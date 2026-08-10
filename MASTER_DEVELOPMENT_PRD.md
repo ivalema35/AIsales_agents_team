@@ -10,18 +10,29 @@
 ## 0. How to read this document
 
 - **Sections 1–4** are *reference*: architecture, file tree, the complete data layer, and the cognitive contracts (agents, decision thresholds, memory). Implement against them; don't re-derive them per phase.
-- **Section 5** is the *build order*: Phases 1→4, each step listing (a) files to create, (b) a focused code blueprint showing the non-obvious logic and its failure handling, and (c) the DoD tests that open the gate.
+- **Section 5** is the *build order*: Phases 1→5, each step listing (a) files to create, (b) a focused code blueprint showing the non-obvious logic and its failure handling, and (c) the DoD tests that open the gate.
 - **Section 6** is the *agent prompt library* — copy-pasteable Python string constants.
 - **Section 7** is the *command cheat sheet*.
+- **Section 8** is the *Executive Business Layer* (Chapter 15 / AI-BOS): the governance layer sitting above Cognitive + Execution — revenue/CAC ceilings, dual sales-mode routing, capacity throttling, client lifecycle, decision simulation, cross-agent governance, and self-evolution boundaries.
+- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P5).
 - Code blocks are **blueprints**: they carry the critical logic (routing, atomic claims, cleanup, validation) verbatim and leave routine bodies (field mapping, selectors, styling) for you to fill.
 
-**Two-layer contract:** the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/n8n). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel.
+**Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/n8n). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
 
 ---
 
 ## 1. System overview
 
 ```
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                  ENTERPRISE EXECUTIVE LAYER (Chapter 15 / §8)                   │
+│  Executive Business Brain (Revenue/CAC) · Dual Sales Mode Engine · Capacity &    │
+│  Resource Intelligence · Market & Competitor Intelligence · Client Lifecycle     │
+│  (LTV/Renewals) · Decision Simulation · Cross-Agent Governance · Self-Evolution  │
+│  Boundaries                                                                     │
+└───────────────────────────────────┬────────────────────────────────────────────┘
+      budget ceilings · capacity throttles · sales-mode routing · governance vetoes
+                                    ▼
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                         COGNITIVE BRAIN LAYER (PRD v2)                          │
 │  CEO · Sales Manager · ICP/Strategy · Review Analyst · Scoring · Outreach ·     │
@@ -39,7 +50,7 @@
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Cognition never sends anything directly.** An agent proposes an action with a confidence score → the Decision Engine routes it (EXECUTE / QC_REVIEW / HUMAN_ESCALATION / IMMEDIATE_EXECUTE) → only then does an Execution-layer service dispatch. Every hop is logged to `agent_events` for audit, self-evaluation, and KPIs.
+**The Executive layer never touches a channel or a lead directly** — it only sets ceilings, thresholds, and routing rules that the Cognitive layer must operate within (§8). **Cognition never sends anything directly either.** An agent proposes an action with a confidence score → the Decision Engine routes it (EXECUTE / QC_REVIEW / HUMAN_ESCALATION / IMMEDIATE_EXECUTE) → only then does an Execution-layer service dispatch. Every hop is logged to `agent_events` for audit, self-evaluation, and KPIs.
 
 **Five operating principles (enforced in every prompt, §6):** value-first over pitch-spam; contextual authenticity (no AI-buzzwords); radical truthfulness / zero hallucination; adaptability within guardrails; and immediate, permanent respect for opt-out signals ahead of any other processing.
 
@@ -69,7 +80,9 @@ ai-sales-os/
 │   │   ├── outreach.py                 # /api/v1/outreach (enqueue only)
 │   │   ├── inbound.py                  # /api/v1/inbound/webhook
 │   │   ├── alerts.py                   # /api/v1/alerts (human queue)
-│   │   └── reports.py                  # /api/v1/reports
+│   │   ├── reports.py                  # /api/v1/reports
+│   │   ├── executive.py                # /api/v1/executive (budget, what-if sim) (§8.6)
+│   │   └── lifecycle.py                # /api/v1/lifecycle (onboarding, renewals) (§8.5)
 │   ├── cognition/
 │   │   ├── __init__.py
 │   │   ├── decision_engine.py          # confidence×risk routing (§4.2)
@@ -78,7 +91,9 @@ ai-sales-os/
 │   │   ├── llm_client.py               # Gemini wrapper: JSON mode + validation
 │   │   ├── memory.py                   # 4-tier memory read/write helpers
 │   │   ├── adaptability.py             # self-adaptation trigger matrix (§4.3)
-│   │   └── bandit.py                   # A/B variant allocation (§4.4)
+│   │   ├── bandit.py                   # A/B variant allocation (§4.4)
+│   │   ├── dual_sales_engine.py        # SaaS vs Custom-Dev routing (§8.2)
+│   │   └── capacity_intelligence.py    # capacity throttle + CAC ceiling (§8.1/§8.3)
 │   ├── agents/
 │   │   ├── __init__.py
 │   │   ├── icp_strategy_agent.py
@@ -86,7 +101,8 @@ ai-sales-os/
 │   │   ├── scoring_agent.py
 │   │   ├── outreach_agent.py
 │   │   ├── inbound_agent.py
-│   │   └── quality_controller.py       # veto gate before every send
+│   │   ├── quality_controller.py       # veto gate before every send
+│   │   └── lifecycle_agent.py          # onboarding/renewal/upsell intelligence (§8.5)
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── lead_service.py             # atomic claim + state transitions
@@ -120,7 +136,12 @@ ai-sales-os/
 │       ├── test_scraper_memory.py
 │       ├── test_qc_gate.py
 │       ├── test_suppression.py
-│       └── test_inbound_edge_cases.py
+│       ├── test_inbound_edge_cases.py
+│       ├── test_dual_sales_routing.py
+│       ├── test_capacity_throttle.py
+│       ├── test_lifecycle_renewal.py
+│       ├── test_governance_hierarchy.py
+│       └── test_self_evolution_boundaries.py
 ├── frontend/
 │   ├── package.json
 │   ├── vite.config.js
@@ -130,8 +151,8 @@ ai-sales-os/
 │       ├── main.jsx
 │       ├── App.jsx
 │       ├── api/client.js
-│       ├── pages/{Dashboard.jsx, Products.jsx}
-│       └── components/{ProductForm.jsx, PipelineKanban.jsx, LeadCard.jsx, AlertsPanel.jsx}
+│       ├── pages/{Dashboard.jsx, Products.jsx, ExecutiveControl.jsx}
+│       └── components/{ProductForm.jsx, PipelineKanban.jsx, LeadCard.jsx, AlertsPanel.jsx, CapacityMeter.jsx}
 ├── n8n/
 │   ├── docker-compose.yml
 │   └── workflows/
@@ -143,7 +164,7 @@ ai-sales-os/
 └── README.md
 ```
 
-**Table count reconciliation:** the 11 named tables + 3 intelligence-layer tables (`agent_events`, `campaign_variants`, `knowledge_memory`) = **14 total**. The three additions are what make the cognitive layer auditable, adaptive, and able to remember; they're flagged in §3.1.
+**Table count reconciliation:** the 11 named tables + 3 intelligence-layer tables (`agent_events`, `campaign_variants`, `knowledge_memory`) + 2 executive-layer tables (`team_capacity`, `client_lifecycle`) = **16 total**. The intelligence tables make the cognitive layer auditable, adaptive, and able to remember; the executive tables make it capacity-aware and post-sale-aware. All are flagged in §3.1.
 
 ---
 
@@ -184,6 +205,8 @@ CREATE TABLE IF NOT EXISTS leads (
       -- ENGAGED, HOT_LEAD, CONVERTED, REJECTED
     source               TEXT,
     region_location      TEXT,
+    sales_route          TEXT DEFAULT 'UNASSIGNED',
+      -- UNASSIGNED, SAAS_PRODUCT, CUSTOM_DEV — set by dual_sales_engine.py (§8.2)
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
@@ -349,6 +372,30 @@ CREATE TABLE IF NOT EXISTS knowledge_memory (
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 15. TEAM CAPACITY  (executive add: delivery/onboarding bandwidth — §8.3)
+CREATE TABLE IF NOT EXISTS team_capacity (
+    id                    TEXT PRIMARY KEY,
+    team_name             TEXT NOT NULL,        -- 'ONBOARDING', 'DEV_SERVICES'
+    total_slots           INTEGER NOT NULL DEFAULT 10,
+    occupied_slots        INTEGER NOT NULL DEFAULT 0,
+    max_utilization_pct   INTEGER DEFAULT 90,
+    updated_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 16. CLIENT LIFECYCLE  (executive add: post-sale LTV / renewals / upsell — §8.5)
+CREATE TABLE IF NOT EXISTS client_lifecycle (
+    id                    TEXT PRIMARY KEY,
+    lead_id               TEXT UNIQUE NOT NULL,
+    onboarding_status     TEXT DEFAULT 'NOT_STARTED',
+    current_mrr           REAL DEFAULT 0.0,
+    contract_start_date   DATE,
+    contract_end_date     DATE,
+    upsell_opportunity    TEXT,
+    referral_requested    INTEGER DEFAULT 0,
+    updated_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -356,6 +403,9 @@ CREATE INDEX IF NOT EXISTS idx_jobs_due              ON jobs (status, job_type, 
 CREATE INDEX IF NOT EXISTS idx_agent_events_lead     ON agent_events (lead_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_variants_campaign     ON campaign_variants (campaign_id, status);
 CREATE INDEX IF NOT EXISTS idx_knowledge_cat_key     ON knowledge_memory (category, key);
+CREATE INDEX IF NOT EXISTS idx_leads_sales_route     ON leads (sales_route);
+CREATE INDEX IF NOT EXISTS idx_team_capacity_name    ON team_capacity (team_name);
+CREATE INDEX IF NOT EXISTS idx_client_lifecycle_end  ON client_lifecycle (contract_end_date);
 ```
 
 ### 3.2 PRAGMA connection listener (`database/db_config.py`)
@@ -418,6 +468,9 @@ if __name__ == "__main__":
 | **Inbound** | Classify intent, draft reply | Autonomous reply (≥0.85) | Demo/pricing/hostile/low-conf |
 | **Quality Controller** | Approve/reject any outbound | **Veto power** | Repeated rejects → human |
 | **Learning/Memory** | A/B promotion, KB updates | Autonomous | — |
+| **Lifecycle** (§8.5) | Onboarding milestones, renewal reminders, upsell triggers | Autonomous (≥0.70) | Contract change, churn risk, or any discount/pricing request |
+
+The full cross-agent precedence order — including the new Capacity Intelligence and Executive Business Brain roles — is formalized in the **Cross-Agent Governance Hierarchy** (§8.7); QC's veto stays absolute regardless of rank.
 
 ### 4.2 Decision Engine (`cognition/decision_engine.py`)
 
@@ -501,6 +554,7 @@ Learning agent promotes the winner to ~80% weight and retires losers, then spins
 | Campaign | `outreach_campaigns` + `campaign_variants` | ICP rules, live A/B state, caps |
 | Lead | `leads` + `lead_*` + `inbound_conversations` | full interaction history per lead |
 | Historical | `knowledge_memory` (JSON now, embeddings later) | winning objection scripts, FAQs, competitor matrices |
+| Post-Sale | `client_lifecycle` (§8.5) | onboarding status, MRR, renewal/upsell state per converted lead |
 
 Retrieval helper example — pull the best-performing objection script for the Inbound agent's context (semantic match optional; keyword/category match is fine for v1):
 
@@ -707,6 +761,33 @@ def handle_inbound(db, evt):
 
 ---
 
+### PHASE 5 — Executive Business OS & Governance Layer
+
+**Goal:** revenue/CAC-aware budget control, dual sales-mode routing, capacity-throttled discovery, post-sale lifecycle tracking, and a governance hierarchy that resolves cross-agent conflicts — layered on top of Phases 1–4 without changing their contracts. Full module specification: §8.
+
+**Step 5.1 — Schema additions.** Add `team_capacity` and `client_lifecycle` (Tables 15–16, §3.1) and the `leads.sales_route` column. Seed `team_capacity` with one row per delivery team (`ONBOARDING`, `DEV_SERVICES`).
+
+**Step 5.2 — Dual Sales Mode Engine** (`cognition/dual_sales_engine.py`, §8.2). Wire `route_sales_mode()` into the pipeline right after `ENRICHED` (needs `lead_firmographics.company_size_range`), before `REVIEWED`/`SCORED`. `outreach_agent.py`'s prompt selection (§6) branches on `sales_route`: `SAAS_PRODUCT` gets the existing subscription-pitch prompt; `CUSTOM_DEV` gets a bespoke-development variant that routes to a human-quoted proposal and never auto-prices (§8.8 boundary).
+
+**Step 5.3 — Capacity & Resource Intelligence** (`cognition/capacity_intelligence.py`, §8.1/§8.3). Wire `check_discovery_throttle()` into `scraper_worker/async_runner.py` immediately before claiming any `DISCOVER` job — a `THROTTLED` result skips the claim and leaves the job `PENDING`, no job is lost. Wire `check_cac_ceiling()` into the existing `adaptability_sweep` cron alongside the §4.3 checks.
+
+**Step 5.4 — Executive & Lifecycle APIs** (`api/executive.py`, `api/lifecycle.py`, `agents/lifecycle_agent.py`, §8.5/§8.6). `POST /api/v1/executive/simulate` — read-only Monte Carlo over historical `outreach_logs`/`lead_scores`/`campaign_variants`, advisory only, never auto-applies. `POST /api/v1/lifecycle/convert` transitions a `CONVERTED` lead into a `client_lifecycle` row. A daily job (piggyback on the `eod_report` cron) calls `enqueue_renewal_reminders()`.
+
+**Step 5.5 — Governance hierarchy** (extend `cognition/decision_engine.py`, §8.7). Add `resolve_conflict()` and `GOVERNANCE_RANK`. QC's veto stays absolute exactly as in §4.1/§4.2 — Phase 5 only adds an explicit tie-break for agents ranked below QC.
+
+**Step 5.6 — Self-evolution boundaries** (extend `config.py` and `cognition/adaptability.py`, §8.8). Add `ADAPTABLE_PARAMS`/`HUMAN_LOCKED_PARAMS` and call `guard_adaptation()` from every autonomous parameter-write path, including the existing §4.3 `evaluate_campaign` actions.
+
+**Step 5.7 — Executive dashboard** (`frontend/src/pages/ExecutiveControl.jsx`, `frontend/src/components/CapacityMeter.jsx`). Read-only v1: live capacity gauge per team, CAC-vs-ceiling per product, pending renewal list, and a simulate-budget form that calls `/executive/simulate` and renders p10/p50/p90 — no auto-apply button; a human copies the result into a real campaign action via the existing CEO-agent path.
+
+**DoD tests (gate):**
+- `test_dual_sales_routing.py`: headcount > 50 → `sales_route='CUSTOM_DEV'`; headcount < 20 → `'SAAS_PRODUCT'`; 21–49 band exercises the LLM tiebreak path and is never silently defaulted.
+- `test_capacity_throttle.py`: `team_capacity` at ≥90% utilization → `check_discovery_throttle()` returns `THROTTLED` and no `DISCOVER` job gets claimed while throttled; dropping below the cap re-opens discovery.
+- `test_lifecycle_renewal.py`: a `client_lifecycle` row with `contract_end_date` 30 days out → exactly one `RENEWAL_REMINDER` job enqueued; a row 45 days out → none yet.
+- `test_governance_hierarchy.py`: conflicting proposals from two operational agents resolve by `GOVERNANCE_RANK`; a QC reject always wins regardless of rank.
+- `test_self_evolution_boundaries.py`: any attempted write to a `HUMAN_LOCKED_PARAMS` key raises and routes to `HUMAN_ESCALATION`; `ADAPTABLE_PARAMS` writes succeed unblocked.
+
+---
+
 ## 6. Agent system prompt library (`cognition/prompts.py`)
 
 All prompts share a guardrail preamble so the five principles and the buzzword ban are enforced everywhere. Every prompt demands **JSON only** and is called through `call_json()` with a matching schema.
@@ -859,7 +940,172 @@ PLACES_API_KEY=
 
 ---
 
-## 8. Cross-cutting concerns & phase-gate checklist
+## 8. Executive Business Layer specifications (Chapter 15 — AI-BOS)
+
+This layer sits **above** the Cognitive Brain Layer (§1) and never touches a channel or a lead directly — it only sets ceilings, thresholds, and routing rules the Cognitive layer must operate within. Built in Phase 5 (§5); does not alter any Phase 1–4 contract.
+
+### 8.0 Module map
+
+| # | Module | Owning file(s) | New DB objects |
+| :-- | :-- | :-- | :-- |
+| 1 | Executive Business Brain (revenue/margin/CAC ceiling, budget allocation) | `cognition/capacity_intelligence.py` (`check_cac_ceiling`), `config.py` (`CAC_CEILINGS`, `DAILY_API_BUDGET`) | — |
+| 2 | Dual Sales Mode Engine | `cognition/dual_sales_engine.py`, `api/executive.py` | `leads.sales_route` |
+| 3 | Capacity & Resource Intelligence | `cognition/capacity_intelligence.py` | `team_capacity` |
+| 4 | Market & Competitor Intelligence | extends `agents/icp_strategy_agent.py` + job type `MARKET_SCAN` | `knowledge_memory` (category=`COMPETITOR`) |
+| 5 | Client Lifecycle Intelligence | `agents/lifecycle_agent.py`, `api/lifecycle.py` | `client_lifecycle` |
+| 6 | Executive Decision Simulation | `api/executive.py` (`/simulate`) | — (reads existing tables only) |
+| 7 | Cross-Agent Governance & Conflict Resolution | extends `cognition/decision_engine.py` (`resolve_conflict`) | `agent_events.routed_to` gains `GOVERNANCE_OVERRIDE` |
+| 8 | AI Self-Evolution Boundaries | `config.py` (`ADAPTABLE_PARAMS` / `HUMAN_LOCKED_PARAMS`), enforced in `cognition/adaptability.py` | — |
+
+### 8.1 Executive Business Brain — revenue, margin & CAC ceilings
+
+Monitors realized CAC per product against a configured ceiling and the daily API/outreach budget split across active products by conversion ROI. Implemented as `check_cac_ceiling()` inside `capacity_intelligence.py` (§8.3) so budget and capacity share one enforcement path — both are "can we afford to keep going" checks running on the same cron.
+
+### 8.2 Dual Sales Mode Engine (`cognition/dual_sales_engine.py`)
+
+Routes a lead into `SAAS_PRODUCT` or `CUSTOM_DEV` right after `ENRICHED` (needs firmographics), before `REVIEWED`/`SCORED`, and writes `leads.sales_route`.
+
+```python
+# config.py
+SALES_ROUTE_RULES = {
+    "SAAS_PRODUCT": {"max_headcount": 20},
+    "CUSTOM_DEV":   {"min_headcount": 50},
+}
+
+def route_sales_mode(db, lead, firmographics) -> str:
+    """Deterministic at the extremes; the 21-49 headcount band is genuinely
+    ambiguous and gets an LLM tiebreak routed through the Decision Engine —
+    never silently defaulted to one flow."""
+    headcount = firmographics.get("company_size_numeric")
+    if headcount is None:
+        route, confidence = "SAAS_PRODUCT", 0.5         # unknown size — conservative default, low confidence
+    elif headcount < SALES_ROUTE_RULES["SAAS_PRODUCT"]["max_headcount"]:
+        route, confidence = "SAAS_PRODUCT", 0.95
+    elif headcount > SALES_ROUTE_RULES["CUSTOM_DEV"]["min_headcount"]:
+        route, confidence = "CUSTOM_DEV", 0.95
+    else:
+        route, confidence = llm_tiebreak_route(lead, firmographics)   # 21-49 band, tech-stack complexity signal
+
+    db.execute(text("UPDATE leads SET sales_route=:r, updated_at=CURRENT_TIMESTAMP WHERE id=:id"),
+               {"r": route, "id": lead["id"]})
+    db.commit()
+    log_agent_event(db, "DUAL_SALES_ENGINE", lead["id"], "ROUTE_SALES_MODE", confidence, "LOW",
+                     route_action("SCORING", confidence))   # reuses the SCORING threshold band (§4.2)
+    return route
+```
+
+Downstream: `outreach_agent.py` reads `sales_route` — `SAAS_PRODUCT` gets the existing subscription-pitch prompt (§6); `CUSTOM_DEV` gets a variant that pitches bespoke development and hands off to a human-quoted proposal instead of an auto-priced offer (custom pricing is always `HUMAN_ESCALATION` per §4.2/§8.8).
+
+### 8.3 Capacity & Resource Intelligence (`cognition/capacity_intelligence.py`)
+
+Throttles discovery before the funnel outproduces what the delivery team can onboard. Called from `scraper_worker/async_runner.py` immediately before claiming a `DISCOVER` job, and from the `adaptability_sweep` cron for the CAC check.
+
+```python
+def get_utilization(db, team_name: str) -> float:
+    row = db.execute(text(
+        "SELECT occupied_slots, total_slots FROM team_capacity WHERE team_name=:t"),
+        {"t": team_name}).fetchone()
+    if not row or row.total_slots == 0:
+        return 0.0
+    return row.occupied_slots / row.total_slots
+
+def check_discovery_throttle(db, team_name="ONBOARDING") -> str:
+    """Returns 'THROTTLED' or 'OPEN'. A THROTTLED result skips the DISCOVER
+    claim entirely — the job stays PENDING, nothing is lost, discovery just pauses."""
+    row = db.execute(text(
+        "SELECT max_utilization_pct FROM team_capacity WHERE team_name=:t"),
+        {"t": team_name}).fetchone()
+    cap_pct = (row.max_utilization_pct if row else 90) / 100.0
+    status = "THROTTLED" if get_utilization(db, team_name) >= cap_pct else "OPEN"
+    log_agent_event(db, "CAPACITY_INTELLIGENCE", None, "CHECK_THROTTLE", 1.0, "LOW", status)
+    return status
+
+def check_cac_ceiling(db, product_id: str, cac_ceiling: float) -> bool:
+    """Executive Business Brain (§8.1): pause a product's campaigns if realized CAC exceeds ceiling."""
+    spend, conversions = get_campaign_spend_and_conversions(db, product_id)
+    cac = spend / max(conversions, 1)
+    if cac > cac_ceiling:
+        pause_campaigns_for_product(db, product_id, reason=f"CAC {cac:.2f} exceeds ceiling {cac_ceiling:.2f}")
+        return False
+    return True
+```
+
+### 8.4 Market & Competitor Intelligence
+
+Extends `icp_strategy_agent.py` with a `MARKET_SCAN` job type (weekly cron via n8n) that re-runs `ICP_STRATEGY_AGENT_SYSTEM_PROMPT` (§6) against fresh SERP/Places data to surface competitor pricing shifts and under-saturated regions, writing findings to `knowledge_memory` (`category='COMPETITOR'`). No new autonomy: output only informs the CEO agent's `executive_summary` and the Learning agent's `next_experiment` — it never changes pricing or ICP on its own (§8.8 boundary).
+
+### 8.5 Client Lifecycle Intelligence (`agents/lifecycle_agent.py`, `api/lifecycle.py`)
+
+Picks up where the funnel ends: a lead reaching `CONVERTED` gets a `client_lifecycle` row.
+
+```python
+def enqueue_renewal_reminders(db, lookahead_days=30):
+    rows = db.execute(text(
+        "SELECT lead_id, contract_end_date FROM client_lifecycle "
+        "WHERE contract_end_date IS NOT NULL "
+        "AND date(contract_end_date) <= date('now', :d)"),
+        {"d": f"+{lookahead_days} days"}).fetchall()
+    for r in rows:
+        enqueue(db, "RENEWAL_REMINDER", {"lead_id": r.lead_id, "contract_end_date": r.contract_end_date})
+    return len(rows)
+```
+
+Upsell detection (usage-spike webhook or manual flag) sets `upsell_opportunity`, which routes through the **same Decision Engine** (`STANDARD_OUTREACH` category, §4.2) before any upsell message sends — no bypass channel for post-sale outreach.
+
+### 8.6 Executive Decision Simulation (`api/executive.py` → `POST /api/v1/executive/simulate`)
+
+Read-only Monte Carlo over existing historical data (`outreach_logs`, `lead_scores`, `campaign_variants`) — never writes, never triggers an action itself. Input: a proposed budget/ICP change; output: projected ROI/deal-velocity distribution (p10/p50/p90). Treat a simulation result as **advisory input to a human decision, never as authority to act** — approval still flows through the CEO agent's normal `campaign_actions` path (§6).
+
+### 8.7 Cross-Agent Governance & Conflict Resolution
+
+Formalizes the agent roster (§4.1) into an explicit precedence order, enforced as a tie-break inside `decision_engine.py` whenever two agents propose conflicting actions on the same lead/campaign in the same cycle:
+
+```
+CEO Agent  >  Quality Controller (veto)  >  Capacity Intelligence  >  ICP/Strategy Agent  >  Operational Agents
+```
+
+```python
+GOVERNANCE_RANK = {
+    "CEO": 0, "QC": 1, "CAPACITY_INTELLIGENCE": 2, "ICP_STRATEGY": 3,
+    "SCORING": 4, "OUTREACH": 4, "INBOUND": 4, "LIFECYCLE": 4,
+}
+
+def resolve_conflict(proposals: list[dict]) -> dict:
+    """proposals: [{"agent": "...", "action": {...}}, ...] targeting the same entity.
+    QC's veto is absolute regardless of rank — a QC REJECT always wins."""
+    veto = next((p for p in proposals if p["agent"] == "QC" and p["action"].get("approved") is False), None)
+    if veto:
+        return veto
+    return min(proposals, key=lambda p: GOVERNANCE_RANK.get(p["agent"], 99))
+```
+
+Every override is logged to `agent_events` with `routed_to='GOVERNANCE_OVERRIDE'` so a human can audit why one agent's action won.
+
+### 8.8 AI Self-Evolution Boundaries
+
+A static allowlist enforced in code, not left to prompt discipline alone — the adaptability sweep (§4.3) and the bandit (§4.4) may only ever touch `ADAPTABLE_PARAMS`.
+
+```python
+# config.py
+ADAPTABLE_PARAMS = {
+    "subject_line", "email_copy_variant", "scraper_query_params",
+    "send_delay_pacing", "ab_prompt_weights",
+}
+HUMAN_LOCKED_PARAMS = {
+    "base_price", "discount_pct", "icp_core_definition",
+    "contractual_sla", "compliance_policy",
+}
+
+def guard_adaptation(param_name: str):
+    if param_name in HUMAN_LOCKED_PARAMS:
+        raise PermissionError(f"{param_name} requires human sign-off — not autonomously adaptable")
+```
+
+`adaptability.py`'s `evaluate_campaign` (§4.3) and every Phase-5 autonomous write path must call `guard_adaptation()` first; a `HUMAN_LOCKED_PARAMS` hit always routes to `HUMAN_ESCALATION`, never `EXECUTE`.
+
+---
+
+## 9. Cross-cutting concerns & phase-gate checklist
 
 - **Process topology:** Flask API, scraper worker, and job worker are **separate processes**. If Flask scales behind gunicorn, keep the job worker a single dedicated process so pacing/caps and bandit allocation stay consistent (N gunicorn workers = N executors = inconsistent counters).
 - **DB hygiene:** run `PRAGMA wal_checkpoint(TRUNCATE)` on a timer (a long-lived n8n read connection can pin the WAL and bloat it); keep write transactions short; never hold one open across an LLM/network call.
@@ -873,5 +1119,6 @@ PLACES_API_KEY=
 | **P2** | atomic job claim under contention · validated scored JSON + confidence · zero orphan browsers / flat RSS · decision routing correct |
 | **P3** | no double-send · suppression on every channel · one-click unsubscribe · QC veto rejects bad drafts · pacing caps · official WhatsApp |
 | **P4** | idempotent inbound · hard rules before LLM · human-in-loop on demo/pricing/hostile/low-conf · dashboard live · EOD report sends |
+| **P5** | sales-mode routing correct at both headcount extremes · capacity throttle opens/closes on utilization · renewal reminders fire on schedule, not early · governance tie-break honors rank · QC veto still absolute · no autonomous write ever touches a `HUMAN_LOCKED_PARAMS` key |
 
-Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, or an AI that auto-answers a pricing question it should have escalated.
+Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, an AI that auto-answers a pricing question it should have escalated, or an executive layer that quietly overrides a human-locked parameter.
