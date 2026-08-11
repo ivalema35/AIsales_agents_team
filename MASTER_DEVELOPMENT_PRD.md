@@ -70,7 +70,7 @@ ai-sales-os/
 │   ├── database/
 │   │   ├── __init__.py
 │   │   ├── db_config.py                # engine, SessionLocal, PRAGMA listener
-│   │   ├── models.py                   # SQLAlchemy ORM (all 14 tables)
+│   │   ├── models.py                   # SQLAlchemy ORM (all 16 tables)
 │   │   └── schema.sql                  # full DDL (source of truth)
 │   ├── api/
 │   │   ├── __init__.py
@@ -577,11 +577,11 @@ Demo/meeting request → mark `HOT_LEAD`, alert human, halt auto follow-ups. Cus
 
 ### PHASE 1 — Foundation & Core REST API
 
-**Goal:** running Flask app, WAL SQLite with all 14 tables, per-connection pragmas, Product + Lead CRUD. No scraping, no LLM.
+**Goal:** running Flask app, WAL SQLite with all 16 tables, per-connection pragmas, Product + Lead CRUD. No scraping, no LLM.
 
 **Step 1.1 — Skeleton & config.** Create `app.py`, `config.py`, `logging_config.py`, `.env.example`, `requirements.txt` (`flask`, `flask-cors`, `sqlalchemy`, `python-dotenv`, `pytest`). Config loads keys + `DECISION_THRESHOLDS` from env. Enable CORS for the Vite dev origin. Structured JSON logging with a request id. **No secrets in source.**
 
-**Step 1.2 — Models & pragma listener.** Implement `database/db_config.py` (§3.2), `database/models.py` (ORM mirror of all 14 tables), and run `migrate.py`. App factory calls nothing destructive on boot.
+**Step 1.2 — Models & pragma listener.** Implement `database/db_config.py` (§3.2), `database/models.py` (ORM mirror of all 16 tables), and run `migrate.py`. App factory calls nothing destructive on boot.
 
 **Step 1.3 — Product CRUD** (`/api/v1/products`, GET/POST/PUT/DELETE). Validate `target_keywords`/`pain_point_mappings` parse as JSON → 422 on bad input, never 500.
 
@@ -896,7 +896,7 @@ python -m playwright install chromium
 cp .env.example .env                                   # then fill in keys
 
 # ── Database ─────────────────────────────────────────────────────
-python migrate.py                                      # apply schema.sql (14 tables)
+python migrate.py                                      # apply schema.sql (16 tables)
 
 # ── Run services (each in its own terminal / process) ────────────
 # API server (dev)

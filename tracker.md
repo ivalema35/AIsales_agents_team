@@ -48,19 +48,20 @@
 
 ### Code (backend/frontend/n8n)
 - [x] **Phase 1 / Step 1.1 — Skeleton & config.** Created `backend/requirements.txt`, `backend/.env.example`, `backend/config.py` (env-driven Config class + `DECISION_THRESHOLDS`), `backend/logging_config.py` (structured JSON logs + per-request id via Flask `g`), `backend/app.py` (app factory, CORS for Vite dev origin, `/health` route). Verified via Flask test client: `/health` → 200, `{"status": "ok"}`. No secrets in source — only `.env.example` exists, real `.env` not created (no real keys available yet).
+- [x] **Phase 1 / Step 1.2 — Models & pragma listener.** Created `backend/database/__init__.py`, `backend/database/schema.sql` (all 16 tables + indexes), `backend/database/db_config.py` (engine + per-connection PRAGMA listener), `backend/database/models.py` (SQLAlchemy ORM mirror of all 16 tables, incl. `UniqueConstraint` on `inbound_conversations`/`suppression_list`), `backend/migrate.py`. Verified: `migrate.py` runs clean, `journal_mode=wal` + `foreign_keys=1` confirmed live on an open session, `-wal`/`-shm` files present while a session is open, FK cascade delete tested (product delete → its lead vanishes). Fixed a stale "14 tables" reference in 3 places in MASTER_DEVELOPMENT_PRD.md (now correctly 16, post Phase-5 addition).
 
 ---
 
 ## 3. Ongoing Module / Step
 
-*(Step 1.1 complete. Agla step — Phase 1 / Step 1.2 (Models & pragma listener) — user confirmation ka wait hai.)*
+*(Step 1.2 complete. Agla step — Phase 1 / Step 1.3 (Product CRUD) — user confirmation ka wait hai. Ek open question hai: `sales_system.db` ko gitignore me daalna chahiye — user se confirm karna hai.)*
 
 ---
 
 ## 4. Pending Modules / Steps
 
 ### PHASE 1 — Foundation & Core REST API
-- [ ] Step 1.2 — Models & pragma listener (`database/db_config.py`, `database/models.py`, `migrate.py`)
+- [ ] Step 1.3 — Product CRUD (`api/products.py`)
 - [ ] Step 1.3 — Product CRUD (`api/products.py`)
 - [ ] Step 1.4 — Lead CRUD & ingestion (`api/leads.py`)
 - [ ] DoD Gate P1 (pragmas live · FK cascade · CRUD round-trip · secrets in `.env`)
