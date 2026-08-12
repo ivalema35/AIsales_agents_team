@@ -6,6 +6,13 @@ import requests
 
 from config import Config
 from services.data_acquisition.base import LeadSourceProvider, empty_lead
+from services.data_acquisition.website_scraper import (
+    normalize_mobile,
+    EMAIL_RE,
+    is_valid_contact_email,
+    belongs_to_company,
+    TEXT_MOBILE_RE as MOBILE_RE,  # reuse the one fixed pattern, don't fork a second copy
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,13 +43,25 @@ def _is_directory(url):
     return any(root == d or root.endswith(f".{d}") for d in DIRECTORY_DOMAINS)
 
 
-def _name_tokens(company_name):
-    """'Fun Blast - SBR | Trampoline Park' -> {'funblast', 'fun', 'blast', 'sbr', ...}"""
+def _name_matches_blob(company_name, blob):
+    """True if the business's own name is actually present in this result -- a raw
+    substring check (spaces/punctuation stripped) on the first 1-2 significant words,
+    not loose token overlap.
+
+    This exists because plain majority-vote over phone numbers found in search results
+    is exploitable by coincidence: for "Infinity Gaming Zone PS5", two DIFFERENT
+    competing businesses' promo reels both mentioned the same number and outvoted the
+    one snippet that was actually Infinity Gaming Zone's own Instagram bio. Loose token
+    overlap (e.g. matching on "gaming" or "zone" alone) doesn't fix this -- those words
+    are the category, not the business -- so this requires the name's own word(s) to
+    appear as a contiguous chunk.
+    """
     words = [w for w in re.split(r"[^a-z0-9]+", (company_name or "").lower()) if len(w) > 2]
-    tokens = set(words)
-    if len(words) >= 2:
-        tokens.add("".join(words[:2]))   # 'funblast' matches funblast.co
-    return tokens
+    if not words:
+        return False
+    needle = "".join(words[:2])
+    haystack = re.sub(r"[^a-z0-9]+", "", (blob or "").lower())
+    return needle in haystack
 
 
 class SerperProvider(LeadSourceProvider):
@@ -96,6 +115,15 @@ class SerperProvider(LeadSourceProvider):
 
         Returns a URL only when the domain plausibly belongs to the company; returns
         None rather than guessing, since a wrong site poisons every downstream step.
+
+        Real bug found live (2026-08-12): the original version accepted a domain if
+        ANY single significant word of the business name (>3 chars) appeared as a
+        substring of the domain -- for "Game Zone | Nexus Gaming Hub", the word "game"
+        matched inside "timezonegames.com" (an unrelated business, Timezone), and every
+        downstream field -- email, contact name, role -- got silently overwritten with
+        Timezone's data. Same bug class as the find_phone/find_email name-match fix,
+        just never applied here. Now uses `_name_matches_blob()` -- the FULL first-1-2-
+        word signature must appear contiguously, not any one generic category word.
         """
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
@@ -110,25 +138,213 @@ class SerperProvider(LeadSourceProvider):
         resp.raise_for_status()
         data = resp.json()
 
-        # Google's own knowledge panel is the strongest signal when present
+        # Google's own knowledge panel is a strong signal, but still name-checked --
+        # ambiguous/generic business names can resolve the panel to the wrong entity.
         kg_site = (data.get("knowledgeGraph") or {}).get("website")
-        if kg_site and not _is_directory(kg_site):
+        if kg_site and not _is_directory(kg_site) and _name_matches_blob(company_name, _root_domain(kg_site)):
             logger.info("find_website %s -> %s (knowledge graph)", company_name, kg_site)
             return kg_site
 
-        tokens = _name_tokens(company_name)
         for result in data.get("organic", []):
             link = result.get("link")
             if not link or _is_directory(link):
                 continue
             root = _root_domain(link)
-            stem = root.split(".")[0]
-            # accept only when the domain echoes the business name -- otherwise a
-            # blog post about the company would be stored as the company's site
-            if stem in tokens or any(t in stem for t in tokens if len(t) > 3):
+            if _name_matches_blob(company_name, root):
                 url = f"https://{root}/"
                 logger.info("find_website %s -> %s (organic)", company_name, url)
                 return url
 
         logger.info("find_website %s -> nothing confident enough", company_name)
         return None
+
+    def find_phone(self, company_name, location=None, domain=None):
+        """Recover a phone/WhatsApp number via organic search snippets, when the
+        company's own website (website_scraper.scrape_phones) found nothing.
+
+        Verified live (2026-08-12): Google's Places listing frequently has no phone for
+        smaller businesses, but the organic web (their own contact page, a social bio)
+        usually does. One recovered number was cross-confirmed against the same number
+        found independently via a Google Maps detail-panel read -- same digits, two
+        unrelated sources. Costs 1 Serper credit; call only after the free website
+        scrape has already come up empty.
+
+        Accuracy note: a single top hit is NOT trustworthy on its own -- different
+        branches, stale numbers, and unrelated businesses all show up across results.
+        Majority vote across all snippets, with a hit on the company's own domain
+        breaking ties, beats "take the first match" -- BUT plain majority vote is itself
+        exploitable: two different competing businesses' promo posts can coincidentally
+        share a number and outvote the one genuine hit. Verified live -- for "Infinity
+        Gaming Zone PS5", two unrelated PS5-gaming reels (different names, different
+        addresses) both mentioned the same number and would have outvoted the number on
+        the business's own Instagram bio. Fix: only snippets where the business's own
+        name actually appears are counted at all; a numeric majority from unrelated
+        results is discarded rather than trusted.
+
+        Second bug, found the same way (live-tested against a known-good number, not
+        just "the code ran"): even with name-matching, a single result mentioning
+        SEVERAL different numbers together (a "call us on X, Y, or Z" round-up post,
+        common when a page covers multiple venues) can tie against a result that
+        cleanly mentions ONE number -- and a raw count-based tie-break is arbitrary,
+        effectively "whichever Google happened to rank first that day". Verified live
+        for "SSJ CAFE AND PLAY": their own Instagram profile cleanly states one number
+        (their real one), while an unrelated round-up post mentions that SAME real
+        number ALONGSIDE three other unrelated numbers in one cluttered snippet -- a
+        1-vote-each tie that could have gone either way. Fix: a result contributing
+        MORE THAN ONE distinct number is ambiguous -- which one is actually theirs?
+        -- and is excluded from voting entirely, not just partially discounted.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+
+        query = f"{company_name} {location or ''} contact mobile".strip()
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": 10},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        votes = {}
+        own_domain_hits = set()
+        skipped_unmatched = 0
+        skipped_ambiguous = 0
+        for result in data.get("organic", []):
+            blob = f"{result.get('title', '')} {result.get('snippet', '')}"
+            link_root = _root_domain(result.get("link", ""))
+            has_numbers = MOBILE_RE.search(blob)
+            if has_numbers and not _name_matches_blob(company_name, blob):
+                skipped_unmatched += 1
+                continue
+
+            distinct_numbers = {normalize_mobile(m.group(0)) for m in MOBILE_RE.finditer(blob)}
+            distinct_numbers.discard(None)
+            if len(distinct_numbers) > 1:
+                # multiple different numbers crammed into one result -- can't tell
+                # which is actually theirs, so none of them earn a vote from this result
+                skipped_ambiguous += 1
+                continue
+            for mobile in distinct_numbers:
+                votes[mobile] = votes.get(mobile, 0) + 1
+                if domain and link_root == domain:
+                    own_domain_hits.add(mobile)
+
+        if not votes:
+            logger.info("find_phone %s -> nothing found (skipped %d unmatched-name, "
+                        "%d ambiguous-multi-number results)",
+                         company_name, skipped_unmatched, skipped_ambiguous)
+            return None
+
+        ranked = sorted(votes, key=lambda p: (p not in own_domain_hits, -votes[p]))
+        winner = ranked[0]
+        logger.info("find_phone %s -> %s (votes=%d, own_domain=%s, all=%s, skipped_ambiguous=%d)",
+                     company_name, winner, votes[winner], winner in own_domain_hits, votes, skipped_ambiguous)
+        return winner
+
+    def find_email(self, company_name, location=None, domain=None):
+        """Recover a contact email via organic search snippets -- specifically for
+        businesses with NO independent website (Instagram/Facebook page only), where
+        website_scraper.scrape_emails() has nothing to scrape in the first place.
+
+        Deliberately does NOT open Instagram/Facebook's own page (login walls, heavy
+        JS, and closer to a ToS problem than reading a company's own site or even Maps).
+        Instead it reads what Google already indexed from those pages -- the same
+        public snippet text find_phone() reads, just filtered for emails instead.
+
+        Same two safeguards as find_phone(), both required:
+          1. name-match -- a result's email only counts if the business's own name is
+             actually in that result (the exact bug class found while building find_phone).
+          2. platform-address rejection -- help@instagram.com / support@facebook.com etc.
+             are real, valid-shaped emails that would otherwise pass every other check;
+             they belong to the platform, never the business, so they're excluded outright
+             regardless of how often they appear.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+
+        query = f"{company_name} {location or ''} contact email".strip()
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": 10},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        votes = {}
+        own_domain_hits = set()
+        skipped_unmatched = 0
+        for result in data.get("organic", []):
+            blob = f"{result.get('title', '')} {result.get('snippet', '')}"
+            link_root = _root_domain(result.get("link", ""))
+            candidates = EMAIL_RE.findall(blob)
+            if candidates and not _name_matches_blob(company_name, blob):
+                skipped_unmatched += 1
+                continue
+            for raw in candidates:
+                email = raw.lower().strip(".,;:)('\"")
+                if not is_valid_contact_email(email):
+                    continue
+                email_domain = email.partition("@")[2]
+                if _is_directory(f"https://{email_domain}"):
+                    continue  # e.g. help@instagram.com -- the platform, not the business
+                if domain and not belongs_to_company(email, domain):
+                    continue
+                votes[email] = votes.get(email, 0) + 1
+                if domain and link_root == domain:
+                    own_domain_hits.add(email)
+
+        if not votes:
+            logger.info("find_email %s -> nothing found (skipped %d unmatched-name results with emails)",
+                         company_name, skipped_unmatched)
+            return None
+
+        ranked = sorted(votes, key=lambda e: (e not in own_domain_hits, -votes[e]))
+        winner = ranked[0]
+        logger.info("find_email %s -> %s (votes=%d, own_domain=%s, all=%s)",
+                     company_name, winner, votes[winner], winner in own_domain_hits, votes)
+        return winner
+
+    def find_review_signals(self, company_name, location=None, max_snippets=6):
+        """Pull public-web snippets that MIGHT contain genuine customer complaints, for
+        the Review Analyst LLM agent to judge. Deliberately does NOT try to detect
+        complaint language itself with keywords/regex -- "is this a real complaint or
+        just marketing copy" is exactly the kind of qualitative judgment an LLM is good
+        at and regex is bad at. This just gathers name-matched candidate text and lets
+        the agent decide; an empty or irrelevant result is expected and must be handled
+        gracefully downstream, not treated as an error.
+
+        Verified live (2026-08-12): works for some businesses (found genuine "poor
+        maintenance of arcade games", "billing mistakes and malfunctioning VR games"
+        via review-aggregator sites Google indexes) and returns nothing usable for
+        others in the same run -- roughly 1 in 3 in a small sample. This uneven
+        coverage is why scoring/outreach must degrade gracefully rather than depend
+        on review data being present.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+
+        query = f"{company_name} {location or ''} review complaint".strip()
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": 10},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        snippets = []
+        for result in data.get("organic", []):
+            blob = f"{result.get('title', '')} {result.get('snippet', '')}".strip()
+            if not blob or not _name_matches_blob(company_name, blob):
+                continue
+            snippets.append(blob)
+            if len(snippets) >= max_snippets:
+                break
+
+        logger.info("find_review_signals %s -> %d name-matched snippets", company_name, len(snippets))
+        return snippets

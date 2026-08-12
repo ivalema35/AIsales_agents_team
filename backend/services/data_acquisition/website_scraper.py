@@ -19,6 +19,22 @@ logger = logging.getLogger(__name__)
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 MAILTO_RE = re.compile(r'mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})', re.I)
 
+TEL_HREF_RE = re.compile(r'href=["\']tel:([^"\']+)["\']', re.I)
+WA_HREF_RE = re.compile(
+    r'href=["\'][^"\']*(?:wa\.me/|api\.whatsapp\.com/send\?phone=)(\+?\d[\d\-\s]{7,15})[^"\']*["\']',
+    re.I,
+)
+# Plain-text fallback: an Indian mobile number quoted in body copy, not inside a link.
+# Weakest signal of the three -- more prone to matching order IDs, GSTINs, etc.
+#
+# Each digit after the first may have an optional single space/dash before it -- plain
+# Indian text overwhelmingly writes numbers "97244 09639" or "97244-09639" (5+5), not as
+# one unbroken run. A naive \d{9} tail (no allowance for embedded separators) silently
+# fails to match that format at all -- found live: a business's own Instagram bio wrote
+# their number spaced, an unrelated post happened to write a WRONG number unspaced, and
+# the unbroken-digits version won a vote tie it should never have been eligible to enter.
+TEXT_MOBILE_RE = re.compile(r"(?<!\d)(?:\+?91[-\s]?)?[6-9](?:[-\s]?\d){9}(?!\d)")
+
 # Real browser headers. Without an Accept header some servers return 406 outright
 # (atlantacomputer.in did exactly that) -- this is politeness/compatibility, not evasion.
 HEADERS = {
@@ -103,6 +119,49 @@ def is_role_account(email: str) -> bool:
     return local in ROLE_PREFIXES or base in ROLE_PREFIXES
 
 
+def normalize_mobile(raw: str) -> str | None:
+    """'+91 98765 43210' / '098765-43210' / '9876543210' -> '9876543210'.
+
+    Returns None for anything that isn't a valid 10-digit Indian mobile number
+    (starts 6-9) once the country code / leading 0 is stripped -- landlines (which
+    carry an STD area code and don't fit this shape) are discarded on purpose, not
+    just deprioritized: outreach here is WhatsApp-first, and WhatsApp requires a
+    mobile number, so a landline is dead weight rather than a weaker lead.
+    """
+    digits = re.sub(r"\D", "", raw or "")
+    if len(digits) == 12 and digits.startswith("91"):
+        digits = digits[2:]
+    elif len(digits) == 11 and digits.startswith("0"):
+        digits = digits[1:]
+    if len(digits) == 10 and digits[0] in "6789":
+        return digits
+    return None
+
+
+def _extract_phones(html: str) -> list[dict]:
+    """WhatsApp links first (a wa.me link is mobile by definition), then tel: links,
+    then a plain-text regex as a last, weaker pass. Order = priority; dedup keeps the
+    first (highest-priority) source for a number found multiple ways.
+    """
+    found = []
+    seen = set()
+
+    def add(raw, source):
+        mobile = normalize_mobile(raw)
+        if mobile and mobile not in seen:
+            seen.add(mobile)
+            found.append({"phone": mobile, "source": source})
+
+    for m in WA_HREF_RE.finditer(html or ""):
+        add(m.group(1), "whatsapp_link")
+    for m in TEL_HREF_RE.finditer(html or ""):
+        add(m.group(1), "tel_link")
+    for m in TEXT_MOBILE_RE.finditer(html or ""):
+        add(m.group(0), "text")
+
+    return found
+
+
 def _extract(html: str, domain: str | None = None) -> list[str]:
     """mailto: links first -- those are unambiguously contact addresses the site owner
     put there on purpose, unlike a stray address in body text.
@@ -168,6 +227,37 @@ def scrape_emails(domain: str, timeout=12, max_pages=4) -> list[str]:
             return found
 
     logger.info("website scrape %s -> nothing found (%d pages reachable)", domain, pages_tried)
+    return found
+
+
+def scrape_phones(domain: str, timeout=12, max_pages=4) -> list[dict]:
+    """Return WhatsApp-capable mobile numbers found on the company's own site,
+    best-effort. Mirrors scrape_emails()'s page-walking; kept as a separate pass
+    (rather than merged into one fetch) so the already-tested email path stays
+    untouched.
+    """
+    if not domain:
+        return []
+
+    found = []
+    seen = set()
+    pages_tried = 0
+    for url in _candidate_urls(domain):
+        if pages_tried >= max_pages:
+            break
+        html = _fetch(url, timeout)
+        if html is None:
+            continue
+        pages_tried += 1
+        for entry in _extract_phones(html):
+            if entry["phone"] not in seen:
+                seen.add(entry["phone"])
+                found.append(entry)
+        if found:
+            logger.info("phone scrape %s -> %s (from %s)", domain, found, url)
+            return found
+
+    logger.info("phone scrape %s -> nothing found (%d pages reachable)", domain, pages_tried)
     return found
 
 

@@ -11,7 +11,7 @@ class Config:
 
     # LLM provider — swappable, one line to change (tracker.md §A.1)
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")
-    LLM_MODEL = os.getenv("LLM_MODEL", "gemini-2.5-flash")
+    LLM_MODEL = os.getenv("LLM_MODEL", "gemini-flash-latest")
 
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
