@@ -1,0 +1,126 @@
+Schema applied.
+
+--- Processing: Fun Blast ---
+  ENRICH: claimed=True
+  REVIEW: claimed=True
+  SCORE: claimed=True
+
+--- Processing: Sparrk ---
+  ENRICH: claimed=True
+  REVIEW: claimed=True
+  SCORE: claimed=True
+
+--- Processing: BounceUp ---
+  ENRICH: claimed=True
+  REVIEW: claimed=True
+  SCORE: claimed=True
+
+--- Processing: Timezone Palladium Mall Ahmedabad ---
+  ENRICH: claimed=True
+  REVIEW: claimed=True
+  SCORE: claimed=True
+
+--- Processing: INFINITY GAMING ZONE PS5 ---
+  ENRICH: claimed=True
+  REVIEW: claimed=True
+  SCORE: claimed=True
+
+
+##########################################################################################
+FULL RESULTS -- 5 LEADS
+##########################################################################################
+
+==========================================================================================
+Fun Blast
+==========================================================================================
+  Website : https://funblast.co/
+  Email   : hello@funblast.co
+  Phone   : 9586601007
+  Contact : - / -
+  Status  : SCORED
+
+  --- REVIEW ---
+  Source       : SERPER_SNIPPETS
+  Sentiment    : -1.0
+  Pain points  : [{"code": "POOR_MAINTENANCE", "evidence_quote": "Several customers complained about the poor maintenance of arcade games.", "severity_0_1": 0.7}, {"code": "BILLING_ERRORS", "evidence_quote": "there were mentions of billing mistakes", "severity_0_1": 0.6}, {"code": "EQUIPMENT_MALFUNCTION", "evidence_quote": "malfunctioning VR games", "severity_0_1": 0.5}]
+
+  --- SCORE ---
+  Score        : 85  |  Tier: HOT  |  Confidence: 0.9
+  Breakdown    : {"icp_fit": 1.0, "pain_match": 0.9, "reachability": 1.0, "buying_signal": 0.0}
+  Justification: Fun Blast operates in a relevant category and has significant pain points that align with our value proposition. They are reachable via email and phone.
+
+==========================================================================================
+Sparrk
+==========================================================================================
+  Website : https://sparrk.fun/
+  Email   : sparrk24@gmail.com
+  Phone   : 8866105511
+  Contact : - / -
+  Status  : SCORED
+
+  --- REVIEW ---
+  Source       : SERPER_SNIPPETS
+  Sentiment    : -1.0
+  Pain points  : []
+
+  --- SCORE ---
+  Score        : 50  |  Tier: WARM  |  Confidence: 1.0
+  Breakdown    : {"icp_fit": 50.0, "pain_match": 0.0, "reachability": 100.0, "buying_signal": 0.0}
+  Justification: Sparrk's business type aligns with the target market, but no specific pain points were identified. Contact info is available.
+
+==========================================================================================
+BounceUp
+==========================================================================================
+  Website : https://bounceup.in/
+  Email   : brd@bounceup.in
+  Phone   : 6223165948
+  Contact : - / -
+  Status  : SCORED
+
+  --- REVIEW ---
+  Source       : SERPER_SNIPPETS
+  Sentiment    : 1.0
+  Pain points  : []
+
+  --- SCORE ---
+  Score        : 50  |  Tier: WARM  |  Confidence: 1.0
+  Breakdown    : {"icp_fit": 70.0, "pain_match": 0.0, "reachability": 100.0, "buying_signal": 0.0}
+  Justification: BounceUp fits the target customer profile, but lacks identified pain points. Reachable contact info is available.
+
+==========================================================================================
+Timezone Palladium Mall Ahmedabad
+==========================================================================================
+  Website : https://timezonegames.com/
+  Email   : peronika.saribu@timezonegames.com
+  Phone   : 9549308309
+  Contact : Peronika Saribu / SPV
+  Status  : SCORED
+
+  --- REVIEW ---
+  Source       : SERPER_SNIPPETS
+  Sentiment    : -1.0
+  Pain points  : []
+
+  --- SCORE ---
+  Score        : 60  |  Tier: WARM  |  Confidence: 1.0
+  Breakdown    : {"icp_fit": 70.0, "pain_match": 0.0, "reachability": 100.0, "buying_signal": 0.0}
+  Justification: The lead fits the target customer profile but lacks identified pain points. Reachable contact info boosts the score.
+
+==========================================================================================
+INFINITY GAMING ZONE PS5
+==========================================================================================
+  Website : https://infinitygaming-gamezone.vercel.app/
+  Email   : helpme.infinitygaming@gmail.com
+  Phone   : 9875014799
+  Contact : - / -
+  Status  : SCORED
+
+  --- REVIEW ---
+  Source       : SERPER_SNIPPETS
+  Sentiment    : 0.8
+  Pain points  : [{"code": "MANAGEMENT_ISSUES", "evidence_quote": "While some mention issues with management", "severity_0_1": 0.5}]
+
+  --- SCORE ---
+  Score        : 80  |  Tier: HOT  |  Confidence: 0.8
+  Breakdown    : {"icp_fit": 1.0, "pain_match": 0.5, "reachability": 1.0, "buying_signal": 0.0}
+  Justification: The lead matches the target customer profile and has a relevant pain point related to management issues.

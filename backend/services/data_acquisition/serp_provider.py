@@ -64,6 +64,48 @@ def _name_matches_blob(company_name, blob):
     return needle in haystack
 
 
+# Platforms where "the first path segment is the account handle" is a reliable
+# structural assumption. Deliberately NOT extended to directories/listings (JustDial,
+# Trip.com, etc.) -- their URL slugs routinely embed a business name inside a listing
+# page that belongs to the DIRECTORY, not the business.
+_PROFILE_HOSTS = {"instagram.com", "facebook.com", "m.facebook.com"}
+
+
+def _is_own_profile_link(company_name, link):
+    """True if the URL's account HANDLE (the first path segment on a known social
+    platform, e.g. instagram.com/<handle>) names the business -- i.e. this looks like
+    the business's own profile page, not a third party merely mentioning it.
+
+    This is a stronger trust signal than `_name_matches_blob` alone catches. Verified
+    live: for "Sparrk", the correct email tied 1-1 (by plain vote count) against a wrong
+    one -- but the correct email came from `facebook.com/sparrkgamezone/` (their own
+    profile: the handle IS the business name) while the wrong one came from
+    `facebook.com/cityshor/posts/newinahmedabad-sparrk-gaming-zone-.../` (a city-events
+    aggregator account whose POST SLUG happened to mention Sparrk's name).
+
+    Real bug caught during testing THIS function: checking the whole path (not just the
+    first segment) made the cityshor URL above a false positive too -- "sparrk" appears
+    in the post slug even though the actual account is "cityshor", not Sparrk's own. It
+    matched the same "generic substring, not the actual identity" trap that
+    `_name_matches_blob` exists to avoid for review/snippet text -- URL paths need the
+    identical discipline, checking the handle specifically, not the whole path.
+    """
+    parsed = urlparse(link or "")
+    host = parsed.netloc.lower().removeprefix("www.")
+    if host not in _PROFILE_HOSTS:
+        return False
+    segments = [s for s in parsed.path.split("/") if s]
+    if not segments:
+        return False
+    handle = re.sub(r"[^a-z0-9]+", "", segments[0].lower())
+
+    words = [w for w in re.split(r"[^a-z0-9]+", (company_name or "").lower()) if len(w) > 2]
+    if not words:
+        return False
+    needle = "".join(words[:2])
+    return needle in handle
+
+
 class SerperProvider(LeadSourceProvider):
     """Company discovery via Serper.dev's Google Places search -- returns real
     business listings (name, website, phone, address), not raw web-search links."""
@@ -209,11 +251,14 @@ class SerperProvider(LeadSourceProvider):
 
         votes = {}
         own_domain_hits = set()
+        own_profile_hits = set()
         skipped_unmatched = 0
         skipped_ambiguous = 0
         for result in data.get("organic", []):
             blob = f"{result.get('title', '')} {result.get('snippet', '')}"
-            link_root = _root_domain(result.get("link", ""))
+            link = result.get("link", "")
+            link_root = _root_domain(link)
+            is_own_profile = _is_own_profile_link(company_name, link)
             has_numbers = MOBILE_RE.search(blob)
             if has_numbers and not _name_matches_blob(company_name, blob):
                 skipped_unmatched += 1
@@ -230,6 +275,8 @@ class SerperProvider(LeadSourceProvider):
                 votes[mobile] = votes.get(mobile, 0) + 1
                 if domain and link_root == domain:
                     own_domain_hits.add(mobile)
+                if is_own_profile:
+                    own_profile_hits.add(mobile)
 
         if not votes:
             logger.info("find_phone %s -> nothing found (skipped %d unmatched-name, "
@@ -237,10 +284,13 @@ class SerperProvider(LeadSourceProvider):
                          company_name, skipped_unmatched, skipped_ambiguous)
             return None
 
-        ranked = sorted(votes, key=lambda p: (p not in own_domain_hits, -votes[p]))
+        # own domain/profile beats plain vote count -- "this is literally their page"
+        # is stronger evidence than "this number was mentioned more times"
+        trusted = own_domain_hits | own_profile_hits
+        ranked = sorted(votes, key=lambda p: (p not in trusted, -votes[p]))
         winner = ranked[0]
-        logger.info("find_phone %s -> %s (votes=%d, own_domain=%s, all=%s, skipped_ambiguous=%d)",
-                     company_name, winner, votes[winner], winner in own_domain_hits, votes, skipped_ambiguous)
+        logger.info("find_phone %s -> %s (votes=%d, trusted_source=%s, all=%s, skipped_ambiguous=%d)",
+                     company_name, winner, votes[winner], winner in trusted, votes, skipped_ambiguous)
         return winner
 
     def find_email(self, company_name, location=None, domain=None):
@@ -253,13 +303,29 @@ class SerperProvider(LeadSourceProvider):
         Instead it reads what Google already indexed from those pages -- the same
         public snippet text find_phone() reads, just filtered for emails instead.
 
-        Same two safeguards as find_phone(), both required:
+        Three safeguards, all required (the first two were here from the start; the
+        third was missing until a real bug proved it was needed too):
           1. name-match -- a result's email only counts if the business's own name is
              actually in that result (the exact bug class found while building find_phone).
           2. platform-address rejection -- help@instagram.com / support@facebook.com etc.
              are real, valid-shaped emails that would otherwise pass every other check;
              they belong to the platform, never the business, so they're excluded outright
              regardless of how often they appear.
+          3. ambiguous multi-email results are excluded entirely. Verified live: for
+             "Sparrk", the correct email (`sparrk24@gmail.com`, from their own official
+             Facebook page's labeled "Contact info" field) tied 1-1 against a wrong one
+             (`funzillasurat@gmail.com`) pulled from a city-events listicle post that
+             names several different venues' contacts in one paragraph. Same root cause
+             as the SSJ CAFE AND PLAY phone bug (tracker.md), just never ported to this
+             function until this run exposed it: a source listing multiple different
+             contacts can't tell you which one is this business's, so none of them vote.
+          4. own-profile-link trust (`_is_own_profile_link`) -- that same "Sparrk" case
+             had only ONE email per result (safeguard 3 alone didn't catch it), so vote
+             count still tied 1-1. The real signal: the correct email's result URL was
+             `facebook.com/sparrkgamezone/` (their own profile -- the business name IS
+             the path), the wrong one was `facebook.com/cityshor/posts/...` (an events
+             aggregator account). A result from the business's own profile page now
+             outranks plain vote count entirely, not just breaks ties on top of it.
         """
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
@@ -276,14 +342,20 @@ class SerperProvider(LeadSourceProvider):
 
         votes = {}
         own_domain_hits = set()
+        own_profile_hits = set()
         skipped_unmatched = 0
+        skipped_ambiguous = 0
         for result in data.get("organic", []):
             blob = f"{result.get('title', '')} {result.get('snippet', '')}"
-            link_root = _root_domain(result.get("link", ""))
+            link = result.get("link", "")
+            link_root = _root_domain(link)
+            is_own_profile = _is_own_profile_link(company_name, link)
             candidates = EMAIL_RE.findall(blob)
             if candidates and not _name_matches_blob(company_name, blob):
                 skipped_unmatched += 1
                 continue
+
+            valid_emails = set()
             for raw in candidates:
                 email = raw.lower().strip(".,;:)('\"")
                 if not is_valid_contact_email(email):
@@ -293,19 +365,34 @@ class SerperProvider(LeadSourceProvider):
                     continue  # e.g. help@instagram.com -- the platform, not the business
                 if domain and not belongs_to_company(email, domain):
                     continue
+                valid_emails.add(email)
+
+            if len(valid_emails) > 1:
+                # multiple different emails crammed into one result (a listicle covering
+                # several businesses, a "contact any of these" page) -- can't tell which
+                # is actually theirs, so none of them earn a vote from this result
+                skipped_ambiguous += 1
+                continue
+            for email in valid_emails:
                 votes[email] = votes.get(email, 0) + 1
                 if domain and link_root == domain:
                     own_domain_hits.add(email)
+                if is_own_profile:
+                    own_profile_hits.add(email)
 
         if not votes:
-            logger.info("find_email %s -> nothing found (skipped %d unmatched-name results with emails)",
-                         company_name, skipped_unmatched)
+            logger.info("find_email %s -> nothing found (skipped %d unmatched-name, "
+                        "%d ambiguous-multi-email results)",
+                         company_name, skipped_unmatched, skipped_ambiguous)
             return None
 
-        ranked = sorted(votes, key=lambda e: (e not in own_domain_hits, -votes[e]))
+        # own domain/profile beats plain vote count -- "this is literally their page"
+        # is stronger evidence than "this email was mentioned more times"
+        trusted = own_domain_hits | own_profile_hits
+        ranked = sorted(votes, key=lambda e: (e not in trusted, -votes[e]))
         winner = ranked[0]
-        logger.info("find_email %s -> %s (votes=%d, own_domain=%s, all=%s)",
-                     company_name, winner, votes[winner], winner in own_domain_hits, votes)
+        logger.info("find_email %s -> %s (votes=%d, trusted_source=%s, all=%s, skipped_ambiguous=%d)",
+                     company_name, winner, votes[winner], winner in trusted, votes, skipped_ambiguous)
         return winner
 
     def find_review_signals(self, company_name, location=None, max_snippets=6):
