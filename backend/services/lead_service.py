@@ -18,20 +18,30 @@ from jobs.job_queue import enqueue
 ELIGIBLE_TIERS = {"HOT", "WARM"}
 
 
-def claim_lead_for_outreach(db, lead_id):
+def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None):
     """Atomically move a SCORED, outreach-eligible lead to OUTREACHING and enqueue one
     OUTREACH_EMAIL and/or OUTREACH_WA job per channel the lead actually has contact info
     for -- both if both exist, deliberately not "pick one channel". Safe to call
     concurrently for the same lead_id: only the caller that wins the atomic status flip
     enqueues anything.
 
+    `run_after`: optional datetime forwarded to both enqueue() calls -- lets a caller
+    (jobs/discovery_scheduler.py's outreach tick) stagger a batch instead of bursting all
+    of it at once.
+
+    `allowed_channels`: optional set restricting which channels may be enqueued THIS call
+    (e.g. {"EMAIL"} when the WhatsApp daily cap is already used up for today). None means
+    no restriction. If this narrows a lead down to zero usable channels, the lead is left
+    at SCORED (not claimed) rather than claimed with nothing queued -- it's a legitimate
+    candidate for a later tick once budget frees up, not a dead lead.
+
     Returns the list of channels queued (e.g. ["EMAIL"], ["EMAIL", "WHATSAPP"]), or None
-    if the lead wasn't eligible or was already claimed by someone else.
+    if the lead wasn't eligible (no usable channel, wrong tier, low confidence) or was
+    already claimed by someone else.
 
     Eligibility:
-      - has at least one contact channel (email or phone/WhatsApp) -- otherwise there's
-        nothing to queue and OUTREACHING would be a dead-end status with no job to move
-        it forward, so such leads are left at SCORED rather than claimed.
+      - has at least one contact channel (email or phone/WhatsApp), not excluded by
+        `allowed_channels` -- otherwise there's nothing to queue right now.
       - tier is HOT or WARM -- COLD leads are not autonomously outreached.
       - the scoring confidence must not have been low enough that SCORING itself routed
         to HUMAN_ESCALATION (re-derived via the same route_action() used at scoring time,
@@ -42,8 +52,9 @@ def claim_lead_for_outreach(db, lead_id):
     if not lead:
         return None
 
-    has_email = bool(lead.primary_email)
-    has_phone = bool(lead.primary_phone or lead.whatsapp_number)
+    has_email = bool(lead.primary_email) and (allowed_channels is None or "EMAIL" in allowed_channels)
+    has_phone = bool(lead.primary_phone or lead.whatsapp_number) and (
+        allowed_channels is None or "WHATSAPP" in allowed_channels)
     if not has_email and not has_phone:
         return None
 
@@ -62,10 +73,10 @@ def claim_lead_for_outreach(db, lead_id):
 
     channels_queued = []
     if has_email:
-        enqueue(db, "OUTREACH_EMAIL", {"lead_id": lead_id})
+        enqueue(db, "OUTREACH_EMAIL", {"lead_id": lead_id}, run_after=run_after)
         channels_queued.append("EMAIL")
     if has_phone:
-        enqueue(db, "OUTREACH_WA", {"lead_id": lead_id})
+        enqueue(db, "OUTREACH_WA", {"lead_id": lead_id}, run_after=run_after)
         channels_queued.append("WHATSAPP")
 
     return channels_queued

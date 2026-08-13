@@ -39,6 +39,18 @@ class Config:
     WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v21.0")
     SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
+    # Autonomous discovery scheduler (tracker.md A.2 — replaces n8n for Step 3.5)
+    ICP_STRATEGY_REFRESH_DAYS = int(os.getenv("ICP_STRATEGY_REFRESH_DAYS", "7"))
+    DISCOVERY_COOLDOWN_HOURS = int(os.getenv("DISCOVERY_COOLDOWN_HOURS", "24"))
+    MAX_DISCOVER_PER_TICK = int(os.getenv("MAX_DISCOVER_PER_TICK", "3"))
+    SCHEDULER_POLL_INTERVAL_SECONDS = int(os.getenv("SCHEDULER_POLL_INTERVAL_SECONDS", "300"))
+    OUTREACH_TICK_INTERVAL_SECONDS = int(os.getenv("OUTREACH_TICK_INTERVAL_SECONDS", "3600"))
+    # Pacing caps -- global for now (per-product override is a possible future extension,
+    # not built since it wasn't needed to close the DoD Gate P3 "pacing caps" item).
+    OUTREACH_DAILY_CAP_EMAIL = int(os.getenv("OUTREACH_DAILY_CAP_EMAIL", "40"))
+    OUTREACH_DAILY_CAP_WHATSAPP = int(os.getenv("OUTREACH_DAILY_CAP_WHATSAPP", "40"))
+    OUTREACH_STAGGER_SECONDS = int(os.getenv("OUTREACH_STAGGER_SECONDS", "90"))
+
     # Data acquisition (lead discovery / enrichment) — free-tier providers in use
     SERPER_API_KEY = os.getenv("SERPER_API_KEY")
     HUNTER_API_KEY = os.getenv("HUNTER_API_KEY")

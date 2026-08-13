@@ -20,6 +20,7 @@ class Product(Base):
     pain_point_mappings = Column(Text, default="{}")
     priority = Column(Integer, default=1)
     is_active = Column(Integer, default=1)
+    target_regions = Column(Text, default="[]")  # JSON array (tracker.md A.2)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -238,3 +239,29 @@ class ClientLifecycle(Base):
     upsell_opportunity = Column(Text)
     referral_requested = Column(Integer, default=0)
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 17. PRODUCT STRATEGIES (tracker.md A.2 — ICP Strategy Agent output, versioned)
+class ProductStrategy(Base):
+    __tablename__ = "product_strategies"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    icp = Column(Text, default="{}")
+    search_queries = Column(Text, default="[]")
+    target_complaints = Column(Text, default="[]")
+    source = Column(String, nullable=False)  # AI_GENERATED, HUMAN_ADDED
+    status = Column(String, default="ACTIVE")  # ACTIVE, SUPERSEDED
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 18. DISCOVERY RUNS (tracker.md A.2 — per product+query+region cooldown tracking)
+class DiscoveryRun(Base):
+    __tablename__ = "discovery_runs"
+    __table_args__ = (
+        UniqueConstraint("product_id", "query", "region", name="uq_discovery_run"),
+    )
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    query = Column(String, nullable=False)
+    region = Column(String, nullable=False)
+    last_run_at = Column(TIMESTAMP, server_default=func.current_timestamp())

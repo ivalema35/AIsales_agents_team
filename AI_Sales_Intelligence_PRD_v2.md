@@ -5,6 +5,8 @@
 **Layer Focus:** Autonomous Cognition, Decision-Making, Strategy, Adaptability, Memory & Organizational Orchestration  
 **v2.1 Addendum:** Chapter 15 — Enterprise Executive Business & Operating System Layer (AI-BOS). Implementation blueprints for the modules below live in `MASTER_DEVELOPMENT_PRD.md` §8 (spec) and Phase 5 (§5, build order); this chapter defines the cognitive/strategic contract, MASTER defines the code.
 
+**v2.2 Amendment (2026-08-13, implemented):** the ICP & Strategy Agent (§2.1.C below) is no longer just a cognitive-contract definition — it is live code as of `MASTER_DEVELOPMENT_PRD.md` Phase 3 Step 3.5 (`agents/icp_strategy_agent.py`). n8n, named throughout this document as part of the Technical Execution Layer, was dropped from the actual build (see MASTER's §3.5 amendment / `tracker.md` §A.2) — its scheduler/trigger role is now a dedicated in-process Python worker (`jobs/discovery_scheduler.py`), which also autonomously triggers the ICP & Strategy Agent per product rather than that being a manual/CEO-agent-initiated step.
+
 ---
 
 ## Executive Summary & Architectural Mandate
@@ -35,7 +37,7 @@ Where traditional automation relies on deterministic IF/THEN rules, the **AI Sal
 
 |  \- Flask REST API                  \- SQLite WAL Engine \+ ThreadPool               |
 
-|  \- Playwright Scrapers             \- n8n Workflow Dispatchers                     |
+|  \- Playwright Scrapers             \- In-process Discovery Scheduler               |
 
 \+-----------------------------------------------------------------------------------+
 
@@ -116,11 +118,12 @@ The AI Sales OS is structured as a hierarchical organization with specialized ag
 * **Responsibilities:** Assigns lead batches to Enrichment and Scoring agents, approves personalized outreach batches, monitors queue velocity.  
 * **Decision Authority:** Operational. Can adjust daily dispatch volumes and re-assign retry queues.
 
-#### C. ICP & Strategy Agent (Audience Intelligence)
+#### C. ICP & Strategy Agent (Audience Intelligence) — ✅ implemented (`agents/icp_strategy_agent.py`, v2.2 amendment)
 
 * **Purpose:** Analyzes target industries, firmographics, and pain points to define exact Ideal Customer Profiles (ICPs).  
-* **Inputs:** Product Brief JSON (Value props, target verticals, pricing tier).  
-* **Outputs:** Detailed ICP Definitions (Target company size, role titles, key review complaints to search for).
+* **Inputs:** Product Brief JSON (Value props, target verticals, pricing tier). The human sets only the geographic boundary once per product (`products.target_regions`) — this agent has no location-judgment input of its own and does not invent one.
+* **Outputs:** Detailed ICP Definitions (Target company size, role titles, key review complaints to search for), plus the exact search queries used to find those businesses.
+* **Trigger:** autonomous — `jobs/discovery_scheduler.py` calls this per active product on a refresh cadence (default 7 days) rather than a human or the CEO Agent invoking it manually.
 
 #### D. Lead Discovery & Enrichment Agent
 
@@ -166,6 +169,8 @@ The AI Sales OS is structured as a hierarchical organization with specialized ag
 ## 3\. Agent Collaboration & Orchestration Model
 
 Agents communicate via structured JSON event buses managed by the Flask Central Engine.
+
+*(v2.2 note: the CEO/Manager Agent is not yet built. As implemented since Phase 3 Step 3.5, the first two steps below — analyzing the product brief and generating search queries — are triggered directly by `jobs/discovery_scheduler.py` on a refresh cadence, not by a CEO Agent decision. The diagram's intent still holds once the CEO Agent lands in a later phase; it will sit above the scheduler's trigger, not replace it.)*
 
 sequenceDiagram
 
@@ -579,7 +584,7 @@ The Executive Layer never talks to a lead and never touches a channel. It only s
 +-----------------------------------------------------------------------------------+
 |                     TECHNICAL EXECUTION LAYER (PRD v3)                            |
 |  - Flask REST API                  - SQLite WAL Engine + ThreadPool               |
-|  - Playwright Scrapers             - n8n Workflow Dispatchers                     |
+|  - Playwright Scrapers             - In-process Discovery Scheduler               |
 +-----------------------------------------------------------------------------------+
 ```
 
@@ -676,6 +681,6 @@ A fifth tier extends the model in §7: **Post-Sale Memory** — onboarding statu
 
 ## Conclusion & Architectural Sign-Off
 
-This **AI Sales Intelligence PRD v2** defines the complete cognitive, decision-making, and organizational framework required to transform the technical plumbing (Flask, SQLite, n8n, Playwright) into an **autonomous, enterprise-grade AI Sales Team** — and, with Chapter 15, extends that framework upward into a governing **Executive Business Layer (AI-BOS)** that turns the sales team into a revenue-and-capacity-aware business operating system.
+This **AI Sales Intelligence PRD v2** defines the complete cognitive, decision-making, and organizational framework required to transform the technical plumbing (Flask, SQLite, Playwright, and — as actually implemented, per the v2.2 amendment — an in-process discovery scheduler rather than n8n) into an **autonomous, enterprise-grade AI Sales Team** — and, with Chapter 15, extends that framework upward into a governing **Executive Business Layer (AI-BOS)** that turns the sales team into a revenue-and-capacity-aware business operating system.
 
 By separating the **Technical Execution Layer (PRD v3)**, the **Cognitive Brain Layer (Chapters 1–12)**, and the **Enterprise Executive Layer (Chapter 15)**, the system achieves maximum modularity, zero-hallucination reliability, strict compliance, and scalable human-AI collaboration — with every layer's autonomy bounded by the one above it.

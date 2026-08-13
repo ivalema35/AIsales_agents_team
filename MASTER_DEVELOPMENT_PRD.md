@@ -17,7 +17,9 @@
 - **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P5).
 - Code blocks are **blueprints**: they carry the critical logic (routing, atomic claims, cleanup, validation) verbatim and leave routine bodies (field mapping, selectors, styling) for you to fill.
 
-**Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/n8n). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
+**Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/an in-process discovery scheduler). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
+
+**Amendment (2026-08-13, implemented):** §3.5's original n8n-based scheduler design was superseded during Phase 3 build — see the project's `tracker.md` §A.2 for full rationale. n8n is dropped entirely; scheduling (autonomous discovery targeting + outreach pacing) now runs as a dedicated in-process Python worker, `jobs/discovery_scheduler.py`. This also activates §6's `ICP_STRATEGY_AGENT_SYSTEM_PROMPT` / `agents/icp_strategy_agent.py`, originally specified but never wired into any build step — it is now live starting Phase 3. Every mention of n8n below describes the ORIGINAL design; treat `jobs/discovery_scheduler.py` as its replacement wherever n8n is named as the scheduler/trigger.
 
 ---
 
@@ -46,7 +48,7 @@
 │                       EXECUTION INFRASTRUCTURE (PRD v3)                         │
 │  Flask REST API · SQLite WAL + pragma listener · durable jobs queue ·           │
 │  async Playwright worker · Gemini 2.5 Flash · Resend (email) ·                   │
-│  WhatsApp Cloud API · n8n schedulers · React/Vite/Tailwind dashboard            │
+│  WhatsApp Cloud API · in-process discovery scheduler · React/Vite/Tailwind dashboard │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -122,7 +124,8 @@ ai-sales-os/
 │   ├── jobs/
 │   │   ├── __init__.py
 │   │   ├── job_queue.py                # enqueue + atomic claim (run_after)
-│   │   └── worker.py                   # background poller (pacing, retries)
+│   │   ├── worker.py                   # background poller (pacing, retries)
+│   │   └── discovery_scheduler.py      # autonomous discovery + outreach-pacing cron -- replaces n8n (§3.5 amendment)
 │   ├── scraper_worker/
 │   │   ├── __init__.py
 │   │   └── async_runner.py             # dedicated asyncio process
@@ -153,18 +156,12 @@ ai-sales-os/
 │       ├── api/client.js
 │       ├── pages/{Dashboard.jsx, Products.jsx, ExecutiveControl.jsx}
 │       └── components/{ProductForm.jsx, PipelineKanban.jsx, LeadCard.jsx, AlertsPanel.jsx, CapacityMeter.jsx}
-├── n8n/
-│   ├── docker-compose.yml
-│   └── workflows/
-│       ├── morning_discovery.json
-│       ├── hourly_outreach_pacer.json
-│       ├── adaptability_sweep.json
-│       ├── inbound_relay.json
-│       └── eod_report.json
 └── README.md
 ```
 
-**Table count reconciliation:** the 11 named tables + 3 intelligence-layer tables (`agent_events`, `campaign_variants`, `knowledge_memory`) + 2 executive-layer tables (`team_capacity`, `client_lifecycle`) = **16 total**. The intelligence tables make the cognitive layer auditable, adaptive, and able to remember; the executive tables make it capacity-aware and post-sale-aware. All are flagged in §3.1.
+*(The `n8n/` folder in the original design — `docker-compose.yml` + `workflows/{morning_discovery,hourly_outreach_pacer,adaptability_sweep,inbound_relay,eod_report}.json` — is dropped per the §3.5 amendment above. `jobs/discovery_scheduler.py` replaces the first three; Phase 4/5's remaining cron-shaped items (`eod_report`, and `inbound_relay` if still needed once `api/inbound.py`'s own webhook receiver is built in Step 4.1) follow the same in-process-scheduler pattern when their phase is reached, rather than reviving n8n.)*
+
+**Table count reconciliation:** the 11 named tables + 3 intelligence-layer tables (`agent_events`, `campaign_variants`, `knowledge_memory`) + 2 executive-layer tables (`team_capacity`, `client_lifecycle`) + 2 discovery-scheduler tables (`product_strategies`, `discovery_runs` — §3.5 amendment) = **18 total**. The intelligence tables make the cognitive layer auditable, adaptive, and able to remember; the executive tables make it capacity-aware and post-sale-aware; the discovery-scheduler tables make audience targeting autonomous and auditable. All are flagged in §3.1.
 
 ---
 
@@ -185,6 +182,7 @@ CREATE TABLE IF NOT EXISTS products (
     pain_point_mappings  TEXT DEFAULT '{}',   -- JSON object
     priority             INTEGER DEFAULT 1,
     is_active            INTEGER DEFAULT 1,
+    target_regions       TEXT DEFAULT '[]',   -- JSON array, e.g. ["Ahmedabad","Surat"] (§3.5 amendment)
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -396,6 +394,30 @@ CREATE TABLE IF NOT EXISTS client_lifecycle (
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
 );
 
+-- 17. PRODUCT STRATEGIES  (§3.5 amendment: ICP Strategy Agent output, versioned not overwritten)
+CREATE TABLE IF NOT EXISTS product_strategies (
+    id                 TEXT PRIMARY KEY,
+    product_id         TEXT NOT NULL,
+    icp                TEXT DEFAULT '{}',     -- JSON: {company_size, roles, verticals}
+    search_queries     TEXT DEFAULT '[]',     -- JSON array
+    target_complaints  TEXT DEFAULT '[]',     -- JSON array
+    source             TEXT NOT NULL,         -- AI_GENERATED, HUMAN_ADDED
+    status             TEXT DEFAULT 'ACTIVE', -- ACTIVE, SUPERSEDED
+    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- 18. DISCOVERY RUNS  (§3.5 amendment: per product+query+region cooldown tracking for the scheduler)
+CREATE TABLE IF NOT EXISTS discovery_runs (
+    id            TEXT PRIMARY KEY,
+    product_id    TEXT NOT NULL,
+    query         TEXT NOT NULL,
+    region        TEXT NOT NULL,
+    last_run_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (product_id, query, region),
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -406,6 +428,8 @@ CREATE INDEX IF NOT EXISTS idx_knowledge_cat_key     ON knowledge_memory (catego
 CREATE INDEX IF NOT EXISTS idx_leads_sales_route     ON leads (sales_route);
 CREATE INDEX IF NOT EXISTS idx_team_capacity_name    ON team_capacity (team_name);
 CREATE INDEX IF NOT EXISTS idx_client_lifecycle_end  ON client_lifecycle (contract_end_date);
+CREATE INDEX IF NOT EXISTS idx_product_strategies    ON product_strategies (product_id, status);
+CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);
 ```
 
 ### 3.2 PRAGMA connection listener (`database/db_config.py`)
@@ -670,7 +694,7 @@ def score_lead(db, product, lead, reviews):
 
 ---
 
-### PHASE 3 — n8n, Atomic Claiming & Multi-Channel Outreach
+### PHASE 3 — Autonomous Discovery Scheduling, Atomic Claiming & Multi-Channel Outreach
 
 **Goal:** race-proof, compliant, QC-gated outreach with campaign memory and A/B.
 
@@ -705,17 +729,31 @@ def send_email(db, lead, campaign, variant):
 
 **Step 3.4 — WhatsApp Cloud API** (`services/outreach/whatsapp_service.py`). Official Meta Graph API. First contact uses a pre-approved **template**; free-form only inside the 24-hour window after the lead replies. Opt-out → immediate suppression. (Drop Evolution/Baileys for first-touch — cold unofficial sends get numbers banned.)
 
+**Step 3.5 — Autonomous Discovery Scheduler** (`jobs/discovery_scheduler.py`) — **as implemented; supersedes the n8n design below.** See tracker.md §A.2 for the full rationale (no Docker on the dev machine; the user's real self-hosted n8n instance can't reach a local-only Flask backend without a public URL; and, more fundamentally, the user did not want to manually type city/keyword combos in daily — they wanted the system to decide who to target on its own).
+
+A single dedicated always-on process (same "one process per concern" topology as `scraper_worker/async_runner.py` vs `jobs/worker.py`) replaces n8n's scheduling role entirely — no external service, no Docker, no public URL:
+- **Autonomous discovery targeting.** Activates §6's `ICP_STRATEGY_AGENT_SYSTEM_PROMPT` via `agents/icp_strategy_agent.py` (specified in the original PRD but never wired into a build step until this one). For each active product with `products.target_regions` set (new column — a human sets this once, multiple regions supported; the agent has no location-judgment input of its own, so geography stays human-bounded while business-type/keywords/target-complaints are AI-decided), the scheduler refreshes the product's ICP strategy when stale (`ICP_STRATEGY_REFRESH_DAYS`, default 7d) and fires paced `DISCOVER` jobs across `search_queries × target_regions`, capped per tick (`MAX_DISCOVER_PER_TICK`) and cooldown-gated per combo (`DISCOVERY_COOLDOWN_HOURS`) via a new `discovery_runs` tracking table. AI-generated and human-added queries (`product_strategies.source`) both apply; a human can add extra queries via `POST /api/v1/products/<id>/strategy/queries` without losing or being overwritten by the AI's own.
+- **Outreach pacing tick** (every `OUTREACH_TICK_INTERVAL_SECONDS`, default hourly) — the same behavior originally described as `hourly_outreach_pacer.json` → `POST /api/v1/outreach/tick`, now a direct in-process call to `services/lead_service.py`'s `claim_lead_for_outreach()` (extended with `run_after` + `allowed_channels`): computes remaining per-channel daily budget from today's already-queued job counts, claims eligible `SCORED` leads up to that budget, staggers `run_after` so sends trickle out instead of bursting.
+- `adaptability_sweep` / `POST /api/v1/campaigns/adapt` (§4.3) stays **not built** — deliberately deferred until Phase 4's inbound handler exists to supply real reply/open-rate data; building it earlier would be guesswork, not a data-driven sweep.
+
+Dashboard visibility: `GET /api/v1/products/<id>/strategy` returns the active AI-generated + human-added strategy per product (full React view is still Phase 4.4; this only guarantees the data is inspectable now).
+
+<details>
+<summary>Original design (superseded, kept for reference)</summary>
+
 **Step 3.5 — n8n workflow specs** (`n8n/workflows/`). n8n is scheduler/trigger, not brain:
 - `morning_discovery.json`: cron 09:00 → HTTP `POST /api/v1/leads/discover` (Flask enqueues `DISCOVER`).
 - `hourly_outreach_pacer.json`: cron hourly → `POST /api/v1/outreach/tick` (Flask enqueues a staggered batch respecting per-channel daily caps; the Phase-2 worker drains it).
 - `adaptability_sweep.json`: cron → `POST /api/v1/campaigns/adapt` (runs §4.3 evaluation).
+
+</details>
 
 **DoD tests (gate):**
 - 10 concurrent claims on one `SCORED` lead → exactly one `True`; stale-claim sweeper resets an old `OUTREACHING`.
 - Suppressed identifier → `SKIPPED_SUPPRESSED`, no provider call; unsubscribe endpoint suppresses and blocks the next send.
 - Outgoing email carries `List-Unsubscribe` + `List-Unsubscribe-Post` and a visible unsubscribe link.
 - **QC gate:** a draft containing "game-changer"/"delve" or lacking the pain-point reference is rejected (`test_qc_gate.py`).
-- Pacing: 40 queued emails respect the daily cap and staggered `run_after` (no burst).
+- Pacing: 40 queued emails respect the daily cap and staggered `run_after` (no burst). ✅ verified — `jobs/discovery_scheduler.py`'s `_run_outreach_tick` (tracker.md §A.2 / Phase 3 Step 3.5 completion entry).
 
 ---
 
@@ -751,7 +789,7 @@ def handle_inbound(db, evt):
 
 **Step 4.4 — React dashboard** (`frontend/`, Vite+React+Tailwind). `ProductForm` (dynamic product registration, no code change to add products), `PipelineKanban` (columns by `status`), `LeadCard` (score/tier/justification), `AlertsPanel` (polls `/api/v1/alerts`; rep claims a HOT lead). Read-mostly in v1 — AI owns transitions, humans act on HOT leads. Use `api/client.js` as a thin fetch wrapper; no `<form>` submit side-effects, use `onClick` handlers.
 
-**Step 4.5 — EOD executive report** (`services/reporting_service.py` + `n8n/workflows/eod_report.json`). Cron 23:50 → `POST /api/v1/reports/generate`: aggregate discovered/scored-by-tier/outreached-per-channel/replies/high-intent + KPI framework (bounce <2%, spam <0.1%, intent accuracy, escalation response time) into `daily_reports`; CEO agent writes the executive summary; email it.
+**Step 4.5 — EOD executive report** (`services/reporting_service.py`). Cron 23:50, scheduled the same way as `jobs/discovery_scheduler.py`'s own ticks (§3.5 amendment — no n8n): aggregate discovered/scored-by-tier/outreached-per-channel/replies/high-intent + KPI framework (bounce <2%, spam <0.1%, intent accuracy, escalation response time) into `daily_reports`; CEO agent writes the executive summary; email it.
 
 **DoD tests (gate):**
 - Duplicate `provider_message_id` → processed once. `STOP` → suppressed, no LLM call. OOO → not "interested". Hostile/pricing → escalated, no auto-reply. Confidence<0.70 → escalated (`test_inbound_edge_cases.py`).
@@ -907,11 +945,8 @@ gunicorn -w 4 -b 0.0.0.0:5000 "app:create_app()"
 python -m scraper_worker.async_runner
 # Durable job worker (pacing, retries, outreach dispatch)
 python -m jobs.worker
-
-# ── n8n (self-hosted) ────────────────────────────────────────────
-cd ../n8n
-docker compose up -d                                   # then import workflows/*.json
-docker compose logs -f n8n
+# Autonomous discovery + outreach-pacing scheduler (§3.5 amendment — replaces n8n)
+python -m jobs.discovery_scheduler
 
 # ── Frontend ─────────────────────────────────────────────────────
 cd ../frontend
@@ -1032,7 +1067,7 @@ def check_cac_ceiling(db, product_id: str, cac_ceiling: float) -> bool:
 
 ### 8.4 Market & Competitor Intelligence
 
-Extends `icp_strategy_agent.py` with a `MARKET_SCAN` job type (weekly cron via n8n) that re-runs `ICP_STRATEGY_AGENT_SYSTEM_PROMPT` (§6) against fresh SERP/Places data to surface competitor pricing shifts and under-saturated regions, writing findings to `knowledge_memory` (`category='COMPETITOR'`). No new autonomy: output only informs the CEO agent's `executive_summary` and the Learning agent's `next_experiment` — it never changes pricing or ICP on its own (§8.8 boundary).
+Extends `agents/icp_strategy_agent.py` — already built and live since Phase 3 Step 3.5 (§3.5 amendment), not a first-time build here — with a `MARKET_SCAN` job type (weekly, scheduled the same way `jobs/discovery_scheduler.py` already schedules its own ticks) that re-runs `ICP_STRATEGY_AGENT_SYSTEM_PROMPT` (§6) against fresh SERP/Places data to surface competitor pricing shifts and under-saturated regions, writing findings to `knowledge_memory` (`category='COMPETITOR'`). No new autonomy: output only informs the CEO agent's `executive_summary` and the Learning agent's `next_experiment` — it never changes pricing or ICP on its own (§8.8 boundary).
 
 ### 8.5 Client Lifecycle Intelligence (`agents/lifecycle_agent.py`, `api/lifecycle.py`)
 
@@ -1108,7 +1143,7 @@ def guard_adaptation(param_name: str):
 ## 9. Cross-cutting concerns & phase-gate checklist
 
 - **Process topology:** Flask API, scraper worker, and job worker are **separate processes**. If Flask scales behind gunicorn, keep the job worker a single dedicated process so pacing/caps and bandit allocation stay consistent (N gunicorn workers = N executors = inconsistent counters).
-- **DB hygiene:** run `PRAGMA wal_checkpoint(TRUNCATE)` on a timer (a long-lived n8n read connection can pin the WAL and bloat it); keep write transactions short; never hold one open across an LLM/network call.
+- **DB hygiene:** run `PRAGMA wal_checkpoint(TRUNCATE)` on a timer (a long-lived reader connection — e.g. `jobs/discovery_scheduler.py`'s own process, or historically a long-lived n8n connection under the original design — can pin the WAL and bloat it); keep write transactions short; never hold one open across an LLM/network call.
 - **Secrets & observability:** keys only in `.env`/secrets manager; structured logs with request/job id; alert on `DEAD` job pileups, scraper OOM, bounce >2%, spam >0.1%.
 - **Data acquisition:** run providers-first (Places/SerpAPI/Apollo). The Playwright fallback stays evasion-free; pointing it at defended surfaces at volume is a maintenance and blocklist liability, not a plumbing gap.
 - **Model string:** `gemini-2.5-flash` is valid today; the Flash lineup moves fast — pin the exact string in `config.py` so a swap is one line.

@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS products (
     pain_point_mappings  TEXT DEFAULT '{}',   -- JSON object
     priority             INTEGER DEFAULT 1,
     is_active            INTEGER DEFAULT 1,
+    target_regions       TEXT DEFAULT '[]',   -- JSON array, e.g. ["Ahmedabad","Surat"] (tracker.md A.2)
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -221,6 +222,30 @@ CREATE TABLE IF NOT EXISTS client_lifecycle (
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
 );
 
+-- 17. PRODUCT STRATEGIES  (tracker.md A.2: ICP Strategy Agent output, versioned not overwritten)
+CREATE TABLE IF NOT EXISTS product_strategies (
+    id                 TEXT PRIMARY KEY,
+    product_id         TEXT NOT NULL,
+    icp                TEXT DEFAULT '{}',     -- JSON: {company_size, roles, verticals}
+    search_queries     TEXT DEFAULT '[]',     -- JSON array
+    target_complaints  TEXT DEFAULT '[]',     -- JSON array
+    source             TEXT NOT NULL,         -- AI_GENERATED, HUMAN_ADDED
+    status             TEXT DEFAULT 'ACTIVE', -- ACTIVE, SUPERSEDED
+    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- 18. DISCOVERY RUNS  (tracker.md A.2: per product+query+region cooldown tracking for the scheduler)
+CREATE TABLE IF NOT EXISTS discovery_runs (
+    id            TEXT PRIMARY KEY,
+    product_id    TEXT NOT NULL,
+    query         TEXT NOT NULL,
+    region        TEXT NOT NULL,
+    last_run_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (product_id, query, region),
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -231,3 +256,5 @@ CREATE INDEX IF NOT EXISTS idx_knowledge_cat_key     ON knowledge_memory (catego
 CREATE INDEX IF NOT EXISTS idx_leads_sales_route     ON leads (sales_route);
 CREATE INDEX IF NOT EXISTS idx_team_capacity_name    ON team_capacity (team_name);
 CREATE INDEX IF NOT EXISTS idx_client_lifecycle_end  ON client_lifecycle (contract_end_date);
+CREATE INDEX IF NOT EXISTS idx_product_strategies    ON product_strategies (product_id, status);
+CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);

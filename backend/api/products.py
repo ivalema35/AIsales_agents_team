@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, jsonify, request
 
 from database.db_config import SessionLocal
-from database.models import Product
+from database.models import Product, ProductStrategy
 
 products_bp = Blueprint("products", __name__, url_prefix="/api/v1/products")
 
@@ -18,15 +18,17 @@ def _serialize(product):
         "pain_point_mappings": json.loads(product.pain_point_mappings or "{}"),
         "priority": product.priority,
         "is_active": product.is_active,
+        "target_regions": json.loads(product.target_regions or "[]"),
         "created_at": str(product.created_at),
         "updated_at": str(product.updated_at),
     }
 
 
 def _extract_json_fields(data, errors):
-    """Validates target_keywords (array) / pain_point_mappings (object) if present.
-    Returns (target_keywords_str, pain_point_mappings_str) — None means 'not provided'.
-    Appends to `errors` instead of raising, so callers always get a 422, never a 500.
+    """Validates target_keywords (array) / pain_point_mappings (object) / target_regions
+    (array) if present. Returns (target_keywords_str, pain_point_mappings_str,
+    target_regions_str) — None means 'not provided'. Appends to `errors` instead of
+    raising, so callers always get a 422, never a 500.
     """
     target_keywords = None
     if "target_keywords" in data:
@@ -42,7 +44,14 @@ def _extract_json_fields(data, errors):
         else:
             pain_point_mappings = json.dumps(data["pain_point_mappings"])
 
-    return target_keywords, pain_point_mappings
+    target_regions = None
+    if "target_regions" in data:
+        if not isinstance(data["target_regions"], list):
+            errors.append("target_regions must be a JSON array")
+        else:
+            target_regions = json.dumps(data["target_regions"])
+
+    return target_keywords, pain_point_mappings, target_regions
 
 
 @products_bp.route("", methods=["GET"])
@@ -82,7 +91,7 @@ def create_product():
         errors.append("title is required")
     if not data.get("description"):
         errors.append("description is required")
-    target_keywords, pain_point_mappings = _extract_json_fields(data, errors)
+    target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -98,6 +107,8 @@ def create_product():
             product.target_keywords = target_keywords
         if pain_point_mappings is not None:
             product.pain_point_mappings = pain_point_mappings
+        if target_regions is not None:
+            product.target_regions = target_regions
         db.add(product)
         db.commit()
         db.refresh(product)
@@ -113,7 +124,7 @@ def update_product(product_id):
         return jsonify({"error": "request body must be a JSON object"}), 422
 
     errors = []
-    target_keywords, pain_point_mappings = _extract_json_fields(data, errors)
+    target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -141,6 +152,8 @@ def update_product(product_id):
             product.target_keywords = target_keywords
         if pain_point_mappings is not None:
             product.pain_point_mappings = pain_point_mappings
+        if target_regions is not None:
+            product.target_regions = target_regions
 
         db.commit()
         db.refresh(product)
@@ -159,5 +172,76 @@ def delete_product(product_id):
         db.delete(product)
         db.commit()
         return "", 204
+    finally:
+        db.close()
+
+
+def _serialize_strategy(row):
+    return {
+        "id": row.id,
+        "icp": json.loads(row.icp or "{}"),
+        "search_queries": json.loads(row.search_queries or "[]"),
+        "target_complaints": json.loads(row.target_complaints or "[]"),
+        "source": row.source,
+        "status": row.status,
+        "created_at": str(row.created_at),
+    }
+
+
+@products_bp.route("/<product_id>/strategy", methods=["GET"])
+def get_product_strategy(product_id):
+    """Dashboard visibility (tracker.md A.2): what the ICP Strategy Agent decided to
+    target for this product, plus any human-added queries alongside it. Full React view
+    is Phase 4.4 -- this just guarantees the data is inspectable now."""
+    db = SessionLocal()
+    try:
+        product = db.get(Product, product_id)
+        if not product:
+            return jsonify({"error": "product not found"}), 404
+
+        rows = (
+            db.query(ProductStrategy)
+            .filter(ProductStrategy.product_id == product_id, ProductStrategy.status == "ACTIVE")
+            .order_by(ProductStrategy.created_at.desc())
+            .all()
+        )
+        return jsonify({
+            "product_id": product_id,
+            "target_regions": json.loads(product.target_regions or "[]"),
+            "active_strategies": [_serialize_strategy(r) for r in rows],
+        })
+    finally:
+        db.close()
+
+
+@products_bp.route("/<product_id>/strategy/queries", methods=["POST"])
+def add_strategy_query(product_id):
+    """Lets a human add extra search queries alongside the AI's own, without triggering
+    (or losing) a fresh AI_GENERATED strategy. Kept as its own ACTIVE, HUMAN_ADDED row."""
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get("search_queries"), list) \
+            or not data["search_queries"]:
+        return jsonify({"error": ["search_queries is required and must be a non-empty JSON array"]}), 422
+
+    queries = [str(q).strip()[:100] for q in data["search_queries"] if str(q).strip()]
+    if not queries:
+        return jsonify({"error": ["search_queries contained no usable values"]}), 422
+
+    db = SessionLocal()
+    try:
+        product = db.get(Product, product_id)
+        if not product:
+            return jsonify({"error": "product not found"}), 404
+
+        row = ProductStrategy(
+            product_id=product_id,
+            search_queries=json.dumps(queries),
+            source="HUMAN_ADDED",
+            status="ACTIVE",
+        )
+        db.add(row)
+        db.commit()
+        db.refresh(row)
+        return jsonify(_serialize_strategy(row)), 201
     finally:
         db.close()
