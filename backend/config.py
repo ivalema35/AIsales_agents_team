@@ -17,8 +17,26 @@ class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
     RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+    # Sandbox default until a domain is verified in Resend -- can only send TO the
+    # email address the Resend account itself was signed up with (tracker.md §Phase 3).
+    RESEND_FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+    # Must be publicly reachable for a real recipient's unsubscribe click to work --
+    # localhost is fine for our own test sends, not for anyone else's inbox.
+    PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://localhost:5000")
+    # HUMAN_LOCKED: required on every email footer (MASTER §9.1 rule 4 / QC checklist).
+    # Placeholder -- set the real registered business address before any real lead is
+    # ever emailed; QC will still approve drafts with this placeholder in place today,
+    # but the placeholder itself would not be compliant in a real send.
+    COMPANY_PHYSICAL_ADDRESS = os.getenv(
+        "COMPANY_PHYSICAL_ADDRESS", "IVinfotech -- [SET COMPANY_PHYSICAL_ADDRESS IN .env]")
     WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
     WHATSAPP_PHONE_ID = os.getenv("WHATSAPP_PHONE_ID")
+    WHATSAPP_WABA_ID = os.getenv("WHATSAPP_WABA_ID")
+    # This BSP (waba.fortius.in.net) mirrors Meta's real Cloud API path structure
+    # exactly (/{version}/{phoneNumberId}/messages) -- confirmed live 2026-08-13 --
+    # just fronted by their own API server instead of graph.facebook.com.
+    WHATSAPP_API_BASE_URL = os.getenv("WHATSAPP_API_BASE_URL", "https://waba.fortius.in.net")
+    WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v21.0")
     SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
     # Data acquisition (lead discovery / enrichment) — free-tier providers in use
