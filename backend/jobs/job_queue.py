@@ -6,9 +6,11 @@ from sqlalchemy import text
 from database.models import Job
 
 
-def enqueue(db, job_type, payload: dict, run_after=None, max_attempts=3):
+def enqueue(db, job_type, payload: dict, run_after=None, max_attempts=3, commit=True):
     """Add a new job to the queue. `run_after` (datetime) delays when it becomes claimable;
-    omit for 'as soon as possible'."""
+    omit for 'as soon as possible'. `commit=False` lets a caller fold this insert into a
+    larger transaction it commits itself (e.g. inbound_service.record_inbound(), so the
+    triggering row and its job either both land or both roll back together)."""
     job = Job(
         id=str(uuid.uuid4()),
         job_type=job_type,
@@ -18,8 +20,9 @@ def enqueue(db, job_type, payload: dict, run_after=None, max_attempts=3):
     if run_after is not None:
         job.run_after = run_after
     db.add(job)
-    db.commit()
-    db.refresh(job)
+    if commit:
+        db.commit()
+        db.refresh(job)
     return job.id
 
 

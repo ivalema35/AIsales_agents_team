@@ -151,7 +151,7 @@ class Job(Base):
     __tablename__ = "jobs"
     id = Column(String, primary_key=True, default=_uuid)
     job_type = Column(String, nullable=False)
-    # DISCOVER, ENRICH, REVIEW, SCORE, OUTREACH_EMAIL, OUTREACH_WA, ADAPT
+    # DISCOVER, ENRICH, REVIEW, SCORE, OUTREACH_EMAIL, OUTREACH_WA, CLASSIFY_INBOUND, ADAPT
     payload = Column(Text, nullable=False)
     status = Column(String, default="PENDING")  # PENDING, CLAIMED, DONE, FAILED, DEAD
     run_after = Column(TIMESTAMP, server_default=func.current_timestamp())
@@ -265,3 +265,11 @@ class DiscoveryRun(Base):
     query = Column(String, nullable=False)
     region = Column(String, nullable=False)
     last_run_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 19. SYSTEM SETTINGS (Step 4.4 — dashboard-controlled runtime switches)
+class SystemSetting(Base):
+    __tablename__ = "system_settings"
+    key = Column(String, primary_key=True)
+    value = Column(Text, nullable=False)
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())

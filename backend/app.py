@@ -6,6 +6,9 @@ from logging_config import configure_logging
 from api.products import products_bp
 from api.leads import leads_bp
 from api.unsubscribe import unsubscribe_bp
+from api.alerts import alerts_bp
+from api.settings import settings_bp
+from api.inbound import inbound_bp
 
 
 def create_app():
@@ -16,6 +19,9 @@ def create_app():
     app.register_blueprint(products_bp)
     app.register_blueprint(leads_bp)
     app.register_blueprint(unsubscribe_bp)
+    app.register_blueprint(alerts_bp)
+    app.register_blueprint(settings_bp)
+    app.register_blueprint(inbound_bp)
 
     @app.route("/health")
     def health():

@@ -246,6 +246,16 @@ CREATE TABLE IF NOT EXISTS discovery_runs (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+-- 19. SYSTEM SETTINGS  (Step 4.4: dashboard-controlled runtime switches, e.g. discovery/
+-- outreach on-off -- checked fresh from the DB every scheduler tick so a dashboard toggle
+-- takes effect within one tick, no process restart needed. Not the same as .env config,
+-- which only changes at process start.)
+CREATE TABLE IF NOT EXISTS system_settings (
+    key         TEXT PRIMARY KEY,
+    value       TEXT NOT NULL,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);

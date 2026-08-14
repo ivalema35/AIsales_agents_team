@@ -5,20 +5,9 @@ import time
 from database.db_config import SessionLocal
 from database.models import Job
 from jobs.job_queue import claim_next, mark_done, mark_failed
+from jobs.registry import HANDLERS, register_handler  # noqa: F401 - re-exported for existing imports
 
 logger = logging.getLogger(__name__)
-
-# Populated by later phases via register_handler(job_type) — e.g. agents/scoring_agent.py
-# registers "SCORE". Keeping the registry here (not hardcoded job types) means worker.py
-# never needs to change as Phase 2-5 add new job types.
-HANDLERS = {}
-
-
-def register_handler(job_type):
-    def decorator(fn):
-        HANDLERS[job_type] = fn
-        return fn
-    return decorator
 
 
 def run_once(job_type):
@@ -62,4 +51,11 @@ def run_forever(job_types, poll_interval=2):
 
 
 if __name__ == "__main__":
+    # See jobs/registry.py's module docstring for the real bug this import order fixes.
+    import jobs.outreach_handler          # noqa: F401 - registers OUTREACH_EMAIL
+    import jobs.outreach_wa_handler       # noqa: F401 - registers OUTREACH_WA
+    import jobs.inbound_classify_handler  # noqa: F401 - registers CLASSIFY_INBOUND
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logger.info("jobs.worker started, handlers=%s", sorted(HANDLERS.keys()))
     run_forever(list(HANDLERS.keys()))

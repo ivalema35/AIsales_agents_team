@@ -14,10 +14,12 @@ import logging
 import uuid
 from urllib.parse import urlparse
 
+from sqlalchemy import func
+
 from database.db_config import SessionLocal
 from database.models import Lead, Product, LeadReviewInsight, LeadScore
 from jobs.job_queue import enqueue, claim_next, mark_done, mark_failed
-from services.data_acquisition.serp_provider import SerperProvider
+from services.data_acquisition.serp_provider import SerperProvider, SOCIAL_PROFILE_HOSTS
 from services.data_acquisition.b2b_provider import HunterProvider
 from services.data_acquisition.website_scraper import (
     scrape_emails,
@@ -41,13 +43,28 @@ _maps_breaker = MapsPhoneCircuitBreaker()
 
 
 def extract_domain(website_url):
-    """example: 'https://www.foo.co.in/about' -> 'foo.co.in'. None if unusable."""
+    """example: 'https://www.foo.co.in/about' -> 'foo.co.in'. None if unusable.
+
+    Returns None for a social-media profile link (instagram.com/<handle>, etc.) instead
+    of the platform's own domain -- found live (2026-08-13): several leads whose only web
+    presence is an Instagram profile ended up with `it@instagram.com` (Instagram's own
+    generic contact address) as their "verified" email, because scrape_emails() was
+    pointed at instagram.com itself and belongs_to_company() correctly-but-uselessly
+    confirmed that address really does belong to the domain we scraped -- the domain was
+    just wrong to begin with, not the business's own site. A lead whose website is a
+    social profile has no real company domain to enrich against; downstream code must
+    fall through to the Serper-snippet/Hunter paths instead, same as having no website at
+    all, not silently adopt the platform's own domain.
+    """
     if not website_url:
         return None
     netloc = urlparse(website_url).netloc or urlparse(f"//{website_url}").netloc
     if not netloc:
         return None
-    return netloc.split(":")[0].removeprefix("www.") or None
+    domain = netloc.split(":")[0].removeprefix("www.") or None
+    if domain in SOCIAL_PROFILE_HOSTS:
+        return None
+    return domain
 
 
 def _handle_discover(db, payload):
@@ -297,6 +314,10 @@ def _handle_score(db, payload):
         existing.confidence = result["confidence"]
         existing.scoring_breakdown = json.dumps(result["scoring_breakdown"])
         existing.justification = result["justification"]
+        # server_default only fires on INSERT, not UPDATE -- without this, a re-scored
+        # lead keeps showing its FIRST (possibly failed) evaluation time, which is
+        # exactly what made auditing a reprocessed lead confusing today.
+        existing.evaluated_at = func.current_timestamp()
     else:
         db.add(LeadScore(
             id=str(uuid.uuid4()),

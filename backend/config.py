@@ -20,6 +20,7 @@ class Config:
     # Sandbox default until a domain is verified in Resend -- can only send TO the
     # email address the Resend account itself was signed up with (tracker.md §Phase 3).
     RESEND_FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+    RESEND_FROM_NAME = os.getenv("RESEND_FROM_NAME", "")  # e.g. "Ronak from IVinfotech"
     # Must be publicly reachable for a real recipient's unsubscribe click to work --
     # localhost is fine for our own test sends, not for anyone else's inbox.
     PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://localhost:5000")
@@ -37,6 +38,9 @@ class Config:
     # just fronted by their own API server instead of graph.facebook.com.
     WHATSAPP_API_BASE_URL = os.getenv("WHATSAPP_API_BASE_URL", "https://waba.fortius.in.net")
     WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v21.0")
+    # Set when registering the inbound webhook URL in the Meta/BSP dashboard (Step 4.1) --
+    # any string you choose, just has to match what you enter there.
+    WHATSAPP_WEBHOOK_VERIFY_TOKEN = os.getenv("WHATSAPP_WEBHOOK_VERIFY_TOKEN")
     SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
     # Autonomous discovery scheduler (tracker.md A.2 — replaces n8n for Step 3.5)
@@ -50,6 +54,22 @@ class Config:
     OUTREACH_DAILY_CAP_EMAIL = int(os.getenv("OUTREACH_DAILY_CAP_EMAIL", "40"))
     OUTREACH_DAILY_CAP_WHATSAPP = int(os.getenv("OUTREACH_DAILY_CAP_WHATSAPP", "40"))
     OUTREACH_STAGGER_SECONDS = int(os.getenv("OUTREACH_STAGGER_SECONDS", "90"))
+    # Safety kill-switch (added 2026-08-13 during a live process audit): discovery now
+    # runs autonomously against real businesses, but the project's own non-negotiable
+    # rule is that no real third party gets contacted until the user explicitly says so.
+    # Defaults CLOSED -- _run_outreach_tick() in jobs/discovery_scheduler.py must check
+    # this before claiming/sending anything real. Deliberately does not gate the
+    # already-existing manual test paths (claim_lead_for_outreach called directly, e.g.
+    # a self-test lead) -- only the autonomous scheduler's own tick.
+    AUTONOMOUS_OUTREACH_ENABLED = os.getenv("AUTONOMOUS_OUTREACH_ENABLED", "false").lower() == "true"
+
+    # Inbound email (Step 4.1) -- IMAP polling of the reply-monitored mailbox, no public
+    # webhook URL needed (unlike WhatsApp's inbound webhook).
+    INBOUND_EMAIL_HOST = os.getenv("INBOUND_EMAIL_HOST")
+    INBOUND_EMAIL_PORT = int(os.getenv("INBOUND_EMAIL_PORT", "993"))
+    INBOUND_EMAIL_USER = os.getenv("INBOUND_EMAIL_USER")
+    INBOUND_EMAIL_PASSWORD = os.getenv("INBOUND_EMAIL_PASSWORD")
+    INBOUND_POLL_INTERVAL_SECONDS = int(os.getenv("INBOUND_POLL_INTERVAL_SECONDS", "120"))
 
     # Data acquisition (lead discovery / enrichment) — free-tier providers in use
     SERPER_API_KEY = os.getenv("SERPER_API_KEY")

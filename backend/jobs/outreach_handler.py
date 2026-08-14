@@ -18,7 +18,7 @@ from agents.quality_controller_agent import review_draft
 from cognition.agent_events import log_agent_event
 from config import Config
 from database.models import Lead, Product, LeadReviewInsight, OutreachLog
-from jobs.worker import register_handler
+from jobs.registry import register_handler
 from services.outreach.email_service import send_email
 from services.outreach.suppression import is_suppressed
 
@@ -76,7 +76,7 @@ def handle_outreach_email(db, payload):
         draft = draft_email(db, lead.id, product_brief, lead_profile, pain_points, qc_feedback=qc_feedback)
         if not draft:
             break
-        qc_result = review_draft(db, lead.id, draft, pain_points)
+        qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief)
         if qc_result["approved"]:
             break
         logger.info("OUTREACH_EMAIL %s -> QC rejected draft %d/%d: %s",

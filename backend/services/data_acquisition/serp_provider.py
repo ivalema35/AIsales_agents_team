@@ -68,7 +68,7 @@ def _name_matches_blob(company_name, blob):
 # structural assumption. Deliberately NOT extended to directories/listings (JustDial,
 # Trip.com, etc.) -- their URL slugs routinely embed a business name inside a listing
 # page that belongs to the DIRECTORY, not the business.
-_PROFILE_HOSTS = {"instagram.com", "facebook.com", "m.facebook.com"}
+SOCIAL_PROFILE_HOSTS = {"instagram.com", "facebook.com", "m.facebook.com"}
 
 
 def _is_own_profile_link(company_name, link):
@@ -92,7 +92,7 @@ def _is_own_profile_link(company_name, link):
     """
     parsed = urlparse(link or "")
     host = parsed.netloc.lower().removeprefix("www.")
-    if host not in _PROFILE_HOSTS:
+    if host not in SOCIAL_PROFILE_HOSTS:
         return False
     segments = [s for s in parsed.path.split("/") if s]
     if not segments:

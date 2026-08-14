@@ -5,10 +5,27 @@ the system appends a compliant footer (physical address + unsubscribe link) so a
 can never accidentally omit one or invent a non-compliant one.
 """
 import json
+import re
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
 from cognition.prompts import OUTREACH_AGENT_SYSTEM_PROMPT
+
+# Deterministic backstop, not just a prompt instruction: the prompt already tells the
+# model never to write its own signature/footer, but LLM instruction-following isn't
+# 100% reliable (caught live -- a real draft ended with "Best,\n[Your Name]" and QC's
+# own LLM judgment missed it too). Matches a trailing sign-off line (+ optional name/
+# placeholder line after it) and strips it, same "never trust blindly" posture used
+# everywhere else in this codebase (clamp/coerce, don't hope).
+_SIGNATURE_RE = re.compile(
+    r"\n+\s*(best|regards|sincerely|thanks|thank you|cheers|warm regards|kind regards|"
+    r"best regards)[,.]?\s*\n*(\[?[a-z ]{0,30}\]?)?\s*$",
+    re.IGNORECASE,
+)
+
+
+def _strip_signature(body: str) -> str:
+    return _SIGNATURE_RE.sub("", body).rstrip()
 
 
 def draft_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
@@ -35,7 +52,7 @@ CHANNEL: EMAIL
         return None
 
     subject = str(data.get("subject", "")).strip()[:150]
-    body = str(data.get("body", "")).strip()
+    body = _strip_signature(str(data.get("body", "")).strip())
     hook_type = str(data.get("hook_type", ""))[:40]
     try:
         confidence = max(0.0, min(1.0, float(data.get("confidence"))))

@@ -16,7 +16,7 @@ import uuid
 
 from cognition.agent_events import log_agent_event
 from database.models import Lead, LeadReviewInsight, OutreachLog
-from jobs.worker import register_handler
+from jobs.registry import register_handler
 from services.data_acquisition.website_scraper import normalize_mobile
 from services.outreach.suppression import is_suppressed
 from services.outreach.whatsapp_service import send_template_message

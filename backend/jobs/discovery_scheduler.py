@@ -25,6 +25,7 @@ from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadSc
 from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
+from services.system_settings import get_bool, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +93,14 @@ def _refresh_strategy_if_stale(db, product):
 def _run_discovery_tick(db):
     """Fires at most MAX_DISCOVER_PER_TICK DISCOVER jobs this tick, oldest-due
     (product, query, region) combo first, respecting each combo's own cooldown so the
-    same search isn't repeated needlessly (and so API budget isn't burned in one burst)."""
+    same search isn't repeated needlessly (and so API budget isn't burned in one burst).
+
+    Dashboard kill-switch: does nothing unless system_settings.discovery_enabled is
+    true (default false). Checked fresh from the DB every tick so a dashboard toggle
+    takes effect within one poll interval, no process restart needed."""
+    if not get_bool(db, DISCOVERY_ENABLED, default=False):
+        return 0
+
     fired = 0
     for product in db.query(Product).filter(Product.is_active == 1).all():
         if fired >= Config.MAX_DISCOVER_PER_TICK:
@@ -141,7 +149,17 @@ def _queued_today(db, job_type):
 
 def _run_outreach_tick(db):
     """Claims eligible SCORED leads up to the remaining per-channel daily budget,
-    staggering each claimed lead's run_after so sends trickle out instead of bursting."""
+    staggering each claimed lead's run_after so sends trickle out instead of bursting.
+
+    Safety kill-switch: does nothing at all unless system_settings.autonomous_outreach_enabled
+    is explicitly true (dashboard-toggleable; .env's Config.AUTONOMOUS_OUTREACH_ENABLED is
+    only the seed default the first time, before any dashboard row exists). Discovery/
+    scoring can run autonomously against real businesses, but real sends to a real third
+    party require an explicit opt-in -- this is the project's own non-negotiable rule,
+    not just a cautious default (tracker.md A.3)."""
+    if not get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED):
+        return 0
+
     remaining = {
         "EMAIL": Config.OUTREACH_DAILY_CAP_EMAIL - _queued_today(db, "OUTREACH_EMAIL"),
         "WHATSAPP": Config.OUTREACH_DAILY_CAP_WHATSAPP - _queued_today(db, "OUTREACH_WA"),

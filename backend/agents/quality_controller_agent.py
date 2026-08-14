@@ -11,17 +11,25 @@ from cognition.llm_client import call_json, LLMError
 from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT
 
 
-def review_draft(db, lead_id, draft: dict, pain_points: list) -> dict:
+def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
     NOT treated as approval -- a QC that can't run must never be mistaken for a QC that
     said yes. `approved` is only ever True when the model explicitly returned `true`,
     not merely a truthy value (defends against e.g. a stray "approved": "yes" string).
+
+    `product_brief` is what QC checks capability claims against for the zero-hallucination
+    rule -- without it, QC has no ground truth to tell a real capability from an invented
+    one, and (found live, 2026-08-13) ends up flagging genuine, product-description-backed
+    claims as "unsupported" simply because it was never shown the product at all.
     """
     prompt = QUALITY_CONTROLLER_SYSTEM_PROMPT + f"""
 DRAFT: {json.dumps(draft, ensure_ascii=False)}
 VERIFIED_PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
+PRODUCT_BRIEF (the ground truth for judging capability claims -- a claim consistent with
+this is NOT hallucination, even if worded differently than the brief itself):
+{json.dumps(product_brief or {}, ensure_ascii=False)}
 """
     try:
         data = call_json(prompt, temperature=0.1)
