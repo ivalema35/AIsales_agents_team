@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Real-data aggregations for the Analytics page (CRM_UI_UX_PLAN.md Phase 3). Every
 number here is computed from existing tables at query time -- nothing is pre-aggregated
 or cached, so it's always current, and nothing is invented when a metric genuinely isn't

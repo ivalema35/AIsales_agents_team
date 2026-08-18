@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Analytics endpoints (CRM_UI_UX_PLAN.md Phase 3) -- read-only aggregations, computed
 fresh from real data every call, nothing cached/pre-materialized."""
 from flask import Blueprint, jsonify, request

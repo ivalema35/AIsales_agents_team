@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Pull contact emails off a company's own website.
 
 Why this exists: Hunter's domain-search can only ever return `@thatdomain` addresses.

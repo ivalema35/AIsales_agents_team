@@ -1,3 +1,4 @@
+from __future__ import annotations
 """EOD executive report (MASTER Phase 4 / Step 4.5). Aggregates real, already-computed
 metrics for one IST calendar day, has a narrowly-scoped LLM call turn them into a short
 narrative summary, writes a daily_reports row, and emails it -- scheduled the same way

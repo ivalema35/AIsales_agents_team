@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Shared inbound-message handling (MASTER Phase 4 / Steps 4.1-4.3). Both the WhatsApp
 webhook (api/inbound.py) and the email IMAP poller (jobs/inbound_poller.py) funnel
 through record_inbound() so idempotency, lead-matching, and hard-classification logic

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Dashboard-controlled runtime switches (Step 4.4). Unlike .env config (only read at
 process start), these are checked fresh from the DB every time -- a toggle flipped from
 the dashboard takes effect on the scheduler's next tick, no restart needed.

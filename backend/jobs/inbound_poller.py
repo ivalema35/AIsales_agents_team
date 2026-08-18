@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """Inbound email poller (MASTER Phase 4 / Step 4.1). IMAP-polls the reply-monitored
 mailbox instead of a webhook -- a real reply to our outreach lands via normal SMTP/MX
 routing at Hostinger, not through Resend (Resend only handles what WE send), so there is

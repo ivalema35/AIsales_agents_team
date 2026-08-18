@@ -1,3 +1,4 @@
+from __future__ import annotations
 """WhatsApp Cloud API sending, via a Meta-compatible BSP (waba.fortius.in.net) --
 confirmed live (tracker.md, 2026-08-13) to mirror Meta's real Cloud API path structure
 exactly (`/{version}/{phoneNumberId}/messages`), just fronted by their own API server

@@ -1,3 +1,6 @@
+from __future__ import annotations
+from __future__ import annotations
+from __future__ import annotations
 """Hyper-Personalized Outreach Agent (MASTER §6 / Intelligence PRD §2.1.G).
 
 Drafts short, one-to-one-sounding outreach copy. Never writes its own footer/signature --

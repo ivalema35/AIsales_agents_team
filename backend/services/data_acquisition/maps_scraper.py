@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Last-resort phone recovery: read Google Maps' own detail panel via Playwright.
 
 Only reached when both the free website scrape (website_scraper.scrape_phones) and the

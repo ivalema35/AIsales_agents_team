@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """Hard pre-classifiers (MASTER Phase 4 / Step 4.2) -- deterministic, rule-based checks
 that run BEFORE any LLM call on an inbound reply. No AI involved on purpose: the 100%
 rule for OPT_OUT (see tracker.md's non-negotiable rules) means opt-out detection must

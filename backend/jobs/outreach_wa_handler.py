@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """OUTREACH_WA job handler (MASTER Phase 3 / Step 3.4).
 
 Registered into jobs/worker.py for the same pacing reason as OUTREACH_EMAIL

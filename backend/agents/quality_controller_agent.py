@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """Quality Controller & Compliance Supervisor (MASTER §6 / Intelligence PRD §9.1).
 
 Absolute veto over any outbound message -- MASTER's non-negotiable rule, and the top of

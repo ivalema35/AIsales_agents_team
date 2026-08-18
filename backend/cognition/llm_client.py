@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Swappable LLM wrapper (tracker.md sec.A.1): MASTER PRD names Gemini specifically,
 but the user asked for a one-line-config swap between providers since we're testing on
 free/low-cost tiers. Every agent goes through call_json() -- nobody imports google.genai

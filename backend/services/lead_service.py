@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Atomic lead claiming for outreach (MASTER §5 Phase 3 / non-negotiable rule: atomic
 claims everywhere concurrency can double-process something).
 

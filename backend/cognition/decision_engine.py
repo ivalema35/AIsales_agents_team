@@ -1,3 +1,4 @@
+from __future__ import annotations
 """The single gate every autonomous action passes through (MASTER §4.2). Thresholds live
 in config.py's DECISION_THRESHOLDS, not scattered through agent code, so tuning a cutoff
 is a one-line config change.

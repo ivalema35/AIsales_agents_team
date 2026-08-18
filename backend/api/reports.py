@@ -1,3 +1,4 @@
+from __future__ import annotations
 """EOD report endpoints (Step 4.5). GET for dashboard/inspection visibility; POST lets a
 human (or this session, for live testing) trigger generation on demand instead of only at
 the scheduled 23:50 IST tick -- generate() is idempotent per report_date either way."""

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """WhatsApp template library -- MASTER's non-negotiable rule (first-contact only via a
 pre-approved template) means the Outreach Agent can't freely draft WhatsApp copy the way
 it does for email. Instead it picks the best-fitting ALREADY-APPROVED template from this

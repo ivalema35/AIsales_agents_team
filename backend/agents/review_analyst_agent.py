@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """Review & Weakness Detection Agent (MASTER §6 / Intelligence PRD §2.1.E).
 
 Turns public-web text snippets about a business into structured pain-point codes an

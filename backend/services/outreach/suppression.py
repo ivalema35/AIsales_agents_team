@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Suppression enforcement -- MASTER's non-negotiable 100% rule: a STOP, unsubscribe,
 bounce, or manual block, once recorded, blocks a channel+identifier PERMANENTLY.
 

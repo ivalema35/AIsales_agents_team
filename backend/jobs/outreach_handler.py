@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """OUTREACH_EMAIL job handler (MASTER Phase 3).
 
 Registered here rather than inline in jobs/worker.py so worker.py stays a generic poll

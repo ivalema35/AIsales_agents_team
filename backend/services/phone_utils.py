@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Country-aware phone number normalization, using Google's `phonenumbers` library
 (the standard, well-tested implementation of this exact problem) instead of hand-rolled
 digit-count regexes.

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Resend email-event webhook -- the "Seen" half of the Sent/Seen/Replied funnel for
 EMAIL (WhatsApp's own half lives in api/inbound.py, since Meta delivers it through the
 same webhook as inbound messages; Resend needs its own separate endpoint).

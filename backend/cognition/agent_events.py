@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Audit log helper -- every autonomous agent decision writes one row here (MASTER §4.2).
 This table is simultaneously the audit trail, the self-evaluation record, and the future
 KPI source, so every LLM-backed agent call routes through this, not just the ones that

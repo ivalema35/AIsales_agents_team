@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Compliant email sending via Resend (MASTER Phase 3 / Step 3.3).
 
 Every email gets a footer with the company's physical address and a working

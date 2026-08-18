@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Dashboard customization -- lets a human pin any Analytics chart onto the Dashboard's
 own "Your widgets" section via an "Add to Home" button on the Analytics page. Persisted
 server-side (system_settings, same pattern as every other dashboard-editable value) so

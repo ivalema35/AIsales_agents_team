@@ -1,3 +1,4 @@
+from __future__ import annotations
 """HOT-lead alerts for the dashboard (MASTER PRD §5 Step 4.4's AlertsPanel).
 
 Two genuinely different situations, kept as two sections rather than one merged list:

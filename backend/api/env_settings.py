@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Dashboard view/edit over .env-backed Config values (CRM_UI_UX_PLAN.md Phase 2b) --
 distinct from api/settings.py, which covers the dashboard-hot system_settings values.
 These take effect only after the relevant process is restarted; see

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Dashboard-controlled runtime settings (Step 4.4, extended CRM_UI_UX_PLAN.md Phase 2)
 -- discovery/outreach on-off, plus operational values (EOD recipients, send caps,
 discovery cooldown) that used to be .env-only. All backed by system_settings (checked

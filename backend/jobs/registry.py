@@ -1,3 +1,5 @@
+from __future__ import annotations
+from __future__ import annotations
 """Handler registry, split out of jobs/worker.py (2026-08-14, real bug fix).
 
 Real bug found live: `python -m jobs.worker` loads that file as `__main__`, a SEPARATE
