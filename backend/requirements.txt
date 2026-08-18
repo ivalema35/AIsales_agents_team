@@ -7,3 +7,4 @@ requests>=2.31
 playwright>=1.40
 google-genai>=0.3
 openai>=1.0
+phonenumbers>=9.0

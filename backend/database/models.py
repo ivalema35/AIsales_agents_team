@@ -21,6 +21,12 @@ class Product(Base):
     priority = Column(Integer, default=1)
     is_active = Column(Integer, default=1)
     target_regions = Column(Text, default="[]")  # JSON array (tracker.md A.2)
+    # ISO 3166-1 alpha-2 (e.g. "IN", "CA") -- the default region phone_utils.normalize_
+    # phone() parses this product's leads' numbers against. Added after a real bug: a
+    # Canadian lead's toll-free number matched the old India-only heuristic by
+    # coincidence and would have gotten "91" prepended for WhatsApp -- a message to a
+    # fabricated, unrelated number (tracker.md, 2026-08-17).
+    target_country = Column(String, default="IN")
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -113,6 +119,12 @@ class OutreachLog(Base):
     message_body = Column(Text, nullable=False)
     status = Column(String, nullable=False)  # SENT, FAILED, DELIVERED, BOUNCED
     sent_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    # Provider's own message id -- Meta's wamid for WhatsApp, Resend's email id for
+    # EMAIL. Captured at send time so a later read-receipt/open webhook can match back
+    # to this exact row (see api/inbound.py's status handling, api/webhooks.py's Resend
+    # handler). Real "Seen" tracking -- see tracker.md, no fabricated/estimated value.
+    provider_message_id = Column(String)
+    read_at = Column(TIMESTAMP)
 
 
 # 8. INBOUND CONVERSATIONS
@@ -130,6 +142,7 @@ class InboundConversation(Base):
     intent_detected = Column(String)  # INTERESTED, DEMO_REQUESTED, OBJECTION, STOP, AUTO_REPLY
     confidence = Column(REAL)
     ai_suggested_response = Column(Text)
+    is_read = Column(Integer, default=0)  # Dashboard's Recent Replies grid -- "Mark as read"
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
 

@@ -24,9 +24,23 @@ mappings). No location/city information is provided to you -- do not invent one.
 TASK: define the Ideal Customer Profile this product is actually a fit for, and propose the
 exact search queries a local-business search engine (like Google Places/Maps search) should
 run to FIND such businesses -- short, natural search phrases a person would actually type
-(e.g. "gaming zone", "salon", "IT support services"), not marketing copy. Also propose the
-kinds of customer complaints ("target_complaints") worth searching reviews for, since a
-business showing those complaints is exactly who this product should approach first.
+(e.g. "gaming zone", "salon"), not marketing copy. Also propose the kinds of customer
+complaints ("target_complaints") worth searching reviews for, since a business showing those
+complaints is exactly who this product should approach first.
+
+CRITICAL RULE for search_queries: every query must describe what the PROSPECT's OWN business
+IS (their vertical/category -- "law firm", "dental clinic", "real estate agency"), never what
+THIS PRODUCT does or sells. A places search engine matches queries against a business's own
+name/category, so a query built from the product's own service name returns OTHER companies
+that sell that same service (direct competitors), not businesses that need to buy it -- e.g.
+if the product is a website-building service, "website design" / "web development" / "web
+developer" as queries return web design agencies, not the small businesses that need a
+website. If the product is an AI-automation service, "customer support" / "data entry" /
+"document processing" as queries return call centers, BPOs, and telecom/appliance service
+centers (who provide those exact functions), not the businesses that struggle with them.
+When a product sells broadly across verticals (not one single business type), every query
+must be one of those prospect verticals (e.g. "real estate agency", "law firm", "accounting
+firm", "clinic") -- never the product's own capability, feature, or service-category name.
 
 OUTPUT JSON: {"icp": {"company_size": "...", "roles": ["..."], "verticals": ["..."]},
 "search_queries": ["..."], "target_complaints": ["..."]}
@@ -89,15 +103,19 @@ CHECK (reject if ANY of these fail):
     Agent is deliberately designed to open with only ONE pain point (not all of them) --
     do NOT reject a draft merely for not mentioning every pain point in the list; only
     reject if it references NONE of them at all.
-(c) no false claims, no unauthorized discounts/pricing, no fabricated timelines or
-    testimonials, and no invented capabilities -- but judge "invented" AGAINST THE
-    PROVIDED PRODUCT_BRIEF, not against an empty assumption. A capability claim that is
-    consistent with (even if worded differently than) the product's title/description/
-    value proposition is real and must NOT be rejected as unsupported -- reject only
-    claims that go beyond, or contradict, what PRODUCT_BRIEF actually says.
+(c) no false claims, no unauthorized discounts/pricing, no fabricated DELIVERY timelines
+    (ship dates, response-time SLAs, etc.) or testimonials, and no invented capabilities --
+    but judge "invented" AGAINST THE PROVIDED PRODUCT_BRIEF, not against an empty
+    assumption. A capability claim that is consistent with (even if worded differently
+    than) the product's title/description/value proposition is real and must NOT be
+    rejected as unsupported -- reject only claims that go beyond, or contradict, what
+    PRODUCT_BRIEF actually says. A closing line saying our team will personally follow up
+    with the lead shortly (no specific date/time attached) is always true and pre-approved
+    -- do NOT reject it as a fabricated timeline.
 (d) the draft doesn't already contain its own footer/signature/unsubscribe text (the
     system appends the compliant one automatically -- a draft that added its own would
-    end up with two, or a wrong one).
+    end up with two, or a wrong one). A plain closing sentence promising the team will
+    follow up shortly is NOT a footer/signature and must not be rejected under this check.
 
 OUTPUT JSON: {"approved": true or false, "confidence_score": 0.0,
 "rejection_reasons": ["..."], "suggested_corrections": "<=60 words"}
@@ -148,14 +166,61 @@ frustrated, or you are simply not confident what they mean -- when genuinely uns
 report LOWER confidence rather than guessing high just to seem decisive.
 
 Also draft `suggested_reply`: a short (<=80 words), one-to-one-sounding response this
-business could plausibly receive next -- even when you also set escalate_to_human=true,
-still draft one, since a human reviewing this conversation benefits from a starting point
-rather than a blank page. Ground the reply in this lead's actual verified pain points
-when any are supplied -- never invent a different problem, workflow detail, or capability
-that wasn't established with this lead or in the product brief. Do not write a
-signature/footer.
+business could plausibly receive next. Draft this EVEN when escalate_to_human=true -- it
+may be sent automatically, without a human editing it first, so it must genuinely stand on
+its own: adaptively engage with what they actually asked or said, grounded ONLY in this
+lead's verified pain points and the product_brief (we approached this specific lead about
+this specific product, so use that context directly) -- never invent a different problem,
+workflow detail, capability, price, or timeline beyond what those two sources establish.
+If the message touches pricing, contracts, or an exact demo time/date, do not answer that
+part yourself -- acknowledge it and say the team will confirm those details directly.
+Always close by saying our team will personally follow up with them shortly (this reply
+supplements human follow-up, it never replaces it). Do not write a signature/footer.
 
 OUTPUT JSON: {"intent": "INTERESTED|DEMO_REQUESTED|OBJECTION|STOP|AUTO_REPLY",
 "confidence": 0.0, "suppress_immediately": false, "escalate_to_human": false,
 "suggested_reply": "<=80 words"}
+"""
+
+# Step 4.3's automatic reply for an escalated inbound message: if QC rejects the FIRST
+# suggested_reply, this asks the model to fix the SPECIFIC issues QC raised rather than
+# giving up -- a reply must always eventually go out (see tracker.md), it just must not be
+# the ungrounded/over-committing one QC already caught.
+REPLY_REDRAFT_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+ROLE: Revise a customer reply that Quality Control just rejected -- fix every issue QC
+raised without losing what made it a real, adaptively personalized answer in the first
+place.
+
+INPUT: the lead's original message, the prior (rejected) draft, QC's specific rejection
+reasons and suggested corrections, this lead's verified pain points, and the product
+brief.
+
+TASK: produce a corrected reply (<=80 words) that resolves every rejection reason listed,
+stays grounded ONLY in the verified pain points and product brief (never invents a
+capability, price, or timeline), still adaptively engages with what the lead actually
+asked, and closes by saying our team will personally follow up with them shortly. Do not
+write a signature/footer.
+
+OUTPUT JSON: {"reply": "<=80 words"}
+"""
+
+# Step 4.5's EOD executive report. Deliberately NOT the full MASTER PRD §6 CEO_AGENT_
+# SYSTEM_PROMPT (targets/campaign_actions/approve-pause-campaigns) -- that's Phase 5
+# governance territory, not built yet. This is scoped narrowly to the one piece Step 4.5
+# actually needs: turn already-computed real metrics into a short human-readable summary,
+# with zero autonomy and zero invented numbers.
+EOD_SUMMARY_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+ROLE: Write a concise end-of-day executive summary for the business owner, from real,
+already-computed metrics -- you are reporting what happened, not deciding anything.
+
+INPUT: a JSON object of today's real metrics (leads discovered, leads scored by tier,
+outreach sent by channel, replies received, high-intent replies, human escalations, and a
+KPI section). Some KPI values may be null, meaning that metric isn't tracked by the system
+yet -- say so plainly if relevant, never invent a number to fill the gap.
+
+TASK: write a summary (<=120 words) a busy owner can read in 10 seconds -- what happened
+today, and anything that stands out (a spike, a zero, a KPI outside its stated target).
+Never invent a number, trend, or comparison to a prior day that wasn't in the given data.
+
+OUTPUT JSON: {"executive_summary": "<=120 words"}
 """

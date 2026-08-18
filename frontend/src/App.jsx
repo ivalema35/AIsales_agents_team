@@ -1,6 +1,11 @@
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import Leads from "./pages/Leads";
+import LeadDetail from "./pages/LeadDetail";
+import Settings from "./pages/Settings";
+import Analytics from "./pages/Analytics";
+import { ConfirmProvider } from "./lib/ConfirmContext";
 
 function Nav() {
   const linkClass = ({ isActive }) =>
@@ -21,6 +26,15 @@ function Nav() {
         <NavLink to="/products" className={linkClass}>
           Products
         </NavLink>
+        <NavLink to="/leads" className={linkClass}>
+          Leads
+        </NavLink>
+        <NavLink to="/analytics" className={linkClass}>
+          Analytics
+        </NavLink>
+        <NavLink to="/settings" className={linkClass}>
+          Settings
+        </NavLink>
       </div>
     </nav>
   );
@@ -29,13 +43,19 @@ function Nav() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-50">
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/products" element={<Products />} />
-        </Routes>
-      </div>
+      <ConfirmProvider>
+        <div className="min-h-screen bg-slate-50">
+          <Nav />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/leads" element={<Leads />} />
+            <Route path="/leads/:id" element={<LeadDetail />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/analytics" element={<Analytics />} />
+          </Routes>
+        </div>
+      </ConfirmProvider>
     </BrowserRouter>
   );
 }

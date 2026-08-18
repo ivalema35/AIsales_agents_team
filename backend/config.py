@@ -54,6 +54,13 @@ class Config:
     OUTREACH_DAILY_CAP_EMAIL = int(os.getenv("OUTREACH_DAILY_CAP_EMAIL", "40"))
     OUTREACH_DAILY_CAP_WHATSAPP = int(os.getenv("OUTREACH_DAILY_CAP_WHATSAPP", "40"))
     OUTREACH_STAGGER_SECONDS = int(os.getenv("OUTREACH_STAGGER_SECONDS", "90"))
+    # Step 4.5 EOD report -- comma-separated, sent to every address/number in each list.
+    # Env-configurable for now, deliberately -- the user wants these dashboard-editable
+    # eventually, not hardcoded, but that UI isn't built yet (tracker.md Step 4.5).
+    EOD_REPORT_RECIPIENTS = [e.strip() for e in os.getenv(
+        "EOD_REPORT_RECIPIENTS", "ivaiagent05@gmail.com").split(",") if e.strip()]
+    EOD_REPORT_WHATSAPP_RECIPIENTS = [p.strip() for p in os.getenv(
+        "EOD_REPORT_WHATSAPP_RECIPIENTS", "9510254405").split(",") if p.strip()]
     # Safety kill-switch (added 2026-08-13 during a live process audit): discovery now
     # runs autonomously against real businesses, but the project's own non-negotiable
     # rule is that no real third party gets contacted until the user explicitly says so.

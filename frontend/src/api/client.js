@@ -38,12 +38,39 @@ export const api = {
     return request(`/leads${qs ? `?${qs}` : ""}`);
   },
   getLead: (id) => request(`/leads/${id}`),
+  getLeadTimeline: (id) => request(`/leads/${id}/timeline`),
+  getAdjacentLead: (id, params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/leads/${id}/adjacent${qs ? `?${qs}` : ""}`);
+  },
+  updateLead: (id, data) => request(`/leads/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   patchLeadStatus: (id, status) =>
     request(`/leads/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
   triggerOutreach: (id) => request(`/leads/${id}/outreach`, { method: "POST" }),
+  getRecentReplies: (limit = 8) => request(`/leads/recent-replies?limit=${limit}`),
+  markReplyRead: (conversationId) => request(`/inbound/${conversationId}/read`, { method: "PATCH" }),
 
   listAlerts: () => request("/alerts"),
 
+  getDashboardWidgets: () => request("/dashboard/widgets"),
+  saveDashboardWidgets: (widgets) =>
+    request("/dashboard/widgets", { method: "PUT", body: JSON.stringify({ widgets }) }),
+
   getSettings: () => request("/settings"),
   patchSettings: (data) => request("/settings", { method: "PATCH", body: JSON.stringify(data) }),
+
+  getEnvSettings: () => request("/env-settings"),
+  patchEnvSettings: (data) => request("/env-settings", { method: "PATCH", body: JSON.stringify(data) }),
+
+  getFunnel: () => request("/analytics/funnel"),
+  getChannelPerformance: () => request("/analytics/channel-performance"),
+  getTrend: (granularity, periods) => request(`/analytics/trend?granularity=${granularity}&periods=${periods}`),
+  getByProduct: () => request("/analytics/by-product"),
+  getOutreachFunnel: (start, end) => {
+    const params = new URLSearchParams();
+    if (start) params.set("start", start);
+    if (end) params.set("end", end);
+    const qs = params.toString();
+    return request(`/analytics/outreach-funnel${qs ? `?${qs}` : ""}`);
+  },
 };

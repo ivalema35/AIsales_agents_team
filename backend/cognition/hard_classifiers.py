@@ -57,15 +57,22 @@ _AUTOREPLY_HEADER_KEYS = ("Auto-Submitted", "X-Autoreply", "X-Autorespond", "X-A
 # own opt-out below. Cut the body off at the first sign of quoted content before any
 # keyword match runs.
 _QUOTE_START_RE = re.compile(
-    r"\r?\n\s*>|"                             # a quoted line (starts with '>')
-    r"\r?\n\s*On .{0,150}?wrote:\s*\r?\n|"     # Gmail/Apple-style "On ... wrote:"
-    r"\r?\n-{2,}\s*Original Message\s*-{2,}|"  # Outlook "-----Original Message-----"
-    r"\r?\n_{5,}",                             # Outlook separator line
+    r"\r?\n\s*>|"                                # a quoted line (starts with '>')
+    r"\r?\n\s*On [\s\S]{0,150}?wrote:\s*\r?\n?|"  # Gmail/Apple-style "On ... wrote:" --
+    # [\s\S] (not '.') because a long sender name/email wraps onto its own line inside
+    # this span in real Gmail replies (e.g. "On Fri... IVinfotech <\r\nronak@...> wrote:"),
+    # and '.' doesn't match a newline; the trailing "\r?\n" is optional because a reply
+    # can genuinely end AT "wrote:" with nothing quoted after it (no further "\r\n" to
+    # anchor on) -- both found live: the first silently failed to strip anything for any
+    # reply whose header line wrapped, the second left a dangling "On ... wrote:" fragment
+    # visible in the Conversation panel even after the rest of the quote was cut.
+    r"\r?\n-{2,}\s*Original Message\s*-{2,}|"     # Outlook "-----Original Message-----"
+    r"\r?\n_{5,}",                                # Outlook separator line
     re.IGNORECASE,
 )
 
 
-def _strip_quoted_reply(text: str) -> str:
+def strip_quoted_reply(text: str) -> str:
     if not text:
         return text
     match = _QUOTE_START_RE.search(text)
@@ -73,7 +80,7 @@ def _strip_quoted_reply(text: str) -> str:
 
 
 def is_optout(text: str) -> bool:
-    stripped = _strip_quoted_reply(text)
+    stripped = strip_quoted_reply(text)
     return bool(stripped) and bool(_OPTOUT_RE.search(stripped))
 
 
@@ -84,7 +91,7 @@ def is_autoreply(text: str, email_headers: dict | None = None) -> bool:
             return True
         if any(email_headers.get(k) for k in _AUTOREPLY_HEADER_KEYS if k != "Auto-Submitted"):
             return True
-    stripped = _strip_quoted_reply(text)
+    stripped = strip_quoted_reply(text)
     return bool(stripped) and bool(_AUTOREPLY_RE.search(stripped))
 
 
@@ -104,5 +111,5 @@ _HIGH_RISK_RE = re.compile("|".join(_HIGH_RISK_PATTERNS), re.IGNORECASE)
 
 
 def looks_pricing_or_legal(text: str) -> bool:
-    stripped = _strip_quoted_reply(text)
+    stripped = strip_quoted_reply(text)
     return bool(stripped) and bool(_HIGH_RISK_RE.search(stripped))

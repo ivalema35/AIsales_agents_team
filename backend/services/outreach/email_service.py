@@ -18,6 +18,14 @@ logger = logging.getLogger(__name__)
 RESEND_API_URL = "https://api.resend.com/emails"
 
 
+def extract_resend_id(send_response: dict) -> str | None:
+    """Resend's send response is `{"id": "..."}` -- this is what a later `email.opened`
+    webhook event references (`data.email_id`), so callers that want "Seen" tracking
+    (OutreachLog.provider_message_id) pull it via this helper rather than reaching into
+    the response dict themselves."""
+    return send_response.get("id")
+
+
 def _build_footer(unsubscribe_url: str) -> str:
     return (
         f"\n\n---\n{Config.COMPANY_PHYSICAL_ADDRESS}\n"
@@ -85,4 +93,26 @@ def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str
     resp.raise_for_status()
     data = resp.json()
     logger.info("email sent to %s (resend id=%s)", to_email, data.get("id"))
+    return data
+
+
+def send_internal_email(to_email: str, subject: str, body_text: str) -> dict:
+    """Plain internal email, no compliance footer/unsubscribe link -- this is the
+    project's own EOD report (Step 4.5) going to the business owner, not outreach to a
+    lead, so send_email()'s mandatory footer doesn't apply and would be confusing here."""
+    if not Config.RESEND_API_KEY:
+        raise RuntimeError("RESEND_API_KEY not configured")
+
+    resp = requests.post(
+        RESEND_API_URL,
+        headers={
+            "Authorization": f"Bearer {Config.RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={"from": _from_header(), "to": [to_email], "subject": subject, "text": body_text},
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    logger.info("internal email sent to %s (resend id=%s)", to_email, data.get("id"))
     return data

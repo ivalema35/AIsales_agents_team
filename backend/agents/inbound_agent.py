@@ -6,7 +6,7 @@ import json
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import INBOUND_CLASSIFIER_SYSTEM_PROMPT
+from cognition.prompts import INBOUND_CLASSIFIER_SYSTEM_PROMPT, REPLY_REDRAFT_SYSTEM_PROMPT
 
 VALID_INTENTS = {"INTERESTED", "DEMO_REQUESTED", "OBJECTION", "STOP", "AUTO_REPLY"}
 
@@ -63,3 +63,27 @@ LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
                     "HUMAN_ESCALATION" if escalate_to_human else "EXECUTE",
                     payload={"intent": intent})
     return result
+
+
+def redraft_reply(db, lead_id, message: str, prior_draft: str, rejection_reasons: list,
+                  suggested_corrections: str, pain_points: list, product_brief: dict) -> str:
+    """Asks the model to fix a QC-rejected suggested_reply using QC's own feedback,
+    instead of giving up -- a reply must always eventually go out for an escalated
+    message (tracker.md Step 4.3: "reply karna jaruri he"). Returns "" on any LLM error
+    (the caller falls back to a fixed, non-AI-generated message in that case, never an
+    ungrounded/re-guessed reply)."""
+    prompt = REPLY_REDRAFT_SYSTEM_PROMPT + f"""
+LEAD_MESSAGE: {json.dumps(message, ensure_ascii=False)}
+PRIOR_DRAFT: {json.dumps(prior_draft, ensure_ascii=False)}
+QC_REJECTION_REASONS: {json.dumps(rejection_reasons, ensure_ascii=False)}
+QC_SUGGESTED_CORRECTIONS: {json.dumps(suggested_corrections, ensure_ascii=False)}
+LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
+PRODUCT_BRIEF: {json.dumps(product_brief or {}, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.2)
+    except LLMError as exc:
+        log_agent_event(db, "INBOUND", lead_id, "REDRAFT_REPLY", 0.0, "MEDIUM", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return ""
+    return str(data.get("reply", ""))[:600]

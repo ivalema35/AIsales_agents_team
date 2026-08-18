@@ -8,6 +8,8 @@ async_runner.py vs jobs/worker.py -- MASTER §9 process topology), owns two jobs
 2. Outreach pacing tick: claim SCORED leads for outreach up to the daily per-channel cap,
    staggered via run_after so a day's worth of sends doesn't burst all at once (the
    "pacing caps" item flagged open under DoD Gate P3).
+3. EOD report tick (Step 4.5): once per day, after 23:50 IST, generates and emails the
+   daily_reports row via services/reporting_service.py if today's doesn't already exist.
 
 Run as `python -m jobs.discovery_scheduler`, alongside (not instead of) jobs/worker.py and
 scraper_worker/async_runner.py.
@@ -17,15 +19,18 @@ import logging
 import time
 from datetime import datetime, timedelta
 
-from sqlalchemy import text
+from sqlalchemy import func, text
 
 from config import Config
 from database.db_config import SessionLocal
-from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadScore
+from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport
 from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
-from services.system_settings import get_bool, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED
+from services.reporting_service import generate as generate_eod_report, IST_OFFSET
+from services.system_settings import (
+    get_bool, get_int, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
+    OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS)
 
 logger = logging.getLogger(__name__)
 
@@ -101,8 +106,35 @@ def _run_discovery_tick(db):
     if not get_bool(db, DISCOVERY_ENABLED, default=False):
         return 0
 
+    # Product whose most recent DiscoveryRun is oldest (or has NONE at all) goes first --
+    # NOT insertion order. Without this, a product with enough due (query, region) combos
+    # to fill the whole per-tick budget on its own (an easy bar: a few queries x several
+    # regions) permanently starves every product after it in the list, since the loop
+    # always restarts from the same first product and breaks as soon as the cap is hit
+    # (found live, 2026-08-17 -- a brand new product got zero discovery activity across 3
+    # ticks while an older one kept firing). A product with zero DiscoveryRun rows ever
+    # (freshly created) has a NULL last-run, which SQLite sorts before any real
+    # timestamp -- so a new product is correctly treated as maximally overdue and wins
+    # the very next tick. (`Product.updated_at` was tried first and rejected: a NEW
+    # product's updated_at is its own creation moment, the MOST recent timestamp of all,
+    # which would sort it LAST under "oldest first" -- the opposite of what's needed.)
+    last_run_subq = (
+        db.query(DiscoveryRun.product_id, func.max(DiscoveryRun.last_run_at).label("last_run"))
+        .group_by(DiscoveryRun.product_id)
+        .subquery()
+    )
+    products = (
+        db.query(Product)
+        .filter(Product.is_active == 1)
+        .outerjoin(last_run_subq, last_run_subq.c.product_id == Product.id)
+        .order_by(last_run_subq.c.last_run.asc().nullsfirst())
+        .all()
+    )
+
+    cooldown_hours = get_int(db, DISCOVERY_COOLDOWN_HOURS, default=Config.DISCOVERY_COOLDOWN_HOURS)
+
     fired = 0
-    for product in db.query(Product).filter(Product.is_active == 1).all():
+    for product in products:
         if fired >= Config.MAX_DISCOVER_PER_TICK:
             break
 
@@ -125,7 +157,7 @@ def _run_discovery_tick(db):
                     DiscoveryRun.query == query,
                     DiscoveryRun.region == region,
                 ).first()
-                if run and datetime.utcnow() - run.last_run_at < timedelta(hours=Config.DISCOVERY_COOLDOWN_HOURS):
+                if run and datetime.utcnow() - run.last_run_at < timedelta(hours=cooldown_hours):
                     continue
 
                 enqueue(db, "DISCOVER", {"product_id": product.id, "query": query, "location": region})
@@ -160,9 +192,11 @@ def _run_outreach_tick(db):
     if not get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED):
         return 0
 
+    cap_email = get_int(db, OUTREACH_DAILY_CAP_EMAIL, default=Config.OUTREACH_DAILY_CAP_EMAIL)
+    cap_whatsapp = get_int(db, OUTREACH_DAILY_CAP_WHATSAPP, default=Config.OUTREACH_DAILY_CAP_WHATSAPP)
     remaining = {
-        "EMAIL": Config.OUTREACH_DAILY_CAP_EMAIL - _queued_today(db, "OUTREACH_EMAIL"),
-        "WHATSAPP": Config.OUTREACH_DAILY_CAP_WHATSAPP - _queued_today(db, "OUTREACH_WA"),
+        "EMAIL": cap_email - _queued_today(db, "OUTREACH_EMAIL"),
+        "WHATSAPP": cap_whatsapp - _queued_today(db, "OUTREACH_WA"),
     }
     if remaining["EMAIL"] <= 0 and remaining["WHATSAPP"] <= 0:
         return 0
@@ -193,6 +227,19 @@ def _run_outreach_tick(db):
     return claimed_count
 
 
+def _run_eod_report_tick(db):
+    """Once per IST calendar day, after 23:50 -- generate() is idempotent per report_date
+    (checks daily_reports itself), so a poll interval well under 24h just means this is a
+    cheap no-op check most ticks, not a duplicate-report risk."""
+    now_ist = datetime.utcnow() + IST_OFFSET
+    if (now_ist.hour, now_ist.minute) < (23, 50):
+        return
+    report_date_str = now_ist.strftime("%Y-%m-%d")
+    if db.query(DailyReport).filter(DailyReport.report_date == report_date_str).first():
+        return
+    generate_eod_report(db, report_date_str)
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
@@ -207,6 +254,7 @@ def run_forever(poll_interval=None):
             if now - last_outreach_tick >= Config.OUTREACH_TICK_INTERVAL_SECONDS:
                 _run_outreach_tick(db)
                 last_outreach_tick = now
+            _run_eod_report_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
         finally:

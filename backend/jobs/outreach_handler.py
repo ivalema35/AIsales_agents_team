@@ -19,7 +19,7 @@ from cognition.agent_events import log_agent_event
 from config import Config
 from database.models import Lead, Product, LeadReviewInsight, OutreachLog
 from jobs.registry import register_handler
-from services.outreach.email_service import send_email
+from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ def handle_outreach_email(db, payload):
         return lead.id
 
     unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
-    send_email(lead.primary_email, draft["subject"], draft["body"], unsubscribe_url)
+    send_response = send_email(lead.primary_email, draft["subject"], draft["body"], unsubscribe_url)
 
     db.add(OutreachLog(
         id=str(uuid.uuid4()),
@@ -111,6 +111,7 @@ def handle_outreach_email(db, payload):
         message_subject=draft["subject"],
         message_body=draft["body"],
         status="SENT",
+        provider_message_id=extract_resend_id(send_response),
     ))
     lead.status = "OUTREACHED"
     db.commit()

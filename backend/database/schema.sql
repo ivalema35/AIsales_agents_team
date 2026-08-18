@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS products (
     priority             INTEGER DEFAULT 1,
     is_active            INTEGER DEFAULT 1,
     target_regions       TEXT DEFAULT '[]',   -- JSON array, e.g. ["Ahmedabad","Surat"] (tracker.md A.2)
+    target_country       TEXT DEFAULT 'IN',   -- ISO 3166-1 alpha-2, phone-parsing default region
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -102,6 +103,8 @@ CREATE TABLE IF NOT EXISTS outreach_logs (
     message_body     TEXT NOT NULL,
     status           TEXT NOT NULL,           -- SENT, FAILED, DELIVERED, BOUNCED
     sent_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    provider_message_id TEXT,                 -- Meta wamid (WhatsApp) or Resend email id
+    read_at          TIMESTAMP,                -- set by a real read-receipt/open webhook
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
     FOREIGN KEY (campaign_id) REFERENCES outreach_campaigns(id) ON DELETE SET NULL
 );
@@ -117,6 +120,7 @@ CREATE TABLE IF NOT EXISTS inbound_conversations (
     intent_detected      TEXT,                 -- INTERESTED, DEMO_REQUESTED, OBJECTION, STOP, AUTO_REPLY
     confidence           REAL,
     ai_suggested_response TEXT,
+    is_read              INTEGER DEFAULT 0,    -- Dashboard's Recent Replies grid -- "Mark as read"
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
     UNIQUE (channel, provider_message_id)      -- dedup re-delivered webhooks

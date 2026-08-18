@@ -18,7 +18,7 @@ from jobs.job_queue import enqueue
 ELIGIBLE_TIERS = {"HOT", "WARM"}
 
 
-def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None):
+def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, enqueue_jobs=True):
     """Atomically move a SCORED, outreach-eligible lead to OUTREACHING and enqueue one
     OUTREACH_EMAIL and/or OUTREACH_WA job per channel the lead actually has contact info
     for -- both if both exist, deliberately not "pick one channel". Safe to call
@@ -34,6 +34,14 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None):
     no restriction. If this narrows a lead down to zero usable channels, the lead is left
     at SCORED (not claimed) rather than claimed with nothing queued -- it's a legitimate
     candidate for a later tick once budget frees up, not a dead lead.
+
+    `enqueue_jobs=False`: skip creating OUTREACH_EMAIL/OUTREACH_WA jobs -- for a caller
+    that only wants this function's atomic SCORED->OUTREACHING claim + eligible-channel
+    list and is about to process those channels itself, synchronously, in the same
+    request (api/leads.py's manual "Send Outreach Now" trigger). Without this, that
+    endpoint's own synchronous handler calls AND jobs.worker picking up the queued jobs
+    both send -- a guaranteed real duplicate send every time the worker is running, not
+    just an occasional race (see tracker.md Step 4.4 duplicate-outreach bug).
 
     Returns the list of channels queued (e.g. ["EMAIL"], ["EMAIL", "WHATSAPP"]), or None
     if the lead wasn't eligible (no usable channel, wrong tier, low confidence) or was
@@ -73,10 +81,12 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None):
 
     channels_queued = []
     if has_email:
-        enqueue(db, "OUTREACH_EMAIL", {"lead_id": lead_id}, run_after=run_after)
+        if enqueue_jobs:
+            enqueue(db, "OUTREACH_EMAIL", {"lead_id": lead_id}, run_after=run_after)
         channels_queued.append("EMAIL")
     if has_phone:
-        enqueue(db, "OUTREACH_WA", {"lead_id": lead_id}, run_after=run_after)
+        if enqueue_jobs:
+            enqueue(db, "OUTREACH_WA", {"lead_id": lead_id}, run_after=run_after)
         channels_queued.append("WHATSAPP")
 
     return channels_queued

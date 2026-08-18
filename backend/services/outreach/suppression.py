@@ -17,7 +17,7 @@ from services.data_acquisition.website_scraper import normalize_mobile
 VALID_REASONS = {"UNSUBSCRIBE", "STOP", "BOUNCE", "MANUAL"}
 
 
-def _normalize_identifier(channel: str, identifier: str):
+def normalize_identifier(channel: str, identifier: str):
     """Same normalization rule used everywhere else in this project for each channel,
     so a suppression recorded one way is never missed by a check written another way
     (e.g. 'ABC@Gmail.com' suppressed must still block a later send to 'abc@gmail.com').
@@ -38,7 +38,7 @@ def _normalize_identifier(channel: str, identifier: str):
 
 
 def is_suppressed(db, channel: str, identifier: str) -> bool:
-    normalized = _normalize_identifier(channel, identifier)
+    normalized = normalize_identifier(channel, identifier)
     if not normalized:
         return False
     return db.query(SuppressionEntry).filter(
@@ -58,7 +58,7 @@ def add_suppression(db, channel: str, identifier: str, reason: str) -> bool:
     if reason not in VALID_REASONS:
         raise ValueError(f"invalid suppression reason: {reason!r} (expected one of {VALID_REASONS})")
 
-    normalized = _normalize_identifier(channel, identifier)
+    normalized = normalize_identifier(channel, identifier)
     if not normalized:
         raise ValueError(f"cannot suppress an empty/unusable identifier for channel {channel!r}")
 

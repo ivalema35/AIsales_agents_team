@@ -1,5 +1,6 @@
 import json
 
+import phonenumbers
 from flask import Blueprint, jsonify, request
 
 from database.db_config import SessionLocal
@@ -19,6 +20,7 @@ def _serialize(product):
         "priority": product.priority,
         "is_active": product.is_active,
         "target_regions": json.loads(product.target_regions or "[]"),
+        "target_country": product.target_country,
         "created_at": str(product.created_at),
         "updated_at": str(product.updated_at),
     }
@@ -52,6 +54,20 @@ def _extract_json_fields(data, errors):
             target_regions = json.dumps(data["target_regions"])
 
     return target_keywords, pain_point_mappings, target_regions
+
+
+def _validate_target_country(data, errors):
+    """ISO 3166-1 alpha-2 (e.g. "IN", "CA") -- validated against phonenumbers' own real
+    region list (SUPPORTED_REGIONS) rather than just "is it 2 letters", so a typo like
+    "XX" is caught here instead of silently breaking every phone normalization for this
+    product's leads later (tracker.md, 2026-08-17)."""
+    if "target_country" not in data:
+        return None
+    value = str(data["target_country"] or "").strip().upper()
+    if value not in phonenumbers.SUPPORTED_REGIONS:
+        errors.append(f"target_country must be a real ISO 3166-1 alpha-2 code (got {value!r})")
+        return None
+    return value
 
 
 @products_bp.route("", methods=["GET"])
@@ -92,6 +108,7 @@ def create_product():
     if not data.get("description"):
         errors.append("description is required")
     target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
+    target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -109,6 +126,8 @@ def create_product():
             product.pain_point_mappings = pain_point_mappings
         if target_regions is not None:
             product.target_regions = target_regions
+        if target_country is not None:
+            product.target_country = target_country
         db.add(product)
         db.commit()
         db.refresh(product)
@@ -125,6 +144,7 @@ def update_product(product_id):
 
     errors = []
     target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
+    target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -154,6 +174,8 @@ def update_product(product_id):
             product.pain_point_mappings = pain_point_mappings
         if target_regions is not None:
             product.target_regions = target_regions
+        if target_country is not None:
+            product.target_country = target_country
 
         db.commit()
         db.refresh(product)

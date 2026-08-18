@@ -15,11 +15,11 @@ import logging
 import uuid
 
 from cognition.agent_events import log_agent_event
-from database.models import Lead, LeadReviewInsight, OutreachLog
+from database.models import Lead, LeadReviewInsight, OutreachLog, Product
 from jobs.registry import register_handler
-from services.data_acquisition.website_scraper import normalize_mobile
 from services.outreach.suppression import is_suppressed
-from services.outreach.whatsapp_service import send_template_message
+from services.phone_utils import normalize_phone
+from services.outreach.whatsapp_service import send_template_message, extract_wamid
 from services.outreach.whatsapp_templates import (
     TEMPLATE_LIBRARY,
     select_template,
@@ -36,13 +36,20 @@ def handle_outreach_wa(db, payload):
     if not lead:
         raise ValueError(f"lead {payload['lead_id']} not found")
 
+    # Country-aware: normalize_mobile() (still used elsewhere for India-only enrichment
+    # checks) assumed every lead was Indian, which real Canadian leads' numbers only
+    # avoided by accident (tracker.md, 2026-08-17 -- a Canadian toll-free number matched
+    # the old 10-digit-starting-6-9 heuristic and would have gotten "91" prepended,
+    # sending to a fabricated, unrelated number). Product.target_country tells us which
+    # region this specific lead's number should be parsed against.
+    product = db.get(Product, lead.product_id)
     raw_phone = lead.whatsapp_number or lead.primary_phone
-    phone = normalize_mobile(raw_phone) if raw_phone else None
-    if not phone:
+    to_phone = normalize_phone(raw_phone, country_hint=product.target_country) if raw_phone else None
+    if not to_phone:
         logger.info("OUTREACH_WA %s -> no usable phone on file, skipping", lead.company_name)
         return lead.id
 
-    if is_suppressed(db, "WHATSAPP", phone):
+    if is_suppressed(db, "WHATSAPP", to_phone):
         logger.info("OUTREACH_WA %s -> suppressed, aborting before send", lead.company_name)
         lead.status = "REJECTED"
         db.commit()
@@ -72,16 +79,15 @@ def handle_outreach_wa(db, payload):
 
     # Re-check suppression immediately before the network call -- the 100% rule applies
     # right up to the send, not just once earlier in this function.
-    if is_suppressed(db, "WHATSAPP", phone):
+    if is_suppressed(db, "WHATSAPP", to_phone):
         logger.info("OUTREACH_WA %s -> suppressed between selection and send, aborting", lead.company_name)
         lead.status = "REJECTED"
         db.commit()
         return lead.id
 
-    # Meta's international-format convention: country code + number, no leading '+'.
-    # normalize_mobile() always returns a clean 10-digit Indian mobile, so this is safe.
-    to_phone = f"91{phone}"
-    send_template_message(to_phone, spec["name"], spec["language"], values)
+    # to_phone is already Meta's international-format convention (country code + number,
+    # no leading '+') via normalize_phone() -- no manual prefixing needed.
+    send_response = send_template_message(to_phone, spec["name"], spec["language"], values)
 
     db.add(OutreachLog(
         id=str(uuid.uuid4()),
@@ -90,6 +96,7 @@ def handle_outreach_wa(db, payload):
         message_subject=spec["name"],
         message_body=json.dumps({"template": spec["name"], "variables": values}),
         status="SENT",
+        provider_message_id=extract_wamid(send_response),
     ))
     lead.status = "OUTREACHED"
     db.commit()
