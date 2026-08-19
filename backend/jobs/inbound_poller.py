@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """Inbound email poller (MASTER Phase 4 / Step 4.1). IMAP-polls the reply-monitored
 mailbox instead of a webhook -- a real reply to our outreach lands via normal SMTP/MX
 routing at Hostinger, not through Resend (Resend only handles what WE send), so there is
@@ -8,6 +6,7 @@ directly needs no public URL at all (tracker.md Step 4.1 discussion, 2026-08-13)
 
 Run as `python -m jobs.inbound_poller`, alongside the other always-on processes.
 """
+from __future__ import annotations
 import email
 import imaplib
 import logging

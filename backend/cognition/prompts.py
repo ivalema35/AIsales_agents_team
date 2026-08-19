@@ -1,8 +1,8 @@
-from __future__ import annotations
 """Agent system prompts (MASTER §6). Every prompt shares the guardrail preamble so the
 five operating principles and the buzzword ban apply everywhere, and every prompt demands
 JSON-only output, called through llm_client.call_json().
 """
+from __future__ import annotations
 
 GUARDRAIL_PREAMBLE = """
 NON-NEGOTIABLE RULES (apply to every output):

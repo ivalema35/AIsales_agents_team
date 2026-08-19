@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Shared inbound-message handling (MASTER Phase 4 / Steps 4.1-4.3). Both the WhatsApp
 webhook (api/inbound.py) and the email IMAP poller (jobs/inbound_poller.py) funnel
 through record_inbound() so idempotency, lead-matching, and hard-classification logic
@@ -9,6 +8,7 @@ they're cheap rule-based checks. Step 4.3's AI classification is NOT run inline 
 enqueued as a CLASSIFY_INBOUND job instead, so a webhook call (which Meta expects a fast
 200 from) or an IMAP poll cycle never blocks on an LLM call.
 """
+from __future__ import annotations
 import logging
 import uuid
 

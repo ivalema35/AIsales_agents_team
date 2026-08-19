@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Swappable LLM wrapper (tracker.md sec.A.1): MASTER PRD names Gemini specifically,
 but the user asked for a one-line-config swap between providers since we're testing on
 free/low-cost tiers. Every agent goes through call_json() -- nobody imports google.genai
@@ -17,6 +16,7 @@ configured LLM_PROVIDER first and, only if it exhausts its own retries, automati
 falls back to the other provider (if that provider's API key is configured) before
 raising LLMError. LLM_PROVIDER still controls which one is tried FIRST.
 """
+from __future__ import annotations
 import json
 import logging
 import time

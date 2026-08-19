@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Pull contact emails off a company's own website.
 
 Why this exists: Hunter's domain-search can only ever return `@thatdomain` addresses.
@@ -9,6 +8,7 @@ source: it's where they themselves say "write to us here".
 
 Free (no API cost), so it runs before Hunter, not after.
 """
+from __future__ import annotations
 import logging
 import re
 from urllib.parse import urlparse
@@ -183,6 +183,99 @@ def _extract(html: str, domain: str | None = None) -> list[str]:
     return ordered
 
 
+# Same HTML scrape_emails()/scrape_phones() already fetch for this domain -- extracting
+# social links off it costs nothing extra (no new request), unlike the search-based
+# lookup this feeds into for businesses that have no website at all.
+#
+# Real bug, found live measuring the free-path hit rate on 37 real leads (54% -- wanted
+# higher): several sites that genuinely link their own Instagram/Facebook were still
+# coming back empty. Root cause -- modern sites increasingly publish their official
+# profiles as Schema.org "sameAs" JSON-LD (`"sameAs":["https:\/\/www.facebook.com\/x",...]`)
+# or framework SSR-hydration JSON (`"metadata":{"value":"https://instagram.com/x"}`), not
+# a plain `<a href="...">` -- a regex anchored on `href=["\']` structurally can't see
+# either. Not required anymore: any URL sitting inside a quoted string (JSON strings
+# also use quotes) now matches, which covers both.
+_SOCIAL_HREF_RES = {
+    # Real bug, found live: excluding backslash from the capture class (matching this
+    # project's usual "stop at a quote/whitespace" style) broke as soon as a JSON-
+    # escaped URL had a SECOND escaped slash later in the path (e.g. a trailing
+    # "...\/ekoching_india\/") -- the match ended right before that backslash instead of
+    # continuing to the real closing quote, since backslash wasn't a permitted capture
+    # character at all. Escaped slashes can appear anywhere in the path, not just right
+    # after the domain, so backslash has to stay INSIDE the capture class; only the
+    # actual string terminators (quote/whitespace) should stop it.
+    "instagram_url": re.compile(r'["\'](https?:\\?/\\?/(?:www\.)?instagram\.com\\?/[^"\'\s]+)["\']', re.I),
+    "facebook_url": re.compile(r'["\'](https?:\\?/\\?/(?:www\.|m\.)?facebook\.com\\?/[^"\'\s]+)["\']', re.I),
+    "linkedin_url": re.compile(r'["\'](https?:\\?/\\?/(?:www\.)?linkedin\.com\\?/[^"\'\s]+)["\']', re.I),
+}
+
+# A link matching the platform's domain isn't necessarily the business's own PROFILE --
+# share widgets, login walls, and policy pages match the domain regex too. LinkedIn is
+# stricter still: it requires an actual company/personal/school profile path, since a
+# generic /pulse/... or /jobs/... link is just a blog citation, not the business's page.
+_SOCIAL_JUNK_PATH_PREFIXES = {
+    "instagram_url": ("p/", "reel", "stories/", "explore/", "accounts/", "about/",
+                       "legal/", "developer/", "directory/", "embed"),
+    "facebook_url": ("sharer", "share.php", "plugins/", "policies", "help", "legal",
+                      "privacy", "watch/", "groups/", "marketplace/", "business/",
+                      "policy.php", "dialog/", "login", "l.php"),
+}
+# Real bug, found live at scale (not in the original small samples): facebook.com/tr is
+# Meta's own conversion-tracking pixel endpoint (`facebook.com/tr?id=...&ev=PageView`,
+# embedded by nearly every site running Meta Ads) -- the query string means the path is
+# exactly "tr" with NO trailing slash, so the "tr/" prefix above never matched it (a bare
+# "tr".startswith("tr/") is False). Checked separately, as an EXACT segment match rather
+# than folding a bare "tr" into the prefix tuple -- a real business handle that merely
+# STARTS WITH "tr" (e.g. "trueblue...") would wrongly match a "tr" prefix check.
+_FACEBOOK_JUNK_EXACT_FIRST_SEGMENT = {"tr"}
+_LINKEDIN_PROFILE_PREFIXES = ("company/", "in/", "school/")
+
+
+def find_social_links(html: str) -> dict:
+    """Instagram/Facebook/LinkedIn profile URLs off a company's own page HTML,
+    best-effort, one per platform. Not a full crawl -- these links live in a site's own
+    header/footer, which is on every page the rest of this module already fetches.
+    """
+    found = {}
+    for field, pattern in _SOCIAL_HREF_RES.items():
+        for match in pattern.finditer(html or ""):
+            # JSON string values escape forward slashes ("https:\/\/..."); the pattern
+            # above tolerates that so it can match inside JSON-LD/SSR-hydration blobs at
+            # all, but urlparse() needs a normal URL -- unescape before parsing.
+            raw_url = match.group(1).replace("\\/", "/")
+            parsed = urlparse(raw_url)
+            path = parsed.path.strip("/")
+            if not path:
+                continue
+            if field == "linkedin_url":
+                if not (path + "/").lower().startswith(_LINKEDIN_PROFILE_PREFIXES):
+                    continue
+                # Real bug, found live: a business's own site had
+                # linkedin.com/company/<id>/admin/updates/ embedded in its footer --
+                # their own developer had pasted the LinkedIn ADMIN-panel link (visible
+                # only when logged in as that page's manager) instead of the public
+                # page URL. Structurally matches the company/ prefix check above, but
+                # clicking it sends a rep to a LinkedIn login wall, not the business's
+                # page -- worthless for outreach. Any "admin" segment anywhere in a
+                # linkedin.com path is never part of a real public profile.
+                if "admin" in path.lower().split("/"):
+                    continue
+            elif any(path.lower().startswith(j) for j in _SOCIAL_JUNK_PATH_PREFIXES[field]):
+                continue
+            elif field == "facebook_url" and path.lower().split("/")[0] in _FACEBOOK_JUNK_EXACT_FIRST_SEGMENT:
+                continue
+            # Real bug, found live against real business sites: sharer-generated links
+            # carry tracking query params (?igsh=..., ?mibextid=..., a nested
+            # share_url=... with its own %-encoded querystring) -- keeping those made
+            # the stored "clean" profile URL both ugly and, once a trailing slash got
+            # appended straight onto the end of a query value, genuinely malformed.
+            # Drop query/fragment entirely; the path alone is the actual identifier.
+            clean_url = f"{parsed.scheme}://{parsed.netloc}/{path}/"
+            found[field] = clean_url
+            break  # first genuine match wins -- same "one hit is enough" call as scrape_emails
+    return found
+
+
 def _candidate_urls(domain: str) -> list[str]:
     """Both www and bare (calibersnova.com only answers on www, others only on bare),
     plus the pages SMBs actually put their address on."""
@@ -259,6 +352,34 @@ def scrape_phones(domain: str, timeout=12, max_pages=4) -> list[dict]:
             return found
 
     logger.info("phone scrape %s -> nothing found (%d pages reachable)", domain, pages_tried)
+    return found
+
+
+def scrape_social_links(domain: str, timeout=12, max_pages=4) -> dict:
+    """Instagram/Facebook/LinkedIn profile URLs found on the company's own site,
+    best-effort. A separate fetch pass from scrape_emails()/scrape_phones() (not a
+    shared one) -- deliberately, so this new lookup can't risk regressing either of
+    those two already-verified paths real outreach depends on.
+    """
+    if not domain:
+        return {}
+
+    found = {}
+    pages_tried = 0
+    for url in _candidate_urls(domain):
+        if pages_tried >= max_pages or len(found) == 3:
+            break
+        html = _fetch(url, timeout)
+        if html is None:
+            continue
+        pages_tried += 1
+        for field, value in find_social_links(html).items():
+            found.setdefault(field, value)
+
+    if found:
+        logger.info("website social scrape %s -> %s", domain, found)
+    else:
+        logger.info("website social scrape %s -> nothing found (%d pages reachable)", domain, pages_tried)
     return found
 
 

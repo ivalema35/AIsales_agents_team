@@ -1,4 +1,3 @@
-from __future__ import annotations
 """WhatsApp Cloud API sending, via a Meta-compatible BSP (waba.fortius.in.net) --
 confirmed live (tracker.md, 2026-08-13) to mirror Meta's real Cloud API path structure
 exactly (`/{version}/{phoneNumberId}/messages`), just fronted by their own API server
@@ -9,6 +8,7 @@ Template-based only (MASTER non-negotiable rule: first-contact only via a pre-ap
 template, never free-form). Free-form messages are only legal within a 24h reply window
 and belong to Phase 4's inbound flow, not here.
 """
+from __future__ import annotations
 import logging
 
 import requests

@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """OUTREACH_WA job handler (MASTER Phase 3 / Step 3.4).
 
 Registered into jobs/worker.py for the same pacing reason as OUTREACH_EMAIL
@@ -12,6 +10,7 @@ approved the template's actual wording, so there's no creative content left to r
 `validate_variables()` is the deterministic stand-in for QC: sanity-checking the filled
 values, not judging prose.
 """
+from __future__ import annotations
 import json
 import logging
 import uuid

@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """ICP & Strategy Agent (MASTER §6). Designed in the original PRD but never wired into
 the pipeline until tracker.md A.2: reads a product's own brief and decides who to target
 and what to search for -- replacing the earlier assumption that a human types city +
@@ -10,6 +8,7 @@ defensively-validated result. It does not touch the DB itself -- the caller (job
 discovery_scheduler.py) owns persisting it into product_strategies, same separation used
 for lead_scores in _handle_score.
 """
+from __future__ import annotations
 import json
 
 from cognition.agent_events import log_agent_event

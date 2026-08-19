@@ -9,6 +9,18 @@ class Config:
     DB_PATH = os.getenv("DB_PATH", "sales_system.db")
     FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
 
+    # Login (2026-08-19) -- the CRM was reachable by anyone with the URL until now (real
+    # gap found live once the VPS deploy made that URL public). Single shared admin
+    # credential, not a full per-user account system -- deliberately scoped to "keep
+    # strangers out", not a multi-user permissions model this project doesn't need yet
+    # (small internal team, no role-based access requirement has come up). SECRET_KEY
+    # signs the Flask session cookie (itsdangerous, ships with Flask -- no new
+    # dependency); password is stored as a hash only, checked with werkzeug's
+    # constant-time compare, never compared/logged in plaintext.
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+    ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+
     # LLM provider — swappable, one line to change (tracker.md §A.1)
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")
     LLM_MODEL = os.getenv("LLM_MODEL", "gemini-flash-latest")

@@ -1,4 +1,3 @@
-from __future__ import annotations
 """EOD executive report (MASTER Phase 4 / Step 4.5). Aggregates real, already-computed
 metrics for one IST calendar day, has a narrowly-scoped LLM call turn them into a short
 narrative summary, writes a daily_reports row, and emails it -- scheduled the same way
@@ -8,6 +7,7 @@ DB timestamps are UTC (SQLite CURRENT_TIMESTAMP); "today" for this report is an 
 calendar date, so every query window is converted to the matching UTC range rather than
 just taking naive UTC day boundaries.
 """
+from __future__ import annotations
 import json
 import logging
 from datetime import datetime, timedelta

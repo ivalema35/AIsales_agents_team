@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """Hard pre-classifiers (MASTER Phase 4 / Step 4.2) -- deterministic, rule-based checks
 that run BEFORE any LLM call on an inbound reply. No AI involved on purpose: the 100%
 rule for OPT_OUT (see tracker.md's non-negotiable rules) means opt-out detection must
@@ -9,6 +7,7 @@ vacation responder can never get mistaken for a genuine "interested" signal down
 
 Pure functions, no DB dependency -- same style as cognition/decision_engine.py.
 """
+from __future__ import annotations
 import re
 
 # Deliberately includes "not interested" per MASTER's own Step 4.2 spec ("STOP/

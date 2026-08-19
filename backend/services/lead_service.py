@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Atomic lead claiming for outreach (MASTER §5 Phase 3 / non-negotiable rule: atomic
 claims everywhere concurrency can double-process something).
 
@@ -10,6 +9,7 @@ standalone, explicitly-triggered function is the safety boundary: nothing goes t
 outreach until something (a scheduler, a human, a deliberate test call) calls this on
 purpose.
 """
+from __future__ import annotations
 from sqlalchemy import text
 
 from cognition.decision_engine import route_action

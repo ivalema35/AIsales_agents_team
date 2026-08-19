@@ -3,3 +3,7 @@ venv/
 __pycache__/
 *.pyc
 .env
+backend/sales_system.db
+backend/sales_system.db-shm
+backend/sales_system.db-wal
+node_modules/

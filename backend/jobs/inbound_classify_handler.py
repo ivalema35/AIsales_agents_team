@@ -1,10 +1,9 @@
-from __future__ import annotations
-from __future__ import annotations
 """CLASSIFY_INBOUND job handler (MASTER Phase 4 / Step 4.3). Registered into
 jobs/worker.py (sequential poller, same as OUTREACH_EMAIL/OUTREACH_WA) -- classification
 volume is comparable to outreach volume, and a human being alerted to a hot reply
 promptly matters more than concurrent throughput here.
 """
+from __future__ import annotations
 import json
 import logging
 import uuid

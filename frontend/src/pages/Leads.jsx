@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X, Users, Mail, Phone, Send, BellOff } from "lucide-react";
+import { InstagramIcon, FacebookIcon, LinkedinIcon } from "../lib/socialIcons";
 import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass } from "../lib/statusColors";
@@ -132,7 +133,13 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
         <div className="flex items-center gap-2.5 text-[11px] text-slate-400">
           {lead.primary_email && <span title={lead.primary_email}><Mail size={12} /></span>}
           {(lead.primary_phone || lead.whatsapp_number) && <span title={lead.primary_phone || lead.whatsapp_number}><Phone size={12} /></span>}
-          {!lead.primary_email && !lead.primary_phone && !lead.whatsapp_number && <span className="text-slate-300">—</span>}
+          {lead.instagram_url && <span title="Instagram"><InstagramIcon size={12} /></span>}
+          {lead.facebook_url && <span title="Facebook"><FacebookIcon size={12} /></span>}
+          {lead.linkedin_url && <span title="LinkedIn"><LinkedinIcon size={12} /></span>}
+          {!lead.primary_email && !lead.primary_phone && !lead.whatsapp_number &&
+           !lead.instagram_url && !lead.facebook_url && !lead.linkedin_url && (
+            <span className="text-slate-300">—</span>
+          )}
         </div>
       </td>
       <td className="max-w-[180px] truncate px-4 py-2.5 text-slate-500">{lead.region_location || "—"}</td>

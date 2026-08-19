@@ -9,6 +9,7 @@ import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass } from "../lib/statusColors";
 import { useConfirm } from "../lib/ConfirmContext";
+import { InstagramIcon, FacebookIcon, LinkedinIcon } from "../lib/socialIcons";
 
 const TIER_VARIANT = { HOT: "HOT", WARM: "WARM", COLD: "COLD" };
 
@@ -321,6 +322,9 @@ const EDITABLE_FIELDS = [
   ["primary_phone", "Phone", Phone],
   ["whatsapp_number", "WhatsApp number", MessageCircle],
   ["website_url", "Website", Globe],
+  ["instagram_url", "Instagram", InstagramIcon],
+  ["facebook_url", "Facebook", FacebookIcon],
+  ["linkedin_url", "LinkedIn", LinkedinIcon],
   ["region_location", "Region", MapPin],
 ];
 
@@ -594,6 +598,24 @@ export default function LeadDetail() {
                   <Phone size={12} /> {lead.primary_phone}
                 </a>
               )}
+              {lead.instagram_url && (
+                <a href={lead.instagram_url} target="_blank" rel="noopener noreferrer"
+                   title="Instagram" className="flex items-center text-slate-400 hover:text-slate-800">
+                  <InstagramIcon size={13} />
+                </a>
+              )}
+              {lead.facebook_url && (
+                <a href={lead.facebook_url} target="_blank" rel="noopener noreferrer"
+                   title="Facebook" className="flex items-center text-slate-400 hover:text-slate-800">
+                  <FacebookIcon size={13} />
+                </a>
+              )}
+              {lead.linkedin_url && (
+                <a href={lead.linkedin_url} target="_blank" rel="noopener noreferrer"
+                   title="LinkedIn" className="flex items-center text-slate-400 hover:text-slate-800">
+                  <LinkedinIcon size={13} />
+                </a>
+              )}
               <span className="text-slate-300">·</span>
               <span>Added {relativeTime(lead.created_at)}</span>
             </div>
@@ -676,7 +698,15 @@ export default function LeadDetail() {
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <SectionCard title="Contact & profile" icon={UserIcon}>
-          <ContactSection lead={lead} onSaved={setLead} />
+          {/* Real bug, found live: PATCH /leads/<id> only ever returns the bare
+             contact/profile fields it actually changed -- never pain_points/
+             review_insight/firmographics/score.scoring_breakdown, which only the
+             initial GET enriches the response with. Replacing `lead` wholesale with
+             that partial response wiped those out and crashed the next render
+             (`lead.pain_points.length` on `undefined`). Merge onto the existing lead
+             instead -- PATCH's editable fields never overlap with the enrichment-only
+             ones anyway, so a merge is strictly correct, not just a workaround. */}
+          <ContactSection lead={lead} onSaved={(updated) => setLead((prev) => ({ ...prev, ...updated }))} />
         </SectionCard>
         <SectionCard title="Score" icon={Gauge}>
           <ScoreCard score={lead.score} />

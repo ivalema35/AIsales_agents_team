@@ -24,6 +24,7 @@ from services.data_acquisition.b2b_provider import HunterProvider
 from services.data_acquisition.website_scraper import (
     scrape_emails,
     scrape_phones,
+    scrape_social_links,
     rank_candidates,
     is_role_account,
 )
@@ -179,6 +180,30 @@ def _enrich_phone(db, lead, domain):
         return None
 
 
+def _enrich_social(lead, domain):
+    """Waterfall, same shape as _enrich_email/_enrich_phone: the company's own website
+    footer first (free -- scrape_social_links does its own separate fetch, see that
+    function's docstring for why it's not merged into the existing email/phone fetch),
+    then a Serper search fallback ONLY for whichever platform(s) weren't already found
+    on the site itself (covers both "no website at all" and "has a site but no footer
+    social links" -- same two cases find_email's fallback tier already covers).
+    """
+    found = scrape_social_links(domain) if domain else {}
+
+    missing = [f for f in ("instagram_url", "facebook_url", "linkedin_url") if f not in found]
+    if missing:
+        try:
+            search_found = SerperProvider().find_social_profiles(lead.company_name, lead.region_location)
+        except Exception as exc:  # noqa: BLE001 - last-resort lookup failing must not fail the job
+            logger.warning("find_social_profiles failed for %s: %s", lead.company_name, exc)
+            search_found = {}
+        for field in missing:
+            if field in search_found:
+                found[field] = search_found[field]
+
+    return found
+
+
 def _handle_enrich(db, payload):
     """Full contact-enrichment waterfall -> best email + phone onto the lead -> ENRICHED.
 
@@ -225,6 +250,17 @@ def _handle_enrich(db, payload):
 
     if not lead.primary_email and not lead.primary_phone:
         logger.info("ENRICH %s (%s) -> no contacts found anywhere", lead.company_name, domain)
+
+    if not (lead.instagram_url and lead.facebook_url and lead.linkedin_url):
+        social = _enrich_social(lead, domain)
+        if social.get("instagram_url") and not lead.instagram_url:
+            lead.instagram_url = social["instagram_url"]
+        if social.get("facebook_url") and not lead.facebook_url:
+            lead.facebook_url = social["facebook_url"]
+        if social.get("linkedin_url") and not lead.linkedin_url:
+            lead.linkedin_url = social["linkedin_url"]
+        if social:
+            logger.info("ENRICH %s -> social %s", lead.company_name, social)
 
     lead.status = "ENRICHED"
     db.commit()

@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Dashboard-visible/editable view over the real `.env` file, for every Config value that
 isn't already dashboard-hot via system_settings.py (that module's 9 keys stay there --
 this is deliberately everything ELSE).
@@ -17,6 +16,7 @@ dashboard can warn the user, instead of silently implying an instant change that
 actually happened (see tracker.md's own repeated "long-running process didn't pick up the
 code/config change" lesson this session).
 """
+from __future__ import annotations
 import os
 import re
 

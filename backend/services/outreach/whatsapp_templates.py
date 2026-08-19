@@ -1,4 +1,3 @@
-from __future__ import annotations
 """WhatsApp template library -- MASTER's non-negotiable rule (first-contact only via a
 pre-approved template) means the Outreach Agent can't freely draft WhatsApp copy the way
 it does for email. Instead it picks the best-fitting ALREADY-APPROVED template from this
@@ -13,6 +12,7 @@ see tracker.md Step 3.4); a periodic "propose a new template when an existing on
 stale or a pain-point category has no good match" process is a natural extension once
 per-template performance tracking exists (campaign_variants table), not built yet.
 """
+from __future__ import annotations
 
 # key -> a lead-facing template. "GENERIC" is the always-available fallback used when no
 # pain point is known, or no category-specific template exists (yet) for the one found.

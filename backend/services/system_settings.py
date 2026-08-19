@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Dashboard-controlled runtime switches (Step 4.4). Unlike .env config (only read at
 process start), these are checked fresh from the DB every time -- a toggle flipped from
 the dashboard takes effect on the scheduler's next tick, no restart needed.
@@ -7,6 +6,7 @@ All switches default CLOSED/false if no row exists yet -- the same fail-safe def
 Config.AUTONOMOUS_OUTREACH_ENABLED (tracker.md A.3): a missing setting must never be
 silently treated as "on".
 """
+from __future__ import annotations
 from database.models import SystemSetting
 
 DISCOVERY_ENABLED = "discovery_enabled"

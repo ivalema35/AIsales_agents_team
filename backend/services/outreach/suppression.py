@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Suppression enforcement -- MASTER's non-negotiable 100% rule: a STOP, unsubscribe,
 bounce, or manual block, once recorded, blocks a channel+identifier PERMANENTLY.
 
@@ -8,6 +7,7 @@ module is deliberately the only place that reads/writes `suppression_list`, so e
 future send path (Step 3.3 email, 3.4 WhatsApp, and Phase 4's inbound STOP handler) goes
 through the exact same normalization and the exact same table.
 """
+from __future__ import annotations
 import uuid
 
 from sqlalchemy.exc import IntegrityError

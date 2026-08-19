@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """Handler registry, split out of jobs/worker.py (2026-08-14, real bug fix).
 
 Real bug found live: `python -m jobs.worker` loads that file as `__main__`, a SEPARATE
@@ -15,6 +13,7 @@ every real send this whole project made only happened because a one-off script c
 Splitting the registry into its own module (never run as __main__ itself) means there is
 only ever one instance of it, imported the same way from every direction.
 """
+from __future__ import annotations
 HANDLERS = {}
 
 

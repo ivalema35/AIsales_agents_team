@@ -1,8 +1,8 @@
-from __future__ import annotations
 """WhatsApp inbound webhook (MASTER Phase 4 / Step 4.1). Meta's Cloud API pushes
 messages here; email inbound is handled separately by jobs/inbound_poller.py (IMAP
 polling, no webhook needed -- see tracker.md's Step 4.1 discussion).
 """
+from __future__ import annotations
 import logging
 from datetime import datetime
 

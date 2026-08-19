@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """Discovery scheduler (tracker.md A.2) -- replaces n8n entirely for Step 3.5. A small
 dedicated always-on process (same "one process per concern" pattern as scraper_worker/
 async_runner.py vs jobs/worker.py -- MASTER §9 process topology), owns two jobs:
@@ -16,6 +14,7 @@ async_runner.py vs jobs/worker.py -- MASTER §9 process topology), owns two jobs
 Run as `python -m jobs.discovery_scheduler`, alongside (not instead of) jobs/worker.py and
 scraper_worker/async_runner.py.
 """
+from __future__ import annotations
 import json
 import logging
 import time

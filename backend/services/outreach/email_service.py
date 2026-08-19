@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Compliant email sending via Resend (MASTER Phase 3 / Step 3.3).
 
 Every email gets a footer with the company's physical address and a working
@@ -7,6 +6,7 @@ depend on an LLM remembering to include it. This is the only module in the proje
 calls Resend, matching the pattern already used for other single-purpose external
 integrations (b2b_provider.py for Hunter, etc.).
 """
+from __future__ import annotations
 import html
 import logging
 

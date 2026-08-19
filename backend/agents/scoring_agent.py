@@ -1,9 +1,8 @@
-from __future__ import annotations
-from __future__ import annotations
 """Lead Scoring & Fit Agent (MASTER §6 / §4.2). The first place a real SCORING
 confidence value actually drives Decision Engine routing: <0.70 -> a human looks at it,
 0.70-0.85 -> QC reviews it, >=0.85 -> the lead advances on its own.
 """
+from __future__ import annotations
 import json
 
 from cognition.agent_events import log_agent_event

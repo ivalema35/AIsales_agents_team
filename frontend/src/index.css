@@ -14,3 +14,34 @@ body {
 #root {
   min-height: 100vh;
 }
+
+@keyframes login-orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3%, -4%) scale(1.08); }
+}
+@keyframes login-card-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes login-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes login-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+@keyframes login-chip-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+@keyframes login-dash {
+  to { stroke-dashoffset: -24; }
+}
+.animate-login-orb { animation: login-orb-float 10s ease-in-out infinite; }
+.animate-login-card-in { animation: login-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-login-bob { animation: login-bob 4s ease-in-out infinite; }
+.animate-login-shake { animation: login-shake 0.4s ease-in-out; }
+.animate-login-chip { animation: login-chip-float 5s ease-in-out infinite; }
+.animate-login-dash { stroke-dasharray: 4 6; animation: login-dash 1.4s linear infinite; }

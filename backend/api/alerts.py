@@ -1,4 +1,3 @@
-from __future__ import annotations
 """HOT-lead alerts for the dashboard (MASTER PRD §5 Step 4.4's AlertsPanel).
 
 Two genuinely different situations, kept as two sections rather than one merged list:
@@ -22,6 +21,7 @@ A `needs_response` lead stops showing here the moment a human moves it out of HO
 (e.g. the Lead Detail page's "Mark as Contacted" action, which sets it to ENGAGED) --
 no separate "resolved" flag needed.
 """
+from __future__ import annotations
 import json
 
 from flask import Blueprint, jsonify

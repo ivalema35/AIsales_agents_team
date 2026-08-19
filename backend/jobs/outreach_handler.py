@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """OUTREACH_EMAIL job handler (MASTER Phase 3).
 
 Registered here rather than inline in jobs/worker.py so worker.py stays a generic poll
@@ -11,6 +9,7 @@ too fast looks like spam. Importing this module is what registers the handler --
 jobs/worker.py's __main__ (or a test) must `import jobs.outreach_handler` for it to
 take effect, the same requirement register_handler already has for any handler module.
 """
+from __future__ import annotations
 import json
 import logging
 import uuid

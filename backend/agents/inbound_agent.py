@@ -1,9 +1,8 @@
-from __future__ import annotations
-from __future__ import annotations
 """Inbound Reply Intent Classifier (MASTER §6 / Phase 4 Step 4.3). Only called for a
 message that Step 4.2's deterministic hard classifiers didn't already resolve (STOP/
 AUTO_REPLY) -- this is the first (and so far only) LLM call anywhere in the inbound path.
 """
+from __future__ import annotations
 import json
 
 from cognition.agent_events import log_agent_event

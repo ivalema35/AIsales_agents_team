@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Resend email-event webhook -- the "Seen" half of the Sent/Seen/Replied funnel for
 EMAIL (WhatsApp's own half lives in api/inbound.py, since Meta delivers it through the
 same webhook as inbound messages; Resend needs its own separate endpoint).
@@ -17,6 +16,7 @@ same accepted risk posture as the WhatsApp webhook (tracker.md: low risk while t
 is a random, not-widely-shared address). Worth adding before this is load-bearing for
 anything beyond an analytics count.
 """
+from __future__ import annotations
 import logging
 
 from flask import Blueprint, jsonify, request

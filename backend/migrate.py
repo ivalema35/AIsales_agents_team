@@ -6,6 +6,9 @@ from database.db_config import engine
 # never reaches a dev DB that was created before the column was added.
 COLUMN_MIGRATIONS = [
     ("products", "target_regions", "TEXT DEFAULT '[]'"),
+    ("leads", "instagram_url", "TEXT"),
+    ("leads", "facebook_url", "TEXT"),
+    ("leads", "linkedin_url", "TEXT"),
 ]
 
 

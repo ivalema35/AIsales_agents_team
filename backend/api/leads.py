@@ -66,6 +66,9 @@ def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=
         "product_id": lead.product_id,
         "company_name": lead.company_name,
         "website_url": lead.website_url,
+        "instagram_url": lead.instagram_url,
+        "facebook_url": lead.facebook_url,
+        "linkedin_url": lead.linkedin_url,
         "primary_email": lead.primary_email,
         "primary_phone": lead.primary_phone,
         "whatsapp_number": lead.whatsapp_number,
@@ -383,7 +386,8 @@ def get_lead(lead_id):
 
 
 _EDITABLE_FIELDS = {
-    "company_name", "website_url", "primary_email", "primary_phone",
+    "company_name", "website_url", "instagram_url", "facebook_url", "linkedin_url",
+    "primary_email", "primary_phone",
     "whatsapp_number", "contact_person_name", "contact_person_role", "region_location",
 }
 

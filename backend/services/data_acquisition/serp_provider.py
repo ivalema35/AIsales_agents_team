@@ -1,6 +1,7 @@
 from __future__ import annotations
 import logging
 import re
+import unicodedata
 from urllib.parse import urlparse
 
 import requests
@@ -16,6 +17,41 @@ from services.data_acquisition.website_scraper import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _extract_city(region_location):
+    """Best-effort city extraction from a scraped Google Places address, for building
+    tighter search queries. Real bug, found live investigating why find_social_profiles
+    missed a genuine match for "TIME Ahmedabad": every Serper-backed function in this
+    file baked the lead's FULL scraped address in verbatim (`lead.region_location`,
+    often 150+ characters of floor/building/landmark text), and re-running the exact
+    real query with that full address showed the genuine result simply wasn't in the
+    top-10 anymore -- the address noise was drowning the one signal (the business name)
+    that actually matters for these searches.
+
+    Verified against 30 real leads by hand, then all 587 real leads with a
+    `region_location` set: the scraped format is overwhelmingly
+    "<street/landmark text>, <City>, <State> <6-digit PIN>, India" -- the city is
+    reliably the 3rd-from-last comma-separated segment. 86% (507/587) of the real
+    database extracts cleanly; the rest -- non-Indian addresses (Canada's
+    "..., Edmonton, AB T5H 3Y3, Canada" correctly does NOT match, since it has no
+    literal "India" and no 6-digit PIN shape -- this deliberately must not touch the
+    project's existing Canadian-lead product), a bare city with no commas at all
+    ("Visnagar"), or a handful of malformed scrapes -- fall through UNCHANGED rather
+    than guess wrong. A worse-than-before "city" is never picked; not extracting at all
+    just falls back to today's existing (already-verified) full-address query.
+    """
+    if not region_location:
+        return region_location
+    parts = [p.strip() for p in region_location.split(",")]
+    if len(parts) < 3:
+        return region_location
+    if parts[-1].lower() != "india":
+        return region_location
+    if not re.search(r"\d{6}", parts[-2]):
+        return region_location
+    return parts[-3]
+
 
 SERPER_PLACES_URL = "https://google.serper.dev/places"
 SERPER_SEARCH_URL = "https://google.serper.dev/search"
@@ -44,6 +80,23 @@ def _is_directory(url):
     return any(root == d or root.endswith(f".{d}") for d in DIRECTORY_DOMAINS)
 
 
+def _name_words(company_name):
+    """First-1-2-significant-word extraction, shared by every name-matching check below.
+
+    Real bug, found live: several real Google Business listings style their name with
+    decorative Unicode ("Mathematical Alphanumeric Symbols", e.g. "𝗖𝗮𝗿𝗲𝗲𝗿 𝗙𝗶𝗿𝘀𝘁 𝗜𝗔𝗦
+    𝗔𝗰𝗮𝗱𝗲𝗺𝘆") for attention/SEO -- a plain `[^a-z0-9]+` split treats every one of those
+    characters as a separator (they're not ASCII a-z0-9), silently discarding the ENTIRE
+    styled name and leaving only whatever plain-ASCII text happened to follow it (here:
+    "best upsc coaching" -- the wrong words entirely, not the business's real name).
+    `unicodedata.normalize("NFKD", ...)` decomposes these into their standard Latin-letter
+    compatibility form BEFORE the split -- verified live: "𝗖𝗮𝗿𝗲𝗲𝗿" -> "Career" correctly.
+    A no-op for every plain-ASCII name already working correctly.
+    """
+    normalized = unicodedata.normalize("NFKD", company_name or "")
+    return [w for w in re.split(r"[^a-z0-9]+", normalized.lower()) if len(w) > 2]
+
+
 def _name_matches_blob(company_name, blob):
     """True if the business's own name is actually present in this result -- a raw
     substring check (spaces/punctuation stripped) on the first 1-2 significant words,
@@ -57,7 +110,7 @@ def _name_matches_blob(company_name, blob):
     are the category, not the business -- so this requires the name's own word(s) to
     appear as a contiguous chunk.
     """
-    words = [w for w in re.split(r"[^a-z0-9]+", (company_name or "").lower()) if len(w) > 2]
+    words = _name_words(company_name)
     if not words:
         return False
     needle = "".join(words[:2])
@@ -100,11 +153,70 @@ def _is_own_profile_link(company_name, link):
         return False
     handle = re.sub(r"[^a-z0-9]+", "", segments[0].lower())
 
-    words = [w for w in re.split(r"[^a-z0-9]+", (company_name or "").lower()) if len(w) > 2]
+    words = _name_words(company_name)
     if not words:
         return False
     needle = "".join(words[:2])
     return needle in handle
+
+
+# Extends SOCIAL_PROFILE_HOSTS/_is_own_profile_link's host set with LinkedIn -- that
+# pair only ever needed a bare bool (a phone/email trust signal), this needs to know
+# WHICH field a matched link belongs to and keep the actual URL, so it's a separate map
+# rather than overloading the existing one.
+_SOCIAL_HOST_FIELDS = {
+    "instagram.com": "instagram_url",
+    "facebook.com": "facebook_url",
+    "m.facebook.com": "facebook_url",
+    "linkedin.com": "linkedin_url",
+}
+
+
+def _own_social_profile_field(company_name, link):
+    """Like `_is_own_profile_link`, but returns WHICH field this profile belongs to
+    (instagram_url / facebook_url / linkedin_url) plus enough of the parsed path to
+    rebuild a clean URL, instead of a bare bool -- `find_social_profiles()` needs to
+    keep the link itself, not just trust a phone/email found alongside it. Same handle-
+    must-contain-the-business's-own-name discipline as `_is_own_profile_link` (see its
+    docstring for the real "cityshor" false-positive this guards against), extended so
+    LinkedIn also requires an actual company/personal/school profile path -- a generic
+    /pulse/... article matching the domain isn't the business's own page.
+    """
+    parsed = urlparse(link or "")
+    host = parsed.netloc.lower().removeprefix("www.")
+    field = _SOCIAL_HOST_FIELDS.get(host)
+    # Real bug, found live testing against "TIME Ahmedabad": LinkedIn serves real
+    # profile links on country subdomains (in.linkedin.com for India -- Serper handed
+    # back exactly this shape for a genuine match), which a bare "linkedin.com" lookup
+    # never matches. Any single-label subdomain of linkedin.com is still linkedin.com.
+    if not field and host.endswith(".linkedin.com"):
+        field = "linkedin_url"
+    if not field:
+        return None
+    segments = [s for s in parsed.path.split("/") if s]
+    if not segments:
+        return None
+    if field == "linkedin_url":
+        if segments[0].lower() not in {"company", "in", "school"} or len(segments) < 2:
+            return None
+        # Same real bug website_scraper.py's find_social_links() hit live: an
+        # "admin"-segment LinkedIn URL (the page-manager view, e.g.
+        # company/<id>/admin/updates) is never a usable public profile link, even
+        # though it structurally passes the company/in/school prefix check above.
+        if "admin" in (s.lower() for s in segments):
+            return None
+        handle_segment = segments[1]
+    else:
+        handle_segment = segments[0]
+    handle = re.sub(r"[^a-z0-9]+", "", handle_segment.lower())
+
+    words = _name_words(company_name)
+    if not words:
+        return None
+    needle = "".join(words[:2])
+    if needle not in handle:
+        return None
+    return field, segments
 
 
 class SerperProvider(LeadSourceProvider):
@@ -171,7 +283,8 @@ class SerperProvider(LeadSourceProvider):
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
 
-        query = f"{company_name} {location}".strip() if location else company_name
+        city = _extract_city(location)
+        query = f"{company_name} {city}".strip() if city else company_name
         resp = requests.post(
             SERPER_SEARCH_URL,
             headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
@@ -240,6 +353,17 @@ class SerperProvider(LeadSourceProvider):
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
 
+        # Deliberately still the FULL region_location here, not _extract_city() -- found
+        # live (real regression test, "MILESTONE ACADEMY"): shortening the query to just
+        # the city changed which snippet excerpt Google returns for the business's own
+        # (correct, trusted) Facebook page, and that shorter excerpt happened to omit the
+        # email text entirely -- letting a single ambiguous OCR'd-flyer Instagram post
+        # (mentioning an unrelated company's email in the same blob) win by default. This
+        # function feeds REAL outreach sends, so a wrong-business contact is a real-world
+        # mis-send, not just a missed lead -- higher stakes than find_website/
+        # find_social_profiles's own strict own-handle/own-domain checks tolerate. The
+        # full address is noisier but is the already-verified, production-proven query
+        # shape this exact function has always used for real sends.
         query = f"{company_name} {location or ''} contact mobile".strip()
         resp = requests.post(
             SERPER_SEARCH_URL,
@@ -331,6 +455,11 @@ class SerperProvider(LeadSourceProvider):
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
 
+        # Deliberately still the FULL region_location here, not _extract_city() -- same
+        # real reason as find_phone() above: this feeds real outreach, and a shortened
+        # query was proven live to sometimes change which Google snippet excerpt wins in
+        # a way that can surface a wrong-business email. Kept on the already-verified
+        # full-address query shape for this specific function.
         query = f"{company_name} {location or ''} contact email".strip()
         resp = requests.post(
             SERPER_SEARCH_URL,
@@ -396,6 +525,55 @@ class SerperProvider(LeadSourceProvider):
                      company_name, winner, votes[winner], winner in trusted, votes, skipped_ambiguous)
         return winner
 
+    def find_social_profiles(self, company_name, location=None):
+        """Instagram/Facebook/LinkedIn profile URLs via organic search -- for businesses
+        with NO independent website (website_scraper.scrape_social_links has nothing to
+        scrape in that case), which is common among the small-SMB ICPs this project
+        targets. A plain brand-name search, not `site:instagram.com`-restricted --
+        these platforms' own business pages already tend to rank organically for a
+        search on the business's own name, same assumption find_email/find_phone make
+        for their own snippet sources.
+
+        Reuses `_own_social_profile_field()`'s own-name-must-appear-in-the-URL-HANDLE
+        discipline (not just anywhere in the result text) -- the exact trust signal
+        that already proved necessary for find_phone/find_email (see `_is_own_profile_
+        link`'s docstring for the real false-positive it was built to catch). First
+        genuine match per platform wins; no vote-counting needed here since a wrong
+        profile link doesn't get "outvoted" the way a wrong phone/email does -- it's
+        either this business's own handle or it structurally isn't.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+
+        query = f"{company_name} {_extract_city(location) or ''}".strip()
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": 10},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        found = {}
+        for result in data.get("organic", []):
+            link = result.get("link", "")
+            classified = _own_social_profile_field(company_name, link)
+            if not classified:
+                continue
+            field, segments = classified
+            if field in found:
+                continue
+            if field == "linkedin_url":
+                clean = f"https://www.linkedin.com/{segments[0]}/{segments[1]}/"
+            else:
+                host = "www.instagram.com" if field == "instagram_url" else "www.facebook.com"
+                clean = f"https://{host}/{segments[0]}/"
+            found[field] = clean
+
+        logger.info("find_social_profiles %s -> %s", company_name, found or "nothing found")
+        return found
+
     def find_review_signals(self, company_name, location=None, max_snippets=6):
         """Pull public-web snippets that MIGHT contain genuine customer complaints, for
         the Review Analyst LLM agent to judge. Deliberately does NOT try to detect
@@ -415,7 +593,7 @@ class SerperProvider(LeadSourceProvider):
         if not self.api_key:
             raise RuntimeError("SERPER_API_KEY not configured")
 
-        query = f"{company_name} {location or ''} review complaint".strip()
+        query = f"{company_name} {_extract_city(location) or ''} review complaint".strip()
         resp = requests.post(
             SERPER_SEARCH_URL,
             headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},

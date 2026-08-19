@@ -5,9 +5,18 @@ const BASE = "/api/v1";
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
+    credentials: "include", // send/receive the login session cookie
     ...options,
   });
   if (!res.ok) {
+    // A 401 on anything other than the login attempt itself means the session expired
+    // (or the server restarted with a new SECRET_KEY, invalidating old cookies) mid-use
+    // -- reload so App.jsx's getMe() check runs fresh and drops back to the login
+    // screen, instead of leaving every open page silently broken.
+    if (res.status === 401 && !path.startsWith("/auth/login")) {
+      window.location.reload();
+      return new Promise(() => {}); // reload is in flight; don't let callers race it
+    }
     let detail = res.statusText;
     try {
       const body = await res.json();
@@ -22,6 +31,11 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  login: (username, password) =>
+    request("/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
+  logout: () => request("/auth/logout", { method: "POST" }),
+  getMe: () => request("/auth/me"),
+
   listProducts: () => request("/products"),
   getProduct: (id) => request(`/products/${id}`),
   createProduct: (data) => request("/products", { method: "POST", body: JSON.stringify(data) }),

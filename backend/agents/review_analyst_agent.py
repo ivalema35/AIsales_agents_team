@@ -1,5 +1,3 @@
-from __future__ import annotations
-from __future__ import annotations
 """Review & Weakness Detection Agent (MASTER §6 / Intelligence PRD §2.1.E).
 
 Turns public-web text snippets about a business into structured pain-point codes an
@@ -8,6 +6,7 @@ genuine review text -- verified live that only about 1 in 3 sampled businesses h
 anything real indexed at all -- so this must degrade to "no pain points found" cleanly,
 never force one into existence.
 """
+from __future__ import annotations
 import json
 
 from cognition.agent_events import log_agent_event

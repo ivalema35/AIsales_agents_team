@@ -1,4 +1,3 @@
-from __future__ import annotations
 """Last-resort phone recovery: read Google Maps' own detail panel via Playwright.
 
 Only reached when both the free website scrape (website_scraper.scrape_phones) and the
@@ -11,6 +10,7 @@ same "read-only, no tricks" rule as playwright_fallback.py. What this module add
 is a circuit breaker, because unlike a one-off fetch, this is meant to be called across a
 whole batch of leads and must not hammer Maps if something starts going wrong.
 """
+from __future__ import annotations
 import asyncio
 import logging
 import random
