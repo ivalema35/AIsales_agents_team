@@ -1,8 +1,9 @@
 from __future__ import annotations
 import json
+import logging
 
 from flask import Blueprint, jsonify, request
-from sqlalchemy import and_, or_, func
+from sqlalchemy import and_, or_, func, text
 
 from cognition.hard_classifiers import strip_quoted_reply
 from database.db_config import SessionLocal
@@ -13,6 +14,8 @@ from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
 from jobs.outreach_handler import handle_outreach_email
 from jobs.outreach_wa_handler import handle_outreach_wa
+
+logger = logging.getLogger(__name__)
 
 leads_bp = Blueprint("leads", __name__, url_prefix="/api/v1/leads")
 
@@ -580,8 +583,26 @@ def trigger_outreach(lead_id):
         }
 
         handlers = {"EMAIL": handle_outreach_email, "WHATSAPP": handle_outreach_wa}
-        for channel in channels:
-            handlers[channel](db, {"lead_id": lead_id})
+        try:
+            for channel in channels:
+                handlers[channel](db, {"lead_id": lead_id})
+        except Exception:
+            # Safety net (2026-08-19 incident): claim_lead_for_outreach() already committed
+            # OUTREACHING above, before this slow LLM-draft+QC+send work even starts. If a
+            # handler blows up (LLM outage, etc.), the lead must not stay parked in
+            # OUTREACHING forever -- the guard above (line ~550) would then reject every
+            # future retry with 409, permanently stuck. Revert to SCORED so the next click
+            # (or the scheduler's own tick) can claim it again.
+            logger.exception("trigger_outreach failed for lead %s -- reverting to SCORED", lead_id)
+            db.rollback()
+            db.execute(text(
+                "UPDATE leads SET status='SCORED', updated_at=CURRENT_TIMESTAMP "
+                "WHERE id=:id AND status='OUTREACHING'"), {"id": lead_id})
+            db.commit()
+            return jsonify({
+                "error": ["outreach send failed (provider outage or similar) -- lead was "
+                          "reset to SCORED, safe to retry"]
+            }), 503
 
         results = {}
         for channel in channels:

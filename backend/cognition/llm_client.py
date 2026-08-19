@@ -51,11 +51,23 @@ def _resolve_model(provider):
     return model
 
 
+# A single provider call must fail fast rather than hang -- 2026-08-19 incident: a Gemini
+# 503 outage left one request's underlying socket read hanging with no client-side
+# timeout, so gunicorn's own worker-timeout watchdog force-killed the process mid-request
+# (SIGABRT, not a catchable Python exception) before the OUTREACHING->SCORED safety-net
+# in api/leads.py trigger_outreach ever got a chance to run, leaving the lead stuck.
+_LLM_CALL_TIMEOUT_SECONDS = 12
+
+
 def _get_gemini_client():
     global _gemini_client
     if _gemini_client is None:
         from google import genai
-        _gemini_client = genai.Client(api_key=Config.GEMINI_API_KEY)
+        from google.genai import types
+        _gemini_client = genai.Client(
+            api_key=Config.GEMINI_API_KEY,
+            http_options=types.HttpOptions(timeout=_LLM_CALL_TIMEOUT_SECONDS * 1000),
+        )
     return _gemini_client
 
 
@@ -63,7 +75,7 @@ def _get_openai_client():
     global _openai_client
     if _openai_client is None:
         from openai import OpenAI
-        _openai_client = OpenAI(api_key=Config.OPENAI_API_KEY)
+        _openai_client = OpenAI(api_key=Config.OPENAI_API_KEY, timeout=_LLM_CALL_TIMEOUT_SECONDS)
     return _openai_client
 
 
