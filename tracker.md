@@ -1408,13 +1408,44 @@ bare `PIPE` nahi.
 
 ---
 
-**▶ CURRENT (2026-08-20): Phase 8 — Message Format Engine & Content Library — ✅ POORA COMPLETE**
-(Steps 8.1–8.5 sab done, real data se poora walkthrough bhi verify kiya). **Agla: Phase 9 —
-Measurement, Multi-Touch & Adaptive Templates.** Phase 7 ✅ COMPLETE, Phase 6 ✅ COMPLETE + ✅ VPS par
-LIVE hai. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10. **VPS deploy abhi baaki hai** —
-poora Phase 7 (7.1–7.7) + Phase 8 (8.1-8.5) ka code local par hai + `serp_provider.py` ka temporary
-sync VPS disk par (services restart nahi hue, safe) — real deploy (migrate + build + restart) abhi
-hona baaki hai, agli major milestone/user-confirmation par.
+### ⭐ VPS DEPLOY (2026-08-20) — Phase 7 (7.1–7.7) + Phase 8 (8.1–8.5) sab live production par
+
+User ne khud confirm kiya "abhi git push karke vps deploy karke live me test karlo." Poora established
+safe-sync sequence follow kiya (§A.5):
+
+1. **Local commit + push** — `561c29d`, 23 files, 2060 insertions.
+2. **VPS git sync** — ek chhoti si real cheez mili: VPS pe pehle se (Step 7.6/7.7 real-testing ke
+   dauraan) `serp_provider.py` ka ek temporary uncommitted copy pada tha (already tracker.md me
+   disclosed tha) — usi wajah se merge pehli baar block hua. Verify kiya (`git diff --stat`) ki wo
+   bilkul wahi content tha jo ab commit se aa raha tha, `git checkout --` se discard kiya, merge clean
+   fast-forward ho gaya. `sales_system.db` bilkul untouched raha (mtime check se confirm kiya).
+3. **`migrate.py`** VPS ke real prod DB par — naye tables (`lead_contacts`, `message_formats`,
+   `content_assets`) + naye columns (`target_business_categories`, `target_person_roles`,
+   `subject_candidates`) sab real production data pe safely add hue.
+4. **Import sanity-check** (`python -c "import app; app.create_app()"`) — clean, live services
+   restart karne se PEHLE (established discipline — agar ye fail hota to services touch hi nahi karte).
+5. **Frontend build** VPS par hi (`npm install && npm run build`) — real build success, naya
+   `index-CKUE0uAX.js` hash. `dist/` → `public_html/` copy + `chown`.
+6. **5 services restart** (`bos-api`, `bos-worker`, `bos-scraper`, `bos-poller`, `bos-scheduler`) —
+   sab `active`, `journalctl` me koi traceback/import-error nahi, sab normal startup logs.
+7. **Real HTTPS verification** (VPS ke andar se, established Secure-cookie-vs-plain-http gotcha
+   avoid karke): login 200, `/api/v1/message-formats` aur `/api/v1/content-assets` (naye endpoints)
+   dono `[]` + 200, real products list me `target_business_categories`/`target_person_roles` fields
+   sahi (empty arrays purane products ke liye, jaisa expect kiya).
+8. **Real browser (Playwright) se live UI verify kiya** `https://sales.ivinfotech.com` par — real
+   login, Products page, product expand karke teeno naye tabs ("AI targeting strategy" / "Message
+   format" / "Content library") sab real production build me sahi render hue, dono naye tabs apna
+   correct empty-state dikhate hain (real production API se data leke).
+
+**Poora deploy verified, zero regressions, zero errors.**
+
+---
+
+**▶ CURRENT (2026-08-20): Phase 8 — Message Format Engine & Content Library — ✅ POORA COMPLETE,
+✅ VPS PAR LIVE HAI.** (Steps 8.1–8.5 sab done, real data se poora walkthrough bhi verify kiya, ab
+production pe bhi live-verified.) **Agla: Phase 9 — Measurement, Multi-Touch & Adaptive Templates.**
+Phase 7 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6),
+sequence 6 → 7 → 8 → 9 → 10.
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
 search quota is month ke liye khatam hai (0/50, reset 2026-09-11) — jab tak reset na ho ya plan upgrade

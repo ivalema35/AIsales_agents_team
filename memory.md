@@ -171,4 +171,6 @@ Quick highlights — poori list ke liye `tracker.md` dekho: secrets sirf `.env` 
 
 ---
 
+- **Poora Phase 7 + Phase 8 VPS pe deploy ho gaya, real live verify kiya (2026-08-20).** User ne khud bola "push karke deploy karo, live test karlo." Sab kuch clean gaya — git sync, real DB migration (naye tables/columns), naya frontend build, 5 services restart, sab active, koi error nahi. Real browser se `https://sales.ivinfotech.com` pe login karke Products page ke naye tabs (Message format / Content library) dikhaye — sab sahi kaam kar rahe hain live par.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka Section 3 (Ongoing) aur Section 4 (Pending) dekho ki abhi kahan tak kaam hua hai, phir wahi collaboration protocol follow karo (explain → confirm → build → tracker update).
