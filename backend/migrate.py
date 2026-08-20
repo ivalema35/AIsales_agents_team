@@ -9,6 +9,10 @@ COLUMN_MIGRATIONS = [
     ("leads", "instagram_url", "TEXT"),
     ("leads", "facebook_url", "TEXT"),
     ("leads", "linkedin_url", "TEXT"),
+    # Added mid-Step-6.1, after real-process testing showed a single global staleness window
+    # can't work across loops running at 2s vs 300s. Any DB that already created
+    # system_heartbeats without this column needs the ALTER, not just the CREATE.
+    ("system_heartbeats", "expected_interval_seconds", "INTEGER NOT NULL DEFAULT 60"),
 ]
 
 

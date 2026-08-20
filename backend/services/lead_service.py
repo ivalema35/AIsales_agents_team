@@ -19,7 +19,8 @@ from jobs.job_queue import enqueue
 ELIGIBLE_TIERS = {"HOT", "WARM"}
 
 
-def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, enqueue_jobs=True):
+def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, enqueue_jobs=True,
+                            force=False):
     """Atomically move a SCORED, outreach-eligible lead to OUTREACHING and enqueue one
     OUTREACH_EMAIL and/or OUTREACH_WA job per channel the lead actually has contact info
     for -- both if both exist, deliberately not "pick one channel". Safe to call
@@ -56,6 +57,15 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
         to HUMAN_ESCALATION (re-derived via the same route_action() used at scoring time,
         not persisted separately). An AI should not draft outreach off a signal it
         wasn't confident enough to act on without a human already reviewing it.
+
+    `force=True`: a human, looking at this ONE specific lead, deliberately overrides the
+    tier/confidence judgment call above (e.g. a COLD lead they have outside context on).
+    Only for api/leads.py's manual single-lead trigger -- never passed by the autonomous
+    scheduler tick, which has no human in the loop to be making this call. Does NOT bypass
+    the contact-channel check (there's nowhere to send with none), and does NOT touch QC or
+    suppression -- those still run, unconditionally, exactly as for any other send. Forcing
+    past a low-confidence/COLD judgment call is a business decision; forcing past QC's veto
+    or a suppression entry would be a compliance one, and this flag has no reach into either.
     """
     lead = db.get(Lead, lead_id)
     if not lead:
@@ -67,11 +77,12 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
     if not has_email and not has_phone:
         return None
 
-    score = db.query(LeadScore).filter(LeadScore.lead_id == lead_id).first()
-    if not score or score.tier not in ELIGIBLE_TIERS:
-        return None
-    if route_action("SCORING", score.confidence) == "HUMAN_ESCALATION":
-        return None
+    if not force:
+        score = db.query(LeadScore).filter(LeadScore.lead_id == lead_id).first()
+        if not score or score.tier not in ELIGIBLE_TIERS:
+            return None
+        if route_action("SCORING", score.confidence) == "HUMAN_ESCALATION":
+            return None
 
     claimed = db.execute(text(
         "UPDATE leads SET status='OUTREACHING', updated_at=CURRENT_TIMESTAMP "

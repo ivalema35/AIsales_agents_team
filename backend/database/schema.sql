@@ -263,6 +263,27 @@ CREATE TABLE IF NOT EXISTS system_settings (
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 20. SYSTEM HEARTBEATS  (Phase 6 Step 6.1: liveness for the long-running background
+-- processes. Deliberately a DB row, NOT a `systemctl is-active` shell-out -- the API
+-- process must never need root, and the same code has to work on a dev machine where
+-- none of these are systemd units. A process is considered DOWN by comparing
+-- last_seen_at against a staleness window at READ time; nothing marks itself dead,
+-- because a process that has crashed cannot write its own tombstone.)
+CREATE TABLE IF NOT EXISTS system_heartbeats (
+    process_name  TEXT PRIMARY KEY,   -- e.g. 'jobs.worker'
+    status        TEXT NOT NULL DEFAULT 'RUNNING',  -- RUNNING, IDLE, ERROR
+    detail        TEXT DEFAULT '{}',  -- JSON: small per-process context
+    -- How often THIS process is expected to beat. Non-negotiable for a correct reader:
+    -- these processes loop at wildly different rates (worker ~2s, scraper ~3s, inbound
+    -- poller 120s, discovery scheduler 300s), so a single global staleness window is
+    -- always wrong -- either the scheduler reads as permanently DOWN while healthy, or
+    -- the window is widened until a genuinely dead worker stays invisible for minutes.
+    -- Each process declares its own rate; the reader compares against that (Step 6.2).
+    expected_interval_seconds INTEGER NOT NULL DEFAULT 60,
+    last_seen_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    started_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);

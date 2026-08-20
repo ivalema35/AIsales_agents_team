@@ -289,3 +289,16 @@ class SystemSetting(Base):
     key = Column(String, primary_key=True)
     value = Column(Text, nullable=False)
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 20. SYSTEM HEARTBEATS (Phase 6 Step 6.1 — liveness of the long-running processes)
+class SystemHeartbeat(Base):
+    __tablename__ = "system_heartbeats"
+    process_name = Column(String, primary_key=True)
+    status = Column(String, nullable=False, default="RUNNING")  # RUNNING, IDLE, ERROR
+    detail = Column(Text, default="{}")
+    # Per-process expected beat rate — these loops run at very different speeds (2s to 300s),
+    # so staleness must be judged per process, never against one global window. See schema.sql.
+    expected_interval_seconds = Column(Integer, nullable=False, default=60)
+    last_seen_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    started_at = Column(TIMESTAMP, server_default=func.current_timestamp())

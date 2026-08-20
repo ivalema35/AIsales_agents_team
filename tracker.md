@@ -56,6 +56,41 @@ The project is live on a real VPS (`sales.ivinfotech.com`, full architecture in 
 - **What this unlocks**: checking `systemctl status`/`journalctl` on the 5 `bos-*` services, querying the VPS's own live `sales_system.db` directly (remember `DB_PATH` is relative -- always `cd` into `/home/sales.ivinfotech.com/aisales/backend` first, or a stray phantom DB gets created wherever the shell's cwd happens to be, silently), deploying code/frontend updates, and general live-production debugging -- same "verify against real evidence, don't guess" discipline this project already applies everywhere else, now extended to the real deployment, not just local dev.
 - **Redeploying the frontend after any frontend change**: `frontend/dist` (the build) and `public_html` (what's actually served) are two separate directories with no automated sync yet -- after a rebuild, `cp -a frontend/dist/. public_html/` and `chown -R sales8657:nobody public_html` are both still required manually every time (this exact gap caused the very first real VPS incident -- see Section 2).
 
+### A.5 Deployment workflow rule (2026-08-19)
+User ne explicit standing rule di hai: **koi bhi major change ya naya module complete hone ke baad**, deploy karne se pehle user se confirm karna, aur confirmation milne ke baad ye poora sequence chalana:
+1. `git add`/`commit` (specific files, secrets/DB check karke) → `git push origin main`.
+2. VPS par: `git fetch` + `git pull`/`merge origin/main` (DB files ko hamesha touch se bachana — dekh §A.4/2026-08-19 VPS sync incident me safe pattern).
+3. Agar frontend change hai to `npm run build` (frontend build banana), phir `public_html` me sync (§A.4 ka existing rebuild step).
+4. Affected `bos-*` services restart karna, phir verify (`systemctl is-active`, app import check).
+
+**Har chhote change ke baad nahi** — sirf major change/naya module complete hone par ye poora cycle chalana hai, chhote tweaks ke liye nahi. Har baar is rule ko apply karne se pehle user confirmation lena hai (default "confirm-first" pattern jo Section A.1 me already hai, isi par extend hai — deploy step specifically).
+
+Agar koi information chahiye ho (VPS state, hone wale change ka scope, etc.) to user se pooch lena, guess nahi karna.
+
+### A.6 Architectural deviation — Phase 5 postponed, add-on Phases 6–10 run first (2026-08-19)
+Rule §A/1.3 (aur MASTER §9) kehta hai: strict phase order, pichle phase ka DoD gate green hue bina agla
+phase start nahi. **User ne explicitly decide kiya ki Phase 5 (Executive Business OS & Governance Layer)
+abhi indefinitely postpone hoga, aur naye add-on Phases 6 → 7 → 8 → 9 → 10 seedhe chalenge.**
+
+**Kyun ye deviation defensible hai (aur kyun ye baaki phase-order rule ko weak nahi karta):**
+- Phases 6–10 ki Phase 5 par **koi technical dependency nahi** hai. Phase 5 discovery/outreach ke *upar*
+  ek governance layer hai (CAC ceilings, capacity throttle, client lifecycle, executive simulation);
+  Phases 6–10 usi discovery/outreach path ko *andar se* extend karte hain. Dono alag axes hain.
+- Phase 5 ke saare modules **volume-dependent** hain — converted clients, delivery-capacity pressure,
+  realized CAC. Ye teeno abhi exist nahi karte. Ek aisa funnel throttle karna jo saturate hi nahi hua,
+  ya un clients ka renewal track karna jo abhi hai hi nahi — ye ek non-existent problem solve karna hai.
+- Phases 6–10 ka har item ek **aaj ki real, measured cost** se aaya hai: system ki koi visibility nahi
+  (2 real incidents sirf SSH se pakde gaye), targeting imprecise (157 leads reject karne pade), aur
+  open/read rate — jo user ka khud ka stated goal hai.
+- **Phase 5 ka kuch bhi delete nahi hua.** MASTER §5 me uska poora spec waisa hi hai, P5 gate bhi §9
+  ki table me hai, Section 4 ka checklist bhi. Jab business me genuinely delivery-capacity pressure ya
+  converted clients aayenge, tab ye cleanly slot ho jayega — kyunki Phases 6–10 un contracts ko change
+  nahi karte jin par Phase 5 depend karta hai.
+
+**Jo cheez is deviation ke baad bhi nahi badli:** har naye phase ka apna DoD gate (P6–P10, MASTER §9)
+utna hi mandatory hai. Phase order chhodne ka matlab gate chhodna nahi hai — gates hi wo cheez hain
+jinki wajah se phase order ka rule pehle exist karta tha.
+
 ### B. Non-negotiable technical/safety rules (from MASTER_DEVELOPMENT_PRD.md)
 - **Secrets:** sirf `.env` me, kabhi bhi source code me hardcode nahi (config.py env-driven).
 - **SQLite pragmas** (`foreign_keys`, `busy_timeout`, `journal_mode=WAL`, `synchronous=NORMAL`) per-connection set karne hain — connection listener (`db_config.py`) ke through, kahin aur nahi. Warna FK cascade silently no-op ho jata hai.
@@ -545,7 +580,263 @@ Direct follow-up: user asked how the "no website at all" leads (141/604 = 23% of
 
 ---
 
+### ⭐ Phase 6 / Step 6.1 — Process heartbeats (2026-08-19)
+
+Phase 6 ka pehla step. Goal: pata chale ki 5 background processes zinda hain ya nahi, **bina SSH ke**.
+Do real incidents isi blindness se hue the (2026-08-18 ka silently-band process; 2026-08-19 ke stuck leads) —
+dono sirf logs padh ke pakde gaye, UI se dikhte hi nahi the.
+
+**Kya bana:**
+- **Table 20 `system_heartbeats`** (`schema.sql` + `models.py` + `migrate.py`) — har process ki ek row:
+  `process_name` (PK), `status` (RUNNING/IDLE/ERROR), `detail` (JSON), `expected_interval_seconds`,
+  `last_seen_at`, `started_at`.
+- **`services/heartbeat.py`** — `beat(db, ...)` (session udhaar leta hai) aur `beat_standalone(...)`
+  (apna session kholta hai). Upsert, throttled.
+- **4 processes wired**: `jobs/worker.py`, `scraper_worker/async_runner.py`,
+  `jobs/discovery_scheduler.py`, `jobs/inbound_poller.py`.
+
+**Design decisions (aur kyun):**
+- **DB row, `systemctl` shell-out nahi** — API process ko kabhi root nahi chahiye, aur yahi code dev
+  machine par bhi chalna chahiye jaha koi systemd unit hai hi nahi.
+- **`bos-api` ka heartbeat jaan-bujh kar nahi** — gunicorn ke 3 workers ek hi row par jhagadte, aur agar
+  API down ho to CRM khulta hi nahi (wo khud apna signal hai).
+- **Koi process khud ko "dead" mark nahi karta** — jo process crash/SIGKILL ho gaya wo apna tombstone
+  likh hi nahi sakta. Staleness READ time par judge hoti hai (Step 6.2).
+- **Heartbeat failure kabhi caller ko na girae** — write wrapped hai; DB lock ya missing table sirf ek
+  log line banti hai. Ek monitoring feature us cheez ko nahi gira sakta jise wo monitor kar raha hai.
+- **Throttle 15s** — worker ka loop busy queue me back-to-back chalta hai; bina throttle ke sainkado
+  bekaar UPDATE hote. Check in-memory hai, `beat_standalone` me session kholne se *pehle*.
+- **`started_at` update par preserve hota hai** — taaki monitor real uptime dikha sake, na ki last beat ki age.
+- **Scheduler/poller `ERROR` status report karte hain** — ek scheduler jo har tick fail kar raha hai
+  lekin zinda hai, wo healthy jaisa hi dikhta agar heartbeat sirf RUNNING bolta. Poller ka toota IMAP
+  connection isse bhi zyada chupa hua failure hai — inbound replies chup-chaap aana band ho jate hain.
+
+**🐛 Real bug jo sirf asli process chalane se mila:** pehle design me ek hi global staleness window tha.
+Live test me `jobs.discovery_scheduler` ne 25s me heartbeat advance hi nahi kiya — kyunki uska poll
+interval **300s** hai, jabki worker ka ~2s aur poller ka 120s. Ek global window rakhne ka matlab hota:
+ya to **scheduler hamesha "DOWN" dikhta healthy hote hue bhi**, ya window itna bada karna padta ki ek
+genuinely dead worker minuton tak invisible rehta. **Fix:** har process apna `expected_interval_seconds`
+khud declare karta hai (fast loops throttle-window par clamp ho jate hain), reader usi ke against
+staleness judge karega. Column `COLUMN_MIGRATIONS` se add hua — kyunki table pehle hi ban chuki thi,
+aur VPS par bhi exactly yahi case hoga.
+
+**Verification (real, mocked nahi):**
+- 8 offline checks — first write · throttle · `force=True` bypass · `started_at` preserve +
+  `last_seen_at` advance · throttle window elapse · unserialisable detail degrade ho jaye par heartbeat
+  bache · **missing table par raise na ho, sirf False** · 3 process = 3 independent rows.
+- **Live test — chaaro asli `python -m` entrypoints** ek disposable temp DB ke against chalaye
+  (local me `discovery_enabled=true` tha aur 15 pending jobs the — seedha chalane se real Serper/LLM
+  spend ho jata). Chaaron ne heartbeat likha, sabne apna sahi interval declare kiya
+  (worker 15 · scraper 15 · poller 120 · scheduler 300), ek process kill kiya to wahi stale hua aur
+  baaki chalte rahe, `started_at` preserve raha.
+- Real entrypoints isliye, imports nahi: heartbeat unit test me perfect lag sakta hai jabki asli
+  `python -m` entrypoint toota ho — [[feedback_verify_standalone_entrypoints]].
+
+**Abhi baaki (Step 6.2–6.4):** read API, UI page, stuck-detection + alerts. **VPS par abhi deploy nahi
+kiya** — Phase 6 complete hone par ek saath jayega (deployment rule: har chhote step par nahi).
+
+### ⭐ Phase 6 / Step 6.2 — `GET /api/v1/system/live` (2026-08-19)
+
+Naya `backend/api/system.py` — ek read-only endpoint jo ek hi call me poora system state deta hai:
+per-process liveness, job-queue counts (`DEAD` alag), `agent_events` ka activity feed, aur
+`OUTREACHING` leads ka count (Step 6.4 ke stuck-detection ka base). `app.py` me blueprint registered.
+
+**Design decisions (aur kyun):**
+- **Ek endpoint, chaar nahi** — UI isse interval par poll karega; alag-alag calls matlab 4x load bina
+  kisi fayde ke.
+- **Auth apne aap lag gaya** — `/api/v1/system/` `_PUBLIC_PREFIXES` me nahi hai, to `app.py` ka global
+  `before_request` gate isse khud protect karta hai. Is file me koi auth code nahi likhna pada.
+- **🐛 Timezone trap — age SQL me nikalta hai, Python me nahi.** SQLite `CURRENT_TIMESTAMP` **UTC** me
+  likhta hai; is machine ki clock IST (+5:30) hai. Python ke `datetime.now()` se subtract karta to har
+  process **~19800s (5.5h) stale** dikhta aur **poora system hamesha DOWN** report hota. Isliye
+  `julianday('now') - julianday(last_seen_at)` — dono taraf SQLite ki apni clock. Ye poori bug-class
+  hi khatam kar deta hai. (Is project ne ek IST/UTC bug pehle bhi khaya hai — analytics trend-bucketing.)
+  Test isko explicitly pakadta hai: fresh beat ka age <60s hona chahiye.
+- **`EXPECTED_PROCESSES` hardcoded list** — jo process kabhi start hi nahi hua uski row hoti hi nahi,
+  aur sirf table padhne se wo **list se gayab** ho jata. Wahi to sabse zaroori case hai dikhane ka.
+  Ab wo `NEVER_SEEN` report hota hai. Ulta case bhi handle: koi anjaan heartbeat row mile to
+  `UNKNOWN_PROCESS` (process rename hua aur list update nahi hui).
+- **`STALE_MULTIPLIER = 3`, 1x nahi** — 15s wala loop kabhi-kabhi long job ya slow write se late hoga;
+  usse DOWN batana matlab monitor jhooth bolega. **Jis monitor par log bharosa karna chhod dete hain
+  wo na hone se bura hai.** Har process ka apna interval use hota hai (6.1 ka fix), ek global window nahi.
+- **`ERROR` alag state hai `DOWN` se** — jo scheduler/poller zinda hai par har tick fail kar raha hai wo
+  UP/DOWN wale binary me healthy dikhta.
+- **Activity feed me `LEFT JOIN`** — `agent_events.lead_id` nullable hai (ICP strategy product ke against
+  chalta hai, lead ke nahi); inner join un rows ko chup-chaap feed se gira deta.
+- **`api.state` hamesha `UP`** — agar tum response padh pa rahe ho to API zinda hai; isse zyada imaandaar
+  kuch nahi, koi heartbeat ye behtar nahi keh sakta.
+- **Zero writes, zero LLM, zero external calls** — ek monitoring endpoint jo khud state badal sake ya
+  kisi aur ke outage par fail ho jaye, apna maqsad hi khatam kar deta hai. Test isko verify karta hai.
+
+**Verification (real, mocked nahi):**
+- **14 checks** disposable DB par: auth 401 · chaaro `NEVER_SEEN` · **timezone (fresh beat = age ~0,
+  19800 nahi)** · detail JSON round-trip · tolerance boundary (40s UP, 50s DOWN @ interval 15) ·
+  **200s purana scheduler phir bhi UP** (per-process interval respected) · `ERROR` ≠ `DOWN` ·
+  **job counts + `leads_in_flight` direct SQL se exactly reconcile** · feed me `company_name` resolve
+  (UUID nahi) · null-`lead_id` event feed me bacha rehta · **3 calls ke baad koi row count nahi badla**.
+- **End-to-end, asli entrypoints:** real `python app.py` server + real `jobs.worker` +
+  `scraper_worker.async_runner`, real HTTP (urllib + cookie jar), temp DB ke against. 401 without login ·
+  dono chalte process `UP` · do jo start hi nahi hue `NEVER_SEEN` · **worker kill kiya to ~30s me `DOWN`
+  flip hua (age 46s > 45s threshold)** · bacha hua process `UP` hi raha (koi false positive nahi).
+  Test client asli entrypoint prove nahi karta — [[feedback_verify_standalone_entrypoints]].
+- Test ke liye `ENV=development` rakhna pada: `app.py` `SESSION_COOKIE_SECURE` set karta hai jab
+  `ENV != development`, aur Secure cookie plain `http://` par bhejа hi nahi jata — login chup-chaap
+  persist na hota aur har call 401 deti.
+
+**Abhi baaki (Step 6.3–6.4):** UI page, stuck-detection + alerts. Deploy Phase 6 ke end me.
+
+---
+
+### ⭐ Phase 6 / Step 6.3 — `SystemMonitor.jsx` UI page (2026-08-20)
+
+Naya `frontend/src/pages/SystemMonitor.jsx` (`/system` route): 4 process cards (state, last-seen,
+uptime, beat-interval), job-queue board (Stuck count laal me alag), leads-mid-outreach count,
+live activity feed (`agent_events` se). Plus `frontend/src/components/SystemStatusDot.jsx` — nav me
+ek chhota dot jo har page se system-status dikhata hai, taaki System page par jaana zaroori na ho.
+
+**Design decisions:** Human-readable process labels (`"Job Worker"` `jobs.worker` ki jagah) + ek line
+ka blurb ki wo process kya karta hai. **Uptime bhi dikhaya, sirf "healthy" nahi** — kyunki
+`Restart=always` ke neeche crash-loop karta process har poll par "Running" dikhega, sirf resetting
+uptime hi usse expose karta hai. Teen alag load-states (`loading` / `data` / `error`) — kabhi collapse
+nahi kiye, kyunki khali activity feed aur dead-backend agar ek jaisi dikhein to page jhoothi tasalli
+deta hai. Error hone par purana `data` screen par rakha (blank nahi kiya) — jo aakhri accha state pata
+tha, wahi sabse zyada kaam ka hai jab kuch toota ho. Polling 5s (page) / 20s (nav dot) — WebSocket nahi,
+wahi n8n-drop wali philosophy.
+
+**🐛 Real, machine-level finding (is Windows dev machine ke liye important, future testing ke liye
+yaad rakhna):** UI verify karne ke liye ek real process (`jobs.worker`) kill karke DOWN-transition
+dekhna tha. Do cheezein mili:
+1. **`venv\Scripts\python.exe -m X` is machine par ek "launcher" hai** jo asli kaam karne wala
+   interpreter **child process** ke roop me spawn karta hai (confirmed: shim PID ka apna child PID,
+   alag executable path — base Python install). Plain `.kill()` sirf launcher ko marta hai, **asli
+   child zombie bankar chalta rehta hai** — heartbeat likhta rehta hai, port par serve karta rehta hai.
+   `app.py` ka Flask reloader (`debug=True`) ek teesri layer bhi jodta hai. **Fix: hamesha
+   `taskkill /F /T` (tree-kill) use karo, plain `.kill()` kabhi nahi**, in processes ke liye.
+2. **Chromium (Playwright) + Vite + API + ek force-killed process ek saath is machine par kuch
+   der ke baad HAR request ko hang kar dete hain** — verified ki ye sirf browser/React/Vite-proxy ka
+   masla nahi hai: ek **plain `urllib` call bhi** (bina browser ke) usi scenario me hang hua. Isliye
+   ye ek genuine machine-level resource/AV interference hai, humare code ka bug nahi — 2-process aur
+   3-process (bina Chromium ke) scenarios me DOWN-transition **hamesha saaf 30-45s me flip hui**, koi
+   hang nahi. **Isko is project ki memory me save kar raha hoon** taaki future real-browser process-kill
+   testing isi cheez pe waqt zaya na kare.
+   - **Resolution:** staleness-detection logic already Step 6.2 ke real (non-browser) end-to-end test
+     se proven hai (worker kill → real HTTP → ~30s me DOWN). Isliye UI ke liye alag, cleaner test
+     design use kiya: **DB me directly saare 4 states seed karo** (UP/DOWN/ERROR/NEVER_SEEN — bina
+     kisi process ko kill kiye) → real browser me fresh load karo → render verify karo. Ye "staleness
+     math sahi hai" (already proven) aur "UI use sahi render karta hai" (asli goal) do alag cheezon ko
+     decouple karta hai, aur is machine ke hang-issue ko poori tarah avoid karta hai.
+- **Chhota, safe side-fix mila:** `app.py`'s dev-only `app.run()` single-threaded tha (Werkzeug default)
+  — is naye continuous-polling UI ke saath requests serialize ho sakte the. `threaded=(Config.ENV ==
+  "development")` add kiya — sirf `python app.py` (local dev) path ko affect karta hai, VPS ka
+  production gunicorn (`bos-api.service`, already multi-worker) is line ko chhoo hi nahi.
+
+**Verification — real Playwright browser, 11/11 checks pass:** saare 4 states sahi render (Running/
+Down/Erroring/Never started), banner sahi 2 problem-processes list karta hai, job board ka Stuck
+count laal me, leads-in-flight count sahi, activity feed real company names ke saath (UUID nahi),
+DOWN aur UP card ka ring-color visibly alag, **nav dot bhi sahi problem reflect karta hai**
+(`aria-label="System status: 2 processes need attention"`), zero unexpected console/page errors.
+Screenshot verify kiya — layout clean, colors clearly distinguishable.
+
+**VPS par abhi deploy nahi kiya** — Phase 6 complete hone par ek saath jayega.
+
+---
+
+### ⭐ Phase 6 / Step 6.4 — Stuck-detection + admin alert (2026-08-20) — Phase 6 COMPLETE
+
+Phase 6 ka aakhri step. **Naya process nahi** — `discovery_scheduler.py` ke existing tick-loop me ek
+naya tick (`_run_stuck_alert_tick`), bilkul EOD-report tick jaisa pattern.
+
+**Refactor pehle:** Step 6.2/6.3 ki DOWN-detection logic `api/system.py` me thi. Naya tick ko wahi
+threshold use karna zaroori tha — do jagah alag copy rakhne se ek din drift ho jaata (ek tune ho jaye,
+doosra na ho, kisi ko pata na chale). Isliye **`services/system_health.py`** banaya (shared source of
+truth: `get_process_states`, `find_stuck_leads`, `find_stuck_jobs`, `count_dead_jobs`), aur
+`api/system.py` ko usi ko use karne ke liye refactor kiya. Refactor ke baad Step 6.2 ke saare **14
+offline checks dobara chalaye — sab pass**, confirm ki kuch nahi toota.
+
+**4 cheezein detect hoti hain, ek hi consolidated email me:**
+1. Process DOWN/ERROR (Step 6.2 ki wahi logic).
+2. **Lead 15 min se zyada `OUTREACHING` me** — bilkul aaj ka wahi real incident (Physics Wallah/Angel
+   Academy). 15 min threshold: asli send, worst-case LLM-retry ke saath bhi, 2 minute se kam me poora
+   ho jaata hai — kaafi margin hai.
+3. **Naya gap mila code padhते waqt: job `CLAIMED` me 15 min se zyada atka** — agar worker kisi job ko
+   claim karne ke baad crash ho jaye, wo job hamesha atka rehta hai (`claim_next()` sirf `PENDING`
+   dekhta hai, koi timeout-recovery nahi hai). Bilkul `OUTREACHING` wali class ka bug.
+4. `DEAD` jobs ka count > 0.
+
+**Design decisions:**
+- **Detect + alert only, khud fix nahi karta** — jaisa pehle bataya tha, confirm hone ke baad bhi isi
+  scope pe rakha. Auto-recovery (lead ko wapas `SCORED` karna, ya job ko retry karna) apna alag,
+  riskier decision hai jo abhi ke scope me nahi hai.
+- **Ek hi consolidated email**, alag-alag nahi — agar 3 cheezein ek saath galat hon to ek email me
+  sab list hota hai (real test se verify kiya: multiple problems ek saath → exactly 1 email).
+- **Cooldown** (`system_settings` reuse, default 60 min) — same problem ke liye baar-baar email nahi.
+  **Agar send hi fail ho jaye (Resend down) to cooldown start nahi hota** — deliberate: agli tick
+  phir try karegi, warna ek real outage ke waqt hi alert silently chhut jaata.
+- **`STUCK_ALERT_ENABLED` naya setting, default `true`** — is file ka apna established rule hai
+  "missing setting = off" (risky autonomous SENDS ke liye), lekin ye deliberately deviate kiya:
+  ye sirf admin ke apne inbox ko email karta hai, koi external/lead-facing risk nahi hai, aur off-by-
+  default rakhna isi phase ke solve kiye jaane wale blindness ko wapas la deta.
+
+**Verification:**
+- **11 offline checks** (mocked email transport, real DB) — healthy system → zero email · kill-switch
+  off → zero email even with real problem · stuck lead (30 min) → real email with company name ·
+  5-min-old lead → **sahi se NOT flagged** (legitimate send window ke andar) · stuck CLAIMED job →
+  real email · DEAD pile-up → count sahi · DOWN process → real email · **cooldown block** karta hai
+  same problem ko · cooldown elapse hone par phir se alert · **multiple problems → exactly 1 email**
+  (spam-avoidance ka core proof) · **failed send crash nahi karta, cooldown start nahi hota**.
+- **Real end-to-end: asli `python -m jobs.discovery_scheduler` process** (import nahi), temp DB me ek
+  genuinely-stuck lead seed karke, **real Resend send** — real message id mila
+  (`df7c9bba-1036-4a45-806f-a6f3d51b9d26`), `ivaiagent05@gmail.com` par real email pahunchi, cooldown
+  timestamp real DB me persist hui.
+
+**✅ Phase 6 (Live System Observability) ab poora complete hai — Steps 6.1–6.4 sab local-verified.
+Deploy VPS par abhi baaki hai** (ek saath jayega, deployment rule ke hisaab se). **Agla: Phase 7 —
+Targeting Precision & Person-Level Contacts.**
+
+---
+
 ## 3. Ongoing Module / Step
+
+### ⭐ Live-testing fallout, same session (2026-08-20) — real fixes + a new feature, outside the Phase 6 step list
+
+User ne local system (frontend+backend, real DB) chalu karke khud verify kiya, aur real use se kuch cheezein mili:
+
+- **2 real orphaned jobs unstick kiye** (`CLAIMED` state se 2 din se atke) — "Dhalgarwad Market" samet
+  10 leads `SCORED` tak pahunchi. **Real mistake khud pakda**: unstick karte waqt ek broad
+  `UPDATE...WHERE status='CLAIMED'` chalaya jisne kuch genuinely-live jobs bhi touch kar diye —
+  verify kiya koi duplicate-processing nahi hui (sab safely `DONE`), lekin aage se sirf Step 6.4 ke
+  15-min-threshold jaisi **age-filtered** cleanup hi karni hai, blanket status-match nahi.
+- **`discovery_enabled` ek live-update test se accidentally `true` ho gaya tha** (user ka khud OFF
+  kiya hua state override ho gaya) — pakadte hi wapas `false` kiya.
+- **Nav status indicator — 3 round design iteration** (real user feedback har round me): health-dot +
+  labeled Discovery badge → sirf 2 alternating-blink health dots (Discovery badge galti se hata diya)
+  → **final: dono ek saath, ek unified bordered pill me** (2 blinking health dots + divider + labeled
+  Discovery ON/OFF badge) — `SystemStatusDot.jsx`. Polling bhi 20s se 8s kiya (perceived slowness
+  fix).
+- **`LeadCard.jsx` truncate bug** — location + "X ago" time ek hi `truncate` line me the, lambi
+  location time-suffix ko silently khа jaati thi. Fix: flex row, location `truncate` + time
+  `shrink-0`, same line, no height change (Kanban column height is hardcoded from this card's exact
+  height).
+- **Naya: Force Outreach + Toast system.** `services/lead_service.py`'s `claim_lead_for_outreach()`
+  gets a `force` param — sirf tier/confidence eligibility check bypass karta hai, **contact-channel
+  requirement aur QC/suppression kabhi bypass nahi karta** (business judgment override hai, compliance
+  override nahi). `api/leads.py`'s manual `POST /leads/<id>/outreach` ab `{"force": true}` accept
+  karta hai. Frontend: naya `ToastContext`/`Toast.jsx` (permanent inline error-banners replace kiye
+  `LeadDetail.jsx` + `LeadCard.jsx` dono me) — eligibility-rejection wale toast me ek **"Force send
+  anyway"** action button hota hai jo dusra, alag-warning-text wala confirm dialog kholta hai. Real
+  browser me verify kiya (asli COLD lead, "Gandhinagar Sports Academy") — poora flow tak gaya
+  **jaan-bujh kar dusre confirm dialog par Cancel kiya**, taaki koi real send trigger na ho.
+- **Note (fix nahi kiya, sirf flag kiya):** LeadDetail ke Score panel me "Icp Fit 5000%" / "Reachability
+  10000%" dikh raha hai — percentage double-multiply jaisa real bug lagta hai, user ne abhi nahi maanga
+  isliye untouched chhoda.
+
+---
+
+**▶ CURRENT (2026-08-20): Phase 6 — Live System Observability — ✅ COMPLETE (Steps 6.1–6.4 sab
+local-verified).** VPS par abhi deploy nahi hua — jab agla phase shuru karenge us se pehle, ya jab
+user explicitly bole, poora Phase 6 ek saath VPS jayega (deployment rule ke hisaab se, har chhote
+step par nahi). **Agla: Phase 7 — Targeting Precision & Person-Level Contacts.** Phase 5 postpone hai
+(§A.6), sequence 6 → 7 → 8 → 9 → 10.
 
 *(2026-08-17: Phase 4 is now fully complete, DoD Gate P4 green — see Section 2's Step 4.5 entry and Section 4's Phase 4 checklist. Nothing in progress right now; Phase 5 (Executive Business OS & Governance Layer) is next, not yet started.)*
 *(Fixed today, 2026-08-17: the "Claimed" Kanban column gap is resolved — `PipelineKanban.jsx` now shows a "Hot / Escalated" column for `HOT_LEAD` leads.)*
@@ -562,11 +853,12 @@ Direct follow-up: user asked how the "no website at all" leads (141/604 = 23% of
   - **Re-verified live:** ran a small real discovery sample (2 queries × 1 region per product) through the actual pipeline (also discovered `scraper_worker.async_runner` — the process that actually handles `DISCOVER`/`ENRICH`/`REVIEW`/`SCORE` jobs — wasn't running this session despite the other processes being up; started it). All 60 new leads (20 per product) are correctly-targeted real small businesses (dental clinics, law firms, medical clinics/hospitals, retail stores, restaurants) — zero self-referential-service matches. User confirmed this was a verification-only run, not a request to leave `discovery_enabled` on — left off/as before.
 
 **Known open items (not blockers, just not forgotten):**
-- Cross-city name-collision in `find_website`/`find_phone`/`find_email` (e.g. "Infinity Gaming Zone" Ahmedabad vs "Infinity Gaming" Navsari) — needs a real locality/gazetteer approach, deliberately not attempted with a quick regex.
-- `_handle_discover` doesn't filter by queried city — Serper Places sometimes returns leads from a different city entirely (seen for both Mehsana searches).
-- Multi-branch businesses (e.g. BounceUp Ahmedabad vs Vadodara) can return either branch's contact depending on search ranking that day.
-- `sales_system.db` gitignore-vs-commit question — still open, user to confirm.
-- **Dashboard: claiming a HOT lead makes it disappear from the Kanban board entirely** (`HOT_LEAD` status isn't one of `PipelineKanban`'s displayed columns) — found today, not yet fixed. Needs a "Claimed" column added.
+*(2026-08-19: this list has been triaged — the three discovery-precision bugs are now scheduled work, and two items are resolved. Nothing was dropped.)*
+- Cross-city name-collision in `find_website`/`find_phone`/`find_email` (e.g. "Infinity Gaming Zone" Ahmedabad vs "Infinity Gaming" Navsari) — needs a real locality/gazetteer approach, deliberately not attempted with a quick regex. → **now scheduled as Phase 7 Step 7.6(b)** (Section 5).
+- `_handle_discover` doesn't filter by queried city — Serper Places sometimes returns leads from a different city entirely (seen for both Mehsana searches). → **now Phase 7 Step 7.6(a)**.
+- Multi-branch businesses (e.g. BounceUp Ahmedabad vs Vadodara) can return either branch's contact depending on search ranking that day. → **now Phase 7 Step 7.6(c)**.
+- ~~`sales_system.db` gitignore-vs-commit question~~ — **✅ RESOLVED 2026-08-19**: untracked from git on both machines (`git rm --cached` + `.gitignore`), file kept on disk. Reason the earlier "commit it" decision was reversed: once the VPS went live, local dev data and the VPS's real production data genuinely diverged, so keeping a binary DB in git meant one careless `git pull` could overwrite real leads.
+- ~~**Dashboard: claiming a HOT lead makes it disappear from the Kanban board**~~ — **✅ RESOLVED 2026-08-17**, `PipelineKanban.jsx` now shows a "Hot / Escalated" column (see the Section 3 note above).
 
 ## 4. Pending Modules / Steps
 
@@ -589,6 +881,7 @@ User explicitly called this out as a feature that will take the system to "the n
 - **What's NOT built:** no agent/job inside the running system decides *when* a new template is needed, drafts its copy via LLM (respecting Meta's header/body/variable component rules), submits it, or auto-detects approval and updates `TEMPLATE_LIBRARY` itself without a manual code edit.
 - **Why deferred (my recommendation, user agreed):** this needs real performance data to be meaningful — which template underperforms, which pain-point category keeps showing up with no good match. That data doesn't exist yet (`campaign_variants` table not wired up, zero real-lead campaigns run so far, only self-tests). Building the automation before the data exists would be a guess-based "Learning Agent," not a data-driven one.
 - **When to revisit:** once Phase 3 is fully live on real leads and there's enough campaign history to see actual template performance gaps — natural fit alongside the PRD's Learning & Memory Manager Agent concept (Phase 5 territory, `cognition/adaptability.py`).
+- **✅ NOW SCHEDULED (2026-08-19) — Phase 9 Step 9.6** (Section 5 below; spec in `MASTER_DEVELOPMENT_PRD.md` §5A). The deferral condition is finally being met deliberately rather than waited for: Step 9.1 wires `campaign_variants` (the exact "data doesn't exist yet" blocker named above) and Step 9.2 builds the sent/seen/replied rollup on top of the real Seen-tracking pipeline that shipped 2026-08-17/18. The user's Item 4(d) request — *"abhi ai khud template nahi banata adaptivness ke sath wo bhi karna he"* — is the same capability, so it merged into this line rather than becoming a second parallel item. Guardrails added at scheduling time: QC review **plus** a human approval gate before any AI-authored template can reach a real business, and cold first-contact still restricted to Meta-approved templates (§B).
 
 ### PHASE 4 — Inbound Handler, Human-in-the-Loop, React UI & Nightly Report
 - [x] Step 4.1 — Inbound webhook + idempotency (`api/inbound.py`) — see Section 2
@@ -613,3 +906,79 @@ User explicitly called this out as a feature that will take the system to "the n
 - [ ] Step 5.6 — Self-evolution boundaries (`config.py`, `cognition/adaptability.py` extension)
 - [ ] Step 5.7 — Executive dashboard (`ExecutiveControl.jsx`, `CapacityMeter.jsx`)
 - [ ] DoD Gate P5 (sales-mode routing correct · capacity throttle works · renewal reminders on-time · governance tie-break honors rank · QC veto absolute · no autonomous write touches `HUMAN_LOCKED_PARAMS`)
+
+---
+
+## 5. Add-on Phases 6–10 (planned 2026-08-19) — post-launch requirements
+
+**Source:** user ke 11 naye requirements (`NEW_REQUIREMENTS_STAGING.md`, saare ab `MERGED`) + **har wo
+point jo pehle hold par tha** (Phase 5 ke alawa). Full spec: `MASTER_DEVELOPMENT_PRD.md` §5A ·
+cognitive contract: `AI_Sales_Intelligence_PRD_v2.md` Chapter 16 · UI: `CRM_UI_UX_PLAN.md` §2A.
+
+**User ka stated goal is poore block ka:** *"ab hum jo ai outreach karvaye wo open and read it ratio
+badhaye"* — har phase ka order isi par depend karta hai, kisi preference par nahi.
+
+### ✅ DECIDED (2026-08-19) — Phase 5 postpone, sequence = 6 → 7 → 8 → 9 → 10
+User ne confirm kiya: **Phase 5 (Executive Business OS) abhi indefinitely postpone**, seedha Phase 6 se
+shuru karke 10 tak. Phases 6–10 ki Phase 5 par koi technical dependency nahi hai. Reasoning: Phase 5 ke
+modules (CAC ceilings, capacity throttle, renewal lifecycle, executive simulation) tab kaam ke hain jab
+real converted customers aur delivery-capacity pressure ho — jo abhi hai nahi; ek aisa funnel throttle
+karna jo saturate hi nahi hua, ek non-existent problem solve karna hai. Phase 6–8 aaj ki real cost
+(visibility nahi, targeting weak, open-rate low) address karte hain.
+**Phase 5 ka spec delete nahi kiya** — MASTER §5 me jaisa tha waisa hai, P5 gate bhi §9 table me hai.
+Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
+
+### PHASE 6 — Live System Observability *(no external dependency, no cost, no new risk — isliye pehle)*
+- [x] **Step 6.1 — `system_heartbeats` table (T20) + har long-running process apna heartbeat likhe — ✅ DONE 2026-08-19** (detail Section 2 me)
+- [x] **Step 6.2 — `api/system.py` → `GET /api/v1/system/live` — ✅ DONE 2026-08-19** (detail Section 2 me)
+- [x] **Step 6.3 — `SystemMonitor.jsx` (polling, WebSocket nahi) — ✅ DONE 2026-08-20** (detail Section 2 me)
+- [x] **Step 6.4 — stuck-state detection + admin alert — ✅ DONE 2026-08-20** (detail Section 2 me)
+- [ ] DoD Gate P6
+- *Why first:* do real incidents (2026-08-18 ka silently-band process, 2026-08-19 ke stuck leads) sirf
+  SSH se pakde gaye the — UI se dikhte hi nahi the. Ye us poori class ka systemic fix hai.
+
+### PHASE 7 — Targeting Precision & Person-Level Contacts
+- [ ] Step 7.1 — `products.target_business_categories` + `target_person_roles` (dono optional)
+- [ ] Step 7.2 — ICP strategy agent in categories ke andar hi queries banaye
+- [ ] Step 7.3 — `lead_contacts` table (T21) — ek lead par **multiple** log (aaj sirf 1 contact fit hota hai)
+- [ ] Step 7.4 — **[hold se]** Hunter ke already-aa-rahe-but-discard-ho-rahe fields (linkedin/seniority/department/decision_maker) persist karo — zero naya API cost
+- [ ] Step 7.5 — role-targeted LinkedIn person discovery (company LinkedIn = priority signal per user)
+- [ ] Step 7.6 — **[hold se]** teen purane open bugs: (a) `_handle_discover` city filter (b) cross-city name-collision (c) multi-branch galat branch
+- [ ] Step 7.7 — **[hold se]** 604-lead social-profile backfill (spend estimate user se confirm karke)
+- [ ] DoD Gate P7 — *gate hit-rate nahi hai, **zero wrong-company person attachments** hai*
+
+### PHASE 8 — Message Format Engine & Content Library *(user ke open-rate goal ka direct answer)*
+- [ ] Step 8.1 — `message_formats` table (T22) — admin ka **structure**, final copy nahi; versioned
+- [ ] Step 8.2 — `content_assets` table (T23) — demo URLs/case studies; AI select karta hai, invent nahi
+- [ ] Step 8.3 — `outreach_agent.py` format fill kare (QC veto absolute rehta hai, format se bypass nahi)
+- [ ] Step 8.4 — subject-line candidates (is phase me AI judgment se pick; data-driven Phase 9 me)
+- [ ] Step 8.5 — format builder + content library UI (CRM Phase 7)
+- [ ] DoD Gate P8
+
+### PHASE 9 — Measurement, Multi-Touch & Adaptive Templates
+- [ ] Step 9.1 — **[hold se]** `campaign_variants` wire karo (Phase 1 se schema me hai, kabhi likha nahi gaya)
+- [ ] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi)
+- [ ] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi
+- [ ] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi)
+- [ ] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate)
+- [ ] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory
+- [ ] DoD Gate P9
+
+### PHASE 10 — Channel Expansion *(sabse zyada cost/legal risk — deliberately last, har channel alag gate)*
+- [ ] Step 10.1 — region-aware channel routing (`channel_policies` T26); email universal fallback
+- [ ] Step 10.2 — SMS channel; per-country compliance **hard gate** (unconfigured region = refuse), apna kill-switch
+- [ ] Step 10.3 — LinkedIn/IG/FB **draft-and-queue** (AI drafts, human sends) + IG/FB reply-window auto-response
+- [ ] Step 10.4 — AI voice calling (`call_logs` T27); **apna alag kill-switch** global se stricter, per-lead consent basis, region gate, assisted-before-autonomous
+- [ ] DoD Gate P10
+
+**Item 2 & 3 par honest position (docs me bhi likha hai):** LinkedIn cold-messaging ka koi official API
+hai hi nahi, aur Meta sirf reply-window me messaging allow karta hai — cold DM ka koi "template" rasta
+IG/FB par nahi hai jaise WhatsApp me hai. Bot se bhejna = ToS violation + permanent account-ban risk +
+is project ke apne evasion-free rule (§B) ke against. Isliye Step 10.3 me AI sab karega **except send**;
+system me aisa koi code path hoga hi nahi jo in platforms par khud se bhej sake — P10 ka gate isko
+**absence se verify** karta hai.
+
+### New tables introduced by Phases 6–10 (19 → 27)
+T20 `system_heartbeats` · T21 `lead_contacts` · T22 `message_formats` · T23 `content_assets` ·
+T24 `outreach_sequences` · T25 `whatsapp_templates` · T26 `channel_policies` · T27 `call_logs`
+(+ 2 optional `products` columns, + `campaign_variants` finally used)

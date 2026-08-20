@@ -60,11 +60,14 @@ export const api = {
   updateLead: (id, data) => request(`/leads/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   patchLeadStatus: (id, status) =>
     request(`/leads/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
-  triggerOutreach: (id) => request(`/leads/${id}/outreach`, { method: "POST" }),
+  triggerOutreach: (id, { force = false } = {}) =>
+    request(`/leads/${id}/outreach`, { method: "POST", body: JSON.stringify({ force }) }),
   getRecentReplies: (limit = 8) => request(`/leads/recent-replies?limit=${limit}`),
   markReplyRead: (conversationId) => request(`/inbound/${conversationId}/read`, { method: "PATCH" }),
 
   listAlerts: () => request("/alerts"),
+
+  getSystemLive: () => request("/system/live"),
 
   getDashboardWidgets: () => request("/dashboard/widgets"),
   saveDashboardWidgets: (widgets) =>

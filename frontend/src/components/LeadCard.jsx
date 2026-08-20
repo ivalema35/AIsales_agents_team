@@ -4,8 +4,10 @@ import { Send, BellOff } from "lucide-react";
 import { api } from "../api/client";
 import Badge from "./ui/Badge";
 import { useConfirm } from "../lib/ConfirmContext";
+import { useToast } from "../lib/ToastContext";
 import { intentBadgeClass } from "../lib/intentColors";
 import { TIER_BG, TIER_BORDER } from "../lib/tierColors";
+import { relativeTime } from "../lib/relativeTime";
 
 // Compact pipeline-board row -- deliberately NOT the old tall card (name + region +
 // AI-justification paragraph + score/contact chips + full-width button). At real volume
@@ -25,8 +27,9 @@ export default function LeadCard({ lead }) {
   const intent = lead.status === "HOT_LEAD" ? lead.latest_reply_intent : null;
   const navigate = useNavigate();
   const confirm = useConfirm();
+  const toast = useToast();
   const [sending, setSending] = useState(false);
-  const [result, setResult] = useState(null); // { EMAIL: {...}, WHATSAPP: {...} } | { error }
+  const [result, setResult] = useState(null); // { EMAIL: {...}, WHATSAPP: {...} }
   // OUTREACHING (from the server, via props) backs up local `sending` state -- when a
   // send is in flight the lead's status flips to OUTREACHING almost immediately, which
   // moves its Kanban column and REMOUNTS this card with fresh (sending=false) state, so
@@ -45,13 +48,17 @@ export default function LeadCard({ lead }) {
   }
 
   async function sendOutreach(e) {
-    // Send button sits INSIDE the now fully-clickable card -- stopPropagation here is
-    // what keeps a send click from also firing the card's own openLead() navigation.
-    e.stopPropagation();
+    // Send button sits INSIDE the now fully-clickable card -- stopPropagation here is what
+    // keeps a send click from also firing the card's own openLead() navigation.
+    e?.stopPropagation?.();
+    // force: true by default -- see LeadDetail.jsx's sendOutreach for the full reasoning.
+    // Still requires a real contact channel, still goes through QC + suppression.
     const ok = await confirm({
       title: "Send real outreach?",
       message: `Send REAL outreach to ${lead.company_name} now (${lead.primary_email || "no email"} / ` +
-        `${lead.primary_phone || "no phone"})? This is a real send, not a simulation.`,
+        `${lead.primary_phone || "no phone"})? This is a real send, not a simulation -- sent ` +
+        `regardless of the AI's own tier/confidence read, though QC review and suppression checks ` +
+        `still apply.`,
       confirmLabel: "Send now",
     });
     if (!ok) return;
@@ -59,10 +66,12 @@ export default function LeadCard({ lead }) {
     setSending(true);
     setResult(null);
     try {
-      const res = await api.triggerOutreach(lead.id);
+      const res = await api.triggerOutreach(lead.id, { force: true });
       setResult(res.results);
     } catch (err) {
-      setResult({ error: err.message });
+      toast.error(err.message.replace(/^\d+\s*/, "").replace(/^\["|"\]$/g, ""), {
+        duration: 6000,
+      });
     } finally {
       setSending(false);
     }
@@ -97,8 +106,16 @@ export default function LeadCard({ lead }) {
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-medium leading-snug text-slate-800">{lead.company_name}</p>
-          <p className="mt-0.5 truncate text-[11px] leading-snug text-slate-500">
-            {lead.region_location || "No region"}
+          {/* flex row, not one truncated string -- a single `truncate` on "region · time"
+             clips the WHOLE line at the container edge, so a long region silently ate the
+             time suffix entirely (found live: "1d ago" never rendered behind a long
+             address). Region gets the shrinking flex-1 slot; time is shrink-0 so it always
+             stays visible regardless of how long the region text is. Still one line --
+             PipelineKanban.jsx's column height is computed from this card's exact fixed
+             height (ROW_HEIGHT_PX); a second line here would silently break that math. */}
+          <p className="mt-0.5 flex items-baseline gap-1 text-[11px] leading-snug text-slate-500">
+            <span className="min-w-0 truncate">{lead.region_location || "No region"}</span>
+            {lead.updated_at && <span className="shrink-0">· {relativeTime(lead.updated_at)}</span>}
           </p>
         </div>
         {/* One right-hand cluster, top-aligned with the name -- score, tier, and the
@@ -134,7 +151,7 @@ export default function LeadCard({ lead }) {
         </div>
       </div>
 
-      {result && !result.error && (
+      {result && (
         <div className="mt-1.5 flex flex-wrap gap-x-3 text-[10px]">
           {Object.entries(result).map(([channel, r]) => (
             <span key={channel} className={r.status === "SENT" ? "text-emerald-600" : "text-amber-600"}>
@@ -143,7 +160,6 @@ export default function LeadCard({ lead }) {
           ))}
         </div>
       )}
-      {result?.error && <p className="mt-1.5 text-[10px] text-red-600">{result.error}</p>}
     </div>
   );
 }

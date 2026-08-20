@@ -9,6 +9,7 @@ import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass } from "../lib/statusColors";
 import { useConfirm } from "../lib/ConfirmContext";
+import { useToast } from "../lib/ToastContext";
 import { InstagramIcon, FacebookIcon, LinkedinIcon } from "../lib/socialIcons";
 
 const TIER_VARIANT = { HOT: "HOT", WARM: "WARM", COLD: "COLD" };
@@ -449,6 +450,7 @@ export default function LeadDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const confirm = useConfirm();
+  const toast = useToast();
   const [searchParams] = useSearchParams();
   const [lead, setLead] = useState(null);
   const [timeline, setTimeline] = useState(null);
@@ -522,21 +524,29 @@ export default function LeadDetail() {
   }
 
   async function sendOutreach() {
+    // force: true by default -- a human already deliberately clicking "send" on this one
+    // specific lead's own page IS the judgment call; making them click again past a
+    // rejection to override the AI's tier/confidence read was friction with no real safety
+    // value here (unlike the autonomous scheduler tick, which force never reaches). What
+    // still applies unconditionally, force or not: a real contact channel must exist, and
+    // QC + suppression still run exactly as for any other send -- see lead_service.py.
     const ok = await confirm({
       title: "Send real outreach?",
       message: `Send REAL outreach to ${lead.company_name} now (${lead.primary_email || "no email"} / ` +
-        `${lead.primary_phone || "no phone"})? This is a real send, not a simulation.`,
+        `${lead.primary_phone || "no phone"})? This is a real send, not a simulation -- sent ` +
+        `regardless of the AI's own tier/confidence read, though QC review and suppression checks ` +
+        `still apply.`,
       confirmLabel: "Send now",
     });
     if (!ok) return;
     setSending(true);
     setSendResult(null);
     try {
-      const res = await api.triggerOutreach(lead.id);
+      const res = await api.triggerOutreach(lead.id, { force: true });
       setSendResult(res.results);
       refresh();
     } catch (err) {
-      setSendResult({ error: err.message });
+      toast.error(err.message.replace(/^\d+\s*/, "").replace(/^\["|"\]$/g, ""), { duration: 6000 });
     } finally {
       setSending(false);
     }
@@ -648,7 +658,7 @@ export default function LeadDetail() {
           )}
           {lead.score && (lead.primary_email || lead.primary_phone) && !lead.is_suppressed && (
             <button
-              onClick={sendOutreach}
+              onClick={() => sendOutreach()}
               disabled={sendInFlight}
               className="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
             >
@@ -681,7 +691,10 @@ export default function LeadDetail() {
         </div>
       </div>
 
-      {sendResult && !sendResult.error && (
+      {/* Failure now goes to a toast (see sendOutreach's catch block) -- a permanent inline
+         banner here used to sit on the page forever with no way to act on it; the toast
+         version can also offer a real next step (Force send anyway). */}
+      {sendResult && (
         <div className="-mt-3 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs shadow-sm">
           {Object.entries(sendResult).map(([channel, r]) => (
             <span key={channel} className={r.status === "SENT" ? "text-emerald-600" : "text-amber-600"}>
@@ -689,11 +702,6 @@ export default function LeadDetail() {
             </span>
           ))}
         </div>
-      )}
-      {sendResult?.error && (
-        <p className="-mt-3 rounded-lg border border-red-100 bg-red-50 px-4 py-2 text-xs text-red-600 shadow-sm">
-          {sendResult.error}
-        </p>
       )}
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">

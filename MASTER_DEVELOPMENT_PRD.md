@@ -3,7 +3,7 @@
 
 **Merges:** Technical PRD v3 (Execution Infrastructure) + Intelligence PRD v2 (Cognitive Brain Layer)
 **Audience:** A software engineer or a coding agent (Claude Code / Cursor) building production code section by section.
-**Build model:** 4 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green.
+**Build model:** 10 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green. Phases 1–5 are the original build (§5); Phases 6–10 (§5A) were added 2026-08-19 from real post-launch requirements.
 
 ---
 
@@ -11,10 +11,11 @@
 
 - **Sections 1–4** are *reference*: architecture, file tree, the complete data layer, and the cognitive contracts (agents, decision thresholds, memory). Implement against them; don't re-derive them per phase.
 - **Section 5** is the *build order*: Phases 1→5, each step listing (a) files to create, (b) a focused code blueprint showing the non-obvious logic and its failure handling, and (c) the DoD tests that open the gate.
+- **Section 5A** is the *add-on build order*: Phases 6→10, added 2026-08-19 from real post-launch requirements plus every previously-deferred item. It follows the same step + DoD-gate structure as §5. Read §5A.0 before reordering anything there — the sequence encodes real dependencies, and it carries one open decision about Phase 5's position that needs the user's confirmation.
 - **Section 6** is the *agent prompt library* — copy-pasteable Python string constants.
 - **Section 7** is the *command cheat sheet*.
 - **Section 8** is the *Executive Business Layer* (Chapter 15 / AI-BOS): the governance layer sitting above Cognitive + Execution — revenue/CAC ceilings, dual sales-mode routing, capacity throttling, client lifecycle, decision simulation, cross-agent governance, and self-evolution boundaries.
-- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P5).
+- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P10).
 - Code blocks are **blueprints**: they carry the critical logic (routing, atomic claims, cleanup, validation) verbatim and leave routine bodies (field mapping, selectors, styling) for you to fill.
 
 **Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/an in-process discovery scheduler). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
@@ -168,6 +169,15 @@ ai-sales-os/
 ## 3. Data layer
 
 ### 3.1 Complete SQLite DDL (`database/schema.sql`)
+
+> **Addendum (2026-08-19):** this section's prose says "16 tables", but the **live `schema.sql` now has
+> 19** — `product_strategies` (17), `discovery_runs` (18) and `system_settings` (19) were added during
+> Phases 3–4 after this text was written. Phases 6–10 (§5A) add **8 more (Tables 20–27)** plus two
+> optional `products` columns; each is specified in the §5A step that introduces it, and the full list
+> is tabulated in §5A.1. Two schema facts worth carrying forward when reading this DDL:
+> `campaign_variants` (Table 13) exists here but has never been written to — Phase 9 Step 9.1 is what
+> finally wires it; and `leads` holds exactly **one** contact person, which is why Phase 7 introduces
+> `lead_contacts` rather than widening this table.
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -826,6 +836,339 @@ def handle_inbound(db, evt):
 
 ---
 
+## 5A. Add-on phase plan (Phases 6–10) — added 2026-08-19
+
+**Origin.** Phases 1–5 were specified before the system had ever run against real leads. Phases 6–10
+come from the opposite direction: eleven requirements the user raised *after* watching the live system
+work (captured verbatim in `NEW_REQUIREMENTS_STAGING.md`), plus every item this project had explicitly
+deferred along the way and never lost — the ⭐ Autonomous WhatsApp Template loop, Hunter's discarded
+person-level fields, the `campaign_variants` table that was designed in Phase 1's DDL and never wired,
+the 604-lead social backfill, and three known discovery-precision bugs.
+
+**The user's stated goal for this whole block:** *"ab hum jo ai outreach karvaye wo open and read it
+ratio badhaye"* — raise open/read/reply rates on real outreach. Every phase below is ordered by what
+that goal actually depends on, not by what is most exciting to build.
+
+### 5A.0 Sequencing logic (read this before reordering anything)
+
+The order is forced by three real dependencies, not preference:
+
+1. **Measurement before adaptation.** The ⭐ WhatsApp Template Creation & Approval Loop was deferred
+   on 2026-08-13 for one stated reason: *"this needs real performance data to be meaningful — which
+   template underperforms... That data doesn't exist yet (`campaign_variants` not wired up)."* That
+   same missing data blocks AI-generated adaptive templates (Item 4d) and true subject-line testing
+   (Item 6). So Phase 8 must produce **variants**, Phase 9 must **measure** them, and only then can the
+   AI adapt them. Building the adaptive layer first would produce a guess-based "learning" agent — the
+   exact thing that deferral was avoiding.
+2. **Targeting before copy.** A message format (Phase 8) can only personalise as well as the targeting
+   data underneath it. Phase 7's product-level target category/role fields and person-level contacts
+   are what give Phase 8's format slots something real to say.
+3. **Visibility before everything.** Phase 6 is first because the user currently cannot see what the
+   running system is doing at all (*"abhi crm me ye pata nahi chal raha he ki system kya kar raha he"*).
+   Every phase after it becomes verifiable-in-the-open rather than verifiable-only-by-SSH.
+
+**Risk ordering runs the same direction.** Phase 6 adds no external dependency, no cost, no legal
+surface. Phase 10 adds new paid providers, new per-country compliance law, and the highest-stakes
+channel in the entire product (AI voice calls). Deliberately last, and each of its sub-steps gates
+independently — Phase 10 is the one phase that may legitimately ship partially.
+
+**Relationship to Phase 5 — RESOLVED 2026-08-19: Phase 5 is postponed indefinitely.** This project's
+own rule (§9, tracker.md §A) is strict phase order: no phase starts before the previous DoD gate is
+green. Phase 5 (Executive Business OS) has not started, and Phases 6–10 have **no technical dependency
+on it** — they extend the discovery/outreach path, while Phase 5 governs budget/capacity/lifecycle
+above it.
+
+**The user's decision: skip Phase 5 for now and run 6 → 7 → 8 → 9 → 10 directly.** The reasoning holds
+up on its own terms — Phase 5's modules (CAC ceilings, capacity throttling, renewal lifecycle,
+executive simulation) all become valuable at a volume of real customers the business does not have
+yet, and throttling a funnel that is not yet saturated solves a problem that does not exist. Phases
+6–10 address what is actually costing the operator today: no visibility, imprecise targeting, and low
+open/read rates.
+
+**Recorded as a deliberate deviation** from §9's ordering rule (tracker.md §A.6), not an oversight.
+Phase 5's spec in §5 stays exactly as written — nothing is deleted, and its DoD gate P5 remains in the
+§9 table. Revisit it when the business genuinely has delivery-capacity pressure or converted clients
+to track; at that point it slots in cleanly, since none of Phases 6–10 change the contracts it depends
+on.
+
+### 5A.1 New data-layer objects introduced across Phases 6–10
+
+**Real current table count: 19, not 16.** §3.1's DDL prose says 16 because three tables were added
+during Phases 3–4 after that section was written — `product_strategies` (17, §3.5 amendment),
+`discovery_runs` (18, discovery cooldown) and `system_settings` (19, dashboard toggles). Verified
+against the live `schema.sql`, not assumed. Phases 6–10 therefore add Tables **20–27 (total 27)**,
+plus two `products` columns, and finally use `campaign_variants` (Table 13), which has existed since
+Phase 1 and has never been written to. Migrations go through `migrate.py` (schema.sql's
+`CREATE TABLE IF NOT EXISTS` for new tables, `COLUMN_MIGRATIONS` for new columns on existing ones) —
+never a manual `ALTER` on a live DB.
+
+| # | Table | Phase | Purpose |
+|---|-------|-------|---------|
+| 20 | `system_heartbeats` | 6 | one row per long-running process; liveness without shell access |
+| 21 | `lead_contacts` | 7 | **multiple** people per lead (today `leads` holds exactly one contact) |
+| 22 | `message_formats` | 8 | admin-authored message STRUCTURE (slots), not content |
+| 23 | `content_assets` | 8 | demo URLs / case studies / testimonials the AI selects from |
+| 24 | `outreach_sequences` | 9 | multi-touch cadence state per lead |
+| 25 | `whatsapp_templates` | 9 | local mirror of each Meta template's real approval state |
+| 26 | `channel_policies` | 10 | region → allowed/preferred channel rules |
+| 27 | `call_logs` | 10 | AI voice call records, consent basis, transcript ref |
+
+New `products` columns (Phase 7): `target_business_categories` (JSON array), `target_person_roles`
+(JSON array). Both optional and nullable — an existing product with neither set must behave exactly as
+it does today.
+
+---
+
+### PHASE 6 — Live System Observability
+
+**Goal:** the CRM shows, without SSH, whether the system is alive and what it is doing right now.
+No new external dependency, no cost, no new risk surface — which is why it goes first.
+
+**Why this is not just a dashboard nicety:** two real incidents this project already had were invisible
+from the UI — a background process that had silently not been running for a session (tracker.md
+2026-08-18), and two leads stuck mid-outreach after a provider outage (2026-08-19). Both were found
+only by reading logs over SSH. This phase is the systemic fix for that class of blindness.
+
+**Step 6.1 — Heartbeat table + process reporting.** New Table 17 `system_heartbeats`
+(`process_name` PK, `last_seen_at`, `status`, `detail` JSON). Each long-running process — `jobs.worker`,
+`scraper_worker.async_runner`, `jobs.discovery_scheduler`, `jobs.inbound_poller` — writes/updates its
+own row on every loop iteration. Deliberately a DB heartbeat, **not** a `systemctl` shell-out: the API
+process must never need root, and the same code must work on the dev machine where nothing is a
+systemd unit.
+
+**Step 6.2 — Live status API** (`api/system.py` → `GET /api/v1/system/live`). Returns, in one call:
+per-process liveness (`last_seen_at` older than a configurable staleness window ⇒ `DOWN`), job-queue
+counts grouped by `status` × `job_type`, counts of leads currently mid-flight (`OUTREACHING`), and the
+last N `agent_events` as a real activity feed. All read-only, all from tables that already exist.
+
+**Step 6.3 — Live monitor UI** (`frontend/src/pages/SystemMonitor.jsx`, CRM_UI_UX_PLAN Phase 5).
+Simple interval polling — no WebSocket. This project's own precedent (dropping n8n, §3.5 amendment) is
+to refuse infrastructure that a simpler mechanism already covers.
+
+**Step 6.4 — Stuck-state detection + admin alert.** A scheduler tick flags anything genuinely stuck:
+a process stale beyond the window, a lead sitting in `OUTREACHING` far longer than a send can take, or
+`DEAD` jobs accumulating. Surfaced in the UI and — reusing `send_internal_email()` from Step 4.5, not a
+new mechanism — emailed to the admin. Rate-limited so an outage cannot generate an email storm.
+
+**DoD tests (gate):**
+- `test_heartbeat_liveness.py`: kill one worker process → `/system/live` reports it `DOWN` within the
+  staleness window; restart → `UP` again. Verified against real processes, not mocked timestamps.
+- Activity feed shows a real discovery and a real outreach as they happen, cross-checked against a
+  direct SQL query of `agent_events` (the project's standing "chart must match ground truth" rule).
+- A lead deliberately left in `OUTREACHING` is flagged as stuck; a lead mid-legitimate-send is not.
+- The alert path sends exactly one email per incident, not one per tick.
+
+---
+
+### PHASE 7 — Targeting Precision & Person-Level Contacts
+
+**Goal:** stop aiming at "a business" and start aiming at **the right business, and the right person
+inside it** — plus close three known discovery-precision bugs that have been on the open-items list
+since Phase 2.
+
+**Step 7.1 — Product targeting fields.** Add `products.target_business_categories` and
+`products.target_person_roles` (both JSON arrays, both optional). Products CRUD + UI accept them
+(CRM_UI_UX_PLAN Phase 6). Same design precedent as `target_regions` (§3.5 amendment): a **human-set
+boundary the AI then works freely inside**, never an AI-invented one.
+
+**Step 7.2 — ICP strategy agent consumes the categories.** `agents/icp_strategy_agent.py` currently
+invents prospect verticals from the product brief alone — which is exactly what produced the
+self-referential-query bug (tracker.md 2026-08-18: 157 leads had to be rejected). When
+`target_business_categories` is set, the agent must generate queries **within** those categories only.
+Empty ⇒ today's behaviour, unchanged.
+
+**Step 7.3 — Multi-contact schema.** New Table 18 `lead_contacts` (`lead_id` FK, `full_name`, `role`,
+`seniority`, `department`, `email`, `phone`, `linkedin_url`, `is_decision_maker`, `source`,
+`confidence`). Today `leads` carries exactly one `contact_person_name`/`_role`, which cannot represent
+"the CEO and the sales manager at the same company." `leads.primary_email`/`primary_phone` stay as the
+canonical outreach target for backward compatibility; `lead_contacts` is additive.
+
+**Step 7.4 — Unlock Hunter's discarded person data.** `HunterProvider.enrich_domain()` already
+receives `linkedin`, `seniority`, `department`, `position` and a decision-maker signal per contact from
+Hunter's real API response and currently **throws all of it away**, keeping only the single best email.
+Persist every returned contact into `lead_contacts`. Zero new API cost — this is data already being
+paid for and discarded.
+
+**Step 7.5 — Role-targeted LinkedIn person discovery.** When `target_person_roles` is set, search for
+that role at that company (Serper, reusing the already-proven `_is_own_profile_link` /
+`_name_words()` trust discipline from the social-profile feature). Company LinkedIn is treated as a
+**priority signal, not best-effort** (user: *"unke linkedin to hoga hi to wo must needed he"*): a
+resolved company page is what triggers the person-level lookup. **Hard rule, inherited from the
+existing social-profile work:** a person is only ever attached to a lead when the company's own name
+verifiably matches — a wrong person on a real lead is a real mis-contact, exactly the reasoning that
+kept `_extract_city()` off `find_phone`/`find_email`.
+
+**Step 7.6 — Close three long-open discovery bugs.** All three are on the tracker's known-open list and
+all three cause wrong-business contact data: (a) `_handle_discover` does not filter Places results to
+the queried city; (b) cross-city name collisions in `find_website`/`find_phone`/`find_email`;
+(c) multi-branch businesses resolving to whichever branch ranked that day.
+
+**Step 7.7 — Social-profile backfill.** Run the (already-built, already-verified) social-profile
+enrichment across the existing lead base — offered when that feature shipped, never executed. Batched
+and resumable; Serper spend estimated and confirmed with the user before the run, not during it.
+
+**DoD tests (gate):**
+- A product with `target_business_categories` set produces only in-category search queries across a
+  real ICP regeneration; a product with none set produces byte-identical behaviour to today.
+- `lead_contacts` populated from a real Hunter response with ≥1 role/seniority field preserved, and the
+  lead's existing `primary_email` unchanged (proves the addition is non-destructive).
+- Role-targeted lookup measured on a real sample of corporate leads: hit-rate reported honestly, and
+  **zero wrong-company person attachments** — the second number is the gate, not the first.
+- City filter: a search for city A returns no lead whose address resolves to city B.
+- Backfill: re-running it is idempotent (no duplicate writes, no re-spend on already-enriched leads).
+
+---
+
+### PHASE 8 — Message Format Engine & Content Library
+
+**Goal:** the admin defines the message's **structure**; the AI fills that structure per lead and
+product. This is the phase that directly targets the user's stated open/read-rate goal.
+
+**The distinction that defines this phase:** the admin authors a *format*, never final copy —
+"greeting/hook → 2-3 of this business's own weak points → how we solve them → demo link if relevant."
+The AI supplies the content for each slot from that specific lead's real, verified pain points. Today
+`outreach_agent.py` free-writes the entire message, which is why output quality varies per send and
+cannot be steered without a code change.
+
+**Step 8.1 — Format schema.** New Table 19 `message_formats` (`product_id` nullable for a global
+default, `channel` (`EMAIL`/`WHATSAPP`), `slots` JSON ordered list, `is_active`, `version`). Resolution
+order: product+channel format → global channel format → today's free-form behaviour. Versioned rather
+than overwritten (same precedent as `product_strategies`), so a format change never silently
+invalidates the performance history Phase 9 measures.
+
+**Step 8.2 — Content asset library.** New Table 20 `content_assets` (`product_id` nullable,
+`asset_type` (`DEMO_URL`/`VIDEO_URL`/`CASE_STUDY`/`TESTIMONIAL`/`TEXT_BLOCK`), `title`, `value`,
+`tags` JSON, `is_active`). The AI **selects** from this library per lead/product — it never invents a
+URL. A format slot that asks for a demo link and finds no matching asset renders the message without
+that slot rather than fabricating one.
+
+**Step 8.3 — Format-driven drafting.** `agents/outreach_agent.py` fills the resolved format instead of
+free-writing. Unchanged and non-negotiable: the Quality Controller's veto stays absolute (§4.1), the
+buzzword ban and pain-point-grounding rules still apply, and a draft that references no verified pain
+point is still rejected. A format cannot be used to bypass QC.
+
+**Step 8.4 — Subject-line candidates.** The email drafting call returns N subject candidates; one is
+selected. In this phase selection is AI judgment from lead context — **not** performance-driven, because
+the performance data does not exist until Phase 9. All candidates are persisted so Phase 9 can measure
+them retrospectively.
+
+**Step 8.5 — Format builder + content library UI** (CRM_UI_UX_PLAN Phase 7).
+
+**DoD tests (gate):**
+- Same lead, two different formats → drafts provably follow their respective slot structures.
+- A product-scoped asset is chosen for that product and never leaks into a different product's message.
+- A format demanding a demo link with no asset available produces a valid message with no fabricated URL.
+- QC still vetoes a deliberately bad format-filled draft, via a real LLM call (repeat of the Phase 3
+  gate's real-veto test, not a mocked one).
+- A lead with no verified pain points still cannot produce a pain-point-claiming message.
+
+---
+
+### PHASE 9 — Measurement, Multi-Touch & Adaptive Templates
+
+**Goal:** close the loop. Measure what actually works, follow up on what does not, and finally build
+the ⭐ deferred autonomous template loop — now on real data instead of guesses.
+
+**Step 9.1 — Wire `campaign_variants`.** Table 12 has existed since Phase 1 and has never been written
+to. Every send records which format version, subject candidate and template it used. This single step
+is what unblocks the rest of this phase and Item 4d.
+
+**Step 9.2 — Variant performance rollup.** Sent / seen / replied per variant, built on the **real Seen
+tracking that already exists** (`OutreachLog.provider_message_id`, `read_at`, both channels' status
+webhooks — built 2026-08-17/18). No estimated or modelled numbers: a metric with no real signal stays
+`null`, exactly as Step 4.5's KPI section already does.
+
+**Step 9.3 — Multi-touch follow-up sequences.** New Table 21 `outreach_sequences` (per-lead cadence
+state, step index, next-run, terminal reason). Cadence is configurable per product. **Every existing
+outreach rule applies unchanged at every touch, not just the first:** suppression re-checked immediately
+before each send, OPT_OUT absolute, daily pacing caps respected, and the whole sequencer sits behind
+`autonomous_outreach_enabled` — a follow-up is still an autonomous real send to a real business.
+
+**Step 9.4 — Engagement-based escalation.** A lead that opens repeatedly but never replies is a real
+signal being wasted today. Configurable threshold → switch channel or raise a human alert through the
+existing escalation path. Where open data is unavailable for a channel, the rule simply does not fire —
+it must never be inferred.
+
+**Step 9.5 — Admin WhatsApp template submission.** New Table 22 `whatsapp_templates` mirrors each
+template's real Meta-side state (`PENDING`/`APPROVED`/`REJECTED`, category, components, rejection
+reason). Admin composes and submits from the CRM via Meta's Business Management API; a poll updates
+approval state and activates approved templates **without a code edit** — today `TEMPLATE_LIBRARY`
+requires one.
+
+**Step 9.6 — ⭐ Autonomous adaptive template loop** *(the item the user flagged on 2026-08-13 as taking
+the system "to the next level"; deferred then, unblocked now).* Using Step 9.2's real performance data,
+the system detects an underperforming or missing template, drafts a replacement respecting Meta's
+component/variable rules, submits it, and detects approval on its own. **Guardrails, all mandatory:**
+QC review before submission, a human approval gate before any AI-authored template goes live to real
+businesses, and cold first-contact still restricted to Meta-approved templates (§B, non-negotiable).
+The AI proposes; a human still signs off before real strangers receive it.
+
+**DoD tests (gate):**
+- Variant stats reconcile exactly against a direct SQL query for one real day.
+- Follow-up sequence: an opt-out mid-sequence stops every subsequent touch immediately; a replied lead
+  exits the sequence; pacing caps hold across a multi-lead batch; no duplicate sends under concurrency
+  (the Phase 3 atomic-claim contention test, re-run against the sequencer).
+- Kill-switch honoured: with `autonomous_outreach_enabled` false, zero follow-ups leave the system.
+- A real template submitted from the CRM reaches Meta and its real approval state is detected and
+  reflected without a code change.
+- An AI-drafted template cannot reach a real business without passing QC **and** a human approval.
+
+---
+
+### PHASE 10 — Channel Expansion (region-aware, gated per channel)
+
+**Goal:** reach leads on the channel they actually use. Highest cost, highest compliance exposure, and
+the newest infrastructure in the entire product — deliberately last, and the only phase designed to
+legitimately ship partially.
+
+**Step 10.1 — Region-aware channel routing.** New Table 23 `channel_policies` maps a region to allowed
+and preferred channels. Solves the user's real observation that WhatsApp is not a reliable channel
+outside India — the system's existing Canadian leads are a live example. `products.target_regions`
+(already present) feeds the decision. Email stays the universal fallback: it is the one channel that
+works everywhere and carries no new risk.
+
+**Step 10.2 — SMS channel.** Provider-backed (Twilio-class), reusing the existing outreach handler
+shape, suppression list and pacing caps rather than a parallel path. **Compliance is a hard gate, not a
+note:** SMS outreach law is country-specific (US TCPA, Canada CASL, EU rules); the channel must refuse
+to send into a region whose policy is not explicitly configured. Its own kill-switch, default off.
+
+**Step 10.3 — Social messaging: draft-and-queue, not auto-send.** Straight answer to the user's
+LinkedIn and Instagram/Facebook requests, and the reason this is designed the way it is:
+- **LinkedIn** offers no official API for general cold messaging. The only way to automate it is
+  browser-driving a real logged-in account — a ToS violation with a permanent-ban risk, and a direct
+  contradiction of this project's own evasion-free rule (§B).
+- **Instagram/Facebook** *do* have official Meta messaging APIs, but Meta's policy only permits
+  messaging someone who contacted **you** first, inside a reply window. There is no cold-template
+  equivalent to WhatsApp's.
+- **Therefore:** the AI drafts LinkedIn/IG/FB messages into a **human-send queue** — a team member
+  reviews, sends manually, and marks sent. Full AI value (research, personalisation, drafting) with
+  zero account-ban and zero policy risk. Automated *sending* on these platforms is out of scope, and
+  should stay out of scope unless the platform's own rules change.
+- **Additionally allowed and worth building:** IG/FB **reply-window** auto-response for leads who
+  message *us* first — genuinely permitted by Meta, and it reuses the existing inbound classifier and
+  escalation path rather than adding a new one.
+
+**Step 10.4 — AI voice calling.** The highest-stakes channel in the product. Cold-calling law is far
+stricter than email or messaging — India's TRAI DND regime, and US TCPA where AI/prerecorded calls
+carry per-call statutory penalties. Requirements, all mandatory: **its own kill-switch, independent of
+and stricter than `autonomous_outreach_enabled`**; an explicit consent/legal-basis check per lead before
+any dial; a region gate (launch only where compliance is actually established); recorded consent basis
+and outcome in Table 24 `call_logs`; and immediate human handoff on anything the AI cannot handle.
+**Ship AI-assisted first** (a human dials, the AI assists live) — fully autonomous dialling only after
+the assisted mode has run against real calls and the compliance posture is proven.
+
+**DoD tests (gate) — each channel gates independently:**
+- Region routing: a Canadian lead is never queued for WhatsApp when policy excludes it; an Indian lead
+  is unaffected; a region with no policy configured falls back to email and never guesses.
+- SMS: a send into an unconfigured region is refused, not attempted. Suppression and opt-out behave
+  identically to email/WhatsApp (re-run those exact tests against the SMS path).
+- Social: the draft queue can produce a message and mark it sent, and **no code path exists that can
+  send a LinkedIn/IG/FB message automatically** — verified by absence, deliberately.
+- Voice: with the voice kill-switch off, zero calls are placed under any condition. A lead without a
+  recorded consent basis is never dialled even with the switch on.
+
+---
+
 ## 6. Agent system prompt library (`cognition/prompts.py`)
 
 All prompts share a guardrail preamble so the five principles and the buzzword ban are enforced everywhere. Every prompt demands **JSON only** and is called through `call_json()` with a matching schema.
@@ -1155,5 +1498,12 @@ def guard_adaptation(param_name: str):
 | **P3** | no double-send · suppression on every channel · one-click unsubscribe · QC veto rejects bad drafts · pacing caps · official WhatsApp |
 | **P4** | idempotent inbound · hard rules before LLM · human-in-loop on demo/pricing/hostile/low-conf · dashboard live · EOD report sends |
 | **P5** | sales-mode routing correct at both headcount extremes · capacity throttle opens/closes on utilization · renewal reminders fire on schedule, not early · governance tie-break honors rank · QC veto still absolute · no autonomous write ever touches a `HUMAN_LOCKED_PARAMS` key |
+| **P6** | killed process shows `DOWN` within the staleness window and `UP` on restart · activity feed reconciles against a direct SQL query · genuinely-stuck lead flagged, mid-send lead not · one alert per incident, not per tick |
+| **P7** | category-constrained queries stay in-category, and an unset product behaves byte-identically to today · `lead_contacts` populated non-destructively from a real Hunter response · **zero wrong-company person attachments** · city filter holds · backfill idempotent |
+| **P8** | two formats produce provably different structures for the same lead · product-scoped assets never leak across products · missing asset ⇒ no fabricated URL · QC still vetoes a bad format-filled draft via a real LLM call |
+| **P9** | variant stats reconcile against direct SQL · opt-out mid-sequence stops every later touch · replied lead exits · no duplicate sends under concurrency · kill-switch off ⇒ zero follow-ups · AI-drafted template cannot reach a real business without QC **and** human approval |
+| **P10** | unconfigured region ⇒ refused, never guessed · SMS suppression/opt-out identical to email/WhatsApp · **no code path can auto-send LinkedIn/IG/FB** (verified by absence) · voice kill-switch off ⇒ zero calls · no consent basis ⇒ never dialled |
 
 Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, an AI that auto-answers a pricing question it should have escalated, or an executive layer that quietly overrides a human-locked parameter.
+
+**P6–P10 note:** these gates follow the same rule, with one addition — several of them are stated as *negative* guarantees ("zero wrong-company attachments", "no code path can auto-send", "zero calls"). Those are deliberately harder to pass than a hit-rate number, because in each case a single false positive reaches a real business or a real person, and no aggregate success rate compensates for that.

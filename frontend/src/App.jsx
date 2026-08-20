@@ -7,8 +7,11 @@ import Leads from "./pages/Leads";
 import LeadDetail from "./pages/LeadDetail";
 import Settings from "./pages/Settings";
 import Analytics from "./pages/Analytics";
+import SystemMonitor from "./pages/SystemMonitor";
 import Login from "./pages/Login";
+import SystemStatusDot from "./components/SystemStatusDot";
 import { ConfirmProvider } from "./lib/ConfirmContext";
+import { ToastProvider } from "./lib/ToastContext";
 import { api } from "./api/client";
 
 function Nav({ onLogout }) {
@@ -39,6 +42,10 @@ function Nav({ onLogout }) {
         <NavLink to="/settings" className={linkClass}>
           Settings
         </NavLink>
+        <NavLink to="/system" className={linkClass}>
+          System
+        </NavLink>
+        <SystemStatusDot />
         <button
           onClick={onLogout}
           title="Log out"
@@ -78,19 +85,22 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <ConfirmProvider>
-        <div className="min-h-screen bg-slate-50">
-          <Nav onLogout={handleLogout} />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/leads" element={<Leads />} />
-            <Route path="/leads/:id" element={<LeadDetail />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Routes>
-        </div>
-      </ConfirmProvider>
+      <ToastProvider>
+        <ConfirmProvider>
+          <div className="min-h-screen bg-slate-50">
+            <Nav onLogout={handleLogout} />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/leads" element={<Leads />} />
+              <Route path="/leads/:id" element={<LeadDetail />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/system" element={<SystemMonitor />} />
+            </Routes>
+          </div>
+        </ConfirmProvider>
+      </ToastProvider>
     </BrowserRouter>
   );
 }

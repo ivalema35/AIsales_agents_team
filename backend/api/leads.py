@@ -531,7 +531,14 @@ def trigger_outreach(lead_id):
     scheduler's autonomous tick -- it is NOT gated by system_settings.autonomous_outreach_
     enabled (that switch only governs the scheduler's own automatic claiming; see
     tracker.md A.3 / services/system_settings.py).
+
+    Optional JSON body `{"force": true}` -- a human overriding the tier/confidence judgment
+    call for this ONE lead (e.g. a COLD lead they have outside context on). Still requires a
+    real contact channel, and still goes through QC + suppression exactly as any other send
+    -- force only reaches services/lead_service.py's eligibility pre-check, nothing else.
     """
+    force = bool((request.get_json(silent=True) or {}).get("force"))
+
     db = SessionLocal()
     try:
         lead = db.get(Lead, lead_id)
@@ -566,11 +573,13 @@ def trigger_outreach(lead_id):
         # right below; letting claim_lead_for_outreach() also enqueue OUTREACH_EMAIL/
         # OUTREACH_WA would mean jobs.worker picks up the exact same work again and sends
         # a real duplicate whenever the worker is running (i.e. always, in normal use).
-        channels = claim_lead_for_outreach(db, lead_id, enqueue_jobs=False)
+        channels = claim_lead_for_outreach(db, lead_id, enqueue_jobs=False, force=force)
         if not channels:
             return jsonify({
                 "error": ["lead is not outreach-eligible (tier must be HOT/WARM and "
-                          "confidence high enough, and it needs at least one contact channel)"]
+                          "confidence high enough, and it needs at least one contact channel)"
+                          if not force else
+                          "lead has no contact channel (email or phone) -- force can't help with that"]
             }), 422
 
         # Snapshot existing log ids per channel BEFORE processing -- this may not be the

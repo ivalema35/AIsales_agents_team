@@ -31,8 +31,11 @@ from services.data_acquisition.website_scraper import (
 from services.data_acquisition.maps_scraper import MapsPhoneCircuitBreaker
 from agents.review_analyst_agent import analyze_reviews
 from agents.scoring_agent import score_lead
+from services.heartbeat import beat_standalone
 
 logger = logging.getLogger(__name__)
+
+HEARTBEAT_NAME = "scraper_worker.async_runner"
 
 MAX_CONCURRENCY = 5
 POLL_INTERVAL = 3
@@ -418,11 +421,22 @@ async def run_forever(job_types=None, poll_interval=POLL_INTERVAL):
     semaphore = asyncio.Semaphore(MAX_CONCURRENCY)
     logger.info("scraper runner started (concurrency=%d, types=%s)", MAX_CONCURRENCY, job_types)
 
+    # to_thread everywhere below: beat_standalone opens a blocking (sync) SQLAlchemy session,
+    # and this loop must never block on I/O -- the same reason provider HTTP calls in this
+    # module already run through asyncio.to_thread.
+    await asyncio.to_thread(beat_standalone, HEARTBEAT_NAME, "RUNNING",
+                            {"job_types": sorted(job_types), "concurrency": MAX_CONCURRENCY},
+                            True, poll_interval)
+
     while True:
         results = await asyncio.gather(
             *(_run_one(jt, semaphore) for jt in job_types for _ in range(MAX_CONCURRENCY))
         )
-        if not any(results):
+        did_work = any(results)
+        # Called every pass; services/heartbeat.py throttles the real DB write.
+        await asyncio.to_thread(beat_standalone, HEARTBEAT_NAME,
+                                "RUNNING" if did_work else "IDLE", None, False, poll_interval)
+        if not did_work:
             await asyncio.sleep(poll_interval)
 
 

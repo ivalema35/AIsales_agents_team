@@ -7,8 +7,11 @@ from database.db_config import SessionLocal
 from database.models import Job
 from jobs.job_queue import claim_next, mark_done, mark_failed
 from jobs.registry import HANDLERS, register_handler  # noqa: F401 - re-exported for existing imports
+from services.heartbeat import beat_standalone
 
 logger = logging.getLogger(__name__)
+
+HEARTBEAT_NAME = "jobs.worker"
 
 
 def run_once(job_type):
@@ -42,11 +45,20 @@ def run_once(job_type):
 def run_forever(job_types, poll_interval=2):
     """Poll every registered job_type in a loop. Sleeps only when a full pass found no work,
     so a busy queue gets drained back-to-back instead of waiting out the interval each time."""
+    # This loop runs far faster than the heartbeat throttle, so its real observable beat rate
+    # is the throttle window, not poll_interval -- beat() clamps to that anyway.
+    beat_standalone(HEARTBEAT_NAME, status="RUNNING",
+                    detail={"job_types": sorted(job_types)}, force=True,
+                    expected_interval_seconds=poll_interval)
     while True:
         did_work = False
         for job_type in job_types:
             if run_once(job_type):
                 did_work = True
+        # Called every pass; services/heartbeat.py throttles the actual DB write, so a busy
+        # queue spinning back-to-back doesn't turn into hundreds of pointless UPDATEs.
+        beat_standalone(HEARTBEAT_NAME, status="RUNNING" if did_work else "IDLE",
+                        expected_interval_seconds=poll_interval)
         if not did_work:
             time.sleep(poll_interval)
 

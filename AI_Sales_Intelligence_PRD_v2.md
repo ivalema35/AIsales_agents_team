@@ -1,9 +1,11 @@
 # AI Sales Intelligence PRD v2: Autonomous AI Sales Operating System (The Brain Layer)
 
-**Document Version:** 2.1.0-INTELLIGENCE  
+**Document Version:** 2.3.0-INTELLIGENCE  
 **System Classification:** Enterprise Autonomous Multi-Agent Sales Operating System  
 **Layer Focus:** Autonomous Cognition, Decision-Making, Strategy, Adaptability, Memory & Organizational Orchestration  
 **v2.1 Addendum:** Chapter 15 — Enterprise Executive Business & Operating System Layer (AI-BOS). Implementation blueprints for the modules below live in `MASTER_DEVELOPMENT_PRD.md` §8 (spec) and Phase 5 (§5, build order); this chapter defines the cognitive/strategic contract, MASTER defines the code.
+
+**v2.3 Addendum (2026-08-19):** Chapter 16 — Multi-Channel Engagement & Adaptive Messaging Layer. Written *after* the system went live against real businesses, from the operator's own post-launch requirements plus every capability this document specified but deferred for lack of real data (notably §6/§6.1's learning loop and §12's Voice SDR Agent). Build order: `MASTER_DEVELOPMENT_PRD.md` §5A, Phases 6–10.
 
 **v2.2 Amendment (2026-08-13, implemented):** the ICP & Strategy Agent (§2.1.C below) is no longer just a cognitive-contract definition — it is live code as of `MASTER_DEVELOPMENT_PRD.md` Phase 3 Step 3.5 (`agents/icp_strategy_agent.py`). n8n, named throughout this document as part of the Technical Execution Layer, was dropped from the actual build (see MASTER's §3.5 amendment / `tracker.md` §A.2) — its scheduler/trigger role is now a dedicated in-process Python worker (`jobs/discovery_scheduler.py`), which also autonomously triggers the ICP & Strategy Agent per product rather than that being a manual/CEO-agent-initiated step.
 
@@ -544,6 +546,8 @@ The performance of the AI Sales OS is evaluated across 4 core metric categories:
 
 The intelligence architecture is designed to support seamless expansion into downstream sales lifecycle stages:
 
+> **Status update (2026-08-19):** module 1 below is no longer speculative — the **Voice SDR Agent** is now specified in **Chapter 16** (§16.4, §16.6) and scheduled as `MASTER_DEVELOPMENT_PRD.md` §5A Phase 10 Step 10.4, with a scope deliberately wider than the "inbound qualification" originally sketched here, and correspondingly stricter guardrails: its own kill-switch, a per-lead consent/legal basis, a region gate, and assisted-before-autonomous rollout. Modules 2–4 remain future work.
+
 1. **Voice SDR Agent:** Integration with real-time webRTC voice agents (e.g., Retell AI / ElevenLabs) for inbound phone call qualification.  
 2. **Autonomous Demo & Proposal Agent:** Automated creation of personalized slide decks and proposal PDFs based on lead discovery insights.  
 3. **Contract & Negotiation Agent:** Intelligent redlining assistant for standard NDAs and software subscription contracts within human-defined boundaries.  
@@ -679,8 +683,132 @@ A fifth tier extends the model in §7: **Post-Sale Memory** — onboarding statu
 
 ---
 
+## Chapter 16: Multi-Channel Engagement & Adaptive Messaging Layer
+
+*(Added 2026-08-19. Companion build specification: `MASTER_DEVELOPMENT_PRD.md` §5A, Phases 6–10. Where
+Chapter 15 added a layer **above** the Cognitive Brain that governs it, this chapter widens the brain
+itself: more channels to speak through, a human-defined structure to speak within, and a feedback loop
+that finally makes §6's Learning Engine operate on real data instead of a design promise.)*
+
+### 16.0 Why this chapter exists
+
+Chapters 1–12 were written before the system had ever contacted a real business. Chapter 16 is written
+after — from eleven requirements raised by the operator watching it run, plus every capability this
+architecture specified but deliberately deferred for lack of real data.
+
+One theme runs through all of it: **the system could already act, but it could not yet see itself act,
+be steered without a code change, or learn from what it had done.** This chapter closes those three
+gaps, in that order.
+
+### 16.1 Observability as a cognitive prerequisite
+
+§10 (Self-Evaluation & Peer Critique) and §6 (Learning Engine) both assume the system can observe its
+own behaviour. In practice it could not: process liveness and in-flight work were visible only through
+server logs. Two real incidents were found that way rather than through any interface — a worker
+process silently not running for a whole session, and leads stranded mid-outreach after a provider
+outage.
+
+**Principle established:** an autonomous system's operator must be able to answer *"is it alive, and
+what is it doing right now?"* without shell access. Observability is not a reporting feature bolted on
+at the end — it is what makes every downstream claim in this document auditable.
+
+### 16.2 Human-set boundaries, AI-filled interiors
+
+The architecture already had one instance of this pattern: `target_regions` (§2.1.C amendment) — a human
+sets the geographic boundary, the AI decides business types freely inside it, precisely because the ICP
+agent has no grounded basis for inventing geography.
+
+Chapter 16 generalises the pattern into the system's **defining collaboration shape**, applying it in
+three new places:
+
+| Human sets (the boundary) | AI decides (inside it) |
+| :-- | :-- |
+| Target business categories, target person roles (Phase 7) | Which specific businesses and which named individuals actually match |
+| Message **format** — slot structure: hook → this business's own weak points → solution → demo slot (Phase 8) | The actual content of every slot, per lead, per product |
+| Content library — the real demo URLs, case studies, testimonials (Phase 8) | Which asset fits this lead, or that none fits and the slot should be dropped |
+
+This is also a **hallucination boundary**, not merely an ergonomic one. An AI that must select a demo
+URL from a human-curated library cannot invent one. An AI constrained to human-approved verticals cannot
+drift into the self-referential-query failure that once required rejecting 157 real leads. The boundary
+does more safety work than the prompt does.
+
+### 16.3 The measurement → adaptation dependency
+
+§6 (Learning Engine) and §6.1 (Automated A/B Copy Optimization) specify a multi-armed bandit over
+message variants. It has never run, for an honest reason: no variants were ever recorded. The
+`campaign_variants` structure was designed and left empty.
+
+The same gap deferred the operator-flagged **autonomous WhatsApp template loop** — an agent that decides
+a template is underperforming, drafts a replacement, submits it for approval, and adopts it once
+approved. Building that before performance data existed would have produced an agent that *appears* to
+learn while actually guessing.
+
+**Ordering rule, now explicit in the architecture:** *variants are produced (Phase 8) → variants are
+measured against real outcomes (Phase 9) → and only then may an agent adapt them (Phase 9, late).*
+Any future "learning" capability must state which real signal it learns from, or it does not ship.
+
+This is what makes Phase 9's adaptive-template agent legitimate where the same agent would have been
+illegitimate a year earlier in the build: it reads real sent/seen/replied counts, produced by real
+delivery-receipt tracking that already exists on both channels.
+
+### 16.4 New agent responsibilities
+
+These extend §2.1's catalog. None of them gains authority above the Quality Controller — QC's veto
+remains absolute (§2, §8), and every one of these still routes through the Decision Engine (§4).
+
+| Agent / responsibility | Role | Authority ceiling |
+| :-- | :-- | :-- |
+| **Format Adaptation** (extends Outreach Agent) | Fills a human-authored format per lead; selects a content asset or drops the slot | May never invent an asset, nor bypass QC |
+| **Cadence Agent** | Decides whether/when a follow-up touch is warranted; exits on reply or opt-out | Bound by suppression, pacing caps, and the autonomous-outreach kill-switch — at *every* touch, not just the first |
+| **Engagement Escalation** | Reads real open/seen signal; escalates repeated-open-no-reply to another channel or a human | Fires only on real signal; never infers engagement where a channel provides none |
+| **Template Lifecycle Agent** | Detects underperforming/missing templates, drafts replacements, submits for platform approval, adopts on approval | QC review **and** a human approval gate before any AI-authored template reaches a real business |
+| **Channel Router** | Chooses the channel for a lead's region and available contact points | Refuses to send into a region with no explicit policy; never guesses a fallback other than email |
+| **Voice SDR Agent** (§12's first future module, now specified) | Conducts or assists a real phone conversation | Its own kill-switch, stricter than the global one; a per-lead consent/legal basis is mandatory before any dial; hands off to a human on anything it cannot handle |
+
+### 16.5 Channel reality: what the platforms actually permit
+
+The operator asked for AI outreach on LinkedIn, Instagram and Facebook. The honest architectural answer
+distinguishes three regimes, and this distinction is a **design constraint, not a preference**:
+
+1. **Cold-contact-capable channels** — email, WhatsApp (via pre-approved templates), SMS (region-gated).
+   These support a genuine first touch to a stranger, within their own compliance rules.
+2. **Reply-window-only channels** — Instagram DM and Facebook Messenger. Meta's official APIs permit
+   messaging only someone who contacted *us* first, inside a limited window. There is no cold-template
+   equivalent to WhatsApp's. Automated *responses* here are legitimate and worth building; automated
+   *cold outreach* is not available at all.
+3. **No-automation channels** — LinkedIn. No official API exists for general cold messaging. The only
+   technical route is driving a logged-in account with a browser, which violates the platform's terms
+   and risks permanent account loss — and directly contradicts this project's own evasion-free rule.
+
+**Resulting design:** for regimes 2 and 3 the AI does everything *except* send — research, targeting,
+personalisation, drafting — and places the finished message in a **human-send queue**. The operator gets
+the full intelligence benefit at zero policy risk. The system deliberately contains **no code path
+capable of auto-sending on those platforms**, and Phase 10's DoD verifies that by absence.
+
+This is a case where the correct architecture is defined by what it refuses to build.
+
+### 16.6 Escalating risk, escalating guardrails
+
+The channels added in Phase 10 are not equivalent in consequence, and the guardrails scale accordingly:
+
+- **Email/WhatsApp** (live today): suppression list, one-click unsubscribe, pacing caps, QC veto,
+  global autonomous-outreach kill-switch.
+- **SMS**: all of the above, plus a per-country compliance gate that refuses unconfigured regions
+  outright, plus its own kill-switch.
+- **AI voice calling**: all of the above, plus a *dedicated kill-switch independent of and stricter than
+  the global one*, a recorded per-lead consent/legal basis before any dial, a region gate, and an
+  assisted-before-autonomous rollout — a human dials and the AI assists, until real calls prove the
+  compliance posture.
+
+The reasoning is uniform across all three: **the cost of one wrong action rises sharply with each
+channel.** A mistargeted email is a nuisance; an unlawful automated call is a per-call statutory
+penalty in some jurisdictions and a legal exposure in others. Guardrail strength is scaled to the cost
+of being wrong once — never to the average case.
+
+---
+
 ## Conclusion & Architectural Sign-Off
 
 This **AI Sales Intelligence PRD v2** defines the complete cognitive, decision-making, and organizational framework required to transform the technical plumbing (Flask, SQLite, Playwright, and — as actually implemented, per the v2.2 amendment — an in-process discovery scheduler rather than n8n) into an **autonomous, enterprise-grade AI Sales Team** — and, with Chapter 15, extends that framework upward into a governing **Executive Business Layer (AI-BOS)** that turns the sales team into a revenue-and-capacity-aware business operating system.
 
-By separating the **Technical Execution Layer (PRD v3)**, the **Cognitive Brain Layer (Chapters 1–12)**, and the **Enterprise Executive Layer (Chapter 15)**, the system achieves maximum modularity, zero-hallucination reliability, strict compliance, and scalable human-AI collaboration — with every layer's autonomy bounded by the one above it.
+By separating the **Technical Execution Layer (PRD v3)**, the **Cognitive Brain Layer (Chapters 1–12)**, the **Enterprise Executive Layer (Chapter 15)**, and the **Multi-Channel Engagement & Adaptive Messaging Layer (Chapter 16)**, the system achieves maximum modularity, zero-hallucination reliability, strict compliance, and scalable human-AI collaboration — with every layer's autonomy bounded by the one above it, and every channel's autonomy bounded by what that channel's own platform and jurisdiction actually permit.

@@ -18,8 +18,11 @@ from email.utils import parseaddr
 from config import Config
 from database.db_config import SessionLocal
 from services.inbound_service import record_inbound
+from services.heartbeat import beat_standalone
 
 logger = logging.getLogger(__name__)
+
+HEARTBEAT_NAME = "jobs.inbound_poller"
 
 
 def _extract_body(msg) -> str:
@@ -98,13 +101,25 @@ def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.INBOUND_POLL_INTERVAL_SECONDS
     logger.info("inbound email poller started (poll=%ds, mailbox=%s)",
                poll_interval, Config.INBOUND_EMAIL_USER)
+    beat_standalone(HEARTBEAT_NAME, status="RUNNING", force=True,
+                    expected_interval_seconds=poll_interval)
+
     while True:
+        status, detail = "RUNNING", None
         try:
             recorded = check_inbox()
             if recorded:
                 logger.info("inbound poller -> recorded %d new message(s)", recorded)
+                detail = {"last_recorded": recorded}
         except Exception:  # noqa: BLE001 - one bad IMAP cycle must not kill the poller
             logger.exception("inbound poller tick failed")
+            # A poller whose IMAP connection is broken keeps looping and looks perfectly alive
+            # from the outside -- inbound replies just silently stop arriving. Reporting ERROR
+            # is the only way that failure becomes visible without reading logs.
+            status = "ERROR"
+        beat_standalone(HEARTBEAT_NAME, status=status, detail=detail,
+                        force=(status == "ERROR"),
+                        expected_interval_seconds=poll_interval)
         time.sleep(poll_interval)
 
 

@@ -28,7 +28,9 @@ Project ka naam **AI-BOS (Enterprise AI Business Operating System)** hai — peh
 ### Authoritative docs (sab kuch inhi do me hai — baaki files delete ho chuki hain)
 - **`MASTER_DEVELOPMENT_PRD.md`** — single build spec. Phases 1–5, poora DDL (16 tables), saare agent/cognition code blueprints. **Isi ke against build karna hai.**
 - **`AI_Sales_Intelligence_PRD_v2.md`** — cognitive/organizational reference (agent roles, decision engine, memory tiers, Chapter 15 ke 8 executive modules).
-- **`tracker.md`** — meri apni live progress log. 4 sections: Rules & Memory, Completed, Ongoing, Pending. **Har naye session me sabse pehle ye padhna hai** current status jaanne ke liye.
+- **`tracker.md`** — meri apni live progress log. 5 sections: Rules & Memory, Completed, Ongoing, Pending (Phases 1–5), aur **Section 5: Add-on Phases 6–10** (2026-08-19 se). **Har naye session me sabse pehle ye padhna hai** current status jaanne ke liye.
+- **`CRM_UI_UX_PLAN.md`** — dashboard→CRM upgrade plan, apne UI phases ke saath (1–4 original, 5–9 add-on jo backend Phase 6–10 ke saath 1:1 paired hain).
+- **`NEW_REQUIREMENTS_STAGING.md`** — user ke naye raw requirements ka capture buffer. Naya requirement pehle yahan `RAW` me jaata hai; user confirm kare tabhi teeno PRD docs me merge hota hai (status `MERGED`). Ye workflow user ne khud maanga tha (2026-08-19) — turant PRD edit mat karo.
 
 ### Removed docs (ab exist nahi karti, dobara mat banana)
 `prd.md`, `ENTERPRISE_BUSINESS_LAYER_ADDON.md`, aur original standalone "PRD v3" file — inka saara content upar wali 2 files me merge ho chuka hai (2026-08-10).
@@ -37,8 +39,9 @@ Project ka naam **AI-BOS (Enterprise AI Business Operating System)** hai — peh
 
 - Remote: `https://github.com/ivalema35/AIsales_agents_team.git`, branch `main`.
 - **`.gitignore`** covers `.venv/`, `venv/` (actual folder name on this machine, no dot — fixed a real gap here 2026-08-11), `.env` (real secrets, added when real `.env` was created with real API keys), `__pycache__/`, `*.pyc`.
-  - `sales_system.db` (SQLite binary) **jaan-bujh kar commit ki gayi hai** — user ne explicitly "abhi commit kar do" chuna tha jab maine gitignore vs commit ka option pucha (2026-08-11). Agar future me isme real business data aaye aur user apna mind badle, to revisit karna.
+  - `sales_system.db`/`-shm`/`-wal` **ab git se untrack hai (2026-08-19, reverses the 2026-08-11 decision)** — VPS live hone ke baad local dev DB aur VPS ki real production DB genuinely alag data rakhte hain, isliye DB ko git me rakhna risky ho gaya (ek `git pull` VPS ki real leads ko overwrite kar sakta tha). File disk pe as-is hai, bas `git rm --cached` + `.gitignore` me add kiya. Poora incident/recovery detail tracker.md me hai.
 - User agla laptop change karne wala hai — isliye jitna zyada context repo (git) me ho utna better, kyunki mera internal Claude memory system is machine tak local hai, naye laptop pe transfer nahi hoga.
+- **Deployment workflow rule (2026-08-19):** major change/naya module complete hone ke baad hi (chhote tweaks ke liye nahi) — user se confirm karna, phir: `git push` (local→GitHub) → VPS par `git pull` (DB files ko touch kiye bina, tracker.md §A.5/§A.4 ka safe pattern follow karke) → frontend change ho to build+`public_html` sync → affected `bos-*` services restart + verify. Poora detail tracker.md §A.5 me.
 
 ## 4. Build status (as of 2026-08-13 — full detail always in tracker.md, this is a curated summary not a log)
 
@@ -135,6 +138,16 @@ Project ka naam **AI-BOS (Enterprise AI Business Operating System)** hai — peh
 
 ## 4.1 Architectural deviation — LLM provider (2026-08-11, full detail in tracker.md §A.1)
 MASTER PRD hardcodes Gemini 2.5 Flash; user confirmed instead a **single swappable provider** (`config.py`: `LLM_PROVIDER` + `LLM_MODEL`, `cognition/llm_client.py` branches on it) — provider swap = one config change. `LLM_PROVIDER=gemini` is the default (genuinely free tier); `openai` is the tested fallback, already proven useful once when Gemini's daily quota ran out mid-session.
+**Update 2026-08-19:** local aur VPS ab deliberately alag hain — **VPS par `LLM_PROVIDER=openai`** (Gemini ke baar-baar 429/503 free-tier failures live outreach ko rok rahe the), **local par `gemini`** waisa hi. Fallback dono jagah dono taraf kaam karta hai. Ye bilkul wahi swappability hai jiske liye ye design banaya tha — ek `.env` line, koi code change nahi.
+
+## 4.2 Add-on Phases 6–10 planned (2026-08-19) — post-launch requirements
+System live hone ke baad user ne 11 naye requirements diye (`NEW_REQUIREMENTS_STAGING.md` me raw capture, ab sab `MERGED`). Inhe **aur har wo point jo pehle hold par tha** (Phase 5 ke alawa) ek proper phase plan me convert kiya, teeno docs me: `MASTER_DEVELOPMENT_PRD.md` §5A (Phase 6–10 + P6–P10 gates), `AI_Sales_Intelligence_PRD_v2.md` Chapter 16 (cognitive contract), `CRM_UI_UX_PLAN.md` §2A (UI Phase 5–9, backend ke saath 1:1). Poora breakdown tracker.md **Section 5** me.
+
+- **Phase 6** Live observability → **7** Targeting + person-level contacts → **8** Message format engine → **9** Measurement + multi-touch + adaptive templates → **10** Channel expansion (SMS/social/voice).
+- **Sequencing ka asli reason (yaad rakhna, ye preference nahi hai):** ⭐ WhatsApp-template-loop 2026-08-13 ko sirf isliye defer hua tha ki *real performance data nahi tha (`campaign_variants` wired nahi)*. Wahi gap Item 6 (subject-line testing) aur Item 4d (AI templates) ko bhi block karta hai. Isliye **variants banao (P8) → measure karo (P9 early) → tabhi AI adapt kare (P9 late)**. Ulta karne se ek aisa "learning" agent banega jo actually guess kar raha hoga — bilkul wahi cheez jisse bachne ke liye defer kiya tha.
+- **Hold-par-rakhe points jo fold ho gaye:** ⭐ template loop (→ P9.6), Hunter ke discard ho rahe person fields (→ P7.4, zero naya cost), `campaign_variants` wiring (→ P9.1), 604-lead social backfill (→ P7.7), teen discovery bugs — city filter/cross-city collision/multi-branch (→ P7.6), §12 ka Voice SDR Agent (→ P10.4).
+- **✅ DECIDED (2026-08-19): Phase 5 indefinitely postponed, sequence = 6 → 7 → 8 → 9 → 10.** User ka call. Phases 6–10 ki Phase 5 par koi technical dependency nahi hai, aur Phase 5 ke saare modules (CAC ceiling, capacity throttle, renewal lifecycle) volume-dependent hain — converted clients aur delivery-capacity pressure abhi hai hi nahi, to wo ek non-existent problem solve karta. **Phase 5 ka spec delete nahi kiya** — MASTER §5 me intact hai, P5 gate bhi §9 table me hai; jab real capacity pressure aayegi tab cleanly slot ho jayega. Formal deviation record: tracker.md **§A.6**. **Jo nahi badla: har naye phase ka DoD gate (P6–P10) utna hi mandatory hai** — phase order chhodna gates chhodna nahi hai.
+- **Do requests ka jawab "nahi ban sakta" hai, aur wo docs me honestly likha hai:** LinkedIn cold-messaging ka koi official API hai hi nahi; Meta (IG/FB) sirf reply-window me messaging deta hai, cold DM ka koi template-rasta nahi hai. Bot se bhejna = ToS violation + permanent ban risk + project ke apne evasion-free rule ke against. Isliye **draft-and-queue** design: AI sab kare except send, human bheje. P10 ka gate isko *absence se* verify karta hai — aisa koi code path hona hi nahi chahiye.
 
 ## 5. Important technical rules (full list `tracker.md` Section 1 me hai)
 

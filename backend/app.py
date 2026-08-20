@@ -16,6 +16,7 @@ from api.env_settings import env_settings_bp
 from api.analytics import analytics_bp
 from api.dashboard import dashboard_bp
 from api.webhooks import webhooks_bp
+from api.system import system_bp
 from api.auth import auth_bp
 
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
@@ -65,6 +66,7 @@ def create_app():
     app.register_blueprint(analytics_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(webhooks_bp)
+    app.register_blueprint(system_bp)
 
     @app.route("/health")
     def health():
@@ -75,4 +77,11 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=(Config.ENV == "development"))
+    # threaded=True only in dev: the built-in Werkzeug server is single-threaded by default
+    # and serialises every request. That was mostly invisible before Step 6.2/6.3 -- now the
+    # nav's SystemStatusDot and the /system page both poll /api/v1/system/live continuously
+    # in the background, on top of normal page traffic, and a serialised dev server can
+    # queue/delay those enough to make the UI look laggier than it really is. Production is
+    # unaffected -- it's served by gunicorn's multiple worker processes (bos-api.service),
+    # never by this app.run() call at all.
+    app.run(debug=(Config.ENV == "development"), threaded=(Config.ENV == "development"))

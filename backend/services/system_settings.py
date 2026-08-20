@@ -35,8 +35,22 @@ OUTREACH_DAILY_CAP_EMAIL = "outreach_daily_cap_email"
 OUTREACH_DAILY_CAP_WHATSAPP = "outreach_daily_cap_whatsapp"
 DISCOVERY_COOLDOWN_HOURS = "discovery_cooldown_hours"
 
-STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS}
-INT_KEYS = {OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS}
+# Phase 6 Step 6.4 -- deliberately defaults TRUE, breaking this file's usual "missing setting
+# = off" rule. That rule exists to keep risky autonomous SENDS (to real leads) off by
+# default; this switch only ever emails the admin's own inbox about the admin's own system,
+# so there's no external risk to guard against, and defaulting it off would recreate the
+# exact blindness this phase exists to fix on every fresh install.
+STUCK_ALERT_ENABLED = "stuck_alert_enabled"
+# Minimum minutes between two stuck-alert emails -- an ongoing outage must not turn into an
+# email storm; the tick keeps checking every pass, it just doesn't re-notify until this
+# cooldown elapses (or the problem clears and recurs).
+STUCK_ALERT_COOLDOWN_MINUTES = "stuck_alert_cooldown_minutes"
+# ISO timestamp of the last stuck-alert send -- internal bookkeeping, not dashboard-editable.
+STUCK_ALERT_LAST_SENT_AT = "stuck_alert_last_sent_at"
+
+STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS, STUCK_ALERT_LAST_SENT_AT}
+INT_KEYS = {OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
+            STUCK_ALERT_COOLDOWN_MINUTES}
 
 
 def get_bool(db, key: str, default: bool = False) -> bool:
@@ -97,4 +111,6 @@ def get_all(db) -> dict:
         OUTREACH_DAILY_CAP_WHATSAPP: get_int(
             db, OUTREACH_DAILY_CAP_WHATSAPP, default=Config.OUTREACH_DAILY_CAP_WHATSAPP),
         DISCOVERY_COOLDOWN_HOURS: get_int(db, DISCOVERY_COOLDOWN_HOURS, default=Config.DISCOVERY_COOLDOWN_HOURS),
+        STUCK_ALERT_ENABLED: get_bool(db, STUCK_ALERT_ENABLED, default=True),
+        STUCK_ALERT_COOLDOWN_MINUTES: get_int(db, STUCK_ALERT_COOLDOWN_MINUTES, default=60),
     }

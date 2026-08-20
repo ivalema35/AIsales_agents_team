@@ -10,6 +10,10 @@ async_runner.py vs jobs/worker.py -- MASTER §9 process topology), owns two jobs
    "pacing caps" item flagged open under DoD Gate P3).
 3. EOD report tick (Step 4.5): once per day, after 23:50 IST, generates and emails the
    daily_reports row via services/reporting_service.py if today's doesn't already exist.
+4. Stuck-state alert tick (Step 6.4): every tick, checks for a DOWN process, a lead stranded
+   in OUTREACHING, a job stuck CLAIMED, or a DEAD pile-up, and emails the admin -- at most
+   once per cooldown window -- if anything is wrong. Detection only; nothing here fixes what
+   it finds (that's a deliberately separate, riskier capability -- see tracker.md Step 6.4).
 
 Run as `python -m jobs.discovery_scheduler`, alongside (not instead of) jobs/worker.py and
 scraper_worker/async_runner.py.
@@ -30,10 +34,18 @@ from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.system_settings import (
-    get_bool, get_int, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
-    OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS)
+    get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
+    OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
+    STUCK_ALERT_ENABLED, STUCK_ALERT_COOLDOWN_MINUTES, STUCK_ALERT_LAST_SENT_AT,
+    EOD_REPORT_RECIPIENTS)
+from services.heartbeat import beat, beat_standalone
+from services.system_health import (
+    get_process_states, find_stuck_leads, find_stuck_jobs, count_dead_jobs)
+from services.outreach.email_service import send_internal_email
 
 logger = logging.getLogger(__name__)
+
+HEARTBEAT_NAME = "jobs.discovery_scheduler"
 
 
 def _active_strategy_queries(db, product_id):
@@ -241,14 +253,90 @@ def _run_eod_report_tick(db):
     generate_eod_report(db, report_date_str)
 
 
+def _run_stuck_alert_tick(db):
+    """Detect-and-alert only (Step 6.4) -- deliberately does not fix anything it finds.
+    Auto-recovering a stuck lead or job is its own, riskier decision (retry it? just reset
+    the status? what if the underlying cause is still ongoing?) that was explicitly kept out
+    of this step's scope; a human acts on what this email reports.
+    """
+    if not get_bool(db, STUCK_ALERT_ENABLED, default=True):
+        return
+
+    down = [p for p in get_process_states(db) if p["state"] in ("DOWN", "ERROR")]
+    stuck_leads = find_stuck_leads(db)
+    stuck_jobs = find_stuck_jobs(db)
+    dead_count = count_dead_jobs(db)
+
+    if not (down or stuck_leads or stuck_jobs or dead_count):
+        return  # nothing wrong -- don't touch the cooldown timestamp either
+
+    cooldown_minutes = get_int(db, STUCK_ALERT_COOLDOWN_MINUTES, default=60)
+    last_sent = get_str(db, STUCK_ALERT_LAST_SENT_AT, default="")
+    if last_sent:
+        try:
+            elapsed = datetime.utcnow() - datetime.strptime(last_sent, "%Y-%m-%d %H:%M:%S")
+            if elapsed < timedelta(minutes=cooldown_minutes):
+                return  # already alerted recently; still broken, but not an email storm
+        except ValueError:
+            pass  # malformed stored value -- treat as "never sent", alert now
+
+    lines = ["AI-BOS system check found the following:", ""]
+    if down:
+        lines.append(f"Processes needing attention ({len(down)}):")
+        lines += [f"  - {p['name']}: {p['state']} (last seen {p['age_seconds']}s ago)"
+                  for p in down]
+        lines.append("")
+    if stuck_leads:
+        lines.append(f"Leads stuck in OUTREACHING ({len(stuck_leads)}):")
+        lines += [f"  - {l['company_name']} ({l['minutes_stuck']} min)" for l in stuck_leads]
+        lines.append("")
+    if stuck_jobs:
+        lines.append(f"Jobs stuck CLAIMED ({len(stuck_jobs)}):")
+        lines += [f"  - {j['job_type']} ({j['minutes_stuck']} min)" for j in stuck_jobs]
+        lines.append("")
+    if dead_count:
+        lines.append(f"Jobs that exhausted every retry (DEAD): {dead_count}")
+        lines.append("")
+    lines.append("This is a detection-only alert -- nothing was changed automatically. "
+                 "Check the System page in the CRM.")
+
+    recipients = get_str(db, EOD_REPORT_RECIPIENTS,
+                         default=",".join(Config.EOD_REPORT_RECIPIENTS)).split(",")
+    body = "\n".join(lines)
+    sent_any = False
+    for recipient in recipients:
+        recipient = recipient.strip()
+        if not recipient:
+            continue
+        try:
+            send_internal_email(recipient, "AI-BOS: system needs attention", body)
+            sent_any = True
+        except Exception:  # noqa: BLE001 - one bad send must not block the others or crash the tick
+            logger.exception("stuck-alert email failed for %s", recipient)
+
+    # Only start the cooldown once something actually sent -- if every recipient failed
+    # (e.g. Resend key misconfigured), retrying next tick is more useful than going quiet.
+    if sent_any:
+        set_str(db, STUCK_ALERT_LAST_SENT_AT, datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
+        logger.warning("stuck-alert sent: %d down/error process(es), %d stuck lead(s), "
+                       "%d stuck job(s), %d dead job(s)",
+                       len(down), len(stuck_leads), len(stuck_jobs), dead_count)
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
     logger.info("discovery scheduler started (poll=%ds, outreach tick every %ds)",
                poll_interval, Config.OUTREACH_TICK_INTERVAL_SECONDS)
 
+    # 300s by default -- far slower than the other processes, which is exactly why the
+    # expected interval is stored per process instead of assumed globally.
+    beat_standalone(HEARTBEAT_NAME, status="RUNNING", force=True,
+                    expected_interval_seconds=poll_interval)
+
     while True:
         db = SessionLocal()
+        tick_status = "RUNNING"
         try:
             _run_discovery_tick(db)
             now = time.monotonic()
@@ -256,9 +344,19 @@ def run_forever(poll_interval=None):
                 _run_outreach_tick(db)
                 last_outreach_tick = now
             _run_eod_report_tick(db)
+            _run_stuck_alert_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
+            # Surface a failing tick to the monitor instead of only to the log -- a scheduler
+            # that is alive but erroring every tick looks identical to a healthy one if the
+            # heartbeat only ever reports RUNNING.
+            tick_status = "ERROR"
         finally:
+            # Inside the try/finally so a failed tick still beats -- the process IS alive, and
+            # reporting it as stale would be wrong (and would mask the real ERROR status).
+            beat(db, HEARTBEAT_NAME, status=tick_status,
+                 force=(tick_status == "ERROR"),
+                 expected_interval_seconds=poll_interval)
             db.close()
         time.sleep(poll_interval)
 

@@ -202,6 +202,7 @@ at least one real day (the project's standing discipline — a chart that LOOKS 
 verified right until it's checked against ground truth once).
 
 ### Phase 4 — Global UI/UX polish pass
+
 **Goal**: sweep every existing component (`PipelineKanban`, `LeadCard`, `AlertsPanel`,
 `Products.jsx`, `SystemToggles.jsx`) to actually use the §1.2 shared primitives and token
 rules, not just the new Phase 1–3 surfaces. This phase existing is itself an admission that
@@ -214,6 +215,123 @@ this cleanup explicitly rather than pretending it won't be needed.
 - Add real empty/loading states everywhere still missing one.
 - Full keyboard-navigation pass (tab through the whole app once, everything reachable).
 - Verify at 1280px width per §1.2's responsiveness rule.
+
+---
+
+## 2A. Add-on UI phases (5–9) — added 2026-08-19
+
+Phases 1–4 above turned the dashboard into a CRM that can **see** the system's data. Phases 5–9
+are the UI half of `MASTER_DEVELOPMENT_PRD.md` §5A (backend Phases 6–10): surfaces that let the
+operator **steer** the system without a code change, and finally see it running live.
+
+Each phase here pairs 1:1 with its backend phase and **must not start before that backend phase's
+DoD gate is green** — a UI built against an unfinished API is the fastest way to ship a screen full
+of plausible-looking placeholder numbers, which this project has explicitly refused to do since
+Phase 3's analytics work.
+
+§1.2's design tokens and §1's "improved, not basic" rules apply to every phase below without
+exception. Two additions specific to this block:
+
+- **Live surfaces must distinguish "no data" from "not loaded" from "down".** A monitor page that
+  renders an empty feed identically to a dead backend is worse than no monitor page — it manufactures
+  false confidence, which is the exact failure Phase 5 exists to fix.
+- **Every AI-authored artifact shown to the operator must be visibly labelled as AI-authored** (drafts,
+  generated templates, selected subject lines). The operator approving something must always know
+  whether a human or the system wrote it.
+
+### Phase 5 — Live System Monitor  *(backend Phase 6)*
+
+**Goal**: answer *"is the system alive, and what is it doing right now?"* on one screen. This is the
+direct fix for the operator's own observation — *"abhi crm me ye pata nahi chal raha he ki system kya
+kar raha he"* — and for two real incidents that were only ever visible over SSH.
+
+- New `/system` route: per-process liveness cards (`jobs.worker`, `scraper_worker.async_runner`,
+  `jobs.discovery_scheduler`, `jobs.inbound_poller`) with real last-seen timestamps — never a static
+  green dot.
+- Job-queue board: counts by status × type, with `DEAD`/pile-up states visually distinct from healthy.
+- Live activity feed from `agent_events` — what was discovered, enriched, scored, sent, just now.
+- Stuck-state banner: leads parked in `OUTREACHING`, stale processes, `DEAD` job accumulation.
+- Polling on an interval, not WebSocket (same "refuse unneeded infrastructure" call as dropping n8n).
+- A compact liveness indicator in the global nav, so the answer is visible from every page.
+
+**DoD**: kill a real background process → the page reflects `DOWN` within the staleness window and
+recovers on restart; the feed's contents match a direct SQL query of `agent_events`; a deliberately
+stuck lead is visibly flagged while a mid-send lead is not.
+
+### Phase 6 — Product Targeting & Person-Level Contacts  *(backend Phase 7)*
+
+**Goal**: let the operator define *who* to target, and show every real human found at a lead.
+
+- `Products.jsx`: two new optional multi-value fields — target business categories, target person roles
+  (e.g. "Property Manager", "CEO", "Sales Manager"). Both must read clearly as **optional**; a product
+  with neither set must look and behave exactly as it does today.
+- `LeadDetail.jsx`: a real contacts section — multiple people per lead with role, seniority, decision-maker
+  flag, LinkedIn/email/phone, and **the source of each** (scraped / Hunter / LinkedIn lookup).
+- Show contact confidence honestly. A low-confidence guess must not render identically to a verified
+  contact — this is the UI half of the backend's "zero wrong-company attachments" gate.
+- Backfill progress surface for the one-off social-profile enrichment run (Step 7.7), including its
+  estimated API spend **before** the operator starts it, not after.
+
+**DoD**: a product saved with no targeting fields round-trips unchanged; a real lead with multiple
+Hunter contacts renders all of them with correct roles and sources.
+
+### Phase 7 — Message Format Builder & Content Library  *(backend Phase 8)*
+
+**Goal**: the highest-leverage screen in this whole block — where the operator shapes what every
+outreach message says, without touching code. Directly serves the stated goal of raising open/read rates.
+
+- **Format builder**: an ordered, editable list of slots (greeting/hook → this business's own weak
+  points → solution → demo link → CTA), per product and channel, with a global default. The operator
+  writes *structure and intent*, never final copy — the UI must make that distinction obvious, since
+  it is the entire concept of the feature.
+- **Live preview against a real lead**: pick an existing lead, see what the format actually produces.
+  Without this the operator is editing blind, and format quality is unmeasurable until a real send.
+- **Content library**: demo URLs, video links, case studies, testimonials — per product, taggable, with
+  an active/inactive toggle. This is what the AI selects from; it must be obvious that an asset absent
+  here can never appear in a message.
+- Format versioning visible, since a format change resets the performance history Phase 8 measures.
+
+**DoD**: two different formats produce visibly different previews for the same real lead; a
+product-scoped asset never appears in another product's preview.
+
+### Phase 8 — Performance, Follow-ups & Template Manager  *(backend Phase 9)*
+
+**Goal**: close the loop visually — what worked, what is scheduled next, and what the AI wants to change.
+
+- **Variant performance**: sent / seen / replied per format version, subject line and template, built on
+  the real Seen tracking already shipped in Phase 3 of this plan. Follow the `dataviz` skill as that
+  phase did — validate the palette with the script, never eyeball it.
+- **Never fabricate a metric.** Where no real signal exists the cell reads `—`, exactly as the EOD
+  report's KPI section already does for `spam_rate`.
+- **Follow-up timeline** per lead: which touches were sent, which is scheduled next, why the sequence
+  ended (replied / opted out / exhausted). An opted-out lead must be unmistakable.
+- **Template manager**: submit a WhatsApp template from the CRM, watch its real Meta approval state
+  (`PENDING`/`APPROVED`/`REJECTED` + rejection reason), activate an approved one — all without a code edit.
+- **AI-proposed template review queue**: the human approval gate for the ⭐ autonomous template loop.
+  Clearly labelled AI-authored, showing the performance evidence that triggered the proposal, with
+  approve/reject as a deliberate action — never a default-approve.
+
+**DoD**: performance numbers reconcile against a direct SQL query for one real day; a real template
+submitted here reaches Meta and its real state appears without a code change.
+
+### Phase 9 — Channel Manager & Social Draft Queue  *(backend Phase 10)*
+
+**Goal**: make channel policy and its hard limits legible — including the things the system
+deliberately will not do.
+
+- **Channel policy per region**: which channels are allowed/preferred where, why a lead was routed the
+  way it was. Must state plainly when a region has no policy configured, since that means email-only.
+- **Social draft queue** (LinkedIn / Instagram / Facebook): AI-drafted messages a human reviews, copies,
+  sends manually, and marks sent. The UI must make clear this is **deliberately manual** — the platforms
+  do not permit automated cold sending, and the system contains no code path that could.
+- **Voice calling controls** (when Step 10.4 lands): its own kill-switch, visibly separate from and
+  stricter than the global outreach switch; per-lead consent basis shown before any call is possible.
+- Kill-switch states for every channel visible in one place. Given this project's history — a real WARM
+  lead was one tick away from an unauthorised send before the kill-switch existed — a switch whose state
+  is ambiguous in the UI is a safety defect, not a polish item.
+
+**DoD**: a Canadian lead visibly routes away from WhatsApp under policy; the social queue can draft and
+mark-sent; with the voice switch off, no UI path can initiate a call.
 
 ---
 
@@ -230,3 +348,16 @@ still partially real/partially placeholder.
 - [x] Phase 3 — Analytics / Charts (2026-08-17, extended same day with `frontend/src/lib/statusColors.js` -- one fixed color per lead status, shared across Kanban/LeadDetail/Analytics; also fixed a real short-bar-renders-as-a-circle bug, see memory.md) -- new `/analytics` page: pipeline funnel, channel performance, trend line chart, per-product table. Backend aggregations verified against real data before building the frontend. Followed the `dataviz` skill throughout -- validated the categorical palette with its script (not eyeballed), added a table-view fallback for the one series (aqua/replies) the validator flagged below 3:1 contrast on the light surface (its own "relief rule"). See tracker.md for the full build.
   - **Further extended 2026-08-17/18** (still Phase 3 scope, not a new phase): by-product view rebuilt as per-product tier donuts; IST-timezone trend-bucketing bug found and fixed; a whole new real "Seen" tracking pipeline built for both channels from scratch (`api/webhooks.py`, WhatsApp status-webhook handling, `OutreachLog.provider_message_id`/`read_at`); and a new "Sent, seen & replied" chart went through 3 rejected designs before landing on a per-channel donut with mutually-exclusive Replied/Seen-no-reply/Not-seen buckets (the 3 attempts and why each was wrong are in tracker.md and memory.md in full — worth reading before proposing a 4th chart design for anything adjacent to this one, since the pattern of rejection was consistently about FORM, not data).
 - [ ] Phase 4 — Global UI/UX polish pass
+
+**Add-on phases (§2A, added 2026-08-19).** Same protocol, one extra rule: each pairs 1:1 with a backend
+phase in `MASTER_DEVELOPMENT_PRD.md` §5A and does not start until that backend phase's DoD gate is green.
+
+- [ ] Phase 5 — Live System Monitor *(backend Phase 6)*
+- [ ] Phase 6 — Product Targeting & Person-Level Contacts *(backend Phase 7)*
+- [ ] Phase 7 — Message Format Builder & Content Library *(backend Phase 8)*
+- [ ] Phase 8 — Performance, Follow-ups & Template Manager *(backend Phase 9)*
+- [ ] Phase 9 — Channel Manager & Social Draft Queue *(backend Phase 10)*
+
+Phase 4 (polish) is deliberately **not** a prerequisite for Phases 5–9 — it is a sweep over existing
+surfaces and can run whenever there's a natural gap. But it should not be skipped indefinitely either:
+each new phase adds surfaces that will themselves need it, so the longer it waits the larger it gets.
