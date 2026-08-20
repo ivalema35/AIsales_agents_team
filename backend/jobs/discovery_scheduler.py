@@ -82,6 +82,9 @@ def _refresh_strategy_if_stale(db, product):
         "target_keywords": json.loads(product.target_keywords or "[]"),
         "value_proposition": product.value_proposition,
         "pain_point_mappings": json.loads(product.pain_point_mappings or "{}"),
+        # Phase 7 Step 7.2: a human-set category boundary (empty by default -- means
+        # "unchanged from today", the prompt itself only constrains when this is non-empty).
+        "target_business_categories": json.loads(product.target_business_categories or "[]"),
     }
     result = generate_strategy(db, product.id, product_brief)
     if not result:

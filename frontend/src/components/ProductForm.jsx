@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Building2, FileText, Sparkles, MapPin, Globe2, Plus, X, Save } from "lucide-react";
+import { Building2, FileText, Sparkles, MapPin, Globe2, Tag, UserCircle2, Plus, Save } from "lucide-react";
 import { api } from "../api/client";
+import ChipInput, { FieldLabel } from "./ui/ChipInput";
 
 const EMPTY = {
   title: "",
@@ -8,6 +9,8 @@ const EMPTY = {
   value_proposition: "",
   target_regions: [],
   target_country: "IN",
+  target_business_categories: [],
+  target_person_roles: [],
 };
 
 // A handful of common targets as one-click pills instead of a free-text 2-letter box --
@@ -30,18 +33,9 @@ function toFormState(product) {
     value_proposition: product.value_proposition || "",
     target_regions: product.target_regions || [],
     target_country: product.target_country || "IN",
+    target_business_categories: product.target_business_categories || [],
+    target_person_roles: product.target_person_roles || [],
   };
-}
-
-function FieldLabel({ icon: Icon, children, hint }) {
-  return (
-    <div className="mb-1.5">
-      <span className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
-        <Icon size={13} className="text-slate-400" /> {children}
-      </span>
-      {hint && <p className="mt-0.5 text-[11px] leading-relaxed text-slate-400">{hint}</p>}
-    </div>
-  );
 }
 
 const inputClass =
@@ -58,7 +52,6 @@ const inputClass =
 export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
   const isEdit = !!product;
   const [form, setForm] = useState(isEdit ? toFormState(product) : EMPTY);
-  const [regionInput, setRegionInput] = useState("");
   const [customCountry, setCustomCountry] = useState(
     !COMMON_COUNTRIES.some((c) => c.code === (isEdit ? product.target_country : "IN"))
   );
@@ -67,27 +60,6 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
-  }
-
-  function addRegion() {
-    const v = regionInput.trim();
-    if (v && !form.target_regions.includes(v)) {
-      update("target_regions", [...form.target_regions, v]);
-    }
-    setRegionInput("");
-  }
-
-  function removeRegion(r) {
-    update("target_regions", form.target_regions.filter((x) => x !== r));
-  }
-
-  function handleRegionKeyDown(e) {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addRegion();
-    } else if (e.key === "Backspace" && !regionInput && form.target_regions.length > 0) {
-      removeRegion(form.target_regions[form.target_regions.length - 1]);
-    }
   }
 
   async function handleSubmit(e) {
@@ -101,6 +73,8 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
         value_proposition: form.value_proposition || undefined,
         target_regions: form.target_regions,
         target_country: form.target_country || "IN",
+        target_business_categories: form.target_business_categories,
+        target_person_roles: form.target_person_roles,
       };
       if (isEdit) {
         const updated = await api.updateProduct(product.id, payload);
@@ -168,34 +142,32 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
       <div className="flex flex-col gap-4 border-t border-slate-100 pt-4">
         <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Targeting</p>
 
-        <label className="flex flex-col">
-          <FieldLabel icon={MapPin} hint="Type a city and press Enter -- discovery searches each region separately.">
-            Target regions
-          </FieldLabel>
-          <div className="flex flex-wrap items-center gap-1.5 rounded-md border border-slate-300 px-2 py-1.5 focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-100">
-            {form.target_regions.map((r) => (
-              <span key={r} className="flex items-center gap-1 rounded bg-slate-100 px-2 py-1 text-xs text-slate-700">
-                {r}
-                <button
-                  type="button"
-                  onClick={() => removeRegion(r)}
-                  className="text-slate-400 hover:text-slate-700"
-                  aria-label={`Remove ${r}`}
-                >
-                  <X size={11} />
-                </button>
-              </span>
-            ))}
-            <input
-              value={regionInput}
-              onChange={(e) => setRegionInput(e.target.value)}
-              onKeyDown={handleRegionKeyDown}
-              onBlur={addRegion}
-              placeholder={form.target_regions.length === 0 ? "Ahmedabad, Surat, Vadodara…" : "Add another…"}
-              className="min-w-[110px] flex-1 border-none px-1 py-1 text-sm text-slate-800 placeholder:text-slate-300 outline-none"
-            />
-          </div>
-        </label>
+        <ChipInput
+          icon={MapPin}
+          label="Target regions"
+          hint="Type a city and press Enter -- discovery searches each region separately."
+          values={form.target_regions}
+          onChange={(v) => update("target_regions", v)}
+          placeholder="Ahmedabad, Surat, Vadodara…"
+        />
+
+        <ChipInput
+          icon={Tag}
+          label="Target business categories"
+          hint="Optional -- a boundary, not a suggestion. If set, the AI only searches these exact categories; leave empty to let it choose verticals freely."
+          values={form.target_business_categories}
+          onChange={(v) => update("target_business_categories", v)}
+          placeholder="dental clinic, law firm…"
+        />
+
+        <ChipInput
+          icon={UserCircle2}
+          label="Target person roles"
+          hint="Optional -- job titles to prioritize when the AI finds person-level contacts (e.g. LinkedIn)."
+          values={form.target_person_roles}
+          onChange={(v) => update("target_person_roles", v)}
+          placeholder="CEO, Property Manager…"
+        />
 
         <label className="flex flex-col">
           <FieldLabel icon={Globe2} hint="Controls how leads' phone numbers get parsed for WhatsApp.">

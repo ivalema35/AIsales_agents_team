@@ -22,6 +22,8 @@ def _serialize(product):
         "is_active": product.is_active,
         "target_regions": json.loads(product.target_regions or "[]"),
         "target_country": product.target_country,
+        "target_business_categories": json.loads(product.target_business_categories or "[]"),
+        "target_person_roles": json.loads(product.target_person_roles or "[]"),
         "created_at": str(product.created_at),
         "updated_at": str(product.updated_at),
     }
@@ -29,9 +31,10 @@ def _serialize(product):
 
 def _extract_json_fields(data, errors):
     """Validates target_keywords (array) / pain_point_mappings (object) / target_regions
-    (array) if present. Returns (target_keywords_str, pain_point_mappings_str,
-    target_regions_str) — None means 'not provided'. Appends to `errors` instead of
-    raising, so callers always get a 422, never a 500.
+    (array) / target_business_categories (array) / target_person_roles (array) if present.
+    Returns a dict of field -> JSON string (only for keys that were actually present) --
+    None/absent means 'not provided'. Appends to `errors` instead of raising, so callers
+    always get a 422, never a 500.
     """
     target_keywords = None
     if "target_keywords" in data:
@@ -54,7 +57,24 @@ def _extract_json_fields(data, errors):
         else:
             target_regions = json.dumps(data["target_regions"])
 
-    return target_keywords, pain_point_mappings, target_regions
+    # Both optional, both a human-set boundary the ICP agent then works inside (MASTER §5A
+    # Phase 7 Step 7.1) -- same "just a JSON array" validation as target_regions above.
+    target_business_categories = None
+    if "target_business_categories" in data:
+        if not isinstance(data["target_business_categories"], list):
+            errors.append("target_business_categories must be a JSON array")
+        else:
+            target_business_categories = json.dumps(data["target_business_categories"])
+
+    target_person_roles = None
+    if "target_person_roles" in data:
+        if not isinstance(data["target_person_roles"], list):
+            errors.append("target_person_roles must be a JSON array")
+        else:
+            target_person_roles = json.dumps(data["target_person_roles"])
+
+    return (target_keywords, pain_point_mappings, target_regions,
+           target_business_categories, target_person_roles)
 
 
 def _validate_target_country(data, errors):
@@ -108,7 +128,8 @@ def create_product():
         errors.append("title is required")
     if not data.get("description"):
         errors.append("description is required")
-    target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
+    (target_keywords, pain_point_mappings, target_regions,
+     target_business_categories, target_person_roles) = _extract_json_fields(data, errors)
     target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
@@ -129,6 +150,10 @@ def create_product():
             product.target_regions = target_regions
         if target_country is not None:
             product.target_country = target_country
+        if target_business_categories is not None:
+            product.target_business_categories = target_business_categories
+        if target_person_roles is not None:
+            product.target_person_roles = target_person_roles
         db.add(product)
         db.commit()
         db.refresh(product)
@@ -144,7 +169,8 @@ def update_product(product_id):
         return jsonify({"error": "request body must be a JSON object"}), 422
 
     errors = []
-    target_keywords, pain_point_mappings, target_regions = _extract_json_fields(data, errors)
+    (target_keywords, pain_point_mappings, target_regions,
+     target_business_categories, target_person_roles) = _extract_json_fields(data, errors)
     target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
@@ -177,6 +203,10 @@ def update_product(product_id):
             product.target_regions = target_regions
         if target_country is not None:
             product.target_country = target_country
+        if target_business_categories is not None:
+            product.target_business_categories = target_business_categories
+        if target_person_roles is not None:
+            product.target_person_roles = target_person_roles
 
         db.commit()
         db.refresh(product)

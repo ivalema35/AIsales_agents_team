@@ -27,6 +27,12 @@ class Product(Base):
     # coincidence and would have gotten "91" prepended for WhatsApp -- a message to a
     # fabricated, unrelated number (tracker.md, 2026-08-17).
     target_country = Column(String, default="IN")
+    # Phase 7 Step 7.1 -- human-set boundaries the AI works freely inside, same precedent
+    # as target_regions (tracker.md A.2): a human names WHICH business categories/roles to
+    # go after, the AI decides the actual queries/matches within that. Both optional; an
+    # empty list means "unchanged from today" everywhere they're read.
+    target_business_categories = Column(Text, default="[]")  # JSON array
+    target_person_roles = Column(Text, default="[]")         # JSON array
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -128,6 +134,11 @@ class OutreachLog(Base):
     # handler). Real "Seen" tracking -- see tracker.md, no fabricated/estimated value.
     provider_message_id = Column(String)
     read_at = Column(TIMESTAMP)
+    # Phase 8 Step 8.4 -- JSON array of every subject-line candidate the Outreach Agent
+    # generated for this send, not just the one it picked (message_subject). Selection
+    # here is still AI judgment, not performance-driven (no send history exists yet to
+    # learn from) -- Phase 9 reads this column back to measure candidates retrospectively.
+    subject_candidates = Column(Text)
 
 
 # 8. INBOUND CONVERSATIONS
@@ -302,3 +313,54 @@ class SystemHeartbeat(Base):
     expected_interval_seconds = Column(Integer, nullable=False, default=60)
     last_seen_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     started_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 21. LEAD CONTACTS (Phase 7 Step 7.3 — multiple people per lead; leads.primary_email/
+# primary_phone/contact_person_name/_role stay unchanged as the canonical outreach
+# target, this table is purely additive. Populated later by Step 7.4 (Hunter's
+# discarded contact fields) and Step 7.5 (role-targeted LinkedIn person discovery).)
+class LeadContact(Base):
+    __tablename__ = "lead_contacts"
+    id = Column(String, primary_key=True, default=_uuid)
+    lead_id = Column(String, ForeignKey("leads.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String)
+    role = Column(String)
+    seniority = Column(String)
+    department = Column(String)
+    email = Column(String)
+    phone = Column(String)
+    linkedin_url = Column(String)
+    is_decision_maker = Column(Integer, default=0)
+    source = Column(String)  # e.g. "HUNTER", "LINKEDIN"
+    confidence = Column(REAL)
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 22. MESSAGE FORMATS (Phase 8 Step 8.1 — admin-authored message STRUCTURE. See
+# tracker.md A.7: `sections` is an ordered list of GUIDELINES the AI follows while
+# writing its own adaptive draft, never literal template pieces it fills in. Versioned
+# like ProductStrategy (status ACTIVE/SUPERSEDED, never overwritten).)
+class MessageFormat(Base):
+    __tablename__ = "message_formats"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"))  # NULL = global default
+    channel = Column(String, nullable=False)  # "EMAIL" or "WHATSAPP"
+    sections = Column(Text, nullable=False)  # JSON array of guideline strings, ordered
+    version = Column(Integer, nullable=False, default=1)
+    status = Column(String, default="ACTIVE")  # ACTIVE, SUPERSEDED
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 23. CONTENT ASSETS (Phase 8 Step 8.2 — the AI SELECTS from this library, never
+# invents a URL. A format slot with no matching active asset renders without that
+# slot rather than fabricating one.)
+class ContentAsset(Base):
+    __tablename__ = "content_assets"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"))  # NULL = any product
+    asset_type = Column(String, nullable=False)  # DEMO_URL, VIDEO_URL, CASE_STUDY, TESTIMONIAL, TEXT_BLOCK
+    title = Column(String, nullable=False)
+    value = Column(Text, nullable=False)  # the URL, or the text itself for TEXT_BLOCK
+    tags = Column(Text, default="[]")  # JSON array
+    is_active = Column(Integer, default=1)
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())

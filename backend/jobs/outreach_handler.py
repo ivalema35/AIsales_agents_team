@@ -20,6 +20,7 @@ from cognition.agent_events import log_agent_event
 from config import Config
 from database.models import Lead, Product, LeadReviewInsight, OutreachLog
 from jobs.registry import register_handler
+from services.message_format_service import resolve_active_format, get_available_assets
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 
@@ -70,11 +71,20 @@ def handle_outreach_email(db, payload):
         "contact_person_role": lead.contact_person_role,
     }
 
+    # Phase 8 Steps 8.1/8.2 (tracker.md A.7) -- resolve an admin-defined format/content
+    # library for this product+EMAIL, if one exists. Both are None when nothing has been
+    # configured, which keeps draft_email()'s prompt byte-identical to before Phase 8.
+    fmt_row = resolve_active_format(db, lead.product_id, "EMAIL")
+    format_sections = json.loads(fmt_row.sections) if fmt_row else None
+    content_assets = get_available_assets(db, lead.product_id) or None
+
     draft = None
     qc_result = None
     qc_feedback = None
     for attempt in range(1, MAX_DRAFT_ATTEMPTS + 1):
-        draft = draft_email(db, lead.id, product_brief, lead_profile, pain_points, qc_feedback=qc_feedback)
+        draft = draft_email(db, lead.id, product_brief, lead_profile, pain_points,
+                            qc_feedback=qc_feedback, format_sections=format_sections,
+                            content_assets=content_assets)
         if not draft:
             break
         qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief)
@@ -113,6 +123,9 @@ def handle_outreach_email(db, payload):
         message_body=draft["body"],
         status="SENT",
         provider_message_id=extract_resend_id(send_response),
+        # Phase 8 Step 8.4 -- every subject candidate generated, not just the one sent,
+        # so Phase 9 can measure them retrospectively once real reply/open data exists.
+        subject_candidates=json.dumps(draft.get("subject_candidates", [draft["subject"]])),
     ))
     lead.status = "OUTREACHED"
     db.commit()

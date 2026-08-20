@@ -33,6 +33,13 @@ class HunterProvider:
                 "first_name": email.get("first_name"),
                 "last_name": email.get("last_name"),
                 "position": email.get("position"),
+                # Hunter's domain-search returns these per contact too -- previously read
+                # nowhere and silently dropped. Phase 7 Step 7.4 persists them into
+                # lead_contacts instead of discarding everyone except the one email this
+                # class's caller ultimately picks as the lead's primary contact.
+                "seniority": email.get("seniority"),
+                "department": email.get("department"),
+                "linkedin": email.get("linkedin"),
             }
             for email in data.get("emails", [])
         ]

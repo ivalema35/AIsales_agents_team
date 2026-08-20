@@ -13,6 +13,9 @@ COLUMN_MIGRATIONS = [
     # can't work across loops running at 2s vs 300s. Any DB that already created
     # system_heartbeats without this column needs the ALTER, not just the CREATE.
     ("system_heartbeats", "expected_interval_seconds", "INTEGER NOT NULL DEFAULT 60"),
+    ("products", "target_business_categories", "TEXT DEFAULT '[]'"),
+    ("products", "target_person_roles", "TEXT DEFAULT '[]'"),
+    ("outreach_logs", "subject_candidates", "TEXT"),
 ]
 
 

@@ -12,6 +12,9 @@ CREATE TABLE IF NOT EXISTS products (
     is_active            INTEGER DEFAULT 1,
     target_regions       TEXT DEFAULT '[]',   -- JSON array, e.g. ["Ahmedabad","Surat"] (tracker.md A.2)
     target_country       TEXT DEFAULT 'IN',   -- ISO 3166-1 alpha-2, phone-parsing default region
+    -- Phase 7 Step 7.1: human-set boundary the ICP agent works inside (MASTER §5A Phase 7).
+    target_business_categories TEXT DEFAULT '[]',  -- JSON array, e.g. ["dental clinic","law firm"]
+    target_person_roles        TEXT DEFAULT '[]',  -- JSON array, e.g. ["CEO","Property Manager"]
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -108,6 +111,8 @@ CREATE TABLE IF NOT EXISTS outreach_logs (
     sent_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     provider_message_id TEXT,                 -- Meta wamid (WhatsApp) or Resend email id
     read_at          TIMESTAMP,                -- set by a real read-receipt/open webhook
+    subject_candidates TEXT,                  -- JSON array, Phase 8 Step 8.4 -- every subject
+                                                -- candidate generated, not just the chosen one
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
     FOREIGN KEY (campaign_id) REFERENCES outreach_campaigns(id) ON DELETE SET NULL
 );
@@ -284,6 +289,63 @@ CREATE TABLE IF NOT EXISTS system_heartbeats (
     started_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Phase 7 Step 7.3 -- multiple people per lead (today `leads` holds exactly one contact
+-- via contact_person_name/_role/primary_email/primary_phone, which those columns keep
+-- doing unchanged as the canonical outreach target). This table is purely additive --
+-- populated later by Step 7.4 (Hunter's discarded contact fields) and Step 7.5
+-- (role-targeted LinkedIn person discovery).
+CREATE TABLE IF NOT EXISTS lead_contacts (
+    id                TEXT PRIMARY KEY,
+    lead_id           TEXT NOT NULL,
+    full_name         TEXT,
+    role              TEXT,
+    seniority         TEXT,
+    department        TEXT,
+    email             TEXT,
+    phone             TEXT,
+    linkedin_url      TEXT,
+    is_decision_maker INTEGER DEFAULT 0,
+    source            TEXT,   -- e.g. 'HUNTER', 'LINKEDIN'
+    confidence        REAL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+);
+
+-- Phase 8 Step 8.1 -- admin-authored message STRUCTURE, not final copy (tracker.md A.7:
+-- deliberate deviation from a rigid fill-in-the-blank "slots" design -- `sections` is an
+-- ordered list of GUIDELINES the AI follows while writing its own adaptive, personalized
+-- draft, not literal template pieces it substitutes into). `product_id` nullable = a
+-- global default for that channel; resolution order (Step 8.3): product+channel exact
+-- match -> global channel default -> no format at all (today's free-form drafting,
+-- unchanged). Versioned like product_strategies (status ACTIVE/SUPERSEDED, never
+-- overwritten) so a format change never invalidates the performance history Phase 9
+-- measures.
+CREATE TABLE IF NOT EXISTS message_formats (
+    id          TEXT PRIMARY KEY,
+    product_id  TEXT,                    -- NULL = global default for this channel
+    channel     TEXT NOT NULL,           -- 'EMAIL' or 'WHATSAPP'
+    sections    TEXT NOT NULL,           -- JSON array of guideline strings, ordered
+    version     INTEGER NOT NULL DEFAULT 1,
+    status      TEXT DEFAULT 'ACTIVE',   -- ACTIVE, SUPERSEDED
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- Phase 8 Step 8.2 -- the AI SELECTS from this library per lead/product, it never
+-- invents a URL. A format slot that asks for a demo link and finds no matching active
+-- asset renders the message without that slot rather than fabricating one.
+CREATE TABLE IF NOT EXISTS content_assets (
+    id          TEXT PRIMARY KEY,
+    product_id  TEXT,                    -- NULL = available to any product
+    asset_type  TEXT NOT NULL,           -- DEMO_URL, VIDEO_URL, CASE_STUDY, TESTIMONIAL, TEXT_BLOCK
+    title       TEXT NOT NULL,
+    value       TEXT NOT NULL,           -- the URL, or the text itself for TEXT_BLOCK
+    tags        TEXT DEFAULT '[]',       -- JSON array, for matching against a lead's pain points
+    is_active   INTEGER DEFAULT 1,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -295,4 +357,7 @@ CREATE INDEX IF NOT EXISTS idx_leads_sales_route     ON leads (sales_route);
 CREATE INDEX IF NOT EXISTS idx_team_capacity_name    ON team_capacity (team_name);
 CREATE INDEX IF NOT EXISTS idx_client_lifecycle_end  ON client_lifecycle (contract_end_date);
 CREATE INDEX IF NOT EXISTS idx_product_strategies    ON product_strategies (product_id, status);
+CREATE INDEX IF NOT EXISTS idx_lead_contacts_lead    ON lead_contacts (lead_id);
+CREATE INDEX IF NOT EXISTS idx_message_formats_scope ON message_formats (product_id, channel, status);
+CREATE INDEX IF NOT EXISTS idx_content_assets_scope  ON content_assets (product_id, asset_type, is_active);
 CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);

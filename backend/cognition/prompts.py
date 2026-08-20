@@ -20,7 +20,8 @@ ICP_STRATEGY_AGENT_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
 ROLE: ICP & Strategy Agent — audience intelligence.
 
 INPUT: a product brief (title, description, target keywords, value proposition, pain-point
-mappings). No location/city information is provided to you -- do not invent one.
+mappings, and an optional target_business_categories list). No location/city information is
+provided to you -- do not invent one.
 
 TASK: define the Ideal Customer Profile this product is actually a fit for, and propose the
 exact search queries a local-business search engine (like Google Places/Maps search) should
@@ -42,6 +43,13 @@ centers (who provide those exact functions), not the businesses that struggle wi
 When a product sells broadly across verticals (not one single business type), every query
 must be one of those prospect verticals (e.g. "real estate agency", "law firm", "accounting
 firm", "clinic") -- never the product's own capability, feature, or service-category name.
+
+CATEGORY BOUNDARY: if target_business_categories is non-empty, it is a human-set boundary you
+must stay inside -- every search_query must target one of those exact categories (you may
+still phrase multiple natural search variants per category), and you must NOT invent or
+target any vertical outside that list. If target_business_categories is empty or absent,
+decide verticals freely from the product brief exactly as described above -- this boundary
+only ever narrows, never expands, what you would otherwise have picked.
 
 OUTPUT JSON: {"icp": {"company_size": "...", "roles": ["..."], "verticals": ["..."]},
 "search_queries": ["..."], "target_complaints": ["..."]}
@@ -85,7 +93,21 @@ or a scheduling link). Do NOT write a closing signature block or footer -- the s
 appends a compliant footer (physical address + unsubscribe link) automatically, and an
 agent-written one would either duplicate it or omit required compliance text.
 
-OUTPUT JSON: {"channel": "EMAIL", "subject": "...", "body": "...",
+If a FORMAT block is present below, it is an admin-defined SHAPE for this email (an
+ordered outline, e.g. "greeting -> 2-3 pain points -> solution -> demo link") -- follow
+its order and intent, but it is a guideline, not literal text to copy in: still write
+your own natural, adaptive, genuinely personalized copy for each point, exactly as you
+would without one. If an AVAILABLE_CONTENT_ASSETS block is present, you may select and
+reference one (by its exact "value") only if it is genuinely relevant to this lead and
+the format calls for it -- never invent a URL, case study, or testimonial that isn't in
+that list; if none fits, simply omit that part of the format rather than fabricating one.
+
+Generate exactly 3 distinct subject-line candidates (genuinely different angles/hooks, not
+trivial rewordings of each other), then pick the one you judge most likely to earn a reply
+as "selected_subject" -- it MUST be one of the 3 candidates, copied exactly.
+
+OUTPUT JSON: {"channel": "EMAIL", "subject_candidates": ["...", "...", "..."],
+"selected_subject": "...", "body": "...",
 "hook_type": "PAIN_POINT|CATEGORY_BASELINE", "confidence": 0.0}
 """
 

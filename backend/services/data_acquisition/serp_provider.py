@@ -118,6 +118,57 @@ def _name_matches_blob(company_name, blob):
     return needle in haystack
 
 
+# Real bug found live (2026-08-20, Phase 7 Step 7.7 backfill): Indian SMB Google
+# Business listings are frequently keyword-stuffed for local SEO, e.g. "iQuanta Surat -
+# Best CAT Coaching in Surat | Best CMAT Coaching in Surat | ...". _name_matches_blob's
+# own first-1-2-significant-words rule then builds a needle of "iquanta"+"surat" --
+# but "Surat" here is SEO filler, not part of the real brand, so the genuinely correct
+# domain (iquanta.in, containing only "iquanta") fails the check and gets rejected.
+# ONLY used by find_website() below -- deliberately NOT folded into _name_matches_blob
+# itself, which ~8 other call sites (find_phone/find_email/find_social_profiles/
+# find_person_by_role/etc.) all depend on unchanged; touching the shared function risks
+# regressing all of them for one function's specific problem.
+_MIN_STANDALONE_WORD_LEN = 6  # long enough that a single word is distinctive, not
+# generic -- the ORIGINAL find_website bug this file's docstring documents was exactly
+# a short, common word ("game", 4 letters) coincidentally matching an unrelated domain
+# ("timezonegames.com"); this threshold specifically keeps that class of match closed.
+
+
+def _find_website_name_matches(company_name, blob, city=None):
+    """find_website()-only fallback on top of `_name_matches_blob`: if the strict
+    first-1-2-word check fails (as it does for keyword-stuffed names), try each
+    significant word of the company name IN ORDER and accept the first one that is
+    both long enough to be distinctive (>= _MIN_STANDALONE_WORD_LEN chars, ruling out
+    the historical "game"/"zone" false-positive class) AND actually appears in this
+    result on its own. A single generic-but-long word (e.g. "coaching") can still
+    coincidentally match unrelated domains -- scanning words in their ORIGINAL order
+    and stopping at the first hit favours the word closest to the front of the real
+    name (almost always the actual brand) over a later, more generic descriptor word.
+
+    Real false-positive caught live testing THIS function: "SATURN UPSC GPSC TRAINING
+    CENTRE (... / Satellite / Navrangpura / Bopal / Ahmedabad)" -- a keyword-stuffed
+    name padded with its own locality names -- matched "ahmedabad.idbf.in" (an
+    unrelated business DIRECTORY's own city-prefixed subdomain, not this business's
+    site) purely because "ahmedabad" is both >= 6 chars and, coincidentally, also
+    exactly how many Indian directory sites structure their own subdomains. The lead's
+    own already-known city (from `_extract_city(location)`, the SAME value find_website
+    already uses for its search query) is therefore excluded from the fallback's
+    candidate words entirely -- a real business is essentially never identified by its
+    city name alone, so this costs nothing while closing a real false-positive class.
+    """
+    if _name_matches_blob(company_name, blob):
+        return True
+    words = _name_words(company_name)
+    city_word = (city or "").strip().lower()
+    haystack = re.sub(r"[^a-z0-9]+", "", (blob or "").lower())
+    for word in words:
+        if word == city_word:
+            continue
+        if len(word) >= _MIN_STANDALONE_WORD_LEN and word in haystack:
+            return True
+    return False
+
+
 # Platforms where "the first path segment is the account handle" is a reliable
 # structural assumption. Deliberately NOT extended to directories/listings (JustDial,
 # Trip.com, etc.) -- their URL slugs routinely embed a business name inside a listing
@@ -297,7 +348,7 @@ class SerperProvider(LeadSourceProvider):
         # Google's own knowledge panel is a strong signal, but still name-checked --
         # ambiguous/generic business names can resolve the panel to the wrong entity.
         kg_site = (data.get("knowledgeGraph") or {}).get("website")
-        if kg_site and not _is_directory(kg_site) and _name_matches_blob(company_name, _root_domain(kg_site)):
+        if kg_site and not _is_directory(kg_site) and _find_website_name_matches(company_name, _root_domain(kg_site), city=city):
             logger.info("find_website %s -> %s (knowledge graph)", company_name, kg_site)
             return kg_site
 
@@ -306,7 +357,7 @@ class SerperProvider(LeadSourceProvider):
             if not link or _is_directory(link):
                 continue
             root = _root_domain(link)
-            if _name_matches_blob(company_name, root):
+            if _find_website_name_matches(company_name, root, city=city):
                 url = f"https://{root}/"
                 logger.info("find_website %s -> %s (organic)", company_name, url)
                 return url
@@ -374,9 +425,31 @@ class SerperProvider(LeadSourceProvider):
         resp.raise_for_status()
         data = resp.json()
 
+        # Phase 7 Step 7.6(b)/(c) -- two different real businesses can share a name
+        # across cities (e.g. "Infinity Gaming Zone" Ahmedabad vs "Infinity Gaming"
+        # Navsari), and one business can have several branches (e.g. "BounceUp" in
+        # both Ahmedabad and Vadodara) -- plain name-matching alone can't tell them
+        # apart, and a numeric-majority vote can hand the WRONG city's number to this
+        # lead. Deliberately NOT fixed by changing the query (see this function's own
+        # docstring for the real MILESTONE ACADEMY regression that caused, when a query
+        # was shortened to just the city) -- instead, a result whose own text also
+        # names the lead's city earns extra trust in the ranking below, same query as
+        # always. `city` is extracted from the LEAD's own address, never from an
+        # untrusted search result.
+        # `_extract_city` returns its input UNCHANGED when it can't confidently parse a
+        # city out of it (see its own docstring) -- for a full ~150-char scraped address
+        # that means city_needle would be that whole address, which is harmless (it
+        # just never matches a short snippet, so this bonus silently never fires) but
+        # pointless. A short result (a real city name is always short) is what makes
+        # this check meaningful, whether extraction genuinely succeeded or `location`
+        # was already just a bare city name to begin with.
+        city = _extract_city(location)
+        city_needle = city.strip().lower() if city and len(city.strip()) <= 40 else None
+
         votes = {}
         own_domain_hits = set()
         own_profile_hits = set()
+        city_hits = set()
         skipped_unmatched = 0
         skipped_ambiguous = 0
         for result in data.get("organic", []):
@@ -384,6 +457,7 @@ class SerperProvider(LeadSourceProvider):
             link = result.get("link", "")
             link_root = _root_domain(link)
             is_own_profile = _is_own_profile_link(company_name, link)
+            city_matched = bool(city_needle) and city_needle in blob.lower()
             has_numbers = MOBILE_RE.search(blob)
             if has_numbers and not _name_matches_blob(company_name, blob):
                 skipped_unmatched += 1
@@ -402,6 +476,8 @@ class SerperProvider(LeadSourceProvider):
                     own_domain_hits.add(mobile)
                 if is_own_profile:
                     own_profile_hits.add(mobile)
+                if city_matched:
+                    city_hits.add(mobile)
 
         if not votes:
             logger.info("find_phone %s -> nothing found (skipped %d unmatched-name, "
@@ -410,12 +486,16 @@ class SerperProvider(LeadSourceProvider):
             return None
 
         # own domain/profile beats plain vote count -- "this is literally their page"
-        # is stronger evidence than "this number was mentioned more times"
+        # is stronger evidence than "this number was mentioned more times". A result
+        # that also names the lead's own city is the next-strongest tie-breaker, ahead
+        # of plain vote count -- the right-city candidate wins even with fewer votes.
         trusted = own_domain_hits | own_profile_hits
-        ranked = sorted(votes, key=lambda p: (p not in trusted, -votes[p]))
+        ranked = sorted(votes, key=lambda p: (p not in trusted, p not in city_hits, -votes[p]))
         winner = ranked[0]
-        logger.info("find_phone %s -> %s (votes=%d, trusted_source=%s, all=%s, skipped_ambiguous=%d)",
-                     company_name, winner, votes[winner], winner in trusted, votes, skipped_ambiguous)
+        logger.info("find_phone %s -> %s (votes=%d, trusted_source=%s, city_matched=%s, "
+                    "all=%s, skipped_ambiguous=%d)",
+                     company_name, winner, votes[winner], winner in trusted,
+                     winner in city_hits, votes, skipped_ambiguous)
         return winner
 
     def find_email(self, company_name, location=None, domain=None):
@@ -470,9 +550,20 @@ class SerperProvider(LeadSourceProvider):
         resp.raise_for_status()
         data = resp.json()
 
+        # Phase 7 Step 7.6(b)/(c) -- same real risk and same fix as find_phone() above:
+        # a shared business name across cities, or one business with several branches,
+        # can hand this lead the WRONG city's email on a plain vote count. Query stays
+        # exactly as-is (never re-triggering the MILESTONE ACADEMY regression noted
+        # above); a result whose own text also names the lead's city earns extra trust
+        # in the ranking instead. `city` comes from the LEAD's own address, never from
+        # an untrusted search result.
+        city = _extract_city(location)
+        city_needle = city.strip().lower() if city and len(city.strip()) <= 40 else None
+
         votes = {}
         own_domain_hits = set()
         own_profile_hits = set()
+        city_hits = set()
         skipped_unmatched = 0
         skipped_ambiguous = 0
         for result in data.get("organic", []):
@@ -480,6 +571,7 @@ class SerperProvider(LeadSourceProvider):
             link = result.get("link", "")
             link_root = _root_domain(link)
             is_own_profile = _is_own_profile_link(company_name, link)
+            city_matched = bool(city_needle) and city_needle in blob.lower()
             candidates = EMAIL_RE.findall(blob)
             if candidates and not _name_matches_blob(company_name, blob):
                 skipped_unmatched += 1
@@ -509,6 +601,8 @@ class SerperProvider(LeadSourceProvider):
                     own_domain_hits.add(email)
                 if is_own_profile:
                     own_profile_hits.add(email)
+                if city_matched:
+                    city_hits.add(email)
 
         if not votes:
             logger.info("find_email %s -> nothing found (skipped %d unmatched-name, "
@@ -517,12 +611,16 @@ class SerperProvider(LeadSourceProvider):
             return None
 
         # own domain/profile beats plain vote count -- "this is literally their page"
-        # is stronger evidence than "this email was mentioned more times"
+        # is stronger evidence than "this email was mentioned more times". A result
+        # that also names the lead's own city is the next-strongest tie-breaker, ahead
+        # of plain vote count -- the right-city candidate wins even with fewer votes.
         trusted = own_domain_hits | own_profile_hits
-        ranked = sorted(votes, key=lambda e: (e not in trusted, -votes[e]))
+        ranked = sorted(votes, key=lambda e: (e not in trusted, e not in city_hits, -votes[e]))
         winner = ranked[0]
-        logger.info("find_email %s -> %s (votes=%d, trusted_source=%s, all=%s, skipped_ambiguous=%d)",
-                     company_name, winner, votes[winner], winner in trusted, votes, skipped_ambiguous)
+        logger.info("find_email %s -> %s (votes=%d, trusted_source=%s, city_matched=%s, "
+                    "all=%s, skipped_ambiguous=%d)",
+                     company_name, winner, votes[winner], winner in trusted,
+                     winner in city_hits, votes, skipped_ambiguous)
         return winner
 
     def find_social_profiles(self, company_name, location=None):
@@ -614,3 +712,64 @@ class SerperProvider(LeadSourceProvider):
 
         logger.info("find_review_signals %s -> %d name-matched snippets", company_name, len(snippets))
         return snippets
+
+    def find_person_by_role(self, company_name, role, location=None):
+        """Phase 7 Step 7.5 -- find a named person holding `role` at `company_name` on
+        LinkedIn. Only ever called once the company's own LinkedIn page has already
+        resolved (lead.linkedin_url set) -- company LinkedIn is a priority signal per
+        the user, not best-effort (tracker.md: "unke linkedin to hoga hi to wo must
+        needed he").
+
+        Trust discipline, deliberately DIFFERENT from `_own_social_profile_field()`:
+        that function requires the company's name IN THE URL HANDLE (e.g.
+        linkedin.com/company/<name>), which works for a company page but can never work
+        here -- a person's own profile handle is THEIR name, not the company's
+        (linkedin.com/in/<person-slug>). Instead this requires the company's name to
+        appear in the search RESULT's own title/snippet text via `_name_matches_blob()`
+        -- the same wrong-company-rejection technique already proven for
+        find_review_signals()/find_phone()/find_email() (see that function's docstring
+        for the real cross-contamination bug it exists to prevent). A LinkedIn
+        profile-search result's title is normally "<Person> - <Role> - <Company> |
+        LinkedIn", which is exactly where the company name shows up when this really is
+        the right person -- a wrong person at an unrelated company won't have OUR
+        company's name in their own title/snippet.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+
+        query = f"{role} {company_name} {_extract_city(location) or ''} linkedin".strip()
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": 10},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        for result in data.get("organic", []):
+            link = result.get("link", "")
+            parsed = urlparse(link)
+            host = parsed.netloc.lower().removeprefix("www.")
+            if host != "linkedin.com" and not host.endswith(".linkedin.com"):
+                continue
+            segments = [s for s in parsed.path.split("/") if s]
+            # Personal profiles only (/in/<slug>) -- not /company/, /pulse/ (articles),
+            # /school/, etc.
+            if len(segments) < 2 or segments[0].lower() != "in":
+                continue
+            title = result.get("title", "")
+            blob = f"{title} {result.get('snippet', '')}".strip()
+            if not blob or not _name_matches_blob(company_name, blob):
+                continue
+            clean = f"https://www.linkedin.com/in/{segments[1]}/"
+            # Best-effort: LinkedIn's own result titles are "<Person> - <Role> -
+            # <Company> | LinkedIn" -- the part before the first " - " is the name.
+            # None if the title doesn't follow that shape; never invent a name.
+            full_name = title.split(" - ")[0].strip() or None
+            logger.info("find_person_by_role %s @ %s -> %s (%s)", role, company_name, clean, full_name)
+            return {"linkedin_url": clean, "full_name": full_name}
+
+        logger.info("find_person_by_role %s @ %s -> no name-matched personal profile found",
+                    role, company_name)
+        return None

@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 from sqlalchemy import func
 
 from database.db_config import SessionLocal
-from database.models import Lead, Product, LeadReviewInsight, LeadScore
+from database.models import Lead, Product, LeadReviewInsight, LeadScore, LeadContact
 from jobs.job_queue import enqueue, claim_next, mark_done, mark_failed
 from services.data_acquisition.serp_provider import SerperProvider, SOCIAL_PROFILE_HOSTS
 from services.data_acquisition.b2b_provider import HunterProvider
@@ -85,9 +85,22 @@ def _handle_discover(db, payload):
     results = SerperProvider().discover(query, location=location)
 
     created = 0
+    skipped_wrong_city = 0
     for row in results:
         if not row.get("company_name"):
             continue
+
+        # Phase 7 Step 7.6(a) -- Places' own "q ... in {location}" query only biases
+        # results toward that city, it doesn't strictly restrict to it, so a search for
+        # e.g. Mehsana can come back with a business actually in a neighbouring city.
+        # Only skip a result when its OWN address plainly names a different place --
+        # if the address is missing/empty we genuinely can't tell, and a possibly-good
+        # lead is never dropped just because we couldn't read its address.
+        address = row.get("region_location")
+        if location and address and location.strip().lower() not in address.lower():
+            skipped_wrong_city += 1
+            continue
+
         exists = db.query(Lead).filter(
             Lead.product_id == product_id,
             Lead.company_name == row["company_name"],
@@ -111,8 +124,38 @@ def _handle_discover(db, payload):
 
         enqueue(db, "ENRICH", {"lead_id": lead.id})
 
-    logger.info("DISCOVER '%s' -> %d results, %d new leads", query, len(results), created)
+    logger.info("DISCOVER '%s' -> %d results, %d new leads, %d skipped (wrong city)",
+               query, len(results), created, skipped_wrong_city)
     return created
+
+
+def _persist_hunter_contacts(db, lead_id, hunter_contacts):
+    """Phase 7 Step 7.4 -- Hunter's domain-search returns every contact it found for the
+    domain, not just the one _enrich_email ends up picking as the lead's primary email.
+    Persist all of them into lead_contacts instead of discarding everyone else. Purely
+    additive: never touches leads.primary_email/contact_person_name/_role, which stay
+    driven by rank_candidates()'s existing selection exactly as before -- this only adds
+    rows, on the same db session/commit that already runs in _handle_enrich.
+    """
+    for c in hunter_contacts:
+        if not c.get("email"):
+            continue
+        full_name = " ".join(p for p in (c.get("first_name"), c.get("last_name")) if p) or None
+        db.add(LeadContact(
+            lead_id=lead_id,
+            full_name=full_name,
+            role=c.get("position"),
+            seniority=c.get("seniority"),
+            department=c.get("department"),
+            email=c.get("email"),
+            linkedin_url=c.get("linkedin"),
+            # Hunter has no explicit decision-maker boolean field; "executive" is the top
+            # tier of Hunter's own seniority scale (junior/senior/executive) and the
+            # standard proxy for a decision-maker signal.
+            is_decision_maker=1 if c.get("seniority") == "executive" else 0,
+            source="HUNTER",
+            confidence=c.get("confidence"),
+        ))
 
 
 def _enrich_email(db, lead, domain):
@@ -135,6 +178,8 @@ def _enrich_email(db, lead, domain):
     if domain and (not website_emails or only_role_accounts):
         try:
             hunter_contacts = HunterProvider().enrich_domain(domain)
+            if hunter_contacts:
+                _persist_hunter_contacts(db, lead.id, hunter_contacts)
         except Exception as exc:  # noqa: BLE001 - quota/network failure must not lose the free result
             logger.warning("Hunter lookup failed for %s: %s", domain, exc)
 
@@ -207,6 +252,49 @@ def _enrich_social(lead, domain):
     return found
 
 
+def _enrich_person_roles(db, lead, product):
+    """Phase 7 Step 7.5 -- role-targeted LinkedIn person discovery.
+
+    Gated on TWO conditions, both required: `product.target_person_roles` set (a human
+    boundary, same precedent as target_regions/target_business_categories) AND the
+    company's own LinkedIn page already resolved on this lead. The second gate is
+    deliberate, not incidental -- company LinkedIn is a priority signal per the user
+    ("unke linkedin to hoga hi to wo must needed he"), i.e. a resolved company page is
+    what TRIGGERS the person-level lookup, not an independent best-effort attempt.
+
+    Idempotency: guarded by "does this lead already have a LINKEDIN-sourced contact",
+    not a single boolean flag (there can be multiple roles) -- skips entirely on an
+    ENRICH retry instead of re-spending Serper credits and inserting duplicate rows.
+    """
+    roles = json.loads(product.target_person_roles or "[]")
+    if not roles or not lead.linkedin_url:
+        return
+
+    already_done = db.query(LeadContact).filter(
+        LeadContact.lead_id == lead.id, LeadContact.source == "LINKEDIN",
+    ).first()
+    if already_done:
+        return
+
+    for role in roles:
+        try:
+            found = SerperProvider().find_person_by_role(lead.company_name, role, lead.region_location)
+        except Exception as exc:  # noqa: BLE001 - one role's lookup failing must not fail the job
+            logger.warning("find_person_by_role(%s) failed for %s: %s", role, lead.company_name, exc)
+            continue
+        if not found:
+            continue
+        db.add(LeadContact(
+            lead_id=lead.id,
+            full_name=found.get("full_name"),
+            role=role,
+            linkedin_url=found["linkedin_url"],
+            source="LINKEDIN",
+        ))
+        logger.info("ENRICH %s -> LinkedIn person for role '%s': %s",
+                    lead.company_name, role, found["linkedin_url"])
+
+
 def _handle_enrich(db, payload):
     """Full contact-enrichment waterfall -> best email + phone onto the lead -> ENRICHED.
 
@@ -264,6 +352,10 @@ def _handle_enrich(db, payload):
             lead.linkedin_url = social["linkedin_url"]
         if social:
             logger.info("ENRICH %s -> social %s", lead.company_name, social)
+
+    product = db.get(Product, lead.product_id)
+    if product:
+        _enrich_person_roles(db, lead, product)
 
     lead.status = "ENRICHED"
     db.commit()

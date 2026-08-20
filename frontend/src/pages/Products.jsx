@@ -3,6 +3,8 @@ import { Pencil, Plus, MapPin, ChevronDown, X } from "lucide-react";
 import { api } from "../api/client";
 import ProductForm from "../components/ProductForm";
 import Modal from "../components/ui/Modal";
+import MessageFormatPanel from "../components/MessageFormatPanel";
+import ContentLibraryPanel from "../components/ContentLibraryPanel";
 
 function StrategyView({ productId }) {
   const [strategy, setStrategy] = useState(null);
@@ -85,6 +87,39 @@ function DiscoveryToggle({ product, onChanged }) {
   );
 }
 
+const TABS = [
+  { id: "strategy", label: "AI targeting strategy" },
+  { id: "format", label: "Message format" },
+  { id: "library", label: "Content library" },
+];
+
+// Phase 8 Step 8.5 -- format builder + content library UI, alongside the existing AI
+// strategy view rather than replacing it. Tabbed so the expanded card doesn't get
+// cluttered with three unrelated panels visible at once.
+function ExpandedTabs({ productId }) {
+  const [tab, setTab] = useState("strategy");
+  return (
+    <div>
+      <div className="mb-3 flex gap-1 border-b border-slate-100">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide transition-colors ${
+              tab === t.id ? "border-b-2 border-slate-800 text-slate-800" : "text-slate-400 hover:text-slate-600"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === "strategy" && <StrategyView productId={productId} />}
+      {tab === "format" && <MessageFormatPanel productId={productId} />}
+      {tab === "library" && <ContentLibraryPanel productId={productId} />}
+    </div>
+  );
+}
+
 function ProductCard({ product, expanded, onToggleExpand, onChanged, onEdit }) {
   const regions = product.target_regions || [];
   return (
@@ -134,8 +169,7 @@ function ProductCard({ product, expanded, onToggleExpand, onChanged, onEdit }) {
       </div>
       {expanded && (
         <div className="border-t border-slate-100 px-4 pb-4 pt-3">
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">AI targeting strategy</p>
-          <StrategyView productId={product.id} />
+          <ExpandedTabs productId={product.id} />
         </div>
       )}
     </div>

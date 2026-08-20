@@ -65,6 +65,21 @@ export const api = {
   getRecentReplies: (limit = 8) => request(`/leads/recent-replies?limit=${limit}`),
   markReplyRead: (conversationId) => request(`/inbound/${conversationId}/read`, { method: "PATCH" }),
 
+  listMessageFormats: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/message-formats${qs ? `?${qs}` : ""}`);
+  },
+  createMessageFormat: (data) => request("/message-formats", { method: "POST", body: JSON.stringify(data) }),
+  deactivateMessageFormat: (id) => request(`/message-formats/${id}`, { method: "DELETE" }),
+
+  listContentAssets: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/content-assets${qs ? `?${qs}` : ""}`);
+  },
+  createContentAsset: (data) => request("/content-assets", { method: "POST", body: JSON.stringify(data) }),
+  updateContentAsset: (id, data) => request(`/content-assets/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteContentAsset: (id) => request(`/content-assets/${id}`, { method: "DELETE" }),
+
   listAlerts: () => request("/alerts"),
 
   getSystemLive: () => request("/system/live"),
