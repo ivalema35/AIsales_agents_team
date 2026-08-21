@@ -2218,15 +2218,21 @@ only pattern, kabhi kuch bhejta nahi khud).
    structurally sirf EMAIL ke liye hi kaam karta hai.
 
 **Phase 9 (Measurement, Multi-Touch & Adaptive Templates) ab POORA COMPLETE hai** — sab 6 steps (9.1-9.6)
-✅. VPS deploy baaki hai.
+✅.
+
+**VPS deploy turant kiya** (backend-only, frontend rebuild ki zaroorat nahi) — commit + push, VPS `git
+pull` (clean fast-forward, DB mtime unchanged), `migrate.py` (`open_count` column verified), import
+sanity-check pass, `bos-api` + `bos-scheduler` restart (dono `active`, koi real error nahi), real HTTPS
+check (`/api/v1/webhooks/resend` → 200), sab 4 tracked process heartbeats fresh post-restart.
+
+**Phase 9 ab poori tarah VPS par LIVE hai — Steps 9.1-9.6 sab.**
 
 ---
 
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — ✅ POORA
-COMPLETE (Steps 9.1–9.6 sab)** — 9.1–9.3, 9.5, 9.6 ✅ VPS par LIVE, **9.4 abhi local par hai, VPS
-deploy baaki hai.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par LIVE.
-Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10.
-**Agla: Phase 10 (Channel Expansion), ya user jo chahe.**
+COMPLETE (Steps 9.1–9.6 sab) + ✅ VPS par LIVE.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7
+✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6),
+sequence 6 → 7 → 8 → 9 → 10. **Agla: Phase 10 (Channel Expansion), ya user jo chahe.**
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
 search quota is month ke liye khatam hai (0/50, reset 2026-09-11) — jab tak reset na ho ya plan upgrade
