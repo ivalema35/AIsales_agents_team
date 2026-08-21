@@ -8,6 +8,7 @@ from datetime import datetime
 
 from services.analytics_service import (
     get_funnel, get_channel_performance, get_trend, get_by_product, get_outreach_funnel,
+    get_variant_performance,
 )
 
 analytics_bp = Blueprint("analytics", __name__, url_prefix="/api/v1/analytics")
@@ -71,6 +72,24 @@ def outreach_funnel():
     db = SessionLocal()
     try:
         return jsonify(get_outreach_funnel(db, start, end))
+    finally:
+        db.close()
+
+
+@analytics_bp.route("/variant-performance", methods=["GET"])
+def variant_performance():
+    start = request.args.get("start")
+    end = request.args.get("end")
+    if start and not _valid_date(start):
+        return jsonify({"error": ["start must be YYYY-MM-DD"]}), 422
+    if end and not _valid_date(end):
+        return jsonify({"error": ["end must be YYYY-MM-DD"]}), 422
+    if end and not start:
+        return jsonify({"error": ["end requires start"]}), 422
+
+    db = SessionLocal()
+    try:
+        return jsonify(get_variant_performance(db, start, end))
     finally:
         db.close()
 

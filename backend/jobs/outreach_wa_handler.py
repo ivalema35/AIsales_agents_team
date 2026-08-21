@@ -98,6 +98,10 @@ def handle_outreach_wa(db, payload):
         message_body=json.dumps({"template": spec["name"], "variables": values}),
         status="SENT",
         provider_message_id=extract_wamid(send_response),
+        # Phase 9 Step 9.1 (tracker.md A.8) -- the real Meta template name, in its own
+        # queryable column instead of only inside the JSON message_body blob, so Step
+        # 9.2 can roll up real reply rates per template without parsing JSON per row.
+        variant_id=spec["name"],
     ))
     lead.status = "OUTREACHED"
     db.commit()

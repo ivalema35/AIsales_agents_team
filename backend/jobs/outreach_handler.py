@@ -126,6 +126,11 @@ def handle_outreach_email(db, payload):
         # Phase 8 Step 8.4 -- every subject candidate generated, not just the one sent,
         # so Phase 9 can measure them retrospectively once real reply/open data exists.
         subject_candidates=json.dumps(draft.get("subject_candidates", [draft["subject"]])),
+        # Phase 9 Step 9.1 (tracker.md A.8) -- which message_format version drafted this,
+        # so Step 9.2 can roll up real reply/open rates per variant later. "FREE_FORM" is
+        # an explicit sentinel (this codebase's own convention, e.g. Lead.sales_route's
+        # "UNASSIGNED") rather than a bare NULL, so a report reads clearly either way.
+        variant_id=fmt_row.id if fmt_row else "FREE_FORM",
     ))
     lead.status = "OUTREACHED"
     db.commit()

@@ -192,6 +192,56 @@ def get_outreach_funnel(db, start_date: str | None = None, end_date: str | None 
     }
 
 
+def get_variant_performance(db, start_date: str | None = None, end_date: str | None = None) -> dict:
+    """Phase 9 Step 9.1/9.2 (tracker.md A.8): real sent/seen/replied per `variant_id` --
+    the message_format version an EMAIL used, or the real Meta template name a WHATSAPP
+    send used. Deliberately computed fresh from `outreach_logs` on every call, exactly
+    like `get_outreach_funnel` above (same date-filter shape, same is_seen/is_replied
+    definitions, reused verbatim) -- no separate counter table to drift out of sync.
+    That's the whole reason `campaign_variants`'s own stored counters were skipped in
+    favor of this (see tracker.md A.8): a live query against real data can never
+    disagree with "a direct SQL query for one real day", because it IS one.
+    """
+    date_filters = []
+    if start_date:
+        start_ist = datetime.strptime(start_date, "%Y-%m-%d")
+        end_ist = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1) if end_date \
+            else start_ist + timedelta(days=1)
+        start_utc, end_utc = start_ist - IST_OFFSET, end_ist - IST_OFFSET
+        date_filters = [OutreachLog.sent_at >= start_utc, OutreachLog.sent_at < end_utc]
+
+    logs = db.query(OutreachLog).filter(OutreachLog.status == "SENT", *date_filters).all()
+
+    variants = {}
+    for log in logs:
+        key = (log.channel, log.variant_id or "FREE_FORM")
+        v = variants.setdefault(key, {
+            "channel": log.channel, "variant_id": log.variant_id or "FREE_FORM",
+            "sent": 0, "seen": 0, "replied": 0,
+        })
+        v["sent"] += 1
+        if log.read_at is not None:
+            v["seen"] += 1
+        is_replied = db.query(InboundConversation).filter(
+            InboundConversation.lead_id == log.lead_id,
+            InboundConversation.channel == log.channel,
+            InboundConversation.sender_type == "LEAD",
+            InboundConversation.created_at > log.sent_at,
+        ).first() is not None
+        if is_replied:
+            v["replied"] += 1
+
+    for v in variants.values():
+        v["seen_rate"] = round(v["seen"] / v["sent"], 4) if v["sent"] else None
+        v["reply_rate"] = round(v["replied"] / v["sent"], 4) if v["sent"] else None
+
+    return {
+        "start": start_date,
+        "end": end_date or start_date,
+        "variants": sorted(variants.values(), key=lambda v: v["sent"], reverse=True),
+    }
+
+
 def get_by_product(db) -> list[dict]:
     products = db.query(Product).order_by(Product.created_at.desc()).all()
     result = []
