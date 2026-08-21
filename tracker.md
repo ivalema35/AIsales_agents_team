@@ -2229,6 +2229,43 @@ check (`/api/v1/webhooks/resend` → 200), sab 4 tracked process heartbeats fres
 
 ---
 
+### Real production bug: format ka order + demo URL follow nahi ho raha tha (2026-08-21)
+
+**User ne khud production email dikhaya** aur bola "ye sahi format follow nahi kar raha he." Real
+GameZone Visnagar email tha: format `["pain point", "greeting", "solution", "demo url"]` set tha, lekin
+real email "Hi Hardik" (greeting) se shuru hua, phir pain point, aur **demo URL kahin tha hi nahi** —
+jabki is product ka ek real, active `DEMO_URL` content asset hai (`https://ivinfotech.com`).
+
+**Poori wiring VPS pe check ki (real DB se)**: `resolve_active_format()` sahi format row de raha tha
+(`variant_id` outreach_log me match ho raha tha), `get_available_assets()` sahi demo_url return kar raha
+tha. **Koi code/wiring bug nahi tha** — format aur asset dono sahi tarah AI ko prompt me pass ho rahe the.
+
+**Real reproduction kiya** — bilkul wahi real product/lead/pain-points/format/asset data se
+`draft_email()` 3 baar locally call kiya (real LLM): **3/3 baar** greeting pehle aaya (pain point ke
+baad nahi), **3/3 baar** demo URL missing tha. Confirmed, consistent real bug — LLM prompt-compliance
+ka gap, code ka nahi.
+
+**Root cause mila**: `OUTREACH_AGENT_SYSTEM_PROMPT` ka apna illustrative example — *"greeting -> 2-3
+pain points -> solution -> demo link"* — hamesha greeting-first dikha raha tha, chahe runtime FORMAT
+kuch bhi ho. Model isi example se bias ho raha tha, real admin-set order ignore karke. Content-asset
+instruction bhi "you MAY reference it... if none fits, omit" jaisi soft language use kar raha tha —
+model ko asset skip karna bahut aasan lag raha tha.
+
+**Fix**: dono prompts (`cognition/prompts.py`'s system prompt + `agents/outreach_agent.py`'s runtime
+FORMAT block) update kiye — explicit bola "is EXACT order follow karo, greeting-first assume mat karo
+jab tak format khud aisa na kahe," aur asset ko "MUST include karo agar format usse maangta hai aur
+relevant asset available hai" bola (sirf "may" nahi).
+
+**Verified — fix ke baad wahi exact real inputs se dobara 3 baar test kiya: 3/3 baar sahi order (pain
+point pehle), 3/3 baar real demo URL include hua.** QC ne bhi corrected draft ko approve kiya (real
+LLM call). No-format wala purana behavior (pain point se shuru) bhi unaffected confirm kiya (regression
+check).
+
+**Turant commit + push + VPS deploy** (backend-only) — `bos-api` + `bos-worker` restart, DB mtime
+unchanged, import sanity pass, sab 5 services active.
+
+---
+
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — ✅ POORA
 COMPLETE (Steps 9.1–9.6 sab) + ✅ VPS par LIVE.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7
 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6),
