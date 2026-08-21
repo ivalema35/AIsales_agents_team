@@ -46,7 +46,23 @@ def _find_by_name(data, name):
     return None
 
 
-def _create_on_meta(name, language, category, body_text):
+
+# Real, plausible sample values for each {{n}} placeholder -- Meta's Create Template API
+# requires an "example" on the BODY component whenever it has variables, so its real
+# reviewers/classifier have something concrete to check the template against. A real
+# rejection (2026-08-21, pain_point_follow_up, no reason given by Meta) traced back to
+# this being missing entirely -- confirmed by comparing against this same WABA's own
+# already-APPROVED templates, both of which carry a real "example" block. "Sparrk Gaming
+# Zone" / "some customers mentioned slow response times" are the exact example values
+# already on file for ivinfotech_pain_point_outreach, reused here for consistency.
+_EXAMPLE_VALUES = {
+    "contact_name": "Rahul",
+    "company_name": "Sparrk Gaming Zone",
+    "pain_point_phrase": "some customers mentioned slow response times",
+}
+
+
+def _create_on_meta(name, language, category, body_text, variable_labels=None):
     """The actual real Meta Create Template API call, shared by every path that ends in
     a real submission (a direct admin submit, or an admin approving an AI draft --
     Step 9.6). Raises on failure -- same contract as every other real send in this
@@ -58,11 +74,16 @@ def _create_on_meta(name, language, category, body_text):
     if not Config.WHATSAPP_WABA_ID:
         raise RuntimeError("WHATSAPP_WABA_ID not configured")
 
+    body_component = {"type": "BODY", "text": body_text}
+    if variable_labels:
+        body_component["example"] = {
+            "body_text": [[_EXAMPLE_VALUES.get(v, "example") for v in variable_labels]]
+        }
     payload = {
         "name": name,
         "language": language,
         "category": category,
-        "components": [{"type": "BODY", "text": body_text}],
+        "components": [body_component],
     }
     resp = requests.post(
         _templates_url(),
@@ -86,7 +107,7 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
     mandatory: a new product-specific template still needs its own separate Meta
     approval, so defaulting to shared keeps that real cost down.
     """
-    data = _create_on_meta(name, language, category, body_text)
+    data = _create_on_meta(name, language, category, body_text, variable_labels)
 
     row = WhatsappTemplate(
         name=name,
@@ -143,7 +164,9 @@ def approve_draft_and_submit(db, template):
     if template.status != "DRAFT":
         raise ValueError(f"template {template.name!r} is not a DRAFT (status={template.status!r})")
 
-    data = _create_on_meta(template.name, template.language, template.category, template.body_text)
+    variable_labels = json.loads(template.variable_labels or "[]")
+    data = _create_on_meta(template.name, template.language, template.category,
+                           template.body_text, variable_labels)
     template.status = "PENDING"
     template.meta_template_id = data.get("id")
     db.commit()
