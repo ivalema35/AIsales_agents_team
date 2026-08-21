@@ -13,11 +13,30 @@ from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT, TEMPLATE_QC_SYST
 
 
 
-# A format section is treated as "asset-calling" if its own wording mentions any of
-# these -- deliberately keyword-based, not LLM-judged: the whole point is a check that
-# doesn't depend on a model reliably noticing its own omission (see _missing_required_
-# asset's docstring below for why the prompt-only version wasn't enough).
-_ASSET_KEYWORDS = ("demo", "url", "link", "case study", "testimonial", "video")
+# Which real asset TYPE a format section's own wording is calling for -- deliberately
+# keyword-based, not LLM-judged (the whole point is a check that doesn't depend on a
+# model reliably noticing its own omission). A section saying "video url" means the real
+# VIDEO_URL asset specifically, not "any asset will do" -- a product with BOTH a demo
+# link and a video available (real case, 2026-08-21) needs the format's own wording
+# respected, not an arbitrary pick between them.
+_SECTION_ASSET_TYPE_KEYWORDS = {
+    "DEMO_URL": ("demo",),
+    "VIDEO_URL": ("video",),
+    "CASE_STUDY": ("case study", "case-study"),
+    "TESTIMONIAL": ("testimonial",),
+}
+
+
+def _required_asset_types(format_sections):
+    """The real asset TYPES the format's own wording actually names -- a format that
+    never mentions an asset-like word requires nothing."""
+    required = set()
+    for section in format_sections or []:
+        section_lower = str(section).lower()
+        for asset_type, keywords in _SECTION_ASSET_TYPE_KEYWORDS.items():
+            if any(kw in section_lower for kw in keywords):
+                required.add(asset_type)
+    return required
 
 
 def _missing_required_asset(body: str, format_sections, content_assets):
@@ -28,23 +47,30 @@ def _missing_required_asset(body: str, format_sections, content_assets):
     strengthened to say the asset MUST be included). Same "never trust blindly, add a
     deterministic check" posture as outreach_agent.py's own _strip_signature regex.
 
-    Returns the real asset value that should have been included if the format calls for
-    one and none of the real listed values actually appear in the body, else None.
+    Type-aware (2026-08-21 follow-up): only checks for the SPECIFIC asset type each
+    format section actually names -- "video url" requires the real VIDEO_URL asset, not
+    just any real link. A required type with no real asset of that type available is
+    NOT flagged (nothing to include, correctly omitted per the drafting prompt's own
+    carve-out) -- this only fires when a real, available, matching-type asset exists and
+    genuinely isn't in the body.
+
+    Returns the real asset value that should have been included, or None if compliant.
     """
-    if not format_sections or not content_assets:
-        return None
-    calls_for_asset = any(
-        any(kw in str(section).lower() for kw in _ASSET_KEYWORDS) for section in format_sections
-    )
-    if not calls_for_asset:
+    required_types = _required_asset_types(format_sections)
+    if not required_types or not content_assets:
         return None
     body_text = body or ""
+    assets_by_type = {}
     for asset in content_assets:
-        value = asset.get("value") if isinstance(asset, dict) else None
-        if value and value in body_text:
-            return None  # a real listed asset is genuinely present -- compliant
-    first = content_assets[0]
-    return first.get("value") if isinstance(first, dict) else None
+        if isinstance(asset, dict) and asset.get("asset_type") in required_types:
+            assets_by_type.setdefault(asset["asset_type"], asset.get("value"))
+    for asset_type in required_types:
+        value = assets_by_type.get(asset_type)
+        if not value:
+            continue  # no real asset of this exact type available -- omitting it is correct
+        if value not in body_text:
+            return value
+    return None
 
 
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
