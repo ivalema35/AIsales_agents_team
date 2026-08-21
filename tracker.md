@@ -2086,11 +2086,52 @@ hai, honest decline message purpose-specific hota hai ("...found for FIRST_TOUCH
 
 ---
 
+### Steps 9.5 + 9.6 — VPS par deploy + live verify (2026-08-21)
+
+User ne confirm kiya: "badiya he ab isse git push karke vps par deploy karde test kar lena." Poora
+Phase 9 complete hone tak wait karne ka pehle wala plan tha, lekin user ne explicitly abhi deploy karne
+ko bola — usi ko priority di.
+
+**Local commit + push** — `199bfb3`, 18 files (Steps 9.5+9.6 poora, `.log` scratch files exclude kiye).
+
+**Real gap: is machine par VPS ka koi SSH key nahi tha** (pehle sessions me kisi aur tareeke se hua
+hoga). `backend/.env` me hi password-based access already saved tha (`VPS_SSH_PASSWORD` — deliberately
+"ops-only" comment ke saath rakha gaya tha) — `paramiko` install karke usi se connect kiya.
+
+**Poora established deploy sequence follow kiya:**
+1. VPS git status/DB mtime check kiya PEHLE (clean tree, koi conflict nahi).
+2. `git pull` — clean fast-forward (`c7c69e7` → `199bfb3`), `sales_system.db` mtime bilkul unchanged
+   confirm kiya (real timestamp compare).
+3. `migrate.py` real prod DB par — naya `whatsapp_templates` table (Step 9.5 pehli baar VPS pe) +
+   `outreach_sequences` table (Step 9.3) sab clean bane, 0 rows (fresh).
+4. Import sanity-check (`import app; create_app()`) — services touch karne se PEHLE, clean pass.
+5. Frontend build VPS par (`npm install && npm run build`) — real success, naya hash
+   `index-DOA4vG8-.js`. `dist/` → `public_html/` copy + `chown`.
+6. **5 services restart** (`bos-api`, `bos-worker`, `bos-scraper`, `bos-poller`, `bos-scheduler`) —
+   sab `active`. `bos-api`'s ERROR lines sirf gunicorn ka normal graceful-restart SIGTERM log tha
+   (expected). **Ek pre-existing real issue bhi incidentally fix ho gaya**: `bos-scheduler` ka stuck-
+   alert (05:13 se 09:13 tak, hourly) ek down/error process ke baare me tha — restart ke baad sab 4
+   tracked processes (`jobs.worker`, `jobs.inbound_poller`, `scraper_worker.async_runner`, `jobs.
+   discovery_scheduler`) ka heartbeat fresh (10:00-10:01) confirm hua — issue resolved, khud is deploy
+   se pehle ka tha, is session ka introduced nahi.
+7. **Real HTTPS verification**: login 200, `/api/v1/whatsapp-templates` → `[]` + 200, `/api/v1/
+   whatsapp-templates/builtin` → real dono templates apna sahi, alag wording ke saath (Step 9.5's
+   name-filter bug fix production me bhi sahi kaam kar raha hai, confirm hua).
+8. **Real browser (Playwright) se live `https://sales.ivinfotech.com` verify kiya**: real login, nav me
+   "WA Templates" Products ke turant baad, teeno tabs (Built-in/AI Proposed/Submitted) render, built-in
+   dono templates apna real wording dikhate hain, AI Proposed tab ke dono purpose-buttons dikhte hain,
+   Products → Message format → WhatsApp cross-link bhi sahi kaam karta hai. **Sirf read-only checks
+   kiye** — Approve/Reject/Ask AI/New template kuch bhi click nahi kiya (real production data/Meta ko
+   kabhi touch nahi kiya).
+
+**Poora deploy verified, zero regressions, zero errors.** Steps 9.1–9.3, 9.5, 9.6 ab VPS par LIVE hain.
+
+---
+
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3,
-9.5, 9.6 ✅ COMPLETE**, **sirf 9.4 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE +
-✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8
-→ 9 → 10. **VPS deploy abhi baaki hai Steps 9.1–9.3, 9.5, 9.6 ka** — Phase 9 complete hone ke
-baad ek saath deploy hoga.
+9.5, 9.6 ✅ COMPLETE + ✅ VPS par LIVE**, **sirf 9.4 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE.
+Phase 7 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai
+(§A.6), sequence 6 → 7 → 8 → 9 → 10.
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
 search quota is month ke liye khatam hai (0/50, reset 2026-09-11) — jab tak reset na ho ya plan upgrade
