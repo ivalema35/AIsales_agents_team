@@ -122,7 +122,8 @@ def handle_outreach_email(db, payload):
         return lead.id
 
     unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
-    send_response = send_email(lead.primary_email, draft["subject"], draft["body"], unsubscribe_url)
+    send_response = send_email(lead.primary_email, draft["subject"], draft["body"], unsubscribe_url,
+                               content_assets=content_assets)
 
     db.add(OutreachLog(
         id=str(uuid.uuid4()),
