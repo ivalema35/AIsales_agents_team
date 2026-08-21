@@ -2128,6 +2128,44 @@ hoga). `backend/.env` me hi password-based access already saved tha (`VPS_SSH_PA
 
 ---
 
+### Real production incident: user ka pehla real Approve turant Meta se REJECTED (2026-08-21)
+
+User ne khud production dashboard pe "Ask AI" → "Approve & Submit to Meta" try kiya (real, deliberate
+action, jaisa keh diya tha "ab isme AI se follow up template banwata hu aur approve karke check karta
+hu"). Real template Meta ko gaya, **turant REJECTED** wapas aaya — koi reason nahi diya Meta ne.
+
+**User ne khud sahi sawal poocha: "kya category MARKETING sahi hai, kuch miss to nahi horaha he na"** —
+isi se real root cause mila. Meta ke real API se seedha compare kiya apna rejected template vs is WABA
+ke already-2-APPROVED templates (`marketing_gen`, `ivinfotech_pain_point_outreach`) — **dono APPROVED
+templates ke BODY component me ek `"example"` block hai** (real sample values har `{{n}}` variable ke
+liye), **hamara code isse bhejta hi nahi tha**. Category (MARKETING) sahi thi, ye field hi missing thi.
+
+**Fix**: `_create_on_meta()` ab `variable_labels` leta hai, aur naya `_EXAMPLE_VALUES` mapping se real,
+plausible sample values banata hai (`contact_name`→"Rahul", `company_name`→"Sparrk Gaming Zone",
+`pain_point_phrase`→ wahi exact example jo `ivinfotech_pain_point_outreach` par already Meta ke paas
+file me hai, consistency ke liye reuse kiya). Dono real submission paths (`submit_template()` direct-
+admin, `approve_draft_and_submit()` AI-draft) ab isse pass karte hain. Koi variable na ho to `example`
+block bilkul add hi nahi hota (Meta ke liye galat/empty block bhejna bhi ek real risk hota).
+
+**Verified — 3/3 real checks (`test_phase9_step6j.py`, mocked Meta POST):** direct-submit path example
+include karta hai sahi values ke saath; AI-draft-approve path bhi karta hai; zero-variable template ko
+koi example block nahi milta. Poore Step 9.6 regression suite (6a, 6f) dobara chalaya — koi regression
+nahi.
+
+**Fix commit + push + VPS deploy turant** (backend-only, frontend rebuild ki zaroorat nahi) —
+`bos-api`/`bos-worker`/`bos-scheduler` restart, real prod DB mtime unchanged confirm kiya, import
+sanity-check pass. **Real production data se hi ye bug mila aur fix hua** — user ka apna real test
+genuinely useful nikla, exactly jis wajah se real testing ka discipline maintain kiya jaata hai.
+
+**Ek chhota, alag observation bhi mila is investigation ke dauraan (abhi tak fix nahi kiya, disclosed):**
+`WhatsappTemplate.updated_at` column me `onupdate` missing hai — matlab ye column sirf creation time par
+set hota hai, kisi bhi baad ke real update (status poll, is_active toggle, approve/reject) par kabhi
+refresh nahi hota. Real consequence: `get_approved_followup_template()` jo `updated_at DESC` se order
+karta hai, stale/meaningless order use kar raha hoga jab multiple matching templates ho. Chhota fix hai,
+user ki confirmation ka wait hai.
+
+---
+
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3,
 9.5, 9.6 ✅ COMPLETE + ✅ VPS par LIVE**, **sirf 9.4 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE.
 Phase 7 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai
