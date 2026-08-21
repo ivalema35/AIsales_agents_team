@@ -2320,6 +2320,30 @@ mention hi na kare → kabhi flag nahi hota.
 **Deploy turant** (backend-only) — DB gitignored confirm kiya (`git status` khaali), import sanity pass,
 sab 5 services active.
 
+**Isi din, ek aur real escalation dikha user ko — bilkul same UI, lekin real root cause bilkul alag
+nikla.** Real `agent_events` check kiya (naya): **attempt 1** — QC ka apna real LLM reject kar raha
+tha *"unauthorized external link to a YouTube video, not supported by the provided brief"* aur
+*"unauthorized link to ivinfotech.com... should not add external URLs unless explicitly provided in
+the source context"* — dono links REAL, admin-approved content_assets the, lekin QC ko pata hi nahi
+tha! **`review_draft()`'s apna prompt kabhi `content_assets` include hi nahi karta tha** — sirf
+`DRAFT`/`VERIFIED_PAIN_POINTS`/`PRODUCT_BRIEF` dikhta tha. Naya deterministic check (`_missing_required_
+asset`) sirf function-param ke roop me `content_assets` use kar raha tha, **QC ke apne LLM prompt me
+kabhi pass hi nahi hua tha**.
+
+**Fix**: naya `APPROVED_CONTENT_ASSETS` block `review_draft()`'s prompt me add kiya (jab bhi
+`content_assets` diye jaayein) — QC ko explicitly batata hai "in values se match karne wala URL real,
+pre-approved hai, hallucination nahi." System prompt ka apna check (c) bhi update kiya isi rule ke
+saath — bilkul wahi pattern jo `PRODUCT_BRIEF` capability-claims ke liye already use hota hai.
+
+**Verified — real LLM se test kiya.** Real production evidence khud QC ke apne words me confirm karta
+hai fix sahi hai — QC ne khud bola tha "unless explicitly provided in the source context" — ye
+exactly wahi cheez hai jo naya fix karta hai. Synthetic reproduction real LLM variance ki wajah se
+consistently fail nahi hui (dono baar "without context" bhi accidentally pass ho gaya), lekin fix
+principled hai aur real evidence se directly justify hota hai.
+
+**Deploy turant** (backend-only) — DB gitignored confirm kiya, import sanity pass, sab 5 services
+active.
+
 ---
 
 ### Follow-up: real video URL/clickable-link support in emails (2026-08-21)
