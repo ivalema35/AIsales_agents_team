@@ -139,7 +139,11 @@ CHECK (reject if ANY of these fail):
     rejected as unsupported -- reject only claims that go beyond, or contradict, what
     PRODUCT_BRIEF actually says. A closing line saying our team will personally follow up
     with the lead shortly (no specific date/time attached) is always true and pre-approved
-    -- do NOT reject it as a fabricated timeline.
+    -- do NOT reject it as a fabricated timeline. If an APPROVED_CONTENT_ASSETS block is
+    present, a URL in the draft that exactly matches one of its "value" fields is a real,
+    admin-approved link (a demo, video, case study, etc.) -- this is NOT an unauthorized
+    or hallucinated link and must NOT be rejected as one; only flag a URL that matches
+    none of the approved values.
 (d) the draft doesn't already contain its own footer/signature/unsubscribe text (the
     system appends the compliant one automatically -- a draft that added its own would
     end up with two, or a wrong one). A plain closing sentence promising the team will

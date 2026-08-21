@@ -118,6 +118,16 @@ PRODUCT_BRIEF (the ground truth for judging capability claims -- a claim consist
 this is NOT hallucination, even if worded differently than the brief itself):
 {json.dumps(product_brief or {}, ensure_ascii=False)}
 """
+    if content_assets:
+        prompt += f"""
+APPROVED_CONTENT_ASSETS (2026-08-21 follow-up -- found live: without this block QC had
+no way to tell a real, pre-approved link from a hallucinated one, and wrongly rejected
+genuine demo/video links as "unauthorized external URLs"). Any URL in the draft that
+exactly matches one of these "value" fields is a REAL, admin-approved asset -- NOT an
+unsupported claim or an unauthorized link, and must never be rejected on that basis
+alone. Only flag a URL if it does NOT match any of these:
+{json.dumps(content_assets, ensure_ascii=False)}
+"""
     if is_followup:
         prompt += """
 THIS IS A FOLLOW-UP nudge to a lead who already received a full first-touch pitch and
