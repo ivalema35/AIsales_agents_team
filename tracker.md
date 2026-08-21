@@ -1528,10 +1528,63 @@ tab tak NULL tha) — koi galat data nahi, backward-compatible.
 
 ---
 
-**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1 + 9.2
-✅ COMPLETE**, **9.3–9.6 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par
+### ⭐ Phase 9 / Step 9.3 — Multi-touch follow-up sequences (2026-08-21)
+
+Naya Table 24 `outreach_sequences` — per-lead+channel follow-up state (`next_step`, `max_steps`,
+`next_run_at`, `status`, `terminal_reason`). Naya `products.followup_cadence_days` (JSON array, jaise
+`[3, 7]` — touch 2 3 din baad, touch 3 uske 7 din baad, fir stop). **Khali/absent cadence = koi
+follow-up nahi, aaj jaisa hi behavior — sirf tab activate hota hai jab explicitly configure kiya jaaye.**
+
+**Naya `services/sequence_service.py`:**
+- `create_sequence_for_send()` — touch 1 (fresh send) ke baad call hota hai, sirf agar cadence set ho.
+- `process_due_followup()` — **atomic claim** (`services/lead_service.py`'s `claim_lead_for_outreach`
+  jaisa hi rowcount-checked raw UPDATE pattern), phir: reply check (REPLIED ho to sequence khatam), 
+  suppression re-check (opt-out ho to turant STOPPED), warna agla touch enqueue karta hai — **bilkul
+  wahi `OUTREACH_EMAIL`/`OUTREACH_WA` job handlers use karta hai jo fresh touch use karta hai**, isliye
+  suppression/QC/pacing har touch pe unchanged apply hote hain, sirf pehli baar nahi.
+
+Naya `_run_followup_tick()` (`discovery_scheduler.py`) — **wahi `autonomous_outreach_enabled`
+kill-switch aur wahi daily pacing-cap budget** jo fresh outreach tick use karta hai (ek follow-up bhi
+utna hi real autonomous send hai).
+
+`draft_email()`/`review_draft()` me naya `is_followup` param — jab True ho, AI ko batata hai "chhota,
+low-pressure nudge likho, poora pitch dobara mat do."
+
+**2 real bugs pakde, dono fix kiye, is step ko banate/test karte hue:**
+1. **Real SQLAlchemy bug:** claim ek raw SQL `UPDATE` tha (ORM ke change-tracking se invisible) — usके
+   baad `db.get()` se stale cached object mil raha tha, aur jab code usi (stale) value ko wapas set
+   karta ("ACTIVE"), SQLAlchemy ko lagta kuch badla hi nahi, aur real DB me row `'CLAIMED'` par hamesha
+   ke liye atak jaata. Fix: claim ke turant baad `db.refresh(seq)` — ab real state se sync hota hai.
+2. **Real QC conflict** (bilkul wahi shape jo pehle escalation-reply ke time hua tha): QC ka apna
+   existing rule ("pain point ko specifically reference karo") ek deliberately-brief follow-up nudge ko
+   galat reject kar raha tha. Fix: `review_draft()` me bhi `is_followup` carve-out add kiya — sirf
+   specificity-requirement relax hoti hai, baaki sab rules (buzzwords, fake claims, fake pricing)
+   bilkul unchanged rehte hain.
+
+**Verified — 10/10 checks, real end-to-end (`test_phase9_step3.py`, real LLM calls, sirf network-send
+monkeypatched):**
+1. Cadence na ho → koi sequence row nahi banti (regression-safe).
+2. Cadence=[3,7] → real sequence banti hai, sahi `next_step`/`max_steps`/`next_run_at`.
+3. `process_due_followup` due sequence claim karta hai, real job enqueue karta hai, state sahi advance
+   karta hai.
+4. Wahi enqueue hua job chalane par — real LLM se follow-up draft bana, `is_followup` framing use hui,
+   QC approve kiya, **2 real `OutreachLog` rows** (touch1+touch2) ban gayi.
+5. Follow-up bhejne se koi doosri, competing sequence nahi banti.
+6. **Concurrency:** same sequence pe 2 baar claim try karo → doosri baar safe no-op (duplicate send
+   nahi hota) — yehi Phase 9 ka apna DoD test hai ("Phase 3 atomic-claim contention test, re-run").
+7. Max touches khatam hone par sequence sahi `COMPLETED`/`MAX_STEPS_REACHED` hoti hai.
+8. **Reply aane par sequence turant exit hoti hai**, koi aur follow-up nahi jaata.
+9. **Opt-out beech me hone par sequence turant `STOPPED` hoti hai**, koi aur follow-up nahi jaata.
+10. WhatsApp touch 1 bhi sahi sequence row banata hai (cadence set hone par).
+
+**Step 9.3 ✅ COMPLETE.** Agla: Step 9.4 — engagement-based escalation.
+
+---
+
+**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3
+✅ COMPLETE**, **9.4–9.6 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par
 LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10.
-**VPS deploy abhi baaki hai Steps 9.1/9.2 ka** — Phase 9 complete hone ke
+**VPS deploy abhi baaki hai Steps 9.1–9.3 ka** — Phase 9 complete hone ke
 baad ek saath deploy hoga.
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
@@ -1699,7 +1752,7 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
 ### PHASE 9 — Measurement, Multi-Touch & Adaptive Templates
 - [x] Step 9.1 — **[hold se]** `campaign_variants` wire karo (Phase 1 se schema me hai, kabhi likha nahi gaya) — ✅ 2026-08-21, `OutreachLog.variant_id` se (§A.8 deviation), Section 3
 - [x] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi) — ✅ 2026-08-21, Section 3, real SQL reconciliation se verified
-- [ ] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi
+- [x] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi — ✅ 2026-08-21, Section 3, 10/10 real end-to-end checks
 - [ ] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi)
 - [ ] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate)
 - [ ] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory

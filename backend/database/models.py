@@ -33,6 +33,9 @@ class Product(Base):
     # empty list means "unchanged from today" everywhere they're read.
     target_business_categories = Column(Text, default="[]")  # JSON array
     target_person_roles = Column(Text, default="[]")         # JSON array
+    # Phase 9 Step 9.3 -- day-offsets between follow-up touches, e.g. [3,7]. Empty = no
+    # follow-ups for this product (today's single-touch behavior, unchanged).
+    followup_cadence_days = Column(Text, default="[]")       # JSON array of integers
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -364,3 +367,22 @@ class ContentAsset(Base):
     tags = Column(Text, default="[]")  # JSON array
     is_active = Column(Integer, default=1)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 24. OUTREACH SEQUENCES (Phase 9 Step 9.3 -- per-lead+channel follow-up cadence state.
+# Only ever created when the lead's product has a real cadence configured; every send it
+# drives goes through the exact same OUTREACH_EMAIL/OUTREACH_WA handlers as a fresh
+# touch, so suppression/QC/pacing apply identically at every step.)
+class OutreachSequence(Base):
+    __tablename__ = "outreach_sequences"
+    id = Column(String, primary_key=True, default=_uuid)
+    lead_id = Column(String, ForeignKey("leads.id", ondelete="CASCADE"), nullable=False)
+    channel = Column(String, nullable=False)  # "EMAIL" or "WHATSAPP"
+    original_sent_at = Column(TIMESTAMP, nullable=False)
+    next_step = Column(Integer, nullable=False, default=2)
+    max_steps = Column(Integer, nullable=False)
+    next_run_at = Column(TIMESTAMP, nullable=False)
+    status = Column(String, default="ACTIVE")  # ACTIVE, CLAIMED, COMPLETED, STOPPED
+    terminal_reason = Column(String)  # REPLIED, SUPPRESSED, MAX_STEPS_REACHED
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())

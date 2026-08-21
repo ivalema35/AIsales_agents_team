@@ -31,7 +31,7 @@ def _strip_signature(body: str) -> str:
 
 def draft_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
                 qc_feedback: str | None = None, format_sections: list | None = None,
-                content_assets: list | None = None):
+                content_assets: list | None = None, is_followup: bool = False):
     """Returns a dict {subject, body, hook_type, confidence}, or None if drafting failed
     or produced an unusable (empty) result. `qc_feedback` carries a prior rejection's
     `suggested_corrections` into a retry attempt -- "regenerate with feedback", not a
@@ -46,12 +46,26 @@ def draft_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_point
     module's own admin-authored-STRUCTURE-not-final-copy design note. `content_assets`
     is the closed set of demo links/case studies the model may select from; it must
     never invent a URL that isn't in this list.
+
+    `is_followup` (Phase 9 Step 9.3): True only when jobs/discovery_scheduler.py's
+    follow-up tick is drafting touch 2+ for a lead who hasn't replied yet -- tells the
+    model to write a brief nudge referencing the earlier outreach, not repeat the full
+    pitch. False (default) for every touch-1 caller, unchanged from before this existed.
     """
     prompt = OUTREACH_AGENT_SYSTEM_PROMPT + f"""
 PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
 LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
+"""
+    if is_followup:
+        prompt += """
+THIS IS A FOLLOW-UP: an earlier first-touch message was already sent to this same lead
+about this same product and has not been replied to yet. Write a SHORT, low-pressure
+nudge (well under the usual length) that references you reached out before without
+repeating the full pitch or the same pain-point framing verbatim -- a brief new angle or
+a simple "still worth a look?" is enough. Never guilt-trip or imply urgency that isn't
+real (no fake scarcity/deadlines).
 """
     if format_sections:
         numbered = "\n".join(f"{i}. {s}" for i, s in enumerate(format_sections, 1))

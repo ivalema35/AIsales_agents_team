@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import logging
 import uuid
+from datetime import datetime
 
 from agents.outreach_agent import draft_email
 from agents.quality_controller_agent import review_draft
@@ -23,6 +24,7 @@ from jobs.registry import register_handler
 from services.message_format_service import resolve_active_format, get_available_assets
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
+from services.sequence_service import create_sequence_for_send
 
 logger = logging.getLogger(__name__)
 
@@ -78,16 +80,22 @@ def handle_outreach_email(db, payload):
     format_sections = json.loads(fmt_row.sections) if fmt_row else None
     content_assets = get_available_assets(db, lead.product_id) or None
 
+    # Phase 9 Step 9.3 -- present only when jobs/discovery_scheduler.py's follow-up tick
+    # (via services/sequence_service.py) enqueued this as touch 2+, never on a fresh
+    # touch-1 send. Tells the agent to write a brief nudge, not repeat the full pitch.
+    is_followup = bool(payload.get("sequence_id"))
+
     draft = None
     qc_result = None
     qc_feedback = None
     for attempt in range(1, MAX_DRAFT_ATTEMPTS + 1):
         draft = draft_email(db, lead.id, product_brief, lead_profile, pain_points,
                             qc_feedback=qc_feedback, format_sections=format_sections,
-                            content_assets=content_assets)
+                            content_assets=content_assets, is_followup=is_followup)
         if not draft:
             break
-        qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief)
+        qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief,
+                                 is_followup=is_followup)
         if qc_result["approved"]:
             break
         logger.info("OUTREACH_EMAIL %s -> QC rejected draft %d/%d: %s",
@@ -134,6 +142,12 @@ def handle_outreach_email(db, payload):
     ))
     lead.status = "OUTREACHED"
     db.commit()
+
+    # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch itself,
+    # which would otherwise create a second, competing sequence for the same lead).
+    # A no-op if the product has no cadence configured (today's behavior, unchanged).
+    if not is_followup:
+        create_sequence_for_send(db, lead, "EMAIL", datetime.utcnow())
 
     log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL",
                     qc_result["confidence_score"], "MEDIUM", "EXECUTE")

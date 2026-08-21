@@ -28,10 +28,11 @@ from sqlalchemy import func, text
 
 from config import Config
 from database.db_config import SessionLocal
-from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport
+from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport, OutreachSequence
 from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
+from services.sequence_service import process_due_followup
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
@@ -243,6 +244,47 @@ def _run_outreach_tick(db):
     return claimed_count
 
 
+def _run_followup_tick(db):
+    """Phase 9 Step 9.3 -- sends the next due touch for every ACTIVE outreach_sequences
+    row whose next_run_at has arrived. Shares the exact same daily per-channel budget as
+    _run_outreach_tick above (a follow-up is still a real send counting against the same
+    cap) and the exact same autonomous_outreach_enabled kill-switch -- a follow-up is
+    still an autonomous real send to a real business, not a lesser action.
+    """
+    if not get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED):
+        return 0
+
+    cap_email = get_int(db, OUTREACH_DAILY_CAP_EMAIL, default=Config.OUTREACH_DAILY_CAP_EMAIL)
+    cap_whatsapp = get_int(db, OUTREACH_DAILY_CAP_WHATSAPP, default=Config.OUTREACH_DAILY_CAP_WHATSAPP)
+    remaining = {
+        "EMAIL": cap_email - _queued_today(db, "OUTREACH_EMAIL"),
+        "WHATSAPP": cap_whatsapp - _queued_today(db, "OUTREACH_WA"),
+    }
+    if remaining["EMAIL"] <= 0 and remaining["WHATSAPP"] <= 0:
+        return 0
+
+    due = (
+        db.query(OutreachSequence)
+        .filter(OutreachSequence.status == "ACTIVE", OutreachSequence.next_run_at <= datetime.utcnow())
+        .order_by(OutreachSequence.next_run_at.asc())
+        .limit(200)
+        .all()
+    )
+
+    sent_count = 0
+    for seq in due:
+        if remaining.get(seq.channel, 0) <= 0:
+            continue
+        result = process_due_followup(db, seq.id)
+        if result == "SENT":
+            sent_count += 1
+            remaining[seq.channel] -= 1
+
+    if sent_count:
+        logger.info("follow-up tick -> queued %d follow-up(s)", sent_count)
+    return sent_count
+
+
 def _run_eod_report_tick(db):
     """Once per IST calendar day, after 23:50 -- generate() is idempotent per report_date
     (checks daily_reports itself), so a poll interval well under 24h just means this is a
@@ -345,6 +387,7 @@ def run_forever(poll_interval=None):
             now = time.monotonic()
             if now - last_outreach_tick >= Config.OUTREACH_TICK_INTERVAL_SECONDS:
                 _run_outreach_tick(db)
+                _run_followup_tick(db)
                 last_outreach_tick = now
             _run_eod_report_tick(db)
             _run_stuck_alert_tick(db)

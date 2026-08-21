@@ -16,6 +16,7 @@ COLUMN_MIGRATIONS = [
     ("products", "target_business_categories", "TEXT DEFAULT '[]'"),
     ("products", "target_person_roles", "TEXT DEFAULT '[]'"),
     ("outreach_logs", "subject_candidates", "TEXT"),
+    ("products", "followup_cadence_days", "TEXT DEFAULT '[]'"),
 ]
 
 

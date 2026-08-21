@@ -12,7 +12,8 @@ from cognition.llm_client import call_json, LLMError
 from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT
 
 
-def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None) -> dict:
+def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
+                 is_followup: bool = False) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
@@ -24,6 +25,14 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
     rule -- without it, QC has no ground truth to tell a real capability from an invented
     one, and (found live, 2026-08-13) ends up flagging genuine, product-description-backed
     claims as "unsupported" simply because it was never shown the product at all.
+
+    `is_followup` (Phase 9 Step 9.3): a real conflict, found live testing the follow-up
+    sequencer -- this prompt's own existing specificity rule ("clearly and specifically
+    tie to a verified pain point") was BUILT for a first-touch pitch, and correctly
+    caught a deliberately brief, low-pressure follow-up nudge as failing that same bar,
+    even though the follow-up isn't trying to re-pitch. Same conflict shape as the
+    escalation-reply carve-out already in the prompt below for its own closing line --
+    an old rule and a new, legitimate requirement disagreeing, not a bug in either.
     """
     prompt = QUALITY_CONTROLLER_SYSTEM_PROMPT + f"""
 DRAFT: {json.dumps(draft, ensure_ascii=False)}
@@ -31,6 +40,14 @@ VERIFIED_PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 PRODUCT_BRIEF (the ground truth for judging capability claims -- a claim consistent with
 this is NOT hallucination, even if worded differently than the brief itself):
 {json.dumps(product_brief or {}, ensure_ascii=False)}
+"""
+    if is_followup:
+        prompt += """
+THIS IS A FOLLOW-UP nudge to a lead who already received a full first-touch pitch and
+hasn't replied. It is DELIBERATELY brief and does not need to re-state the pain point
+with the same specificity you would require of a first-touch draft -- a light reference
+to "the earlier note" or a general nudge is acceptable here. Still enforce every other
+rule unchanged (no buzzwords, no unsupported claims, no fabricated timelines/pricing).
 """
     try:
         data = call_json(prompt, temperature=0.1)

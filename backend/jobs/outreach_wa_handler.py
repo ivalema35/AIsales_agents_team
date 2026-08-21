@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import logging
 import uuid
+from datetime import datetime
 
 from cognition.agent_events import log_agent_event
 from database.models import Lead, LeadReviewInsight, OutreachLog, Product
@@ -27,6 +28,7 @@ from services.outreach.whatsapp_templates import (
     fill_variables,
     validate_variables,
 )
+from services.sequence_service import create_sequence_for_send
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +107,12 @@ def handle_outreach_wa(db, payload):
     ))
     lead.status = "OUTREACHED"
     db.commit()
+
+    # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch, which
+    # would otherwise create a second, competing sequence for this lead+channel). A
+    # no-op if the product has no cadence configured (today's behavior, unchanged).
+    if not payload.get("sequence_id"):
+        create_sequence_for_send(db, lead, "WHATSAPP", datetime.utcnow())
 
     log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_WHATSAPP", 1.0, "MEDIUM", "EXECUTE",
                     payload={"template": spec["name"]})

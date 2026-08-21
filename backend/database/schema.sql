@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS products (
     -- Phase 7 Step 7.1: human-set boundary the ICP agent works inside (MASTER §5A Phase 7).
     target_business_categories TEXT DEFAULT '[]',  -- JSON array, e.g. ["dental clinic","law firm"]
     target_person_roles        TEXT DEFAULT '[]',  -- JSON array, e.g. ["CEO","Property Manager"]
+    -- Phase 9 Step 9.3: day-offsets between follow-up touches, e.g. [3,7] = touch 2 three
+    -- days after touch 1, touch 3 seven days after touch 2, then stop. Empty = no
+    -- follow-ups at all for this product (today's single-touch behavior, unchanged).
+    followup_cadence_days       TEXT DEFAULT '[]',  -- JSON array of integers
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -346,6 +350,26 @@ CREATE TABLE IF NOT EXISTS content_assets (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+-- Phase 9 Step 9.3 -- per-lead+channel follow-up cadence state. Only ever created when
+-- the lead's product has a real cadence configured (products.followup_cadence_days) --
+-- no cadence means no row means today's single-touch-only behavior, unchanged. Every
+-- send this drives still goes through the exact same OUTREACH_EMAIL/OUTREACH_WA job
+-- handlers as a fresh touch -- suppression/QC/pacing all apply identically, every touch.
+CREATE TABLE IF NOT EXISTS outreach_sequences (
+    id                TEXT PRIMARY KEY,
+    lead_id           TEXT NOT NULL,
+    channel           TEXT NOT NULL,       -- 'EMAIL' or 'WHATSAPP'
+    original_sent_at  TIMESTAMP NOT NULL,  -- touch 1's sent_at, for "replied since?" checks
+    next_step         INTEGER NOT NULL DEFAULT 2,  -- touch number about to be sent next
+    max_steps         INTEGER NOT NULL,    -- total touches configured (len(cadence) + 1)
+    next_run_at       TIMESTAMP NOT NULL,
+    status            TEXT DEFAULT 'ACTIVE',   -- ACTIVE, CLAIMED, COMPLETED, STOPPED
+    terminal_reason   TEXT,                -- REPLIED, SUPPRESSED, MAX_STEPS_REACHED
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -360,4 +384,6 @@ CREATE INDEX IF NOT EXISTS idx_product_strategies    ON product_strategies (prod
 CREATE INDEX IF NOT EXISTS idx_lead_contacts_lead    ON lead_contacts (lead_id);
 CREATE INDEX IF NOT EXISTS idx_message_formats_scope ON message_formats (product_id, channel, status);
 CREATE INDEX IF NOT EXISTS idx_content_assets_scope  ON content_assets (product_id, asset_type, is_active);
+CREATE INDEX IF NOT EXISTS idx_sequences_due          ON outreach_sequences (status, next_run_at);
+CREATE INDEX IF NOT EXISTS idx_sequences_lead_channel  ON outreach_sequences (lead_id, channel);
 CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);
