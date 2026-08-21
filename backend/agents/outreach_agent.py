@@ -70,18 +70,23 @@ real (no fake scarcity/deadlines).
     if format_sections:
         numbered = "\n".join(f"{i}. {s}" for i, s in enumerate(format_sections, 1))
         prompt += f"""
-FORMAT: the admin has defined this shape for the email -- follow this ORDER and INTENT,
-but these are guidelines, not literal text to insert. Write your own natural, adaptive,
-personalized copy that fulfils each point in your own words, exactly as you would
-without a format:
+FORMAT: the admin has defined this shape for the email -- write the sections in THIS
+EXACT ORDER below, section 1 first, then section 2, and so on. Do not reorder them
+(e.g. do not open with a greeting unless section 1 IS the greeting) and do not fall
+back to a generic "greeting, then pain point" structure -- these are guidelines for
+what each section should accomplish, not literal text to insert; write your own
+natural, adaptive, personalized copy that fulfils each point in your own words, in
+this order, exactly as you would without a format:
 {numbered}
 """
     if content_assets:
         prompt += f"""
 AVAILABLE_CONTENT_ASSETS: {json.dumps(content_assets, ensure_ascii=False)}
-If the format calls for one of these (e.g. a demo link) and a genuinely relevant asset
-is listed above, you may reference it by its exact "value". If none is relevant, or the
-format doesn't call for one, omit it entirely -- never invent a URL not in this list.
+If the FORMAT above includes a section calling for one of these (e.g. a demo link),
+you MUST include a genuinely relevant one from this list by its exact "value" -- do
+not silently drop that section just because the email reads more smoothly without it.
+Only omit it if truly no listed asset fits this lead, or the format has no such
+section; never invent a URL not in this list.
 """
     if qc_feedback:
         prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
