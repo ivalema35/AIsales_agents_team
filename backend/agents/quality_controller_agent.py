@@ -12,8 +12,43 @@ from cognition.llm_client import call_json, LLMError
 from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT, TEMPLATE_QC_SYSTEM_PROMPT
 
 
+
+# A format section is treated as "asset-calling" if its own wording mentions any of
+# these -- deliberately keyword-based, not LLM-judged: the whole point is a check that
+# doesn't depend on a model reliably noticing its own omission (see _missing_required_
+# asset's docstring below for why the prompt-only version wasn't enough).
+_ASSET_KEYWORDS = ("demo", "url", "link", "case study", "testimonial", "video")
+
+
+def _missing_required_asset(body: str, format_sections, content_assets):
+    """Deterministic backstop, not just a prompt instruction (2026-08-21, found live --
+    a real production email's admin-set format called for a "demo url" section, a real
+    matching DEMO_URL asset was available and correctly passed to the drafting prompt,
+    yet the real LLM output omitted it anyway, twice, even after the prompt was already
+    strengthened to say the asset MUST be included). Same "never trust blindly, add a
+    deterministic check" posture as outreach_agent.py's own _strip_signature regex.
+
+    Returns the real asset value that should have been included if the format calls for
+    one and none of the real listed values actually appear in the body, else None.
+    """
+    if not format_sections or not content_assets:
+        return None
+    calls_for_asset = any(
+        any(kw in str(section).lower() for kw in _ASSET_KEYWORDS) for section in format_sections
+    )
+    if not calls_for_asset:
+        return None
+    body_text = body or ""
+    for asset in content_assets:
+        value = asset.get("value") if isinstance(asset, dict) else None
+        if value and value in body_text:
+            return None  # a real listed asset is genuinely present -- compliant
+    first = content_assets[0]
+    return first.get("value") if isinstance(first, dict) else None
+
+
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
-                 is_followup: bool = False) -> dict:
+                 is_followup: bool = False, format_sections=None, content_assets=None) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
@@ -33,7 +68,23 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
     even though the follow-up isn't trying to re-pitch. Same conflict shape as the
     escalation-reply carve-out already in the prompt below for its own closing line --
     an old rule and a new, legitimate requirement disagreeing, not a bug in either.
+
+    `format_sections`/`content_assets` (2026-08-21 follow-up): when the admin's format
+    calls for a real content asset (a demo link, etc.) and one was genuinely available,
+    a real production draft still dropped it -- twice, even after the drafting prompt
+    was strengthened. This checks that deterministically, before ever asking the LLM,
+    and rejects (with the missing value named in suggested_corrections, feeding the
+    existing retry loop) rather than hoping the model notices its own omission.
     """
+    missing_asset = _missing_required_asset(draft.get("body", ""), format_sections, content_assets)
+    if missing_asset:
+        reasons = [f"The format calls for a content asset (e.g. a demo link) but the draft "
+                  f"doesn't include one of the real available ones."]
+        log_agent_event(db, "QC", lead_id, "REVIEW_DRAFT", 0.0, "HIGH", "REJECTED",
+                        payload={"reasons": reasons, "check": "missing_required_asset"})
+        return {"approved": False, "confidence_score": 0.0, "rejection_reasons": reasons,
+                "suggested_corrections": f"Include this exact real link/value in the email: {missing_asset}"}
+
     prompt = QUALITY_CONTROLLER_SYSTEM_PROMPT + f"""
 DRAFT: {json.dumps(draft, ensure_ascii=False)}
 VERIFIED_PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}

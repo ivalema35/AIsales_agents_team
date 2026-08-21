@@ -95,7 +95,8 @@ def handle_outreach_email(db, payload):
         if not draft:
             break
         qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief,
-                                 is_followup=is_followup)
+                                 is_followup=is_followup, format_sections=format_sections,
+                                 content_assets=content_assets)
         if qc_result["approved"]:
             break
         logger.info("OUTREACH_EMAIL %s -> QC rejected draft %d/%d: %s",
