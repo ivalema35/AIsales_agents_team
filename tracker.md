@@ -2293,6 +2293,38 @@ pass, sab 5 services active.
 
 ---
 
+### Follow-up: real video URL/clickable-link support in emails (2026-08-21)
+
+User ne poocha: "video URL daalu to email me frame aayega aur video play hoga?" — honestly explain kiya
+(email tool call me kabhi bhi video play nahi ho sakta, poori duniya me koi bhi email client isse
+support nahi karta — is project ka limitation nahi hai) aur real code check ke bataya ki abhi URL sirf
+plain text hai, koi thumbnail/clickable link bhi nahi banta. User ne "haa" confirm kiya feature banane
+ke liye.
+
+**Fix — 2 real improvements `services/outreach/email_service.py` me:**
+1. **`_linkify()`** — body me jo bhi real URL ho (kisi bhi asset type ka — demo, video, sab), ab wo
+   email ke HTML version me ek **real clickable `<a>` link** banta hai (pehle sirf plain escaped text
+   tha).
+2. **`_fetch_video_thumbnail()` + `_build_video_block()`** — agar draft ek `VIDEO_URL` content asset ko
+   genuinely reference kar raha hai, to system YouTube/Vimeo ke apne **real, public oEmbed API** se
+   uska real thumbnail image nikaalta hai aur email me ek clickable image block dikhata hai (click karo
+   to real video khule) — kabhi fabricate nahi karta, sirf real, is specific draft me mention hue asset
+   ke liye.
+
+`send_email()` ab optional `content_assets` param leta hai (`outreach_handler.py` se pass hota hai) —
+None ho to bilkul purana behavior (bas linkification ke saath).
+
+**Verified — 10/10 real checks (`test_email_video_thumbnail.py`):** real YouTube video se real
+thumbnail mila (`i.ytimg.com` se), unsupported provider/fake video ID gracefully `None` deta hai (kabhi
+crash nahi), thumbnail block sirf tab bante hai jab asset genuinely draft body me mention ho (available-
+but-unused asset ke liye nahi), DEMO_URL (non-video) kabhi thumbnail nahi banata, `content_assets=None`
+(default) purana behavior preserve karta hai bas linkification ke saath.
+
+**Deploy turant** (backend-only) — `bos-api` + `bos-worker` restart, DB mtime unchanged, import sanity
+pass, sab 5 services active.
+
+---
+
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — ✅ POORA
 COMPLETE (Steps 9.1–9.6 sab) + ✅ VPS par LIVE.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7
 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6),
