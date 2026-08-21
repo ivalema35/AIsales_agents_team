@@ -14,6 +14,9 @@ async_runner.py vs jobs/worker.py -- MASTER §9 process topology), owns two jobs
    in OUTREACHING, a job stuck CLAIMED, or a DEAD pile-up, and emails the admin -- at most
    once per cooldown window -- if anything is wrong. Detection only; nothing here fixes what
    it finds (that's a deliberately separate, riskier capability -- see tracker.md Step 6.4).
+5. Engagement escalation tick (Step 9.4): a lead that opens an email repeatedly but never
+   replies gets escalated to HOT_LEAD for a human to look at -- real signal only, structurally
+   can never fire for WhatsApp (no open-tracking webhook exists for it).
 
 Run as `python -m jobs.discovery_scheduler`, alongside (not instead of) jobs/worker.py and
 scraper_worker/async_runner.py.
@@ -34,6 +37,7 @@ from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
 from services.sequence_service import process_due_followup
 from services.outreach.whatsapp_template_service import poll_all_pending
+from services.engagement_escalation_service import find_engagement_escalations
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
@@ -381,6 +385,18 @@ def _run_template_poll_tick(db):
         logger.info("template poll tick -> %d template(s) changed status", changed)
 
 
+def _run_engagement_escalation_tick(db):
+    """Phase 9 Step 9.4 -- a lead that opens an email repeatedly but never replies is a
+    real signal being wasted. Detection-only via the exact same HOT_LEAD path Step 4.3
+    already built (no new UI) -- structurally can only ever fire for EMAIL, since that's
+    the only channel with a real open-tracking webhook (never inferred for WhatsApp).
+    """
+    escalated = find_engagement_escalations(db)
+    if escalated:
+        logger.info("engagement escalation tick -> %d lead(s) escalated (high opens, no reply)",
+                   len(escalated))
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
@@ -405,6 +421,7 @@ def run_forever(poll_interval=None):
             _run_eod_report_tick(db)
             _run_stuck_alert_tick(db)
             _run_template_poll_tick(db)
+            _run_engagement_escalation_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
             # Surface a failing tick to the monitor instead of only to the log -- a scheduler

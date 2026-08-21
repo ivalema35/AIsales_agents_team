@@ -117,6 +117,11 @@ CREATE TABLE IF NOT EXISTS outreach_logs (
     read_at          TIMESTAMP,                -- set by a real read-receipt/open webhook
     subject_candidates TEXT,                  -- JSON array, Phase 8 Step 8.4 -- every subject
                                                 -- candidate generated, not just the chosen one
+    -- Phase 9 Step 9.4 -- real count of Resend "email.opened" events for this send
+    -- (EMAIL only; WhatsApp has no open/read-receipt webhook today, so this stays 0
+    -- there, never inferred). read_at only ever marks the FIRST open; this counts every
+    -- one, real signal for "opened repeatedly, never replied" escalation.
+    open_count       INTEGER DEFAULT 0,
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
     FOREIGN KEY (campaign_id) REFERENCES outreach_campaigns(id) ON DELETE SET NULL
 );

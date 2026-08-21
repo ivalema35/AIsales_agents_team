@@ -48,10 +48,22 @@ def resend_event():
             email_id = (payload.get("data") or {}).get("email_id")
             if email_id:
                 log = db.query(OutreachLog).filter(OutreachLog.provider_message_id == email_id).first()
-                if log and log.read_at is None:
-                    log.read_at = datetime.utcnow()
-                    db.commit()
-                    logger.info("Resend %s: outreach_log %s marked read", event_type, log.id)
+                if log:
+                    changed = False
+                    if log.read_at is None:
+                        log.read_at = datetime.utcnow()
+                        changed = True
+                    # Phase 9 Step 9.4 -- a real per-open count, distinct from read_at
+                    # (which only ever marks the first open). Only "email.opened" counts
+                    # here -- "email.clicked" already implies an open but is a different
+                    # real event, counting it too would inflate the open count.
+                    if event_type == "email.opened":
+                        log.open_count = (log.open_count or 0) + 1
+                        changed = True
+                    if changed:
+                        db.commit()
+                        logger.info("Resend %s: outreach_log %s marked read (open_count=%s)",
+                                   event_type, log.id, log.open_count)
     except Exception:  # noqa: BLE001 - never let a malformed/unexpected payload 500 a webhook
         logger.exception("failed processing Resend webhook payload")
     finally:

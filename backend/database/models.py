@@ -137,6 +137,7 @@ class OutreachLog(Base):
     # handler). Real "Seen" tracking -- see tracker.md, no fabricated/estimated value.
     provider_message_id = Column(String)
     read_at = Column(TIMESTAMP)
+    open_count = Column(Integer, default=0)  # Step 9.4 -- real count of email.opened events
     # Phase 8 Step 8.4 -- JSON array of every subject-line candidate the Outreach Agent
     # generated for this send, not just the one it picked (message_subject). Selection
     # here is still AI judgment, not performance-driven (no send history exists yet to

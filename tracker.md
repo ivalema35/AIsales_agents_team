@@ -2164,12 +2164,69 @@ refresh nahi hota. Real consequence: `get_approved_followup_template()` jo `upda
 karta hai, stale/meaningless order use kar raha hoga jab multiple matching templates ho. Chhota fix hai,
 user ki confirmation ka wait hai.
 
+**User ne khud dobara try kiya** (ek naya, hand-written `pain_point_gentle_reminder` template) — is baar
+Meta se **real APPROVED** wapas aaya (`meta_template_id=1577122970546738`), seedha Meta ke live API se
+confirm kiya. Fix genuinely kaam kar gaya, real production loop (draft/create → submit → Meta approve →
+live use) ab poora, real-world proven hai.
+
 ---
 
-**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3,
-9.5, 9.6 ✅ COMPLETE + ✅ VPS par LIVE**, **sirf 9.4 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE.
-Phase 7 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai
-(§A.6), sequence 6 → 7 → 8 → 9 → 10.
+### ⭐ Phase 9 / Step 9.4 — Engagement-based escalation (2026-08-21)
+
+User ne "haa kardo" confirm kiya. MASTER PRD ka literal spec: *"A lead that opens repeatedly but never
+replies is a real signal being wasted... switch channel or raise a human alert... where open data is
+unavailable for a channel, the rule simply does not fire — it must never be inferred."*
+
+**Real constraint check pehle kiya** (build se pehle): `OutreachLog.read_at` sirf **ek baar** set hota
+hai (pehla open) — koi real "kitni baar khola" count kahin store nahi hota tha. WhatsApp ke liye to
+koi read-receipt webhook hi nahi hai (`api/webhooks.py` sirf Resend/EMAIL ke liye hai) — matlab ye rule
+**structurally hamesha sirf EMAIL ke liye hi fire ho sakta hai**, jaisa PRD khud keh raha hai.
+
+**Naya `outreach_logs.open_count`** (INTEGER DEFAULT 0) — real per-open count. `api/webhooks.py`'s
+Resend handler ab har real `email.opened` event par increment karta hai (`email.clicked` nahi — wo ek
+alag real event hai, count inflate karne se bachaya). `read_at` ka purana behavior (sirf pehli baar set)
+bilkul unchanged raha — Step 9.2's Seen-tracking analytics par zero impact.
+
+**Naya `services/engagement_escalation_service.py`'s `find_engagement_escalations(db, open_threshold=3)`**
+— real query: EMAIL channel, `open_count >= 3`, status=SENT, lead abhi `OUTREACHED` hai, aur koi real
+reply nahi aaya. Match mile to lead ko **`HOT_LEAD`** kar deta hai — Step 4.3 ka wahi existing escalation
+path reuse kiya, **koi naya UI/alert channel nahi banana pada** (dashboard ka "Hot / Escalated" Kanban
+column already ise dikha dega).
+
+**Deliberate scope decision (disclosed)**: sirf "human alert" banaya, "switch channel" (autonomous naya
+WhatsApp send) nahi — PRD ne "OR" diya tha (dono mandatory nahi), aur channel-switch ek naya, riskier
+autonomous send hota (isi project ke poore kill-switch/human-approval discipline ke against hota agar
+bina review ke kar diya jaata). Human-alert-only safe hai aur poori tarah existing UI reuse karta hai.
+
+**Idempotency bina extra schema ke**: escalate hote hi lead.status `OUTREACHED` se `HOT_LEAD` ban jaata
+hai, aur query khud hi `status='OUTREACHED'` par filter karti hai — agli tick automatically usi lead ko
+dobara skip kar degi, koi alag "already alerted" flag ki zaroorat nahi padi.
+
+Naya `_run_engagement_escalation_tick()` `discovery_scheduler.py` me wired (5th job, module docstring
+update kiya) — har tick chalta hai, koi kill-switch gate nahi (Step 6.4's stuck-alert jaisa hi detection-
+only pattern, kabhi kuch bhejta nahi khud).
+
+**Verified — 7/7 real checks (`test_phase9_step9_4.py`):**
+1. Real webhook se 3 alag `email.opened` events → `open_count=3`. `email.clicked` inflate nahi karta,
+   `read_at` sirf pehli baar hi set hota hai (dobara move nahi hota).
+2. Real 3-opens+no-reply lead → `HOT_LEAD` ban gaya, real `AgentEvent` (`agent=ENGAGEMENT`,
+   `routed_to=HUMAN_ESCALATION`) logged.
+3. **Idempotency**: dobara call karo to already-escalated lead dobara nahi milta, duplicate event nahi.
+4. High opens **lekin real reply aa chuki** → kabhi escalate nahi hota.
+5. Threshold se kam opens (2 < 3) → escalate nahi hota.
+6. **WhatsApp channel** (hypothetically high open_count diya) → kabhi escalate nahi hota — rule
+   structurally sirf EMAIL ke liye hi kaam karta hai.
+
+**Phase 9 (Measurement, Multi-Touch & Adaptive Templates) ab POORA COMPLETE hai** — sab 6 steps (9.1-9.6)
+✅. VPS deploy baaki hai.
+
+---
+
+**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — ✅ POORA
+COMPLETE (Steps 9.1–9.6 sab)** — 9.1–9.3, 9.5, 9.6 ✅ VPS par LIVE, **9.4 abhi local par hai, VPS
+deploy baaki hai.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par LIVE.
+Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10.
+**Agla: Phase 10 (Channel Expansion), ya user jo chahe.**
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
 search quota is month ke liye khatam hai (0/50, reset 2026-09-11) — jab tak reset na ho ya plan upgrade
@@ -2337,7 +2394,7 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
 - [x] Step 9.1 — **[hold se]** `campaign_variants` wire karo (Phase 1 se schema me hai, kabhi likha nahi gaya) — ✅ 2026-08-21, `OutreachLog.variant_id` se (§A.8 deviation), Section 3
 - [x] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi) — ✅ 2026-08-21, Section 3, real SQL reconciliation se verified
 - [x] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi — ✅ 2026-08-21, Section 3, 10/10 real end-to-end checks
-- [ ] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi)
+- [x] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi) — ✅ 2026-08-21, Section 3, 7/7 real checks, sirf EMAIL ke liye (WhatsApp me open-tracking hi nahi hai)
 - [x] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate) — ✅ 2026-08-21, Section 3, 9/9 real checks (Meta call deliberately mocked, user's instruction — real submission needs separate confirmation)
 - [x] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory — ✅ 2026-08-21, Section 3, 5/5 sub-steps, 34 total real checks across sub-steps 1-5
 - [ ] DoD Gate P9

@@ -21,6 +21,7 @@ COLUMN_MIGRATIONS = [
     ("whatsapp_templates", "is_active", "INTEGER DEFAULT 1"),
     ("whatsapp_templates", "origin", "TEXT DEFAULT 'ADMIN'"),
     ("whatsapp_templates", "reasoning", "TEXT"),
+    ("outreach_logs", "open_count", "INTEGER DEFAULT 0"),
 ]
 
 
