@@ -114,6 +114,50 @@ MASTER PRD ke jaisa hi unchanged rahega (§4.1), format inhe kabhi bypass nahi k
 alag formats → drafts provably apne-apne structure follow karte hain" wala test abhi bhi utna hi valid
 hai, bas "structure follow karna" ka matlab ab "guideline follow karna" hai, "blanks fill karna" nahi.
 
+### A.8 Architectural deviation — Phase 9 Step 9.1 `campaign_variants`/`outreach_campaigns` ki jagah `OutreachLog.variant_id` (2026-08-21)
+MASTER_DEVELOPMENT_PRD.md §5A Step 9.1 literally kehta hai: "Wire `campaign_variants`." Us table ka
+`campaign_id` column `NOT NULL` hai, FK `outreach_campaigns` ki taraf — jo Phase 1 se schema me hai
+lekin **kabhi kisi real code path se likha hi nahi gaya** (verify kiya: `grep -rn "outreach_campaigns"`
+poore codebase me sirf `models.py` ki definition me milta hai, kahin aur nahi). Humara real system
+formal "campaigns" ke through kaam nahi karta — har lead individually discover→enrich→score→outreach
+hoti hai, koi pre-registered campaign/variant grouping kabhi build hi nahi hui.
+
+**Do options the:**
+(a) Ek synthetic "campaign" auto-create karo har product+channel scope ke liye, sirf `campaign_variants`
+    ki FK requirement satisfy karne ke liye — extra complexity jo humare real architecture se match nahi
+    karti.
+(b) `OutreachLog` me pehle se maujood (kabhi use na hui) `variant_id` column use karo — direct, koi naya
+    schema nahi.
+
+**(b) choose kiya, ek zaroori extra reason ke saath:** `campaign_variants.sends/replies/conversions`
+alag se maintain kiye jaane wale COUNTERS hain — har real event (send/reply/conversion) par inhe
+manually increment karna padta, jo ek doosra "source of truth" ban jaata jo real `outreach_logs`/
+`inbound_conversations` se drift ho sakta tha (koi bug increment miss kar de). **Phase 9 ka apna hi DoD
+test kehta hai: "Variant stats reconcile exactly against a direct SQL query for one real day"** — agar
+Step 9.2 ki rollup HAMESHA `outreach_logs` par live SQL query se compute hoti hai (koi separate counter
+nahi), to ye guarantee automatically, structurally sach hoti hai, kabhi drift nahi ho sakti.
+
+**Implementation:** `OutreachLog.variant_id` ab populate hota hai —
+- **EMAIL:** resolved `message_format.id` (agar koi format active tha), ya explicit sentinel
+  `"FREE_FORM"` (bare `NULL` ki jagah — isi codebase ka apna precedent, jaise `Lead.sales_route`'s
+  `"UNASSIGNED"`).
+- **WHATSAPP:** real Meta template ka naam (`spec["name"]`) — pehle sirf `message_body`'s JSON blob ke
+  andar chhupa hua tha, ab apne alag queryable column me.
+
+**Verified — 3/3 checks, real end-to-end (`test_phase9_step1.py`, real `handle_outreach_email`/
+`handle_outreach_wa` chalaye, sirf network-send monkeypatched):**
+1. Format na ho → `variant_id = "FREE_FORM"` (real LLM draft).
+2. Real format ho → `variant_id` = us format ka real ID (real LLM draft, format-driven).
+3. WhatsApp → `variant_id` = real template naam jo bheja gaya.
+
+**Ye deviation sirf "kaise store karna hai" badalta hai, DoD gate ka intent nahi** — "which format
+version/subject/template used" wala functional requirement poora satisfy hota hai, `campaign_variants`/
+`outreach_campaigns` sirf ek dead, mismatched-to-reality table reh jaati hai (delete nahi ki, MASTER
+spec me intact hai, jaisa Phase 5 postponement ka precedent tha — §A.6).
+
+**Step 9.1 ✅ COMPLETE.** Agla: Step 9.2 — variant performance rollup (real `outreach_logs`/
+`OutreachLog.read_at` par live SQL, koi estimated number nahi).
+
 ### B. Non-negotiable technical/safety rules (from MASTER_DEVELOPMENT_PRD.md)
 - **Secrets:** sirf `.env` me, kabhi bhi source code me hardcode nahi (config.py env-driven).
 - **SQLite pragmas** (`foreign_keys`, `busy_timeout`, `journal_mode=WAL`, `synchronous=NORMAL`) per-connection set karne hain — connection listener (`db_config.py`) ke through, kahin aur nahi. Warna FK cascade silently no-op ho jata hai.
@@ -1441,11 +1485,54 @@ safe-sync sequence follow kiya (§A.5):
 
 ---
 
-**▶ CURRENT (2026-08-20): Phase 8 — Message Format Engine & Content Library — ✅ POORA COMPLETE,
-✅ VPS PAR LIVE HAI.** (Steps 8.1–8.5 sab done, real data se poora walkthrough bhi verify kiya, ab
-production pe bhi live-verified.) **Agla: Phase 9 — Measurement, Multi-Touch & Adaptive Templates.**
-Phase 7 ✅ COMPLETE + ✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6),
-sequence 6 → 7 → 8 → 9 → 10.
+Phase 8 — Message Format Engine & Content Library — ✅ POORA COMPLETE, ✅ VPS PAR LIVE HAI (Steps
+8.1–8.5 sab done, real data se poora walkthrough bhi verify kiya, production pe bhi live-verified).
+
+---
+
+### ⭐ Phase 9 / Step 9.1 — `OutreachLog.variant_id` wired (2026-08-21)
+
+Poora design reasoning aur deviation detail **§A.8** me hai. Short version: `campaign_variants`/
+`outreach_campaigns` ki jagah existing `OutreachLog.variant_id` column use kiya — EMAIL ke liye
+`message_format.id` (ya `"FREE_FORM"`), WHATSAPP ke liye real Meta template naam. **Verified 3/3, real
+end-to-end** (`test_phase9_step1.py`) — format na ho, format ho, aur WhatsApp teeno case sahi.
+
+**Step 9.1 ✅ COMPLETE.**
+
+---
+
+### ⭐ Phase 9 / Step 9.2 — Variant performance rollup (2026-08-21)
+
+Naya `get_variant_performance(db, start, end)` (`services/analytics_service.py`) — `get_outreach_
+funnel()`'s bilkul wahi date-filter aur `is_seen`/`is_replied` logic reuse kiya (verbatim), bas channel
+ki jagah `variant_id` se group kiya. **Har call par real `outreach_logs` se fresh compute hota hai —
+koi cache/counter table nahi**, jaisa §A.8 me decide kiya tha. Naya endpoint `GET /api/v1/analytics/
+variant-performance` (optional `start`/`end` params, `/outreach-funnel` jaisa hi pattern).
+
+**Verified — 6/6 checks, `test_phase9_step2.py`, disposable DB, 3 alag variants (2 email format + 1
+real WhatsApp template naam) seed kiye:**
+1. `fmt-A`: sent=3, seen=2, replied=1 — sahi.
+2. `fmt-B`: sent=2, seen=0, replied=0 — sahi.
+3. Real WhatsApp template naam (`ivinfotech_pain_point_outreach`): sent=1, seen=1, replied=1 — sahi.
+4. Ek `status='FAILED'` row (jo real me bheja hi nahi gaya) galti se count nahi hua.
+5. **Endpoint ke numbers ek independent raw SQL query se EXACTLY match hue** — yehi Phase 9 ka apna
+   literal DoD test hai ("Variant stats reconcile exactly against a direct SQL query for one real
+   day"), ab structurally hi guaranteed hai (§A.8 ki wajah se).
+6. `seen_rate`/`reply_rate` sahi compute hue.
+
+**Real local system pe bhi sanity-check kiya** (already-running local backend, real DB) — purane
+(is feature se pehle ke) sends sahi tarike se `"FREE_FORM"` bucket me aa gaye (kyunki unka `variant_id`
+tab tak NULL tha) — koi galat data nahi, backward-compatible.
+
+**Step 9.2 ✅ COMPLETE.** Agla: Step 9.3 — multi-touch follow-up sequences.
+
+---
+
+**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1 + 9.2
+✅ COMPLETE**, **9.3–9.6 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par
+LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10.
+**VPS deploy abhi baaki hai Steps 9.1/9.2 ka** — Phase 9 complete hone ke
+baad ek saath deploy hoga.
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
 search quota is month ke liye khatam hai (0/50, reset 2026-09-11) — jab tak reset na ho ya plan upgrade
@@ -1610,8 +1697,8 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
   dedicated end-to-end test); Phase 9 doesn't depend on either gap being closed first.
 
 ### PHASE 9 — Measurement, Multi-Touch & Adaptive Templates
-- [ ] Step 9.1 — **[hold se]** `campaign_variants` wire karo (Phase 1 se schema me hai, kabhi likha nahi gaya)
-- [ ] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi)
+- [x] Step 9.1 — **[hold se]** `campaign_variants` wire karo (Phase 1 se schema me hai, kabhi likha nahi gaya) — ✅ 2026-08-21, `OutreachLog.variant_id` se (§A.8 deviation), Section 3
+- [x] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi) — ✅ 2026-08-21, Section 3, real SQL reconciliation se verified
 - [ ] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi
 - [ ] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi)
 - [ ] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate)
