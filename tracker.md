@@ -2264,6 +2264,33 @@ check).
 **Turant commit + push + VPS deploy** (backend-only) — `bos-api` + `bos-worker` restart, DB mtime
 unchanged, import sanity pass, sab 5 services active.
 
+**User ne ek dusra real email dikhaya** (usi din, fix deploy hone ke BAAD ka real timestamp confirm
+kiya — `bos-worker` 10:43:59 UTC restart hua, email 10:46:38 UTC gaya) — order is baar sahi tha (pain
+point pehle), **lekin demo URL phir bhi missing tha**. Matlab prompt-strengthening akela kaafi nahi
+tha — real LLM kabhi-kabhi phir bhi miss kar sakta hai, chahe instruction kitni bhi clear kyun na ho.
+
+**User ka suggestion: "QC use karo taaki format sahi se follow kare"** — bilkul sahi insight, aur
+`outreach_agent.py`'s apne `_strip_signature` regex backstop jaisa hi established pattern hai ("LLM
+instruction-following isn't 100% reliable" — comment already codebase me tha).
+
+**Fix**: naya deterministic (LLM-judged nahi) check `_missing_required_asset()` — agar format ka koi
+section demo/url/link/case-study/testimonial jaisa kuch maangta hai AND real content_assets available
+hain, to check karta hai ki **real asset ki value literally draft body me present hai ya nahi**. Missing
+ho to `review_draft()` **LLM ko call kiye bina hi** reject kar deta hai, exact missing value ke saath
+(`suggested_corrections` me) — already-existing retry loop (`outreach_handler.py`, `MAX_DRAFT_ATTEMPTS=2`)
+isi feedback se dusri koshish karta hai. Compliant draft is check se bilkul untouched guzarta hai, normal
+LLM QC review hota hai jaisa pehle hota tha.
+
+**Verified — 7/7 unit checks + real end-to-end retry-loop test:** missing asset sahi catch hota hai
+(sahi value return), present asset clean pass hota hai, format/assets na ho to kabhi flag nahi hota,
+non-asset-calling format kabhi flag nahi hota. Real `review_draft()` call missing-asset draft ko
+LLM-call se PEHLE hi reject karta hai (fast, deterministic). Compliant draft normal LLM approval se
+guzarta hai (naya check block nahi karta). **Real end-to-end**: same real GameZone data se poora retry
+loop chalaya (real LLM calls) — final approved draft me demo URL genuinely present tha.
+
+**Deploy turant** (backend-only) — `bos-api` + `bos-worker` restart, DB mtime unchanged, import sanity
+pass, sab 5 services active.
+
 ---
 
 **▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — ✅ POORA
