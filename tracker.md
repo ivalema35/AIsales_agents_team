@@ -2291,6 +2291,35 @@ loop chalaya (real LLM calls) — final approved draft me demo URL genuinely pre
 **Deploy turant** (backend-only) — `bos-api` + `bos-worker` restart, DB mtime unchanged, import sanity
 pass, sab 5 services active.
 
+**Follow-up real gap (isi din, thodi der baad):** user ne khud format update kiya (ek product ke liye
+`content_assets` me ab DEMO_URL aur VIDEO_URL **dono** real assets the, format me dono sections the).
+Real dashboard pe email "Escalated" dikha — real `agent_events` check kiya: **attempt 1** — AI ne dono
+links include kiye, QC (real LLM) ne khud reject kiya ("raw promotional links... unauthorized footer-
+like add-ons" — genuinely sahi judgment, do links ek chhote email me spammy lagte hain). **Attempt 2**
+— AI ne dono hata diye, mera naya deterministic check ne pakad liya ("format calls for asset but none
+present"). Dono real, sahi behavior — bug nahi, ek genuine tension jo do-asset format ne banaya.
+
+**User ne khud ek zaroori refinement maanga: "QC check kare format kya kehta hai — demo chahiye ya
+video, jo bhi likha ho, chahe library me sab kuch pada ho."** Matlab purana check galat tha — wo sirf
+dekhta tha "koi bhi real asset value body me hai kya," specific TYPE nahi check karta tha. Agar format
+"video url" maange aur AI galti se demo link de de, purana check use "compliant" maan leta.
+
+**Fix**: naya `_required_asset_types()` — format ke section wording se **exact asset type** nikalta hai
+(`"demo"` → `DEMO_URL`, `"video"` → `VIDEO_URL`, `"case study"` → `CASE_STUDY`, `"testimonial"` →
+`TESTIMONIAL`). `_missing_required_asset()` ab **type-aware** hai — sirf usi specific type ka real asset
+check karta hai jo format ne naam liya, koi bhi asset nahi chalega. Agar format ek type maange lekin
+uska koi real asset available hi na ho, to flag nahi karta (kuch bhi include karne layak nahi, omit
+karna hi sahi hai — existing carve-out).
+
+**Verified — 6/6 real checks (`test_qc_type_aware_asset.py`):** format sirf demo maange, AI video de de
+→ flag hota hai (demo missing bola jaata hai, video "sahi" nahi maana jaata); ulta bhi sahi; format
+video maange lekin koi real VIDEO_URL asset hi na ho → correctly flag nahi hota; format dono maange,
+sirf ek diya → doosra missing bataya jaata hai; dono diye → clean pass; format kuch bhi asset-type
+mention hi na kare → kabhi flag nahi hota.
+
+**Deploy turant** (backend-only) — DB gitignored confirm kiya (`git status` khaali), import sanity pass,
+sab 5 services active.
+
 ---
 
 ### Follow-up: real video URL/clickable-link support in emails (2026-08-21)
