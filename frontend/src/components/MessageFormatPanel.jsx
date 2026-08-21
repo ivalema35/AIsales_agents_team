@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ListOrdered, Plus, Save, X, History } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ListOrdered, Plus, Save, X, History, ArrowUpRight } from "lucide-react";
 import { api } from "../api/client";
 import ChipInput from "./ui/ChipInput";
 import Badge from "./ui/Badge";
@@ -73,16 +74,27 @@ export default function MessageFormatPanel({ productId }) {
             {c}
           </button>
         ))}
-        {channel === "WHATSAPP" && (
-          <span className="text-[11px] text-amber-600">
-            not yet used by sends -- WhatsApp cold-outreach is Meta-template-based, not free-form
-          </span>
-        )}
       </div>
 
       {error && <p className="text-xs text-red-600">{error}</p>}
 
-      {!editing && (
+      {!editing && channel === "WHATSAPP" && (
+        <div className="flex items-center justify-between gap-3 rounded-md bg-slate-50 p-3">
+          <p className="text-xs leading-relaxed text-slate-500">
+            WhatsApp cold-outreach doesn't use a free-form format -- it always sends via a
+            Meta-approved template instead. Templates are shared across every product, so
+            they're managed in one place, not per product.
+          </p>
+          <Link
+            to={`/whatsapp-templates?product_id=${productId}`}
+            className="flex shrink-0 items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+          >
+            Manage WhatsApp Templates <ArrowUpRight size={12} />
+          </Link>
+        </div>
+      )}
+
+      {!editing && channel === "EMAIL" && (
         <>
           {active ? (
             <div className="rounded-md bg-slate-50 p-3">
@@ -106,14 +118,12 @@ export default function MessageFormatPanel({ productId }) {
               <p className="text-xs text-slate-500">
                 No format set for {channel} -- the AI drafts freely (today's default behavior).
               </p>
-              {channel === "EMAIL" && (
-                <button
-                  onClick={startEdit}
-                  className="flex shrink-0 items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
-                >
-                  <Plus size={12} /> Define a format
-                </button>
-              )}
+              <button
+                onClick={startEdit}
+                className="flex shrink-0 items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+              >
+                <Plus size={12} /> Define a format
+              </button>
             </div>
           )}
 

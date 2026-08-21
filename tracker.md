@@ -1577,14 +1577,519 @@ monkeypatched):**
 9. **Opt-out beech me hone par sequence turant `STOPPED` hoti hai**, koi aur follow-up nahi jaata.
 10. WhatsApp touch 1 bhi sahi sequence row banata hai (cadence set hone par).
 
-**Step 9.3 ✅ COMPLETE.** Agla: Step 9.4 — engagement-based escalation.
+**Step 9.3 ✅ COMPLETE.**
+
+**Real live verification, user ke apne test lead `GameZone Visnagar` par (2026-08-21), user ke explicit
+request par ("abhi hi follow up msg bhejo") — simulated wait ke bajaye seedha real follow-up bheja:**
+- **EMAIL**: real prior send (`2026-08-20 05:37:56`) se anchor kiya, `process_due_followup()` direct call
+  kiya (kill-switch bypass — bilkul `force=True` jaisa deliberate, manual, single-lead action, autonomous
+  kill-switch khud kabhi touch nahi hui). Real email gaya: subject "Still worth a look for GameZone
+  Visnagar?", body ek genuinely chhota, low-pressure nudge — sequence `COMPLETED`/`MAX_STEPS_REACHED`.
+- **WHATSAPP**: same pattern, real prior send (`2026-08-18 11:45:30`, template `ivinfotech_pain_point_
+  outreach`) se anchor kiya. Real WhatsApp gaya — **lekin user ne turant pakda: "ye to same wo hi msg
+  hogaya na"** — sahi observation. Root cause confirm kiya: `TEMPLATE_LIBRARY` me sirf 2 templates hain
+  aur `select_template()` fully deterministic hai same pain-points ke liye, isliye follow-up ne touch 1
+  ka bilkul wahi template+variables reuse kiya — **byte-identical message**, koi bug nahi, ek genuine
+  Meta-policy-driven limitation (cold WhatsApp sirf pre-approved template se, dynamic nudge wording
+  possible nahi bina naya template approve karwaye). Ye exact gap Step 9.5 ko motivate karta hai neeche.
 
 ---
 
-**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3
-✅ COMPLETE**, **9.4–9.6 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE + ✅ VPS par
-LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8 → 9 → 10.
-**VPS deploy abhi baaki hai Steps 9.1–9.3 ka** — Phase 9 complete hone ke
+### ⭐ Phase 9 / Step 9.5 — WhatsApp template management from CRM (2026-08-21)
+
+**Kyun:** Step 9.3 ke real GameZone Visnagar live test ne seedha ye gap dikhaya — WhatsApp follow-up ke
+paas koi doosra approved template nahi tha, isliye touch 1 ka wahi template+wording repeat hota tha.
+
+Naya Table 25 `whatsapp_templates` — har template ka real Meta approval state track karta hai
+(`name` unique, `category`, `purpose` [`FIRST_TOUCH`/`FOLLOW_UP`], `body_text`, `variable_labels` JSON,
+`status` [`PENDING`/`APPROVED`/`REJECTED`], `rejection_reason`, `meta_template_id`).
+
+**Naya `services/outreach/whatsapp_template_service.py`:**
+- `submit_template()` — **real Meta Create Template API call** (`POST {waba}/message_templates`), row ko
+  `PENDING` se store karta hai Meta ke apne returned template id ke saath — kabhi approval state guess
+  nahi karta.
+- `poll_template_status()` — real Meta GET call, jo actually badla wahi likhta hai (ek template ka lookup
+  fail ho to poore batch ko break nahi karta).
+- `poll_all_pending()` — sab `PENDING` templates poll karta hai, naya periodic tick `discovery_scheduler.
+  py` me wired (`_run_template_poll_tick`, har scheduler poll pe — cheap no-op jab kuch PENDING na ho).
+- `get_approved_followup_template()` — sabse recent `APPROVED` + `purpose=FOLLOW_UP` template return karta
+  hai, ya `None` (koi hard failure nahi — missing template kabhi bhi send ko block nahi karta).
+
+**Naya `api/whatsapp_templates.py`** — full CRUD (`GET`/`GET <id>`/`POST`/`POST <id>/refresh`), **real Meta
+call se pehle poora validation** (name regex, category/purpose enum, `{{n}}` placeholder count = variable_
+labels length, duplicate-name check) — kyunki repeated bad/messy submissions WABA ki apni Meta standing ko
+affect kar sakte hain.
+
+**`jobs/outreach_wa_handler.py` wired**: jab payload me `sequence_id` ho (matlab ye ek follow-up touch hai),
+pehle `get_approved_followup_template()` check karta hai — agar mila to **uska real naam/language use hota
+hai, variables `fill_variables_for_labels()` se fill hote hain** (`whatsapp_templates.py` ka wahi recognized
+vocabulary — `contact_name`/`company_name`/`pain_point_phrase` — reuse kiya, naya naming scheme nahi
+banaya). Agar koi approved FOLLOW_UP template nahi mila, **aaj jaisa hi behavior unchanged** (`TEMPLATE_
+LIBRARY` se touch-1 wala template). Fresh touch 1 (`sequence_id` na ho) is change se bilkul unaffected.
+
+**User ke explicit instruction ke mutabik: real Meta template submission is session me nahi hua** — sirf
+schema/API/CRUD/mechanics safe-to-build-and-test-locally part banaya, mocked Meta responses se verify kiya.
+Koi real naya template abhi tak submit nahi hua — jab bhi user ek real FOLLOW_UP template chahe, wo apna
+alag, explicit confirmation lega.
+
+**Verified — 9 sections, sab real Flask test client + disposable temp DB (`test_phase9_step5.py`), Meta ka
+POST/GET **deliberately mocked** (per user's instruction), baaki sab real:**
+1. Invalid name/category/placeholder-mismatch → 422, Meta API kabhi call hi nahi hoti.
+2. Valid submission → ek real (yahan fake) Meta call, `PENDING` store, Meta ka returned id capture hota hai.
+3. Duplicate name → 422, doosri Meta call nahi hoti.
+4. List + `status`/`purpose` filters real DB state reflect karte hain.
+5. Manual refresh → real Meta GET → `PENDING` se `APPROVED` flip; same-status refresh → no-op.
+6. `REJECTED` poll → real rejection reason capture hota hai.
+7. `poll_all_pending` batching — ek template ka failed lookup baaki ko block nahi karta.
+8. `fill_variables_for_labels()` wahi recognized vocabulary use karta hai jo `fill_variables()` karta hai.
+9. **Asli fix proven**: koi approved FOLLOW_UP template na ho → follow-up `TEMPLATE_LIBRARY` pe fallback
+   karta hai (unchanged) → approved FOLLOW_UP template ho → follow-up **usko use karta hai**, alag naam
+   aur alag filled variables ke saath → fresh touch 1 is change se unaffected, hamesha `TEMPLATE_LIBRARY`
+   use karta hai.
+
+**Gap caught by the user (2026-08-21): "dashboard me kaha he template request bhejne ka"** — sirf
+backend/API bana tha, dashboard UI banana reh gaya tha (originally confirmed plan ka hi part tha,
+maine "complete" bol diya tha bina UI ke — galti). Fixed same session:
+
+**Nayi `frontend/src/pages/WhatsappTemplates.jsx`** — naya top-level nav item ("WA Templates", `App.jsx`,
+Products ke andar nahi kyunki ye per-product nahi, global template library hai jaisa `TEMPLATE_LIBRARY`
+khud hai). Purpose filter (All/FIRST_TOUCH/FOLLOW_UP), har template ka status badge (PENDING=amber/
+APPROVED=green/REJECTED=red), REJECTED par rejection reason dikhta hai, PENDING par "Check status"
+button (manual on-demand refresh). "New template" form — name/category/purpose/body/variables
+(`ChipInput` reuse, hint deta hai ki sirf `contact_name`/`company_name`/`pain_point_phrase` recognized
+hain), client-side hi `{{n}}` placeholder count vs variable count match check karta hai (mismatch par
+submit button disabled). **Submit se pehle `useConfirm()` modal** — explicitly batata hai ki ye ek REAL
+Meta API call hai, edit nahi ho sakti baad me, aur repeated bad submissions WABA ki standing affect kar
+sakte hain — same pattern jo `SystemToggles.jsx` real-send-switches ke liye already use karta hai.
+`frontend/src/api/client.js` me `listWhatsappTemplates`/`createWhatsappTemplate`/
+`refreshWhatsappTemplate` add kiye.
+
+**Verified — real browser (Playwright), real running local backend, koi real Meta call nahi:** nav link
+se page navigate hota hai, real heading + real (empty) data backend se load hota hai, form khulta hai,
+placeholder-mismatch par submit disabled rehta hai, sahi count par enable hota hai — **"Submit to Meta"
+button deliberately click nahi kiya gaya** (real external action, user ka apna alag confirmation chahiye).
+
+**User ne fir ek gap pakda: "isme tumne jo temple banayethe 2 wo add karo aur iss page ka ui ux bhi
+improved karo"** — page pe sirf DB-submitted templates dikh rahe the, wo 2 hardcoded `TEMPLATE_LIBRARY`
+templates (jo aaj bhi real first-touch sends ke liye live use hote hain) kahin nahi dikh rahe the.
+
+**Naya read-only `GET /api/v1/whatsapp-templates/builtin`** — `TEMPLATE_LIBRARY` ko seedha expose karta
+hai (naam/language/variables/status), edit/delete nahi ho sakta (code-managed hai, DB-managed nahi;
+inki approved wording Meta ke apne store me hai, is codebase me kabhi duplicate nahi ki gayi).
+
+**UI/UX pass (`WhatsappTemplates.jsx`):** 4 stat tiles (Built-in / Pending / Approved / Rejected, real
+counts), "Built-in templates" section (dashed-border cards, "Built-in" badge, non-editable note) upar,
+"Submitted templates" section niche apni purpose-filter ke saath. Form ko labeled fields (pehle sirf
+placeholder text tha, koi real `<label>` nahi) + grouped sections + naya Language field mein improve
+kiya, mismatch-warning ko highlighted box banaya, empty-state ko icon+message diya.
+
+**Verified — real browser, dono real built-in templates (`marketing_gen`, `ivinfotech_pain_point_
+outreach`) real data se render hue, stat tiles sahi counts dikhate hain, form ka labeled layout sahi
+kaam karta hai** — screenshot se visually bhi confirm kiya.
+
+**User ne ek real IA (information architecture) inconsistency pakdi: "email and content library
+product page me manage hote he... whatsapp template iss alag page me manage hote he iska koi ahc aux
+nahi ho sakta jise messy na lage."** Root cause: `MessageFormatPanel.jsx` (Products ke andar) me pehle
+se hi EMAIL/WHATSAPP tabs the — WHATSAPP click karne par sirf ek dead-end note tha ("not yet used by
+sends"), kahin WA Templates page ka pointer nahi tha.
+
+**Real reasoning (isliye templates ko Products ke andar nest nahi kiya):** WhatsApp templates
+genuinely global hain (`whatsapp_templates` table me `product_id` column hi nahi hai, `TEMPLATE_LIBRARY`
+bhi ek hi shared dict hai) — sab products ke leads isi library se select karte hain. Products ke andar
+ek tab bana dena galat signal deta (jaise per-product cheez hai). Fix: **cross-link + nav reorder**,
+nesting nahi.
+
+**2 chhote, low-risk changes:**
+1. `App.jsx` — "WA Templates" nav ko Products ke bilkul baad la diya (pehle Analytics ke baad tha).
+2. `MessageFormatPanel.jsx` — WHATSAPP tab ka dead-end note replace kiya ek real card se: explanation
+   + **"Manage WhatsApp Templates →"** button jo seedha `/whatsapp-templates` pe le jaata hai (react-
+   router `Link`).
+
+**Verified — real browser:** nav order confirm ("WA Templates" Products ke turant baad), Products →
+koi product expand karo → Message format tab → WHATSAPP click → naya cross-link card dikhta hai
+(purana dead-end note gaya) → button click karke real WhatsApp Templates page pe pahunch gaya.
+
+**User ne ek asli architecture sawal poocha: "humne email format ko product specific kiya, to wa
+template ka kya karna he??"** — explain kiya: email specificity product-LEVEL wording se aati hai
+(alag pitch structure), WhatsApp specificity per-LEAD variables se (`pain_point_phrase` jaisa) —
+isliye ek shared template sab products ke liye equally kaam karta hai. Lekin agar kal koi bahut alag
+product aaye to ek shared template kaafi na ho, isliye **optional product-scoping** suggest kiya (hard
+mandatory nahi, kyunki har naya product-specific template apna alag Meta approval maangta hai). User ne
+"haa ye kiya ja sakta he" confirm kiya, **plus ek enable/disable toggle bhi maanga** — disabled ho to
+wo template kabhi use na ho, chahe Meta ke hisaab se APPROVED hi kyun na ho.
+
+**Naye columns `whatsapp_templates` par:** `product_id` (nullable, `NULL` = shared/sab products,
+set = sirf wahi product), `is_active` (default `1`, manual kill-switch — Meta ke apne `status` se
+alag/independent).
+
+**Real migration-ordering bug pakda aur fix kiya:** `migrate.py` pehle poora `schema.sql` chalata tha
+phir naye columns ke liye `ALTER TABLE` — lekin is baar `schema.sql` me naya `product_id` column ke
+liye ek naya INDEX bhi tha, jo purane (pre-existing) `whatsapp_templates` table par fail ho gaya
+(column abhi tak exist hi nahi karta tha jab tak ALTER na chale). Fix: `_add_missing_columns()` ab
+`schema.sql` se **PEHLE** chalta hai, aur ek naya `_table_exists()` guard add kiya (fresh DB par table
+hi nahi hai to ALTER skip, kyunki fresh `CREATE TABLE` khud hi naye column ke saath banega).
+
+**`services/outreach/whatsapp_template_service.py`'s `get_approved_followup_template(db, product_id)`
+ab tiered:** pehle us product ka apna specific `APPROVED`+`is_active` template dhoondta hai, na mile to
+shared (`product_id IS NULL`) pe fallback karta hai — dono cases me `is_active=0` wala kabhi select
+nahi hota, chahe Meta APPROVED bhi bole. `outreach_wa_handler.py` ab `lead.product_id` pass karta hai.
+
+**API (`api/whatsapp_templates.py`):** create ab optional `product_id` accept karta hai (real Product
+row ke against validate hota hai, warna 422), list `product_id` filter support karta hai, naya
+`PATCH /<id>` endpoint sirf `is_active` toggle karta hai (naam/wording immutable — Meta ka apna
+template edit nahi ho sakta).
+
+**Real bug pakda test se hi:** `create_template()` ka response `_serialize(row)` call kar raha tha bina
+`product_titles` pass kiye — naya submit hua product-specific template turant `product_title: null`
+dikhata (galat). Test se hi pakda, fix kiya.
+
+**Dashboard (`WhatsappTemplates.jsx`):** Product filter dropdown (purpose filter ke baaju me), naya
+"Product" field New Template form me (default "Shared"), har template row par product badge ("Shared"
+ya product ka naam) + Enable/Disable button (disabled row dim ho jaati hai, "Disabled" badge dikhta
+hai). **Cross-link bhi improve kiya**: Products ke andar WhatsApp tab ka "Manage WhatsApp Templates"
+button ab `?product_id=` ke saath deep-link karta hai — WA Templates page us product ke templates pe
+already-filtered khulta hai.
+
+**Verified — real Flask test client + disposable DB (Meta call mocked) + real browser, 14 checks
+total:** shared vs product-specific creation, bogus product_id 422, list filter, PATCH toggle dono
+directions, tiered selection (product-specific > shared > None), **disabled template kabhi select nahi
+hota chahe APPROVED ho**, real `outreach_wa_handler.py` end-to-end (product A ka lead → product A ka
+template, product B ka lead → shared template), real browser me product dropdown + deep-link dono
+kaam karte hain.
+
+**User ne screenshot dikhake 2 aur real gap pakde:** (1) Built-in templates "Submitted" ke saath stacked
+the, apni jagah alag tab chahiye; (2) built-in template ka **asli message (wording)** kahin nahi dikh
+raha tha — sirf naam/variables the, kyunki wo wording is codebase me kabhi store hi nahi hui (Meta ke
+apne system me hai). User ne ek teesri, future baat bhi flag ki: "AI khud template banayega to pehle
+yahan admin approval ke liye aayega" — explicitly Step 9.6 (autonomous adaptive template loop) ka scope
+hai, is turn me sirf structural groundwork rakha (tabs), AI-authorship logic nahi banaya.
+
+**Naya tab-based layout** (`WhatsappTemplates.jsx`): "Built-in (N)" / "Submitted (N)" tabs, stat tiles
+upar hamesha visible. Deep-link se aane par (`?product_id=`) seedha Submitted tab khulta hai.
+
+**Naya `services/outreach/whatsapp_template_service.py`'s `fetch_template_wording(name)`** — real,
+read-only Meta GET call jo template ka poora `components` (BODY text sahit) fetch karta hai, sirf
+display ke liye, kuch bhi likhta nahi. `/builtin` endpoint ab TEMPLATE_LIBRARY ke dono templates ke
+liye live isse call karta hai.
+
+**Real production-grade bug pakda pehle hi real fetch me:** BSP ka `GET .../message_templates?name=X`
+apna **khud ka `name` filter ignore karta hai** aur poori WABA ki ~20-template list return karta hai
+(confirmed live, raw response dekh ke) — pehla entry hamesha same rehta hai, requested naam se
+unrelated. Original Step 9.5 code (`poll_template_status`) `matches[0]` blindly le raha tha — matlab
+ye **ek pre-existing, abhi tak unnoticed real correctness bug tha**: kisi bhi doosre submitted template
+ko poll karte waqt, wo galti se KISI AUR (unrelated) template ka status/rejection-reason apne upar le
+sakta tha. **Dono jagah fix kiya** — naya shared `_find_by_name()` helper jo response ko client-side
+naam se filter karta hai, kabhi request-side filter par trust nahi karta. Mocked regression test se
+lock kiya (`test_phase9_step5_name_filter_bug.py`).
+
+**Verified:**
+- Real Meta se dono built-in templates ka apna-apna, ALAG real wording fetch hua (pehle bug ki wajah se
+  dono same text dikha rahe the — fix ke baad har ek apna sahi text dikhata hai).
+- Mocked regression test: `fetch_template_wording()`/`poll_template_status()` dono ab sahi entry select
+  karte hain jab response me unrelated entries pehle aati hain.
+- Real browser: tabs sahi kaam karte hain (counts, content switch), dono built-in cards apna real,
+  distinct wording dikhate hain.
+
+**Step 9.5 ✅ COMPLETE (backend + dashboard UI + built-in visibility + real wording + UX pass + IA
+cross-link + optional product-scoping + enable/disable + built-in/submitted tabs + a real BSP
+name-filter bug fixed, sab dono).**
+
+---
+
+### ⭐ Phase 9 / Step 9.6 sub-step 1 — DRAFT lifecycle for AI-authored templates (2026-08-21)
+
+User ne confirm kiya "haa test bhi karte rahena" — Step 9.6 (autonomous adaptive template loop) 5
+sub-steps me todke, ek-ek karke banana shuru kiya. Ye pehla sub-step: sirf lifecycle/status machinery —
+AI se asli drafting logic (sub-step 2), QC gate (sub-step 3), trigger (sub-step 4), UI (sub-step 5)
+abhi baaki hain.
+
+**Naya `whatsapp_templates.origin`** column (`ADMIN` default, ya `AI`) — kis path se template aaya.
+**Naye status values**: `DRAFT` (AI ne likha, admin review pending, Meta ko kabhi nahi bheja gaya) aur
+`ADMIN_REJECTED` (admin ne draft ko reject kiya, kabhi Meta tak pahuncha hi nahi — `REJECTED` se alag,
+jo Meta ki apni real decision hai).
+
+**`services/outreach/whatsapp_template_service.py` refactor:** real Meta POST call ab `_create_on_meta()`
+me extract hui — pehle `submit_template()` (admin direct-submit, unchanged behavior) aur naya
+`approve_draft_and_submit()` (admin ek DRAFT approve kare) dono isi ek jagah se reuse karte hain, code
+duplicate nahi. Naye functions:
+- `create_draft_template()` — DRAFT row banata hai, **zero Meta call**.
+- `approve_draft_and_submit(db, template)` — sirf DRAFT row par kaam karta hai, **yehi ek jagah hai jahan
+  AI-authored wording pehli baar real Meta ko jaati hai**; fail ho to row DRAFT hi rehta hai (retryable,
+  silently lost nahi hota).
+- `reject_draft(db, template)` — `ADMIN_REJECTED`, koi Meta call kabhi nahi.
+
+**Naye API endpoints**: `POST /<id>/approve` (real Meta call, sirf DRAFT row par, warna 409),
+`POST /<id>/reject` (local-only, sirf DRAFT row par, warna 409). `_serialize()` me `origin` field add
+kiya; API file ke andar product-title lookup ka 5x-duplicate ho raha inline block ek `_product_titles_for()`
+helper me consolidate kiya.
+
+**Verified — 9/9 real checks (`test_phase9_step6a.py`), Meta POST mocked (real submission ke liye
+alag confirmation chahiye, established rule):**
+1. `create_draft_template()` → DRAFT, origin=AI, zero Meta call.
+2. Reject → `ADMIN_REJECTED`, zero Meta call. Doosri baar reject → 409.
+3. Approve → **exactly 1 real Meta call**, status → PENDING, `meta_template_id` set, `origin` AI hi
+   rehta hai (provenance preserved). Doosri baar approve → 409, doosra Meta call nahi hota.
+4. **Real Meta failure simulate kiya** → row `DRAFT` hi rehta hai (PENDING nahi ban jaata galti se),
+   502 surface hota hai — matlab ek failed submission retry ho sakta hai, silently lost nahi hota.
+5. `get_approved_followup_template()`/`poll_all_pending()` — DRAFT/ADMIN_REJECTED rows dono ke liye
+   completely invisible (sirf APPROVED/PENDING dekhte hain).
+6. **Regression**: admin ka direct-submit path (dashboard form) bilkul waisa hi hai — turant PENDING,
+   `origin=ADMIN` — koi behavior change nahi.
+
+**Sub-step 1 ✅ COMPLETE.**
+
+---
+
+### ⭐ Phase 9 / Step 9.6 sub-step 2 — AI template drafting logic (2026-08-21)
+
+Naya `agents/template_agent.py`'s `draft_template(db, reason, context, existing_templates)` — **pure
+function**, koi DB write nahi (sirf `AgentEvent` audit log), koi Meta call nahi. Sirf ek real LLM call
+karta hai, jisko REASON (kyun naya template chahiye — jaise "is template ka reply rate bahut kam hai"),
+CONTEXT (real supporting numbers), aur EXISTING_TEMPLATES (taaki near-duplicate propose na kare) diye
+jaate hain. Har stage independently testable rehne ke liye deliberately isolated rakha — QC (sub-step 3)
+aur persist+trigger (sub-step 4) abhi iske andar nahi hai.
+
+**Naya `cognition/prompts.py`'s `TEMPLATE_AGENT_SYSTEM_PROMPT`** — Meta ke real constraints explicitly
+sikhaata hai: naam ka format, category enum, purpose enum, `{{n}}` placeholders sequential honi chahiye,
+aur **variable_labels sirf 3 recognized values me se ek ho sakta hai** (`contact_name`/`company_name`/
+`pain_point_phrase` — `fill_variables_for_labels()` jo already jaanta hai, wahi vocabulary, koi nayi
+naming scheme nahi). Model ko explicit permission hai decline karne ki (`{"drafted": false, ...}`) agar
+genuinely kuch achha na bane — force karke bekaar candidate nahi banata.
+
+**Deterministic validation (`_is_valid_candidate`)** — LLM ke output ko kabhi blindly trust nahi karta,
+har baar check: naam ka regex, existing names se collision, category/purpose enum, `{{n}}` count ==
+variable_labels length, har variable recognized set me hai.
+
+**Verified — 9 checks total, `test_phase9_step6b.py`:**
+1-6. **Deterministic validation, 6/6**: sahi candidate pass, galat naam/collision/category/variable/
+     placeholder-mismatch — sab reject hote hain (mocked dicts, real LLM ki zaroorat nahi in checks ke
+     liye).
+7. **Real LLM call** (Gemini exhausted mid-test, automatic OpenAI fallback observed — expected behavior):
+   ek genuine reason diya ("shared_followup ka 5% reply rate hai 40 real sends me, average 15% se bahut
+   kam") — AI ne ek **genuinely distinct, achhi quality candidate** banaya: naya naam, same FOLLOW_UP
+   purpose (jaisa reason maang raha tha), pain-point-specific opening, sahi 3-variable placeholder order.
+8. Real `AgentEvent` row confirm hua (`agent=TEMPLATE_AGENT`, `routed_to=DRAFTED`) — audit trail me
+   dikhega.
+9. **Weak/unjustified reason test** ("just checking if a new template idea might be nice") — AI ne
+   **khud decline kiya** (`None` return hua) — koi fake urgency nahi banayi, guardrail ka intent sahi
+   respect hua.
+
+**Sub-step 2 ✅ COMPLETE.**
+
+---
+
+### ⭐ Phase 9 / Step 9.6 sub-step 3 — QC gate for AI-drafted templates (2026-08-21)
+
+Naya `agents/quality_controller_agent.py`'s `review_template_draft(db, candidate, reason,
+existing_templates)` — bilkul `review_draft()` (email QC) jaisa hi **fails-CLOSED contract** (QC khud
+fail ho jaaye to kabhi approval nahi maana jaata), lekin deliberately **alag prompt/function** — ek
+template candidate ka koi lead-specific personalization check nahi hota (ye kai real leads ke liye
+reuse hota hai `{{n}}` variables ke through), aur koi footer/signature concept nahi. Iski jagah check
+karta hai: Meta ke real constraints, jis REASON ke liye draft hua uska honest address, aur
+EXISTING_TEMPLATES se genuine distinctness.
+
+**Naya `cognition/prompts.py`'s `TEMPLATE_QC_SYSTEM_PROMPT`** — 5 checks: (a) banned buzzwords/generic
+AI phrasing, (b) fake claims/discount/pricing/timeline (template FIXED wording hai, kabhi ek deal-specific
+promise nahi kar sakta), (c) EXISTING_TEMPLATES se genuinely distinct (trivial reword reject), (d) stated
+REASON ko honestly address karta hai, (e) professional tone (spammy/pushy/fake-urgency nahi).
+
+**Verified — 5/5 real checks (`test_phase9_step6c.py`), real LLM calls (Gemini exhausted, OpenAI
+fallback observed):**
+1. Sub-step 2 wala genuinely achha candidate → **approved=True**, confidence 0.93.
+2. Deliberately bekaar candidate (buzzwords "REVOLUTIONARY"/"game-changing"/"unlock"/"seamless" + fake
+   "50% discount, today only!!!") → **rejected**, QC ne apne aap **5 alag, sahi reasons diye** (buzzwords,
+   fake discount, fake urgency, reason address nahi kiya, distinct nahi hai) — real judgment quality.
+3. Ek existing template ka trivial reword ("still worth a look" → "is it still worth taking a look")
+   → **rejected**, QC ne sahi pakda ki ye genuinely distinct nahi hai.
+4. Teeno real review real `AgentEvent` rows (`agent=QC`, `action_type=REVIEW_TEMPLATE_DRAFT`) me sahi
+   outcome ke saath log hue.
+5. **Fails-closed test**: `call_json` ko force-fail kiya (simulated total provider outage) → result
+   `approved=False` (kabhi silently "yes" nahi maana), rejection reason me "unavailable" explicitly.
+
+**Sub-step 3 ✅ COMPLETE.**
+
+---
+
+### ⭐ Phase 9 / Step 9.6 sub-step 4 — trigger + orchestration (2026-08-21)
+
+**Naya `find_template_improvement_reason(db)`** — real signal detection, **kabhi fake need nahi
+banata**. 2 real gaps check karta hai order me: (1) Step 9.2 ka apna `get_variant_performance()` use
+karke, koi WhatsApp template jiska real reply rate `MIN_SAMPLE_FOR_SIGNAL=20`+ sends par
+`LOW_REPLY_RATE_THRESHOLD=10%` se kam hai (chhote sample pe noise-guard — 5 sends pe trigger nahi
+karta chahe reply rate kaisa bhi ho); (2) agar koi underperformer nahi mila, to check karta hai **koi
+approved FOLLOW_UP template hai bhi ya nahi** (Step 9.3 ka wahi original gap). Dono me se koi nahi mila
+to **`None`** — honest "kuch propose karne layak nahi hai."
+
+**Naya `propose_new_template(db, reason, context, purpose, product_id)`** — poora safe pipeline ek
+saath: existing templates (built-in + DB) gather karta hai → `draft_template()` (sub-step 2) → 
+`review_template_draft()` (sub-step 3) → dono pass ho tabhi `create_draft_template()` (sub-step 1) se
+persist karta hai. Kahin bhi is function ke andar real Meta call nahi hoti.
+
+**Naya `POST /api/v1/whatsapp-templates/propose`** — manual trigger endpoint (koi real Meta call nahi,
+isliye create/approve jaisa extra confirmation nahi chahiye). Admin dabaye to real signal check karta
+hai, mile to draft+QC+persist, na mile to honest message.
+
+**Real bug pakda testing se hi (prompt-level, code nahi):** underperformer-signal test baar-baar QC se
+reject ho raha tha — root cause dekha: naya FOLLOW_UP candidate ek existing FIRST_TOUCH template
+(`ivinfotech_pain_point_outreach`) jaisa hi pain-point reference kar raha tha, aur QC prompt "genuinely
+distinct from EVERY existing template" bol raha tha — **bina purpose ka dhyan rakhe**. Lekin ek
+FOLLOW_UP ka usi pain-point ko reference karna jo FIRST_TOUCH ne kiya tha, actually **sahi hai** (same
+lead ki same conversation continue ho rahi hai) — duplicate nahi. Dono prompts (`TEMPLATE_AGENT_
+SYSTEM_PROMPT` aur `TEMPLATE_QC_SYSTEM_PROMPT`) me ek **purpose-aware carve-out** add kiya — bilkul
+wahi pattern jo Step 9.3 ke `is_followup` carve-out me pehle use ho chuka tha (purani rule + nayi
+legitimate requirement ka conflict, kisi bug ka nahi). Fix ke baad clean-slate scenario **pehle hi real
+attempt me pass hua** (pehle 3 attempts fail ho rahe the).
+
+**Verified — 10/10 real checks (`test_phase9_step6d.py`):**
+1. Fresh DB → "no approved FOLLOW_UP template" gap sahi surface hoti hai.
+2. **Poora real pipeline** (clean slate pe) → real DRAFT bana aur DB me persist hua (GameZone Visnagar
+   wala hi original real-world scenario).
+3. Ek unapproved DRAFT khud gap ko close nahi karta — jab tak Meta actually approve na kare.
+4. Chhota sample (5 sends) → trigger nahi karta (noise-guard).
+5. Real underperformer (25 sends, 4% reply) → sahi numbers + sahi `product_id` carry hota hai.
+6. Underperformer signal pe pipeline chalaya → is baar QC ne reject kiya (3 similar FOLLOW_UP templates
+   already exist is point tak) — **honest disclosed outcome, forced pass nahi kiya**.
+7. `POST /propose` real HTTP se poora pipeline wrap karta hai.
+8. Signal hata do to system honestly "kuch propose nahi" bolta hai.
+**Real local dev backend pe bhi live confirm kiya** — `/propose` ne ek real DRAFT row bana di (`meta_
+template_id: null`, koi Meta call nahi hui) — admin dashboard aane par (sub-step 5) review kar sakta hai.
+
+**Sub-step 4 ✅ COMPLETE.**
+
+---
+
+### ⭐ Phase 9 / Step 9.6 sub-step 5 — Dashboard UI, Step 9.6 COMPLETE (2026-08-21)
+
+**Naya `reasoning` column** `whatsapp_templates` par — AI ke drafting agent ka apna `<=40-word`
+explanation ab persist hota hai (pehle sirf `AgentEvent` audit log me tha, dashboard pe nahi dikhta
+tha) — admin ko approve/reject karne se pehle informed decision lene ke liye zaroori.
+
+**`WhatsappTemplates.jsx` me teesra tab: "AI Proposed"** — naya 5th stat tile bhi ("AI proposed" count).
+- **"Ask AI to draft a template" button** — real `/propose` endpoint call karta hai, honest result
+  dikhata hai (naya draft bana, ya "abhi kuch propose karne layak nahi" message).
+- Har `DRAFT` card pe: naam/purpose/category/product badge, real body text, variables, **AI ka reasoning**
+  (informed decision ke liye), aur **Approve & Submit to Meta** / **Reject** buttons.
+- **Approve** — bilkul wahi real-Meta-call confirmation dialog jo direct-submit form use karta hai
+  (irreversible, WABA standing risk warning).
+- **Reject** — halka confirm ("undo nahi ho sakta"), koi Meta call kabhi nahi.
+- **Submitted tab** ab DRAFT rows exclude karta hai (sirf decided templates — PENDING/APPROVED/
+  REJECTED/ADMIN_REJECTED), aur origin=AI wale par ek "AI-drafted" badge dikhata hai (provenance kabhi
+  chhupti nahi, approve hone ke baad bhi).
+
+**Verified — real browser, poora real flow end-to-end:**
+1. AI Proposed tab renders, real "Ask AI" button dikhta hai.
+2. Ek pehle se maujood real DRAFT (sub-step 4 ke manual `/propose` test se) ko **real UI se reject
+   kiya** (confirm dialog ke saath) — kabhi Meta ko touch nahi kiya.
+3. **"Ask AI to draft a template" live click kiya** — real signal detection → real LLM draft → real
+   QC review → sab kuch turant browser me dikha: naya draft, uska reasoning, Approve/Reject buttons
+   ready.
+4. Screenshot se visually confirm — clean, "No AI-proposed drafts" empty state, purple accent AI
+   Proposed tab, 5 stat tiles.
+
+**Step 9.6 ✅ COMPLETE — sabhi 5 sub-steps ban gaye:**
+1. DRAFT lifecycle (Approve/Reject, fail-safe on Meta failure)
+2. AI drafting agent (real LLM, Meta constraints validate)
+3. QC gate (admin ko dikhne se pehle veto power)
+4. Trigger + orchestration (real signal detection, kabhi fake need nahi)
+5. Dashboard UI (poora real flow visible aur actionable)
+
+**QC + human approval gate dono mandatory rahe — jaisa 2026-08-13 ko user se commit kiya gaya tha**
+("AI khud template banaye... hamesha ek insaan ko approve karna hoga real bhejne se pehle, poori
+tarah autonomous kabhi nahi hoga"). Trigger abhi manual hai (button), poori tarah autonomous
+(discovery_scheduler tick jaisa periodic check) deliberately is scope se bahar — jab real usage data
+zyada ho jaaye tab revisit karna.
+
+---
+
+### Step 9.6 follow-up — 2 real gaps user ne khud dashboard use karte hue pakde (2026-08-21)
+
+User real dashboard use kar raha tha (test-artifacts approve/reject kar raha tha) aur 2 cheezein
+report ki: (1) "AI hamesha FOLLOW_UP hi banata hai, FIRST_TOUCH kabhi kyun nahi," (2) "Rejected dikh
+raha he lekin iska kya matlab he, use ho raha he ya nahi, ab kya karna he." Dono real, verified.
+
+**Real bug #1 — `find_template_improvement_reason()` hardcoded FOLLOW_UP:** chahe jo bhi template
+underperform kare (FIRST_TOUCH ho ya FOLLOW_UP), function hamesha `"FOLLOW_UP"` return kar raha tha —
+matlab ek weak FIRST_TOUCH template kabhi FIRST_TOUCH candidate trigger hi nahi kar sakta tha. Fix:
+underperformer ka **apna real purpose** check karta hai ab (pehle DB `WhatsappTemplate` row me dekhta
+hai, warna `TEMPLATE_LIBRARY` me match karta hai — built-in templates hamesha FIRST_TOUCH hote hain) —
+agar purpose honestly determine na ho paye, guess nahi karta, coverage-gap check pe fall through karta
+hai.
+
+**Real gap #2 — "Rejected" ka koi explanation ya "ab kya karo" nahi tha:** `ADMIN_REJECTED` status ka
+koi microcopy nahi tha, aur inhe hatane ka koi tareeka nahi tha — Submitted tab me hamesha ke liye pade
+rehte. Fix: naya `DELETE /api/v1/whatsapp-templates/<id>` endpoint — **sirf** `ADMIN_REJECTED` ya
+(Meta ka apna) `REJECTED` status wale templates delete ho sakte hain (DRAFT/PENDING/APPROVED kabhi
+nahi — wo ya to real decision ka wait kar rahe hain ya actively use ho rahe hain). UI me clear caption
+("Rejected before it ever reached Meta -- permanently unusable, safe to delete") + Delete button (halka
+confirm ke saath) — Enable/Disable toggle ki jagah lete hain jab template dead ho.
+
+**Verified — 7/7 real checks (`test_phase9_step6f.py`):**
+1. Real underperforming FIRST_TOUCH template → sahi `purpose=FIRST_TOUCH` surface hota hai.
+2. Built-in TEMPLATE_LIBRARY entry (`marketing_gen`, koi DB row hi nahi) → sahi FIRST_TOUCH resolve
+   hota hai TEMPLATE_LIBRARY se.
+3. DRAFT delete nahi ho sakta (409).
+4. ADMIN_REJECTED **real delete** hota hai DB se.
+5. Meta-REJECTED bhi real delete hota hai.
+6. Already-gone row delete karo to 404.
+7. APPROVED (actively usable) template delete nahi ho sakta (409).
+
+**Real browser me bhi confirm kiya** — 3 real test-artifact rejected templates (jo pehle testing se pade
+the) ko **asli UI se delete kiya**, real database `0 rows` ho gaya, dashboard clean.
+
+---
+
+### Step 9.6 follow-up #2 — real context-grounding gap + purpose-choice UI (2026-08-21)
+
+**Real gap #3 — coverage-gap signal me koi real supporting data nahi tha.** Clean-slate DB pe "Ask AI"
+click karne par AI ko sirf ek khaali reason milta tha ("no FOLLOW_UP template exists") — koi real numbers,
+koi real pain-point example, kuch nahi. Result: AI vague/generic candidates likh raha tha
+("I can share a few simple options" jaisa unsupported claim), aur QC **3 baar consistently reject** kar
+raha tha. Fix: naya `_sample_real_pain_point(db)` — real `LeadReviewInsight` se ek genuine, verified pain
+point sample karta hai (kabhi invent nahi karta, fresh install pe `None`), aur ise context me pass karta
+hai — drafting prompt ko explicitly bataya ki ye sirf **tone/specificity ke liye example hai**, literal
+text ke roop me copy nahi karna (asli pain point hamesha `{{n}}` variable rehta hai).
+
+**Real interesting finding testing se:** grounding ke baad bhi ek attempt me QC ne ek genuinely **debatable
+false-positive** pakda — AI ne likha *"If it's not a priority right now, no need to reply"* (polite,
+low-pressure line), aur QC ne guardrail ka "any opt-out signal ends outreach permanently" wala rule
+**template ki apni wording par** galat apply kar diya (jabki wo rule lead ke reply ke liye hai, template
+ki apni copy ke liye nahi). Disclose kiya user ko, abhi fix nahi kiya (separate, chhota scope) — user ne
+iski jagah ek badi, zyada useful cheez maangi (neeche).
+
+**User ka real request: "ask ai me 2 option rakho first touch ya follow up taaki jo chahiye wo template
+mil jaye."** Sahi insight — admin ko purpose choose karne do, system ka "real signal" search us purpose
+tak scope ho jaaye (kabhi fabricate nahi karta, sirf search zyada targeted ho jaata hai).
+
+**`find_template_improvement_reason(db, purpose=None)`** — naya optional param. Underperformer search
+ab pehle har candidate ka apna real purpose determine karta hai, phir requested purpose se filter karta
+hai (worst-overall nahi, worst-**matching-purpose**). Coverage-gap check (`no FOLLOW_UP template`) sirf
+FOLLOW_UP ya unscoped search ke liye chalta hai — kyunki `TEMPLATE_LIBRARY`'s GENERIC hamesha ek real
+FIRST_TOUCH fallback hai, isliye "koi FIRST_TOUCH template hai hi nahi" wala gap kabhi genuinely exist
+nahi kar sakta.
+
+**Dashboard UI**: "Ask AI to draft a template" ek button ki jagah ab **2 buttons hain** — "Ask for a First
+Touch template" / "Ask for a Follow-up template" — har ek apna purpose-scoped real signal search karta
+hai, honest decline message purpose-specific hota hai ("...found for FIRST_TOUCH right now").
+
+**Verified — 12/12 real checks across `test_phase9_step6h.py` (grounding) aur `test_phase9_step6i.py`
+(purpose-scoping) + real browser:**
+- Fresh install → koi fake sample pain point nahi banata.
+- Real lead pain point seed kiya → sahi sample pull hota hai aur context me pahunchta hai.
+- Real underperforming FIRST_TOUCH + real healthy FOLLOW_UP saath me seed kiye → unscoped search sahi
+  worse wala (FIRST_TOUCH) pakadta hai; **explicitly FOLLOW_UP maango** to healthy hone ki wajah se
+  honest `None` (galat FIRST_TOUCH signal wapas nahi karta); **explicitly FIRST_TOUCH maango** to sahi
+  real signal milta hai.
+- Real API call invalid purpose ke saath → 422.
+- Real browser: dono buttons render hote hain, "Ask for a First Touch template" click karne par real
+  pipeline chalta hai, real honest purpose-aware decline message aata hai (clean-slate DB, koi real
+  signal nahi tha).
+
+---
+
+**▶ CURRENT (2026-08-21): Phase 9 — Measurement, Multi-Touch & Adaptive Templates — Steps 9.1–9.3,
+9.5, 9.6 ✅ COMPLETE**, **sirf 9.4 baaki.** Phase 8 ✅ COMPLETE + ✅ VPS par LIVE. Phase 7 ✅ COMPLETE +
+✅ VPS par LIVE. Phase 6 ✅ COMPLETE + ✅ VPS par LIVE. Phase 5 postpone hai (§A.6), sequence 6 → 7 → 8
+→ 9 → 10. **VPS deploy abhi baaki hai Steps 9.1–9.3, 9.5, 9.6 ka** — Phase 9 complete hone ke
 baad ek saath deploy hoga.
 
 **Known open item (not a blocker, tracked here so it isn't forgotten):** Hunter Free plan ka monthly
@@ -1754,8 +2259,8 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
 - [x] Step 9.2 — variant performance rollup (already-built real Seen tracking par, koi estimated number nahi) — ✅ 2026-08-21, Section 3, real SQL reconciliation se verified
 - [x] Step 9.3 — multi-touch follow-up sequences (`outreach_sequences` T24) — suppression/opt-out/caps/kill-switch **har touch par**, sirf pehle par nahi — ✅ 2026-08-21, Section 3, 10/10 real end-to-end checks
 - [ ] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi)
-- [ ] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate)
-- [ ] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory
+- [x] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate) — ✅ 2026-08-21, Section 3, 9/9 real checks (Meta call deliberately mocked, user's instruction — real submission needs separate confirmation)
+- [x] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory — ✅ 2026-08-21, Section 3, 5/5 sub-steps, 34 total real checks across sub-steps 1-5
 - [ ] DoD Gate P9
 
 ### PHASE 10 — Channel Expansion *(sabse zyada cost/legal risk — deliberately last, har channel alag gate)*

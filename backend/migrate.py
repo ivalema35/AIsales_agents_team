@@ -17,11 +17,24 @@ COLUMN_MIGRATIONS = [
     ("products", "target_person_roles", "TEXT DEFAULT '[]'"),
     ("outreach_logs", "subject_candidates", "TEXT"),
     ("products", "followup_cadence_days", "TEXT DEFAULT '[]'"),
+    ("whatsapp_templates", "product_id", "TEXT"),
+    ("whatsapp_templates", "is_active", "INTEGER DEFAULT 1"),
+    ("whatsapp_templates", "origin", "TEXT DEFAULT 'ADMIN'"),
+    ("whatsapp_templates", "reasoning", "TEXT"),
 ]
+
+
+def _table_exists(raw_conn, table):
+    row = raw_conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table,)
+    ).fetchone()
+    return row is not None
 
 
 def _add_missing_columns(raw_conn):
     for table, column, coltype in COLUMN_MIGRATIONS:
+        if not _table_exists(raw_conn, table):
+            continue  # brand-new table -- schema.sql's own CREATE TABLE already has this column
         existing = {row[1] for row in raw_conn.execute(f"PRAGMA table_info({table})").fetchall()}
         if column not in existing:
             raw_conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {coltype}")
@@ -30,9 +43,14 @@ def _add_missing_columns(raw_conn):
 def run():
     with engine.begin() as conn:
         raw = conn.connection
+        # Column migrations run BEFORE the schema script -- a statement later in schema.sql
+        # can reference a column that's new to an EXISTING table (e.g. an index on it), and
+        # that statement would fail against a DB that predates the column if executescript
+        # ran first (real ordering bug hit adding whatsapp_templates.product_id + its index
+        # in the same change).
+        _add_missing_columns(raw)
         with open("database/schema.sql", "r", encoding="utf-8") as f:
             raw.executescript(f.read())
-        _add_missing_columns(raw)
     print("Schema applied.")
 
 

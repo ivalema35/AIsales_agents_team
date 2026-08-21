@@ -26,8 +26,10 @@ from services.outreach.whatsapp_templates import (
     TEMPLATE_LIBRARY,
     select_template,
     fill_variables,
+    fill_variables_for_labels,
     validate_variables,
 )
+from services.outreach.whatsapp_template_service import get_approved_followup_template
 from services.sequence_service import create_sequence_for_send
 
 logger = logging.getLogger(__name__)
@@ -71,9 +73,24 @@ def handle_outreach_wa(db, payload):
         "contact_person_name": lead.contact_person_name,
     }
 
-    template_key = select_template(pain_points)
-    spec = TEMPLATE_LIBRARY[template_key]
-    values = fill_variables(template_key, lead_profile, pain_points)
+    # Phase 9 Step 9.5 -- a follow-up touch prefers a real, Meta-approved FOLLOW_UP
+    # template over resending touch 1's own template verbatim (the exact gap Step 9.3
+    # found live against GameZone Visnagar: no FOLLOW_UP template existed yet, so the
+    # follow-up was byte-identical to the original). Falls back to today's behavior
+    # (TEMPLATE_LIBRARY's first-touch pick) whenever none is approved yet -- a missing
+    # follow-up template must never block sending, only lose this refinement.
+    followup_template = (
+        get_approved_followup_template(db, product_id=lead.product_id)
+        if payload.get("sequence_id") else None
+    )
+    if followup_template:
+        spec = {"name": followup_template.name, "language": followup_template.language}
+        variable_labels = json.loads(followup_template.variable_labels or "[]")
+        values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
+    else:
+        template_key = select_template(pain_points)
+        spec = TEMPLATE_LIBRARY[template_key]
+        values = fill_variables(template_key, lead_profile, pain_points)
 
     if not validate_variables(values):
         logger.info("OUTREACH_WA %s -> filled variables failed validation, escalating", lead.company_name)

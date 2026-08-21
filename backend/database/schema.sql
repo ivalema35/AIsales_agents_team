@@ -370,6 +370,47 @@ CREATE TABLE IF NOT EXISTS outreach_sequences (
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
 );
 
+-- Phase 9 Step 9.5 -- admin composes + submits a real WhatsApp template from the CRM
+-- (real Meta Create Template API call), mirroring its real Meta-side approval state
+-- here instead of only in code (TEMPLATE_LIBRARY). `purpose` distinguishes a first-
+-- touch template from a FOLLOW_UP one -- a real gap found live testing Step 9.3: a
+-- WhatsApp follow-up had no choice but to resend the exact same first-touch template
+-- word for word, since Meta only allows pre-approved templates and none existed yet
+-- specifically written as a brief nudge.
+CREATE TABLE IF NOT EXISTS whatsapp_templates (
+    id                TEXT PRIMARY KEY,
+    name              TEXT NOT NULL UNIQUE,  -- Meta's own template name (lowercase_underscored)
+    language          TEXT NOT NULL DEFAULT 'en',
+    category          TEXT NOT NULL,         -- Meta's real categories: MARKETING, UTILITY, AUTHENTICATION
+    purpose           TEXT NOT NULL DEFAULT 'FIRST_TOUCH',  -- FIRST_TOUCH or FOLLOW_UP
+    body_text         TEXT NOT NULL,         -- with {{1}}, {{2}} placeholders, Meta's own syntax
+    variable_labels   TEXT DEFAULT '[]',     -- JSON array, what each {{n}} means, e.g. ["company_name"]
+    -- DRAFT: AI-authored, awaiting admin review, never yet sent to Meta (Step 9.6).
+    -- PENDING: submitted to Meta (by an admin directly, or an admin-approved AI draft),
+    -- awaiting Meta's own decision. APPROVED/REJECTED: Meta's own decision. ADMIN_REJECTED:
+    -- an admin rejected a DRAFT before it ever reached Meta -- terminal, no Meta call made.
+    status            TEXT DEFAULT 'PENDING',
+    rejection_reason  TEXT,
+    -- ADMIN: submitted directly via the dashboard form, real Meta call made immediately
+    -- (today's only behavior before Step 9.6). AI: drafted by the adaptive-template loop,
+    -- starts as DRAFT, never reaches Meta without an explicit admin approve action.
+    origin            TEXT DEFAULT 'ADMIN',
+    -- Only set for origin='AI' rows -- the drafting agent's own <=40-word explanation of
+    -- why this candidate addresses the real signal it was given, so an admin reviewing a
+    -- DRAFT can judge it informed, not blind.
+    reasoning         TEXT,
+    meta_template_id  TEXT,                  -- Meta's own returned id for this template
+    -- NULL = shared/global (usable by every product); set = only this product may use it.
+    -- Optional, not mandatory, deliberately (tracker.md Step 9.5 follow-up): each new
+    -- product-specific template needs its own separate Meta approval, so defaulting to
+    -- shared keeps that real cost down while still allowing a product with a genuinely
+    -- distinct pitch to get its own.
+    product_id        TEXT REFERENCES products(id),
+    is_active         INTEGER DEFAULT 1,  -- manual kill-switch, independent of Meta's own status
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -386,4 +427,6 @@ CREATE INDEX IF NOT EXISTS idx_message_formats_scope ON message_formats (product
 CREATE INDEX IF NOT EXISTS idx_content_assets_scope  ON content_assets (product_id, asset_type, is_active);
 CREATE INDEX IF NOT EXISTS idx_sequences_due          ON outreach_sequences (status, next_run_at);
 CREATE INDEX IF NOT EXISTS idx_sequences_lead_channel  ON outreach_sequences (lead_id, channel);
+CREATE INDEX IF NOT EXISTS idx_wa_templates_status     ON whatsapp_templates (status, purpose);
+CREATE INDEX IF NOT EXISTS idx_wa_templates_product     ON whatsapp_templates (product_id);
 CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);

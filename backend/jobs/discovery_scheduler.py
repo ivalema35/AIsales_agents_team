@@ -33,6 +33,7 @@ from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
 from services.sequence_service import process_due_followup
+from services.outreach.whatsapp_template_service import poll_all_pending
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
@@ -368,6 +369,18 @@ def _run_stuck_alert_tick(db):
                        len(down), len(stuck_leads), len(stuck_jobs), dead_count)
 
 
+def _run_template_poll_tick(db):
+    """Phase 9 Step 9.5 -- periodic real Meta status check for every PENDING template,
+    so an admin-submitted template goes PENDING -> APPROVED/REJECTED (and becomes usable
+    by outreach_wa_handler.py) without anyone manually clicking "refresh" on the
+    dashboard. A cheap no-op query when nothing is PENDING; only calls Meta's real API
+    for rows that are.
+    """
+    changed = poll_all_pending(db)
+    if changed:
+        logger.info("template poll tick -> %d template(s) changed status", changed)
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
@@ -391,6 +404,7 @@ def run_forever(poll_interval=None):
                 last_outreach_tick = now
             _run_eod_report_tick(db)
             _run_stuck_alert_tick(db)
+            _run_template_poll_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
             # Surface a failing tick to the monitor instead of only to the log -- a scheduler

@@ -9,7 +9,7 @@ import json
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT
+from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT, TEMPLATE_QC_SYSTEM_PROMPT
 
 
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
@@ -74,5 +74,47 @@ rule unchanged (no buzzwords, no unsupported claims, no fabricated timelines/pri
               "rejection_reasons": reasons, "suggested_corrections": corrections}
 
     log_agent_event(db, "QC", lead_id, "REVIEW_DRAFT", confidence_score, "HIGH",
+                    "APPROVED" if approved else "REJECTED", payload={"reasons": reasons})
+    return result
+
+
+def review_template_draft(db, candidate: dict, reason: str, existing_templates: list[dict]) -> dict:
+    """QC gate for an AI-drafted WhatsApp template candidate (Phase 9 Step 9.6 sub-step 3)
+    -- runs BEFORE an admin ever sees the draft, so a bad candidate never even reaches
+    the review queue. Same fails-CLOSED contract as review_draft(): a QC that can't run
+    is never mistaken for a QC that said yes.
+
+    Deliberately a separate prompt/function from review_draft() -- a template candidate
+    has no lead-specific personalization to check against (it's reused across many real
+    leads via {{n}} variables, unlike a one-off email draft) and no footer/signature
+    concept; instead it's judged against Meta's real constraints, the stated drafting
+    REASON, and distinctness from EXISTING_TEMPLATES.
+    """
+    prompt = TEMPLATE_QC_SYSTEM_PROMPT + f"""
+CANDIDATE: {json.dumps(candidate, ensure_ascii=False)}
+REASON: {reason}
+EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.1)
+    except LLMError as exc:
+        log_agent_event(db, "QC", None, "REVIEW_TEMPLATE_DRAFT", 0.0, "HIGH", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return {"approved": False, "confidence_score": 0.0,
+                "rejection_reasons": ["QC agent unavailable -- failing closed, not shown to admin"]}
+
+    approved = data.get("approved") is True
+    try:
+        confidence_score = max(0.0, min(1.0, float(data.get("confidence_score"))))
+    except (TypeError, ValueError):
+        confidence_score = 0.0
+
+    reasons = data.get("rejection_reasons")
+    if not isinstance(reasons, list):
+        reasons = []
+    reasons = [str(r)[:200] for r in reasons]
+
+    result = {"approved": approved, "confidence_score": confidence_score, "rejection_reasons": reasons}
+    log_agent_event(db, "QC", None, "REVIEW_TEMPLATE_DRAFT", confidence_score, "HIGH",
                     "APPROVED" if approved else "REJECTED", payload={"reasons": reasons})
     return result

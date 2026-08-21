@@ -386,3 +386,29 @@ class OutreachSequence(Base):
     terminal_reason = Column(String)  # REPLIED, SUPPRESSED, MAX_STEPS_REACHED
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 25. WHATSAPP TEMPLATES (Phase 9 Step 9.5 -- mirrors each template's real Meta-side
+# approval state; `purpose` FOLLOW_UP closes the real gap found live testing Step 9.3,
+# where a WhatsApp follow-up had to resend the exact same first-touch template.)
+class WhatsappTemplate(Base):
+    __tablename__ = "whatsapp_templates"
+    id = Column(String, primary_key=True, default=_uuid)
+    name = Column(String, nullable=False, unique=True)
+    language = Column(String, nullable=False, default="en")
+    category = Column(String, nullable=False)  # MARKETING, UTILITY, AUTHENTICATION
+    purpose = Column(String, nullable=False, default="FIRST_TOUCH")  # FIRST_TOUCH, FOLLOW_UP
+    body_text = Column(Text, nullable=False)
+    variable_labels = Column(Text, default="[]")  # JSON array
+    # DRAFT, PENDING, APPROVED, REJECTED, ADMIN_REJECTED -- see schema.sql for the full
+    # meaning of each (Step 9.6 added DRAFT/ADMIN_REJECTED for AI-authored templates).
+    status = Column(String, default="PENDING")
+    rejection_reason = Column(Text)
+    meta_template_id = Column(String)
+    # NULL = shared/global (every product may use it); set = only that product may.
+    product_id = Column(String, ForeignKey("products.id"))
+    is_active = Column(Integer, default=1)  # manual kill-switch, independent of Meta's own status
+    origin = Column(String, default="ADMIN")  # ADMIN (dashboard form) or AI (Step 9.6 draft)
+    reasoning = Column(Text)  # only for origin=AI -- the drafting agent's own explanation
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())

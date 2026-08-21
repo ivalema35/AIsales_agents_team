@@ -61,24 +61,35 @@ def select_template(pain_points: list) -> str:
     return "GENERIC"
 
 
+def _fill_value(var_name: str, lead_profile: dict, pain_points: list) -> str:
+    if var_name == "contact_name":
+        return lead_profile.get("contact_person_name") or lead_profile.get("company_name") or "there"
+    if var_name == "company_name":
+        return lead_profile.get("company_name") or "there"
+    if var_name == "pain_point_phrase":
+        quote = pain_points[0].get("evidence_quote") if pain_points else ""
+        return quote[:80] if quote else "some recent challenges"
+    return ""
+
+
 def fill_variables(template_key: str, lead_profile: dict, pain_points: list) -> list:
     """Deterministic filling for known simple fields -- WhatsApp template variables are
     plain substitutions into Meta-approved fixed wording, not open-ended generation, so
     this doesn't need (and per MASTER's rules, shouldn't invent via) an LLM call.
     """
     spec = TEMPLATE_LIBRARY[template_key]
-    values = []
-    for var in spec["variables"]:
-        if var == "contact_name":
-            values.append(lead_profile.get("contact_person_name") or lead_profile.get("company_name") or "there")
-        elif var == "company_name":
-            values.append(lead_profile.get("company_name") or "there")
-        elif var == "pain_point_phrase":
-            quote = pain_points[0].get("evidence_quote") if pain_points else ""
-            values.append(quote[:80] if quote else "some recent challenges")
-        else:
-            values.append("")
-    return values
+    return [_fill_value(var, lead_profile, pain_points) for var in spec["variables"]]
+
+
+def fill_variables_for_labels(variable_labels: list, lead_profile: dict, pain_points: list) -> list:
+    """Phase 9 Step 9.5 -- same deterministic filling as fill_variables(), for a
+    DB-registered WhatsappTemplate row (services/outreach/whatsapp_template_service.py)
+    instead of a hardcoded TEMPLATE_LIBRARY entry. Uses the exact same recognized
+    variable-name vocabulary (contact_name/company_name/pain_point_phrase), so an admin
+    composing a template from the dashboard uses the same building blocks this file
+    already understands, not a new naming scheme.
+    """
+    return [_fill_value(var, lead_profile, pain_points) for var in variable_labels]
 
 
 def validate_variables(values: list) -> bool:
