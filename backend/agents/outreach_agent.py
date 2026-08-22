@@ -156,6 +156,32 @@ section; never invent a URL not in this list.
 MAX_BULLETS = 4
 MAX_BULLET_CHARS = 160
 
+# Every asset-backed section, declared in the order it appears between SOLUTION and CTA.
+#
+# This is a table rather than a chain of if-statements for a specific reason: the rule
+# "a section whose asset does not exist is not rendered at all" must hold for EVERY
+# optional section, not just the two that happened to be asked for first. Adding a new
+# one later -- a testimonial, a case study, a price sheet -- is one row here, and it
+# inherits the omission behaviour automatically instead of needing someone to remember
+# to re-implement it.
+#
+# `kind` is how the asset's own `value` should be read: "url" means the value is a link
+# the renderer turns into a button/thumbnail; "text" means the value IS the content.
+# Asset types come from content_assets.asset_type (schema.sql Table 23).
+ASSET_SECTIONS = (
+    # (section_type,  asset_type,     kind,   fallback_label)
+    ("VIDEO",         "VIDEO_URL",    "url",  "Watch the video"),
+    ("CASE_STUDY",    "CASE_STUDY",   "url",  "Read the case study"),
+    ("TESTIMONIAL",   "TESTIMONIAL",  "text", "What our clients say"),
+    ("TEXT_BLOCK",    "TEXT_BLOCK",   "text", ""),
+)
+
+# The demo link is deliberately NOT in the table above: it is a button inside the CTA
+# section (the operator's own spec: "cta start for 1 month free aur usme hoga demo link
+# btn"), not a section of its own. It follows the identical rule anyway -- no approved
+# DEMO_URL asset means the CTA renders with no button rather than a fabricated one.
+CTA_BUTTON_ASSET_TYPE = "DEMO_URL"
+
 
 def _clean_line(value, limit=300) -> str:
     return str(value or "").strip()[:limit]
@@ -189,7 +215,8 @@ def _pick_asset(content_assets, asset_type):
 def _assemble_sections(data: dict, content_assets) -> list[dict]:
     """Ordered, typed sections. A section is appended ONLY when it has real content, so
     graceful omission is a property of the structure itself rather than something the
-    renderer has to remember to check for.
+    renderer has to remember to check for -- and it applies uniformly to every optional
+    section (ASSET_SECTIONS above), not just the ones that existed first.
 
     INTEREST / CONTACT / FOOTER are deliberately absent here: they carry no AI-authored
     content at all and are added downstream from real system data (Step 11.4 settings,
@@ -209,14 +236,25 @@ def _assemble_sections(data: dict, content_assets) -> list[dict]:
     if solution_points:
         sections.append({"type": "SOLUTION", "items": solution_points})
 
-    video = _pick_asset(content_assets, "VIDEO_URL")
-    if video:
-        sections.append({"type": "VIDEO", "url": video["value"],
-                        "title": _clean_line(video.get("title"), 120) or "Watch the video"})
+    # Every optional asset-backed section, same rule for all of them: no approved asset
+    # of that type -> the section is not appended at all.
+    for section_type, asset_type, kind, fallback_label in ASSET_SECTIONS:
+        asset = _pick_asset(content_assets, asset_type)
+        if not asset:
+            continue
+        title = _clean_line(asset.get("title"), 120) or fallback_label
+        section = {"type": section_type, "title": title}
+        if kind == "url":
+            section["url"] = asset["value"]
+        else:
+            section["text"] = _clean_line(asset["value"], 1000)
+            if not section["text"]:
+                continue  # an asset row that exists but is empty is still "no content"
+        sections.append(section)
 
     cta_headline = _clean_line(data.get("cta_headline"), 120)
     cta_subtext = _clean_line(data.get("cta_subtext"), 240)
-    demo = _pick_asset(content_assets, "DEMO_URL")
+    demo = _pick_asset(content_assets, CTA_BUTTON_ASSET_TYPE)
     if cta_headline or cta_subtext or demo:
         cta = {"type": "CTA", "headline": cta_headline, "subtext": cta_subtext}
         if demo:
@@ -238,13 +276,17 @@ def _sections_to_text(sections: list[dict]) -> str:
             parts.append(section["text"])
         elif kind in ("PAIN_POINTS", "SOLUTION"):
             parts.append("\n".join(f"- {item}" for item in section["items"]))
-        elif kind == "VIDEO":
-            parts.append(f"{section['title']}: {section['url']}")
         elif kind == "CTA":
             cta = [section.get("headline", ""), section.get("subtext", "")]
             if section.get("button_url"):
                 cta.append(f"{section.get('button_label', 'Demo')}: {section['button_url']}")
             parts.append("\n".join(p for p in cta if p))
+        # Every asset-backed section renders the same way regardless of which one it is,
+        # so a newly-added ASSET_SECTIONS row needs no change here either.
+        elif "url" in section:
+            parts.append(f"{section['title']}: {section['url']}".lstrip(": "))
+        elif "text" in section:
+            parts.append(f"{section['title']}: {section['text']}".lstrip(": "))
     return "\n\n".join(p for p in parts if p).strip()
 
 
