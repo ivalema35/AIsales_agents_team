@@ -2654,15 +2654,20 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
      sample, chhota hai but real).
   4. ✅ City filter: city A search → city B ka lead kabhi nahi — real test (`test_phase7_step6a.py`),
      Mehsana/Visnagar case — DONE.
-  5. ⚠️ Backfill idempotent (duplicate writes/re-spend nahi) — koi dedicated fresh test nahi likha is
-     session me, lekin existing code se logically guaranteed: `_handle_enrich`'s `if not (instagram AND
-     facebook AND linkedin): _enrich_social(...)` guard — agar teeno already set hain, function call
-     hi nahi hota, matlab zero cost/zero duplicate write ek fully-enriched lead par. **Verified by
-     construction, dedicated re-run test nahi kiya.**
-  **Overall: gate ka core intent ("zero wrong-company attachments") explicitly proven real data se.**
-  2 items (Hunter real-call, backfill-idempotency dedicated test) chhote, disclosed follow-ups hain,
-  gate-blocking nahi (dono ka reason bhi genuine hai — external quota / already-guaranteed-by-code).
-  Phase 8 shuru karne me koi rukawat nahi.
+  5. ✅ Backfill idempotent (duplicate writes/re-spend nahi) — **2026-08-22 UPDATE: ab real dedicated
+     re-run test se proven hai**, ab tak sirf "verified by construction" tha. `test_phase7_backfill_
+     idempotency.py`: real disposable DB, real `Product`/`Lead` rows, real `_handle_enrich()` +
+     `_enrich_person_roles()` calls (sirf paid/external leaf calls -- `scrape_social_links`,
+     `SerperProvider.find_social_profiles`/`find_person_by_role` -- monkeypatch kiye, ye Serper ke
+     apne results ka test nahi tha, sirf apne code ke guard logic ka). Ek fresh lead pe **2 baar**
+     `_handle_enrich` chalaya (real ENRICH retry ya backfill re-run jaisa) — run 2 me: social lookup
+     call count same raha (1, dobara nahi hua), person-role lookup call count bhi same raha (1),
+     `LeadContact` row count bhi same raha (1, koi duplicate nahi bana), aur instagram/facebook/
+     linkedin URLs bilkul same rahe (kuch overwrite nahi hua). **3/3 real checks pass.**
+  **Overall: gate ka core intent ("zero wrong-company attachments") explicitly proven real data se,
+  aur ab dono chhote follow-up items me se ek (backfill-idempotency) bhi close ho gaya.** Bacha sirf
+  Hunter ka real-quota-wala final confirm (genuine external wait, 2026-09-11 tak) — gate-blocking
+  nahi tha, ab bhi nahi hai.
 
 ### PHASE 8 — Message Format Engine & Content Library *(user ke open-rate goal ka direct answer)*
 - [x] Step 8.1 — `message_formats` table (T22) — admin ka **structure**, final copy nahi; versioned — ✅ 2026-08-20, Section 3
