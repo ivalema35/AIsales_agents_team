@@ -2565,6 +2565,41 @@ the user hasn't set up yet — not forgotten, not blocked by anything on this pr
 
 ---
 
+### ⭐ Real production incident: `bos-poller` silently hung for ~17 hours, no crash, no error (2026-08-22)
+
+User caught this live on the System Monitor dashboard ("ye band he vps par") — "Inbound Poller" showing
+DOWN, last seen 17h ago. Investigated on the real VPS: `systemctl status bos-poller` showed **"active
+(running)"**, same PID, real memory usage, no restart, no crash — but `journalctl` showed its last real
+log line was `2026-08-21 12:02:28`, and real server time was `2026-08-22 05:20`. The process was alive
+per systemd but genuinely frozen — zero exceptions logged anywhere in that window.
+
+**Root cause found reading the actual code** (`jobs/inbound_poller.py`): `imaplib.IMAP4_SSL(host, port)`
+was called with **no `timeout=`** — Python's default is a blocking socket with no bound at all. If the
+mailbox server's TCP connection silently drops (no FIN/RST ever received — a real, not hypothetical,
+network condition), a socket read hangs forever. Because the exception never fires, `run_forever()`'s
+own `except Exception` safety net (already written specifically for "one bad IMAP cycle must not kill
+the poller") never gets a chance to run — the loop just sits mute inside `check_inbox()`, invisible from
+the outside, exactly matching the symptom.
+
+**Fix:** `imaplib.IMAP4_SSL(host, port, timeout=IMAP_TIMEOUT_SECONDS)` — 30s, well under the 120s poll
+interval. A hung connection now raises `socket.timeout` instead of blocking forever, which the existing
+exception handler already correctly catches, logs, and reports as `ERROR` status (visible on the
+dashboard) — then the loop retries on the next cycle instead of dying silently for hours.
+
+**Verified — real test (`test_imap_timeout_fix.py`), not mocked:** connected to a real, genuinely
+unroutable IP (`203.0.113.1`, RFC 5737 TEST-NET-3 — a real blackhole address, not a fake host) with a
+short 3s timeout — raised `TimeoutError` at exactly ~3.0s instead of hanging. Proves the real fix
+mechanism (a connection that neither completes nor errors now fails fast) with real socket/SSL
+machinery, not a mock of the failure.
+
+**Deployed to VPS**: restarted the hung process immediately (`systemctl restart bos-poller`, confirmed
+fresh log activity right away) as the immediate fix, then pushed the real root-cause fix (`git push` →
+VPS `git pull`, DB untouched confirmed, import sanity-checked) and restarted `bos-poller` again to run
+the corrected code. `systemctl is-active` confirmed active, fresh real inbound-email activity logged
+immediately after.
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)

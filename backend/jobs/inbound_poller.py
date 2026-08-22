@@ -47,16 +47,32 @@ def _extract_body(msg) -> str:
     return ""
 
 
+IMAP_TIMEOUT_SECONDS = 30  # well under the 120s poll interval -- fail fast, retry next cycle
+
+
 def check_inbox() -> int:
     """One poll cycle: connect, pull recent messages, record each (record_inbound's own
     DB-level UNIQUE constraint is what actually guarantees idempotency -- this only
     bounds how much IMAP fetches per cycle, it is not itself the dedup mechanism, so a
-    message can never be silently missed by an IMAP-flag race)."""
+    message can never be silently missed by an IMAP-flag race).
+
+    Real incident, 2026-08-22: found live on the VPS -- the poller's own systemd unit
+    stayed "active (running)" and every heartbeat/log line simply stopped for ~17 hours,
+    with zero exception ever logged, zero crash. Root cause: `imaplib.IMAP4_SSL()` (and
+    every socket op on the connection it returns) blocks with NO timeout by default -- a
+    silently-dropped TCP connection (no FIN/RST received) hangs the read forever, so
+    run_forever()'s own `except Exception` safety net below never even fires; the process
+    just sits frozen inside this function, invisible from the outside. A bare restart
+    fixes the symptom for a while but not the recurrence. Fix: pass a real timeout so a
+    hung connection raises `socket.timeout` instead of hanging -- run_forever() already
+    catches that, logs it, reports ERROR status (visible on the dashboard), and retries
+    next cycle, instead of dying silently for hours."""
     if not Config.INBOUND_EMAIL_HOST:
         logger.warning("INBOUND_EMAIL_HOST not configured -- skipping this cycle")
         return 0
 
-    conn = imaplib.IMAP4_SSL(Config.INBOUND_EMAIL_HOST, Config.INBOUND_EMAIL_PORT)
+    conn = imaplib.IMAP4_SSL(Config.INBOUND_EMAIL_HOST, Config.INBOUND_EMAIL_PORT,
+                             timeout=IMAP_TIMEOUT_SECONDS)
     try:
         conn.login(Config.INBOUND_EMAIL_USER, Config.INBOUND_EMAIL_PASSWORD)
         conn.select("INBOX")
