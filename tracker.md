@@ -2552,7 +2552,14 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
 - [x] Step 9.4 — engagement-based escalation (real signal par hi fire ho, infer kabhi nahi) — ✅ 2026-08-21, Section 3, 7/7 real checks, sirf EMAIL ke liye (WhatsApp me open-tracking hi nahi hai)
 - [x] Step 9.5 — admin WhatsApp template submission from CRM (`whatsapp_templates` T25, bina code edit ke activate) — ✅ 2026-08-21, Section 3, 9/9 real checks (Meta call deliberately mocked, user's instruction — real submission needs separate confirmation)
 - [x] Step 9.6 — ⭐ **[hold se]** Autonomous adaptive template loop — *wahi item jo 2026-08-13 ko user ne "next level" bola tha aur maine data na hone ki wajah se defer kiya tha; Step 9.1/9.2 ab wahi data de rahe hain* — QC + **human approval gate** dono mandatory — ✅ 2026-08-21, Section 3, 5/5 sub-steps, 34 total real checks across sub-steps 1-5
-- [ ] DoD Gate P9
+- [x] DoD Gate P9 — ✅ 2026-08-22, explicitly re-checked against real evidence (not just prior narrative) before starting Phase 10, per rule A/3 + the "verify DoD gates explicitly" discipline. All 6 gate criteria confirmed:
+  1. Variant stats reconcile against direct SQL — Step 9.2 check #5 (structurally guaranteed, §A.8).
+  2. Opt-out mid-sequence stops every later touch — Step 9.3 check #9.
+  3. Replied lead exits — Step 9.3 check #8.
+  4. No duplicate sends under concurrency — Step 9.3 check #6.
+  5. Kill-switch off ⇒ zero follow-ups — re-read `jobs/discovery_scheduler.py` `_run_followup_tick()` just now: it checks `AUTONOMOUS_OUTREACH_ENABLED` at its own top (line 259), independently of `_run_outreach_tick`, returns 0 immediately if off.
+  6. AI-drafted template cannot reach a real business without QC **and** human approval — re-read `get_approved_followup_template()` (`whatsapp_template_service.py`): only ever selects `status == "APPROVED"`, which requires QC pass (sub-step 3, before an admin ever sees the draft) **and** an explicit admin "Approve & Submit" click (sub-step 1) **and** Meta's own real approval — no code path skips either gate.
+  - VPS confirmed in sync at the same commit as local main (`e905d86`) before this check.
 
 ### PHASE 10 — Channel Expansion *(sabse zyada cost/legal risk — deliberately last, har channel alag gate)*
 - [ ] Step 10.1 — region-aware channel routing (`channel_policies` T26); email universal fallback
