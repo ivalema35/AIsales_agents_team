@@ -158,6 +158,20 @@ spec me intact hai, jaisa Phase 5 postponement ka precedent tha — §A.6).
 **Step 9.1 ✅ COMPLETE.** Agla: Step 9.2 — variant performance rollup (real `outreach_logs`/
 `OutreachLog.read_at` par live SQL, koi estimated number nahi).
 
+### A.9 Current hold list — sab kuch jo abhi pause hai, ek jagah (updated 2026-08-22)
+
+Koi bhi item yahan **bhoola nahi gaya hai** — har ek ka apna genuine, disclosed reason hai (indefinite
+architectural postponement, ya external credential/decision jo sirf user hi le sakta hai), koi bhi
+gate/rule chhoda nahi gaya. Jab bhi resume karna ho, wahi item yahan se uthega.
+
+| Item | Kyun ruka hai | Kab resume ho sakta hai |
+|---|---|---|
+| **Phase 5** (Executive Business OS & Governance Layer — CAC ceilings, capacity throttle, client lifecycle, executive simulation) | Indefinitely postponed, 2026-08-19 (full reasoning §A.6). Saare modules volume-dependent hain (converted clients, delivery-capacity pressure) — abhi genuinely non-existent problem hote. | Jab real delivery-capacity pressure ya converted clients aayenge — Phase 6-10 ke contracts isse change nahi karte, cleanly slot hoga. |
+| **Step 10.2 — SMS channel** | Koi SMS provider (Twilio-class) account/API key nahi hai, user ne ispe socha bhi nahi tha (2026-08-22). Bina real account ke sirf adhura, untest-able code banta. | Jab user koi provider decide kare. |
+| **Step 10.3(b) — IG/FB reply-window auto-response** | Real Meta Instagram/Facebook Messaging API connection chahiye (ek connected Facebook Page + app permissions) — abhi setup nahi hai (2026-08-22). Step 10.3(a) (draft-and-queue, koi credential nahi chahiye) already ban chuka hai. | Jab IG/FB Page connection ho jaaye. |
+| **Step 10.4 — AI voice calling** | Abhi shuru hi nahi hua — sabse zyada risk wala channel (naya paid voice provider, per-country calling-law compliance jaisa India ka TRAI DND, US ka TCPA). Genuinely last rakha gaya plan me. | Jab user voice-calling provider + compliance posture pe decide kare. |
+| **Hunter API real-quota confirm** (Phase 7 Step 7.4/DoD) | Free quota is mahine ke liye khatam (0/50) — schema-accurate mock se already verify kiya, sirf real-call se final confirm baaki. | 2026-09-11 quota reset ke baad, ek chhota real-call test. |
+
 ### B. Non-negotiable technical/safety rules (from MASTER_DEVELOPMENT_PRD.md)
 - **Secrets:** sirf `.env` me, kabhi bhi source code me hardcode nahi (config.py env-driven).
 - **SQLite pragmas** (`foreign_keys`, `busy_timeout`, `journal_mode=WAL`, `synchronous=NORMAL`) per-connection set karne hain — connection listener (`db_config.py`) ke through, kahin aur nahi. Warna FK cascade silently no-op ho jata hai.
