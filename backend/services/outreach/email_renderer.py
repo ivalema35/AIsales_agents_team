@@ -50,18 +50,24 @@ logger = logging.getLogger(__name__)
 INK = "#1f2328"          # primary text -- softer than pure black, easier to read at length
 INK_MUTED = "#57606a"    # secondary text
 RULE = "#e4e7eb"         # hairlines and borders
-CANVAS = "#f6f7f9"       # the area around the card
+CANVAS = "#f2f4f7"       # the area around the card
 CARD = "#ffffff"
 ACCENT = "#1f2328"       # primary button fill
 ACCENT_TEXT = "#ffffff"
 LINK = "#0969da"         # calmer than the usual bright link blue
-PAIN_MARK = "#8c959f"    # quiet -- the words carry the problem, not the colour
-GAIN_MARK = "#1a7f64"    # restrained green, closer to ink than to a highlight
+
+# Icon badges. A coloured glyph on its own reads as clip-art; the same glyph centred in a
+# soft tinted disc reads as a designed component, and it degrades gracefully -- Outlook
+# squares the border-radius but keeps the tint, so the meaning survives either way.
+WARN_FG, WARN_BG = "#b54708", "#fef3e2"    # amber -- a problem, not an alarm
+GAIN_FG, GAIN_BG = "#067647", "#e7f6ef"    # green -- the answer to it
+TINT = "#f7f9fc"         # the CTA panel
+
 FONT = ("'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', "
         "Helvetica, Arial, sans-serif")
-CARD_WIDTH = 560
+CARD_WIDTH = 580
 BODY_SIZE = 15
-LINE_HEIGHT = "1.65"
+LINE_HEIGHT = "1.62"
 
 # An asset's title is written by the operator for their own reference in the dashboard
 # ("demo url", "video url") and then appears on a customer-facing button. Caught on the
@@ -124,15 +130,27 @@ def _button(url: str, label: str, primary: bool = True) -> str:
 </table>"""
 
 
-def _bullet_list(items, mark: str, mark_color: str, margin_bottom: int = 20) -> str:
+def _badge(glyph: str, fg: str, bg: str) -> str:
+    """A glyph centred in a soft tinted disc. Built as a fixed-size table cell rather than
+    a styled span because line-height/vertical-centring on an inline element is one of the
+    least reliable things across mail clients -- a cell with matching width, height and
+    line-height centres correctly in all of them."""
+    return f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0">
+  <tr><td width="24" height="24" align="center" valign="middle" bgcolor="{bg}"
+          style="width: 24px; height: 24px; border-radius: 12px; font-family: {FONT};
+                 font-size: 13px; line-height: 24px; font-weight: 700; color: {fg};">{glyph}</td></tr>
+</table>"""
+
+
+def _bullet_list(items, glyph: str, fg: str, bg: str, margin_bottom: int = 20) -> str:
     """A two-column table per bullet rather than `<ul>`: list-marker styling is one of the
     least consistent things across mail clients, and the marker here carries real meaning
     (a problem vs. an answer to it), so it cannot be left to the client to decide."""
+    badge = _badge(glyph, fg, bg)
     rows = "".join(f"""
   <tr>
-    <td valign="top" style="padding: 0 9px 9px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
-        line-height: {LINE_HEIGHT}; color: {mark_color};">{mark}</td>
-    <td valign="top" style="padding: 0 0 9px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
+    <td valign="top" width="24" style="padding: 1px 12px 12px 0;">{badge}</td>
+    <td valign="top" style="padding: 0 0 12px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
         line-height: {LINE_HEIGHT}; color: {INK};">{_e(item)}</td>
   </tr>""" for item in items)
     return f"""
@@ -153,23 +171,30 @@ def _render_video(section: dict) -> str:
     # Deliberately NOT full width. A hero-sized image is the single loudest campaign
     # signal in an email; at ~380px it reads as something a person attached, which is
     # what it actually is.
-    thumb_width = 380
+    thumb_width = 400
     image_html = ""
     if thumbnail:
         image_html = f"""
-  <a href="{_e(url)}" style="text-decoration: none;">
-    <img src="{_e(thumbnail)}" alt="{_e(title)}" width="{thumb_width}"
-         style="display: block; width: 100%; max-width: {thumb_width}px; height: auto;
-                border-radius: 6px; border: 1px solid {RULE};">
-  </a>"""
-    # With images disabled the thumbnail is invisible, so the text link below it is not a
-    # nicety -- it is the only thing that survives. Always present, never conditional on
-    # the image being missing.
+      <a href="{_e(url)}" style="text-decoration: none; display: block;">
+        <img src="{_e(thumbnail)}" alt="{_e(title)}" width="{thumb_width}"
+             style="display: block; width: 100%; max-width: {thumb_width}px; height: auto;
+                    border-radius: 8px 8px 0 0;">
+      </a>"""
+    # With images disabled the thumbnail is invisible, so the caption row below it is not
+    # a nicety -- it is the only thing that survives. Always present, never conditional on
+    # the image being missing, and it carries the play glyph so the row still reads as a
+    # video rather than a stray link.
     return f"""
-<div style="margin: 0 0 22px 0;">{image_html}
-  <a href="{_e(url)}" style="display: inline-block; margin-top: 9px; font-family: {FONT};
-     font-size: 14px; color: {LINK}; text-decoration: none;">&#9654;&nbsp;{_e(title)}</a>
-</div>"""
+<table role="presentation" cellpadding="0" cellspacing="0" border="0"
+       style="margin: 0 0 24px 0; max-width: {thumb_width}px;">
+  <tr>
+    <td style="border: 1px solid {RULE}; border-radius: 8px;">{image_html}
+      <a href="{_e(url)}" style="display: block; padding: 11px 14px; font-family: {FONT};
+         font-size: 14px; font-weight: 600; color: {LINK}; text-decoration: none;
+         border-top: 1px solid {RULE};">&#9654;&#65038;&nbsp;&nbsp;{_e(title)}</a>
+    </td>
+  </tr>
+</table>"""
 
 
 def _render_quote(section: dict) -> str:
@@ -192,27 +217,28 @@ def _render_quote(section: dict) -> str:
 
 
 def _render_cta(section: dict) -> str:
-    """No filled panel, no big bold headline. A grey box with a bold header is a banner,
-    and a banner is the thing this email is trying not to be -- so the CTA is set off by
-    a hairline and a little space instead, at the same weight as the rest of the message.
-    """
+    """A softly tinted panel with a hairline, not a saturated banner. It needs enough
+    presence to read as the one thing being asked, without becoming the loud coloured
+    block that makes an email look bought rather than written."""
     headline = section.get("headline")
     subtext = section.get("subtext")
     button_url = section.get("button_url")
     inner = ""
     if headline:
-        inner += (f'<div style="font-family: {FONT}; font-size: {BODY_SIZE}px; font-weight: 600; '
-                  f'color: {INK}; margin: 0 0 5px 0;">{_e(headline)}</div>')
+        inner += (f'<div style="font-family: {FONT}; font-size: {BODY_SIZE + 1}px; font-weight: 600; '
+                  f'color: {INK}; margin: 0 0 6px 0;">{_e(headline)}</div>')
     if subtext:
         inner += (f'<div style="font-family: {FONT}; font-size: 14px; line-height: {LINE_HEIGHT}; '
-                  f'color: {INK_MUTED}; margin: 0 0 14px 0;">{_e(subtext)}</div>')
+                  f'color: {INK_MUTED}; margin: 0 0 16px 0;">{_e(subtext)}</div>')
     if button_url:
         inner += _button(button_url,
                          _label_or_fallback(section.get("button_label"), "See the demo"))
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 2px 0 22px 0; border-top: 1px solid {RULE};">
-  <tr><td style="padding: 20px 0 0 0;">{inner}</td></tr>
+       style="margin: 4px 0 24px 0;">
+  <tr>
+    <td bgcolor="{TINT}" style="padding: 20px 22px; border: 1px solid {RULE}; border-radius: 10px;">{inner}</td>
+  </tr>
 </table>"""
 
 
@@ -270,11 +296,13 @@ def _render_section(section: dict) -> str:
     if kind == "HOOK":
         return _para(section.get("text"), size=BODY_SIZE + 1, margin="0 0 22px 0")
     if kind == "PAIN_POINTS":
-        # Tighter bottom margin than the default: the solution list that follows is the
-        # answer to this one, and reading them as a pair is the whole point.
-        return _bullet_list(section.get("items") or [], "&#8226;", PAIN_MARK, margin_bottom=14)
+        # `&#65038;` is the text-presentation variation selector: without it several
+        # clients substitute their own colour emoji for the warning sign, which would
+        # break the badge's own colour scheme with something the design never chose.
+        return _bullet_list(section.get("items") or [], "&#9888;&#65038;",
+                            WARN_FG, WARN_BG, margin_bottom=18)
     if kind == "SOLUTION":
-        return _bullet_list(section.get("items") or [], "&#8594;", GAIN_MARK)
+        return _bullet_list(section.get("items") or [], "&#10003;", GAIN_FG, GAIN_BG)
     if kind == "VIDEO":
         return _render_video(section)
     if kind == "CTA":
@@ -315,7 +343,8 @@ def render_email_html(sections: list[dict], unsubscribe_url: str,
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="{CARD_WIDTH}"
              style="width: 100%; max-width: {CARD_WIDTH}px;">
         <tr>
-          <td style="background: {CARD}; border: 1px solid {RULE}; border-radius: 10px; padding: 34px;">{body}</td>
+          <td style="background: {CARD}; border: 1px solid {RULE}; border-radius: 12px;
+                     padding: 36px 34px 32px 34px; box-shadow: 0 1px 3px rgba(16,24,40,0.04);">{body}</td>
         </tr>
         <tr>
           <td style="padding: 16px 34px 0 34px;">
