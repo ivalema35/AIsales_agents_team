@@ -11,7 +11,7 @@
 ### A. Collaboration process (how we work together on this project)
 1. **Har development step shuru karne se pehle**, us step me kya hone wala hai — simple bhasha me, poora detail ke saath — samjhaunga, aur user ka confirmation aane ke baad hi aage badhunga. Bina confirmation ke code nahi likhunga.
 2. **Har step complete hone ke baad**, is tracker.md ko turant update karunga — Section 3 (Ongoing) se Section 2 (Completed) me shift, aur agla item Section 4 (Pending) se Section 3 me laana.
-3. **Phase order strictly follow karna hai** — Phase 1 → 2 → 3 → 4 → 5. Pichle phase ka DoD gate green hue bina agla phase start nahi karna (MASTER §5 / §9).
+3. **Phase order strictly follow karna hai** — ab total **15 phases** hain (§5 = 1–5 original, §5A = 6–10, §5B = 11–15). Pichle phase ka DoD gate green hue bina agla phase start nahi karna (MASTER §5 / §5A / §5B / §9 ki P1–P15 table). **Gate ko explicitly, real evidence se verify karna hai** — sirf "pehle bola tha ye done hai" wale narrative pe trust nahi karna (ye discipline 2026-08-13 aur phir 2026-08-22 ko P9 ke liye dobara apply hui). Phase 5 abhi indefinitely postponed hai — §A.6 dekho.
 4. Koi bhi naya architectural decision ya deviation MASTER_DEVELOPMENT_PRD.md ke against lena ho, to pehle yahi is section me note karna, phir user se confirm karna.
 
 ### A.1 Architectural deviation — LLM provider (2026-08-11)
@@ -189,7 +189,7 @@ gate/rule chhoda nahi gaya. Jab bhi resume karna ho, wahi item yahan se uthega.
 ### C. Long-term project facts to remember
 - Project naam: **Enterprise AI Business Operating System (AI-BOS)** — pehle "AI Sales OS" tha, ab upgrade ho chuka hai Executive layer ke saath.
 - 3-layer architecture: **Executive Layer (governs)** → **Cognitive Brain Layer (decides)** → **Execution Infrastructure (acts)**.
-- 16 total DB tables (11 core + 3 intelligence + 2 executive — `team_capacity`, `client_lifecycle`).
+- **DB tables: 28 live abhi** (original 16 = 11 core + 3 intelligence + 2 executive; +3 Phases 3–4 me: `product_strategies`/`discovery_runs`/`system_settings`; +9 Phases 6–10 me: T20–T28). **Phases 11–15 plan me 3 aur hain (T29–T31 → total 31)**, abhi bane nahi. Poori list: MASTER §5A.1 + §5B.1, aur is file ka §5/§5B. Migration hamesha `migrate.py` se — live DB par manual `ALTER` kabhi nahi.
 - Redundant docs already removed: `prd.md`, `ENTERPRISE_BUSINESS_LAYER_ADDON.md`, old `PRD v3` source file — sab MASTER_DEVELOPMENT_PRD.md me merge ho chuke hain.
 - **Project is LIVE on a real VPS since 2026-08-18: `https://sales.ivinfotech.com`.** I have real SSH access to it (see rule **A.4** for how, and Section 2's "⭐ VPS PRODUCTION DEPLOYMENT" entry for the full architecture/incident writeup) — credentials are in `backend/.env` (`VPS_*` keys), never in this file.
 
@@ -2845,3 +2845,50 @@ padh ke pass ho jaaye, wo gate hai hi nahi.**
 
 **Status: sirf planning complete hai (2026-08-22), koi build shuru nahi hua.** Phase 11 se shuru hoga,
 usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, tab code.
+
+### PHASE 11 — Designed Outreach Composition *(no external dependency — isliye pehle)*
+- [ ] Step 11.1 — structured section contract (`draft_email()` ab typed sections return kare, prose blob nahi)
+- [ ] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — table layout, inline styles, **button CTAs**, images-blocked me bhi readable
+- [ ] Step 11.3 — graceful section omission (asset na ho to section poora hat jaaye, khaali heading nahi)
+- [ ] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho)
+- [ ] Step 11.5 — AI cross-sell block, `products.ai_cross_sell_enabled` (default OFF, buzzword-ban still applies)
+- [ ] Step 11.6 — QC structural review (order/empty-section/approved-asset/factual-cross-sell)
+- [ ] DoD Gate P11
+
+### PHASE 12 — Interest Capture & Instant Alerting
+- [ ] Step 12.1 — `leads.reference_code` (human-readable, backfilled)
+- [ ] Step 12.2 — HMAC-signed public Yes/No routes (tampered token = **refuse**, kabhi guess nahi)
+- [ ] Step 12.3 — T29 `interest_responses` + DB-level UNIQUE (double-click idempotent)
+- [ ] Step 12.4 — existing `HOT_LEAD` escalation reuse (naya parallel status system nahi)
+- [ ] Step 12.5 — admin alert (email/WhatsApp, `send_internal_email()` reuse, rate-limited)
+- [ ] Step 12.6 — "No" handling: sequence rukti hai, **suppression list me NAHI jaata**
+- [ ] DoD Gate P12
+
+### PHASE 13 — Level-Aware Follow-Up Content
+- [ ] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal
+- [ ] Step 13.2 — `whatsapp_templates.followup_level`; template approve na ho to us level pe **kuch nahi jaata**, doosre level ka template kabhi nahi
+- [ ] Step 13.3 — per-level `variant_id` (Step 9.2 ki rollup se hi measurable, naya counter nahi)
+- [ ] Step 13.4 — view-without-reply trigger (existing `open_count` signal, wahi kill-switch + caps)
+- [ ] DoD Gate P13
+
+### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
+- [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
+- [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
+- [ ] Step 14.3 — follow-up stage indicator (`outreach_sequences` se, terminal reason ke saath)
+- [ ] Step 14.4 — platform-icon copy, **stored `content_sections` se** (dobara LLM se generate nahi)
+- [ ] Step 14.5 — P10 ka auto-send absence check dobara chalana (assume nahi karna)
+- [ ] DoD Gate P14
+
+### PHASE 15 — Person-Level Relevance & Prospect Sourcing *(naya paid provider — deliberately last, 15A/15B independently gate karte hain)*
+- [ ] Step 15(A).1 — product-brief se relevant role infer (human-set list ke andar hi)
+- [ ] Step 15(A).2 — multiple relevant people per company (`lead_contacts`, source+confidence honestly dikhe)
+- [ ] Step 15(A).3 — manual outreach only (person-level autonomous send is phase me nahi)
+- [ ] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho)
+- [ ] Step 15(B).2 — provider (Apollo.io ya equivalent) + T31 `prospect_searches` + **hard spend cap jo actually block kare**
+- [ ] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi)
+- [ ] DoD Gate P15
+
+### New tables introduced by Phases 11–15 (28 → 31)
+T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)
+(+ 4 columns: `products.ai_cross_sell_enabled` · `outreach_logs.content_sections` ·
+`leads.reference_code` · `whatsapp_templates.followup_level`)
