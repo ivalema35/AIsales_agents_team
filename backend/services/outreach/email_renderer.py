@@ -32,18 +32,53 @@ logger = logging.getLogger(__name__)
 
 # One place to tune the whole design. Kept as plain constants (not a CSS file) because
 # every value below has to end up inlined on an element anyway.
-INK = "#1f2937"          # primary text
-INK_MUTED = "#6b7280"    # secondary text
-RULE = "#e5e7eb"         # hairlines and borders
-CANVAS = "#f4f5f7"       # the area around the card
+#
+# The design brief is "a real person's well-formatted email, not a campaign", and several
+# choices below exist specifically to avoid reading as a marketing template:
+#
+# - **No colored icon bullets.** A red-dot list next to a green-tick list is one of the
+#   most recognisable template signals there is. The two lists are distinguished
+#   typographically instead -- a quiet dot for what is wrong, an arrow for what answers
+#   it -- which carries the same meaning without looking designed at someone.
+# - **Near-black buttons, not a saturated brand colour.** A bright orange/blue CTA reads
+#   as an ad; a restrained dark button reads as a link someone meant you to click.
+# - **A narrower column.** 560px with 34px padding puts the measure at roughly 65-75
+#   characters, which is the comfortable reading range. The earlier 600px card ran wide
+#   enough that long lines started to feel like body copy in a newsletter.
+# - **Nothing is centred.** Real email is left-aligned; centred text is a layout choice
+#   almost only campaigns make.
+INK = "#1f2328"          # primary text -- softer than pure black, easier to read at length
+INK_MUTED = "#57606a"    # secondary text
+RULE = "#e4e7eb"         # hairlines and borders
+CANVAS = "#f6f7f9"       # the area around the card
 CARD = "#ffffff"
-ACCENT = "#1f2937"       # primary button fill
+ACCENT = "#1f2328"       # primary button fill
 ACCENT_TEXT = "#ffffff"
-LINK = "#2563eb"
-PAIN_MARK = "#dc2626"
-GAIN_MARK = "#059669"
-FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif"
-CARD_WIDTH = 600
+LINK = "#0969da"         # calmer than the usual bright link blue
+PAIN_MARK = "#8c959f"    # quiet -- the words carry the problem, not the colour
+GAIN_MARK = "#1a7f64"    # restrained green, closer to ink than to a highlight
+FONT = ("'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', "
+        "Helvetica, Arial, sans-serif")
+CARD_WIDTH = 560
+BODY_SIZE = 15
+LINE_HEIGHT = "1.65"
+
+# An asset's title is written by the operator for their own reference in the dashboard
+# ("demo url", "video url") and then appears on a customer-facing button. Caught on the
+# first real send: the button genuinely read "demo url". A title that is really a field
+# name rather than a label is replaced with the section's proper fallback -- narrow on
+# purpose, so a real label like "See our 2-minute walkthrough" is never overridden.
+_FIELD_NAME_WORDS = ("url", "link", "asset")
+
+
+def _label_or_fallback(title: str, fallback: str) -> str:
+    t = (title or "").strip()
+    if not t:
+        return fallback
+    words = t.lower().split()
+    if len(words) <= 3 and any(w.strip(":-") in _FIELD_NAME_WORDS for w in words):
+        return fallback
+    return t
 
 
 def fetch_video_thumbnail(video_url: str) -> str | None:
@@ -82,53 +117,57 @@ def _button(url: str, label: str, primary: bool = True) -> str:
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 0;">
   <tr>
     <td align="center" bgcolor="{bg}" style="border-radius: 6px; border: {border};">
-      <a href="{_e(url)}" style="display: inline-block; padding: 12px 22px; font-family: {FONT};
+      <a href="{_e(url)}" style="display: inline-block; padding: 10px 18px; font-family: {FONT};
          font-size: 14px; font-weight: 600; color: {fg}; text-decoration: none; border-radius: 6px;">{_e(label)}</a>
     </td>
   </tr>
 </table>"""
 
 
-def _bullet_list(items, mark: str, mark_color: str) -> str:
+def _bullet_list(items, mark: str, mark_color: str, margin_bottom: int = 20) -> str:
     """A two-column table per bullet rather than `<ul>`: list-marker styling is one of the
-    least consistent things across mail clients, and the marker here is carrying real
-    meaning (a problem vs. an answer to it), so it cannot be left to the client."""
+    least consistent things across mail clients, and the marker here carries real meaning
+    (a problem vs. an answer to it), so it cannot be left to the client to decide."""
     rows = "".join(f"""
   <tr>
-    <td valign="top" style="padding: 0 10px 10px 0; font-family: {FONT}; font-size: 15px;
-        line-height: 1.5; color: {mark_color}; font-weight: 700;">{mark}</td>
-    <td valign="top" style="padding: 0 0 10px 0; font-family: {FONT}; font-size: 15px;
-        line-height: 1.5; color: {INK};">{_e(item)}</td>
+    <td valign="top" style="padding: 0 9px 9px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
+        line-height: {LINE_HEIGHT}; color: {mark_color};">{mark}</td>
+    <td valign="top" style="padding: 0 0 9px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
+        line-height: {LINE_HEIGHT}; color: {INK};">{_e(item)}</td>
   </tr>""" for item in items)
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 18px 0;">{rows}
+       style="margin: 0 0 {margin_bottom}px 0;">{rows}
 </table>"""
 
 
-def _para(text: str, size: int = 16, color: str = INK, margin: str = "0 0 18px 0") -> str:
+def _para(text: str, size: int = BODY_SIZE, color: str = INK, margin: str = "0 0 20px 0") -> str:
     return (f'<p style="margin: {margin}; font-family: {FONT}; font-size: {size}px; '
-            f'line-height: 1.6; color: {color};">{_e(text)}</p>')
+            f'line-height: {LINE_HEIGHT}; color: {color};">{_e(text)}</p>')
 
 
 def _render_video(section: dict) -> str:
     url = section.get("url", "")
-    title = section.get("title") or "Watch the video"
+    title = _label_or_fallback(section.get("title"), "Watch the walkthrough")
     thumbnail = fetch_video_thumbnail(url)
-    # With images disabled the thumbnail is invisible, so the text link below it is not a
-    # nicety -- it is the only thing that survives. It is always present, never
-    # conditional on the image being missing.
+    # Deliberately NOT full width. A hero-sized image is the single loudest campaign
+    # signal in an email; at ~380px it reads as something a person attached, which is
+    # what it actually is.
+    thumb_width = 380
     image_html = ""
     if thumbnail:
         image_html = f"""
   <a href="{_e(url)}" style="text-decoration: none;">
-    <img src="{_e(thumbnail)}" alt="{_e(title)}" width="{CARD_WIDTH - 64}"
-         style="display: block; width: 100%; max-width: {CARD_WIDTH - 64}px; height: auto;
-                border-radius: 8px; border: 1px solid {RULE};">
+    <img src="{_e(thumbnail)}" alt="{_e(title)}" width="{thumb_width}"
+         style="display: block; width: 100%; max-width: {thumb_width}px; height: auto;
+                border-radius: 6px; border: 1px solid {RULE};">
   </a>"""
+    # With images disabled the thumbnail is invisible, so the text link below it is not a
+    # nicety -- it is the only thing that survives. Always present, never conditional on
+    # the image being missing.
     return f"""
-<div style="margin: 0 0 20px 0;">{image_html}
-  <a href="{_e(url)}" style="display: inline-block; margin-top: 8px; font-family: {FONT};
+<div style="margin: 0 0 22px 0;">{image_html}
+  <a href="{_e(url)}" style="display: inline-block; margin-top: 9px; font-family: {FONT};
      font-size: 14px; color: {LINK}; text-decoration: none;">&#9654;&nbsp;{_e(title)}</a>
 </div>"""
 
@@ -139,36 +178,41 @@ def _render_quote(section: dict) -> str:
     around content it did not write."""
     title = section.get("title")
     title_html = (f'<div style="font-family: {FONT}; font-size: 12px; color: {INK_MUTED}; '
-                  f'margin-top: 8px;">{_e(title)}</div>') if title else ""
+                  f'margin-top: 7px;">{_e(title)}</div>') if title else ""
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 20px 0;">
+       style="margin: 0 0 22px 0;">
   <tr>
-    <td style="padding: 2px 0 2px 16px; border-left: 3px solid {RULE};">
-      <div style="font-family: {FONT}; font-size: 15px; line-height: 1.6; color: {INK};
-           font-style: italic;">{_e(section.get('text'))}</div>{title_html}
+    <td style="padding: 2px 0 2px 15px; border-left: 2px solid {RULE};">
+      <div style="font-family: {FONT}; font-size: {BODY_SIZE}px; line-height: {LINE_HEIGHT};
+           color: {INK_MUTED};">{_e(section.get('text'))}</div>{title_html}
     </td>
   </tr>
 </table>"""
 
 
 def _render_cta(section: dict) -> str:
+    """No filled panel, no big bold headline. A grey box with a bold header is a banner,
+    and a banner is the thing this email is trying not to be -- so the CTA is set off by
+    a hairline and a little space instead, at the same weight as the rest of the message.
+    """
     headline = section.get("headline")
     subtext = section.get("subtext")
     button_url = section.get("button_url")
     inner = ""
     if headline:
-        inner += (f'<div style="font-family: {FONT}; font-size: 17px; font-weight: 700; '
-                  f'color: {INK}; margin: 0 0 6px 0;">{_e(headline)}</div>')
+        inner += (f'<div style="font-family: {FONT}; font-size: {BODY_SIZE}px; font-weight: 600; '
+                  f'color: {INK}; margin: 0 0 5px 0;">{_e(headline)}</div>')
     if subtext:
-        inner += (f'<div style="font-family: {FONT}; font-size: 14px; line-height: 1.5; '
+        inner += (f'<div style="font-family: {FONT}; font-size: 14px; line-height: {LINE_HEIGHT}; '
                   f'color: {INK_MUTED}; margin: 0 0 14px 0;">{_e(subtext)}</div>')
     if button_url:
-        inner += _button(button_url, section.get("button_label") or "See the demo")
+        inner += _button(button_url,
+                         _label_or_fallback(section.get("button_label"), "See the demo"))
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 4px 0 20px 0; background: {CANVAS}; border-radius: 8px;">
-  <tr><td style="padding: 20px;">{inner}</td></tr>
+       style="margin: 2px 0 22px 0; border-top: 1px solid {RULE};">
+  <tr><td style="padding: 20px 0 0 0;">{inner}</td></tr>
 </table>"""
 
 
@@ -181,9 +225,9 @@ def _render_interest(section: dict) -> str:
     prompt = section.get("prompt") or "Would this be worth a look?"
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 20px 0; border-top: 1px solid {RULE}; border-bottom: 1px solid {RULE};">
-  <tr><td style="padding: 18px 0;">
-    <div style="font-family: {FONT}; font-size: 15px; color: {INK}; margin: 0 0 12px 0;">{_e(prompt)}</div>
+       style="margin: 0 0 22px 0; border-top: 1px solid {RULE};">
+  <tr><td style="padding: 20px 0 0 0;">
+    <div style="font-family: {FONT}; font-size: {BODY_SIZE}px; color: {INK}; margin: 0 0 12px 0;">{_e(prompt)}</div>
     <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
       <td style="padding-right: 10px;">{_button(yes_url, section.get('yes_label') or "Yes, tell me more")}</td>
       <td>{_button(no_url, section.get('no_label') or "Not right now", primary=False)}</td>
@@ -224,11 +268,13 @@ def _render_contact(section: dict) -> str:
 def _render_section(section: dict) -> str:
     kind = section.get("type")
     if kind == "HOOK":
-        return _para(section.get("text"), size=16)
+        return _para(section.get("text"), size=BODY_SIZE + 1, margin="0 0 22px 0")
     if kind == "PAIN_POINTS":
-        return _bullet_list(section.get("items") or [], "&#9679;", PAIN_MARK)
+        # Tighter bottom margin than the default: the solution list that follows is the
+        # answer to this one, and reading them as a pair is the whole point.
+        return _bullet_list(section.get("items") or [], "&#8226;", PAIN_MARK, margin_bottom=14)
     if kind == "SOLUTION":
-        return _bullet_list(section.get("items") or [], "&#10003;", GAIN_MARK)
+        return _bullet_list(section.get("items") or [], "&#8594;", GAIN_MARK)
     if kind == "VIDEO":
         return _render_video(section)
     if kind == "CTA":
@@ -241,7 +287,8 @@ def _render_section(section: dict) -> str:
     # url-kind renders as a button, a text-kind as a quote. Handled generically on
     # purpose -- a new optional section should not need a new branch here either.
     if section.get("url"):
-        return f'<div style="margin: 0 0 20px 0;">{_button(section["url"], section.get("title") or "Take a look", primary=False)}</div>'
+        label = _label_or_fallback(section.get("title"), "Take a look")
+        return f'<div style="margin: 0 0 22px 0;">{_button(section["url"], label, primary=False)}</div>'
     if section.get("text"):
         return _render_quote(section)
     return ""
@@ -254,21 +301,26 @@ def render_email_html(sections: list[dict], unsubscribe_url: str,
     email_service._build_footer() already enforces for the plain-text part."""
     body = "".join(_render_section(s) for s in sections or [])
     address = _e(company_address if company_address is not None else Config.COMPANY_PHYSICAL_ADDRESS)
+    # The compliance block sits OUTSIDE the white card, the way a mail client's own
+    # footer does, rather than inside it as another section of the message. It keeps the
+    # legally-required text present and findable without letting it read as part of what
+    # the sender wrote.
     return f"""<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
-<body style="margin: 0; padding: 0; background: {CANVAS};">
+<body style="margin: 0; padding: 0; background: {CANVAS}; -webkit-font-smoothing: antialiased;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background: {CANVAS};">
   <tr>
-    <td align="center" style="padding: 24px 12px;">
+    <td align="center" style="padding: 28px 12px 36px 12px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="{CARD_WIDTH}"
-             style="width: 100%; max-width: {CARD_WIDTH}px; background: {CARD};
-                    border: 1px solid {RULE}; border-radius: 12px;">
-        <tr><td style="padding: 32px;">{body}</td></tr>
+             style="width: 100%; max-width: {CARD_WIDTH}px;">
         <tr>
-          <td style="padding: 18px 32px 24px 32px; border-top: 1px solid {RULE};">
-            <div style="font-family: {FONT}; font-size: 12px; line-height: 1.5; color: {INK_MUTED};">{address}</div>
-            <div style="margin-top: 10px;">
+          <td style="background: {CARD}; border: 1px solid {RULE}; border-radius: 10px; padding: 34px;">{body}</td>
+        </tr>
+        <tr>
+          <td style="padding: 16px 34px 0 34px;">
+            <div style="font-family: {FONT}; font-size: 12px; line-height: 1.6; color: {INK_MUTED};">{address}</div>
+            <div style="margin-top: 6px;">
               <a href="{_e(unsubscribe_url)}" style="font-family: {FONT}; font-size: 12px;
                  color: {INK_MUTED};">Unsubscribe</a>
             </div>
