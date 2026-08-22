@@ -10,7 +10,7 @@ import re
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import OUTREACH_AGENT_SYSTEM_PROMPT
+from cognition.prompts import OUTREACH_AGENT_SYSTEM_PROMPT, OUTREACH_SECTIONS_SYSTEM_PROMPT
 
 # Deterministic backstop, not just a prompt instruction: the prompt already tells the
 # model never to write its own signature/footer, but LLM instruction-following isn't
@@ -134,4 +134,179 @@ section; never invent a URL not in this list.
     }
     log_agent_event(db, "OUTREACH", lead_id, "DRAFT_EMAIL", confidence, "MEDIUM", "DRAFTED",
                     payload={"hook_type": hook_type})
+    return draft
+
+
+# ---------------------------------------------------------------------------
+# Phase 11 Step 11.1 -- structured section contract.
+#
+# Deliberately a SEPARATE function from draft_email() above rather than a flag on it:
+# every caller live today keeps running the exact code path it runs now, so the day this
+# ships nothing already in production changes behaviour. The two converge later, once the
+# structured path has been proven on real sends.
+#
+# The safety-critical design decision here is WHO writes a URL. The model authors only
+# prose (hook, bullets, CTA copy) and is told explicitly not to write any URL at all;
+# every real link -- video, demo button -- is inserted by _assemble_sections() below from
+# the approved content_assets list. That makes a fabricated URL structurally impossible
+# rather than prompt-discouraged, which is the same posture the project already took with
+# the content library itself: the boundary does the safety work, not the instruction.
+# ---------------------------------------------------------------------------
+
+MAX_BULLETS = 4
+MAX_BULLET_CHARS = 160
+
+
+def _clean_line(value, limit=300) -> str:
+    return str(value or "").strip()[:limit]
+
+
+def _clean_bullets(value) -> list[str]:
+    """A bullet list is a real list. A model that returns a newline-joined string instead
+    (which happens) is coerced rather than dropped -- losing a whole section to a
+    formatting slip would be a worse failure than accepting a recoverable one."""
+    if isinstance(value, str):
+        value = [line for line in value.splitlines() if line.strip()]
+    if not isinstance(value, list):
+        return []
+    bullets = []
+    for item in value:
+        text = str(item or "").strip().lstrip("-•*").strip()
+        if text:
+            bullets.append(text[:MAX_BULLET_CHARS])
+    return bullets[:MAX_BULLETS]
+
+
+def _pick_asset(content_assets, asset_type):
+    """The first genuinely usable approved asset of this type, or None. None is a normal,
+    expected outcome -- it means this section is dropped (Step 11.3), never fabricated."""
+    for asset in content_assets or []:
+        if isinstance(asset, dict) and asset.get("asset_type") == asset_type and asset.get("value"):
+            return asset
+    return None
+
+
+def _assemble_sections(data: dict, content_assets) -> list[dict]:
+    """Ordered, typed sections. A section is appended ONLY when it has real content, so
+    graceful omission is a property of the structure itself rather than something the
+    renderer has to remember to check for.
+
+    INTEREST / CONTACT / FOOTER are deliberately absent here: they carry no AI-authored
+    content at all and are added downstream from real system data (Step 11.4 settings,
+    Phase 12 signed interest links, the renderer's own compliance footer).
+    """
+    sections = []
+
+    hook = _clean_line(data.get("hook"))
+    if hook:
+        sections.append({"type": "HOOK", "text": hook})
+
+    pain_points = _clean_bullets(data.get("pain_points"))
+    if pain_points:
+        sections.append({"type": "PAIN_POINTS", "items": pain_points})
+
+    solution_points = _clean_bullets(data.get("solution_points"))
+    if solution_points:
+        sections.append({"type": "SOLUTION", "items": solution_points})
+
+    video = _pick_asset(content_assets, "VIDEO_URL")
+    if video:
+        sections.append({"type": "VIDEO", "url": video["value"],
+                        "title": _clean_line(video.get("title"), 120) or "Watch the video"})
+
+    cta_headline = _clean_line(data.get("cta_headline"), 120)
+    cta_subtext = _clean_line(data.get("cta_subtext"), 240)
+    demo = _pick_asset(content_assets, "DEMO_URL")
+    if cta_headline or cta_subtext or demo:
+        cta = {"type": "CTA", "headline": cta_headline, "subtext": cta_subtext}
+        if demo:
+            cta["button_url"] = demo["value"]
+            cta["button_label"] = _clean_line(demo.get("title"), 40) or "See the demo"
+        sections.append(cta)
+
+    return sections
+
+
+def _sections_to_text(sections: list[dict]) -> str:
+    """Plain-text rendering of the same sections. Not a display format -- it exists so
+    QC, `outreach_logs.message_body` and every existing consumer that expects a body
+    string keep working unchanged against a structured draft."""
+    parts = []
+    for section in sections:
+        kind = section["type"]
+        if kind == "HOOK":
+            parts.append(section["text"])
+        elif kind in ("PAIN_POINTS", "SOLUTION"):
+            parts.append("\n".join(f"- {item}" for item in section["items"]))
+        elif kind == "VIDEO":
+            parts.append(f"{section['title']}: {section['url']}")
+        elif kind == "CTA":
+            cta = [section.get("headline", ""), section.get("subtext", "")]
+            if section.get("button_url"):
+                cta.append(f"{section.get('button_label', 'Demo')}: {section['button_url']}")
+            parts.append("\n".join(p for p in cta if p))
+    return "\n\n".join(p for p in parts if p).strip()
+
+
+def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
+                           qc_feedback: str | None = None, content_assets: list | None = None):
+    """Phase 11 Step 11.1. Returns {subject, subject_candidates, body, sections, hook_type,
+    confidence}, or None if drafting failed or produced nothing usable.
+
+    `body` is the plain-text equivalent of `sections`, kept so QC and the existing
+    outreach_logs contract need no change to accept a structured draft; `sections` is what
+    Step 11.2's renderer actually builds the real email from.
+    """
+    prompt = OUTREACH_SECTIONS_SYSTEM_PROMPT + f"""
+PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
+LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
+PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
+CHANNEL: EMAIL
+"""
+    if qc_feedback:
+        prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+
+    try:
+        data = call_json(prompt, temperature=0.4)
+    except LLMError as exc:
+        log_agent_event(db, "OUTREACH", lead_id, "DRAFT_EMAIL_SECTIONS", 0.0, "MEDIUM", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return None
+
+    raw_candidates = data.get("subject_candidates")
+    subject_candidates = (
+        [str(s).strip()[:150] for s in raw_candidates if str(s).strip()]
+        if isinstance(raw_candidates, list) else []
+    )
+    selected_subject = str(data.get("selected_subject") or data.get("subject") or "").strip()[:150]
+    if subject_candidates and selected_subject not in subject_candidates:
+        selected_subject = subject_candidates[0]
+    subject = selected_subject or (subject_candidates[0] if subject_candidates else "")
+
+    sections = _assemble_sections(data, content_assets)
+    body = _sections_to_text(sections)
+    hook_type = str(data.get("hook_type", ""))[:40]
+    try:
+        confidence = max(0.0, min(1.0, float(data.get("confidence"))))
+    except (TypeError, ValueError):
+        confidence = 0.0
+
+    # A draft with a subject but no hook is not a recoverable partial -- it has no opening
+    # line at all, which is the one section this design treats as mandatory.
+    has_hook = any(s["type"] == "HOOK" for s in sections)
+    if not subject or not has_hook:
+        log_agent_event(db, "OUTREACH", lead_id, "DRAFT_EMAIL_SECTIONS", confidence, "MEDIUM",
+                        "EMPTY_DRAFT", payload={"section_types": [s["type"] for s in sections]})
+        return None
+
+    draft = {
+        "subject": subject,
+        "subject_candidates": subject_candidates or [subject],
+        "body": body,
+        "sections": sections,
+        "hook_type": hook_type,
+        "confidence": confidence,
+    }
+    log_agent_event(db, "OUTREACH", lead_id, "DRAFT_EMAIL_SECTIONS", confidence, "MEDIUM", "DRAFTED",
+                    payload={"hook_type": hook_type, "section_types": [s["type"] for s in sections]})
     return draft
