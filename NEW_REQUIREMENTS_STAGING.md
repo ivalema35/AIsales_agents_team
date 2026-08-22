@@ -249,3 +249,220 @@ User ke original words (raw): "man le koi business me linkedin he ya hum kisi co
 **Open questions (jab confirm karoge tab clarify karna hoga):** Dashboard par kaunsi cheezein exactly dikhni chahiye (service health, current job counts by status, last N activities feed, per-product live stats)? Alert/notification bhi chahiye agar system down ho jaye (e.g. email/WhatsApp alert to admin)?
 
 ---
+
+## ✅ BATCH 2 — ALL 6 ITEMS MERGED into the PRD docs (2026-08-22)
+
+User ne confirm kiya, saare Batch-2 items (12–17) teeno authoritative docs me proper phases ke roop me
+likh diye gaye — bilkul wahi process jo Batch 1 (Items 1–11 → Phases 6–10) ke liye follow hua tha.
+
+**Kahan likha gaya:**
+- `MASTER_DEVELOPMENT_PRD.md` **§5B** — naye **Phase 11–15**, har phase ke steps + DoD gate
+  (§9 ki gate table me **P11–P15** bhi add, aur §0/§3.1 ke table-count references bhi correct kiye).
+- `AI_Sales_Intelligence_PRD_v2.md` **Chapter 17** — cognitive contract (composition as a cognitive act,
+  declared-vs-inferred intent ranking, sequence-as-conversation, one-content-many-renderings,
+  relevance-is-comprehension-not-seniority, cross-sell-without-hype).
+- `CRM_UI_UX_PLAN.md` **§2B** — UI **Phase 10–14**, har ek apne backend phase ke saath 1:1 paired.
+
+**Item → Phase mapping:**
+
+| Item | Kya | Phase |
+| :-- | :-- | :-- |
+| 12 | Email template ka naya 8-section structure + Hostinger-jaisa HTML design, button CTAs, graceful section-skip | **Phase 11** (UI Phase 10) |
+| 17 | Har outreach me AI-services cross-sell mention | **Phase 11** (Step 11.5, per-product opt-in) |
+| 13 | Yes/No one-click interest + admin email/WhatsApp alert + human-readable lead reference code | **Phase 12** (UI Phase 11) |
+| 14 (A+C) | 3-level follow-up ka apna-apna content + har level ke liye HTML/WhatsApp templates | **Phase 13** (UI Phase 12) |
+| 14 (B) | Lead page pe per-message status (Delivered/Seen/Replied), real WhatsApp text, follow-up stage | **Phase 14** (UI Phase 13) |
+| 15 | Lead page ke platform icons se same content copy karke manually share | **Phase 14** (Step 14.4) |
+| 16 (A) | Company lead ke andar product-relevant person target karna (CEO nahi, engineer) | **Phase 15(A)** (UI Phase 14) |
+| 16 (B) | Standalone LinkedIn/prospect finder (keyword+filter search, Apollo.io ya equivalent) | **Phase 15(B)** — independently gated |
+
+**Item 14 ko do phases me kyun toda:** 14(A)+(C) backend follow-up content hai (Phase 13), 14(B) lead-page
+UI hai — aur 14(B) + Item 15 dono `LeadDetail.jsx` ke usi conversation panel pe kaam karte hain. Alag-alag
+phases me karte to ek hi screen do baar rebuild karni padti. Yehi precedent Batch 1 me bhi tha (Item 6
+subject-line testing: Phase 8 me candidates bane, Phase 9 me measure hue).
+
+**Naye data-layer objects (28 → 31):** T29 `interest_responses` (Phase 12), T30 `prospects` +
+T31 `prospect_searches` (Phase 15). Naye columns: `products.ai_cross_sell_enabled`,
+`outreach_logs.content_sections`, `leads.reference_code`, `whatsapp_templates.followup_level`.
+**Do cheezon ke liye jaanbujh ke koi nayi table nahi banayi** — apni company ke contact details
+(`system_settings` me, already dashboard-editable) aur products/services ki list (`products` table khud —
+ek doosri list banate to dono time ke saath alag ho jaati).
+
+**Sequencing (§5B.0 me poora reasoning):** 11 → 12 → 13 → 14 → 15. Structure pehle (kyunki buttons,
+per-level emails, cross-channel re-render — sab section-engine ke bina possible hi nahi), phir click-capture
+(button ke bina click ho hi nahi sakta), phir follow-up content (cadence machinery already proven hai,
+sirf content badalna hai), phir lead-page UI (ek hi screen, ek hi baar), aur naya paid provider
+(Apollo.io) sabse aakhir me — bilkul wahi risk-ordering jo Phase 10 me SMS/voice ke liye thi.
+
+---
+
+## Batch 2 (2026-08-22) — original raw capture, jaisa bola gaya tha
+
+### Item 12 — Email outreach template ka poora naya structure + behtar HTML design — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "sabse pahela point he email template me isme ye email sirf marketing jese nahi lagne chahiye log view karne ke liye majbur hojaye aisa hook first line and subject jese unke kisi customer ne bheja ho pain point ke regarding , fir ayege bullet point me unke domain ke pain points , fir hoga soltion by our product uske bhi bullet points me fir ek video url (thumbnail ke sath) jisme product ke bare me hoga video me bas uss video ka thumbnail dikhana he fir hoga cta start for 1 month free aur usme hoga demo link btn fir hoga are you intredted or not yes or no btn sath phir hoga company yani hamare compnay contact details unke contact ke liye jisme email, mobile number, website , company profile link etc last me hoga stop and footer -- ye hoga otreach mail ka template but ye har business lead ka personal content ke hisab se hoga aur isse bettre html me degine karna he bettre ui ux ke sath. aur agar koi section na bhi ho like video na ho to ye bhi handle ho jaye ye ke reqruiment he isse pahele note karo"
+
+**Samajh (paraphrase, exact order jo user ne bataya):**
+
+Email ka naya, fixed section-order chahiye (aaj jo bhi format hai uski jagah ya usse extend karke):
+
+1. **Subject + first line (hook)** — marketing-jaisa bilkul na lage, aisa lage jaise koi real customer ne khud apna pain point describe karte hue message bheja ho — user ko turant open/read karne pe majboor kare.
+2. **Unke domain/business ke real pain points** — bullet points me.
+3. **Hamare product se solution** — unhi pain points ka jawab, bullet points me.
+4. **Ek video URL, thumbnail ke saath** — product ke baare me ek video, email me sirf uska thumbnail image dikhna hai (video pehle hi build ho chuka hai Phase 9 me — thumbnail-fetch mechanism already exist karta hai).
+5. **CTA: "Start for 1 month free"** — iske andar ek **Demo link button**.
+6. **"Are you interested or not" — Yes/No button** — lead ka turant response capture karne ke liye.
+7. **Company/contact details** — hamari company ki details (email, mobile number, website, company profile link, etc.) taaki lead humein contact kar sake.
+8. **Aakhir me: Unsubscribe/STOP + footer** (compliance).
+
+**Do explicit, non-negotiable requirements jo user ne khud bataye:**
+- **Personalization**: ye poora structure fixed hai, lekin har section ka *content* har business lead ke apne real data/pain-points ke hisab se **personalized** hona chahiye — generic/copy-paste nahi.
+- **Graceful section-skip**: agar koi section ke liye data available na ho (jaise video na ho kisi product ke content library me), to us section ko **cleanly skip/handle** karna hai — email tootna/adhura nahi dikhna chahiye.
+- **Behtar HTML design + UI/UX** — abhi ka email HTML basic hai (plain text + linkify + thumbnail), isko genuinely achhe visual design/layout ke saath banana hai.
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference ke liye, build nahi kiya):**
+- Ye poora Phase 8's `message_formats` (admin-defined "sections" guideline list) ka hi ek bahut zyada specific, opinionated **default/reference template** jaisa lagta hai — matlab is exact 8-section order ko ek naya "recommended format" ke roop me kisi product ke liye set kiya ja sakta hai (already-built format-engine hi is use karega), ya phir ek naya, alag "smart HTML template" layer likhna padega jo:
+  - "Yes/No — interested?" jaisa **naya interactive element** hai — abhi tak koi email me clickable Yes/No response-capture button hai hi nahi (naya real feature, koi reply-tracking se bhi jud sakta hai).
+  - CTA + demo-link button, company-contact block — ye bhi naye, structured HTML components hain (abhi sirf plain linkified text + ek video-thumbnail block hai).
+- Video-thumbnail mechanism (Step 9 follow-up, YouTube/Vimeo oEmbed) already bana hua hai — is naye structure me wahi reuse ho sakta hai.
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - "Yes/No — interested?" button dabane par kya hona chahiye — seedha ek reply-jaisa event record ho (jaise `inbound_conversations` me ek "YES_CLICKED"/"NO_CLICKED" signal), ya kisi landing page/form pe le jaaye?
+  - Ye naya structure **sabhi products ke liye default** banega, ya per-product/per-format optional choice hoga (jaise aaj `message_formats` optional hai)?
+  - Company contact-details block ke exact fields kahan se aayenge (`Config`/naya settings table, ya hardcoded company info)?
+
+**Addendum (2026-08-22, same item — design reference):**
+
+User ke original words (raw): "dekh hume email temaplete degined chahiye jese hostinger ka hota he normal ya text me achha nahi lagega minimum but behetre ui ux like urlke liye link nahi but btn lenge wisa kuch to tum"
+
+**Samajh:** Design ka reference/bar — **Hostinger ke transactional/marketing emails jaisa** professional, polished HTML template chahiye — plain/minimal text me nahi jaana (achha nahi lagega), lekin bahut zyada heavy-designed bhi nahi. **URLs ke liye plain hyperlink text nahi, balki proper styled BUTTON elements** use karne hain (jaise demo-link, CTA — sab clickable buttons ki tarah dikhein, plain blue underlined link nahi).
+
+---
+
+### Item 13 — Yes-click par admin ko turant email/WhatsApp alert, lead ID ke saath — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "phir agal point he har lead ka alag identifier yani unique lead id manlo email me lead ne yes dabay to wo crm me update to hoga but admin ke email ya whatsapp me bhi msg ayega ki this lead id shows intrest isse lead findout karna aur bhi assana hoga ye point add karo"
+
+**Samajh:** Item 12 ke "Are you interested — Yes/No" button ka seedha follow-up/extension:
+- Har lead ka apna **unique identifier (lead ID)** hona chahiye — reference/dikhane ke liye (note: `Lead.id` already ek UUID hai DB me, lekin user shayad ek chhota/readable ID chahta ho ya bas isi existing ID ko surface karna chahta ho — abhi clarify nahi hua, open question hai).
+- Jab lead email me **"Yes" button dabaye**:
+  1. CRM me turant update ho (jaise lead status "interested"/hot ho jaaye — Item 12 ka hi open-question tha).
+  2. **Admin ko turant ek alert jaaye — email YA WhatsApp par** — jisme us lead ka **ID** bataya jaaye ki "is lead ID ne interest dikhaya hai."
+- **Purpose**: taaki admin us specific lead ko turant, aasani se dhoondh (find out) sake CRM me — us waqt bina khud dashboard khole scan kiye.
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference, build nahi kiya):**
+- Isme bahut kuch already-built infra reuse ho sakta hai — Phase 6 ka admin-alert mechanism (stuck-lead/system-down alerts already email bhejte hain `Config` se), aur Phase 9 Step 9.4 ka engagement-escalation pattern (real signal par lead ko "Hot" banana + koi ek `agent_events` log) bilkul isi shape ka hai — "Yes" click bhi ek naya real signal hoga, jaisa "3+ opens" signal tha.
+- WhatsApp se admin ko alert bhejna — abhi tak koi admin-facing WhatsApp alert nahi hai (sirf lead-facing WhatsApp outreach hai), ye ek naya real capability hoga agar WhatsApp wala option choose kiya.
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - Lead ID — existing `Lead.id` (UUID) hi surface karna hai, ya ek naya chhota/human-readable ID (jaise "L-0042") banega?
+  - Alert **email**, **WhatsApp**, ya **dono** jaaye — ya admin dashboard se configurable ho?
+  - "No" button dabane par bhi kuch hona chahiye (koi alert, ya bas silently record ho ki interested nahi hai)?
+
+---
+
+### Item 14 — 3-level structured follow-up content + lead-page message status/visibility + HTML+WhatsApp templates for every level — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "jese ki ab humne lead idetifier add kar diya he ab uska process bhi behter karte he like ab follow up wala manle koi lead ne email reply nahi diya ya sirf view kiya to isme hum 3 level follow up karege like out reach ke bad 1 level agar video url bheji gayi thi to video ke sath ya phir akele uske pain point and solution ke sath video frame bheje, level 2 me uska follow up agar koi response na aye to have you check out the video or details any query you want to ask like, agar fir bhi na aaye to ek last level 3 follow up jisme company detail hogi contact ki aur jo produts and services he sare uska bullet points ke sath dikhe aur kahe ke future me apko aise services need ho to contact kare aur ye follow up me proper deley maintain ho har follow up me demo cta hona chahiye if avilable aur process lead me bhi dikhe sath me lead page me jo email and whatsaap ke msg dikhte he usme status dikhe dileverd ,seen , reply etc whatsapp me template ki jagah real msg dikhe isme aur ye emails bhi achee html templates ke sath hi jaye aur same whatsapp temaplets bhi chahiye outreach and 3 leve follow up ke liye"
+
+**Samajh (paraphrase, alag sub-parts me tod ke):**
+
+**(A) 3-level follow-up ka specific content-design** (abhi ka follow-up sirf ek generic "chhota nudge" hai — ye use content-specific 3-level structure me badalna hai):
+- **Trigger**: lead ne reply nahi diya, ya sirf email **view/open** kiya (dono cases follow-up trigger karenge).
+- **Level 1** (pehla follow-up): agar original outreach me video URL bheja gaya tha, to video ke saath follow-up bhejo; agar video nahi tha, to sirf unke pain point + hamare solution ke saath follow-up bhejo.
+- **Level 2** (agar Level 1 ke baad bhi koi response nahi): ek check-in style follow-up — "did you check out the video/details? Any query you want to ask?" jaisa.
+- **Level 3** (aakhri follow-up, agar Level 2 ke baad bhi response nahi): company contact details + **hamare saare products/services ki poori list bullet points me**, aur ek closing note ki "future me agar aisi services chahiye ho to contact karna."
+- **Delay**: har level ke beech proper delay maintain ho (jaisa aaj `followup_cadence_days` already karta hai, e.g. [3,7] din).
+- **Demo CTA har follow-up me ho, agar available ho** — sirf first-touch tak simit nahi (Item 12 ka CTA design har touch pe apply hona chahiye).
+
+**(B) Lead page par visibility improvements:**
+- Lead ka "process/stage" bhi lead page pe dikhna chahiye — matlab abhi lead kis follow-up level pe hai (outreach done, Level 1 follow-up done, Level 2 me hai, etc.) — ek visible progress/stage indicator.
+- Jo email/WhatsApp messages already lead page pe dikhte hain, unme **status bhi dikhna chahiye** — Delivered / Seen / Replied, etc. (per-message status, sirf list nahi).
+- **WhatsApp message list me abhi template ka naam dikhta hai — uski jagah asli, real bheja gaya message (filled-in text) dikhna chahiye.**
+
+**(C) Template quality — sabhi levels ke liye:**
+- Har follow-up email bhi Item 12 wale **achhe HTML design** ke saath jaana chahiye (sirf first-touch nahi — outreach + Level 1 + Level 2 + Level 3, sabme).
+- WhatsApp ke liye bhi — outreach + teeno follow-up levels, sabke liye **proper (Meta-approved) WhatsApp templates** chahiye (abhi sirf ek generic follow-up template ka concept hai).
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference, build nahi kiya):**
+- **(A)** ye Phase 9 Step 9.3 ke `followup_cadence_days` + `is_followup` design ka hi extension hai, lekin abhi `is_followup` sirf ek generic boolean flag hai ("chhota nudge likho") — is naye requirement ko ek **level-aware** design chahiye (`is_followup` ki jagah/saath "follow_up_level: 1/2/3" jaisa kuch), jisse AI ko har level ka apna specific content-instruction mile.
+- **(B)** "Seen" status ke liye email me already `open_count`/`read_at` tracking hai (Phase 9 Step 9.4 ka engagement-escalation isi pe based hai) — "Delivered"/"Replied" bhi already `OutreachLog.status`/`inbound_conversations` se derive ho sakta hai, sirf UI par surface karna baaki hai. WhatsApp ka "real message dikhna" — `OutreachLog.message_body` me already poora filled-in text store hota hai (Step 9.1 ke `variant_id` ke saath), sirf frontend abhi template-naam dikha raha hai uski jagah.
+- **(C)** WhatsApp ke liye 3 naye follow-up templates (Level 1/2/3 ke liye) Meta se real approval lene honge (Step 9.5/9.6 ka existing AI-draft-template loop yahan reuse ho sakta hai — AI khud in teeno levels ke liye template draft kar sakta hai, QC check ke saath, phir admin approve kare).
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - "Sirf view kiya" (open hua, reply nahi) — Level 1 kab trigger ho, kitne opens/kitne din baad?
+  - Kya teeno level har product ke liye same structure follow karenge, ya per-product customizable?
+  - WhatsApp ke 3 naye templates — Meta approval process me time lagta hai, isliye jab tak approve na ho tab tak fallback kya hoga (aaj jaisa generic follow-up, ya WhatsApp follow-up skip)?
+
+**Claude ka suggestion (2026-08-22, user-approved to log):** In naye 3 follow-up levels + har-touch-CTA ka result bhi **measurable** rehna chahiye — Phase 9 ka already-bana variant-tracking system (`OutreachLog.variant_id`, Step 9.1/9.2) in teeno levels ke liye bhi use ho, taaki baad me pata chal sake kaunsa level (1/2/3) sabse zyada reply/interest laata hai, sirf build karke chhod na diya jaaye.
+
+---
+
+### Item 15 — Lead page ke platform-icons se, usi lead ke real outreach content ko copy karke doosre channels pe manually share karna — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "ab agala point he copy formate ka manle ye email temaplete (out reach wala ) set he ab mujhe ye copy karke uss lead ke dusre channle yani insta me ya khud email kare ke dalna he (jese abhi social queue he) wo lead page me lead specific banle aye aur lead page me sare paltform ke icons he un par click karke same formate me lead ke real otreach mssg yani lead spesific outreach msg copy ho jaye (email keliye hum html me template le rahe he to email ,wa , insta, facebook ya limnked in me ye proper handle hona chaiye) aur hum uss platform me manul share kar paye."
+
+**Samajh:**
+- Ek baar jab lead ke liye outreach content (Item 12 wala real, personalized email — pain points + solution + video + CTA) ban jaaye, to usi content ko **doosre channels ke liye bhi copy karke manually share karna** ho — jaise Instagram DM me, ya khud apne email client se manually bhejna.
+- Ye bilkul jaisa **abhi ka Social Queue feature** (Step 10.3, LinkedIn/Instagram/Facebook draft-and-queue) hai, lekin isko **lead-specific** banana hai aur **seedha lead page pe** laana hai.
+- Lead page pe already platform icons hain (Email/WhatsApp/Instagram/Facebook/LinkedIn — `EDITABLE_FIELDS` me already dikhte hain profile-URL ke roop me, aur Step 10.3 ka "Social outreach" card bhi already lead page pe hai). Un icons par click karne se **usi lead ka real, already-generated outreach message** (same content jo email me gaya tha) copy ho jaana chahiye, **us specific platform ke format me sahi tarike se handle karke**:
+  - **Email** — HTML template (Item 12 wala poora design) jaisa hai waisa hi.
+  - **WhatsApp / Instagram / Facebook / LinkedIn** — same core content (pain point + solution + CTA, etc.) ko us platform ke liye sahi tarah handle karna hai (HTML nahi chalega in platforms pe — plain/formatted text version chahiye).
+- Purpose: user khud us platform (jaise Instagram) me jaake manually paste/share kar sake.
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference, build nahi kiya):**
+- Ye Item 12 (naya email template) aur existing Step 10.3 (Social Queue) — dono ka combination/extension hai: Step 10.3 abhi apna **alag, independent AI draft** banata hai social platforms ke liye (chhota, platform-native tone) — is naye requirement me lagta hai user chahta hai ki **wahi outreach content jo email me gaya** (same pain-point/solution framing) doosre platforms ke liye bhi reuse/reformat ho, taaki messaging consistent rahe across channels — ye Step 10.3 ke current design se thoda alag philosophy hai (naya draft vs. same content ka reformatted version), confirm karte waqt ye trade-off clarify karna hoga.
+- "Copy" ka matlab — sirf ek **plain-text/clipboard copy button** (jaisa Social Queue me pehle se hai "Copy text"), koi automatic send nahi — ye project ka already-established "AI drafts, human sends manually" principle follow karta hai (Step 10.3 ka evasion-free rule).
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - Har platform ke liye alag AI draft chahiye (jaisa Step 10.3 abhi karta hai), ya bas email ka content hi ek simple text-conversion (HTML strip + reformat) karke reuse karna hai?
+  - Video/CTA/company-details jaise HTML-only elements (Item 12 se) doosre platforms pe kaise represent honge (jaise WhatsApp me link + short text, Instagram me sirf text)?
+
+**Claude ka suggestion (2026-08-22, user-approved to log):** Email-HTML aur social-platform-text — dono **ek hi "lead ka real content" (pain point + solution + assets) se generate hone chahiye**, do alag content-generation paths se nahi. Warna waqt ke saath email ka content aur social ka content ek-doosre se drift kar sakta hai (alag-alag baar regenerate hone se), aur messaging inconsistent lagega usi lead ko.
+
+---
+
+### Item 16 — Sahi decision-maker/relevant person ko target karna (existing company lead ke andar) + naya standalone LinkedIn profile-finder tool — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "ab agala point linked in aur sahi outreach person ke related he man le humne kisi corporate ya aise buisiness ko lead kiya jo ek company he jisme humne company linked in ya uske email whatsapp liye he aur unhe outreach kiya but man lo wo person descion maker nahi he ya unhe hamare product me kuch sahmj nahi aya to hum ghalat person ko contact kiya he like agar me ai automation service pitch kar raha hu to mujhe company ke ceo ya hr ko nahi but uske koi engeenr ya ko ai related kam karta he ya jinhe actual me ai ke bare me pata he usse pitch karna hoga uske liye hume company ke sath unke connected emps jo cureent me bhi aise logo ke linked in bhi lane hoge jinhe abhi ke liye hum manual email and whatapp outreach kar paye , satheme ek alag se linked in profile getter chahiye jkisme ek specific keyaoword ya tag ya kuch filter se unke linked in profile get kar sake klike ai developer in mehsana , 3 years ecperiens etc aur waha se bhi hum koi product unhe pitch kar sake unke email , whatsapp nikal ke ye apollo.io se hosakta he ya koi aur rasta bhi apna sakte he."
+
+**Samajh (do alag sub-requirements hain):**
+
+**(A) Existing company-lead ke andar sahi person target karna:**
+- Abhi jab koi corporate/company lead discover hoti hai, hum company-level LinkedIn/email/WhatsApp nikaalte hain aur outreach kar dete hain — lekin ye **galat person ho sakta hai** (decision-maker nahi hai, ya product ko samajhta hi nahi — e.g. AI-automation service pitch kar rahe hain to CEO/HR ko nahi, balki us company ka **engineer / AI-related kaam karne wala employee** ko pitch karna chahiye, jo actually samajh sake).
+- Isliye us company se juде **multiple connected employees ke LinkedIn profiles** bhi lane hain (sirf ek "target person role" nahi — product ke hisab se sahi role hona chahiye, jaise AI product ke liye engineer/developer).
+- Abhi ke liye ye poora automated nahi karna — bas unka email/WhatsApp nikaal ke rakhna hai taaki user **khud manually** unhe outreach kar sake.
+
+**(B) Ek naya, standalone "LinkedIn Profile Finder" tool:**
+- Ye existing company-lead-discovery pipeline se **alag/independent** feature hai.
+- User specific **keyword/tag/filter** se seedha LinkedIn profiles search kar sake — jaise "AI developer in Mehsana, 3 years experience."
+- Wahan se milne wale profiles ka bhi **email/WhatsApp nikaalna hai** taaki unhe bhi koi product pitch kiya ja sake.
+- User ne khud suggest kiya: ye **Apollo.io** se ho sakta hai, ya koi aur tareeka/provider bhi use kar sakte hain.
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference, build nahi kiya):**
+- **(A)** Ye Phase 7 Step 7.4 (Hunter ke discarded person-fields) + Step 7.5 (role-targeted LinkedIn person discovery, `product.target_person_roles` se gated) ka hi extension hai — abhi Step 7.5 sirf ek admin-set role-list (jaise "CEO") ke against match karta hai; is naye ask me role ki definition **product-specific aur zyada technical/domain-relevant** honi chahiye (jaise "engineer"/"AI-savvy person" AI-automation product ke liye) — ye ek real design question hai ki ye role kaise decide hoga (admin manually set kare per product, ya AI khud product-brief se relevant designation infer kare).
+- **(B)** Ye ek **naya, alag data-acquisition capability** hai — abhi existing providers Serper/SerpAPI/Hunter/B2B-provider hain (`services/data_acquisition/`), Apollo.io abhi kahin use nahi ho raha (naya provider integration hoga, agar use karna decide ho). Ye feature discovery pipeline se independent, apna alag "search LinkedIn by criteria" tool jaisa lagta hai — apna alag UI/API bhi chahiye hoga (kisi specific lead se bandha nahi hai).
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - (A) "Sahi role" kaise decide hoga per product — admin manually role list set kare (jaisa aaj `target_person_roles` hai), ya AI khud product-brief dekh ke decide kare kaunsa role technically relevant hai?
+  - (A) Multiple employees mile to sab dikhengे ya top-N (kitne)?
+  - (B) Apollo.io ka real account/API key hai kya (jaisa Hunter ka hai) — ya koi aur specific provider pehle se soch rakha hai?
+  - (B) Ye standalone tool se mile hue "leads" kya normal `leads` table me hi jaayenge (ek naya product se linked), ya ek alag "prospect list" jaisi cheez banegi?
+
+---
+
+### Item 17 — Har outreach me AI-services ka cross-sell mention (chahe pitched product se match na kare) — `MERGED` (2026-08-22)
+
+**User ke original words (raw):** "aur abhi ke duar me ai boom par he to hum har outreach me ai automation ya ai slotions , ai products tools ko force kare agar kisi lead ko hamare putch kiye product me intrest nahi he but apne business ke liye ai services lena chahte he to wo contact kar sake"
+
+**Samajh:** Abhi AI boom chal raha hai (market trend) — isliye **har outreach** (chahe jo bhi product specifically pitch ho raha ho) me **AI automation / AI solutions / AI products/tools** ka bhi mention/push ho, taaki:
+- Agar lead ko us specific pitched product me interest na ho, lekin unhe apne business ke liye **AI services chahiye ho**, to wo bhi humein contact kar sake.
+- Matlab ek **cross-sell/secondary mention** — pitched product ke alawa, hamari AI capability ka bhi awareness/CTA har message me ho.
+
+**Claude ka technical note (raw ke saath, existing architecture se related — abhi sirf reference, build nahi kiya):**
+- Ye Item 12 ke naya email-template design me ek **extra section/mention** ke roop me fit ho sakta hai (jaise company-contact-details block ke paas, ya ek chhoti closing line "agar AI se related kuch chahiye ho to bhi contact karein" jaisa) — ya phir Phase 8 ke `content_assets`/`message_formats` system ka use karke ek naya "always include this AI cross-sell line" wala rule bhi ban sakta hai.
+- Real tension jo dhyan me rakhna hoga: is project ka apna **zero-hallucination / buzzword-ban rule** (QC ka apna check) already generic AI-hype language (jaise "revolutionary", "cutting-edge") ko reject karta hai — is naye "AI push" ko us rule ke against jaye bina, genuinely relevant/specific tarike se likhna hoga (QC prompt me shayad ek explicit carve-out chahiye hoga is cross-sell line ke liye).
+- **Open questions (jab confirm karoge tab clarify karna hoga):**
+  - Ye sirf un leads ke liye ho jinka pitched product AI se related NAHI hai (taaki genuinely "cross-sell" lage), ya har outreach me hamesha ho chahe product AI-related ho ya na ho?
+  - Kya ye ek fixed line/CTA hai (jaisa company-contact-details), ya AI se khud is line ko bhi personalize karna hai lead ke business ke hisab se?
+  - Kya ye email + WhatsApp + social — sabhi channels me ho, ya sirf email me?
+
+**Claude ka suggestion (2026-08-22, user-approved to log):** Ise ek **per-product optional flag** banao ("is product ke outreach me AI cross-sell line include karo — haan/nahi"), sab products ke liye force mat karo. Kuch products (jaise koi bahut specific, non-AI niche service) ke liye ye secondary mention pitch ko diluted/off-topic kar sakta hai — admin apne hisab se decide kar sake, jaisa is project ka already-established "admin boundary set kare, AI andar se kaam kare" pattern hai (`target_business_categories` jaisa).
+
+---
+

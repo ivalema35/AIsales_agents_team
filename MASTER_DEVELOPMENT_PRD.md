@@ -3,7 +3,7 @@
 
 **Merges:** Technical PRD v3 (Execution Infrastructure) + Intelligence PRD v2 (Cognitive Brain Layer)
 **Audience:** A software engineer or a coding agent (Claude Code / Cursor) building production code section by section.
-**Build model:** 10 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green. Phases 1–5 are the original build (§5); Phases 6–10 (§5A) were added 2026-08-19 from real post-launch requirements.
+**Build model:** 15 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green. Phases 1–5 are the original build (§5); Phases 6–10 (§5A) were added 2026-08-19 from real post-launch requirements; Phases 11–15 (§5B) were added 2026-08-22 from a second round of the same, after Phases 6–9 were live on real leads.
 
 ---
 
@@ -12,10 +12,11 @@
 - **Sections 1–4** are *reference*: architecture, file tree, the complete data layer, and the cognitive contracts (agents, decision thresholds, memory). Implement against them; don't re-derive them per phase.
 - **Section 5** is the *build order*: Phases 1→5, each step listing (a) files to create, (b) a focused code blueprint showing the non-obvious logic and its failure handling, and (c) the DoD tests that open the gate.
 - **Section 5A** is the *add-on build order*: Phases 6→10, added 2026-08-19 from real post-launch requirements plus every previously-deferred item. It follows the same step + DoD-gate structure as §5. Read §5A.0 before reordering anything there — the sequence encodes real dependencies, and it carries one open decision about Phase 5's position that needs the user's confirmation.
+- **Section 5B** is the *second add-on build order*: Phases 11→15, added 2026-08-22 after Phases 6–9 shipped and ran on real leads. Where §5A answered "I can't see, steer, or measure the system", §5B answers a later problem — the message reads competently but not persuasively, can't be answered in one click, repeats itself across touches, drifts between channels, and often reaches someone who can't judge the pitch. Read §5B.0 before reordering.
 - **Section 6** is the *agent prompt library* — copy-pasteable Python string constants.
 - **Section 7** is the *command cheat sheet*.
 - **Section 8** is the *Executive Business Layer* (Chapter 15 / AI-BOS): the governance layer sitting above Cognitive + Execution — revenue/CAC ceilings, dual sales-mode routing, capacity throttling, client lifecycle, decision simulation, cross-agent governance, and self-evolution boundaries.
-- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P10).
+- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P15).
 - Code blocks are **blueprints**: they carry the critical logic (routing, atomic claims, cleanup, validation) verbatim and leave routine bodies (field mapping, selectors, styling) for you to fill.
 
 **Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/an in-process discovery scheduler). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
@@ -170,14 +171,16 @@ ai-sales-os/
 
 ### 3.1 Complete SQLite DDL (`database/schema.sql`)
 
-> **Addendum (2026-08-19):** this section's prose says "16 tables", but the **live `schema.sql` now has
-> 19** — `product_strategies` (17), `discovery_runs` (18) and `system_settings` (19) were added during
-> Phases 3–4 after this text was written. Phases 6–10 (§5A) add **8 more (Tables 20–27)** plus two
-> optional `products` columns; each is specified in the §5A step that introduces it, and the full list
-> is tabulated in §5A.1. Two schema facts worth carrying forward when reading this DDL:
-> `campaign_variants` (Table 13) exists here but has never been written to — Phase 9 Step 9.1 is what
-> finally wires it; and `leads` holds exactly **one** contact person, which is why Phase 7 introduces
-> `lead_contacts` rather than widening this table.
+> **Addendum (2026-08-19, extended 2026-08-22):** this section's prose says "16 tables", but the **live
+> `schema.sql` now has 28**. `product_strategies` (17), `discovery_runs` (18) and `system_settings` (19)
+> were added during Phases 3–4 after this text was written. Phases 6–10 (§5A) added Tables **20–28** —
+> nine, not the eight §5A.1 projected, because `social_message_queue` (27) turned out to need its own
+> state while building Step 10.3(a) and `call_logs` moved to 28. Phases 11–15 (§5B) add Tables **29–31
+> (total 31)** plus four columns on existing tables; each is specified in the §5B step that introduces
+> it, and the full list is tabulated in §5B.1. Two schema facts worth carrying forward when reading this
+> DDL: `campaign_variants` (Table 13) exists here but has never been written to — Phase 9 Step 9.1 is
+> what finally wires it; and `leads` holds exactly **one** contact person, which is why Phase 7
+> introduces `lead_contacts` rather than widening this table.
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -1169,6 +1172,377 @@ the assisted mode has run against real calls and the compliance posture is prove
 
 ---
 
+## 5B. Add-on phase plan (Phases 11–15) — added 2026-08-22
+
+**Origin.** Phases 6–10 were specified after the operator first watched the system run. Phases 11–15
+come from a second round of the same thing — six requirements raised after Phases 6–9 were live on real
+leads and Phase 10 had partially shipped (captured verbatim as Items 12–17 in
+`NEW_REQUIREMENTS_STAGING.md`, Batch 2).
+
+**What changed between the two rounds.** Phases 6–10 answered *"the system can act, but I cannot see
+it, steer it, or measure it."* All three of those are now true. Batch 2 answers a different, later
+complaint: **the system speaks competently but not persuasively, cannot be answered in one click,
+repeats itself across touches, drifts between channels, and often reaches a person who cannot judge the
+pitch at all.** Every phase below targets one of those five.
+
+**The operator's stated goal for this block:** the outreach email *"sirf marketing jese nahi lagne
+chahiye — log view karne ke liye majbur hojaye"* — a message a real person feels compelled to open and
+read, and can act on without composing a reply.
+
+### 5B.0 Sequencing logic (read this before reordering anything)
+
+The order is forced by four real dependencies, not preference:
+
+1. **A structure must exist before anything can live inside it.** Today an outreach email body is a
+   single free-form prose blob (`services/outreach/email_service.py`'s `_build_html()` escapes it,
+   linkifies URLs, and optionally appends one video-thumbnail block). Nothing downstream can address
+   "the CTA section" or "the video section", because sections are not objects yet. Phase 12's Yes/No
+   buttons, Phase 13's per-level emails, Phase 14's cross-channel re-render, and Phase 11's own AI
+   cross-sell block all require that composition layer first. It goes first for the same structural
+   reason Phase 8's format engine preceded Phase 9's measurement of it.
+2. **A click can only be captured if there is a button to click.** Phase 12 (interest capture) is
+   meaningless before Phase 11 ships a real button — and it needs the same public-URL surface the
+   one-click unsubscribe endpoint already uses (`Config.PUBLIC_BASE_URL`), so it adds no new
+   infrastructure, only a new signed route.
+3. **Follow-up levels are a content problem, not a plumbing problem.** The cadence machinery already
+   works and is gate-proven (Phase 9 Step 9.3: configurable delays, atomic claim under contention,
+   reply/opt-out exit at every touch). Phase 13 changes *what each touch says*, which needs Phase 11's
+   sections — and, for its final touch, a real per-product services list. Rebuilding cadence would be
+   re-solving a solved problem.
+4. **New paid provider last, again.** Phase 15's standalone prospect finder needs a new external,
+   billable data provider (Apollo.io or equivalent) that has not been chosen or purchased. Same posture
+   that put SMS and voice at the end of Phase 10 — and the same reason: this project has already lost a
+   verification cycle to an exhausted third-party quota (Hunter, 0/50, tracker.md Phase 7 DoD).
+   Phase 15's two halves therefore **gate independently**: 15(A) rides on machinery that already exists
+   and can ship alone.
+
+**Risk ordering runs the same direction.** Phase 11 changes only how an already-approved message is
+composed and rendered — no new external surface. Phase 12 opens a new *public, unauthenticated* HTTP
+route that a stranger can hit, which is a real security surface and is specified as signed and
+tamper-refusing rather than trusted. Phase 15 adds new spend. Deliberately last.
+
+**Relationship to the still-open Phase 10 work.** Steps 10.2 (SMS), 10.3(b) (IG/FB reply-window
+auto-response) and 10.4 (voice) remain deliberately on hold for missing provider credentials
+(tracker.md §A.9), and nothing in Phases 11–15 depends on them. Phase 14 does extend Step 10.3(a)'s
+already-shipped social draft-and-queue, which is live. Phase 10's own gate P10 stays exactly as
+written — a partially-shipped phase is not a skipped gate; the shipped sub-steps passed their own
+criteria, the unshipped ones will pass theirs when they ship.
+
+### 5B.1 New data-layer objects introduced across Phases 11–15
+
+**Real current table count: 28, not 27.** §5A.1 projected 27 because `social_message_queue` did not
+exist in that plan — it was added while building Step 10.3(a), where a QC-gated human-send queue turned
+out to need its own state (`QUEUED`/`SENT`/`DISMISSED`) rather than living inside `outreach_logs`, which
+records things that were actually sent. Verified against the live `schema.sql`, not assumed. Phases
+11–15 therefore add Tables **29–31 (total 31)**, plus four columns on existing tables.
+
+| # | Table | Phase | Purpose |
+|---|-------|-------|---------|
+| 29 | `interest_responses` | 12 | one row per real Yes/No click: which lead, which send, which answer |
+| 30 | `prospects` | 15 | person-level contacts found *without* a company lead (standalone finder) |
+| 31 | `prospect_searches` | 15 | the search criteria, provider, result count and **real API spend** per run |
+
+New columns on existing tables:
+
+| Table | Column | Phase | Purpose |
+|-------|--------|-------|---------|
+| `products` | `ai_cross_sell_enabled` | 11 | per-product opt-in for the AI-services cross-sell block (Item 17) |
+| `outreach_logs` | `content_sections` | 11 | the canonical structured content this send was rendered from (JSON) |
+| `leads` | `reference_code` | 12 | short human-readable lead identifier an operator can actually quote |
+| `whatsapp_templates` | `followup_level` | 13 | which follow-up level (1/2/3) this template is written for |
+
+**Two things this block deliberately does NOT add a table for**, because an existing structure already
+holds them correctly:
+- **Our own company contact details** (Item 12's contact block) → `system_settings`, the existing
+  dashboard-editable key/value store (Phase 4 Step 4.4). No schema change at all, and the operator can
+  edit them without a deploy — which is the whole reason that table exists.
+- **The products/services list** for Phase 13's final follow-up touch → the `products` table itself.
+  Inventing a second list of what we sell would immediately drift from the first one.
+
+---
+
+### PHASE 11 — Designed Outreach Composition
+
+**Goal:** turn the outreach email from one block of AI prose into a **structured, designed, personalised
+message** — one that reads like a real person wrote it about *this* business, and looks like a
+professionally built email rather than a text dump.
+
+**Why this is a composition change, not a styling change:** the operator's requirement is a fixed
+*sequence of sections*, each with its own job — a hook that reads like a customer describing their own
+problem, that business's real pain points as bullets, our solution as bullets, a product video, a free-
+trial CTA with a demo button, a one-click interest answer, our contact details, and the compliance
+footer. Today's pipeline cannot express that: `draft_email()` returns `{subject, body}` where `body` is
+undifferentiated prose, so there is no section to skip when an asset is missing, no section for a button
+to attach to, and no section boundary for Phase 14 to re-render for another channel. The sections have
+to become real objects before any of that is possible.
+
+**Step 11.1 — Structured section contract.** `agents/outreach_agent.py`'s `draft_email()` returns
+`sections` — an ordered list of typed blocks (`HOOK`, `PAIN_POINTS`, `SOLUTION`, `VIDEO`, `CTA`,
+`INTEREST`, `CONTACT`, `FOOTER`) with typed payloads (a bullet list is a real list, not a newline-joined
+string). `subject` keeps its existing 3-candidate selection (Step 8.4) unchanged. The existing
+free-form path stays intact for any caller that hasn't opted in, so nothing already live changes
+behaviour on the day this ships.
+
+**Step 11.2 — HTML renderer.** New `services/outreach/email_renderer.py` renders sections to real email
+HTML: **table-based layout, fully inline styles, no external stylesheet, no JavaScript, no web fonts** —
+not a preference, the actual constraint every mail client imposes. Action URLs render as **styled
+buttons, never bare links** (the operator's explicit ask). Every image carries real `alt` text and the
+layout must still read correctly with images blocked, which is the default in a large share of real
+inboxes — so the video block degrades to a visible labelled link, not an empty box.
+
+**Step 11.3 — Graceful section omission.** A section with no real content is **removed entirely** —
+no empty heading, no orphan spacing, no "N/A". This is the operator's explicit requirement (*"agar koi
+section na bhi ho like video na ho to ye bhi handle ho jaye"*) and it extends the rule Phase 8 already
+established for content assets: a missing asset drops its slot rather than being fabricated. The
+difference here is that dropping a slot must now also be *visually* clean, not merely factually honest.
+
+**Step 11.4 — Company contact block from settings.** The contact section (email, mobile, website,
+company profile link) reads from `system_settings`, editable from the Settings page with no deploy.
+Absent values drop out of the block by the same Step 11.3 rule.
+
+**Step 11.5 — AI cross-sell block (Item 17), per-product opt-in.** New `products.ai_cross_sell_enabled`
+(default off). When on, a short factual availability line is appended near the contact block —
+*"we also build AI automation for businesses like yours"* in the agent's own words, grounded in real
+product records. **Explicitly bound by the existing buzzword ban:** this must read as a factual
+statement of what we offer, never as AI hype ("revolutionary", "cutting-edge" are already banned by
+`GUARDRAIL_PREAMBLE` and stay banned here). Off by default and per-product because a highly specific
+niche pitch is diluted, not helped, by a generic second offer.
+
+**Step 11.6 — QC extension.** `review_draft()` additionally verifies **structural** correctness: the
+sections are in the required order, no section is empty-but-present, the CTA/demo URL is a real approved
+asset (reusing the `APPROVED_CONTENT_ASSETS` grounding added 2026-08-21), and the cross-sell line — when
+present — is factual rather than hype. QC's veto stays absolute and still fails closed.
+
+**DoD tests (gate):**
+- A product with no video asset produces an email with **no empty block, no orphan heading, and no
+  broken layout** — checked against the real rendered HTML, not the section list.
+- Every action URL renders as a real styled button; zero bare `<a>` links in the action positions.
+- The same structure, run against two genuinely different real leads, produces genuinely different
+  section content — personalisation proven by real output, not asserted from the prompt.
+- Rendered HTML contains no external stylesheet, no `<script>`, and no remote font; layout still reads
+  correctly with images disabled.
+- The cross-sell block appears **only** for a product with the flag on, and never for one with it off.
+- QC still rejects a buzzword-laden draft and a fabricated URL with the new structure in place.
+
+---
+
+### PHASE 12 — Interest Capture & Instant Alerting
+
+**Goal:** let a lead answer *"are you interested?"* in **one click**, and put that answer in front of
+the operator immediately — with an identifier they can actually use to find the lead.
+
+**Why this is the highest-value single addition in the block:** every engagement signal the system has
+today is *inferred* — an open, a click, a repeat open (Phase 9 Step 9.4 escalates on three). A Yes click
+is **declared**. It is the first first-party statement of intent this product has ever been able to
+collect, and it costs the lead no effort at all, which is exactly why it will convert where a written
+reply does not.
+
+**Step 12.1 — Human-readable lead reference.** New `leads.reference_code` — a short, stable,
+operator-quotable code (the raw UUID `Lead.id` is correct for machines and useless in an alert message).
+Backfilled for existing leads; shown on the lead page and in every alert.
+
+**Step 12.2 — Signed one-click endpoints.** New public routes (same unauthenticated surface class as the
+existing one-click unsubscribe, `Config.PUBLIC_BASE_URL`) carrying an **HMAC-signed token** over
+`lead_id + outreach_log_id + response`, signed with a secret from `.env`. Deliberately no token table:
+signing makes the link tamper-evident without new storage, and forging one requires the secret.
+A bad, expired, or altered token is **refused outright** — never partially trusted, never resolved to a
+"probably this lead" guess.
+
+**Step 12.3 — Record the response.** New Table 29 `interest_responses` with a UNIQUE constraint on
+(`outreach_log_id`, `response`) — which is what makes a double-click, a mail-scanner prefetch, or a
+browser retry **idempotent at the database level** rather than in application logic. Same posture as
+`inbound_conversations`' own dedup constraint (Step 4.1), for the same reason.
+
+**Step 12.4 — CRM state change.** A Yes routes the lead through the **existing** escalation path — the
+same `HOT_LEAD` transition Phase 9 Step 9.4 already uses for repeated opens — and logs an `agent_events`
+row. Deliberately not a parallel status system: the operator already has one place where "leads needing
+attention" appear, and a second one would split their attention.
+
+**Step 12.5 — Admin alert.** Reuses `send_internal_email()` (Step 4.5, already used by Phase 6's stuck
+alerts) and adds an optional WhatsApp admin alert. Configurable from Settings (email / WhatsApp / both).
+Rate-limited on the same principle as the stuck alerts: one alert per real event, never one per tick.
+
+**Step 12.6 — "No" handling.** A No stops further follow-ups for that lead+product and is recorded — but
+is deliberately **not** written to the suppression list. Declining one pitch is not a legal opt-out, and
+conflating the two would silently and permanently destroy contactability that the lead never revoked.
+The unsubscribe link remains the only path into suppression, exactly as today.
+
+**DoD tests (gate):**
+- A real Yes click updates the lead **and** sends exactly one admin alert, and the reference code in
+  that alert resolves to that same lead in the CRM.
+- Clicking the same link twice records once and alerts once — proven against the real DB constraint.
+- A tampered or forged token is refused; no partial trust, no fallback lookup by lead id alone.
+- A No stops the sequence, appears in the CRM, and the lead's contact details are **still not in the
+  suppression list** (verified directly, since this is the failure that would be invisible until the
+  operator tried to contact them again).
+- With no outreach ever sent to a lead, no interest route can be constructed for it at all.
+
+---
+
+### PHASE 13 — Level-Aware Follow-Up Content
+
+**Goal:** make the three follow-up touches **three different conversations**, not the same nudge with
+different delays.
+
+**Why the existing cadence engine is kept as-is:** Phase 9 Step 9.3 already proved the hard parts under
+its own gate — configurable per-product delays, atomic claim under concurrency (no duplicate touch),
+and reply/opt-out exit *at every touch, not just the first*. That machinery is not the problem. The
+problem is that every touch currently receives the same instruction (`is_followup=True` → "write a short
+nudge"), so touch 2 and touch 3 differ only by timing and LLM variance.
+
+**Step 13.1 — Level-aware drafting.** The single `is_followup` boolean is replaced by an explicit
+`followup_level` (1/2/3), each with its own stated communicative goal:
+- **Level 1 — re-present with the asset.** If the first touch carried a video, lead with it; if not,
+  lead with the pain point and the solution. The premise is that the first email was skimmed, not read.
+- **Level 2 — ask an open question.** *"Did you get a chance to look? Anything you'd want to ask?"* —
+  the goal is a reply, not another pitch.
+- **Level 3 — a standing offer, not a chase.** Our contact details plus the real list of products and
+  services as bullets, closing with an explicit "if you ever need this in future, here we are." This is
+  the touch that must not read as pressure, because it is the last one.
+
+Every level renders through Phase 11's section engine, so all three are designed HTML, not plain text —
+and every level carries the demo CTA **when a real demo asset exists** (the Phase 8 rule: present when
+available, silently dropped when not, never fabricated).
+
+**Step 13.2 — Per-level WhatsApp templates.** New `whatsapp_templates.followup_level` so a level can
+resolve its own approved template. The AI template-drafting loop (Step 9.6) is the mechanism for
+producing them — AI drafts, QC gates, a human approves, Meta approves. Until a level's template is
+genuinely approved, that level's WhatsApp touch is **skipped, never substituted with another level's
+template** — sending the wrong pre-approved text is worse than sending nothing.
+
+**Step 13.3 — Per-level measurement.** Each level's `OutreachLog.variant_id` records the level, so
+Step 9.2's existing rollup answers "which level actually earns replies" from real SQL, with no new
+counter. Without this the block ships three new behaviours and no way to know which one works — the
+exact failure §5A.0's measurement-before-adaptation rule exists to prevent.
+
+**Step 13.4 — Trigger on view-without-reply.** A lead who opened but never replied is a legitimate
+follow-up trigger (the operator's own framing). This reuses the real `open_count`/`read_at` signal
+already tracked (Phase 9 Step 9.4), and stays subject to the same autonomous-outreach kill-switch and
+daily pacing caps as every other send.
+
+**DoD tests (gate):**
+- The three levels produce **provably different real output** for the same lead — verified from real
+  LLM output, not from reading the prompt.
+- No level fires before its configured delay.
+- Reply, opt-out, **and** a Phase 12 interest response each exit the sequence at levels 2 and 3, not
+  only at level 1 — Step 9.3's own tests re-run at every level.
+- A level whose WhatsApp template is not approved sends nothing on WhatsApp and never falls back to a
+  different level's template.
+- Per-level sent/seen/replied reconciles against a direct SQL query.
+
+---
+
+### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
+
+**Goal:** make the lead page tell the operator **what actually happened and what happens next**, and let
+them carry the same message to any channel by hand.
+
+**Why these two land in one phase:** both are `LeadDetail.jsx` work on the same conversation panel, and
+both read from the same source — Phase 11's stored `content_sections`. Splitting them would mean
+rebuilding the same screen twice in consecutive phases.
+
+**Step 14.1 — Per-message delivery status.** Each message in the conversation shows its real state —
+Delivered / Seen / Replied / Failed — derived from data that already exists (`OutreachLog.status`,
+`provider_message_id`, `read_at`, `open_count`, and `inbound_conversations`). **Nothing new is
+collected;** this is purely surfacing tracking that has been running since Phase 3's Seen pipeline.
+Where a channel genuinely cannot report a state, it reads `—`, never an optimistic guess — the same
+rule the EOD report already applies to `spam_rate`.
+
+**Step 14.2 — Real WhatsApp message text.** The conversation currently shows the template *name* for
+WhatsApp sends. The real filled-in text is already stored in `OutreachLog.message_body` — show that.
+The template name moves to secondary metadata, where it is useful for debugging and useless to a person
+reading a conversation.
+
+**Step 14.3 — Follow-up stage indicator.** Where this lead is in its sequence — first touch sent, level 1
+done, level 2 scheduled for a real date, or ended and *why* (replied / opted out / said no / exhausted).
+Read from `outreach_sequences`, which already holds all of it.
+
+**Step 14.4 — Cross-channel copy (Item 15).** Platform icons on the lead page (Email / WhatsApp /
+Instagram / Facebook / LinkedIn) copy **that lead's real outreach content**, rendered for that platform:
+HTML for email, platform-appropriate plain text elsewhere (URLs as full links since buttons do not exist
+outside email; the video as a labelled link; the contact block condensed).
+
+**One canonical content object, many renderings** — the platform text is derived from the *same stored*
+`content_sections` the real email was rendered from, never regenerated by a second LLM call. Two
+reasons, both real: a regenerated message drifts from what the lead already received (so a follow-up on
+Instagram would contradict the email), and a second generation is a second spend for content that
+already exists.
+
+**Step 14.5 — Still no auto-send.** This extends Step 10.3(a)'s human-send queue and inherits its hard
+rule unchanged: the operator copies and sends manually. No code path on those platforms sends anything,
+and P10's verify-by-absence check is re-run here rather than assumed to still hold.
+
+**DoD tests (gate):**
+- Per-message status matches a direct SQL query of `outreach_logs`/`inbound_conversations` for a real
+  message on each channel.
+- A real WhatsApp message displays its real filled-in text, never the template name.
+- The follow-up stage shown matches the real `outreach_sequences` row, including the terminal reason.
+- Copy-to-platform yields the **same core content** as the email that was really sent — verified by
+  comparing against the stored `content_sections`, not by reading the two and judging them similar.
+- Re-run P10's absence check: no code path can auto-send on LinkedIn/IG/FB.
+
+---
+
+### PHASE 15 — Person-Level Relevance & Prospect Sourcing
+
+**Goal:** reach a person who can actually **judge** the pitch — and be able to find such people even
+when there is no company lead at all.
+
+**The real failure this fixes**, in the operator's own example: pitching AI automation to a company's
+CEO or HR contact, when the person who can evaluate it is an engineer. The message can be perfect and
+still fail, because it reached someone with no basis to assess it. Phase 7 built the machinery for
+person-level discovery (Step 7.5, role-targeted LinkedIn lookup, gated on `products.target_person_roles`)
+and proved its safety gate (zero wrong-company attachments). What it does not do is decide *which role
+is the right one for this product*.
+
+**Step 15(A).1 — Product-relevant role inference.** For a product whose brief implies technical
+evaluation, the relevant role is inferred **from the product brief itself** and constrained by the
+operator's own `target_person_roles` when set. §16.2's boundary rule holds exactly as before: the human
+sets the boundary, the AI matches inside it — it may not invent a role outside a non-empty list.
+
+**Step 15(A).2 — Multiple relevant people per company.** `lead_contacts` (Table 21) already supports
+many people per lead with role, seniority, decision-maker flag and **source**. This populates it with
+several genuinely relevant people rather than one, each with its source and confidence shown honestly
+(a low-confidence guess must never render like a verified contact — the UI half of P7's gate).
+
+**Step 15(A).3 — Manual outreach to those people.** Deliberately manual for now, per the operator:
+their contact details are surfaced so a human can reach out. No automatic sending to a person-level
+contact in this phase — the "zero wrong-company attachments" guarantee is proven for *attachment*, and
+autonomously messaging an individual employee is a different and higher-consequence action than
+messaging a business.
+
+**Step 15(B).1 — Standalone prospect finder.** A search independent of the discovery pipeline: criteria
+like *"AI developer in Mehsana, 3 years experience"* → real matching people. New Table 30 `prospects`
+(person-level, no parent lead) — deliberately **not** synthetic rows in `leads`, which would corrupt
+every funnel metric the analytics layer computes with people who never went through discovery, scoring,
+or ICP matching.
+
+**Step 15(B).2 — Provider integration + hard spend cap.** Apollo.io or an equivalent, behind the same
+provider-abstraction shape as `services/data_acquisition/`'s existing Serper/Hunter providers. New Table
+31 `prospect_searches` records criteria, provider, result count and **real spend per run**, and a
+configured cap **blocks** the next search rather than warning after the fact. This is a direct lesson
+from real history: Hunter's quota hit 0/50 mid-verification and cost this project a full DoD check
+(tracker.md Phase 7 gate) — a note in a document did not prevent it, so this one is enforced in code.
+
+**Step 15(B).3 — Contact enrichment for prospects.** Email/phone lookup for a found prospect reuses the
+existing enrichment waterfall rather than a parallel one, so suppression, normalization
+(`phone_utils.normalize_phone` with a real country hint) and the idempotency guarantee proven on
+2026-08-22 all apply unchanged.
+
+**DoD tests (gate) — 15(A) and 15(B) gate independently:**
+- 15(A): a person is attached only on a real company match — **zero wrong-company attachments**, P7's
+  exact test re-run, not assumed still passing.
+- 15(A): with `target_person_roles` set, no role outside that list is ever targeted; with it unset, the
+  inferred role is traceable to a real line in the product brief.
+- 15(B): with no provider configured, the finder **refuses** — it must not return an empty result set
+  that is indistinguishable from a real search that found nobody.
+- 15(B): the configured spend cap genuinely blocks the next search, proven by running into it — not by
+  reading the code.
+- 15(B): a prospect never appears in the leads funnel or any pipeline metric.
+- No autonomous send to a person-level contact or prospect exists in this phase — verified by absence.
+
+---
+
 ## 6. Agent system prompt library (`cognition/prompts.py`)
 
 All prompts share a guardrail preamble so the five principles and the buzzword ban are enforced everywhere. Every prompt demands **JSON only** and is called through `call_json()` with a matching schema.
@@ -1503,7 +1877,21 @@ def guard_adaptation(param_name: str):
 | **P8** | two formats produce provably different structures for the same lead · product-scoped assets never leak across products · missing asset ⇒ no fabricated URL · QC still vetoes a bad format-filled draft via a real LLM call |
 | **P9** | variant stats reconcile against direct SQL · opt-out mid-sequence stops every later touch · replied lead exits · no duplicate sends under concurrency · kill-switch off ⇒ zero follow-ups · AI-drafted template cannot reach a real business without QC **and** human approval |
 | **P10** | unconfigured region ⇒ refused, never guessed · SMS suppression/opt-out identical to email/WhatsApp · **no code path can auto-send LinkedIn/IG/FB** (verified by absence) · voice kill-switch off ⇒ zero calls · no consent basis ⇒ never dialled |
+| **P11** | missing asset ⇒ section removed entirely, no empty block or orphan heading in the real rendered HTML · every action URL is a real button, zero bare links · two real leads produce genuinely different section content · no external stylesheet/script/font, readable with images blocked · cross-sell block appears only when that product's flag is on · QC still vetoes buzzwords and fabricated URLs under the new structure |
+| **P12** | one real Yes ⇒ exactly one alert, carrying a reference code that resolves in the CRM · double-click records and alerts once (DB-level constraint, not app logic) · **tampered/forged token refused outright**, never partially trusted · a No stops the sequence but **never lands in the suppression list** · no outreach sent ⇒ no interest route constructible |
+| **P13** | the three levels produce provably different real LLM output · no level fires before its configured delay · reply/opt-out/interest-response exit the sequence at **levels 2 and 3**, not only level 1 · unapproved WhatsApp template ⇒ that level sends nothing, **never another level's template** · per-level sent/seen/replied reconciles against direct SQL |
+| **P14** | per-message status matches direct SQL on every channel, `—` where a channel genuinely can't report · WhatsApp shows real filled-in text, never the template name · follow-up stage matches the real `outreach_sequences` row including terminal reason · copy-to-platform matches the **stored** `content_sections`, never a regenerated message · P10's auto-send absence check re-run and still green |
+| **P15** | **zero wrong-company person attachments** (P7's exact test re-run) · role never invented outside a non-empty `target_person_roles`; when unset, traceable to a real product-brief line · unconfigured provider ⇒ **refused**, never an empty result masquerading as a real search · spend cap genuinely blocks the next search, proven by hitting it · a prospect never enters the leads funnel or any pipeline metric · no autonomous send to a person-level contact (verified by absence) |
 
 Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, an AI that auto-answers a pricing question it should have escalated, or an executive layer that quietly overrides a human-locked parameter.
 
 **P6–P10 note:** these gates follow the same rule, with one addition — several of them are stated as *negative* guarantees ("zero wrong-company attachments", "no code path can auto-send", "zero calls"). Those are deliberately harder to pass than a hit-rate number, because in each case a single false positive reaches a real business or a real person, and no aggregate success rate compensates for that.
+
+**P11–P15 note:** this block adds a third gate style alongside the positive and negative ones — several
+criteria are **"prove it against the real artifact, not the intention"**: check the rendered HTML rather
+than the section list, the real LLM output rather than the prompt that asked for it, the stored content
+rather than two messages that look similar, the spend cap by hitting it rather than by reading it. Every
+one of those phrasings comes from a real failure already recorded in this project's history — a prompt
+that asked for the right thing and got the wrong output twice (tracker.md 2026-08-21), and a quota that
+was documented and still ran out mid-verification. A gate that can be passed by reading code is not a
+gate.

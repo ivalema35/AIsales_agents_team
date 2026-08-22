@@ -335,6 +335,141 @@ mark-sent; with the voice switch off, no UI path can initiate a call.
 
 ---
 
+## 2B. Add-on UI phases (10–14) — added 2026-08-22
+
+Phases 5–9 gave the operator surfaces to **steer** the system. Phases 10–14 are the UI half of
+`MASTER_DEVELOPMENT_PRD.md` §5B (backend Phases 11–15), and they answer a later question:
+**what is actually being said to this lead, what did they say back, and where does this conversation
+stand right now?**
+
+The same 1:1 pairing rule applies — no UI phase starts before its backend phase's DoD gate is green.
+§1.2's design tokens and §1's "improved, not basic" rules apply throughout. Three additions specific to
+this block:
+
+- **The email is now a designed artifact, so the CRM must be able to show it as one.** Until now the
+  operator could read what the AI wrote as text. From Phase 11 onward what actually lands in an inbox is
+  rendered HTML with buttons and images — and a plain-text preview of that is a different artifact from
+  the thing being sent. A preview that does not match the real send is worse than no preview.
+- **A declared answer must never render like an inferred one.** "This lead clicked Yes" and "this lead
+  opened it three times" are different kinds of fact (Intelligence PRD §17.2). Showing them in the same
+  visual register would flatten exactly the distinction that makes the first one valuable.
+- **Anything the operator is meant to send by hand must be genuinely one action away.** The social queue
+  proved this pattern in Phase 9; here it extends to every channel. A "copy" that needs the operator to
+  select text manually has not been built.
+
+### Phase 10 — Email Composition Preview & Controls  *(backend Phase 11)*
+
+**Goal**: let the operator see, and trust, exactly what a real lead will receive.
+
+- **Real rendered preview against a real lead** — the actual HTML, in an iframe, not a text
+  approximation. Pick a lead, pick a product, see the real email. This extends UI Phase 7's format
+  preview, which previewed the *content*; this previews the *artifact*.
+- **Section-level visibility**: which of the eight sections rendered, and which were dropped and why
+  ("no video asset for this product", "no case study matched this lead"). A dropped section must be
+  visibly *accounted for*, not silently absent — otherwise the operator cannot tell a correct omission
+  from a broken generator.
+- **Images-blocked toggle** in the preview, because that is the real default state in a large share of
+  inboxes. If the email only works with images on, the operator should discover that here rather than
+  from a flat reply rate.
+- **Company contact block editing** (Settings): email, mobile, website, company profile link — the
+  values that appear in every outgoing message, editable without a deploy.
+- **AI cross-sell toggle** on the product form, off by default, with plain-language copy explaining that
+  it appends a factual "we also build AI automation" line — and that it is worth leaving off for a
+  narrow, specific pitch.
+
+**DoD**: the preview is byte-identical to what the send path actually produces for that lead; a product
+with no video asset previews cleanly with the omission visibly explained.
+
+### Phase 11 — Interest Signals & Alerting  *(backend Phase 12)*
+
+**Goal**: make a declared "yes" impossible to miss, and instantly traceable to a real lead.
+
+- **Lead reference code** shown prominently on the lead page and copyable — the same code that appears
+  in alerts. An alert naming an identifier the operator cannot find in the UI is an alert that wastes
+  their time.
+- **Interest state on the lead**, visually distinct from every inferred engagement signal: a declared
+  Yes is a top-level fact about the lead, not a row in the activity feed. A declared No is shown just as
+  plainly — a lead who has said no is information the operator needs before their next action, not
+  something to bury.
+- **Dashboard surfacing**: leads that clicked Yes appear in the existing alerts/attention panel — the
+  same one that already carries `HOT_LEAD` escalations. Deliberately not a second inbox; the operator
+  already has one place for "needs attention" and splitting it halves the value of both.
+- **Alert channel settings**: email / WhatsApp / both, with the admin destination editable. State
+  plainly which channels are currently armed — an alerting feature whose delivery state is ambiguous is
+  the same class of safety defect as an ambiguous kill-switch (Phase 9's note).
+- **A "No" must never look like an unsubscribe.** They are different facts with different legal weight
+  (Intelligence PRD §17.2), and the UI is where an operator would most easily conflate them.
+
+**DoD**: a real Yes click surfaces on the dashboard and the lead page with the reference code matching
+the alert; a lead who clicked No is visibly distinct from a lead who unsubscribed.
+
+### Phase 12 — Follow-Up Level Manager  *(backend Phase 13)*
+
+**Goal**: make the three-touch sequence something the operator can see, understand and tune.
+
+- **Per-level configuration** on the product: the delay before each level, and whether that level is
+  active at all. Existing cadence values must migrate visibly, not silently reinterpret themselves.
+- **Per-level preview** — what level 1, 2 and 3 actually say for a real lead, side by side. This is the
+  fastest way to catch the failure this phase exists to fix: three touches that read as the same message.
+- **Per-level performance** (extends UI Phase 8's variant view): sent / seen / replied per level, so
+  "does the third touch earn anything?" is answerable from real data. `—` where no real signal exists,
+  never a fabricated zero.
+- **WhatsApp template state per level**: which level has an approved template and which does not — and
+  plainly that a level without one **sends nothing on WhatsApp**, rather than substituting another
+  level's text. This is a case where the honest explanation prevents a support question and a wrong
+  assumption at the same time.
+
+**DoD**: the three levels preview as visibly different messages for one real lead; a level with no
+approved WhatsApp template says so explicitly rather than appearing merely empty.
+
+### Phase 13 — Conversation Transparency & Cross-Channel Share  *(backend Phase 14)*
+
+**Goal**: the lead page answers *"what happened, and what happens next"* without an SQL query.
+
+- **Per-message status** on every message in the conversation panel — Delivered / Seen / Replied /
+  Failed — with `—` where a channel genuinely cannot report it. All of this data already exists; this is
+  the phase where it stops being invisible.
+- **Real WhatsApp text** in the conversation, replacing the template name. The template name moves to
+  secondary metadata where it belongs — useful when debugging, meaningless when reading a conversation.
+- **Follow-up stage indicator**: touch 1 sent, level 1 done, level 2 scheduled for a real date — or
+  ended, with the real reason (replied / opted out / said no / exhausted). An ended sequence must never
+  look like a stalled one.
+- **Cross-channel share**: the platform icons already on the lead page become one-click copy actions —
+  the same content, rendered for that platform. Copying must be a single click with visible confirmation,
+  and the UI must say plainly that the operator sends it manually.
+- **Make the reuse visible**: the operator should be able to tell that what they are copying is *the same
+  message the lead already received by email*, not a newly written one. That is the entire point of the
+  design (Intelligence PRD §17.4), and it is only reassuring if it is legible.
+
+**DoD**: per-message status matches a direct SQL query for a real message on each channel; a WhatsApp
+message shows real text; copied platform content matches the stored content of the real send.
+
+### Phase 14 — Prospect Finder & Person Relevance  *(backend Phase 15)*
+
+**Goal**: find and reach the person who can actually judge the pitch.
+
+- **Person relevance on the lead** (extends UI Phase 6's contacts section): show *why* each person was
+  targeted — the role, its source, its confidence, and which product's brief made that role relevant.
+  A low-confidence guess must not render like a verified contact; that is the UI half of the backend's
+  zero-wrong-attachment gate, and it has been a standing rule since Phase 6.
+- **Standalone prospect finder**: a real search screen — criteria in ("AI developer in Mehsana, 3 years
+  experience"), real people out. Its own route, not bolted onto the leads list, because these are a
+  different population.
+- **Spend visible before the search, not after.** Show the estimated cost and the remaining cap *before*
+  the operator runs it — the same rule UI Phase 6 already applies to the backfill run, and for the same
+  real reason: this project has already lost a verification cycle to a third-party quota that ran out
+  without warning.
+- **Prospects are visibly not leads.** Different route, different visual treatment, and absent from every
+  funnel chart. If a prospect can be mistaken for a lead in the UI, the funnel numbers become quietly
+  wrong in a way nobody notices for weeks.
+- **Manual outreach only**: a prospect's contact details are shown so a human can reach out. There is no
+  send button, and the UI should not imply one exists.
+
+**DoD**: a search with no provider configured says so explicitly rather than returning an empty result
+set; a prospect appears in no pipeline metric anywhere in the CRM.
+
+---
+
 ## 3. Sequencing note
 
 Phases run in order (1 → 2 → 3 → 4), matching the collaboration protocol already used for

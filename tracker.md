@@ -2775,3 +2775,73 @@ T20 `system_heartbeats` · T21 `lead_contacts` · T22 `message_formats` · T23 `
 T24 `outreach_sequences` · T25 `whatsapp_templates` · T26 `channel_policies` · T27 `social_message_queue`
 · T28 `call_logs` (Step 10.4, not yet built)
 (+ 2 optional `products` columns, + `campaign_variants` finally used)
+
+---
+
+## 5B. Add-on Phases 11–15 (planned 2026-08-22) — Batch 2 post-launch requirements
+
+**Source:** user ke 6 naye requirements (`NEW_REQUIREMENTS_STAGING.md` Batch 2, Items 12–17, saare ab
+`MERGED`). Full spec: `MASTER_DEVELOPMENT_PRD.md` **§5B** · cognitive contract:
+`AI_Sales_Intelligence_PRD_v2.md` **Chapter 17** · UI: `CRM_UI_UX_PLAN.md` **§2B**.
+
+**Batch 1 vs Batch 2 ka farak (ye planning ka core insight hai, yaad rakhna):** Batch 1 (Phases 6–10)
+ka complaint tha *"system kaam karta hai lekin main use dekh/steer/measure nahi kar sakta"* — teeno ab
+solve ho chuke hain. Batch 2 ka complaint **poori tarah alag shape ka hai**, aur wo tabhi dikha jab
+system sahi kaam karne laga: message competent hai lekin persuasive nahi, interested lead ko reply
+likhna padta hai, teeno follow-up ek jaisa hi bolte hain, email aur Instagram ka content alag-alag ho
+jaata hai, aur pitch aksar aise insaan tak pahunchta hai jo usse judge hi nahi kar sakta. **Paanch
+failures, jo sab "system correctly kaam kar raha hai" ke BAAD dikhte hain** — isiliye Batch 1 me inme se
+ek bhi visible nahi tha.
+
+**Sequence: 11 → 12 → 13 → 14 → 15** (poora reasoning MASTER §5B.0 me, 4 real dependencies):
+1. **Structure pehle** — aaj email body ek single prose blob hai (`_build_html()` sirf escape+linkify+
+   video-thumbnail karta hai). Sections "objects" nahi hain, isliye na koi button attach ho sakta hai,
+   na koi section skip ho sakta hai, na koi doosra channel usse re-render kar sakta hai. Phase 12/13/14
+   sab isi par khade hain.
+2. **Button ke bina click capture ho hi nahi sakta** — Phase 12, Phase 11 ke baad hi.
+3. **Follow-up levels content problem hain, plumbing nahi** — cadence machinery (Step 9.3) already
+   gate-proven hai (delays, atomic claim, reply/opt-out exit har touch pe). Sirf har touch ka *matlab*
+   badalna hai.
+4. **Naya paid provider aakhir me** — Apollo.io (Phase 15B) abhi decide hi nahi hua; bilkul wahi posture
+   jo Phase 10 me SMS/voice ke liye thi, aur wahi real wajah: is project ne pehle hi ek DoD verification
+   cycle Hunter ke khatam quota (0/50) ki wajah se ganwaya hai.
+
+| Phase | Kya | Items | UI phase |
+| :-- | :-- | :-- | :-- |
+| **11** | Designed Outreach Composition — 8 typed sections, real HTML renderer (table-layout, inline styles, **button CTAs not links**), graceful section-omission, company-contact block from `system_settings`, AI cross-sell (per-product opt-in), QC structural review | 12, 17 | UI 10 |
+| **12** | Interest Capture & Instant Alerting — human-readable `leads.reference_code`, **HMAC-signed** public Yes/No routes, `interest_responses` (DB-level idempotency), existing `HOT_LEAD` escalation reuse, admin email/WhatsApp alert | 13 | UI 11 |
+| **13** | Level-Aware Follow-Up Content — `is_followup` boolean → explicit level 1/2/3, har level ka apna communicative goal, per-level WhatsApp templates, per-level measurement | 14 (A+C) | UI 12 |
+| **14** | Conversation Transparency & Cross-Channel Reuse — per-message Delivered/Seen/Replied, real WhatsApp text (template naam ki jagah), follow-up stage, platform-icon copy from **stored** content | 14 (B), 15 | UI 13 |
+| **15** | Person-Level Relevance & Prospect Sourcing — product-brief se relevant role infer, multiple `lead_contacts`, standalone prospect finder + **hard spend cap** | 16 (A+B) | UI 14 |
+
+**Naye tables (28 → 31):** T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31
+`prospect_searches` (P15).
+**Naye columns:** `products.ai_cross_sell_enabled` · `outreach_logs.content_sections` ·
+`leads.reference_code` · `whatsapp_templates.followup_level`.
+**Do cheezon ke liye jaanbujh ke koi nayi table NAHI banayi:** apni company ke contact details →
+`system_settings` (already dashboard-editable, bina deploy edit ho jaate hain — isi liye wo table exist
+karti hai), aur products/services ki list → `products` table khud (ek doosri list banate to dono time
+ke saath drift kar jaati).
+
+**Do design decisions jo explicitly record karne layak hain:**
+- **Item 14 ko do phases me toda** — 14(A)+(C) backend content hai (Phase 13), 14(B) lead-page UI hai
+  (Phase 14), aur 14(B) + Item 15 dono `LeadDetail.jsx` ke usi conversation panel pe kaam karte hain.
+  Alag phases me karte to ek hi screen do baar rebuild hoti. Precedent: Batch 1 me Item 6 bhi aise hi
+  toda tha (Phase 8 candidates → Phase 9 measured).
+- **"No" click suppression list me NAHI jaayega** (Phase 12 Step 12.6) — ek pitch decline karna legal
+  opt-out nahi hai; dono ko mila dena us contactability ko permanently khatam kar deta jo lead ne kabhi
+  revoke ki hi nahi. Suppression sirf unsubscribe se pahunchti hai, jaisa aaj hai.
+
+**Phase 15(A) aur 15(B) independently gate karte hain** — 15(A) already-exist machinery (Step 7.5) par
+chalta hai aur akele ship ho sakta hai, chahe Apollo.io kabhi na aaye.
+
+**P11–P15 gates** MASTER §9 ki table me add ho chuke hain. In gates me ek naya style bhi aaya:
+**"prove it against the real artifact, not the intention"** — rendered HTML check karo, section list
+nahi; real LLM output check karo, prompt nahi; stored content se compare karo, "dono similar lag rahe
+hain" se nahi; spend cap me actually ja ke tako, code padh ke nahi. Har phrasing ek real, already-
+recorded failure se aayi hai (2026-08-21 ka prompt jo sahi maangta tha aur do baar galat output deta
+raha; Hunter ka quota jo documented tha aur phir bhi mid-verification khatam ho gaya). **Jo gate code
+padh ke pass ho jaaye, wo gate hai hi nahi.**
+
+**Status: sirf planning complete hai (2026-08-22), koi build shuru nahi hua.** Phase 11 se shuru hoga,
+usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, tab code.
