@@ -14,6 +14,7 @@ import re
 import requests
 
 from config import Config
+from services.outreach.email_renderer import render_email_html, fetch_video_thumbnail
 
 logger = logging.getLogger(__name__)
 
@@ -44,27 +45,6 @@ def _linkify(escaped_text: str) -> str:
     return _URL_RE.sub(r'<a href="\1" style="color: #2563eb;">\1</a>', escaped_text)
 
 
-def _fetch_video_thumbnail(video_url: str) -> str | None:
-    """Real oEmbed lookup (YouTube/Vimeo's own public, no-auth-needed endpoints) for a
-    real thumbnail image of a real video URL -- never fabricated, never a generic
-    placeholder. Returns None for any unsupported provider or a failed lookup; a missing
-    thumbnail must never block or break a real send, it just means no image block."""
-    try:
-        if "youtube.com" in video_url or "youtu.be" in video_url:
-            resp = requests.get("https://www.youtube.com/oembed",
-                                params={"url": video_url, "format": "json"}, timeout=5)
-            resp.raise_for_status()
-            return resp.json().get("thumbnail_url")
-        if "vimeo.com" in video_url:
-            resp = requests.get("https://vimeo.com/api/oembed.json",
-                                params={"url": video_url}, timeout=5)
-            resp.raise_for_status()
-            return resp.json().get("thumbnail_url")
-    except Exception as exc:  # noqa: BLE001 - display-only, must never break a real send
-        logger.warning("video thumbnail lookup failed for %s: %s", video_url, exc)
-    return None
-
-
 def _build_video_block(body_text: str, content_assets) -> str:
     """A real, clickable thumbnail image for a VIDEO_URL asset the draft actually
     references -- only ever built from a real asset genuinely mentioned in this specific
@@ -75,7 +55,7 @@ def _build_video_block(body_text: str, content_assets) -> str:
         video_url = asset.get("value")
         if not video_url or video_url not in body_text:
             continue
-        thumbnail_url = _fetch_video_thumbnail(video_url)
+        thumbnail_url = fetch_video_thumbnail(video_url)
         if not thumbnail_url:
             return ""
         safe_url, safe_thumb = html.escape(video_url), html.escape(thumbnail_url)
@@ -125,7 +105,7 @@ def _from_header() -> str:
 
 
 def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str,
-               content_assets=None) -> dict:
+               content_assets=None, sections=None) -> dict:
     """Sends via Resend's REST API directly (plain `requests`, no SDK dependency --
     consistent with every other external call in this project). Raises on failure
     rather than swallowing it: the caller is a job handler that already has the job
@@ -137,11 +117,20 @@ def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str
     drafting -- passed through here only so a VIDEO_URL asset the draft actually
     references can get a real clickable thumbnail in the HTML version. Optional and
     None-safe: omitting it is identical to today's plain-linkified-text behavior.
+
+    `sections` (Phase 11 Step 11.2) is Step 11.1's structured draft. When present, the
+    HTML part is built by the designed renderer instead of the legacy linkified-text
+    path; the plain-text part is unchanged either way, since `body_text` is already the
+    text equivalent of those same sections. Absent, every line below behaves exactly as
+    it did before this parameter existed -- which is what keeps the currently-live path
+    untouched while the structured one is being proven.
     """
     if not Config.RESEND_API_KEY:
         raise RuntimeError("RESEND_API_KEY not configured")
 
     full_body = body_text.rstrip() + _build_footer(unsubscribe_url)
+    html_body = (render_email_html(sections, unsubscribe_url) if sections
+                 else _build_html(body_text, unsubscribe_url, content_assets))
 
     resp = requests.post(
         RESEND_API_URL,
@@ -154,7 +143,7 @@ def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str
             "to": [to_email],
             "subject": subject,
             "text": full_body,
-            "html": _build_html(body_text, unsubscribe_url, content_assets),
+            "html": html_body,
             "headers": {"List-Unsubscribe": f"<{unsubscribe_url}>"},
         },
         timeout=15,
