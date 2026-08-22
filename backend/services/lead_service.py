@@ -13,8 +13,9 @@ from __future__ import annotations
 from sqlalchemy import text
 
 from cognition.decision_engine import route_action
-from database.models import Lead, LeadScore
+from database.models import Lead, LeadScore, Product
 from jobs.job_queue import enqueue
+from services.channel_policy_service import get_allowed_channels
 
 ELIGIBLE_TIERS = {"HOT", "WARM"}
 
@@ -33,9 +34,16 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
 
     `allowed_channels`: optional set restricting which channels may be enqueued THIS call
     (e.g. {"EMAIL"} when the WhatsApp daily cap is already used up for today). None means
-    no restriction. If this narrows a lead down to zero usable channels, the lead is left
-    at SCORED (not claimed) rather than claimed with nothing queued -- it's a legitimate
-    candidate for a later tick once budget frees up, not a dead lead.
+    no restriction from the caller -- this is always further intersected with the lead's
+    own product.target_country channel_policies (Phase 10 Step 10.1): a country with no
+    configured policy is EMAIL-only, never guessed wider, and this applies to every caller
+    (the autonomous tick and the manual "Send Outreach Now" trigger alike) -- a region
+    policy is a compliance/reliability fact about the channel, not a business judgment
+    call `force=True` is meant to override (same posture as the QC veto and suppression
+    checks below, which `force=True` also never bypasses). If this narrows a lead down to
+    zero usable channels, the lead is left at SCORED (not claimed) rather than claimed
+    with nothing queued -- it's a legitimate candidate for a later tick once budget frees
+    up, not a dead lead.
 
     `enqueue_jobs=False`: skip creating OUTREACH_EMAIL/OUTREACH_WA jobs -- for a caller
     that only wants this function's atomic SCORED->OUTREACHING claim + eligible-channel
@@ -71,9 +79,12 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
     if not lead:
         return None
 
-    has_email = bool(lead.primary_email) and (allowed_channels is None or "EMAIL" in allowed_channels)
-    has_phone = bool(lead.primary_phone or lead.whatsapp_number) and (
-        allowed_channels is None or "WHATSAPP" in allowed_channels)
+    product = db.get(Product, lead.product_id)
+    region_allowed = get_allowed_channels(db, product.target_country if product else None)
+    effective_allowed = region_allowed if allowed_channels is None else (allowed_channels & region_allowed)
+
+    has_email = bool(lead.primary_email) and "EMAIL" in effective_allowed
+    has_phone = bool(lead.primary_phone or lead.whatsapp_number) and "WHATSAPP" in effective_allowed
     if not has_email and not has_phone:
         return None
 

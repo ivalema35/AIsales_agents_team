@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowLeft, ChevronLeft, ChevronRight, Mail, Phone, Globe, MapPin, User as UserIcon, Building2,
   Gauge, AlertTriangle, Clock, Bot, CheckCircle2, XCircle, AlertCircle,
-  MessageCircle, MessagesSquare, BellOff, Trophy, ThumbsDown,
+  MessageCircle, MessagesSquare, BellOff, Trophy, ThumbsDown, Share2, Copy, Send, X,
 } from "lucide-react";
 import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
@@ -438,6 +438,188 @@ function SectionCard({ title, icon: Icon, children, headerExtra }) {
   );
 }
 
+// Phase 10 Step 10.3 -- AI drafts, a human sends manually from their own real account
+// and marks it sent here. Deliberately no "send" action anywhere in this codebase --
+// LinkedIn has no official cold-messaging API, and Instagram/Facebook's official APIs
+// only permit messaging someone who has already messaged us first.
+const SOCIAL_PLATFORMS = [
+  { key: "LINKEDIN", urlField: "linkedin_url", label: "LinkedIn", Icon: LinkedinIcon },
+  { key: "INSTAGRAM", urlField: "instagram_url", label: "Instagram", Icon: InstagramIcon },
+  { key: "FACEBOOK", urlField: "facebook_url", label: "Facebook", Icon: FacebookIcon },
+];
+
+function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh }) {
+  const [drafting, setDrafting] = useState(false);
+  const [acting, setActing] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function requestDraft() {
+    setDrafting(true);
+    setError(null);
+    try {
+      await api.draftSocialMessage(leadId, platform.key);
+      onRefresh();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDrafting(false);
+    }
+  }
+
+  async function copyText() {
+    try {
+      await navigator.clipboard.writeText(queueItem.message_text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard permission denied -- the text is still visible to select manually */
+    }
+  }
+
+  async function markSent() {
+    setActing(true);
+    try {
+      await api.markSocialSent(queueItem.id);
+      onRefresh();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActing(false);
+    }
+  }
+
+  async function dismissDraft() {
+    setActing(true);
+    try {
+      await api.dismissSocialDraft(queueItem.id);
+      onRefresh();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActing(false);
+    }
+  }
+
+  const Icon = platform.Icon;
+
+  return (
+    <div className="rounded-md border border-slate-200 p-3">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
+          <Icon size={14} className="text-slate-400" /> {platform.label}
+        </div>
+        <a href={profileUrl} target="_blank" rel="noopener noreferrer"
+           className="text-xs text-slate-400 hover:text-slate-700 hover:underline">
+          Open profile
+        </a>
+      </div>
+
+      {!queueItem && (
+        <button
+          onClick={requestDraft}
+          disabled={drafting}
+          className="mt-2 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {drafting ? "Drafting…" : `Draft ${platform.label} message`}
+        </button>
+      )}
+
+      {queueItem && queueItem.status === "QUEUED" && (
+        <div className="mt-2 flex flex-col gap-2">
+          <p className="whitespace-pre-wrap rounded-md bg-slate-50 p-2.5 text-xs text-slate-700">
+            {queueItem.message_text}
+          </p>
+          {queueItem.reasoning && (
+            <p className="text-[11px] italic text-slate-400">Why: {queueItem.reasoning}</p>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={copyText}
+              className="flex items-center gap-1 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
+            >
+              <Copy size={12} /> {copied ? "Copied" : "Copy text"}
+            </button>
+            <button
+              onClick={markSent}
+              disabled={acting}
+              title="Confirm you sent this manually from your own account"
+              className="flex items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Send size={12} /> Mark as Sent
+            </button>
+            <button
+              onClick={dismissDraft}
+              disabled={acting}
+              className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <X size={12} /> Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {queueItem && queueItem.status === "SENT" && (
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <span className="text-xs text-emerald-600">Sent {relativeTime(queueItem.sent_at)}</span>
+          <button
+            onClick={requestDraft}
+            disabled={drafting}
+            className="text-xs font-medium text-slate-500 hover:text-slate-800 disabled:opacity-40"
+          >
+            {drafting ? "Drafting…" : "Draft another"}
+          </button>
+        </div>
+      )}
+
+      {queueItem && queueItem.status === "DISMISSED" && (
+        <div className="mt-2">
+          <button
+            onClick={requestDraft}
+            disabled={drafting}
+            className="text-xs font-medium text-slate-500 hover:text-slate-800 disabled:opacity-40"
+          >
+            {drafting ? "Drafting…" : "Draft another"}
+          </button>
+        </div>
+      )}
+
+      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function SocialOutreachCard({ lead, queue, onRefresh }) {
+  const platforms = SOCIAL_PLATFORMS.filter((p) => lead[p.urlField]);
+  if (platforms.length === 0) {
+    return (
+      <p className="text-xs text-slate-400">
+        No LinkedIn, Instagram, or Facebook profile on file for this lead -- add one under
+        "Contact & profile" to enable drafting.
+      </p>
+    );
+  }
+  return (
+    <div className="flex flex-col gap-2.5">
+      {platforms.map((p) => {
+        const latest = queue
+          .filter((q) => q.platform === p.key)
+          .sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
+        return (
+          <SocialPlatformRow
+            key={p.key}
+            platform={p}
+            profileUrl={lead[p.urlField]}
+            leadId={lead.id}
+            queueItem={latest}
+            onRefresh={onRefresh}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 function relativeTime(dateStr) {
   const then = new Date(dateStr.replace(" ", "T") + "Z").getTime();
   const days = Math.floor((Date.now() - then) / 86400000);
@@ -455,6 +637,7 @@ export default function LeadDetail() {
   const [lead, setLead] = useState(null);
   const [timeline, setTimeline] = useState(null);
   const [adjacent, setAdjacent] = useState(null); // {position, total, prev, next}
+  const [socialQueue, setSocialQueue] = useState([]);
   const [error, setError] = useState(null);
   const [sending, setSending] = useState(false);
   const [sendResult, setSendResult] = useState(null);
@@ -469,6 +652,7 @@ export default function LeadDetail() {
     api.getLead(id).then(setLead).catch((err) => setError(err.message));
     api.getLeadTimeline(id).then(setTimeline).catch((err) => setError(err.message));
     api.getAdjacentLead(id, Object.fromEntries(searchParams)).then(setAdjacent).catch(() => setAdjacent(null));
+    api.listSocialQueue({ lead_id: id }).then(setSocialQueue).catch(() => setSocialQueue([]));
   }
 
   useEffect(refresh, [id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -739,6 +923,10 @@ export default function LeadDetail() {
           </div>
         </SectionCard>
       )}
+
+      <SectionCard title="Social outreach (draft-and-queue)" icon={Share2}>
+        <SocialOutreachCard lead={lead} queue={socialQueue} onRefresh={refresh} />
+      </SectionCard>
 
       {/* Side by side on a real desktop width (xl: 1280px+, matches the responsiveness
          floor in CRM_UI_UX_PLAN.md), stacked below that -- both panels are independently

@@ -413,3 +413,24 @@ class WhatsappTemplate(Base):
     reasoning = Column(Text)  # only for origin=AI -- the drafting agent's own explanation
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+class ChannelPolicy(Base):
+    __tablename__ = "channel_policies"
+    id = Column(String, primary_key=True, default=_uuid)
+    country_code = Column(String, nullable=False, unique=True)  # ISO 3166-1 alpha-2, e.g. "IN", "CA"
+    allowed_channels = Column(Text, nullable=False, default="[]")  # JSON array
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+class SocialMessageQueue(Base):
+    __tablename__ = "social_message_queue"
+    id = Column(String, primary_key=True, default=_uuid)
+    lead_id = Column(String, ForeignKey("leads.id", ondelete="CASCADE"), nullable=False)
+    platform = Column(String, nullable=False)  # LINKEDIN, INSTAGRAM, FACEBOOK
+    message_text = Column(Text, nullable=False)
+    reasoning = Column(Text)
+    status = Column(String, default="QUEUED")  # QUEUED, SENT, DISMISSED
+    sent_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())

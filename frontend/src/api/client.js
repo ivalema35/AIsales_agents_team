@@ -95,6 +95,15 @@ export const api = {
   rejectWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/reject`, { method: "POST" }),
   deleteWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}`, { method: "DELETE" }),
 
+  listSocialQueue: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/social-queue${qs ? `?${qs}` : ""}`);
+  },
+  draftSocialMessage: (leadId, platform) =>
+    request("/social-queue/draft", { method: "POST", body: JSON.stringify({ lead_id: leadId, platform }) }),
+  markSocialSent: (id) => request(`/social-queue/${id}/sent`, { method: "POST" }),
+  dismissSocialDraft: (id) => request(`/social-queue/${id}/dismiss`, { method: "POST" }),
+
   listAlerts: () => request("/alerts"),
 
   getSystemLive: () => request("/system/live"),

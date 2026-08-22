@@ -41,6 +41,26 @@ def _add_missing_columns(raw_conn):
             raw_conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {coltype}")
 
 
+def _seed_default_channel_policy(raw_conn):
+    """Phase 10 Step 10.1: an unconfigured country now falls back to EMAIL-only (never
+    guesses WHATSAPP) -- correct for a genuinely new region, but WITHOUT this seed it
+    would also silently break WhatsApp for every existing India lead the moment this
+    migration runs, since 'IN' is products.target_country's own default and today's
+    real, working behavior there includes WhatsApp. Seeding IN explicitly is what makes
+    the step's own DoD promise ("an Indian lead is unaffected") actually true, not just
+    stated. Idempotent -- only inserts if no row for 'IN' exists yet, so a dashboard
+    admin who later edits this policy is never overwritten by a re-run.
+    """
+    row = raw_conn.execute(
+        "SELECT 1 FROM channel_policies WHERE country_code='IN'"
+    ).fetchone()
+    if row is None:
+        raw_conn.execute(
+            "INSERT INTO channel_policies (id, country_code, allowed_channels) "
+            "VALUES (lower(hex(randomblob(16))), 'IN', '[\"EMAIL\", \"WHATSAPP\"]')"
+        )
+
+
 def run():
     with engine.begin() as conn:
         raw = conn.connection
@@ -52,6 +72,7 @@ def run():
         _add_missing_columns(raw)
         with open("database/schema.sql", "r", encoding="utf-8") as f:
             raw.executescript(f.read())
+        _seed_default_channel_policy(raw)
     print("Schema applied.")
 
 

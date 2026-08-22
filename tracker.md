@@ -2411,6 +2411,146 @@ kam milenge).
 - ~~`sales_system.db` gitignore-vs-commit question~~ — **✅ RESOLVED 2026-08-19**: untracked from git on both machines (`git rm --cached` + `.gitignore`), file kept on disk. Reason the earlier "commit it" decision was reversed: once the VPS went live, local dev data and the VPS's real production data genuinely diverged, so keeping a binary DB in git meant one careless `git pull` could overwrite real leads.
 - ~~**Dashboard: claiming a HOT lead makes it disappear from the Kanban board**~~ — **✅ RESOLVED 2026-08-17**, `PipelineKanban.jsx` now shows a "Hot / Escalated" column (see the Section 3 note above).
 
+### ⭐ Phase 10 / Step 10.1 — Region-aware channel routing (2026-08-22)
+
+New Table 26 `channel_policies` (`country_code` UNIQUE, `allowed_channels` JSON array) — keyed by
+`products.target_country` (the ISO 3166-1 alpha-2 code already trusted for phone normalization,
+tracker.md 2026-08-17), deliberately NOT `leads.region_location` (free-text, inconsistently scraped).
+New `services/channel_policy_service.py`'s `get_allowed_channels(db, country_code)` — a country with no
+configured policy row gets EMAIL-only, never a guessed default (MASTER PRD Step 10.1's own wording).
+
+**Wired at a single choke point** — `services/lead_service.py`'s `claim_lead_for_outreach()` now
+resolves the lead's own product's `target_country` and intersects the region-allowed set with whatever
+`allowed_channels` the caller already passed (e.g. the scheduler tick's daily-cap-narrowed set). This
+means every caller inherits it automatically: the autonomous outreach tick, the manual "Send Outreach
+Now" single-lead trigger, and any future caller — no second call site to remember. **`force=True`
+(human override) does NOT bypass this** — same posture as the QC veto and suppression checks just below
+it in that function: a region/channel-reliability fact is a compliance-shaped guarantee, not the kind of
+business judgment call `force` is meant to override.
+
+**Real regression risk caught before it shipped:** without seeding anything, "no policy = EMAIL-only"
+would have silently broken WhatsApp for every existing India lead the moment this migration ran, since
+`IN` is `products.target_country`'s own default and today's real, working behavior there includes
+WhatsApp. Added an idempotent seed (`migrate.py`'s `_seed_default_channel_policy()`) that inserts
+`IN -> ["EMAIL", "WHATSAPP"]` only if no row exists yet (never overwrites an admin's later edit) — this
+is what makes the step's own DoD promise ("an Indian lead is unaffected") actually true, not just
+narrated. Verified on the real local DB after running `migrate.py`: `channel_policies` has exactly one
+seeded row, `IN -> ["EMAIL", "WHATSAPP"]`.
+
+**Verified — 4/4 real checks, disposable DB (`test_phase10_step1.py`), real `claim_lead_for_outreach()`
+calls, matching the step's own DoD wording exactly:**
+1. Indian lead, both contact channels available → both queued, genuinely unaffected.
+2. Canadian lead (policy seeded `CA -> ["EMAIL"]`, an admin's real config) → only EMAIL queued, WhatsApp
+   never even though the lead has a phone number.
+3. Unconfigured region (`"XX"`, no policy row at all) → falls back to EMAIL only, never guesses wider.
+4. Canadian lead with `force=True` → still EMAIL only — confirms the human-override flag does not
+   reach into the region policy, matching its existing "doesn't touch QC/suppression" contract.
+
+Full `app.py` import sanity-checked after the change — no import cycle from the new
+`channel_policy_service` module.
+
+**Deliberately deferred, matching the Phase 8 precedent (8.1 schema-only, UI in the separate, later-
+confirmed 8.5):** no admin API/dashboard UI to edit `channel_policies` yet — today only India (seeded)
+and a hand-inserted Canada row (used for this step's own test) exist. Add the admin surface as its own
+small, separately-confirmed step whenever there's a real second region to configure through it, rather
+than building a UI ahead of a real need.
+
+**Step 10.1 ✅ COMPLETE.** Agla: Step 10.2 — SMS channel (Twilio-class provider, per-country
+compliance hard gate, own kill-switch).
+
+---
+
+### ⭐ Phase 10 / Step 10.2 — SMS channel: DEFERRED (2026-08-22)
+
+User confirmed no SMS provider (Twilio-class) account/credentials exist yet, and hadn't decided on
+one. Building the full mechanism now would mean shipping code that can never be verified end-to-end
+(no real provider to send through) for a channel MASTER PRD itself flags as needing a real, decided
+provider before anything else. **Deliberately paused, not built** — matches this phase's own stated
+risk-ordering (new paid providers are the highest-cost/newest-infra part of Phase 10). Resume once a
+real provider is chosen.
+
+---
+
+### ⭐ Phase 10 / Step 10.3(a) — LinkedIn/Instagram/Facebook draft-and-queue (2026-08-22)
+
+Scoped to just the draft-and-queue half of Step 10.3 (MASTER PRD's own split) — the IG/FB
+reply-window auto-response half needs a real Meta Instagram/Facebook Messaging API connection (a
+connected Page + app permissions) that doesn't exist yet, the same kind of credential gap that
+paused 10.2, so it's deferred alongside it, not built.
+
+**Why draft-and-queue, never auto-send (MASTER PRD's own straight answer, re-confirmed against the
+real codebase before building):** LinkedIn has no official cold-messaging API at all — the only way
+to automate it is browser-driving a real logged-in account, a ToS/permanent-ban risk and a direct
+contradiction of this project's own evasion-free rule. Instagram/Facebook's official APIs only
+permit messaging someone who has already messaged **us** first — no cold-template equivalent to
+WhatsApp. So: AI drafts, QC gates it, a human sends manually from their own real account and marks
+it sent. Grepped the whole backend for `linkedin|instagram|facebook` before writing any code —
+every existing hit was lead-**discovery** code (finding a profile URL via search) or a `graph.
+facebook.com` docstring note about WhatsApp's own unrelated API domain; zero send-capable code path
+existed anywhere, confirming there was nothing to accidentally build on top of.
+
+**New pieces:**
+- Table 27 `social_message_queue` (`lead_id`, `platform`, `message_text`, `reasoning`, `status`:
+  QUEUED/SENT/DISMISSED, `sent_at`).
+- Two new prompts, `SOCIAL_DRAFT_AGENT_SYSTEM_PROMPT` + `SOCIAL_QC_SYSTEM_PROMPT` — deliberately
+  separate from the email ones (same reason `TEMPLATE_QC_SYSTEM_PROMPT` already is its own prompt):
+  there's no system-appended footer/unsubscribe concept on these platforms, so that check is
+  replaced with a platform-length/tone check instead (LinkedIn <300 chars professional,
+  Instagram/Facebook <200 chars casual).
+- `agents/social_draft_agent.py` — `draft_social_message()`, same shape as `outreach_agent.draft_
+  email()`.
+- `agents/quality_controller_agent.py`'s new `review_social_draft()` — same fails-CLOSED contract as
+  `review_draft()`/`review_template_draft()`; a QC-rejected draft is never saved to the queue at all,
+  mirrors the AI-drafted-WhatsApp-template posture (Step 9.6) exactly.
+- `services/outreach/social_queue_service.py` — `request_social_draft()` orchestrates draft→QC→save
+  (max 2 attempts, QC feedback fed back like every other retry loop in this codebase);
+  `mark_sent()`/`dismiss()` for the human's own two actions, both no-ops on a row that isn't
+  currently QUEUED (no silent double-process off a stale click).
+- New `api/social_queue.py` blueprint (`GET /social-queue` with optional `status`/`lead_id`
+  filters, `POST /social-queue/draft`, `POST /<id>/sent`, `POST /<id>/dismiss`).
+- **Dashboard UI** (built in the same step, not deferred like 10.1's admin API — this queue is
+  meant to be actively worked through, unlike a rarely-touched config table): a new "Social
+  outreach" card on each lead's own detail page (draft per-platform, only for platforms the lead
+  actually has a URL for), and a new "Social Queue" nav page listing every QUEUED item across all
+  leads with Copy/Mark Sent/Dismiss actions.
+
+**Real bug caught by the first real test run, fixed before shipping:** the drafting prompt said "a
+natural closing (e.g. a first name) is fine" — the real LLM output ended a genuine draft with
+"— [Your Name]", a literal bracketed placeholder that would have gone straight into the human-send
+queue as-is. Root cause: a human sending a platform-native message doesn't need a written signature
+at all (the platform itself already shows the sender's real identity, like a text message) — the
+prompt's own guidance was simply wrong. Fixed the prompt (never sign off, end on the question
+itself) **and** added a deterministic backstop (`_strip_placeholder_signoff()`, same "never trust
+blindly" posture as `outreach_agent.py`'s own `_strip_signature`) that strips any trailing
+dash+bracketed-placeholder regardless of what the model does next time. Re-ran the same real test
+after the fix — clean output, no signature of any kind. Also strengthened `SOCIAL_QC_SYSTEM_PROMPT`
+check (e) to reject a signed-off draft as a second line of defense.
+
+**Verified — 6/6 real checks, disposable DB (`test_phase10_step3.py`), real LLM draft+QC calls, no
+network send anywhere on this path (nothing to monkeypatch — no send function exists):**
+1. Real draft+QC for a lead with a genuine `linkedin_url` on file → QUEUED, real message text, real
+   `<=40-word` reasoning.
+2. A lead with no profile URL for that platform → hard refusal, not a guessed/empty draft.
+3. Invalid platform name → hard refusal.
+4. `mark_sent()` on a QUEUED row → flips to SENT with a real timestamp.
+5. `mark_sent()` on an already-SENT row → no-op (`None`), not a silent re-process.
+6. `dismiss()` on a fresh QUEUED row → flips to DISMISSED.
+
+**Real production-mirroring local-DB check** (not a synthetic test): ran the real drafting flow
+against a real existing lead, "Chahal Academy" (Instagram URL on file, no verified pain points yet)
+— produced a real, clean 172-character message, category-relevant hook (honestly disclosed in its
+own reasoning that no verified pain point existed), no signature, ending on a real question. Dismissed
+the test row afterward so it doesn't clutter the real dashboard queue.
+
+Local `app.py`/frontend restarted and re-verified (`/health` OK, HMR clean, `oxlint` clean) after all
+changes.
+
+**Step 10.3(a) ✅ COMPLETE** (draft-and-queue only). Step 10.3(b) (IG/FB reply-window
+auto-response) and Step 10.2 (SMS) both deliberately deferred pending real provider/API credentials
+the user hasn't set up yet — not forgotten, not blocked by anything on this project's own side.
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)
@@ -2562,9 +2702,10 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
   - VPS confirmed in sync at the same commit as local main (`e905d86`) before this check.
 
 ### PHASE 10 — Channel Expansion *(sabse zyada cost/legal risk — deliberately last, har channel alag gate)*
-- [ ] Step 10.1 — region-aware channel routing (`channel_policies` T26); email universal fallback
-- [ ] Step 10.2 — SMS channel; per-country compliance **hard gate** (unconfigured region = refuse), apna kill-switch
-- [ ] Step 10.3 — LinkedIn/IG/FB **draft-and-queue** (AI drafts, human sends) + IG/FB reply-window auto-response
+- [x] Step 10.1 — region-aware channel routing (`channel_policies` T26); email universal fallback — ✅ 2026-08-22, Section 3, 4/4 real checks
+- [ ] Step 10.2 — SMS channel; per-country compliance **hard gate** (unconfigured region = refuse), apna kill-switch — **DEFERRED 2026-08-22**, koi SMS provider account nahi hai abhi
+- [x] Step 10.3(a) — LinkedIn/IG/FB **draft-and-queue** (AI drafts, human sends) — ✅ 2026-08-22, Section 3, 6/6 real checks + real local-DB verification, dashboard UI included
+- [ ] Step 10.3(b) — IG/FB reply-window auto-response — **DEFERRED 2026-08-22**, real Meta IG/FB Messaging API connection (Page + app permissions) nahi hai abhi
 - [ ] Step 10.4 — AI voice calling (`call_logs` T27); **apna alag kill-switch** global se stricter, per-lead consent basis, region gate, assisted-before-autonomous
 - [ ] DoD Gate P10
 
@@ -2575,7 +2716,8 @@ is project ke apne evasion-free rule (§B) ke against. Isliye Step 10.3 me AI sa
 system me aisa koi code path hoga hi nahi jo in platforms par khud se bhej sake — P10 ka gate isko
 **absence se verify** karta hai.
 
-### New tables introduced by Phases 6–10 (19 → 27)
+### New tables introduced by Phases 6–10 (19 → 28)
 T20 `system_heartbeats` · T21 `lead_contacts` · T22 `message_formats` · T23 `content_assets` ·
-T24 `outreach_sequences` · T25 `whatsapp_templates` · T26 `channel_policies` · T27 `call_logs`
+T24 `outreach_sequences` · T25 `whatsapp_templates` · T26 `channel_policies` · T27 `social_message_queue`
+· T28 `call_logs` (Step 10.4, not yet built)
 (+ 2 optional `products` columns, + `campaign_variants` finally used)

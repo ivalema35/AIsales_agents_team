@@ -21,6 +21,7 @@ from api.auth import auth_bp
 from api.message_formats import message_formats_bp
 from api.content_assets import content_assets_bp
 from api.whatsapp_templates import whatsapp_templates_bp
+from api.social_queue import social_queue_bp
 
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
 # the login endpoints themselves, health checks, and the handful of routes real external
@@ -73,6 +74,7 @@ def create_app():
     app.register_blueprint(message_formats_bp)
     app.register_blueprint(content_assets_bp)
     app.register_blueprint(whatsapp_templates_bp)
+    app.register_blueprint(social_queue_bp)
 
     @app.route("/health")
     def health():

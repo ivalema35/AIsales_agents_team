@@ -8,6 +8,7 @@ import LeadDetail from "./pages/LeadDetail";
 import Settings from "./pages/Settings";
 import Analytics from "./pages/Analytics";
 import WhatsappTemplates from "./pages/WhatsappTemplates";
+import SocialQueue from "./pages/SocialQueue";
 import SystemMonitor from "./pages/SystemMonitor";
 import Login from "./pages/Login";
 import SystemStatusDot from "./components/SystemStatusDot";
@@ -36,6 +37,9 @@ function Nav({ onLogout }) {
         </NavLink>
         <NavLink to="/whatsapp-templates" className={linkClass}>
           WA Templates
+        </NavLink>
+        <NavLink to="/social-queue" className={linkClass}>
+          Social Queue
         </NavLink>
         <NavLink to="/leads" className={linkClass}>
           Leads
@@ -99,6 +103,7 @@ export default function App() {
               <Route path="/leads" element={<Leads />} />
               <Route path="/leads/:id" element={<LeadDetail />} />
               <Route path="/whatsapp-templates" element={<WhatsappTemplates />} />
+              <Route path="/social-queue" element={<SocialQueue />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/system" element={<SystemMonitor />} />

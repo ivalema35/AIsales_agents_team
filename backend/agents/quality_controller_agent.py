@@ -9,7 +9,9 @@ import json
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import QUALITY_CONTROLLER_SYSTEM_PROMPT, TEMPLATE_QC_SYSTEM_PROMPT
+from cognition.prompts import (
+    QUALITY_CONTROLLER_SYSTEM_PROMPT, TEMPLATE_QC_SYSTEM_PROMPT, SOCIAL_QC_SYSTEM_PROMPT,
+)
 
 
 
@@ -203,5 +205,46 @@ EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
 
     result = {"approved": approved, "confidence_score": confidence_score, "rejection_reasons": reasons}
     log_agent_event(db, "QC", None, "REVIEW_TEMPLATE_DRAFT", confidence_score, "HIGH",
+                    "APPROVED" if approved else "REJECTED", payload={"reasons": reasons})
+    return result
+
+
+def review_social_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None) -> dict:
+    """QC gate for a social-platform draft (Phase 10 Step 10.3 -- LinkedIn/Instagram/
+    Facebook) before it's ever queued for a human to review and send manually. Deliberately
+    a separate prompt from review_draft(), same reason review_template_draft() already is:
+    there is no system-appended footer/unsubscribe concept on these platforms (a human
+    sends this from their own real account), so platform-length/tone norms replace that
+    check instead. Same fails-CLOSED contract as review_draft()/review_template_draft().
+    """
+    prompt = SOCIAL_QC_SYSTEM_PROMPT + f"""
+DRAFT: {json.dumps(draft, ensure_ascii=False)}
+VERIFIED_PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
+PRODUCT_BRIEF: {json.dumps(product_brief or {}, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.1)
+    except LLMError as exc:
+        log_agent_event(db, "QC", lead_id, "REVIEW_SOCIAL_DRAFT", 0.0, "HIGH", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return {"approved": False, "confidence_score": 0.0,
+                "rejection_reasons": ["QC agent unavailable -- failing closed, not queued"],
+                "suggested_corrections": ""}
+
+    approved = data.get("approved") is True
+    try:
+        confidence_score = max(0.0, min(1.0, float(data.get("confidence_score"))))
+    except (TypeError, ValueError):
+        confidence_score = 0.0
+
+    reasons = data.get("rejection_reasons")
+    if not isinstance(reasons, list):
+        reasons = []
+    reasons = [str(r)[:200] for r in reasons]
+    corrections = str(data.get("suggested_corrections", ""))[:300]
+
+    result = {"approved": approved, "confidence_score": confidence_score,
+              "rejection_reasons": reasons, "suggested_corrections": corrections}
+    log_agent_event(db, "QC", lead_id, "REVIEW_SOCIAL_DRAFT", confidence_score, "HIGH",
                     "APPROVED" if approved else "REJECTED", payload={"reasons": reasons})
     return result

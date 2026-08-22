@@ -416,6 +416,40 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Phase 10 Step 10.1 -- which channels are actually safe/reliable to use in a given
+-- country, keyed by products.target_country (the same ISO 3166-1 alpha-2 code already
+-- trusted for phone-number normalization, tracker.md 2026-08-17 -- not the free-text,
+-- inconsistently-scraped leads.region_location). A country with no row here gets NO
+-- guessed default beyond EMAIL (the one channel with no per-country restriction) --
+-- the whole point is refusing to guess, not silently allowing everything.
+CREATE TABLE IF NOT EXISTS channel_policies (
+    id                TEXT PRIMARY KEY,
+    country_code      TEXT NOT NULL UNIQUE,  -- ISO 3166-1 alpha-2, e.g. 'IN', 'CA'
+    allowed_channels  TEXT NOT NULL,         -- JSON array, e.g. ["EMAIL", "WHATSAPP"]
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Phase 10 Step 10.3 -- AI drafts a LinkedIn/Instagram/Facebook message, QC gates it (a
+-- rejected draft is never saved here at all, same "never even reaches review" posture as
+-- whatsapp_templates' AI-drafted rows), and ONLY a QC-approved row appears here for a
+-- human to review and send manually from their own real account. No code path anywhere
+-- in this codebase ever sends one of these automatically -- MASTER PRD Step 10.3's DoD
+-- gate verifies this by absence, deliberately (LinkedIn has no official cold-messaging
+-- API at all; Instagram/Facebook's official APIs only permit messaging someone who has
+-- already messaged us first).
+CREATE TABLE IF NOT EXISTS social_message_queue (
+    id            TEXT PRIMARY KEY,
+    lead_id       TEXT NOT NULL,
+    platform      TEXT NOT NULL,          -- LINKEDIN, INSTAGRAM, FACEBOOK
+    message_text  TEXT NOT NULL,
+    reasoning     TEXT,                   -- the drafting agent's own <=40-word explanation
+    status        TEXT DEFAULT 'QUEUED',  -- QUEUED, SENT, DISMISSED
+    sent_at       TIMESTAMP,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
@@ -435,3 +469,5 @@ CREATE INDEX IF NOT EXISTS idx_sequences_lead_channel  ON outreach_sequences (le
 CREATE INDEX IF NOT EXISTS idx_wa_templates_status     ON whatsapp_templates (status, purpose);
 CREATE INDEX IF NOT EXISTS idx_wa_templates_product     ON whatsapp_templates (product_id);
 CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);
+CREATE INDEX IF NOT EXISTS idx_social_queue_lead      ON social_message_queue (lead_id, platform);
+CREATE INDEX IF NOT EXISTS idx_social_queue_status    ON social_message_queue (status, created_at);
