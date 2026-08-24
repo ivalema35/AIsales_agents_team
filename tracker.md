@@ -2600,6 +2600,97 @@ immediately after.
 
 ---
 
+### ⭐ Phase 11 / Steps 11.1, 11.2, 11.3, 11.6 — Designed outreach composition (2026-08-24)
+
+**Step 11.1 — structured section contract.** New `draft_structured_email()` in
+`agents/outreach_agent.py` returns typed, ordered sections instead of a prose blob. Deliberately a
+SEPARATE function from `draft_email()`, so every caller live today keeps running unchanged.
+
+**The safety-critical decision was who writes a URL.** The model authors only prose (hook, bullets,
+CTA copy) and is told explicitly to write no URL at all; every real link is inserted by
+`_assemble_sections()` from the approved `content_assets` list. A fabricated URL is therefore
+**structurally impossible** rather than prompt-discouraged — the same posture the content library
+itself already took (the boundary does the safety work, not the instruction). Proven, not asserted:
+with no assets supplied at all, the whole draft contains zero URLs.
+
+**Real correction from the operator, mid-step:** the first cut hardcoded VIDEO and DEMO. They pointed
+out the rule has to hold for **any** optional section they add later — a testimonial, a case study,
+anything. Replaced with an ordered `ASSET_SECTIONS` table: adding one is a single row, and it inherits
+the omission behaviour automatically rather than needing someone to remember to reimplement it.
+Verified by removing each of the four declared types one at a time — each dropped alone, none
+disturbed the others.
+
+**Step 11.2 — HTML renderer** (`services/outreach/email_renderer.py`). Every constraint is imposed by
+real mail clients, not preference: table layout (Outlook renders through Word and ignores flex/grid),
+fully inline styles (Gmail strips `<style>`), no JS/web fonts/remote CSS, and buttons built as a table
+wrapping an `<a>` — a styled `<a>` alone collapses to plain text in Outlook. The video block always
+carries a visible caption link beneath the thumbnail, because with images blocked (the default in a
+large share of inboxes) an image-only link is an invisible one.
+
+**Step 11.3 — graceful omission** is inherited, not re-implemented: 11.1 only ever appends a section
+that has real content, so the renderer has no empty-section branch because an empty section never
+arrives. The minimal render (no video, case study, testimonial or contact) leaves no empty card, no
+orphan heading and no stray image.
+
+**Step 11.6 — QC structural review.** `review_draft()` now gets a `STRUCTURED_DRAFT` block when the
+draft carries sections.
+
+**Found live, on the very first real structured send:** QC rejected two consecutive drafts for
+*"footer/signature-style closing content"* that was in fact the CTA section. QC only ever sees the
+flat-text preview, in which the CTA's closing line sits at the end and reads exactly like an
+agent-written sign-off. **QC was applying a correct rule to a shape nobody had told it about** — the
+same failure mode as 2026-08-21, when it flagged genuine approved links because it had never been
+shown the asset list. The new block names the section types and carves out three things: the CTA's
+copy belongs to the template and is not a sign-off; the compliance footer is appended *after* review
+so its absence is correct; and URLs in asset-backed sections were inserted by the system. It also adds
+the two structural checks the phase promises — sensible order, no section present but empty.
+
+**Design: four rounds, all driven by the operator looking at real sends in a real inbox.**
+1. First render — clean but plain.
+2. Removed the coloured icon bullets, reasoning that a red-dot/green-tick pair is a template signal.
+   **Wrong call** — the operator wanted the icons and said so directly. Restored, but built properly:
+   a 24px tinted disc with the glyph centred in a fixed-size table cell, since vertical centring on an
+   inline element is one of the least reliable things across mail clients.
+3. Operator compared it against real Hostinger/Epic/Crunchyroll emails and asked for that level. The
+   gap was **structural, not decorative**: ours was one flat column with no identity, no title and no
+   grouping. Added a brand header, the subject repeated as an on-page headline, and content grouped
+   into bordered cards under short labels. Two decisions worth keeping: the wordmark is **text, not an
+   image** (a remote logo is invisible wherever images are blocked, so the one element identifying the
+   sender would be first to disappear), and the brand navy is taken from IVinfotech's own site rather
+   than invented.
+4. Operator: *"flat icons use karo"*. The warning badge was rendering as a client's own glossy
+   multi-colour triangle — because U+26A0 is an **emoji codepoint** and the text-presentation
+   selector meant to suppress that is widely ignored. Replaced with a plain `!`, which can never be
+   promoted to emoji. Same fix for the play mark. The check (U+2713) was already outside the emoji
+   range.
+
+**Verified:** 8/8 real checks on the section contract (typed ordered sections, every URL traceable to
+an approved asset, each optional type dropping independently, no invented URL with no assets,
+plain-text body still produced, malformed bullets coerced not dropped) and 8/8 on the rendered
+artifact — not the section list it came from, per §9's P11–P15 note (client constraints, every action
+URL a real button, readable with images blocked, brand surviving images-off, headline present exactly
+once and escaped, absent sections leaving no shells, half-configured interest block refusing to
+render, content escaped). Both variants rendered and screenshotted for a real visual check at every
+round.
+
+**Real end-to-end sends** to the project's own test lead (GameZone Visnagar) through the real
+draft→QC→send chain, with its real verified pain points and the real assets configured on production.
+Deliberately no `outreach_log` row: these are operator-requested previews, not pipeline sends, and
+recording them would put sends in the funnel the sequencer never made.
+
+**One real, unresolved conflict, disclosed rather than worked around:** QC rejects *"First month
+free"* on every attempt, correctly — that offer exists nowhere in the product record, so QC reads it
+as an invented discount. The operator's own Item 12 spec asks for exactly that CTA. **Until the offer
+is written somewhere real** (the product description, or a new settings field), every email will fall
+back to a generic CTA. Operator's call for now: *"abhi sahi"* — leave it.
+
+**Still open in Phase 11:** Step 11.4 (company contact block from `system_settings`) and Step 11.5
+(AI cross-sell, per-product opt-in). The renderer already has the CONTACT section; nothing populates
+it yet. The structured path is also not yet wired into `jobs/outreach_handler.py` — that opt-in switch
+is deliberately last, so the live pipeline stays on the proven path until the rest of the phase lands.
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)
@@ -2847,12 +2938,13 @@ padh ke pass ho jaaye, wo gate hai hi nahi.**
 usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, tab code.
 
 ### PHASE 11 — Designed Outreach Composition *(no external dependency — isliye pehle)*
-- [ ] Step 11.1 — structured section contract (`draft_email()` ab typed sections return kare, prose blob nahi)
-- [ ] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — table layout, inline styles, **button CTAs**, images-blocked me bhi readable
-- [ ] Step 11.3 — graceful section omission (asset na ho to section poora hat jaaye, khaali heading nahi)
-- [ ] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho)
+- [x] Step 11.1 — structured section contract — ✅ 2026-08-24, Section 3, 8/8 real checks; naya `draft_structured_email()`, `ASSET_SECTIONS` table se har optional section same rule follow karta hai
+- [x] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — ✅ 2026-08-24, Section 3, 8/8 real checks against the rendered artifact; brand header + headline + bordered cards (4 design rounds, sab operator ke real-inbox feedback se)
+- [x] Step 11.3 — graceful section omission — ✅ 2026-08-24, structurally inherited from 11.1 (empty section kabhi banti hi nahi), minimal render me verified
+- [ ] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — renderer ka CONTACT section ready hai, populate karna baaki
 - [ ] Step 11.5 — AI cross-sell block, `products.ai_cross_sell_enabled` (default OFF, buzzword-ban still applies)
-- [ ] Step 11.6 — QC structural review (order/empty-section/approved-asset/factual-cross-sell)
+- [x] Step 11.6 — QC structural review — ✅ 2026-08-24, Section 3; real bug se aaya (QC ne CTA ko signature samajh ke 2 draft reject kiye)
+- [ ] Wiring — structured path ko `jobs/outreach_handler.py` me opt-in karna (deliberately last, live pipeline tab tak proven path pe)
 - [ ] DoD Gate P11
 
 ### PHASE 12 — Interest Capture & Instant Alerting
