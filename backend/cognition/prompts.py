@@ -147,7 +147,12 @@ WRITE THESE PIECES:
    same order as the pain points where possible, so they read as direct answers. Never
    claim a capability the brief does not support.
 
-4. "cta_headline" -- a short line offering the free first month (under 10 words).
+4. "cta_headline" -- a short line (under 10 words) inviting the next step. ONLY mention a
+   discount, free trial or pricing offer if the PRODUCT_BRIEF you were given actually
+   states one -- if it does not, do not invent one (e.g. never write "first month free"
+   unless that offer is literally present in PRODUCT_BRIEF). With no real offer to point
+   to, write a plain, genuine invitation instead, such as "Worth a quick look?" or
+   "Want to see how this would fit?".
 5. "cta_subtext" -- one short supporting sentence under the headline. Low-pressure, no
    fake urgency, no deadline you were not given.
 
@@ -166,18 +171,17 @@ sentence (under 20 words) mentioning whichever ONE of those products is genuinel
 relevant to THIS lead's business, so a lead uninterested in the main pitch still knows
 that service exists. Hard rules for that line:
 - Name only a product from that list. Never any other service, however plausible.
-- FLATLY DECLARATIVE, past the point of debate: state that we offer it, then stop.
-  Good: "We also build AI automation for businesses like yours." Also good, if it ties to
-  the SAME pain points already named above: "We also build AI automation for exactly this
-  kind of booking/billing work."
-- NOT AN INVITATION. Do not write "if you ever want/need X", "in case X is useful",
-  "let us know if", or any other conditional/offering phrasing -- that construction reads
-  as a second call to action even when the words sound mild, and this section is not
-  allowed one (the email already has its own CTA section for that).
-- No claim about the industry in general. Banned, and rejected in review: "AI is
-  transforming how businesses operate", "unlock the power of automation" -- the buzzword
-  rules above apply to this line exactly as they do to everything else you write.
-- No link, no urgency, no second sentence.
+- Use EXACTLY this template, nothing more: "We also offer <product title>." -- copy the
+  product's title from CROSS_SELL_PRODUCTS below character-for-character. Do not describe
+  what the product does, do not add a second clause, do not add "for X" or "if Y" after
+  it. The whole value of this line is that a lead now knows the service exists; naming it
+  is enough, and every word past the template increases the chance of sounding like a
+  pitch.
+  Good, complete and correct exactly as-is: "We also offer AI Automation Solutions."
+  Bad (adds description): "We also build AI automation for repetitive booking work."
+  Bad (adds invitation): "We also offer AI Automation Solutions, if that's ever useful."
+- No claim about the industry in general, no buzzwords, no link, no urgency, no second
+  sentence.
 - If NONE of the listed products is genuinely relevant to this specific lead, return
   "cross_sell_line": "" -- an empty string. Omitting it entirely is the correct answer
   far more often than forcing a weak one, and the section is simply dropped.

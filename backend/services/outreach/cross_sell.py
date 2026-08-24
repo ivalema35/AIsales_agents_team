@@ -13,6 +13,20 @@ from database.models import Product
 
 logger = logging.getLogger(__name__)
 
+# Every product in this system is conventionally titled "<Company> -- <Service>" (e.g.
+# "IVinfotech -- AI Automation Solutions"). Used verbatim in a cross-sell sentence that
+# already opens with "We also offer...", the company name is redundant and the double
+# dash reads oddly -- "We also offer IVinfotech -- AI Automation Solutions." Real bug,
+# found on the first real end-to-end send: QC's own exact-template check read the
+# "IVinfotech --" prefix as extra text tacked onto the title and rejected it, every time,
+# regardless of retries. Stripped here rather than in the prompt, so both the drafting
+# agent and QC see the same clean name and there is nothing for either of them to disagree
+# about.
+def _display_name(title: str) -> str:
+    if " -- " in title:
+        return title.split(" -- ", 1)[1].strip()
+    return title.strip()
+
 
 def get_cross_sell_products(db, product_id: str) -> list[dict]:
     """Real briefs of the products this product cross-sells, or [] when none is
@@ -47,7 +61,7 @@ def get_cross_sell_products(db, product_id: str) -> list[dict]:
         if not other:
             continue          # deleted since being selected -- quietly stop offering it
         briefs.append({
-            "title": other.title,
+            "title": _display_name(other.title),
             "description": other.description,
             "value_proposition": other.value_proposition,
         })

@@ -2826,14 +2826,69 @@ free"*), so the fix is exactly what was already disclosed under Step 11.1/11.2: 
 written somewhere real (a product field, or a new settings value) before the prompt can safely ask for
 it. Operator's call stands: *"abhi sahi"* — left alone.
 
-**Verified — 7/7 real checks** (`test_phase11_step5.py`, real disposable DB + real LLM calls): empty
-list → no cross-sell; admin's chosen ids resolve to real briefs in order; a discovery-paused product is
-still offered while self-reference/unknown ids are skipped; malformed JSON degrades safely; an empty or
-whitespace-only line drops the section entirely while a real one appends last; a real LLM call names a
-product from the admin's list with no link and no banned hype; and the section renders as quiet muted
-text, never a card or button. Cross-sell's own correctness was end-to-end confirmed via the isolated
-draft→QC real-LLM check above (QC explicitly approving the line itself); the full real SEND remains
-blocked only by the separate, pre-existing, already-disclosed CTA issue.
+**Verified — 8/8 real checks** (`test_phase11_step5.py`, real disposable DB + real LLM calls) — see the
+follow-up entry immediately below for the full story of getting a real send to actually go out; this
+count is post-fix.
+
+---
+
+### Follow-up: getting a real cross-sell send to actually land — three real bugs, one deep (2026-08-24)
+
+User asked for a real test email; getting one out exposed three genuinely separate problems, stacked.
+Recorded in full because the third one is a real, reusable lesson about how far to trust an LLM's own
+self-check even when the rule is written as clearly as it can be.
+
+**Bug 1 — the CTA's own hardcoded discount, now actually fixed (not just disclosed).** Step 11.1's
+prompt literally instructed *"cta_headline -- a short line offering the free first month"* with the
+offer grounded nowhere, so QC rejected it on every single attempt, deterministically, not by chance
+(exact root cause already traced in the entry above). Fixed for real this time: the instruction now
+says to mention a real offer **only if PRODUCT_BRIEF actually states one**, and to write a plain
+invitation ("Worth a quick look?") otherwise. This is the permanent fix, not a one-off workaround — it
+also protects every future real send once this path is wired into the live pipeline.
+
+**Bug 2 — the product's own name broke the exact-template match.** Every real product in this system is
+titled `"<Company> -- <Service>"` (e.g. `"IVinfotech -- AI Automation Solutions"`). Used verbatim in
+`"We also offer <title>."`, the sentence became `"We also offer IVinfotech -- AI Automation
+Solutions."` — QC's own exact-template check read the `"IVinfotech --"` prefix as extra text tacked on
+and rejected it, every attempt. Fixed in `cross_sell.py`'s new `_display_name()`, which strips a
+`" -- "`-separated company prefix before the title ever reaches either prompt, so drafting agent and QC
+see the identical clean name and have nothing to disagree about.
+
+**Bug 3 — the real, deep one: QC's own LLM judgment was unreliable on an OBJECTIVELY correct line, 
+repeatably.** After fixing 1 and 2, QC kept rejecting cross-sell lines that were verified, character-
+for-character, to exactly match its own stated required template — `"We also offer Website
+Development."` against an approved list containing exactly that product. Not occasionally: **3 fresh,
+uncontaminated single-pass calls in a row**, each inventing a different reason ("adds a description",
+"not a bare mention", "goes beyond the allowed pattern") for text that added nothing. One response even
+leaked raw, unparsed JSON syntax into a `rejection_reasons` string
+(`'...approved":false,"confidence_score":0.98,"rejection_reasons":[...'`) — direct evidence the model's
+own generation was getting confused mid-output, not that the content was actually wrong. The most
+likely real cause: `CROSS_SELL_PRODUCTS` in the prompt carries each product's full, richer
+description/value-proposition, and the model appears to have pattern-matched "this product has a rich
+description available" onto "the output line should be richer too", then flagged the deliberately bare,
+correct line as suspiciously incomplete.
+
+**No amount of rewording the instruction fixed this** — tightened it three separate times (flatly
+declarative → exact template → "one-step check, don't debate it") and the failure mode persisted
+unchanged. That itself is the finding: **this was never a wording problem.** The actual fix follows a
+pattern already established twice elsewhere in this exact codebase (`outreach_agent.py`'s
+`_strip_signature`, `_missing_required_asset`, `_strip_placeholder_signoff`) — when a model's own
+output is *objectively, mechanically checkable*, stop asking it to re-judge that fact on every call and
+check it in code instead. `_assemble_sections()` now only ever keeps a `cross_sell_line` that exactly
+equals `f"We also offer {title}."` for one of the admin's own approved products — anything else is
+dropped like any other malformed optional field, never "corrected" or passed through partially. QC's
+own CROSS_SELL prompt block was rewritten to state plainly that the line has *already* been mechanically
+verified and must not be re-evaluated, rather than asking it to re-derive a judgment that had already
+failed three different ways. `review_draft()`'s now-unused `cross_sell_products` parameter was removed
+rather than left as dead code.
+
+**Real end-to-end proof, immediately after the fix:** the exact product name that had failed
+repeatedly (`"AI Automation Solutions"`) now passes on **2/2 fresh attempts**, and a real send with the
+full section set (HOOK/PAIN_POINTS/SOLUTION/VIDEO/CTA/CROSS_SELL/CONTACT) reached
+`ivaiagent05@gmail.com` on the **first** QC attempt (confidence 0.98) — screenshotted and visually
+confirmed. `test_phase11_step5.py` extended to 8/8, with test 6 now asserting an *exact* string match
+against the mechanically-computed expected set rather than a fuzzy word-overlap check, since exactness
+is now a real, structural guarantee rather than a hopeful outcome.
 
 ---
 

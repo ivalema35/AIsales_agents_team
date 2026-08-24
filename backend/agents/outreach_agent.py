@@ -212,7 +212,7 @@ def _pick_asset(content_assets, asset_type):
     return None
 
 
-def _assemble_sections(data: dict, content_assets) -> list[dict]:
+def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> list[dict]:
     """Ordered, typed sections. A section is appended ONLY when it has real content, so
     graceful omission is a property of the structure itself rather than something the
     renderer has to remember to check for -- and it applies uniformly to every optional
@@ -262,13 +262,24 @@ def _assemble_sections(data: dict, content_assets) -> list[dict]:
             cta["button_label"] = _clean_line(demo.get("title"), 40) or "See the demo"
         sections.append(cta)
 
-    # Phase 11 Step 11.5 -- only ever appended when the model actually wrote one. An empty
-    # string is the documented, expected answer when nothing in the admin's cross-sell list
-    # genuinely fits this lead, and it drops the section by the same rule as every other
-    # optional one rather than forcing a weak offer into a real email.
+    # Phase 11 Step 11.5 -- only ever appended when the model actually wrote one AND that
+    # line deterministically matches the required template exactly. Real bug, found live:
+    # QC's own LLM judgment repeatedly rejected drafts where the line was OBJECTIVELY,
+    # character-for-character correct ("We also offer Website Development." against an
+    # approved list containing exactly that product) -- it kept reading the presence of a
+    # real, richer product description elsewhere in its own context as implying the
+    # output line should be richer too, and flagged the deliberately bare, correct line as
+    # suspiciously incomplete. Same "never trust blindly" posture already used elsewhere
+    # in this file (_strip_signature) and this codebase (_missing_required_asset,
+    # _strip_placeholder_signoff): the line's correctness is objectively checkable, so it
+    # is checked in code, not re-litigated by a model on every single call. A model output
+    # that doesn't match the template exactly is dropped like any other malformed
+    # optional field -- never "corrected" or passed through partially.
     cross_sell = _clean_line(data.get("cross_sell_line"), 240)
-    if cross_sell:
-        sections.append({"type": "CROSS_SELL", "text": cross_sell})
+    if cross_sell and cross_sell_products:
+        approved_lines = {f"We also offer {p['title']}." for p in cross_sell_products}
+        if cross_sell in approved_lines:
+            sections.append({"type": "CROSS_SELL", "text": cross_sell})
 
     return sections
 
@@ -352,7 +363,7 @@ relevant to THIS lead, and you may never name a service outside this list:
         selected_subject = subject_candidates[0]
     subject = selected_subject or (subject_candidates[0] if subject_candidates else "")
 
-    sections = _assemble_sections(data, content_assets)
+    sections = _assemble_sections(data, content_assets, cross_sell_products)
     body = _sections_to_text(sections)
     hook_type = str(data.get("hook_type", ""))[:40]
     try:

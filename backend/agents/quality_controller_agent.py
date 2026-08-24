@@ -76,8 +76,7 @@ def _missing_required_asset(body: str, format_sections, content_assets):
 
 
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
-                 is_followup: bool = False, format_sections=None, content_assets=None,
-                 cross_sell_products=None) -> dict:
+                 is_followup: bool = False, format_sections=None, content_assets=None) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
@@ -122,8 +121,20 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
         return {"approved": False, "confidence_score": 0.0, "rejection_reasons": reasons,
                 "suggested_corrections": f"Include this exact real link/value in the email: {missing_asset}"}
 
+    # A structured draft carries BOTH `sections` (the real source of truth) and `body`
+    # (the same content, pre-flattened to plain text, kept only so non-QC consumers like
+    # outreach_logs need no change). Sending both to QC put the identical content in front
+    # of it twice, in two different shapes, and it kept reading the second copy as
+    # something extra to police -- "duplicated section-like lines", "text outside the
+    # approved sections" -- rejecting real, already-correct drafts for content that was
+    # never actually duplicated, just redundantly represented. Found live, several
+    # consecutive real rejections in a row, all citing this same confusion. QC now never
+    # sees `body` at all when `sections` is present -- one representation, nothing to
+    # cross-check against itself.
+    draft_for_qc = {k: v for k, v in draft.items() if k != "body"} if draft.get("sections") else draft
+
     prompt = QUALITY_CONTROLLER_SYSTEM_PROMPT + f"""
-DRAFT: {json.dumps(draft, ensure_ascii=False)}
+DRAFT: {json.dumps(draft_for_qc, ensure_ascii=False)}
 VERIFIED_PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 PRODUCT_BRIEF (the ground truth for judging capability claims -- a claim consistent with
 this is NOT hallucination, even if worded differently than the brief itself):
@@ -141,10 +152,12 @@ alone. Only flag a URL if it does NOT match any of these:
 """
     if draft.get("sections"):
         prompt += f"""
-STRUCTURED_DRAFT (Phase 11 Step 11.6). This draft is NOT free-form prose. The system
-assembled it from typed sections and will RENDER each one itself; the DRAFT.body you are
-reading is only a flat text preview of those sections, so things that look like they run
-together are separate blocks in the real email. The section list, in order:
+STRUCTURED_DRAFT (Phase 11 Step 11.6). This draft is NOT free-form prose. `DRAFT.sections`
+below is the complete and ONLY content that will ever be sent -- the system assembled it
+from typed sections and will RENDER each one itself, as a separate visual block, with
+proper spacing between them. There is no other, longer version of this email anywhere;
+what you are reading in `sections` is everything, review it exactly as given, and do not
+infer or assume any additional prose surrounds it. The section list, in order:
 {json.dumps([s.get("type") for s in draft["sections"]], ensure_ascii=False)}
 
 Three consequences for your checks, all of them carve-outs, not relaxations:
@@ -163,27 +176,26 @@ ALSO CHECK, in addition to (a)-(d): the sections are in a sensible order, and no
 is present but empty (a heading with nothing under it, a bullet list with no bullets).
 """
         if any(s.get("type") == "CROSS_SELL" for s in draft["sections"]):
-            prompt += f"""
-CROSS_SELL section (Phase 11 Step 11.5). One short line mentioning ANOTHER real service
-this company offers, so a lead uninterested in the main pitch still learns it exists. The
-admin explicitly chose which products may be named here; these are their real briefs:
-{json.dumps(cross_sell_products or [], ensure_ascii=False)}
-
-Judge it as follows, and note the first point is a carve-out while the rest are
-TIGHTENINGS, not relaxations:
-- Naming a service from that list is NOT an unsupported claim -- it is a fact about this
-  company's own catalogue, and must not be rejected under check (c) on that basis.
-- It must be FLATLY DECLARATIVE -- a statement that we offer the service, nothing more.
-  "We also build AI automation for businesses like yours" is correct. REJECT any
-  conditional/offering phrasing -- "if you ever want/need X", "in case X is useful",
-  "let us know if" -- even though the words sound mild, that construction functions as a
-  second call to action, and this section is not allowed one (the email's own CTA section
-  already covers that job).
-- It is still fully subject to the buzzword ban. An industry-wide claim ("AI is
-  transforming how businesses operate", "unlock the power of...") is exactly the register
-  this line tends to get written in, and must be REJECTED.
-- Reject it too if it names any service NOT in the list above, adds a link, or runs
-  longer than about one short sentence.
+            # Real bug, found live (repeatable, 3/3 fresh calls): asked to judge this
+            # section itself, this exact same LLM kept rejecting an OBJECTIVELY correct,
+            # template-exact line ("We also offer Website Development.") as "adding a
+            # description" -- apparently pattern-matching the rich product description it
+            # was shown in CROSS_SELL_PRODUCTS onto the (correctly bare) output line. Since
+            # the line's correctness is mechanically checkable, it now IS checked
+            # mechanically, before this prompt is even built (outreach_agent.py's
+            # _assemble_sections -- a CROSS_SELL section only ever exists here if it
+            # already matches "We also offer <one of the admin's approved titles>."
+            # exactly). Telling QC that plainly, instead of asking it to re-derive the
+            # same judgment that kept failing, is the actual fix -- not more wording.
+            prompt += """
+CROSS_SELL section (Phase 11 Step 11.5). A short line naming another real service this
+company offers, so a lead uninterested in the main pitch still learns it exists. This
+line has ALREADY been mechanically verified, in code, to be an exact, bare mention of one
+of the admin's own pre-approved products -- nothing added, nothing off the approved list.
+Do not re-evaluate its wording, length or format; there is nothing left to check about it,
+and it must never be a rejection reason. Treat check (c)'s "unsupported claim" rule as
+already satisfied for this section specifically -- naming an approved product is a fact
+about this company's own catalogue.
 """
     if is_followup:
         prompt += """
