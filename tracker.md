@@ -2942,6 +2942,61 @@ reached a real inbox, opening present, benefit specific, screenshotted.
 
 ---
 
+### ⭐ Phase 11 / Wiring — structured path into `jobs/outreach_handler.py` (2026-08-24)
+
+**Decision, explained to the operator before building (per A.1), then confirmed with "haan ab age
+badhte he":** a fresh touch-1 email (`is_followup = bool(payload.get("sequence_id"))` false) now goes
+through Phase 11's `draft_structured_email()` + `render_email_html()`, which **supersedes** Phase 8's
+admin-format-driven free-form path for EMAIL — Phase 11 is a more complete answer to the same "control
+what the email looks like" goal, not a second parallel option living alongside it. A follow-up touch
+(`sequence_id` present) is deliberately left **completely unchanged** — still the old `draft_email()` +
+`format_sections` path — until Phase 13 gives follow-up touches their own level-aware structured
+content; wiring today's fixed 8-section design into a brief follow-up nudge would silently turn every
+follow-up into a second full pitch, the opposite of Step 9.3's own design.
+
+**Tangential design question, raised by the operator mid-explanation, explicitly parked, not decided:**
+*"me soch raha tha ki admin ye template product wise manage kar sake to bhi achha raheta"* — whether an
+admin should be able to manage the structured template per product (a simple on/off switch vs. deeper
+per-product section customization). Presented both options; operator's answer was to hold, not choose:
+*"suno isse abhi hold karo badme sochege abhi age ka kam karte he."* **Nothing built for this** — no
+toggle, no per-product override — must not be silently added later without the operator revisiting it.
+
+**What changed:** `jobs/outreach_handler.py` now branches on `is_followup` to pick the drafting
+function; `get_cross_sell_products()` (Step 11.5) called only on the non-followup branch; the contact
+section (Step 11.4) is appended to `draft["sections"]` after QC approval (system-supplied, nothing for
+QC to judge, same reasoning as the CTA/footer carve-outs already in `review_draft()`'s prompt); `send_email()`
+now receives `sections=` so it renders via `render_email_html()` instead of the legacy text-linkifying
+`_build_html()`; `OutreachLog.variant_id` gets a new explicit sentinel, `"STRUCTURED_EMAIL"`, alongside
+the existing `"FREE_FORM"` and per-format ids — so Step 9.2's rollup can eventually compare the new
+design's real reply/open rate against the old path's. The manual "Send Outreach Now" trigger
+(`api/leads.py`'s `trigger_outreach`) needed no separate change — it already calls
+`handle_outreach_email` directly.
+
+**Real bug, found by the first test run (test harness, not production code):** the wiring test built a
+`Lead` row and immediately referenced `lead.id` for a `LeadScore`/`LeadReviewInsight` row in the same
+batch before any flush — `Lead.id`'s default is a Python-side `default=_uuid`, which SQLAlchemy only
+applies at flush time, not at object construction, so `lead.id` was still `None` and the insert hit
+`NOT NULL constraint failed: lead_review_insights.lead_id`. Fixed with an explicit `db.flush()` right
+after `db.add(lead)`, before anything references `lead.id`.
+
+**Verified — `test_phase11_wiring.py`, real disposable DB, real LLM drafting + QC calls, only the
+Resend network POST monkeypatched (this project's standing rule: mock the network boundary, never the
+business logic):**
+1. A fresh touch-1 call to the real `handle_outreach_email()` (no `sequence_id`) leaves the lead
+   `OUTREACHED`, writes one real `OutreachLog` row with `status="SENT"` and `variant_id="STRUCTURED_EMAIL"`.
+2. The actual HTML captured at the real send boundary — not a separately-rendered copy — contains the
+   brand header, the configured company contact block (`info@ivinfotech.com`), a grounded cross-sell
+   line naming the admin-chosen product with its mandatory "We also offer" opening, and a demo CTA; and
+   is genuinely the new table-based renderer (`<table` present, no `<script`).
+3. The same lead re-claimed and re-sent as a follow-up (`sequence_id` present) produces HTML with none
+   of the new design's markers (`"WHAT WE NOTICED"` heading absent) — proof the follow-up path is
+   completely untouched.
+
+Not yet done: DoD Gate P11 has not been explicitly re-checked against MASTER_DEVELOPMENT_PRD.md §9's P11
+row; VPS deploy has not happened (major-change confirm-first rule applies, per §A.5).
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)
@@ -3195,8 +3250,14 @@ usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, t
 - [x] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — ✅ 2026-08-24, Section 3, 6/6 real checks + real send; Settings page pe apna alag card
 - [x] Step 11.5 — AI cross-sell block, admin-chosen `products.cross_sell_product_ids` (deviation from spec's boolean, §A.10) — ✅ 2026-08-24, Section 3, 8/8 real checks + real end-to-end send (3-bug saga, deterministic gate added — see follow-up entry)
 - [x] Step 11.6 — QC structural review — ✅ 2026-08-24, Section 3; real bug se aaya (QC ne CTA ko signature samajh ke 2 draft reject kiye)
-- [ ] Wiring — structured path ko `jobs/outreach_handler.py` me opt-in karna (deliberately last, live pipeline tab tak proven path pe)
-- [ ] DoD Gate P11
+- [x] Wiring — structured path `jobs/outreach_handler.py` me live (fresh touch-1 = naya design, follow-up = purana free-form, unchanged) — ✅ 2026-08-24, Section 3, 3/3 real checks against `handle_outreach_email()` directly; per-product template management operator ne explicitly hold kiya
+- [x] DoD Gate P11 — ✅ 2026-08-24, explicitly re-checked against MASTER §9's P11 row (real evidence, not narrative), per the "verify DoD gates explicitly" discipline. All 6 gate criteria confirmed:
+  1. Missing asset ⇒ section removed entirely, no empty block/orphan heading — `ASSET_SECTIONS` omission pattern (Step 11.1/11.3), structurally guaranteed (an empty section is never appended, not filtered after the fact).
+  2. Every action URL is a real button, zero bare links — Step 11.2's `_render_cta()`/`_render_video()` render every asset URL as a table-wrapped `<a>` button; `_assemble_sections()` never lets the AI write a URL itself (system-inserted from `content_assets` only).
+  3. Two real leads produce genuinely different section content — re-verified just now, fresh (`test_p11_dod_two_leads.py`, real LLM calls, no mocking): GameZone Visnagar (no-online-booking) and Patel Dental Clinic (slow WhatsApp replies) on the *same* product produced distinct HOOK and PAIN_POINTS text with zero cross-lead leakage (neither lead's name/detail appeared in the other's draft).
+  4. No external stylesheet/script/font, readable with images blocked — Step 11.2's real-email-client constraints (inline styles only, no `<style>`/`<script>`, video section always carries a visible text caption/link); re-confirmed in the wiring test's own assertion (`<script` absent from real sent HTML).
+  5. Cross-sell block appears only when that product's flag is on — deviated from the spec's boolean to `cross_sell_product_ids` (§A.10, disclosed); the equivalent real behavior holds: `get_cross_sell_products()` returns `[]` when unconfigured (Step 11.5 check #1) and the section is never appended without an admin-approved product name (`_assemble_sections()`'s gate).
+  6. QC still vetoes buzzwords and fabricated URLs under the new structure — `QUALITY_CONTROLLER_SYSTEM_PROMPT` checks (a)-(d) (buzzwords, false claims/pricing/timelines, unauthorized URLs) run unconditionally for every draft, structured or not; the `STRUCTURED_DRAFT`/CROSS_SELL blocks are additive context, not a replacement (confirmed by re-reading `review_draft()` just now — the base prompt is never swapped out).
 
 ### PHASE 12 — Interest Capture & Instant Alerting
 - [ ] Step 12.1 — `leads.reference_code` (human-readable, backfilled)
