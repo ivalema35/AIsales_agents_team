@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MessageCircle, Mail } from "lucide-react";
+import { MessageCircle, Mail, CheckCircle2 } from "lucide-react";
 import { api } from "../api/client";
 import { relativeTime } from "../lib/relativeTime";
 
@@ -109,11 +109,23 @@ export default function AlertsPanel({ alerts, onClaimed, onContacted }) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-slate-900">{a.company_name}</p>
-                    <p className="mt-1 line-clamp-2 text-xs italic leading-relaxed text-slate-600">"{a.message}"</p>
+                    {a.source === "INTEREST_CLICK" ? (
+                      <p className="mt-1 flex items-center gap-1 text-xs font-medium text-emerald-700">
+                        <CheckCircle2 size={12} /> Clicked "Yes, tell me more" on the outreach email
+                      </p>
+                    ) : (
+                      <p className="mt-1 line-clamp-2 text-xs italic leading-relaxed text-slate-600">"{a.message}"</p>
+                    )}
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400">
-                      <span className="rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600">
-                        {a.intent.replace(/_/g, " ")}
-                      </span>
+                      {a.source === "INTEREST_CLICK" ? (
+                        <span className="rounded bg-emerald-50 px-1.5 py-0.5 font-medium text-emerald-600">
+                          DECLARED YES
+                        </span>
+                      ) : (
+                        <span className="rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600">
+                          {a.intent.replace(/_/g, " ")}
+                        </span>
+                      )}
                       <ChannelChip channel={a.channel} />
                       <span>{relativeTime(a.replied_at)}</span>
                     </div>

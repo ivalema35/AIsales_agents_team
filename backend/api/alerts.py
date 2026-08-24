@@ -27,7 +27,7 @@ import json
 from flask import Blueprint, jsonify
 
 from database.db_config import SessionLocal
-from database.models import InboundConversation, Lead, LeadReviewInsight, LeadScore
+from database.models import InboundConversation, InterestResponse, Lead, LeadReviewInsight, LeadScore, OutreachLog
 
 alerts_bp = Blueprint("alerts", __name__, url_prefix="/api/v1/alerts")
 
@@ -58,6 +58,23 @@ def _needs_response(db):
     for c in convs:
         latest_by_lead[c.lead_id] = c  # last write wins -- ascending order, so it's the latest
 
+    # Phase 12 UI follow-up -- a real Yes click is just as much a "needs your attention,
+    # nobody has acted on it yet" signal as a written INTERESTED/DEMO_REQUESTED reply, and
+    # the UI plan is explicit this belongs in the SAME panel, not a second inbox. Joined
+    # against OutreachLog for the real send channel rather than hardcoding "EMAIL" --
+    # interest links only exist on EMAIL sends today, but this stays correct if that ever
+    # changes.
+    yes_clicks = (
+        db.query(InterestResponse, OutreachLog)
+        .join(OutreachLog, InterestResponse.outreach_log_id == OutreachLog.id)
+        .filter(InterestResponse.lead_id.in_(lead_ids), InterestResponse.response == "YES")
+        .order_by(InterestResponse.created_at.asc())
+        .all()
+    )
+    latest_click_by_lead = {}
+    for response, log in yes_clicks:
+        latest_click_by_lead[response.lead_id] = (response, log)  # last write wins, same rule as above
+
     insights = {
         i.lead_id: i for i in
         db.query(LeadReviewInsight).filter(LeadReviewInsight.lead_id.in_(lead_ids)).all()
@@ -66,21 +83,47 @@ def _needs_response(db):
     result = []
     for lead in hot_leads:
         conv = latest_by_lead.get(lead.id)
-        if not conv or conv.intent_detected not in _INTEREST_INTENTS:
+        has_reply_signal = conv is not None and conv.intent_detected in _INTEREST_INTENTS
+        click = latest_click_by_lead.get(lead.id)
+        if not has_reply_signal and not click:
             continue
+
         insight = insights.get(lead.id)
-        result.append({
-            "lead_id": lead.id,
-            "product_id": lead.product_id,
-            "company_name": lead.company_name,
-            "primary_email": lead.primary_email,
-            "primary_phone": lead.primary_phone,
-            "channel": conv.channel,
-            "intent": conv.intent_detected,
-            "message": conv.message_content,
-            "replied_at": str(conv.created_at),
-            "pain_points": json.loads(insight.pain_points_extracted) if insight else [],
-        })
+        # Both signals can exist for the same lead (declined touch 1, replied to touch 2)
+        # -- one row per lead in this panel, so whichever happened more recently wins.
+        use_click = click and (not has_reply_signal or click[0].created_at > conv.created_at)
+        if use_click:
+            response, log = click
+            result.append({
+                "lead_id": lead.id,
+                "product_id": lead.product_id,
+                "company_name": lead.company_name,
+                "primary_email": lead.primary_email,
+                "primary_phone": lead.primary_phone,
+                "channel": log.channel,
+                # Distinct from a written reply's real intent value on purpose -- a
+                # declared Yes click is a different KIND of signal, not a reply the
+                # classifier happened to label the same way, and the UI must not blur them.
+                "source": "INTEREST_CLICK",
+                "intent": "YES_CLICK",
+                "message": None,
+                "replied_at": str(response.created_at),
+                "pain_points": json.loads(insight.pain_points_extracted) if insight else [],
+            })
+        else:
+            result.append({
+                "lead_id": lead.id,
+                "product_id": lead.product_id,
+                "company_name": lead.company_name,
+                "primary_email": lead.primary_email,
+                "primary_phone": lead.primary_phone,
+                "channel": conv.channel,
+                "source": "REPLY",
+                "intent": conv.intent_detected,
+                "message": conv.message_content,
+                "replied_at": str(conv.created_at),
+                "pain_points": json.loads(insight.pain_points_extracted) if insight else [],
+            })
     result.sort(key=lambda r: r["replied_at"], reverse=True)
     return result
 

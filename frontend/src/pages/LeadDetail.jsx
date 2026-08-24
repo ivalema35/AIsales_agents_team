@@ -827,6 +827,22 @@ export default function LeadDetail() {
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           <div className="flex items-center gap-2">
+            {lead.interest_state === "YES" && (
+              <span
+                title={`Clicked "Yes, tell me more" on a real outreach send${lead.interest_state_at ? ` (${relativeTime(lead.interest_state_at)})` : ""}`}
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200"
+              >
+                <CheckCircle2 size={11} /> Said Yes
+              </span>
+            )}
+            {lead.interest_state === "NO" && (
+              <span
+                title={`Clicked "Not right now" -- declined this pitch, still contactable (NOT unsubscribed)${lead.interest_state_at ? ` (${relativeTime(lead.interest_state_at)})` : ""}`}
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700 ring-1 ring-inset ring-blue-200"
+              >
+                <XCircle size={11} /> Said No
+              </span>
+            )}
             {lead.is_suppressed && (
               <span
                 title="This lead's email/phone is in the suppression list -- no future outreach will be sent"

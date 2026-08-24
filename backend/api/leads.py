@@ -8,8 +8,8 @@ from sqlalchemy import and_, or_, func, text
 from cognition.hard_classifiers import strip_quoted_reply
 from database.db_config import SessionLocal
 from database.models import (
-    AgentEvent, InboundConversation, Lead, LeadFirmographics, LeadReviewInsight,
-    LeadScore, OutreachLog, Product, SuppressionEntry)
+    AgentEvent, InboundConversation, InterestResponse, Lead, LeadFirmographics,
+    LeadReviewInsight, LeadScore, OutreachLog, Product, SuppressionEntry)
 from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
 from jobs.outreach_handler import handle_outreach_email
@@ -63,7 +63,8 @@ def _apply_filters(db, query, args):
     return query, None
 
 
-def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=None, is_suppressed=False):
+def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=None, is_suppressed=False,
+               interest_state=None, interest_state_at=None):
     return {
         "id": lead.id,
         # Phase 12 Step 12.1 -- the short, operator-quotable id shown on the lead page and
@@ -111,6 +112,12 @@ def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=
         # CRM that it had opted out (found live -- a real, meaningful gap: the ONLY way
         # to discover it was to open the conversation and notice intent_detected='STOP').
         "is_suppressed": is_suppressed,
+        # Phase 12 UI follow-up -- the lead's MOST RECENT real Yes/No click, "YES"/"NO"/
+        # None, distinct on purpose from `is_suppressed`: a No is a declined pitch, not an
+        # opt-out (services/outreach/interest_service.py never touches suppression_list on
+        # a No), so the two must never render as the same "gray, opted-out" signal.
+        "interest_state": interest_state,
+        "interest_state_at": str(interest_state_at) if interest_state_at else None,
     }
 
 
@@ -174,6 +181,24 @@ def list_leads():
                 latest_intent_by_lead[c.lead_id] = c.intent_detected
                 latest_message_by_lead[c.lead_id] = strip_quoted_reply(c.message_content) or c.message_content
 
+        # A real Yes/No click can happen on any lead this page shows (not scoped to
+        # HOT_LEAD the way replies are, since a No never escalates) -- batched over the
+        # whole page rather than a per-lead query, same reasoning as latest_intent_by_lead.
+        interest_state_by_lead, interest_state_at_by_lead = {}, {}
+        lead_ids = [l.id for l in leads]
+        if lead_ids:
+            responses = (
+                db.query(InterestResponse)
+                .filter(InterestResponse.lead_id.in_(lead_ids))
+                .order_by(InterestResponse.created_at.asc())
+                .all()
+            )
+            for r in responses:
+                # last write wins (ascending order) -- a lead's badge always reflects its
+                # MOST RECENT real click, e.g. a No on touch 1 followed by a Yes on touch 3.
+                interest_state_by_lead[r.lead_id] = r.response
+                interest_state_at_by_lead[r.lead_id] = r.created_at
+
         # Small table in practice (real opt-outs, not bulk data) -- one full read here
         # is cheaper and simpler than an is_suppressed() DB round-trip per lead.
         suppressed_pairs = {(s.channel, s.identifier) for s in db.query(SuppressionEntry).all()}
@@ -194,6 +219,7 @@ def list_leads():
                     lead, scores.get(lead.id),
                     latest_intent_by_lead.get(lead.id), latest_message_by_lead.get(lead.id),
                     _lead_is_suppressed(lead),
+                    interest_state_by_lead.get(lead.id), interest_state_at_by_lead.get(lead.id),
                 )
                 for lead in leads
             ],
@@ -367,8 +393,18 @@ def get_lead(lead_id):
             .first()
         )
         firmographics = db.query(LeadFirmographics).filter(LeadFirmographics.lead_id == lead_id).first()
+        latest_interest = (
+            db.query(InterestResponse)
+            .filter(InterestResponse.lead_id == lead_id)
+            .order_by(InterestResponse.created_at.desc())
+            .first()
+        )
 
-        body = _serialize(lead, score, is_suppressed=_lead_is_suppressed(db, lead))
+        body = _serialize(
+            lead, score, is_suppressed=_lead_is_suppressed(db, lead),
+            interest_state=latest_interest.response if latest_interest else None,
+            interest_state_at=latest_interest.created_at if latest_interest else None,
+        )
         if score and body["score"] is not None:
             body["score"]["scoring_breakdown"] = json.loads(score.scoring_breakdown) if score.scoring_breakdown else {}
         body["pain_points"] = (

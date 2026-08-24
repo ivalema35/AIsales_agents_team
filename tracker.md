@@ -3403,6 +3403,60 @@ the lead:
 No code changes from this pass -- it found nothing wrong, only confirmed the disposable-DB
 test's results hold against the real running system.
 
+### ⭐ Phase 12 UI follow-up — Yes/No made visible, not just functional (2026-08-24)
+
+**Real gap, found before starting Phase 13, not after.** `CRM_UI_UX_PLAN.md`'s own Phase 11
+(the UI counterpart of backend Phase 12) has a DoD MASTER's backend DoD never covers: a
+real Yes click surfaces on the dashboard and the lead page with the reference code
+matching the alert, and a No is visibly distinct from an unsubscribe. Backend DoD Gate P12
+was correctly marked done against MASTER §9's own 5 criteria — this is a genuinely
+separate, UI-side promise that was still open. Flagged to the operator before Phase 13
+rather than silently deferred or silently built; operator chose to close it now.
+
+**Lead Detail page.** A green "Said Yes" badge or a blue "Said No" badge next to the
+company name, next to (not replacing) the existing gray "Opted out" chip — a deliberately
+DIFFERENT color from "Opted out" so a declined pitch can never be misread as an
+unsubscribe at a glance, the exact confusion the UI plan calls out by name. Shows the
+lead's MOST RECENT real click (a lead who declined touch 1 and said yes on touch 3 shows
+"Said Yes", not a stale "Said No").
+
+**Dashboard Alerts panel.** `api/alerts.py`'s `_needs_response()` (today: HOT_LEAD leads
+with a written INTERESTED/DEMO_REQUESTED reply) now ALSO surfaces HOT_LEAD leads with a
+real Yes click — same panel, not a second inbox, per the UI plan's explicit instruction.
+Tagged `source: "INTEREST_CLICK"` / `intent: "YES_CLICK"`, deliberately distinct values
+from a written reply's real intent, so the frontend can never blur "declared via one
+click" with "said INTERESTED in a written reply" — different signals, shown differently
+(no quoted message, a green "DECLARED YES" chip instead of the reply's red intent chip).
+When a lead has BOTH a written reply and a Yes click, whichever happened more recently
+wins the single row this panel shows for that lead. Real channel joined from the actual
+`OutreachLog` rather than hardcoded "EMAIL" — correct today (interest links only exist on
+EMAIL sends) and stays correct if that ever changes. Drops off the panel the same way a
+reply-based entry already does: no separate "resolved" flag, just `lead.status` moving out
+of `HOT_LEAD`.
+
+**Backend serializer** (`api/leads.py`): new `interest_state`/`interest_state_at` fields on
+both the list and detail lead endpoints, sourced from `InterestResponse` — batched over the
+page for the list endpoint (same pattern as the existing `latest_intent_by_lead`), a direct
+query for the single-lead detail endpoint.
+
+**Verified — `test_phase12_ui.py`, real disposable DB, real Flask app with a real
+authenticated test-client session (these routes sit behind the login gate), real
+`handle_outreach_email()` (real LLM+QC), only the Resend network call mocked — 6/6 real
+checks:**
+1. Before any click, `interest_state` is `None` on the real detail endpoint.
+2. Real send + real Yes click through the real public route → the real detail endpoint
+   shows `interest_state="YES"` immediately after.
+3. The real LIST endpoint's batched code path shows the same thing (not just the
+   single-lead path).
+4. The real `/api/v1/alerts` response surfaces the click in `needs_response`, tagged
+   `INTEREST_CLICK`/`YES_CLICK`, `message: null`, real channel `"EMAIL"`.
+5. Moving the lead to `ENGAGED` removes it from `needs_response` — same rule as an
+   already-handled reply.
+6. A lead with both a real (earlier) Yes click and a real (later) written reply shows the
+   reply — genuinely most-recent-wins, not "click always wins."
+
+---
+
 ### PHASE 13 — Level-Aware Follow-Up Content
 - [ ] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal
 - [ ] Step 13.2 — `whatsapp_templates.followup_level`; template approve na ho to us level pe **kuch nahi jaata**, doosre level ka template kabhi nahi
