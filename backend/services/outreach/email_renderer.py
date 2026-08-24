@@ -285,6 +285,27 @@ def _render_interest(section: dict) -> str:
 </table>"""
 
 
+def _render_cross_sell(section: dict) -> str:
+    """A small, brand-tinted callout -- highlighted enough to be noticed on its own, but
+    still deliberately smaller and quieter than the CTA panel above it, so it reads as a
+    secondary note rather than competing with the actual pitch. Same tinted-pill language
+    the badges elsewhere already use, so it feels like part of the same design rather than
+    a bolted-on banner."""
+    return f"""
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 20px 0;">
+  <tr>
+    <td bgcolor="{BRAND_SOFT}" style="padding: 10px 14px; border-radius: 8px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="padding-right: 8px; font-family: {FONT}; font-size: 13px;
+            font-weight: 700; color: {BRAND};">+</td>
+        <td valign="middle" style="font-family: {FONT}; font-size: 13px; font-weight: 600;
+            color: {BRAND};">{_e(section.get('text'))}</td>
+      </tr></table>
+    </td>
+  </tr>
+</table>"""
+
+
 def _render_contact(section: dict) -> str:
     """Step 11.4 supplies these from settings. Each line is independently optional, so a
     business that has not filled in (say) a profile link simply has one fewer line."""
@@ -333,11 +354,7 @@ def _render_section(section: dict) -> str:
     if kind == "CONTACT":
         return _render_contact(section)
     if kind == "CROSS_SELL":
-        # Deliberately the quietest thing on the page: muted, small, no card, no button.
-        # It is a secondary offer, and anything louder would compete with the actual
-        # pitch it is sitting underneath.
-        return (f'<div style="margin: 0 0 20px 0; font-family: {FONT}; font-size: 13px; '
-                f'line-height: {LINE_HEIGHT}; color: {INK_MUTED};">{_e(section.get("text"))}</div>')
+        return _render_cross_sell(section)
     # Any other asset-backed section, including ones added to ASSET_SECTIONS later: a
     # url-kind renders as a button, a text-kind as a quote. Handled generically on
     # purpose -- a new optional section should not need a new branch here either.
