@@ -36,6 +36,9 @@ class Product(Base):
     # Phase 9 Step 9.3 -- day-offsets between follow-up touches, e.g. [3,7]. Empty = no
     # follow-ups for this product (today's single-touch behavior, unchanged).
     followup_cadence_days = Column(Text, default="[]")       # JSON array of integers
+    # Phase 11 Step 11.5 (tracker.md A.10) -- other products the admin chose to cross-sell
+    # alongside this one. Empty = no cross-sell, today's behavior unchanged.
+    cross_sell_product_ids = Column(Text, default="[]")      # JSON array of product ids
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 

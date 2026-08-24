@@ -224,7 +224,7 @@ export default function Products() {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      {showAddForm && <ProductForm onCreated={handleCreated} />}
+      {showAddForm && <ProductForm allProducts={products} onCreated={handleCreated} />}
 
       <div className="flex flex-col gap-3">
         {products.map((p) => (
@@ -241,7 +241,7 @@ export default function Products() {
 
       {editingProduct && (
         <Modal title={`Edit — ${editingProduct.title}`} onClose={() => setEditingProduct(null)}>
-          <ProductForm product={editingProduct} onSaved={handleSaved} onCancel={() => setEditingProduct(null)} />
+          <ProductForm product={editingProduct} allProducts={products} onSaved={handleSaved} onCancel={() => setEditingProduct(null)} />
         </Modal>
       )}
     </div>

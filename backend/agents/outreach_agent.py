@@ -262,6 +262,14 @@ def _assemble_sections(data: dict, content_assets) -> list[dict]:
             cta["button_label"] = _clean_line(demo.get("title"), 40) or "See the demo"
         sections.append(cta)
 
+    # Phase 11 Step 11.5 -- only ever appended when the model actually wrote one. An empty
+    # string is the documented, expected answer when nothing in the admin's cross-sell list
+    # genuinely fits this lead, and it drops the section by the same rule as every other
+    # optional one rather than forcing a weak offer into a real email.
+    cross_sell = _clean_line(data.get("cross_sell_line"), 240)
+    if cross_sell:
+        sections.append({"type": "CROSS_SELL", "text": cross_sell})
+
     return sections
 
 
@@ -281,29 +289,48 @@ def _sections_to_text(sections: list[dict]) -> str:
             if section.get("button_url"):
                 cta.append(f"{section.get('button_label', 'Demo')}: {section['button_url']}")
             parts.append("\n".join(p for p in cta if p))
+        elif kind == "CROSS_SELL":
+            # Plain text, deliberately with no title prefix -- it's one quiet sentence,
+            # not a labelled asset like the sections below.
+            parts.append(section["text"])
         # Every asset-backed section renders the same way regardless of which one it is,
         # so a newly-added ASSET_SECTIONS row needs no change here either.
         elif "url" in section:
-            parts.append(f"{section['title']}: {section['url']}".lstrip(": "))
+            parts.append(f"{section.get('title', '')}: {section['url']}".lstrip(": "))
         elif "text" in section:
-            parts.append(f"{section['title']}: {section['text']}".lstrip(": "))
+            parts.append(f"{section.get('title', '')}: {section['text']}".lstrip(": "))
     return "\n\n".join(p for p in parts if p).strip()
 
 
 def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
-                           qc_feedback: str | None = None, content_assets: list | None = None):
+                           qc_feedback: str | None = None, content_assets: list | None = None,
+                           cross_sell_products: list | None = None):
     """Phase 11 Step 11.1. Returns {subject, subject_candidates, body, sections, hook_type,
     confidence}, or None if drafting failed or produced nothing usable.
 
     `body` is the plain-text equivalent of `sections`, kept so QC and the existing
     outreach_logs contract need no change to accept a structured draft; `sections` is what
     Step 11.2's renderer actually builds the real email from.
+
+    `cross_sell_products` (Step 11.5, tracker.md A.10): the real briefs of the OTHER
+    products the admin explicitly chose to cross-sell alongside this one. The model may
+    name exactly one of them and nothing outside the list -- which is what makes an
+    invented service structurally impossible here, the same boundary the content library
+    already provides for URLs. Absent or empty means no cross-sell line at all, and the
+    prompt below is then byte-identical to before this parameter existed.
     """
     prompt = OUTREACH_SECTIONS_SYSTEM_PROMPT + f"""
 PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
 LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
+"""
+    if cross_sell_products:
+        prompt += f"""
+CROSS_SELL_PRODUCTS -- other real services this company offers, chosen by the admin for
+this specific product. You may mention AT MOST ONE of these, only if it is genuinely
+relevant to THIS lead, and you may never name a service outside this list:
+{json.dumps(cross_sell_products, ensure_ascii=False)}
 """
     if qc_feedback:
         prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"

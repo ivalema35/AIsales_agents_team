@@ -76,7 +76,8 @@ def _missing_required_asset(body: str, format_sections, content_assets):
 
 
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
-                 is_followup: bool = False, format_sections=None, content_assets=None) -> dict:
+                 is_followup: bool = False, format_sections=None, content_assets=None,
+                 cross_sell_products=None) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
@@ -160,6 +161,29 @@ Three consequences for your checks, all of them carve-outs, not relaxations:
 
 ALSO CHECK, in addition to (a)-(d): the sections are in a sensible order, and no section
 is present but empty (a heading with nothing under it, a bullet list with no bullets).
+"""
+        if any(s.get("type") == "CROSS_SELL" for s in draft["sections"]):
+            prompt += f"""
+CROSS_SELL section (Phase 11 Step 11.5). One short line mentioning ANOTHER real service
+this company offers, so a lead uninterested in the main pitch still learns it exists. The
+admin explicitly chose which products may be named here; these are their real briefs:
+{json.dumps(cross_sell_products or [], ensure_ascii=False)}
+
+Judge it as follows, and note the first point is a carve-out while the rest are
+TIGHTENINGS, not relaxations:
+- Naming a service from that list is NOT an unsupported claim -- it is a fact about this
+  company's own catalogue, and must not be rejected under check (c) on that basis.
+- It must be FLATLY DECLARATIVE -- a statement that we offer the service, nothing more.
+  "We also build AI automation for businesses like yours" is correct. REJECT any
+  conditional/offering phrasing -- "if you ever want/need X", "in case X is useful",
+  "let us know if" -- even though the words sound mild, that construction functions as a
+  second call to action, and this section is not allowed one (the email's own CTA section
+  already covers that job).
+- It is still fully subject to the buzzword ban. An industry-wide claim ("AI is
+  transforming how businesses operate", "unlock the power of...") is exactly the register
+  this line tends to get written in, and must be REJECTED.
+- Reject it too if it names any service NOT in the list above, adds a link, or runs
+  longer than about one short sentence.
 """
     if is_followup:
         prompt += """

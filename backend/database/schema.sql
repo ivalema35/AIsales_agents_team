@@ -19,6 +19,13 @@ CREATE TABLE IF NOT EXISTS products (
     -- days after touch 1, touch 3 seven days after touch 2, then stop. Empty = no
     -- follow-ups at all for this product (today's single-touch behavior, unchanged).
     followup_cadence_days       TEXT DEFAULT '[]',  -- JSON array of integers
+    -- Phase 11 Step 11.5 (tracker.md A.10): OTHER products the admin has chosen to
+    -- cross-sell alongside this one. The outreach agent may mention exactly one of
+    -- these -- whichever is genuinely relevant to the specific lead -- and nothing
+    -- outside the list, which is what makes an offered service impossible to invent.
+    -- Empty = no cross-sell at all (today's behavior, unchanged), same "empty means
+    -- unchanged" convention as target_business_categories/followup_cadence_days above.
+    cross_sell_product_ids      TEXT DEFAULT '[]',  -- JSON array of product ids
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

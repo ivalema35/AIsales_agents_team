@@ -158,6 +158,46 @@ spec me intact hai, jaisa Phase 5 postponement ka precedent tha — §A.6).
 **Step 9.1 ✅ COMPLETE.** Agla: Step 9.2 — variant performance rollup (real `outreach_logs`/
 `OutreachLog.read_at` par live SQL, koi estimated number nahi).
 
+### A.10 Architectural deviation — Phase 11 Step 11.5: `cross_sell_product_ids` ki jagah `ai_cross_sell_enabled` (2026-08-24)
+
+MASTER_DEVELOPMENT_PRD.md §5B Step 11.5 likhta hai: **`products.ai_cross_sell_enabled` (boolean,
+default off)** — on hone par AI ek short factual line likhe *"we also build AI automation"*, "grounded
+in real product records".
+
+**Us design me ek unanswered sawaal tha jo maine user ko explain karte waqt khud surface kiya:** agar
+line "real product records se grounded" honi hai, to system ko pata kaise chalega ki kaunse products
+"AI-related" hain? Do hi raste the — title/description me "AI" dhoondhna (guessing, aur naye product
+pe silently galat), ya saare active products AI ko de dena (jisse ek gaming zone ko barber-shop
+software pitch ho sakta tha).
+
+**User ne teesra, behtar raasta khud propose kiya:** *"kyuna hum product me hi select karvaye ki iss
+product ke sath dusra konsa product pitch karvana he aur multi select kar sake jo relevent hoga lead
+ke hisab se wo pitch hoga"* — matlab admin **explicitly chunega** kis product ke saath kaunse doosre
+products cross-sell honge, multi-select, aur AI un chune hue me se **is lead ke liye jo genuinely
+relevant ho** wahi mention karega.
+
+**Isliye boolean ki jagah `products.cross_sell_product_ids` (JSON array of product ids).** Empty array
+= off, aaj jaisa behavior — bilkul wahi "khali = unchanged from today" convention jo
+`target_business_categories`, `target_person_roles` aur `followup_cadence_days` already use karte hain.
+
+**Kyun ye deviation strictly behtar hai, sirf alag nahi:**
+- **Guessing poori tarah khatam.** Boolean design me system ko andaza lagana padta ki kya cross-sell
+  karna hai; ab wo ek human-set list hai. Yehi §16.2 ka apna "human sets the boundary, AI decides
+  inside it" pattern hai, jo is project me already teen jagah use hota hai.
+- **Ek hard hallucination boundary ban jaati hai.** AI sirf un products ka naam le sakta hai jo admin
+  ne khud chune — koi aisi service kabhi offer nahi kar sakta jo hum dete hi nahi.
+- **Per-lead adaptive rehta hai.** Multi-select isliye zaroori hai: admin 2-3 options de deta hai, AI
+  us lead ke liye sabse relevant ek chunta hai (ya koi bhi fit na ho to kuch nahi likhta, aur line
+  gayab — wahi Step 11.3 wala rule).
+- **AI-only se zyada general hai, aur Item 17 phir bhi poora satisfy hota hai** — AI Automation
+  already ek real registered product hai, to use list me daal dene se user ka original ask waisa ka
+  waisa poora hota hai, plus baaki products ke liye bhi kaam karta hai.
+
+**Jo nahi badla:** line ka **factual-not-hype** rule (QC ka buzzword-ban isi tarah lagta rahega —
+"hum AI automation bhi banate hain" fact hai, "AI business badal raha hai" hype hai aur banned rahega),
+default OFF rehna, aur ek hi chhoti line hona — naya section/paragraph nahi. DoD gate P11 ka apna
+criterion bhi intact hai, bas "flag on" ki jagah "list non-empty" padha jayega.
+
 ### A.9 Current hold list — sab kuch jo abhi pause hai, ek jagah (updated 2026-08-22)
 
 Koi bhi item yahan **bhoola nahi gaya hai** — har ek ka apna genuine, disclosed reason hai (indefinite
@@ -2731,6 +2771,72 @@ send with IVinfotech's own details from their live site footer.
 
 ---
 
+### ⭐ Phase 11 / Step 11.5 — AI cross-sell, admin-chosen products (2026-08-24)
+
+**Deviation from MASTER §5B's own text — see §A.10 above for the full reasoning.** User rejected the
+spec's boolean design mid-explanation and proposed the actual mechanism: `products.
+cross_sell_product_ids` (JSON array, admin multi-select), not `ai_cross_sell_enabled` (boolean). AI
+may mention exactly one product from that list — whichever fits THIS lead — never anything outside
+it. Empty array = no cross-sell, today's behavior unchanged.
+
+**New pieces:** `products.cross_sell_product_ids` column; `services/outreach/cross_sell.py`'s
+`get_cross_sell_products(db, product_id)` resolving the admin's chosen ids to real briefs; a new
+CROSS_SELL section (renders as the quietest thing on the page — muted text, no card, no button, so it
+never competes with the actual pitch above it); a multi-select checkbox list on the product form
+(`ProductForm.jsx`), self excluded, showing "No other products yet" until a second product exists.
+
+**Real bug, found by the first real test run:** `_sections_to_text()`'s generic text-section fallback
+assumed every text-kind section had a `title` key (true for TESTIMONIAL/TEXT_BLOCK, false for
+CROSS_SELL) — `KeyError: 'title'` the instant a real cross-sell line was generated. Fixed with an
+explicit CROSS_SELL branch (plain text, no title prefix, since it's one quiet sentence not a labelled
+asset) plus defensive `.get("title", "")` on the generic fallback so a future title-less section type
+degrades instead of crashing.
+
+**Real bug, found before shipping, not by a test:** the first cut filtered cross-sell candidates on
+`Product.is_active`. That flag gates whether `discovery_scheduler.py` is actively hunting NEW leads
+for a product — not whether we still sell it — and every local product currently has discovery paused.
+Filtering on it would have silently disabled cross-sell for every real product the moment this shipped.
+Removed the check entirely; only self-reference and a since-deleted id are now skipped.
+
+**Real QC tension, found on the first real end-to-end send attempt — genuinely two separate issues,
+diagnosed and only one is Step 11.5's:**
+1. **Step 11.5's own bug:** the drafting prompt's first "Good" example itself violated the "no second
+   CTA" rule it was trying to teach — `"...if handling booking queries automatically is ever useful"`
+   is conditional/offering language, and QC correctly read it as a second call-to-action once shown the
+   section. Fixed by making the instruction explicitly FLATLY DECLARATIVE ("we also build AI automation
+   for businesses like yours", never "if you ever want/need X"), with the identical distinction written
+   into `review_draft()`'s own CROSS_SELL check so QC judges by the same rule it was given. Re-verified:
+   the real generated line is now a flat statement with no conditional framing, and QC's own review
+   explicitly called it *"acceptable as a service mention"* in isolation.
+2. **NOT a Step 11.5 bug — QC correctly catching a real hallucination the new section exposed:** on one
+   real attempt the model wrote "AI automation for repetitive booking and billing work" — but the real
+   `AI Automation Solutions` product's own brief never mentions booking or billing (it's chatbots, lead
+   follow-up, document processing, workflow automation). The model borrowed specifics from the OTHER
+   product's pain points rather than staying grounded in the cross-sold product's own brief. QC rejected
+   it, correctly — this is the zero-hallucination rule working exactly as intended on a new surface, not
+   a defect to fix.
+
+**A third, pre-existing, unrelated blocker kept surfacing on full end-to-end send attempts and is
+explicitly NOT part of this step:** QC still rejects the CTA's "First month free/on us" headline every
+time. **Root cause now precisely located, for whenever this gets addressed:** Step 11.1's own drafting
+prompt literally instructs `"cta_headline -- a short line offering the free first month"` (line 150),
+with the offer grounded nowhere — so the retry loop cannot ever succeed for that field; QC will reject
+it on every attempt, not just some. Matches the operator's own Item 12 spec (*"cta start for 1 month
+free"*), so the fix is exactly what was already disclosed under Step 11.1/11.2: the offer needs to be
+written somewhere real (a product field, or a new settings value) before the prompt can safely ask for
+it. Operator's call stands: *"abhi sahi"* — left alone.
+
+**Verified — 7/7 real checks** (`test_phase11_step5.py`, real disposable DB + real LLM calls): empty
+list → no cross-sell; admin's chosen ids resolve to real briefs in order; a discovery-paused product is
+still offered while self-reference/unknown ids are skipped; malformed JSON degrades safely; an empty or
+whitespace-only line drops the section entirely while a real one appends last; a real LLM call names a
+product from the admin's list with no link and no banned hype; and the section renders as quiet muted
+text, never a card or button. Cross-sell's own correctness was end-to-end confirmed via the isolated
+draft→QC real-LLM check above (QC explicitly approving the line itself); the full real SEND remains
+blocked only by the separate, pre-existing, already-disclosed CTA issue.
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)
@@ -2982,7 +3088,7 @@ usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, t
 - [x] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — ✅ 2026-08-24, Section 3, 8/8 real checks against the rendered artifact; brand header + headline + bordered cards (4 design rounds, sab operator ke real-inbox feedback se)
 - [x] Step 11.3 — graceful section omission — ✅ 2026-08-24, structurally inherited from 11.1 (empty section kabhi banti hi nahi), minimal render me verified
 - [x] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — ✅ 2026-08-24, Section 3, 6/6 real checks + real send; Settings page pe apna alag card
-- [ ] Step 11.5 — AI cross-sell block, `products.ai_cross_sell_enabled` (default OFF, buzzword-ban still applies)
+- [x] Step 11.5 — AI cross-sell block, admin-chosen `products.cross_sell_product_ids` (deviation from spec's boolean, §A.10) — ✅ 2026-08-24, Section 3, 7/7 real checks
 - [x] Step 11.6 — QC structural review — ✅ 2026-08-24, Section 3; real bug se aaya (QC ne CTA ko signature samajh ke 2 draft reject kiye)
 - [ ] Wiring — structured path ko `jobs/outreach_handler.py` me opt-in karna (deliberately last, live pipeline tab tak proven path pe)
 - [ ] DoD Gate P11

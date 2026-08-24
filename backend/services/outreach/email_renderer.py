@@ -332,6 +332,12 @@ def _render_section(section: dict) -> str:
         return _render_interest(section)
     if kind == "CONTACT":
         return _render_contact(section)
+    if kind == "CROSS_SELL":
+        # Deliberately the quietest thing on the page: muted, small, no card, no button.
+        # It is a secondary offer, and anything louder would compete with the actual
+        # pitch it is sitting underneath.
+        return (f'<div style="margin: 0 0 20px 0; font-family: {FONT}; font-size: 13px; '
+                f'line-height: {LINE_HEIGHT}; color: {INK_MUTED};">{_e(section.get("text"))}</div>')
     # Any other asset-backed section, including ones added to ASSET_SECTIONS later: a
     # url-kind renders as a button, a text-kind as a quote. Handled generically on
     # purpose -- a new optional section should not need a new branch here either.

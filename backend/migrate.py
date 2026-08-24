@@ -22,6 +22,7 @@ COLUMN_MIGRATIONS = [
     ("whatsapp_templates", "origin", "TEXT DEFAULT 'ADMIN'"),
     ("whatsapp_templates", "reasoning", "TEXT"),
     ("outreach_logs", "open_count", "INTEGER DEFAULT 0"),
+    ("products", "cross_sell_product_ids", "TEXT DEFAULT '[]'"),
 ]
 
 

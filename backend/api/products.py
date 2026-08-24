@@ -24,6 +24,7 @@ def _serialize(product):
         "target_country": product.target_country,
         "target_business_categories": json.loads(product.target_business_categories or "[]"),
         "target_person_roles": json.loads(product.target_person_roles or "[]"),
+        "cross_sell_product_ids": json.loads(product.cross_sell_product_ids or "[]"),
         "created_at": str(product.created_at),
         "updated_at": str(product.updated_at),
     }
@@ -73,8 +74,19 @@ def _extract_json_fields(data, errors):
         else:
             target_person_roles = json.dumps(data["target_person_roles"])
 
+    # Phase 11 Step 11.5 (tracker.md A.10) -- OTHER product ids this product may
+    # cross-sell. Existence is checked at draft time (services/outreach/cross_sell.py),
+    # not here -- a product referenced here and later deleted must not block saving this
+    # product, it should just quietly stop being offered.
+    cross_sell_product_ids = None
+    if "cross_sell_product_ids" in data:
+        if not isinstance(data["cross_sell_product_ids"], list):
+            errors.append("cross_sell_product_ids must be a JSON array")
+        else:
+            cross_sell_product_ids = json.dumps(data["cross_sell_product_ids"])
+
     return (target_keywords, pain_point_mappings, target_regions,
-           target_business_categories, target_person_roles)
+           target_business_categories, target_person_roles, cross_sell_product_ids)
 
 
 def _validate_target_country(data, errors):
@@ -129,7 +141,8 @@ def create_product():
     if not data.get("description"):
         errors.append("description is required")
     (target_keywords, pain_point_mappings, target_regions,
-     target_business_categories, target_person_roles) = _extract_json_fields(data, errors)
+     target_business_categories, target_person_roles,
+     cross_sell_product_ids) = _extract_json_fields(data, errors)
     target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
@@ -154,6 +167,8 @@ def create_product():
             product.target_business_categories = target_business_categories
         if target_person_roles is not None:
             product.target_person_roles = target_person_roles
+        if cross_sell_product_ids is not None:
+            product.cross_sell_product_ids = cross_sell_product_ids
         db.add(product)
         db.commit()
         db.refresh(product)
@@ -170,7 +185,8 @@ def update_product(product_id):
 
     errors = []
     (target_keywords, pain_point_mappings, target_regions,
-     target_business_categories, target_person_roles) = _extract_json_fields(data, errors)
+     target_business_categories, target_person_roles,
+     cross_sell_product_ids) = _extract_json_fields(data, errors)
     target_country = _validate_target_country(data, errors)
     if errors:
         return jsonify({"error": errors}), 422
@@ -207,6 +223,8 @@ def update_product(product_id):
             product.target_business_categories = target_business_categories
         if target_person_roles is not None:
             product.target_person_roles = target_person_roles
+        if cross_sell_product_ids is not None:
+            product.cross_sell_product_ids = cross_sell_product_ids
 
         db.commit()
         db.refresh(product)

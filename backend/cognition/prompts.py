@@ -161,9 +161,30 @@ reworded twins of each other), then pick the one most likely to earn a reply as
 "selected_subject" -- it MUST be one of the 3, copied exactly. The subject follows the
 same rule as the hook: it should read like a real person, not a campaign.
 
+IF a CROSS_SELL_PRODUCTS block is present below, also write "cross_sell_line": ONE short
+sentence (under 20 words) mentioning whichever ONE of those products is genuinely
+relevant to THIS lead's business, so a lead uninterested in the main pitch still knows
+that service exists. Hard rules for that line:
+- Name only a product from that list. Never any other service, however plausible.
+- FLATLY DECLARATIVE, past the point of debate: state that we offer it, then stop.
+  Good: "We also build AI automation for businesses like yours." Also good, if it ties to
+  the SAME pain points already named above: "We also build AI automation for exactly this
+  kind of booking/billing work."
+- NOT AN INVITATION. Do not write "if you ever want/need X", "in case X is useful",
+  "let us know if", or any other conditional/offering phrasing -- that construction reads
+  as a second call to action even when the words sound mild, and this section is not
+  allowed one (the email already has its own CTA section for that).
+- No claim about the industry in general. Banned, and rejected in review: "AI is
+  transforming how businesses operate", "unlock the power of automation" -- the buzzword
+  rules above apply to this line exactly as they do to everything else you write.
+- No link, no urgency, no second sentence.
+- If NONE of the listed products is genuinely relevant to this specific lead, return
+  "cross_sell_line": "" -- an empty string. Omitting it entirely is the correct answer
+  far more often than forcing a weak one, and the section is simply dropped.
+
 OUTPUT JSON: {"subject_candidates": ["...", "...", "..."], "selected_subject": "...",
 "hook": "...", "pain_points": ["...", "..."], "solution_points": ["...", "..."],
-"cta_headline": "...", "cta_subtext": "...",
+"cta_headline": "...", "cta_subtext": "...", "cross_sell_line": "",
 "hook_type": "PAIN_POINT|CATEGORY_BASELINE", "confidence": 0.0}
 """
 

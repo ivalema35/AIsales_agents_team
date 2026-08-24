@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Building2, FileText, Sparkles, MapPin, Globe2, Tag, UserCircle2, Plus, Save } from "lucide-react";
+import { Building2, FileText, Sparkles, MapPin, Globe2, Tag, UserCircle2, Plus, Save, Layers } from "lucide-react";
 import { api } from "../api/client";
 import ChipInput, { FieldLabel } from "./ui/ChipInput";
 
@@ -11,6 +11,7 @@ const EMPTY = {
   target_country: "IN",
   target_business_categories: [],
   target_person_roles: [],
+  cross_sell_product_ids: [],
 };
 
 // A handful of common targets as one-click pills instead of a free-text 2-letter box --
@@ -35,6 +36,7 @@ function toFormState(product) {
     target_country: product.target_country || "IN",
     target_business_categories: product.target_business_categories || [],
     target_person_roles: product.target_person_roles || [],
+    cross_sell_product_ids: product.cross_sell_product_ids || [],
   };
 }
 
@@ -49,7 +51,7 @@ const inputClass =
 // Doubles as the edit form -- pass `product` to pre-fill from it and PUT instead of
 // POST on submit (the backend's PUT /products/<id> already supported every one of these
 // fields; only the create-only UI was missing an edit path to it).
-export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
+export default function ProductForm({ product, allProducts = [], onCreated, onSaved, onCancel }) {
   const isEdit = !!product;
   const [form, setForm] = useState(isEdit ? toFormState(product) : EMPTY);
   const [customCountry, setCustomCountry] = useState(
@@ -57,6 +59,9 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  // A product can never cross-sell itself; on the create form there's no id yet, so
+  // every existing product is a valid option.
+  const otherProducts = allProducts.filter((p) => !isEdit || p.id !== product.id);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -75,6 +80,7 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
         target_country: form.target_country || "IN",
         target_business_categories: form.target_business_categories,
         target_person_roles: form.target_person_roles,
+        cross_sell_product_ids: form.cross_sell_product_ids,
       };
       if (isEdit) {
         const updated = await api.updateProduct(product.id, payload);
@@ -208,6 +214,44 @@ export default function ProductForm({ product, onCreated, onSaved, onCancel }) {
               />
             )}
           </div>
+        </label>
+      </div>
+
+      <div className="flex flex-col gap-3 border-t border-slate-100 pt-4">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Cross-sell</p>
+        <label className="flex flex-col">
+          <FieldLabel
+            icon={Layers}
+            hint="Optional. When this product isn't the right fit for a lead, the AI may mention ONE of these other products instead -- whichever genuinely fits -- as one short line, never a link or a second pitch. Pick none to leave this off entirely."
+          >
+            Also mention these products, if relevant
+          </FieldLabel>
+          {otherProducts.length === 0 ? (
+            <p className="mt-1 text-xs text-slate-400">
+              No other products yet -- add another product first to enable cross-sell here.
+            </p>
+          ) : (
+            <div className="mt-1 flex flex-col gap-1.5 rounded-md border border-slate-200 p-2.5">
+              {otherProducts.map((p) => (
+                <label key={p.id} className="flex items-center gap-2 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={form.cross_sell_product_ids.includes(p.id)}
+                    onChange={(e) =>
+                      update(
+                        "cross_sell_product_ids",
+                        e.target.checked
+                          ? [...form.cross_sell_product_ids, p.id]
+                          : form.cross_sell_product_ids.filter((id) => id !== p.id)
+                      )
+                    }
+                    className="rounded border-slate-300"
+                  />
+                  {p.title}
+                </label>
+              ))}
+            </div>
+          )}
         </label>
       </div>
 
