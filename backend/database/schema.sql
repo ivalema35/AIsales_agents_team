@@ -33,6 +33,9 @@ CREATE TABLE IF NOT EXISTS products (
 -- 2. LEADS
 CREATE TABLE IF NOT EXISTS leads (
     id                   TEXT PRIMARY KEY,
+    -- Phase 12 Step 12.1: short, operator-quotable id ("LD-3F9A2B1C") shown on the lead
+    -- page and in every interest/alert message -- the real UUID above stays the DB key.
+    reference_code       TEXT,
     product_id           TEXT NOT NULL,
     company_name         TEXT NOT NULL,
     website_url          TEXT,
@@ -457,7 +460,31 @@ CREATE TABLE IF NOT EXISTS social_message_queue (
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
 );
 
+-- 29. INTEREST RESPONSES (Phase 12 Step 12.2/12.3) -- one row per real Yes/No click.
+-- UNIQUE(outreach_log_id, response) makes a double-click, a mail-scanner prefetch, or a
+-- browser retry idempotent at the DB level (catch IntegrityError), the same posture as
+-- inbound_conversations' own dedup constraint (Step 4.1), for the same reason. The same
+-- send CAN carry both a YES and a NO row (a lead who changes their mind) -- only a
+-- repeat of the SAME response on the SAME send is a duplicate.
+CREATE TABLE IF NOT EXISTS interest_responses (
+    id                TEXT PRIMARY KEY,
+    lead_id           TEXT NOT NULL,
+    outreach_log_id   TEXT NOT NULL,
+    response          TEXT NOT NULL,        -- YES or NO
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
+    FOREIGN KEY (outreach_log_id) REFERENCES outreach_logs(id) ON DELETE CASCADE,
+    UNIQUE (outreach_log_id, response)
+);
+
 -- INDEXES
+-- UNIQUE, not a plain index -- a duplicate reference_code would make "resolves to that
+-- same lead" (Phase 12 Step 12.1's own DoD promise) ambiguous. A column-level UNIQUE in
+-- the CREATE TABLE above would never reach an already-existing DB (SQLite's ALTER TABLE
+-- ADD COLUMN refuses a UNIQUE constraint), so it lives here instead, applied identically
+-- whether the table is brand new or migrated. NULLs (pre-backfill rows) are exempt from
+-- SQLite's UNIQUE semantics, so this is safe to create before the backfill runs.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_leads_reference_code ON leads (reference_code);
 CREATE INDEX IF NOT EXISTS idx_leads_product_status  ON leads (product_id, status);
 CREATE INDEX IF NOT EXISTS idx_lead_scores_tier      ON lead_scores (tier, score DESC);
 CREATE INDEX IF NOT EXISTS idx_jobs_due              ON jobs (status, job_type, run_after);
@@ -477,4 +504,5 @@ CREATE INDEX IF NOT EXISTS idx_wa_templates_status     ON whatsapp_templates (st
 CREATE INDEX IF NOT EXISTS idx_wa_templates_product     ON whatsapp_templates (product_id);
 CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product_id, last_run_at);
 CREATE INDEX IF NOT EXISTS idx_social_queue_lead      ON social_message_queue (lead_id, platform);
+CREATE INDEX IF NOT EXISTS idx_interest_responses_lead ON interest_responses (lead_id);
 CREATE INDEX IF NOT EXISTS idx_social_queue_status    ON social_message_queue (status, created_at);

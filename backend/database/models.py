@@ -1,3 +1,4 @@
+import secrets
 import uuid
 
 from sqlalchemy import Column, String, Text, Integer, REAL, DATE, TIMESTAMP, ForeignKey, UniqueConstraint, func
@@ -7,6 +8,15 @@ from database.db_config import Base
 
 def _uuid():
     return str(uuid.uuid4())
+
+
+def _reference_code():
+    # Phase 12 Step 12.1 -- a short, operator-quotable id for alerts/conversation ("Ref:
+    # LD-3F9A2B1C"), since the real Lead.id UUID is correct for the DB but useless in a
+    # message a human reads. 8 hex chars (4.29B space) makes a collision practically
+    # impossible at this project's real lead volume -- the DB-level UNIQUE index (see
+    # schema.sql) is the actual backstop, not a retry loop here.
+    return "LD-" + secrets.token_hex(4).upper()
 
 
 # 1. PRODUCTS
@@ -47,6 +57,7 @@ class Product(Base):
 class Lead(Base):
     __tablename__ = "leads"
     id = Column(String, primary_key=True, default=_uuid)
+    reference_code = Column(String, unique=True, default=_reference_code)
     product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     company_name = Column(String, nullable=False)
     website_url = Column(String)
@@ -436,4 +447,22 @@ class SocialMessageQueue(Base):
     reasoning = Column(Text)
     status = Column(String, default="QUEUED")  # QUEUED, SENT, DISMISSED
     sent_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 29. INTEREST RESPONSES (Phase 12 Step 12.2/12.3) -- one row per real Yes/No click.
+# UNIQUE(outreach_log_id, response) is what makes a double-click, a mail-scanner
+# prefetch, or a browser retry idempotent AT THE DB LEVEL (catch IntegrityError, same
+# posture as inbound_conversations' own dedup constraint) rather than a race-prone
+# check-then-insert in application code. The SAME send can carry both a YES and a NO row
+# (a lead who changes their mind) -- only a repeat of the SAME response is a duplicate.
+class InterestResponse(Base):
+    __tablename__ = "interest_responses"
+    id = Column(String, primary_key=True, default=_uuid)
+    lead_id = Column(String, ForeignKey("leads.id", ondelete="CASCADE"), nullable=False)
+    outreach_log_id = Column(String, ForeignKey("outreach_logs.id", ondelete="CASCADE"), nullable=False)
+    response = Column(String, nullable=False)  # YES or NO
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+    __table_args__ = (UniqueConstraint("outreach_log_id", "response"),)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())

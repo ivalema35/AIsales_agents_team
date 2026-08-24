@@ -24,6 +24,7 @@ from jobs.registry import register_handler
 from services.message_format_service import resolve_active_format, get_available_assets
 from services.outreach.company_contact import build_contact_section
 from services.outreach.cross_sell import get_cross_sell_products
+from services.outreach.interest_links import build_interest_urls
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 from services.sequence_service import create_sequence_for_send
@@ -139,13 +140,20 @@ def handle_outreach_email(db, payload):
         db.commit()
         return lead.id
 
-    # Phase 11 Step 11.4 -- the contact block is system-supplied, appended AFTER QC review:
-    # it carries no agent-authored content, so there is nothing in it for QC to judge, and
-    # handing QC more surface it was never told about is exactly what produced the Step
-    # 11.6 bug (it once misread the CTA section as an unreviewed extra). None for a
-    # follow-up draft (old free-form `body`-only path, no `sections` to append to).
+    # Pre-generated (not left to OutreachLog's own column default) so Phase 12 Step 12.2's
+    # signed Yes/No links -- which need this exact id -- can be built and embedded in the
+    # email BEFORE the row exists, rather than sending first and patching the row after.
+    outreach_log_id = str(uuid.uuid4())
+
+    # Phase 11 Step 11.4 / Phase 12 Step 12.2 -- the interest and contact blocks are both
+    # system-supplied, appended AFTER QC review: neither carries agent-authored content,
+    # so there is nothing in either for QC to judge, and handing QC more surface it was
+    # never told about is exactly what produced the Step 11.6 bug (it once misread the CTA
+    # section as an unreviewed extra). Both are None for a follow-up draft (old free-form
+    # `body`-only path, no `sections` to append to, until Phase 13).
     sections = draft.get("sections")
     if sections is not None:
+        sections = sections + [{"type": "INTEREST", **build_interest_urls(lead.id, outreach_log_id)}]
         contact_section = build_contact_section(db)
         if contact_section:
             sections = sections + [contact_section]
@@ -155,7 +163,7 @@ def handle_outreach_email(db, payload):
                                content_assets=content_assets, sections=sections)
 
     db.add(OutreachLog(
-        id=str(uuid.uuid4()),
+        id=outreach_log_id,
         lead_id=lead.id,
         channel="EMAIL",
         message_subject=draft["subject"],

@@ -66,6 +66,10 @@ def _apply_filters(db, query, args):
 def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=None, is_suppressed=False):
     return {
         "id": lead.id,
+        # Phase 12 Step 12.1 -- the short, operator-quotable id shown on the lead page and
+        # in every interest/alert message (lead.id itself is a UUID, useless in a message
+        # a human reads or quotes back).
+        "reference_code": lead.reference_code,
         "product_id": lead.product_id,
         "company_name": lead.company_name,
         "website_url": lead.website_url,

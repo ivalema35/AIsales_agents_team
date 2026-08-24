@@ -1,3 +1,5 @@
+import secrets
+
 from database.db_config import engine
 
 # New columns on already-existing tables -- schema.sql's CREATE TABLE IF NOT EXISTS only
@@ -23,6 +25,7 @@ COLUMN_MIGRATIONS = [
     ("whatsapp_templates", "reasoning", "TEXT"),
     ("outreach_logs", "open_count", "INTEGER DEFAULT 0"),
     ("products", "cross_sell_product_ids", "TEXT DEFAULT '[]'"),
+    ("leads", "reference_code", "TEXT"),
 ]
 
 
@@ -62,6 +65,25 @@ def _seed_default_channel_policy(raw_conn):
         )
 
 
+def _backfill_lead_reference_codes(raw_conn):
+    """Phase 12 Step 12.1 -- every lead that existed before this column shipped needs a
+    real code too (the alert/UI feature has no "N/A" fallback in its own design; a lead
+    with no code would just be unreferenceable in an alert). Runs AFTER the schema script,
+    so the UNIQUE index already exists and a freak collision fails loudly here rather than
+    silently creating a duplicate.
+    """
+    rows = raw_conn.execute("SELECT id FROM leads WHERE reference_code IS NULL").fetchall()
+    for (lead_id,) in rows:
+        while True:
+            code = "LD-" + secrets.token_hex(4).upper()
+            clash = raw_conn.execute(
+                "SELECT 1 FROM leads WHERE reference_code = ?", (code,)
+            ).fetchone()
+            if not clash:
+                break
+        raw_conn.execute("UPDATE leads SET reference_code = ? WHERE id = ?", (code, lead_id))
+
+
 def run():
     with engine.begin() as conn:
         raw = conn.connection
@@ -74,6 +96,7 @@ def run():
         with open("database/schema.sql", "r", encoding="utf-8") as f:
             raw.executescript(f.read())
         _seed_default_channel_policy(raw)
+        _backfill_lead_reference_codes(raw)
     print("Schema applied.")
 
 

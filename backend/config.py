@@ -21,6 +21,16 @@ class Config:
     ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
     ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
+    # Phase 12 Step 12.2 -- signs the public Yes/No interest links (a forged one would
+    # falsely escalate a lead and fire a real admin alert, unlike a forged unsubscribe
+    # link's harmless-direction mistake). Deliberately its OWN secret, not a reuse of
+    # SECRET_KEY: that one signs the short-lived admin session cookie and could get
+    # rotated for reasons that have nothing to do with outreach (e.g. a login incident)
+    # -- rotating it would silently invalidate every Yes/No link already sitting in
+    # leads' inboxes from past sends. Falls back to SECRET_KEY only so a fresh local dev
+    # setup works without a second secret to generate.
+    INTEREST_LINK_SECRET = os.getenv("INTEREST_LINK_SECRET") or SECRET_KEY
+
     # LLM provider — swappable, one line to change (tracker.md §A.1)
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")
     LLM_MODEL = os.getenv("LLM_MODEL", "gemini-flash-latest")

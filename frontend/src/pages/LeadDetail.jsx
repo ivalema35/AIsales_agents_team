@@ -777,7 +777,17 @@ export default function LeadDetail() {
             {lead.company_name.slice(0, 2).toUpperCase()}
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-slate-900">{lead.company_name}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold text-slate-900">{lead.company_name}</h1>
+              {lead.reference_code && (
+                <span
+                  title="Reference code -- quote this in alerts/conversation to identify this lead"
+                  className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-500"
+                >
+                  {lead.reference_code}
+                </span>
+              )}
+            </div>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
               {lead.region_location && (
                 <span className="flex items-center gap-1"><MapPin size={12} /> {lead.region_location}</span>

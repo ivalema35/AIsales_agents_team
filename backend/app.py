@@ -8,6 +8,7 @@ from logging_config import configure_logging
 from api.products import products_bp
 from api.leads import leads_bp
 from api.unsubscribe import unsubscribe_bp
+from api.interest import interest_bp
 from api.alerts import alerts_bp
 from api.settings import settings_bp
 from api.inbound import inbound_bp
@@ -26,15 +27,17 @@ from api.social_queue import social_queue_bp
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
 # the login endpoints themselves, health checks, and the handful of routes real external
 # parties hit directly and can never be asked to log in -- Meta's WhatsApp webhook,
-# Resend's email-event webhook, and the one-click unsubscribe link a real lead clicks
-# from their own inbox. Everything else in the app is real business data (leads,
-# products, outreach) and stays behind the gate.
+# Resend's email-event webhook, the one-click unsubscribe link, and (Phase 12 Step 12.2)
+# the HMAC-verified Yes/No interest link -- all clicked by a real lead from their own
+# inbox. Everything else in the app is real business data (leads, products, outreach)
+# and stays behind the gate.
 _PUBLIC_PREFIXES = (
     "/health",
     "/api/v1/auth/",
     "/api/v1/inbound/",
     "/api/v1/webhooks/",
     "/unsubscribe/",
+    "/interest/",
 )
 
 
@@ -62,6 +65,7 @@ def create_app():
     app.register_blueprint(products_bp)
     app.register_blueprint(leads_bp)
     app.register_blueprint(unsubscribe_bp)
+    app.register_blueprint(interest_bp)
     app.register_blueprint(alerts_bp)
     app.register_blueprint(settings_bp)
     app.register_blueprint(inbound_bp)

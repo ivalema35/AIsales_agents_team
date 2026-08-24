@@ -3259,14 +3259,119 @@ usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, t
   5. Cross-sell block appears only when that product's flag is on — deviated from the spec's boolean to `cross_sell_product_ids` (§A.10, disclosed); the equivalent real behavior holds: `get_cross_sell_products()` returns `[]` when unconfigured (Step 11.5 check #1) and the section is never appended without an admin-approved product name (`_assemble_sections()`'s gate).
   6. QC still vetoes buzzwords and fabricated URLs under the new structure — `QUALITY_CONTROLLER_SYSTEM_PROMPT` checks (a)-(d) (buzzwords, false claims/pricing/timelines, unauthorized URLs) run unconditionally for every draft, structured or not; the `STRUCTURED_DRAFT`/CROSS_SELL blocks are additive context, not a replacement (confirmed by re-reading `review_draft()` just now — the base prompt is never swapped out).
 
-### PHASE 12 — Interest Capture & Instant Alerting
-- [ ] Step 12.1 — `leads.reference_code` (human-readable, backfilled)
-- [ ] Step 12.2 — HMAC-signed public Yes/No routes (tampered token = **refuse**, kabhi guess nahi)
-- [ ] Step 12.3 — T29 `interest_responses` + DB-level UNIQUE (double-click idempotent)
-- [ ] Step 12.4 — existing `HOT_LEAD` escalation reuse (naya parallel status system nahi)
-- [ ] Step 12.5 — admin alert (email/WhatsApp, `send_internal_email()` reuse, rate-limited)
-- [ ] Step 12.6 — "No" handling: sequence rukti hai, **suppression list me NAHI jaata**
-- [ ] DoD Gate P12
+### ⭐ Phase 12 — Interest Capture & Instant Alerting (2026-08-24)
+
+All six steps built and verified together (one coherent feature, not independently
+useful in isolation) — see MASTER §5B Phase 12 for the original spec.
+
+**Step 12.1 — `leads.reference_code`.** A short, operator-quotable id ("LD-3F9A2B1C") on
+every lead, so an alert message never has to quote the real UUID. Python-side column
+default (`default=_reference_code`, `secrets.token_hex(4).upper()`, same pattern as the
+existing `id = Column(..., default=_uuid)`) covers every future lead automatically,
+across both real creation paths (`api/leads.py`'s manual add, `scraper_worker/
+async_runner.py`'s discovery pipeline — grepped for every `Lead(` and `INSERT INTO
+leads`, confirmed no third path exists). A DB-level `UNIQUE` index (not a column
+constraint — SQLite's `ALTER TABLE ADD COLUMN` refuses `UNIQUE` on an existing table, so
+it lives as a separate `CREATE UNIQUE INDEX IF NOT EXISTS`, applied identically whether
+the table is fresh or migrated) is the real backstop, not a retry loop — 8 hex chars is a
+4.29 billion code space, astronomically past collision risk at this project's actual lead
+volume. `migrate.py`'s new `_backfill_lead_reference_codes()` ran against the real dev
+DB: every existing lead got a genuinely unique code, verified directly against
+`sales_system.db` (`SELECT COUNT(*) WHERE reference_code IS NULL` → 0, zero duplicates on
+a `GROUP BY ... HAVING COUNT(*) > 1`). Shown next to the company name on the Lead Detail
+page header.
+
+**Step 12.2 — signed Yes/No links.** New `INTEREST_LINK_SECRET` (config.py), deliberately
+its **own** secret rather than reusing `SECRET_KEY` — that one signs the admin session
+cookie and could get rotated for a reason that has nothing to do with outreach (e.g. a
+login incident), which would silently invalidate every Yes/No link already sitting in
+real leads' inboxes from past sends. Falls back to `SECRET_KEY` only so local dev needs
+no second secret to generate. `services/outreach/interest_links.py`: HMAC-SHA256 over
+`lead_id:outreach_log_id:response`, `hmac.compare_digest` on verify (constant-time, not
+`==`). No token table, same reasoning as the existing one-click unsubscribe link — signing
+makes forgery require the secret, not a lookup. The actual button rendering
+(`_render_interest()`) already existed in `email_renderer.py`, built forward-looking
+during Step 11.2 — this step only had to supply real `yes_url`/`no_url` values.
+
+**A real sequencing problem, solved architecturally.** The link has to be embedded IN the
+email before it's sent, but it needs the `OutreachLog.id` that (in every other flow in
+this codebase) only exists AFTER the row is inserted, which happens AFTER send. Fixed by
+pre-generating the id in Python (`outreach_log_id = str(uuid.uuid4())`) before building
+sections, then using that exact id both for the embedded links and for the `OutreachLog`
+row created afterward — no different from how `OutreachLog.id`'s own column default
+already works, just made explicit instead of implicit so the id is knowable early.
+
+**Step 12.3 — `interest_responses` (Table 29).** `UNIQUE(outreach_log_id, response)` —
+catch `IntegrityError` on insert, exact pattern `inbound_service.py`'s `record_inbound()`
+already uses for its own dedup, not a race-prone check-then-insert. Deliberately allows
+the SAME send to carry both a YES and a NO row (a lead who changes their mind) — only a
+repeat of the identical response on the identical send is a duplicate.
+
+**Step 12.4 — HOT_LEAD reuse.** A Yes click sets `lead.status = "HOT_LEAD"`, the exact
+same transition Step 9.4 (engagement escalation) and Step 4.3 (inbound classifier)
+already use — no parallel status. Logged at confidence=1.0/risk=HIGH via
+`log_agent_event`, distinct from Step 9.4's 0.8/MEDIUM for an *inferred* signal: a
+declared Yes is a stronger signal than three unanswered opens, and the record reflects
+that difference.
+
+**Step 12.5 — admin alert.** Reuses `send_internal_email()` (Step 4.5) exactly like the
+existing stuck-process alert, plus an optional WhatsApp leg via `send_free_form_message()`
+(the EOD report already sends internal WhatsApp alerts the same way). Reuses the
+**existing** `EOD_REPORT_RECIPIENTS`/`_WHATSAPP_RECIPIENTS` settings rather than inventing
+a second, parallel "who gets notified" list — grepped `discovery_scheduler.py`'s own
+stuck-alert code and found it already reuses these same two settings for its own
+real-time, non-EOD alert, so this isn't a new pattern, it's this codebase's established
+one. Zero new Settings UI needed. Rate-limited the way the spec asks ("one alert per real
+event, never one per tick") through a different, more direct mechanism than the
+tick-based stuck alert's cooldown timestamp: this only ever runs from inside
+`record_interest_response()`'s post-INSERT branch, which Step 12.3's UNIQUE constraint
+already guarantees fires at most once per real click.
+
+**Step 12.6 — "No" handling.** Stops the lead's ACTIVE `OutreachSequence` for that
+channel immediately (`status="STOPPED"`, `terminal_reason="DECLINED"`, a new value
+alongside the existing `SUPPRESSED`/`REPLIED`/`MAX_STEPS_REACHED`) — never touches
+`suppression_list`. Declining one pitch is not a legal opt-out; conflating the two would
+silently and permanently kill contactability the lead never actually revoked. Verified
+directly against the real DB: after a real No click, `SuppressionEntry` has zero rows for
+that lead's email.
+
+**A real, disclosed, out-of-scope gap found while building this (not fixed, not
+Phase-12's job):** neither this step nor Step 9.4's own engagement escalation stops a
+lead's active follow-up sequence when it escalates to HOT_LEAD — `process_due_followup()`
+checks reply/suppression, never `lead.status`, so a HOT_LEAD lead can still receive a
+scheduled follow-up touch after a human should already be handling it by hand. Pre-
+existing, not introduced by Phase 12 (Step 9.4 has the identical characteristic already),
+and out of this step's literal spec — noted here so it isn't silently lost, not fixed now.
+
+**Verified — `test_phase12.py`, real disposable DB, real Flask app via its own test
+client (`create_app().test_client()`), real `handle_outreach_email()` (real LLM
+drafting+QC), only the Resend/WhatsApp network calls monkeypatched — 9/9 real checks,
+directly proving every DoD P12 criterion, not narrative:**
+1. `reference_code` auto-assigned the instant a `Lead` is created.
+2. A real fresh send embeds real, correctly-addressed signed Yes/No links in the actual
+   HTML that would go out — pulled the exact tokens straight out of that HTML (not
+   recomputed) and confirmed they verify.
+3-5. A forged token, a single-character-altered token, and a token signed for a
+   *different* `lead_id` are each refused outright (404) against the real Flask route —
+   nothing recorded in any case.
+6. A real Yes click through the real HTTP route → `HOT_LEAD` escalation, exactly one
+   `InterestResponse` row, exactly one real admin alert email containing both the
+   reference code and a working CRM deep link.
+7. The exact same link clicked twice → still exactly one row, exactly one alert — proven
+   against the real DB constraint, not application logic.
+8. A real No click on a second lead → its `OutreachSequence` genuinely `STOPPED`
+   (`DECLINED`), lead NOT escalated, and `suppression_list` verified empty for that
+   lead's email afterward.
+9. A syntactically well-formed token for an `outreach_log_id` that was never actually
+   sent → 404 (DoD criterion 5: no outreach sent ⇒ no interest route resolves).
+
+- [x] Step 12.1 — `leads.reference_code` (human-readable, backfilled) — ✅ 2026-08-24, Section 3
+- [x] Step 12.2 — HMAC-signed public Yes/No routes (tampered token = **refuse**, kabhi guess nahi) — ✅ 2026-08-24, Section 3
+- [x] Step 12.3 — T29 `interest_responses` + DB-level UNIQUE (double-click idempotent) — ✅ 2026-08-24, Section 3
+- [x] Step 12.4 — existing `HOT_LEAD` escalation reuse (naya parallel status system nahi) — ✅ 2026-08-24, Section 3
+- [x] Step 12.5 — admin alert (email/WhatsApp, `send_internal_email()` reuse, rate-limited) — ✅ 2026-08-24, Section 3
+- [x] Step 12.6 — "No" handling: sequence rukti hai, **suppression list me NAHI jaata** — ✅ 2026-08-24, Section 3
+- [x] DoD Gate P12 — ✅ 2026-08-24, all 5 MASTER §9 P12 criteria proven with real evidence (`test_phase12.py` checks 3-9 above, one-to-one against the gate's own wording)
 
 ### PHASE 13 — Level-Aware Follow-Up Content
 - [ ] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal
