@@ -2691,6 +2691,46 @@ is deliberately last, so the live pipeline stays on the proven path until the re
 
 ---
 
+### ⭐ Phase 11 / Step 11.4 — Company contact block from settings (2026-08-24)
+
+Four new `system_settings` keys — `company_contact_email`, `company_contact_phone`,
+`company_website_url`, `company_profile_url` — plus `services/outreach/company_contact.py`'s
+`build_contact_section(db)`, which turns them into the CONTACT section of a structured email.
+
+**Why settings and not a table or Config:** these change (a new number, a new profile page) without
+the change being a deploy, which is the entire reason `system_settings` exists. **And why not
+agent-authored:** they are facts about US, not content written for this lead — an agent that could
+author them could also get one wrong. The agent never sees them and never writes them.
+
+**Three rules carried over deliberately:**
+- **Every line is independently optional.** No profile page configured → that one row is absent, the
+  other three still render.
+- **Every default is an empty string, never a plausible placeholder.** An unset contact detail must
+  render as *absent*, never as a wrong address a real lead might actually use.
+- **Nothing configured → `build_contact_section()` returns `None`, not an empty section.** That is
+  what lets Step 11.3's rule keep working untouched: a section never appended can never render as an
+  empty card.
+
+**Appended AFTER QC review, on purpose.** The block contains no agent-authored content, so there is
+nothing in it for QC to judge — and handing QC more surface it was never told about is exactly what
+produced the Step 11.6 bug, where it read the CTA as an agent-written signature.
+
+A URL displays without its scheme (`ivinfotech.com`, not `https://ivinfotech.com/`) while the href
+keeps the real full value; a phone displays with its human spacing while the `tel:` link strips it.
+
+**UI:** a new "Company contact details" card on the Settings page with its own nav entry —
+deliberately separate from "Operational settings", because everything there governs how the system
+behaves while these are the only values on that page a real lead actually reads.
+
+**Verified — 6/6 real checks** (`test_phase11_step4.py`, real disposable DB, real settings rows, real
+rendered HTML): nothing configured → no section and no empty card; all four keys exposed by the API
+and defaulting to empty; partial config → only configured lines; website shown scheme-less with the
+href intact; `mailto:`/`tel:` built correctly with the tel stripped and the display preserved; and the
+block rendering into a real email with the unset line genuinely absent. Then end-to-end through a real
+send with IVinfotech's own details from their live site footer.
+
+---
+
 ## 4. Pending Modules / Steps
 
 ### PHASE 2 — ✅ COMPLETE (Steps 2.1–2.4 all done, DoD Gate P2 green: atomic claim under contention ✅ 2.1 · validated scoring JSON ✅ 2.4 · zero orphan browsers ✅ 2.3 · decision routing correct ✅ 2.4, reproduced MASTER's exact DoD test)
@@ -2941,7 +2981,7 @@ usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, t
 - [x] Step 11.1 — structured section contract — ✅ 2026-08-24, Section 3, 8/8 real checks; naya `draft_structured_email()`, `ASSET_SECTIONS` table se har optional section same rule follow karta hai
 - [x] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — ✅ 2026-08-24, Section 3, 8/8 real checks against the rendered artifact; brand header + headline + bordered cards (4 design rounds, sab operator ke real-inbox feedback se)
 - [x] Step 11.3 — graceful section omission — ✅ 2026-08-24, structurally inherited from 11.1 (empty section kabhi banti hi nahi), minimal render me verified
-- [ ] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — renderer ka CONTACT section ready hai, populate karna baaki
+- [x] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — ✅ 2026-08-24, Section 3, 6/6 real checks + real send; Settings page pe apna alag card
 - [ ] Step 11.5 — AI cross-sell block, `products.ai_cross_sell_enabled` (default OFF, buzzword-ban still applies)
 - [x] Step 11.6 — QC structural review — ✅ 2026-08-24, Section 3; real bug se aaya (QC ne CTA ko signature samajh ke 2 draft reject kiye)
 - [ ] Wiring — structured path ko `jobs/outreach_handler.py` me opt-in karna (deliberately last, live pipeline tab tak proven path pe)
