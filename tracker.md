@@ -2890,6 +2890,42 @@ confirmed. `test_phase11_step5.py` extended to 8/8, with test 6 now asserting an
 against the mechanically-computed expected set rather than a fuzzy word-overlap check, since exactness
 is now a real, structural guarantee rather than a hopeful outcome.
 
+**Two design follow-ups, same day, driven by the operator reviewing the real sends above.**
+
+**Highlighted (visual).** The cross-sell line rendered as plain muted text — user asked for it to
+stand out. New `_render_cross_sell()`: a small `BRAND_SOFT`-tinted pill with a `+` mark, deliberately
+smaller than the CTA panel so it still reads as a secondary note, not a second pitch.
+
+**Personalized (content — the bigger change).** User rejected the bare `"We also offer X."` template
+outright: *"aisa likhe ki we offer ai automation service which can help automation billing, online
+booking with ai agent etc lead ke anusar aur pain point ko target kare."* This directly undoes the
+exact-template design from the entry above — but that design existed only to route around QC's
+*wording*-level confusion, not because personalization was unsafe, so the fix reshapes rather than
+reverts the deterministic gate:
+- `_assemble_sections()` now checks only what's safely checkable without real reasoning — the line
+  must contain one of the admin's approved product names, and carry no URL (this section still gets no
+  link/button of its own). It no longer demands an exact template, which is what made real
+  personalization impossible in the first place.
+- The matched product's own real brief now **travels with the section** as a new `named_product` key,
+  rather than needing a separate parameter threaded through every call site — `review_draft()` reads it
+  straight out of the draft it already has.
+- QC's CROSS_SELL check changes shape to match: it no longer polices wording/format (the exact thing
+  that broke last time) — it grounds the *specific capability claimed* against that *specific product's
+  own brief*, the identical kind of judgment QC already does reliably for the main pitch against
+  `PRODUCT_BRIEF`, just re-pointed at a second, smaller one. The same redundant-representation fix
+  already applied to `body` (see the entry above) is applied again here: `named_product` is stripped
+  from the inline `DRAFT.sections` view before QC sees it, since it is already shown separately as
+  `NAMED_PRODUCT_BRIEF` — avoiding a second round of the exact confusion that caused Bug 3.
+
+**Verified — 8/8 (`test_phase11_step5.py`, redesigned), then real end-to-end:** a real drafted line —
+*"AI Automation could also help with the booking gap you mentioned, with chatbots that answer customer
+queries and automated booking workflows"* — named an approved product, tied to the lead's real
+`NO_ONLINE_BOOKING` pain point, grounded in that product's own real capabilities, and QC approved it on
+the first call. A follow-up real send correctly saw QC reject one draft's cross-sell line for reading
+"like a second pitch" (a legitimate, working judgment call, not a bug) and approved a cleaner one on
+retry 2 — *"AI Automation Solutions could help reduce the manual billing work tied to notebook-based
+records."* — which reached a real inbox, screenshotted, tinted-pill highlight visible.
+
 ---
 
 ## 4. Pending Modules / Steps
