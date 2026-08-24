@@ -262,24 +262,32 @@ def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> 
             cta["button_label"] = _clean_line(demo.get("title"), 40) or "See the demo"
         sections.append(cta)
 
-    # Phase 11 Step 11.5 -- only ever appended when the model actually wrote one AND that
-    # line deterministically matches the required template exactly. Real bug, found live:
-    # QC's own LLM judgment repeatedly rejected drafts where the line was OBJECTIVELY,
-    # character-for-character correct ("We also offer Website Development." against an
-    # approved list containing exactly that product) -- it kept reading the presence of a
-    # real, richer product description elsewhere in its own context as implying the
-    # output line should be richer too, and flagged the deliberately bare, correct line as
-    # suspiciously incomplete. Same "never trust blindly" posture already used elsewhere
-    # in this file (_strip_signature) and this codebase (_missing_required_asset,
-    # _strip_placeholder_signoff): the line's correctness is objectively checkable, so it
-    # is checked in code, not re-litigated by a model on every single call. A model output
-    # that doesn't match the template exactly is dropped like any other malformed
-    # optional field -- never "corrected" or passed through partially.
-    cross_sell = _clean_line(data.get("cross_sell_line"), 240)
+    # Phase 11 Step 11.5 -- only ever appended when the model wrote a real line AND it
+    # names one of the admin's own approved products. This is a NAME check, not a content
+    # check: the line is allowed to be a genuinely personalized 1-2 sentences tying that
+    # product's real capabilities to this lead's actual pain point (the operator's own
+    # explicit ask -- a bare "we also offer X" with no reason was too generic) --
+    # deliberately NOT forced back into a rigid template. What IS still checked here
+    # deterministically, same "never trust blindly" posture as _strip_signature/
+    # _missing_required_asset/_strip_placeholder_signoff elsewhere in this codebase:
+    # the line must actually contain one of the approved product names, and must carry no
+    # URL (this section gets no button/link of its own -- a URL here would be either a
+    # broken promise or a fabricated one). Whether the CAPABILITY claim inside the line is
+    # genuinely grounded in that product's own brief is QC's job (review_draft()), the
+    # same way QC already grounds the main pitch's own capability claims -- that judgment
+    # needs real reasoning about what the brief says, which a name/URL check cannot do.
+    cross_sell = _clean_line(data.get("cross_sell_line"), 300)
     if cross_sell and cross_sell_products:
-        approved_lines = {f"We also offer {p['title']}." for p in cross_sell_products}
-        if cross_sell in approved_lines:
-            sections.append({"type": "CROSS_SELL", "text": cross_sell})
+        named_product = next(
+            (p for p in cross_sell_products if p["title"] in cross_sell), None)
+        if named_product and not re.search(r"https?://", cross_sell):
+            # The matched product's own real brief travels WITH the section (not as a
+            # separate parameter QC would need threaded through) -- review_draft() reads
+            # it straight out of the draft it already receives, to ground this section's
+            # capability claim the same way it grounds the main pitch's, against a real
+            # source it was actually shown.
+            sections.append({"type": "CROSS_SELL", "text": cross_sell,
+                            "named_product": named_product})
 
     return sections
 

@@ -166,25 +166,31 @@ reworded twins of each other), then pick the one most likely to earn a reply as
 "selected_subject" -- it MUST be one of the 3, copied exactly. The subject follows the
 same rule as the hook: it should read like a real person, not a campaign.
 
-IF a CROSS_SELL_PRODUCTS block is present below, also write "cross_sell_line": ONE short
-sentence (under 20 words) mentioning whichever ONE of those products is genuinely
-relevant to THIS lead's business, so a lead uninterested in the main pitch still knows
-that service exists. Hard rules for that line:
-- Name only a product from that list. Never any other service, however plausible.
-- Use EXACTLY this template, nothing more: "We also offer <product title>." -- copy the
-  product's title from CROSS_SELL_PRODUCTS below character-for-character. Do not describe
-  what the product does, do not add a second clause, do not add "for X" or "if Y" after
-  it. The whole value of this line is that a lead now knows the service exists; naming it
-  is enough, and every word past the template increases the chance of sounding like a
-  pitch.
-  Good, complete and correct exactly as-is: "We also offer AI Automation Solutions."
-  Bad (adds description): "We also build AI automation for repetitive booking work."
-  Bad (adds invitation): "We also offer AI Automation Solutions, if that's ever useful."
-- No claim about the industry in general, no buzzwords, no link, no urgency, no second
-  sentence.
-- If NONE of the listed products is genuinely relevant to this specific lead, return
-  "cross_sell_line": "" -- an empty string. Omitting it entirely is the correct answer
-  far more often than forcing a weak one, and the section is simply dropped.
+IF a CROSS_SELL_PRODUCTS block is present below, also write "cross_sell_line": ONE to two
+short sentences (under 35 words total) naming whichever ONE of those products is
+genuinely relevant to THIS lead, and tying it to a SPECIFIC verified pain point of theirs
+-- so a lead uninterested in the main pitch still sees a concrete, personalized reason the
+other service matters to them, not just that it exists. Hard rules for that line:
+- Name only a product from CROSS_SELL_PRODUCTS below, using its exact title. Never any
+  other service, however plausible.
+- Every capability you claim for that product must be ACTUALLY STATED in that product's
+  own description/value_proposition in CROSS_SELL_PRODUCTS -- ground it exactly the way
+  you ground the main pitch's SOLUTION points against PRODUCT_BRIEF. Never invent what
+  the cross-sold product can do.
+- Tie it to a real entry from VERIFIED_PAIN_POINTS -- name the specific problem, not a
+  vague "your business."
+  Good: "We also offer AI Automation Solutions -- it handles exactly this kind of
+  repetitive booking and billing follow-up automatically." (assuming the product's own
+  description actually mentions booking/billing/follow-up automation, and the lead's
+  verified pain points include one of those)
+  Bad (no pain-point tie, just naming it): "We also offer AI Automation Solutions."
+  Bad (capability not in that product's own brief): claiming it does something its
+  description/value_proposition never says.
+- No link, no urgency, no second call to action -- this stays a short, factual note, not
+  a second pitch with its own CTA.
+- If NO listed product's real capabilities genuinely match any of this lead's verified
+  pain points, return "cross_sell_line": "" -- an empty string. A forced, ungrounded tie
+  is worse than no cross-sell at all, and the section is simply dropped.
 
 OUTPUT JSON: {"subject_candidates": ["...", "...", "..."], "selected_subject": "...",
 "hook": "...", "pain_points": ["...", "..."], "solution_points": ["...", "..."],

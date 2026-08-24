@@ -131,7 +131,19 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
     # consecutive real rejections in a row, all citing this same confusion. QC now never
     # sees `body` at all when `sections` is present -- one representation, nothing to
     # cross-check against itself.
-    draft_for_qc = {k: v for k, v in draft.items() if k != "body"} if draft.get("sections") else draft
+    if draft.get("sections"):
+        # Same fix, same reasoning, applied again: `named_product` (the CROSS_SELL
+        # section's grounding brief) gets shown separately as NAMED_PRODUCT_BRIEF below --
+        # leaving it inline here too would be the identical redundant-representation
+        # confusion `body` caused, just on a smaller scale.
+        draft_for_qc = {
+            k: v for k, v in draft.items() if k != "body"
+        }
+        draft_for_qc["sections"] = [
+            {k: v for k, v in s.items() if k != "named_product"} for s in draft["sections"]
+        ]
+    else:
+        draft_for_qc = draft
 
     prompt = QUALITY_CONTROLLER_SYSTEM_PROMPT + f"""
 DRAFT: {json.dumps(draft_for_qc, ensure_ascii=False)}
@@ -175,27 +187,34 @@ Three consequences for your checks, all of them carve-outs, not relaxations:
 ALSO CHECK, in addition to (a)-(d): the sections are in a sensible order, and no section
 is present but empty (a heading with nothing under it, a bullet list with no bullets).
 """
-        if any(s.get("type") == "CROSS_SELL" for s in draft["sections"]):
-            # Real bug, found live (repeatable, 3/3 fresh calls): asked to judge this
-            # section itself, this exact same LLM kept rejecting an OBJECTIVELY correct,
-            # template-exact line ("We also offer Website Development.") as "adding a
-            # description" -- apparently pattern-matching the rich product description it
-            # was shown in CROSS_SELL_PRODUCTS onto the (correctly bare) output line. Since
-            # the line's correctness is mechanically checkable, it now IS checked
-            # mechanically, before this prompt is even built (outreach_agent.py's
-            # _assemble_sections -- a CROSS_SELL section only ever exists here if it
-            # already matches "We also offer <one of the admin's approved titles>."
-            # exactly). Telling QC that plainly, instead of asking it to re-derive the
-            # same judgment that kept failing, is the actual fix -- not more wording.
-            prompt += """
-CROSS_SELL section (Phase 11 Step 11.5). A short line naming another real service this
-company offers, so a lead uninterested in the main pitch still learns it exists. This
-line has ALREADY been mechanically verified, in code, to be an exact, bare mention of one
-of the admin's own pre-approved products -- nothing added, nothing off the approved list.
-Do not re-evaluate its wording, length or format; there is nothing left to check about it,
-and it must never be a rejection reason. Treat check (c)'s "unsupported claim" rule as
-already satisfied for this section specifically -- naming an approved product is a fact
-about this company's own catalogue.
+        cross_sell_section = next((s for s in draft["sections"] if s.get("type") == "CROSS_SELL"), None)
+        if cross_sell_section:
+            # `named_product` is the SPECIFIC product's real brief, resolved and attached
+            # to this section already (outreach_agent.py's _assemble_sections) -- it is
+            # mechanically guaranteed to be one of the admin's own pre-approved products,
+            # so that part is never in question here. What genuinely needs real judgment,
+            # and could not be checked in code, is whether the CAPABILITY this line claims
+            # for that product is actually grounded in ITS OWN brief below (not the main
+            # PRODUCT_BRIEF above -- a different product, a different ground truth).
+            prompt += f"""
+CROSS_SELL section (Phase 11 Step 11.5). A short, personalized line naming another real
+service this company offers and tying it to one of this lead's own verified pain points.
+The product it names is ALREADY mechanically verified, in code, to be one of the admin's
+own pre-approved products -- never reject it for naming an unapproved service, and never
+reject it under check (c) merely for naming a real product; that is a fact about this
+company's catalogue, not an unsupported claim.
+
+What you DO need to judge, using real reasoning: is every capability this line claims for
+that product ACTUALLY STATED in that product's own real brief below (not invented, not
+borrowed from the main PRODUCT_BRIEF above)? And does it genuinely tie to a real entry in
+VERIFIED_PAIN_POINTS, not a vague, generic tie?
+
+NAMED_PRODUCT_BRIEF (the ground truth for THIS section's capability claim only):
+{json.dumps(cross_sell_section.get("named_product") or {}, ensure_ascii=False)}
+
+REJECT this section specifically if: it claims a capability that product's own brief does
+not support, it merely names the product with no real pain-point tie, it contains a link,
+or it reads as a second pitch with its own call to action. Otherwise approve it.
 """
     if is_followup:
         prompt += """
