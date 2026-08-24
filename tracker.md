@@ -3373,6 +3373,36 @@ directly proving every DoD P12 criterion, not narrative:**
 - [x] Step 12.6 — "No" handling: sequence rukti hai, **suppression list me NAHI jaata** — ✅ 2026-08-24, Section 3
 - [x] DoD Gate P12 — ✅ 2026-08-24, all 5 MASTER §9 P12 criteria proven with real evidence (`test_phase12.py` checks 3-9 above, one-to-one against the gate's own wording)
 
+**Follow-up: re-verified against the LIVE local server, not just the disposable-DB test
+suite (user asked to test real-time), 2026-08-24.** Everything above ran through a
+temporary DB and a mocked network boundary; this pass hit the actual already-running
+`localhost:5000` Flask process, the real persistent dev DB, and real Resend, with GameZone
+Visnagar (the session's own recurring real-send test fixture, `hardikv682@gmail.com`) as
+the lead:
+- Two real fresh sends via `handle_outreach_email()` against the real DB (one QC-rejected
+  first attempt on retry #1, real LLM variance, succeeded on retry #2 -- not a bug).
+- A forged token, a single-character-tampered real token, and a token legitimately signed
+  for a *different real lead* (SHASVI CREATIONS) were each thrown at the live server's
+  actual `/interest/...` route and refused (404) every time -- confirmed nothing was
+  recorded in any case.
+- The real Yes link (pulled from the real signed URL the live server computed, not
+  recomputed independently) → live DB shows `leads.status = HOT_LEAD`, one real
+  `interest_responses` row, one real `agent_events` row. The same link clicked twice →
+  still exactly one of each.
+- **The real admin alert was independently confirmed via Resend's own API** (`GET
+  https://api.resend.com/emails`, not just "no exception raised"): a real email titled
+  *"AI-BOS: GameZone Visnagar said YES (Ref: LD-56195B8C)"* to `ivaiagent05@gmail.com`,
+  timestamped 10:19:41 -- one second after the real click at 10:19:40. `WHATSAPP_TOKEN` is
+  also configured locally, so the WhatsApp leg was genuinely attempted too, not skipped.
+- A real No click (with an `outreach_sequences` row deliberately flipped to `ACTIVE` first,
+  since this particular fixture's sequence rows were already `COMPLETED` from much earlier
+  in the session) → live DB shows that row `STOPPED`/`DECLINED`, lead status unchanged
+  (never escalated), and `suppression_list` verified to have zero rows for that email
+  afterward.
+
+No code changes from this pass -- it found nothing wrong, only confirmed the disposable-DB
+test's results hold against the real running system.
+
 ### PHASE 13 — Level-Aware Follow-Up Content
 - [ ] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal
 - [ ] Step 13.2 — `whatsapp_templates.followup_level`; template approve na ho to us level pe **kuch nahi jaata**, doosre level ka template kabhi nahi
