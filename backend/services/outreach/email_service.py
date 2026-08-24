@@ -129,7 +129,7 @@ def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str
         raise RuntimeError("RESEND_API_KEY not configured")
 
     full_body = body_text.rstrip() + _build_footer(unsubscribe_url)
-    html_body = (render_email_html(sections, unsubscribe_url) if sections
+    html_body = (render_email_html(sections, unsubscribe_url, headline=subject) if sections
                  else _build_html(body_text, unsubscribe_url, content_assets))
 
     resp = requests.post(

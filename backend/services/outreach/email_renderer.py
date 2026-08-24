@@ -47,21 +47,31 @@ logger = logging.getLogger(__name__)
 #   enough that long lines started to feel like body copy in a newsletter.
 # - **Nothing is centred.** Real email is left-aligned; centred text is a layout choice
 #   almost only campaigns make.
-INK = "#1f2328"          # primary text -- softer than pure black, easier to read at length
-INK_MUTED = "#57606a"    # secondary text
-RULE = "#e4e7eb"         # hairlines and borders
+INK = "#101828"          # primary text
+INK_MUTED = "#667085"    # secondary text
+RULE = "#e4e7ec"         # hairlines and borders
 CANVAS = "#f2f4f7"       # the area around the card
 CARD = "#ffffff"
-ACCENT = "#1f2328"       # primary button fill
+# The real IVinfotech brand navy, taken from their own site rather than invented, so the
+# email reads as coming from the same company as the website the CTA points at.
+BRAND = "#0b1c3c"
+BRAND_SOFT = "#eef2f8"   # tinted panels
+ACCENT = BRAND           # primary button fill
 ACCENT_TEXT = "#ffffff"
-LINK = "#0969da"         # calmer than the usual bright link blue
+LINK = "#1552b0"
+
+# Section headings. A premium transactional email groups content under short labels
+# rather than running it together (the operator's own Hostinger reference does exactly
+# this: "Here are the key details", "Plan details", "Useful resources"). Kept as
+# constants so the wording is tunable in one place.
+HEADING_PAIN = "What we noticed"
+HEADING_SOLUTION = "How we'd fix it"
 
 # Icon badges. A coloured glyph on its own reads as clip-art; the same glyph centred in a
 # soft tinted disc reads as a designed component, and it degrades gracefully -- Outlook
 # squares the border-radius but keeps the tint, so the meaning survives either way.
 WARN_FG, WARN_BG = "#b54708", "#fef3e2"    # amber -- a problem, not an alarm
 GAIN_FG, GAIN_BG = "#067647", "#e7f6ef"    # green -- the answer to it
-TINT = "#f7f9fc"         # the CTA panel
 
 FONT = ("'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', "
         "Helvetica, Arial, sans-serif")
@@ -142,21 +152,40 @@ def _badge(glyph: str, fg: str, bg: str) -> str:
 </table>"""
 
 
-def _bullet_list(items, glyph: str, fg: str, bg: str, margin_bottom: int = 20) -> str:
+def _card(inner: str, tint: bool = False, margin_bottom: int = 20) -> str:
+    """A bordered, rounded panel. This is the single biggest thing separating a premium
+    transactional email from a plain one: content grouped into distinct blocks instead of
+    running as one continuous column."""
+    bg = BRAND_SOFT if tint else CARD
+    return f"""
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+       style="margin: 0 0 {margin_bottom}px 0;">
+  <tr><td bgcolor="{bg}" style="padding: 20px 22px; border: 1px solid {RULE};
+      border-radius: 10px;">{inner}</td></tr>
+</table>"""
+
+
+def _heading(text: str) -> str:
+    return (f'<div style="font-family: {FONT}; font-size: 12px; font-weight: 700; '
+            f'letter-spacing: 0.6px; text-transform: uppercase; color: {INK_MUTED}; '
+            f'margin: 0 0 14px 0;">{_e(text)}</div>')
+
+
+def _bullet_list(items, glyph: str, fg: str, bg: str, heading: str = "") -> str:
     """A two-column table per bullet rather than `<ul>`: list-marker styling is one of the
     least consistent things across mail clients, and the marker here carries real meaning
     (a problem vs. an answer to it), so it cannot be left to the client to decide."""
     badge = _badge(glyph, fg, bg)
+    last = len(items) - 1
     rows = "".join(f"""
   <tr>
-    <td valign="top" width="24" style="padding: 1px 12px 12px 0;">{badge}</td>
-    <td valign="top" style="padding: 0 0 12px 0; font-family: {FONT}; font-size: {BODY_SIZE}px;
-        line-height: {LINE_HEIGHT}; color: {INK};">{_e(item)}</td>
-  </tr>""" for item in items)
-    return f"""
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 {margin_bottom}px 0;">{rows}
+    <td valign="top" width="24" style="padding: 1px 12px {0 if i == last else 12}px 0;">{badge}</td>
+    <td valign="top" style="padding: 0 0 {0 if i == last else 12}px 0; font-family: {FONT};
+        font-size: {BODY_SIZE}px; line-height: {LINE_HEIGHT}; color: {INK};">{_e(item)}</td>
+  </tr>""" for i, item in enumerate(items))
+    body = f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">{rows}
 </table>"""
+    return _card((_heading(heading) if heading else "") + body)
 
 
 def _para(text: str, size: int = BODY_SIZE, color: str = INK, margin: str = "0 0 20px 0") -> str:
@@ -233,13 +262,7 @@ def _render_cta(section: dict) -> str:
     if button_url:
         inner += _button(button_url,
                          _label_or_fallback(section.get("button_label"), "See the demo"))
-    return f"""
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 4px 0 24px 0;">
-  <tr>
-    <td bgcolor="{TINT}" style="padding: 20px 22px; border: 1px solid {RULE}; border-radius: 10px;">{inner}</td>
-  </tr>
-</table>"""
+    return _card(inner, tint=True)
 
 
 def _render_interest(section: dict) -> str:
@@ -279,16 +302,9 @@ def _render_contact(section: dict) -> str:
     if not rows:
         return ""
     heading = section.get("heading") or "Get in touch"
-    return f"""
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 4px 0; border-top: 1px solid {RULE};">
-  <tr><td style="padding: 18px 0 0 0;">
-    <div style="font-family: {FONT}; font-size: 13px; font-weight: 700; color: {INK};
-         margin: 0 0 10px 0;">{_e(heading)}</div>
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0">{rows}
-    </table>
-  </td></tr>
-</table>"""
+    inner = (_heading(heading) +
+             f'<table role="presentation" cellpadding="0" cellspacing="0" border="0">{rows}</table>')
+    return _card(inner, margin_bottom=4)
 
 
 def _render_section(section: dict) -> str:
@@ -300,9 +316,10 @@ def _render_section(section: dict) -> str:
         # clients substitute their own colour emoji for the warning sign, which would
         # break the badge's own colour scheme with something the design never chose.
         return _bullet_list(section.get("items") or [], "&#9888;&#65038;",
-                            WARN_FG, WARN_BG, margin_bottom=18)
+                            WARN_FG, WARN_BG, heading=HEADING_PAIN)
     if kind == "SOLUTION":
-        return _bullet_list(section.get("items") or [], "&#10003;", GAIN_FG, GAIN_BG)
+        return _bullet_list(section.get("items") or [], "&#10003;", GAIN_FG, GAIN_BG,
+                            heading=HEADING_SOLUTION)
     if kind == "VIDEO":
         return _render_video(section)
     if kind == "CTA":
@@ -322,12 +339,43 @@ def _render_section(section: dict) -> str:
     return ""
 
 
+def _brand_wordmark(size: int = 17, color: str = BRAND) -> str:
+    """A styled text wordmark, deliberately NOT an image. A remote logo is invisible in
+    every inbox that blocks images by default -- which for a first email from an unknown
+    sender is most of them -- so the one element that identifies who this is from would be
+    the first thing to disappear. Text always renders."""
+    return (f'<span style="font-family: {FONT}; font-size: {size}px; font-weight: 700; '
+            f'letter-spacing: -0.2px; color: {color};">IV<span style="font-weight: 400;">infotech</span></span>')
+
+
+def _header() -> str:
+    return f"""
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+       style="margin: 0 0 24px 0;">
+  <tr><td style="padding: 0 0 18px 0; border-bottom: 1px solid {RULE};">{_brand_wordmark()}</td></tr>
+</table>"""
+
+
+def _headline(text: str) -> str:
+    return (f'<div style="font-family: {FONT}; font-size: 22px; line-height: 1.32; '
+            f'font-weight: 700; color: {INK}; margin: 0 0 14px 0;">{_e(text)}</div>')
+
+
 def render_email_html(sections: list[dict], unsubscribe_url: str,
-                      company_address: str | None = None) -> str:
+                      company_address: str | None = None, headline: str | None = None) -> str:
     """The full email document. `sections` is Step 11.1's ordered list; the compliance
     footer is appended here and is never the agent's responsibility -- the same rule
-    email_service._build_footer() already enforces for the plain-text part."""
-    body = "".join(_render_section(s) for s in sections or [])
+    email_service._build_footer() already enforces for the plain-text part.
+
+    `headline` is normally the subject line, shown again as the page's own heading. That
+    repetition is deliberate and is what almost every well-made transactional email does:
+    the subject is gone from view the moment the message is opened, so without it the
+    reader has no title to anchor on and the email opens mid-sentence.
+    """
+    body = _header()
+    if headline:
+        body += _headline(headline)
+    body += "".join(_render_section(s) for s in sections or [])
     address = _e(company_address if company_address is not None else Config.COMPANY_PHYSICAL_ADDRESS)
     # The compliance block sits OUTSIDE the white card, the way a mail client's own
     # footer does, rather than inside it as another section of the message. It keeps the
@@ -347,9 +395,10 @@ def render_email_html(sections: list[dict], unsubscribe_url: str,
                      padding: 36px 34px 32px 34px; box-shadow: 0 1px 3px rgba(16,24,40,0.04);">{body}</td>
         </tr>
         <tr>
-          <td style="padding: 16px 34px 0 34px;">
+          <td align="center" style="padding: 22px 34px 0 34px;">
+            <div style="margin: 0 0 8px 0;">{_brand_wordmark(14, INK_MUTED)}</div>
             <div style="font-family: {FONT}; font-size: 12px; line-height: 1.6; color: {INK_MUTED};">{address}</div>
-            <div style="margin-top: 6px;">
+            <div style="margin-top: 8px;">
               <a href="{_e(unsubscribe_url)}" style="font-family: {FONT}; font-size: 12px;
                  color: {INK_MUTED};">Unsubscribe</a>
             </div>
