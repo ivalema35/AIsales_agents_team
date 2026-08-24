@@ -103,6 +103,14 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
     was strengthened. This checks that deterministically, before ever asking the LLM,
     and rejects (with the missing value named in suggested_corrections, feeding the
     existing retry loop) rather than hoping the model notices its own omission.
+
+    A `draft` carrying `sections` (Phase 11 Step 11.6) gets an extra prompt block and two
+    extra structural checks. Found live on the first real structured send: QC only ever
+    sees the flat-text preview of the sections, in which the CTA's closing line sits at
+    the end and reads exactly like an agent-written sign-off -- so check (d) rejected two
+    consecutive drafts for "footer/signature-style closing content" that was in fact a
+    defined template section rendered in its own panel. QC was applying a correct rule to
+    a shape it had never been told about.
     """
     missing_asset = _missing_required_asset(draft.get("body", ""), format_sections, content_assets)
     if missing_asset:
@@ -129,6 +137,29 @@ exactly matches one of these "value" fields is a REAL, admin-approved asset -- N
 unsupported claim or an unauthorized link, and must never be rejected on that basis
 alone. Only flag a URL if it does NOT match any of these:
 {json.dumps(content_assets, ensure_ascii=False)}
+"""
+    if draft.get("sections"):
+        prompt += f"""
+STRUCTURED_DRAFT (Phase 11 Step 11.6). This draft is NOT free-form prose. The system
+assembled it from typed sections and will RENDER each one itself; the DRAFT.body you are
+reading is only a flat text preview of those sections, so things that look like they run
+together are separate blocks in the real email. The section list, in order:
+{json.dumps([s.get("type") for s in draft["sections"]], ensure_ascii=False)}
+
+Three consequences for your checks, all of them carve-outs, not relaxations:
+(1) The CTA section's headline and subtext are a DEFINED PART OF THE TEMPLATE, rendered
+    inside their own panel. They are not an agent-written sign-off or signature and must
+    NOT be rejected under check (d). A closing line offering to follow up or share a next
+    step belongs to that section by design.
+(2) The compliance footer, physical address and unsubscribe link are appended by the
+    system AFTER this review. Their absence here is correct, not a defect -- and the
+    draft containing its own would still be a real violation of check (d).
+(3) Every URL in a VIDEO/CTA/CASE_STUDY section was inserted by the system from the
+    approved asset list -- the agent is structurally unable to write a URL at all -- so a
+    link in those sections is never a hallucinated one.
+
+ALSO CHECK, in addition to (a)-(d): the sections are in a sensible order, and no section
+is present but empty (a heading with nothing under it, a bullet list with no bullets).
 """
     if is_followup:
         prompt += """
