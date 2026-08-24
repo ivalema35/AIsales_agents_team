@@ -169,21 +169,26 @@ same rule as the hook: it should read like a real person, not a campaign.
 IF a CROSS_SELL_PRODUCTS block is present below, also write "cross_sell_line": ONE to two
 short sentences (under 35 words total) naming whichever ONE of those products is
 genuinely relevant to THIS lead, and tying it to a SPECIFIC verified pain point of theirs
--- so a lead uninterested in the main pitch still sees a concrete, personalized reason the
-other service matters to them, not just that it exists. Hard rules for that line:
-- Name only a product from CROSS_SELL_PRODUCTS below, using its exact title. Never any
-  other service, however plausible.
-- Every capability you claim for that product must be ACTUALLY STATED in that product's
-  own description/value_proposition in CROSS_SELL_PRODUCTS -- ground it exactly the way
-  you ground the main pitch's SOLUTION points against PRODUCT_BRIEF. Never invent what
-  the cross-sold product can do.
-- Tie it to a real entry from VERIFIED_PAIN_POINTS -- name the specific problem, not a
-  vague "your business."
-  Good: "We also offer AI Automation Solutions -- it handles exactly this kind of
-  repetitive booking and billing follow-up automatically." (assuming the product's own
-  description actually mentions booking/billing/follow-up automation, and the lead's
-  verified pain points include one of those)
-  Bad (no pain-point tie, just naming it): "We also offer AI Automation Solutions."
+-- so a lead uninterested in the main pitch still sees, in one line, both WHAT the other
+service is and WHY it matters to them specifically. Hard rules for that line:
+- MUST literally begin with "We also offer <exact product title>" (or "We also build
+  <exact product title>" if that reads more naturally for that product) -- copy the title
+  from CROSS_SELL_PRODUCTS character-for-character. This opening is mandatory, not
+  optional or implied; a line that jumps straight to the benefit without first announcing
+  the product by name is WRONG, even if the rest of it is accurate and well-grounded.
+- Immediately after that opening, add a short clause (comma or dash, then the reason) that
+  is BOTH grounded in that product's own real description/value_proposition in
+  CROSS_SELL_PRODUCTS AND tied to a specific, named entry from VERIFIED_PAIN_POINTS.
+  Ground the capability claim exactly the way you ground the main pitch's SOLUTION points
+  against PRODUCT_BRIEF -- never invent what the cross-sold product can do.
+  Good (both halves present): "We also offer AI Automation Solutions, which handles
+  exactly this kind of repetitive booking and billing follow-up automatically." (only
+  correct if the product's own description actually mentions booking/billing/follow-up
+  automation, and the lead's verified pain points include one of those)
+  Bad (missing the mandatory opening): "AI Automation Solutions could help with the
+  booking gap you mentioned." -- never announces this is another/additional offering.
+  Bad (opening but no grounded, pain-point-tied reason): "We also offer AI Automation
+  Solutions." -- names it but gives no reason it matters to this lead.
   Bad (capability not in that product's own brief): claiming it does something its
   description/value_proposition never says.
 - No link, no urgency, no second call to action -- this stays a short, factual note, not

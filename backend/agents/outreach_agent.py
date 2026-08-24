@@ -262,24 +262,29 @@ def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> 
             cta["button_label"] = _clean_line(demo.get("title"), 40) or "See the demo"
         sections.append(cta)
 
-    # Phase 11 Step 11.5 -- only ever appended when the model wrote a real line AND it
-    # names one of the admin's own approved products. This is a NAME check, not a content
-    # check: the line is allowed to be a genuinely personalized 1-2 sentences tying that
-    # product's real capabilities to this lead's actual pain point (the operator's own
-    # explicit ask -- a bare "we also offer X" with no reason was too generic) --
-    # deliberately NOT forced back into a rigid template. What IS still checked here
+    # Phase 11 Step 11.5 -- only ever appended when the model wrote a real line that (a)
+    # opens with the required "We also offer/build <product>" announcement and (b) names
+    # one of the admin's own approved products there. This is a NAME + OPENING check, not
+    # a content check: everything after that opening is allowed to be genuinely
+    # personalized, tying that product's real capabilities to this lead's actual pain
+    # point (the operator's own explicit ask -- a bare "we also offer X" with nothing
+    # after it was too generic; a benefit line with no "we also offer" opening didn't
+    # clearly announce this was a second, additional service). What IS still checked here
     # deterministically, same "never trust blindly" posture as _strip_signature/
-    # _missing_required_asset/_strip_placeholder_signoff elsewhere in this codebase:
-    # the line must actually contain one of the approved product names, and must carry no
-    # URL (this section gets no button/link of its own -- a URL here would be either a
-    # broken promise or a fabricated one). Whether the CAPABILITY claim inside the line is
-    # genuinely grounded in that product's own brief is QC's job (review_draft()), the
-    # same way QC already grounds the main pitch's own capability claims -- that judgment
-    # needs real reasoning about what the brief says, which a name/URL check cannot do.
+    # _missing_required_asset/_strip_placeholder_signoff elsewhere in this codebase: the
+    # line must literally start with the mandatory opening naming an approved product, and
+    # must carry no URL (this section gets no button/link of its own -- a URL here would
+    # be either a broken promise or a fabricated one). Whether the CAPABILITY claim inside
+    # the rest of the line is genuinely grounded in that product's own brief is QC's job
+    # (review_draft()), the same way QC already grounds the main pitch's own capability
+    # claims -- that judgment needs real reasoning about what the brief says, which a
+    # name/URL check cannot do.
     cross_sell = _clean_line(data.get("cross_sell_line"), 300)
     if cross_sell and cross_sell_products:
         named_product = next(
-            (p for p in cross_sell_products if p["title"] in cross_sell), None)
+            (p for p in cross_sell_products
+             if re.match(rf"we also (offer|build) {re.escape(p['title'])}\b", cross_sell, re.IGNORECASE)),
+            None)
         if named_product and not re.search(r"https?://", cross_sell):
             # The matched product's own real brief travels WITH the section (not as a
             # separate parameter QC would need threaded through) -- review_draft() reads

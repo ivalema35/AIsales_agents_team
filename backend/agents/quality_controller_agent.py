@@ -197,12 +197,13 @@ is present but empty (a heading with nothing under it, a bullet list with no bul
             # for that product is actually grounded in ITS OWN brief below (not the main
             # PRODUCT_BRIEF above -- a different product, a different ground truth).
             prompt += f"""
-CROSS_SELL section (Phase 11 Step 11.5). A short, personalized line naming another real
-service this company offers and tying it to one of this lead's own verified pain points.
-The product it names is ALREADY mechanically verified, in code, to be one of the admin's
-own pre-approved products -- never reject it for naming an unapproved service, and never
-reject it under check (c) merely for naming a real product; that is a fact about this
-company's catalogue, not an unsupported claim.
+CROSS_SELL section (Phase 11 Step 11.5). A short, personalized line that opens with
+"We also offer/build <product>" and ties it to one of this lead's own verified pain
+points. BOTH the opening announcement AND the named product are ALREADY mechanically
+verified, in code, before this draft ever reached you -- never reject it for missing that
+opening, for its exact wording, or for naming an unapproved service; and never reject it
+under check (c) merely for naming a real product, that is a fact about this company's
+catalogue, not an unsupported claim.
 
 What you DO need to judge, using real reasoning: is every capability this line claims for
 that product ACTUALLY STATED in that product's own real brief below (not invented, not
