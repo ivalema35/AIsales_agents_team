@@ -32,6 +32,10 @@ def _serialize(row, product_titles=None):
         "language": row.language,
         "category": row.category,
         "purpose": row.purpose,
+        # Phase 13 Step 13.2 -- which of the 3 real follow-up levels this is written for.
+        # Only meaningful when purpose="FOLLOW_UP"; null for FIRST_TOUCH and for any
+        # FOLLOW_UP row that predates this column.
+        "followup_level": row.followup_level,
         "body_text": row.body_text,
         "variable_labels": json.loads(row.variable_labels or "[]"),
         "status": row.status,
@@ -140,6 +144,16 @@ def create_template():
     if purpose not in VALID_PURPOSES:
         errors.append(f"purpose must be one of {sorted(VALID_PURPOSES)}")
 
+    # Phase 13 Step 13.2 -- required whenever purpose=FOLLOW_UP: get_approved_followup_
+    # template() matches strictly on this value, so a FOLLOW_UP template with no level
+    # could never actually be selected for any real send.
+    followup_level = data.get("followup_level")
+    if purpose == "FOLLOW_UP":
+        if followup_level not in (1, 2, 3):
+            errors.append("followup_level must be 1, 2, or 3 when purpose is FOLLOW_UP")
+    else:
+        followup_level = None
+
     body_text = str(data.get("body_text", "")).strip()
     if not body_text:
         errors.append("body_text is required")
@@ -172,7 +186,8 @@ def create_template():
         if db.query(WhatsappTemplate).filter(WhatsappTemplate.name == name).first():
             return jsonify({"error": [f"a template named {name!r} already exists"]}), 422
         try:
-            row = submit_template(db, name, language, category, purpose, body_text, variable_labels, product_id)
+            row = submit_template(db, name, language, category, purpose, body_text, variable_labels,
+                                  product_id, followup_level=followup_level)
         except Exception as exc:  # noqa: BLE001 - a real API failure must surface, not 500 silently
             return jsonify({"error": [f"Meta submission failed: {exc}"]}), 502
         product_titles = _product_titles_for(db, row)
@@ -279,30 +294,41 @@ def propose_template():
     happens here at all -- this endpoint can never mutate anything about the real WABA,
     so unlike create_template()/approve_template() it needs no extra confirmation.
 
-    Optional body {"purpose": "FIRST_TOUCH"|"FOLLOW_UP"} (Step 9.6 follow-up) -- the
-    admin picks which one they want, scoping the SEARCH for a real signal to that
-    purpose. This never forces a fabricated need: if nothing real qualifies for the
-    requested purpose, the honest "nothing to propose" response is expected and valid.
+    Optional body {"purpose": "FIRST_TOUCH"|"FOLLOW_UP", "followup_level": 1|2|3}
+    (Step 9.6 follow-up; level added Phase 13 Step 13.2) -- the admin picks which one
+    they want, scoping the SEARCH for a real signal to that purpose (and, for FOLLOW_UP,
+    that exact level -- required, since each level is its own independent coverage gap
+    now). This never forces a fabricated need: if nothing real qualifies, the honest
+    "nothing to propose" response is expected and valid.
     """
     data = request.get_json(silent=True) or {}
     requested_purpose = data.get("purpose")
     if requested_purpose not in (None, "FIRST_TOUCH", "FOLLOW_UP"):
         return jsonify({"error": [f"purpose must be one of {sorted(VALID_PURPOSES)}"]}), 422
 
+    requested_level = data.get("followup_level")
+    if requested_purpose == "FOLLOW_UP":
+        if requested_level not in (1, 2, 3):
+            return jsonify({"error": ["followup_level must be 1, 2, or 3 when purpose is FOLLOW_UP"]}), 422
+    else:
+        requested_level = None
+
     db = SessionLocal()
     try:
-        signal = find_template_improvement_reason(db, purpose=requested_purpose)
+        signal = find_template_improvement_reason(db, purpose=requested_purpose, followup_level=requested_level)
         if not signal:
             return jsonify({
                 "proposed": False,
                 "message": (
                     f"No real underperformance signal or coverage gap found for "
-                    f"{requested_purpose} right now." if requested_purpose else
+                    f"{requested_purpose}" +
+                    (f" Level {requested_level}" if requested_level else "") +
+                    " right now." if requested_purpose else
                     "No real underperformance signal or coverage gap found right now."
                 ),
             })
-        reason, context, purpose, product_id = signal
-        row = propose_new_template(db, reason, context, purpose, product_id)
+        reason, context, purpose, product_id, followup_level = signal
+        row = propose_new_template(db, reason, context, purpose, product_id, followup_level=followup_level)
         if not row:
             return jsonify({
                 "proposed": False,

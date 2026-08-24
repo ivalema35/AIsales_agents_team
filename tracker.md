@@ -3468,12 +3468,114 @@ directly against the real dev DB, both exact and partial match, real
 
 ---
 
-### PHASE 13 — Level-Aware Follow-Up Content
-- [ ] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal
-- [ ] Step 13.2 — `whatsapp_templates.followup_level`; template approve na ho to us level pe **kuch nahi jaata**, doosre level ka template kabhi nahi
-- [ ] Step 13.3 — per-level `variant_id` (Step 9.2 ki rollup se hi measurable, naya counter nahi)
-- [ ] Step 13.4 — view-without-reply trigger (existing `open_count` signal, wahi kill-switch + caps)
-- [ ] DoD Gate P13
+### ⭐ Phase 13 — Level-Aware Follow-Up Content (2026-08-24)
+
+**Step 13.1 — level-aware EMAIL drafting.** The single `is_followup` boolean is gone,
+replaced by `followup_level` (1/2/3), derived from the real `touch_number`
+`services/sequence_service.py`'s `process_due_followup()` already enqueues (level =
+`touch_number - 1`, capped at 3 via the new shared `touch_number_to_followup_level()` --
+a product with a 4+ step cadence just repeats level 3's evergreen framing rather than
+inventing an undefined level 4). New `draft_followup_email()` (agents/outreach_agent.py)
++ 3 new prompts (`FOLLOWUP_LEVEL_1_WITH_ASSET`/`_NO_ASSET`, `FOLLOWUP_LEVEL_2`,
+`FOLLOWUP_LEVEL_3`), replacing the old `draft_email(is_followup=True)` path. Every EMAIL
+send -- touch-1 and every follow-up level -- now renders through Phase 11's structured
+section engine; the old admin "message format" free-form path (`draft_email()`,
+`resolve_active_format()`, `message_formats` table) is called from nowhere in
+`jobs/outreach_handler.py` any more. **Deliberately not deleted** -- 0 real formats exist
+in the dev DB today, so nothing breaks, but the ProductForm "Message format" admin tab is
+now dead code. A separate cleanup decision, not made unilaterally here (operator
+confirmed this scope explicitly before the build started).
+
+Level 1 (re-present) reuses the SAME deterministic asset-selection (`_pick_asset`,
+factored out into a new shared `_asset_sections()` helper) touch 1 used, so it naturally
+re-shows the identical real asset. Level 2 (ask) is genuinely minimal -- HOOK only, no
+asset/CTA/pain-points, enforced both in the prompt AND as a new QC carve-out that rejects
+any pitch content sneaking back in. Level 3 (standing offer) drafts only a short closing
+line; the real product catalogue (`services/outreach/cross_sell.py`'s new
+`get_full_catalogue()`/`build_services_list_section()`, reusing the products table itself
+per §5B.1's own rule -- never a second invented list) and contact info are appended by
+the handler AFTER QC, same system-appended pattern as CONTACT/INTEREST.
+
+**A real, self-inflicted bug found on the first test run, not LLM variance:** Level 3's
+own prompt example phrase ("I'll leave it here for now") reliably triggered the QC
+carve-out written for the SAME level ("reject last-chance/pressure phrasing") --
+deterministic, not occasional. Root cause: the example was invented rather than pulled
+from the PRD's own suggested closing ("if you ever need this in future, here we are").
+Fixed by rewriting the prompt around that actual PRD phrasing plus explicit negative
+examples matching exactly what QC had been rejecting.
+
+**Verified — `test_phase13_step1.py`, real disposable DB, real LLM drafting+QC, only
+Resend mocked, retry-tolerant of ordinary QC variance:** fresh touch-1 unaffected
+(`STRUCTURED_EMAIL`); touches 2/3/4/5 map to `FOLLOWUP_LEVEL_1/2/3/3` correctly (touch 5
+capped at level 3, not an undefined level 4); Level 1's real sent HTML genuinely
+re-presents the real asset; Level 2 is genuinely minimal (48 real chars, zero asset/CTA
+content); Level 3 shows the real second product + real contact info; all three levels'
+actual drafted text is provably distinct (MASTER's own DoD wording, satisfied from real
+LLM output).
+
+**Step 13.2 — WhatsApp per-level templates.** New `whatsapp_templates.followup_level`
+(nullable INTEGER; only 1 pre-existing FOLLOW_UP row in the dev DB, still DRAFT/never
+live, so no real behavior regressed by the migration). `get_approved_followup_template()`
+now matches STRICTLY on the exact level -- a real behavior change from before (it used to
+fall back to resending touch 1's own template): an unapproved level now sends NOTHING on
+WhatsApp for that touch, logged as `routed_to="SKIPPED_NO_TEMPLATE"`, never a crash or a
+silent wrong-template substitution. Admin submission form (`WhatsappTemplates.jsx`) and
+the "Ask AI" flow both require picking a level for a FOLLOW_UP template -- `POST
+/api/v1/whatsapp-templates` and `/propose` both reject a level-less FOLLOW_UP request
+with 422. `find_template_improvement_reason()`'s own real-gap detection is now level-aware
+too: a healthy Level 1 template says nothing about whether Level 2 has ever been covered.
+
+**Verified — `test_phase13_step2.py` (real `handle_outreach_wa()`, real Meta POST mocked)
++ `test_phase13_step2_api.py` (real Flask app, real authenticated session, real Meta
+create-call mocked):** strict per-level matching (a Level 1 template never matches a
+Level 2 request); a real Level 1 send using the exact Level 1 template; a real Level 2
+touch with no approved template genuinely sends nothing (no log row, no fallback, a real
+logged skip-event); fresh touch-1 unaffected; direct submission and "Ask AI" both reject
+a level-less FOLLOW_UP request (422); a real AI-drafted candidate for a genuine Level 1
+gap is correctly tagged `followup_level=1`.
+
+**Step 13.3 — per-level measurement.** Zero code changes -- `services/analytics_service.
+py`'s `get_variant_performance()` was already fully generic (groups by real
+`(channel, variant_id)` from `outreach_logs`, no hardcoded value list), so
+`FOLLOWUP_LEVEL_1/2/3` and each real, level-scoped WhatsApp template name show up as
+their own distinct, queryable rows automatically. **Verified directly**, not just
+reasoned about: ran 3 real sends (touch 1/2/3) against a disposable DB and confirmed
+`get_variant_performance()` returned 3 separate real rows -- `STRUCTURED_EMAIL`,
+`FOLLOWUP_LEVEL_1`, `FOLLOWUP_LEVEL_2` -- each with its own real sent count.
+
+**Step 13.4 — two parts, scoped explicitly with the operator before building either.**
+
+1. *DoD's own explicit line* ("reply/opt-out/interest-response exit the sequence at
+   levels 2 and 3, not only level 1") -- while verifying this, found a real, previously
+   disclosed-but-unfixed gap from Phase 12: a **Yes** click escalated the lead to
+   `HOT_LEAD` but never stopped the lead's still-ACTIVE follow-up sequence (a **No**
+   already did, since Phase 12 Step 12.6). Fixed here, since this Phase 13 DoD line
+   requires it directly: `_escalate_to_hot_lead()` now also calls a new shared
+   `_stop_active_sequence()` helper (factored out of the existing `_stop_sequence()`),
+   with `terminal_reason="ESCALATED"` (a new, distinct value from `"DECLINED"`).
+2. *"A lead who opened but never replied is a legitimate follow-up trigger"* -- genuinely
+   ambiguous in the PRD's one-sentence description: could mean a NEW acceleration
+   mechanism (fire early if a lead opens fast, instead of waiting out the configured
+   delay), or simply documenting that the EXISTING cadence already only ever fires for a
+   reply-less lead (`process_due_followup()`'s own reply check, unconditional, every
+   touch). Asked the operator directly rather than guessing either way -- **confirmed:
+   documentation only, no new scheduling mechanism.** `process_due_followup()` already
+   satisfies the literal claim: a lead who replied is excluded from every subsequent
+   touch regardless of whether they ever opened anything, so "opened but didn't reply"
+   was already the exact population every scheduled follow-up targets, by construction,
+   since Step 9.3. Nothing built.
+
+**Verified — `test_phase13_step4.py`, real disposable DB, real `process_due_followup()`
+walked forward through real touches (not mocked):** a real reply, a real suppression, a
+real Yes click, and a real No click each independently exit the sequence when checked at
+touch 3 (level 2), not only at touch 2 (level 1) -- the literal DoD line, proven for all
+four real exit paths, including the newly-fixed Yes-escalation one.
+
+- [x] Step 13.1 — `is_followup` boolean → explicit level 1/2/3, har level ka apna goal — ✅ 2026-08-24, Section 3
+- [x] Step 13.2 — `whatsapp_templates.followup_level`; template approve na ho to us level pe **kuch nahi jaata**, doosre level ka template kabhi nahi — ✅ 2026-08-24, Section 3
+- [x] Step 13.3 — per-level `variant_id` (Step 9.2 ki rollup se hi measurable, naya counter nahi) — ✅ 2026-08-24, Section 3, zero code changes needed
+- [x] Step 13.4 — reply/opt-out/interest-response exit sequence at every level (real Phase 12 gap fixed) + view-without-reply documented as already-true — ✅ 2026-08-24, Section 3
+- [x] DoD Gate P13 — ✅ 2026-08-24, all 5 MASTER §9 P13 criteria proven with real evidence: 3 levels provably distinct (test_phase13_step1.py) · delay-gating unchanged/unregressed (jobs/discovery_scheduler.py's own next_run_at filter, not touched by this phase) · reply/opt-out/interest exit at levels 2/3 (test_phase13_step4.py) · unapproved WhatsApp level sends nothing, never another level's template (test_phase13_step2.py) · per-level sent/seen/replied reconciles against real SQL (real `get_variant_performance()` check, Step 13.3 above)
 
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)

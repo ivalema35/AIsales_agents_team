@@ -30,7 +30,7 @@ from services.outreach.whatsapp_templates import (
     validate_variables,
 )
 from services.outreach.whatsapp_template_service import get_approved_followup_template
-from services.sequence_service import create_sequence_for_send
+from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
 
 logger = logging.getLogger(__name__)
 
@@ -73,17 +73,26 @@ def handle_outreach_wa(db, payload):
         "contact_person_name": lead.contact_person_name,
     }
 
-    # Phase 9 Step 9.5 -- a follow-up touch prefers a real, Meta-approved FOLLOW_UP
-    # template over resending touch 1's own template verbatim (the exact gap Step 9.3
-    # found live against GameZone Visnagar: no FOLLOW_UP template existed yet, so the
-    # follow-up was byte-identical to the original). Falls back to today's behavior
-    # (TEMPLATE_LIBRARY's first-touch pick) whenever none is approved yet -- a missing
-    # follow-up template must never block sending, only lose this refinement.
-    followup_template = (
-        get_approved_followup_template(db, product_id=lead.product_id)
+    # Phase 13 Step 13.1/13.2 -- same touch-number -> level derivation as jobs/outreach_
+    # handler.py's EMAIL path (level 1 = touch 2, level 2 = touch 3, level 3 = touch 4+).
+    followup_level = (
+        touch_number_to_followup_level(payload.get("touch_number", 2))
         if payload.get("sequence_id") else None
     )
-    if followup_template:
+
+    if followup_level:
+        # Phase 13 Step 13.2 -- STRICT per-level matching, no fallback. A missing
+        # approved template for THIS level means this touch sends nothing on WhatsApp
+        # (real behavior change from before: it used to resend touch 1's own template
+        # verbatim, which read as the wrong conversation entirely -- sending the wrong
+        # level's real, approved text is worse than sending nothing, MASTER §5B).
+        followup_template = get_approved_followup_template(db, followup_level, product_id=lead.product_id)
+        if not followup_template:
+            logger.info("OUTREACH_WA %s -> no approved Level %d template, skipping WhatsApp for this touch",
+                       lead.company_name, followup_level)
+            log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_WHATSAPP", 0.0, "LOW", "SKIPPED_NO_TEMPLATE",
+                            payload={"followup_level": followup_level})
+            return lead.id
         spec = {"name": followup_template.name, "language": followup_template.language}
         variable_labels = json.loads(followup_template.variable_labels or "[]")
         values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
@@ -128,7 +137,7 @@ def handle_outreach_wa(db, payload):
     # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch, which
     # would otherwise create a second, competing sequence for this lead+channel). A
     # no-op if the product has no cadence configured (today's behavior, unchanged).
-    if not payload.get("sequence_id"):
+    if not followup_level:
         create_sequence_for_send(db, lead, "WHATSAPP", datetime.utcnow())
 
     log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_WHATSAPP", 1.0, "MEDIUM", "EXECUTE",

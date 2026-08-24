@@ -95,7 +95,8 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None):
     return resp.json()
 
 
-def submit_template(db, name, language, category, purpose, body_text, variable_labels, product_id=None):
+def submit_template(db, name, language, category, purpose, body_text, variable_labels,
+                    product_id=None, followup_level=None):
     """Real Meta Create Template API call, for a template an admin is submitting
     directly from the dashboard form -- creates the row AND submits it to Meta in one
     step, exactly like before Step 9.6. Stores the new row as PENDING with Meta's own
@@ -106,6 +107,9 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
     set means only that one product may use it. Deliberately optional rather than
     mandatory: a new product-specific template still needs its own separate Meta
     approval, so defaulting to shared keeps that real cost down.
+
+    followup_level (Phase 13 Step 13.2) is REQUIRED when purpose="FOLLOW_UP" -- validated
+    by the caller (api/whatsapp_templates.py), not here, so this stays a plain write.
     """
     data = _create_on_meta(name, language, category, body_text, variable_labels)
 
@@ -114,6 +118,7 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
         language=language,
         category=category,
         purpose=purpose,
+        followup_level=followup_level if purpose == "FOLLOW_UP" else None,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="PENDING",
@@ -129,18 +134,23 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
 
 
 def create_draft_template(db, name, language, category, purpose, body_text, variable_labels,
-                          product_id=None, reasoning=None):
+                          product_id=None, reasoning=None, followup_level=None):
     """Step 9.6 -- an AI-authored candidate template, stored as DRAFT. Deliberately makes
     NO real Meta call: nothing an AI writes reaches Meta (or a real business) without an
     explicit admin approve action first (approve_draft_and_submit below). `reasoning` is
     the drafting agent's own explanation of why this candidate addresses the real signal
     it was given -- shown to the admin so an approve/reject decision is informed, not blind.
+
+    followup_level (Phase 13 Step 13.2) -- the level this draft was requested for, only
+    meaningful when purpose="FOLLOW_UP" (propose_new_template's own caller already knows
+    which level triggered the real signal this was drafted from).
     """
     row = WhatsappTemplate(
         name=name,
         language=language,
         category=category,
         purpose=purpose,
+        followup_level=followup_level if purpose == "FOLLOW_UP" else None,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="DRAFT",
@@ -271,12 +281,15 @@ def poll_all_pending(db):
     return changed
 
 
-def get_approved_followup_template(db, product_id=None):
+def get_approved_followup_template(db, followup_level, product_id=None):
     """The real gap Step 9.3 found live: a WhatsApp follow-up had no choice but to
-    resend the exact same first-touch template word for word. Returns the best
-    approved, active FOLLOW_UP template, or None if none exists yet -- callers fall
-    back to today's behavior (reusing the first-touch template) when this is None,
-    never a hard failure.
+    resend the exact same first-touch template word for word. Phase 13 Step 13.2
+    tightened this further: returns the approved, active FOLLOW_UP template for THIS
+    EXACT level, or None -- never a different level's template, and never falls back to
+    resending touch 1's own template the way this function used to. Sending the wrong
+    level's real, approved text is worse than sending nothing (MASTER §5B Step 13.2's
+    own rule); the caller (jobs/outreach_wa_handler.py) skips the WhatsApp send entirely
+    when this returns None.
 
     Tiered: a template scoped to THIS product wins over a shared one, so a product with
     a genuinely distinct pitch can override the shared default without disabling it for
@@ -285,6 +298,7 @@ def get_approved_followup_template(db, product_id=None):
     """
     base = db.query(WhatsappTemplate).filter(
         WhatsappTemplate.purpose == "FOLLOW_UP",
+        WhatsappTemplate.followup_level == followup_level,
         WhatsappTemplate.status == "APPROVED",
         WhatsappTemplate.is_active == 1,
     )
@@ -303,12 +317,22 @@ def get_approved_followup_template(db, product_id=None):
     )
 
 
-def find_template_improvement_reason(db, purpose=None):
+FOLLOWUP_LEVEL_JOB = {
+    1: "Level 1 (RE-PRESENT): assume the first touch's real asset/pitch was skimmed, not "
+       "read -- a short reminder tied to their pain point, pointing back to it.",
+    2: "Level 2 (ASK): a short, genuine open question inviting a reply -- nothing else, "
+       "no pitch, no new claim. The goal is a reply, not another sell.",
+    3: "Level 3 (STANDING OFFER): the last touch. A low-pressure, warm note that we're "
+       "available if this becomes useful later -- never urgency, never a final push.",
+}
+
+
+def find_template_improvement_reason(db, purpose=None, followup_level=None):
     """Step 9.6 sub-step 4 -- real signal detection for the manual "ask AI to draft a
-    template" trigger. Never fabricates a need: returns (reason, context, purpose) only
-    when a real, data-backed gap exists, or None otherwise -- an admin pressing the
-    button on a healthy system should get an honest "nothing to propose", not a forced
-    draft.
+    template" trigger. Never fabricates a need: returns (reason, context, purpose,
+    product_id, followup_level) only when a real, data-backed gap exists, or None
+    otherwise -- an admin pressing the button on a healthy system should get an honest
+    "nothing to propose", not a forced draft.
 
     `purpose` (Step 9.6 follow-up, 2026-08-21) -- optional, "FIRST_TOUCH" or "FOLLOW_UP".
     The admin picks which one they want a template for; this scopes the SEARCH for a
@@ -316,15 +340,21 @@ def find_template_improvement_reason(db, purpose=None):
     propose for FIRST_TOUCH right now" is a completely valid, expected outcome if every
     real FIRST_TOUCH template is already performing fine.
 
+    `followup_level` (Phase 13 Step 13.2) -- REQUIRED whenever purpose="FOLLOW_UP" (the
+    caller validates this, not this function): each of the 3 real levels is its own
+    coverage gap now, matching get_approved_followup_template()'s own strict per-level
+    matching -- a healthy Level 1 says nothing about whether Level 2 has ever been
+    covered.
+
     Checks two real gaps, in order:
-    1. An existing WhatsApp template (of the requested purpose, if one was given) with a
+    1. An existing WhatsApp template (of the requested purpose+level, if given) with a
        real, statistically meaningful reply rate below LOW_REPLY_RATE_THRESHOLD (Step
        9.2's own performance rollup -- the exact real data this step was built to use).
     2. If nothing is underperforming AND purpose isn't "FIRST_TOUCH" (TEMPLATE_LIBRARY's
        GENERIC entry is always a real, available FIRST_TOUCH fallback, so that gap can
-       never genuinely exist), whether NO approved FOLLOW_UP template exists at all yet
-       -- the real gap Step 9.3 found live (GameZone Visnagar's follow-up being
-       byte-identical to its first touch).
+       never genuinely exist), whether NO approved template exists yet for THIS SPECIFIC
+       level -- the real gap Step 9.3 found live (GameZone Visnagar's follow-up being
+       byte-identical to its first touch), now scoped per level rather than per purpose.
     """
     from services.analytics_service import get_variant_performance
 
@@ -348,6 +378,12 @@ def find_template_improvement_reason(db, purpose=None):
                 None,
             )
         if real_purpose and (purpose is None or real_purpose == purpose):
+            # A FOLLOW_UP candidate only counts as a real signal for THIS level -- a
+            # weak Level 1 template must never trigger a Level 2 proposal.
+            if real_purpose == "FOLLOW_UP" and followup_level:
+                row_level = existing_row.followup_level if existing_row else None
+                if row_level != followup_level:
+                    continue
             candidates.append((v, real_purpose, existing_row))
 
     if candidates:
@@ -359,17 +395,22 @@ def find_template_improvement_reason(db, purpose=None):
                 f"over {worst['sent']} real sends (all-time) -- below a healthy baseline. "
                 f"Propose a genuinely different angle for the SAME purpose."
             )
+            if real_purpose == "FOLLOW_UP" and followup_level:
+                reason += f" This must be written for {FOLLOWUP_LEVEL_JOB[followup_level]}"
             context = {"variant_id": worst["variant_id"], "sent": worst["sent"],
                        "replied": worst["replied"], "reply_rate": worst["reply_rate"]}
             product_id = existing_row.product_id if existing_row else None
-            return reason, context, real_purpose, product_id
+            return reason, context, real_purpose, product_id, followup_level
 
     # TEMPLATE_LIBRARY's GENERIC entry is always a real, available FIRST_TOUCH fallback
     # (select_template() falls back to it unconditionally) -- a "no FIRST_TOUCH template"
     # gap can never genuinely exist, so this check only ever applies to FOLLOW_UP.
-    if purpose != "FIRST_TOUCH" and get_approved_followup_template(db) is None:
-        reason = ("No approved FOLLOW_UP WhatsApp template exists yet -- every follow-up "
-                  "touch currently has to resend the first-touch template verbatim.")
+    if purpose == "FOLLOW_UP" and followup_level and get_approved_followup_template(db, followup_level) is None:
+        reason = (
+            f"No approved WhatsApp template exists yet for Level {followup_level} of the "
+            f"3-level follow-up sequence -- that touch currently sends nothing on WhatsApp. "
+            f"This must be written for {FOLLOWUP_LEVEL_JOB[followup_level]}"
+        )
         # This gap has no real performance numbers behind it (unlike the underperformer
         # branch above), which left the drafting agent writing in the dark and producing
         # vague, generic candidates that QC correctly rejected (found live, 2026-08-21).
@@ -377,7 +418,7 @@ def find_template_improvement_reason(db, purpose=None):
         # non-generic template around -- never fabricated, sourced from a real lead.
         sample_pain_point = _sample_real_pain_point(db)
         context = {"sample_pain_point": sample_pain_point} if sample_pain_point else {}
-        return reason, context, "FOLLOW_UP", None
+        return reason, context, "FOLLOW_UP", None, followup_level
 
     return None
 
@@ -418,7 +459,7 @@ def _existing_templates_summary(db):
     return summary
 
 
-def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=None):
+def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=None, followup_level=None):
     """Step 9.6 sub-step 4 -- the full safe pipeline: gather the real existing-template
     inventory, ask the drafting agent (sub-step 2), QC-gate the result (sub-step 3), and
     only then persist it as a DRAFT (sub-step 1) -- never a real Meta call anywhere in
@@ -441,5 +482,5 @@ def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=No
     return create_draft_template(
         db, candidate["name"], "en", candidate["category"], candidate["purpose"] or purpose,
         candidate["body_text"], candidate["variable_labels"], product_id=product_id,
-        reasoning=candidate.get("reasoning"),
+        reasoning=candidate.get("reasoning"), followup_level=followup_level,
     )

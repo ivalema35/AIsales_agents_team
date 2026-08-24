@@ -76,7 +76,8 @@ def _missing_required_asset(body: str, format_sections, content_assets):
 
 
 def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dict | None = None,
-                 is_followup: bool = False, format_sections=None, content_assets=None) -> dict:
+                 is_followup: bool = False, followup_level: int | None = None,
+                 format_sections=None, content_assets=None) -> dict:
     """Always returns {approved, confidence_score, rejection_reasons, suggested_corrections}.
 
     Fails CLOSED: if the QC call itself fails (LLM error, malformed response), that is
@@ -96,6 +97,13 @@ def review_draft(db, lead_id, draft: dict, pain_points: list, product_brief: dic
     even though the follow-up isn't trying to re-pitch. Same conflict shape as the
     escalation-reply carve-out already in the prompt below for its own closing line --
     an old rule and a new, legitimate requirement disagreeing, not a bug in either.
+
+    `followup_level` (Phase 13 Step 13.1): 1/2/3, only set alongside is_followup=True.
+    Each level has a stricter, more specific job than the generic is_followup carve-out
+    above states on its own -- in particular, Level 2 must be a pure question with
+    NOTHING else (no pitch, no asset, no CTA), and a draft that smuggled a sell back in
+    would otherwise slip past the generic follow-up carve-out, which only relaxes the
+    pain-point-specificity bar, not "is this still a pitch at all."
 
     `format_sections`/`content_assets` (2026-08-21 follow-up): when the admin's format
     calls for a real content asset (a demo link, etc.) and one was genuinely available,
@@ -224,6 +232,20 @@ hasn't replied. It is DELIBERATELY brief and does not need to re-state the pain 
 with the same specificity you would require of a first-touch draft -- a light reference
 to "the earlier note" or a general nudge is acceptable here. Still enforce every other
 rule unchanged (no buzzwords, no unsupported claims, no fabricated timelines/pricing).
+"""
+    if followup_level == 2:
+        prompt += """
+LEVEL 2 CHECK (Phase 13 Step 13.1) -- this touch's ONLY allowed content is a short open
+question inviting a reply. REJECT it if it contains anything beyond that: a restated pain
+point, a solution/capability claim, a CTA, an asset/link, or any framing that reads as a
+pitch rather than a plain check-in question.
+"""
+    if followup_level == 3:
+        prompt += """
+LEVEL 3 CHECK (Phase 13 Step 13.1) -- this is the LAST touch in the sequence, and its job
+is a low-pressure standing offer, not a final push. REJECT it if the tone reads as
+urgency, pressure, or a "last chance" close (fake scarcity, a deadline, "don't miss out"
+language) -- the correct tone is a plain, warm "here if you ever need this."
 """
     try:
         data = call_json(prompt, temperature=0.1)

@@ -14,8 +14,15 @@ const PURPOSES = ["FIRST_TOUCH", "FOLLOW_UP"];
 const STATUS_VARIANT = { PENDING: "WARNING", APPROVED: "SUCCESS", REJECTED: "DANGER", ADMIN_REJECTED: "DANGER" };
 const DEAD_STATUSES = ["ADMIN_REJECTED", "REJECTED"];
 
+// Phase 13 Step 13.1/13.2 -- the same 3 real follow-up conversations as the email side.
+const FOLLOWUP_LEVEL_HINT = {
+  1: "Level 1 re-presents the first touch (e.g. a reminder about the demo/pain point).",
+  2: "Level 2 is a short, plain open question -- no pitch, just inviting a reply.",
+  3: "Level 3 is the last touch: a low-pressure standing offer, never a final push.",
+};
+
 const EMPTY_DRAFT = {
-  name: "", language: "en", category: "MARKETING", purpose: "FOLLOW_UP",
+  name: "", language: "en", category: "MARKETING", purpose: "FOLLOW_UP", followup_level: 1,
   body_text: "", variable_labels: [], product_id: "",
 };
 
@@ -76,7 +83,7 @@ function ProposedCard({ t, onApprove, onReject, busyId }) {
       <div className="flex flex-wrap items-center gap-1.5">
         <Sparkles size={12} className="text-violet-500" />
         <span className="text-xs font-semibold text-slate-800">{t.name}</span>
-        <Badge variant="NEUTRAL">{t.purpose}</Badge>
+        <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
         <Badge variant="NEUTRAL">{t.category}</Badge>
         <span className="flex items-center gap-1 text-[10px] font-medium text-slate-400">
           <Boxes size={10} /> {t.product_title || "Shared -- all products"}
@@ -165,12 +172,13 @@ export default function WhatsappTemplates() {
     [templates],
   );
 
-  async function askAi(purpose) {
-    setAsking(purpose);
+  async function askAi(purpose, followupLevel) {
+    const askingKey = followupLevel ? `${purpose}_${followupLevel}` : purpose;
+    setAsking(askingKey);
     setAskResult(null);
     setError(null);
     try {
-      const res = await api.proposeWhatsappTemplate(purpose);
+      const res = await api.proposeWhatsappTemplate(purpose, followupLevel);
       setAskResult(res);
       if (res.proposed) refreshProposed();
     } catch (err) {
@@ -385,13 +393,20 @@ export default function WhatsappTemplates() {
               >
                 <Sparkles size={12} /> {asking === "FIRST_TOUCH" ? "Thinking…" : "Ask for a First Touch template"}
               </button>
-              <button
-                onClick={() => askAi("FOLLOW_UP")}
-                disabled={!!asking}
-                className="flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-violet-700 disabled:opacity-50"
-              >
-                <Sparkles size={12} /> {asking === "FOLLOW_UP" ? "Thinking…" : "Ask for a Follow-up template"}
-              </button>
+              {/* Phase 13 Step 13.2 -- each follow-up level is its own independent
+                 coverage gap now (get_approved_followup_template matches strictly per
+                 level), so "Ask AI" needs to know WHICH level, not just "a follow-up". */}
+              {[1, 2, 3].map((level) => (
+                <button
+                  key={level}
+                  onClick={() => askAi("FOLLOW_UP", level)}
+                  disabled={!!asking}
+                  className="flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+                >
+                  <Sparkles size={12} />
+                  {asking === `FOLLOW_UP_${level}` ? "Thinking…" : `Ask for a Level ${level} follow-up template`}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -458,7 +473,7 @@ export default function WhatsappTemplates() {
                     <span className="text-xs font-semibold text-slate-800">{t.name}</span>
                     <Badge variant={STATUS_VARIANT[t.status] || "NEUTRAL"}>{t.status}</Badge>
                     {!t.is_active && <Badge variant="NEUTRAL">Disabled</Badge>}
-                    <Badge variant="NEUTRAL">{t.purpose}</Badge>
+                    <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
                     <Badge variant="NEUTRAL">{t.category}</Badge>
                     {t.origin === "AI" && (
                       <span className="flex items-center gap-0.5 text-[10px] font-medium text-violet-500">
@@ -608,9 +623,29 @@ export default function WhatsappTemplates() {
               ))}
             </div>
             {draft.purpose === "FOLLOW_UP" && (
-              <span className="text-[10px] text-slate-400">
-                Once approved, this is preferred automatically over resending the first-touch template.
-              </span>
+              <>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  {[1, 2, 3].map((level) => (
+                    <button
+                      key={level}
+                      type="button"
+                      onClick={() => setDraft((d) => ({ ...d, followup_level: level }))}
+                      className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
+                        draft.followup_level === level
+                          ? "bg-slate-800 text-white"
+                          : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                      }`}
+                    >
+                      Level {level}
+                    </button>
+                  ))}
+                </div>
+                <span className="text-[10px] text-slate-400">
+                  {FOLLOWUP_LEVEL_HINT[draft.followup_level]} Once approved, this is used ONLY for this
+                  exact level -- if this level has no approved template, that touch sends nothing on
+                  WhatsApp rather than reusing a different level's text.
+                </span>
+              </>
             )}
           </div>
 

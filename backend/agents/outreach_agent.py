@@ -10,7 +10,11 @@ import re
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import OUTREACH_AGENT_SYSTEM_PROMPT, OUTREACH_SECTIONS_SYSTEM_PROMPT
+from cognition.prompts import (
+    OUTREACH_AGENT_SYSTEM_PROMPT, OUTREACH_SECTIONS_SYSTEM_PROMPT,
+    FOLLOWUP_LEVEL_SYSTEM_PROMPT, FOLLOWUP_LEVEL_1_WITH_ASSET, FOLLOWUP_LEVEL_1_NO_ASSET,
+    FOLLOWUP_LEVEL_2, FOLLOWUP_LEVEL_3,
+)
 
 # Deterministic backstop, not just a prompt instruction: the prompt already tells the
 # model never to write its own signature/footer, but LLM instruction-following isn't
@@ -212,6 +216,32 @@ def _pick_asset(content_assets, asset_type):
     return None
 
 
+def _asset_sections(content_assets) -> list[dict]:
+    """Every optional asset-backed section (ASSET_SECTIONS table above), same rule for
+    all of them: no approved asset of that type -> nothing appended. Factored out of
+    _assemble_sections() (Phase 13 Step 13.1) so the follow-up Level 1 path can
+    "re-present" the exact same real asset touch 1 would have shown, via the identical
+    deterministic selection (_pick_asset always returns the first matching real asset,
+    so calling it again naturally reproduces touch 1's own choice) -- without duplicating
+    this loop a second time.
+    """
+    sections = []
+    for section_type, asset_type, kind, fallback_label in ASSET_SECTIONS:
+        asset = _pick_asset(content_assets, asset_type)
+        if not asset:
+            continue
+        title = _clean_line(asset.get("title"), 120) or fallback_label
+        section = {"type": section_type, "title": title}
+        if kind == "url":
+            section["url"] = asset["value"]
+        else:
+            section["text"] = _clean_line(asset["value"], 1000)
+            if not section["text"]:
+                continue  # an asset row that exists but is empty is still "no content"
+        sections.append(section)
+    return sections
+
+
 def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> list[dict]:
     """Ordered, typed sections. A section is appended ONLY when it has real content, so
     graceful omission is a property of the structure itself rather than something the
@@ -236,21 +266,7 @@ def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> 
     if solution_points:
         sections.append({"type": "SOLUTION", "items": solution_points})
 
-    # Every optional asset-backed section, same rule for all of them: no approved asset
-    # of that type -> the section is not appended at all.
-    for section_type, asset_type, kind, fallback_label in ASSET_SECTIONS:
-        asset = _pick_asset(content_assets, asset_type)
-        if not asset:
-            continue
-        title = _clean_line(asset.get("title"), 120) or fallback_label
-        section = {"type": section_type, "title": title}
-        if kind == "url":
-            section["url"] = asset["value"]
-        else:
-            section["text"] = _clean_line(asset["value"], 1000)
-            if not section["text"]:
-                continue  # an asset row that exists but is empty is still "no content"
-        sections.append(section)
+    sections += _asset_sections(content_assets)
 
     cta_headline = _clean_line(data.get("cta_headline"), 120)
     cta_subtext = _clean_line(data.get("cta_subtext"), 240)
@@ -402,4 +418,99 @@ relevant to THIS lead, and you may never name a service outside this list:
     }
     log_agent_event(db, "OUTREACH", lead_id, "DRAFT_EMAIL_SECTIONS", confidence, "MEDIUM", "DRAFTED",
                     payload={"hook_type": hook_type, "section_types": [s["type"] for s in sections]})
+    return draft
+
+
+# ---------------------------------------------------------------------------
+# Phase 13 Step 13.1 -- level-aware follow-up drafting. Replaces draft_email()'s old
+# is_followup=True path: that path wrote one generic "brief nudge" instruction regardless
+# of which touch this was, so touch 2 and touch 3 differed only by delay and LLM variance.
+# Each level here has exactly one stated job (tracker.md A.11) and renders through this
+# SAME structured section engine touch 1 uses, not the old free-form path.
+#
+# What stays deliberately AI-authored (reviewed by QC below) vs. system-appended after
+# QC (never reviewed, because there is nothing in it for QC to judge) follows the exact
+# same split touch 1 already established for CONTACT/INTEREST: Level 3's real products
+# list is 100% deterministic (straight from the products table), so it is appended by
+# jobs/outreach_handler.py post-QC, not drafted here -- inventing a second AI-written
+# version of "what we sell" would immediately risk drifting from the real one.
+# ---------------------------------------------------------------------------
+
+def draft_followup_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
+                         followup_level: int, qc_feedback: str | None = None,
+                         content_assets: list | None = None):
+    """followup_level: 1 (re-present the asset), 2 (ask an open question), or 3 (standing
+    offer -- the products list itself is appended by the caller, not drafted here).
+    Returns {subject, subject_candidates, body, sections, hook_type, confidence}, or None.
+    """
+    has_asset = bool(_pick_asset(content_assets, "VIDEO_URL") or _pick_asset(content_assets, CTA_BUTTON_ASSET_TYPE))
+    level_instruction = {
+        1: FOLLOWUP_LEVEL_1_WITH_ASSET if has_asset else FOLLOWUP_LEVEL_1_NO_ASSET,
+        2: FOLLOWUP_LEVEL_2,
+        3: FOLLOWUP_LEVEL_3,
+    }[followup_level]
+
+    prompt = FOLLOWUP_LEVEL_SYSTEM_PROMPT + f"""
+PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
+LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
+PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
+CHANNEL: EMAIL
+""" + level_instruction
+    if qc_feedback:
+        prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+
+    try:
+        data = call_json(prompt, temperature=0.4)
+    except LLMError as exc:
+        log_agent_event(db, "OUTREACH", lead_id, "DRAFT_FOLLOWUP_EMAIL", 0.0, "MEDIUM", "LLM_FAILED",
+                        payload={"error": str(exc), "followup_level": followup_level})
+        return None
+
+    raw_candidates = data.get("subject_candidates")
+    subject_candidates = (
+        [str(s).strip()[:150] for s in raw_candidates if str(s).strip()]
+        if isinstance(raw_candidates, list) else []
+    )
+    selected_subject = str(data.get("selected_subject") or data.get("subject") or "").strip()[:150]
+    if subject_candidates and selected_subject not in subject_candidates:
+        selected_subject = subject_candidates[0]
+    subject = selected_subject or (subject_candidates[0] if subject_candidates else "")
+
+    hook = _clean_line(data.get("hook"))
+    sections = [{"type": "HOOK", "text": hook}] if hook else []
+    if followup_level == 1:
+        # Same real, approved asset touch 1 would have shown -- _pick_asset's own
+        # determinism (always the first matching real asset) is what makes this a
+        # genuine "re-presentation" rather than a coincidence.
+        sections += _asset_sections(content_assets)
+        demo = _pick_asset(content_assets, CTA_BUTTON_ASSET_TYPE)
+        if demo:
+            sections.append({"type": "CTA", "headline": "", "subtext": "",
+                            "button_url": demo["value"],
+                            "button_label": _clean_line(demo.get("title"), 40) or "See the demo"})
+
+    body = _sections_to_text(sections)
+    try:
+        confidence = max(0.0, min(1.0, float(data.get("confidence"))))
+    except (TypeError, ValueError):
+        confidence = 0.0
+
+    has_hook = any(s["type"] == "HOOK" for s in sections)
+    if not subject or not has_hook:
+        log_agent_event(db, "OUTREACH", lead_id, "DRAFT_FOLLOWUP_EMAIL", confidence, "MEDIUM",
+                        "EMPTY_DRAFT", payload={"followup_level": followup_level,
+                                                "section_types": [s["type"] for s in sections]})
+        return None
+
+    draft = {
+        "subject": subject,
+        "subject_candidates": subject_candidates or [subject],
+        "body": body,
+        "sections": sections,
+        "hook_type": f"FOLLOWUP_LEVEL_{followup_level}",
+        "confidence": confidence,
+    }
+    log_agent_event(db, "OUTREACH", lead_id, "DRAFT_FOLLOWUP_EMAIL", confidence, "MEDIUM", "DRAFTED",
+                    payload={"followup_level": followup_level,
+                            "section_types": [s["type"] for s in sections]})
     return draft

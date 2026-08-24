@@ -398,6 +398,13 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     language          TEXT NOT NULL DEFAULT 'en',
     category          TEXT NOT NULL,         -- Meta's real categories: MARKETING, UTILITY, AUTHENTICATION
     purpose           TEXT NOT NULL DEFAULT 'FIRST_TOUCH',  -- FIRST_TOUCH or FOLLOW_UP
+    -- Phase 13 Step 13.2: which of the 3 real follow-up levels (see email_agent's
+    -- FOLLOWUP_LEVEL_* prompts) this template is written for. Only meaningful when
+    -- purpose='FOLLOW_UP'; NULL for FIRST_TOUCH rows and for any FOLLOW_UP row created
+    -- before this column existed. get_approved_followup_template() matches STRICTLY on
+    -- this value -- a level with no approved template sends nothing on WhatsApp rather
+    -- than substituting another level's real, but wrong, text.
+    followup_level    INTEGER,
     body_text         TEXT NOT NULL,         -- with {{1}}, {{2}} placeholders, Meta's own syntax
     variable_labels   TEXT DEFAULT '[]',     -- JSON array, what each {{n}} means, e.g. ["company_name"]
     -- DRAFT: AI-authored, awaiting admin review, never yet sent to Meta (Step 9.6).

@@ -413,6 +413,7 @@ class WhatsappTemplate(Base):
     language = Column(String, nullable=False, default="en")
     category = Column(String, nullable=False)  # MARKETING, UTILITY, AUTHENTICATION
     purpose = Column(String, nullable=False, default="FIRST_TOUCH")  # FIRST_TOUCH, FOLLOW_UP
+    followup_level = Column(Integer)  # Phase 13 Step 13.2 -- 1/2/3, only meaningful when purpose=FOLLOW_UP
     body_text = Column(Text, nullable=False)
     variable_labels = Column(Text, default="[]")  # JSON array
     # DRAFT, PENDING, APPROVED, REJECTED, ADMIN_REJECTED -- see schema.sql for the full

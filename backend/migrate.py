@@ -26,6 +26,7 @@ COLUMN_MIGRATIONS = [
     ("outreach_logs", "open_count", "INTEGER DEFAULT 0"),
     ("products", "cross_sell_product_ids", "TEXT DEFAULT '[]'"),
     ("leads", "reference_code", "TEXT"),
+    ("whatsapp_templates", "followup_level", "INTEGER"),
 ]
 
 

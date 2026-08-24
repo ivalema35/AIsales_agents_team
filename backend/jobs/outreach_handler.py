@@ -15,19 +15,19 @@ import logging
 import uuid
 from datetime import datetime
 
-from agents.outreach_agent import draft_email, draft_structured_email
+from agents.outreach_agent import draft_structured_email, draft_followup_email
 from agents.quality_controller_agent import review_draft
 from cognition.agent_events import log_agent_event
 from config import Config
 from database.models import Lead, Product, LeadReviewInsight, OutreachLog
 from jobs.registry import register_handler
-from services.message_format_service import resolve_active_format, get_available_assets
+from services.message_format_service import get_available_assets
 from services.outreach.company_contact import build_contact_section
-from services.outreach.cross_sell import get_cross_sell_products
+from services.outreach.cross_sell import get_cross_sell_products, build_services_list_section
 from services.outreach.interest_links import build_interest_urls
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
-from services.sequence_service import create_sequence_for_send
+from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
 
 logger = logging.getLogger(__name__)
 
@@ -78,34 +78,31 @@ def handle_outreach_email(db, payload):
 
     content_assets = get_available_assets(db, lead.product_id) or None
 
-    # Phase 9 Step 9.3 -- present only when jobs/discovery_scheduler.py's follow-up tick
-    # (via services/sequence_service.py) enqueued this as touch 2+, never on a fresh
-    # touch-1 send. Tells the agent to write a brief nudge, not repeat the full pitch.
-    is_followup = bool(payload.get("sequence_id"))
+    # Phase 13 Step 13.1 -- replaces the old is_followup boolean. jobs/discovery_
+    # scheduler.py's follow-up tick (via services/sequence_service.py) enqueues the real
+    # touch number (2, 3, 4, ...) alongside sequence_id; level 1 = touch 2 (re-present),
+    # level 2 = touch 3 (ask), level 3 = touch 4+ (standing offer, repeatable). None means
+    # a fresh touch-1 send, unchanged.
+    followup_level = (
+        touch_number_to_followup_level(payload.get("touch_number", 2))
+        if payload.get("sequence_id") else None
+    )
 
-    # Phase 11 (tracker.md A.10 + Steps 11.1-11.6) -- a fresh touch-1 send now goes
-    # through the designed, section-based email built in Phase 11, which supersedes
-    # Phase 8's admin-format-driven free-form path for EMAIL: Phase 11 is a more complete
-    # answer to the same "control what the email looks like" goal, not a parallel option.
-    # A follow-up touch is deliberately UNCHANGED for now -- it keeps the proven Phase 8/9
-    # free-form path (format_sections resolved below, exactly as before) until Phase 13
-    # gives follow-up touches their own level-aware structured content; wiring the fixed
-    # 8-section design into a brief follow-up nudge today would silently turn every
-    # follow-up into a full second pitch, which is the opposite of Step 9.3's own design.
-    fmt_row = None
-    format_sections = None
-    if is_followup:
-        fmt_row = resolve_active_format(db, lead.product_id, "EMAIL")
-        format_sections = json.loads(fmt_row.sections) if fmt_row else None
-
+    # Phase 11 (tracker.md A.10 + Steps 11.1-11.6) + Phase 13 Step 13.1 -- EVERY email
+    # send, touch-1 or any follow-up level, now goes through the designed, section-based
+    # engine built in Phase 11. This supersedes Phase 8's admin-format-driven free-form
+    # path for EMAIL entirely (tracker.md A.12): that path (draft_email(), format_
+    # sections, resolve_active_format()) is no longer called from anywhere in this
+    # handler -- left in place as dead code rather than deleted, a separate cleanup
+    # decision, not one this phase makes unilaterally.
     draft = None
     qc_result = None
     qc_feedback = None
     for attempt in range(1, MAX_DRAFT_ATTEMPTS + 1):
-        if is_followup:
-            draft = draft_email(db, lead.id, product_brief, lead_profile, pain_points,
-                                qc_feedback=qc_feedback, format_sections=format_sections,
-                                content_assets=content_assets, is_followup=True)
+        if followup_level:
+            draft = draft_followup_email(db, lead.id, product_brief, lead_profile, pain_points,
+                                         followup_level, qc_feedback=qc_feedback,
+                                         content_assets=content_assets)
         else:
             cross_sell_products = get_cross_sell_products(db, lead.product_id)
             draft = draft_structured_email(db, lead.id, product_brief, lead_profile, pain_points,
@@ -114,7 +111,7 @@ def handle_outreach_email(db, payload):
         if not draft:
             break
         qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief,
-                                 is_followup=is_followup, format_sections=format_sections,
+                                 is_followup=bool(followup_level), followup_level=followup_level,
                                  content_assets=content_assets)
         if qc_result["approved"]:
             break
@@ -145,15 +142,20 @@ def handle_outreach_email(db, payload):
     # email BEFORE the row exists, rather than sending first and patching the row after.
     outreach_log_id = str(uuid.uuid4())
 
-    # Phase 11 Step 11.4 / Phase 12 Step 12.2 -- the interest and contact blocks are both
-    # system-supplied, appended AFTER QC review: neither carries agent-authored content,
-    # so there is nothing in either for QC to judge, and handing QC more surface it was
-    # never told about is exactly what produced the Step 11.6 bug (it once misread the CTA
-    # section as an unreviewed extra). Both are None for a follow-up draft (old free-form
-    # `body`-only path, no `sections` to append to, until Phase 13).
+    # Phase 11 Step 11.4 / Phase 12 Step 12.2 / Phase 13 Step 13.1 -- interest, contact,
+    # and (level 3 only) the real services list are all system-supplied, appended AFTER QC
+    # review: none of them carry agent-authored content, so there is nothing in any of
+    # them for QC to judge, and handing QC more surface it was never told about is exactly
+    # what produced the Step 11.6 bug (it once misread the CTA section as an unreviewed
+    # extra). Every EMAIL draft now carries `sections` (touch-1 and every follow-up level
+    # alike), so this always runs.
     sections = draft.get("sections")
     if sections is not None:
         sections = sections + [{"type": "INTEREST", **build_interest_urls(lead.id, outreach_log_id)}]
+        if followup_level == 3:
+            services_section = build_services_list_section(db)
+            if services_section:
+                sections = sections + [services_section]
         contact_section = build_contact_section(db)
         if contact_section:
             sections = sections + [contact_section]
@@ -173,14 +175,11 @@ def handle_outreach_email(db, payload):
         # Phase 8 Step 8.4 -- every subject candidate generated, not just the one sent,
         # so Phase 9 can measure them retrospectively once real reply/open data exists.
         subject_candidates=json.dumps(draft.get("subject_candidates", [draft["subject"]])),
-        # Phase 9 Step 9.1 (tracker.md A.8) -- which message_format version drafted this,
-        # so Step 9.2 can roll up real reply/open rates per variant later. "FREE_FORM" is
-        # an explicit sentinel (this codebase's own convention, e.g. Lead.sales_route's
-        # "UNASSIGNED") rather than a bare NULL, so a report reads clearly either way.
-        # "STRUCTURED_EMAIL" is the same convention for a fresh Phase 11 designed send --
-        # a distinct, queryable value so Step 9.2's rollup can eventually compare the new
-        # design's real reply/open rate against the old free-form path's.
-        variant_id=(fmt_row.id if fmt_row else "FREE_FORM") if is_followup else "STRUCTURED_EMAIL",
+        # Phase 9 Step 9.1 (tracker.md A.8) -- a distinct, queryable value per real variant,
+        # so Step 9.2's rollup can compare them from real SQL, no new counter needed
+        # (Step 13.3). "STRUCTURED_EMAIL" = fresh touch-1; "FOLLOWUP_LEVEL_1/2/3" = which
+        # of Phase 13's three follow-up conversations this was.
+        variant_id=f"FOLLOWUP_LEVEL_{followup_level}" if followup_level else "STRUCTURED_EMAIL",
     ))
     lead.status = "OUTREACHED"
     db.commit()
@@ -188,7 +187,7 @@ def handle_outreach_email(db, payload):
     # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch itself,
     # which would otherwise create a second, competing sequence for the same lead).
     # A no-op if the product has no cadence configured (today's behavior, unchanged).
-    if not is_followup:
+    if not followup_level:
         create_sequence_for_send(db, lead, "EMAIL", datetime.utcnow())
 
     log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL",

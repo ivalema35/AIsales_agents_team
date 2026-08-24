@@ -355,6 +355,14 @@ def _render_section(section: dict) -> str:
         return _render_contact(section)
     if kind == "CROSS_SELL":
         return _render_cross_sell(section)
+    if kind == "SERVICES_LIST":
+        # Phase 13 Step 13.1 -- Level 3's standing-offer bullet list. Neutral brand tint
+        # (not the amber "problem"/green "answer" colors PAIN_POINTS/SOLUTION use) --
+        # this is reference information, not a claim about the lead, and a plain bullet
+        # glyph rather than a badge icon keeps it reading as a quiet reference list, not
+        # another pitch.
+        return _bullet_list(section.get("items") or [], "&#8226;", BRAND, BRAND_SOFT,
+                            heading="What we offer")
     # Any other asset-backed section, including ones added to ASSET_SECTIONS later: a
     # url-kind renders as a button, a text-kind as a quote. Handled generically on
     # purpose -- a new optional section should not need a new branch here either.

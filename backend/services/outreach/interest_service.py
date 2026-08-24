@@ -54,10 +54,17 @@ def _escalate_to_hot_lead(db, lead, log):
     declared Yes is the strongest signal this product can ever collect (unlike an
     inferred repeat-open), so confidence=1.0 / risk=HIGH, distinct from the 0.8/MEDIUM
     used for inferred engagement escalation.
+
+    Also stops this lead's active follow-up sequence for this channel (Phase 13 Step
+    13.4's own DoD: a real Yes click must exit the sequence at every level, not just
+    level 1 -- a real, disclosed gap from Phase 12 itself, closed here rather than left
+    open: a lead who already said Yes has no business still receiving a scheduled "did
+    you get a chance to look?" nudge).
     """
     if lead.status != "HOT_LEAD":
         lead.status = "HOT_LEAD"
         db.commit()
+    _stop_active_sequence(db, lead, log, "ESCALATED")
     log_agent_event(
         db, "INTEREST", lead.id, "YES_CLICK_ESCALATE", 1.0, "HIGH", "HUMAN_ESCALATION",
         payload={"outreach_log_id": log.id, "channel": log.channel},
@@ -112,12 +119,10 @@ def _send_admin_alert(db, lead, log):
             logger.exception("interest-click admin alert WhatsApp to %s failed", to_phone)
 
 
-def _stop_sequence(db, lead, log):
-    """Step 12.6 -- a No stops further follow-ups for this lead+channel, immediately
-    (not lazily waiting for the next scheduled touch to notice), but is deliberately NOT
-    written to the suppression list: declining one pitch is not a legal opt-out, and
-    conflating the two would silently and permanently kill contactability the lead never
-    actually revoked. The unsubscribe link stays the only path into suppression.
+def _stop_active_sequence(db, lead, log, terminal_reason: str):
+    """Shared by both a No (Step 12.6) and a Yes (Step 13.4) -- either real click ends
+    this lead's need for further scheduled follow-ups on this channel, immediately (not
+    lazily waiting for the next scheduled touch's own claim-time checks to notice).
     """
     seq = db.query(OutreachSequence).filter(
         OutreachSequence.lead_id == lead.id,
@@ -126,8 +131,18 @@ def _stop_sequence(db, lead, log):
     ).first()
     if seq:
         seq.status = "STOPPED"
-        seq.terminal_reason = "DECLINED"
+        seq.terminal_reason = terminal_reason
         db.commit()
+
+
+def _stop_sequence(db, lead, log):
+    """Step 12.6 -- a No stops further follow-ups for this lead+channel, but is
+    deliberately NOT written to the suppression list: declining one pitch is not a legal
+    opt-out, and conflating the two would silently and permanently kill contactability
+    the lead never actually revoked. The unsubscribe link stays the only path into
+    suppression.
+    """
+    _stop_active_sequence(db, lead, log, "DECLINED")
     log_agent_event(
         db, "INTEREST", lead.id, "NO_CLICK_STOP_SEQUENCE", 1.0, "LOW", "EXECUTE",
         payload={"outreach_log_id": log.id, "channel": log.channel},

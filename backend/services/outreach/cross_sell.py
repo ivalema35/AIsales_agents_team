@@ -66,3 +66,34 @@ def get_cross_sell_products(db, product_id: str) -> list[dict]:
             "value_proposition": other.value_proposition,
         })
     return briefs
+
+
+def get_full_catalogue(db) -> list[dict]:
+    """Phase 13 Step 13.1 -- the real, complete list of what this company offers, for
+    Level 3's standing-offer follow-up. §5B.1's own text is explicit: reuse the products
+    table itself rather than inventing a second list of what we sell, which would
+    immediately drift from the first one. Deliberately does NOT filter on `is_active`,
+    same reasoning as get_cross_sell_products() above -- that flag gates discovery
+    targeting, not whether the service is still real and offered.
+    """
+    products = db.query(Product).order_by(Product.priority.desc(), Product.created_at.asc()).all()
+    return [
+        {"title": _display_name(p.title), "value_proposition": p.value_proposition}
+        for p in products
+    ]
+
+
+def build_services_list_section(db) -> dict | None:
+    """Phase 13 Step 13.1 -- the deterministic SERVICES_LIST section for Level 3's
+    standing offer, appended by jobs/outreach_handler.py AFTER QC review (system data,
+    nothing in it for QC to judge -- same split as build_contact_section()). None only
+    if the catalogue is genuinely empty (no products exist at all), never fabricated.
+    """
+    catalogue = get_full_catalogue(db)
+    if not catalogue:
+        return None
+    items = [
+        p["title"] + (f" -- {p['value_proposition']}" if p.get("value_proposition") else "")
+        for p in catalogue
+    ]
+    return {"type": "SERVICES_LIST", "items": items}

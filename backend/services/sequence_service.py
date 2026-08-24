@@ -15,6 +15,19 @@ from database.models import InboundConversation, Lead, OutreachSequence, Product
 from jobs.job_queue import enqueue
 from services.outreach.suppression import is_suppressed
 
+# Phase 13 Step 13.1 -- how many distinct follow-up "levels" exist (re-present / ask /
+# standing offer). A product's own followup_cadence_days could in principle have more
+# entries than this, but only three distinct conversations are defined -- a touch beyond
+# level 3 repeats level 3's own evergreen "standing offer" framing (deliberately written
+# to be repeatable) rather than inventing an undefined level 4. Shared by both
+# jobs/outreach_handler.py (EMAIL) and jobs/outreach_wa_handler.py (WhatsApp), which both
+# derive their level from the SAME touch_number this module enqueues below.
+MAX_FOLLOWUP_LEVEL = 3
+
+
+def touch_number_to_followup_level(touch_number: int) -> int:
+    return min(max(1, touch_number - 1), MAX_FOLLOWUP_LEVEL)
+
 
 def create_sequence_for_send(db, lead, channel, sent_at):
     """Called right after a TOUCH 1 (fresh, non-follow-up) send succeeds. Only creates a
