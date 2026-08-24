@@ -212,6 +212,52 @@ export default function SystemToggles() {
         />
       </div>
     </div>
+
+    {/* Phase 11 Step 11.4 -- our own contact details, shown in the contact block at the
+        bottom of every outreach email. Deliberately its own card, not buried in
+        "Operational settings": everything above governs how the system behaves, while
+        these are the only values here that a real lead actually reads. */}
+    <div id="company-contact" className="mt-5 scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-slate-800">Company contact details</h2>
+      <p className="mb-1 text-xs text-slate-400">
+        Shown to leads in the &ldquo;Get in touch&rdquo; block of every outreach email. Leave a field
+        empty to leave that line out entirely &mdash; nothing is ever shown as blank or guessed.
+      </p>
+      <div className="divide-y divide-slate-100">
+        <EditableField
+          label="Contact email"
+          description="The address a lead should reply to or write to. Shown as a mailto link."
+          type="text"
+          value={settings.company_contact_email}
+          disabled={busy}
+          onSave={(v) => update("company_contact_email", v)}
+        />
+        <EditableField
+          label="Contact phone"
+          description="Shown as a tap-to-call link on mobile."
+          type="text"
+          value={settings.company_contact_phone}
+          disabled={busy}
+          onSave={(v) => update("company_contact_phone", v)}
+        />
+        <EditableField
+          label="Website"
+          description="Full URL, e.g. https://ivinfotech.com -- displayed without the https:// part."
+          type="text"
+          value={settings.company_website_url}
+          disabled={busy}
+          onSave={(v) => update("company_website_url", v)}
+        />
+        <EditableField
+          label="Company profile link"
+          description="An about/profile page, portfolio or deck. Optional."
+          type="text"
+          value={settings.company_profile_url}
+          disabled={busy}
+          onSave={(v) => update("company_profile_url", v)}
+        />
+      </div>
+    </div>
     </>
   );
 }

@@ -115,6 +115,7 @@ export default function Settings() {
   const navItems = [
     { id: "system-controls", label: "System controls" },
     { id: "operational-settings", label: "Operational settings" },
+    { id: "company-contact", label: "Company contact details" },
     ...categories.map((c) => ({ id: c.id, label: c.name })),
   ];
 

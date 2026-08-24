@@ -48,7 +48,23 @@ STUCK_ALERT_COOLDOWN_MINUTES = "stuck_alert_cooldown_minutes"
 # ISO timestamp of the last stuck-alert send -- internal bookkeeping, not dashboard-editable.
 STUCK_ALERT_LAST_SENT_AT = "stuck_alert_last_sent_at"
 
-STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS, STUCK_ALERT_LAST_SENT_AT}
+# Phase 11 Step 11.4 -- our OWN contact details, shown in the contact block of every
+# structured outreach email. Deliberately settings rather than a new table or a Config
+# constant: these change (a new number, a new profile link) without the change being a
+# deploy, which is the entire reason system_settings exists. Each one is independently
+# optional -- an empty value simply drops its line, by the same Step 11.3 rule that drops
+# a whole section when it has no content, so a business that has no profile page just has
+# one fewer row rather than a blank label.
+COMPANY_CONTACT_EMAIL = "company_contact_email"
+COMPANY_CONTACT_PHONE = "company_contact_phone"
+COMPANY_WEBSITE_URL = "company_website_url"
+COMPANY_PROFILE_URL = "company_profile_url"
+
+COMPANY_CONTACT_KEYS = (COMPANY_CONTACT_EMAIL, COMPANY_CONTACT_PHONE,
+                        COMPANY_WEBSITE_URL, COMPANY_PROFILE_URL)
+
+STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS, STUCK_ALERT_LAST_SENT_AT,
+            *COMPANY_CONTACT_KEYS}
 INT_KEYS = {OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
             STUCK_ALERT_COOLDOWN_MINUTES}
 
@@ -113,4 +129,7 @@ def get_all(db) -> dict:
         DISCOVERY_COOLDOWN_HOURS: get_int(db, DISCOVERY_COOLDOWN_HOURS, default=Config.DISCOVERY_COOLDOWN_HOURS),
         STUCK_ALERT_ENABLED: get_bool(db, STUCK_ALERT_ENABLED, default=True),
         STUCK_ALERT_COOLDOWN_MINUTES: get_int(db, STUCK_ALERT_COOLDOWN_MINUTES, default=60),
+        # Default to empty, not to a plausible-looking placeholder: an unset contact
+        # detail must render as absent, never as a wrong address a real lead might use.
+        **{key: get_str(db, key, default="") for key in COMPANY_CONTACT_KEYS},
     }
