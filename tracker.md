@@ -2926,6 +2926,20 @@ the first call. A follow-up real send correctly saw QC reject one draft's cross-
 retry 2 — *"AI Automation Solutions could help reduce the manual billing work tied to notebook-based
 records."* — which reached a real inbox, screenshotted, tinted-pill highlight visible.
 
+**One more real gap, same review:** the personalized line above never actually announced itself as an
+*additional* service — real generations drifted from the prompt's own "Good" example the moment
+personalization was allowed (`"AI Automation could also help..."`, `"AI Automation Solutions could help
+reduce..."`), because the `"We also offer X"` opening was only ever an *example*, never a hard
+requirement. Made it mandatory on both sides: the prompt now says the line MUST literally begin with
+`"We also offer/build <exact title>"`, and `_assemble_sections()`'s gate changed from a loose
+"title appears somewhere" check to `re.match` against that exact opening — the same "mechanically
+checkable → checked in code" posture as everything else in this saga. Re-verified 8/8 with two new
+explicit drop-cases (a benefit-only line with no opening), using the real 2-attempt retry shape
+production actually uses rather than asserting single-call success (real LLM variance means one
+rejection is expected, not a regression). Real send: *"We also offer AI Automation Solutions, which
+can reduce repetitive manual work like the billing and record-checking issues you mentioned."* —
+reached a real inbox, opening present, benefit specific, screenshotted.
+
 ---
 
 ## 4. Pending Modules / Steps
