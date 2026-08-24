@@ -3143,7 +3143,7 @@ usual protocol ke saath — pehle simple bhasha me explain, user confirm kare, t
 - [x] Step 11.2 — HTML renderer (`services/outreach/email_renderer.py`) — ✅ 2026-08-24, Section 3, 8/8 real checks against the rendered artifact; brand header + headline + bordered cards (4 design rounds, sab operator ke real-inbox feedback se)
 - [x] Step 11.3 — graceful section omission — ✅ 2026-08-24, structurally inherited from 11.1 (empty section kabhi banti hi nahi), minimal render me verified
 - [x] Step 11.4 — company contact block `system_settings` se (bina deploy edit ho) — ✅ 2026-08-24, Section 3, 6/6 real checks + real send; Settings page pe apna alag card
-- [x] Step 11.5 — AI cross-sell block, admin-chosen `products.cross_sell_product_ids` (deviation from spec's boolean, §A.10) — ✅ 2026-08-24, Section 3, 7/7 real checks
+- [x] Step 11.5 — AI cross-sell block, admin-chosen `products.cross_sell_product_ids` (deviation from spec's boolean, §A.10) — ✅ 2026-08-24, Section 3, 8/8 real checks + real end-to-end send (3-bug saga, deterministic gate added — see follow-up entry)
 - [x] Step 11.6 — QC structural review — ✅ 2026-08-24, Section 3; real bug se aaya (QC ne CTA ko signature samajh ke 2 draft reject kiye)
 - [ ] Wiring — structured path ko `jobs/outreach_handler.py` me opt-in karna (deliberately last, live pipeline tab tak proven path pe)
 - [ ] DoD Gate P11
