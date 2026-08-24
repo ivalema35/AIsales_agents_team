@@ -220,7 +220,7 @@ def _render_video(section: dict) -> str:
     <td style="border: 1px solid {RULE}; border-radius: 8px;">{image_html}
       <a href="{_e(url)}" style="display: block; padding: 11px 14px; font-family: {FONT};
          font-size: 14px; font-weight: 600; color: {LINK}; text-decoration: none;
-         border-top: 1px solid {RULE};">&#9654;&#65038;&nbsp;&nbsp;{_e(title)}</a>
+         border-top: 1px solid {RULE};">&#9658;&nbsp;&nbsp;{_e(title)}</a>
     </td>
   </tr>
 </table>"""
@@ -312,12 +312,16 @@ def _render_section(section: dict) -> str:
     if kind == "HOOK":
         return _para(section.get("text"), size=BODY_SIZE + 1, margin="0 0 22px 0")
     if kind == "PAIN_POINTS":
-        # `&#65038;` is the text-presentation variation selector: without it several
-        # clients substitute their own colour emoji for the warning sign, which would
-        # break the badge's own colour scheme with something the design never chose.
-        return _bullet_list(section.get("items") or [], "&#9888;&#65038;",
-                            WARN_FG, WARN_BG, heading=HEADING_PAIN)
+        # A plain "!" rather than the warning-sign character. U+26A0 is an emoji
+        # codepoint, and the text-presentation selector that is supposed to suppress that
+        # is widely ignored -- so it kept rendering as a client's own glossy multi-colour
+        # triangle, which is exactly the non-flat look this design is avoiding, and in a
+        # palette the design never chose. An exclamation in a tinted disc is the standard
+        # flat warning treatment and can never be substituted for an emoji.
+        return _bullet_list(section.get("items") or [], "!", WARN_FG, WARN_BG,
+                            heading=HEADING_PAIN)
     if kind == "SOLUTION":
+        # U+2713 is not an emoji codepoint, so it stays flat and takes our own colour.
         return _bullet_list(section.get("items") or [], "&#10003;", GAIN_FG, GAIN_BG,
                             heading=HEADING_SOLUTION)
     if kind == "VIDEO":
