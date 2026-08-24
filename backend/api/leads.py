@@ -58,6 +58,10 @@ def _apply_filters(db, query, args):
             Lead.primary_phone.ilike(pattern),
             Lead.contact_person_name.ilike(pattern),
             Lead.region_location.ilike(pattern),
+            # Phase 12 Step 12.1 -- the reference code is now THE identifier an operator
+            # actually quotes (alerts, conversation), so it must be searchable by the same
+            # box everything else is, not just displayed and otherwise unfindable.
+            Lead.reference_code.ilike(pattern),
         ))
 
     return query, None

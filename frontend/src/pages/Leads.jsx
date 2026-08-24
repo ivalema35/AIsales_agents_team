@@ -251,7 +251,7 @@ export default function Leads() {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search company, email, phone, region…"
+              placeholder="Search company, ref code, email, phone, region…"
               className="w-full rounded-md border border-slate-200 bg-white py-1.5 pl-8 pr-8 text-xs text-slate-700 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none"
             />
             {searchInput && (

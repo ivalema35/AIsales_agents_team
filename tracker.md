@@ -3455,6 +3455,17 @@ checks:**
 6. A lead with both a real (earlier) Yes click and a real (later) written reply shows the
    reply — genuinely most-recent-wins, not "click always wins."
 
+**Real bug, found live by the operator immediately after (2026-08-24):** typed a real
+`reference_code` ("LD-A7088130") into the Leads page search box — zero results, even
+though that exact lead existed. `_apply_filters()`'s `search` clause was never updated
+when `reference_code` shipped (Step 12.1) — it still only matched company name, email,
+phone, contact name, region. Since `reference_code` is now THE identifier an operator
+actually quotes (alerts, conversation, the badge just added above), leaving it
+unsearchable defeated its own purpose. Fixed: added `Lead.reference_code.ilike(pattern)`
+to the same `or_()` clause; search-box placeholder updated to mention it. Re-verified
+directly against the real dev DB, both exact and partial match, real
+`_apply_filters()` call: "LD-A7088130" and "A7088130" both resolve to SHASVI CREATIONS.
+
 ---
 
 ### PHASE 13 — Level-Aware Follow-Up Content
