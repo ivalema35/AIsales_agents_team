@@ -298,6 +298,14 @@ def _enrich_person_roles(db, lead, product):
     if already_done:
         return
 
+    # Real evidence from the first live run against a genuine small company (2026-08-25,
+    # "IMS Ahmedabad"): several distinct role queries all resolved to the SAME real
+    # person (the founder is often the only one with real LinkedIn visibility at a
+    # smaller business) -- correct per-search behavior, but it produced 3 separate rows
+    # for one real human. Tracked here by linkedin_url within a single run so that case
+    # becomes ONE contact with its roles combined, not a duplicated person.
+    by_linkedin_url: dict[str, LeadContact] = {}
+
     for role in roles:
         try:
             found = SerperProvider().find_person_by_role(lead.company_name, role, lead.region_location)
@@ -306,6 +314,14 @@ def _enrich_person_roles(db, lead, product):
             continue
         if not found:
             continue
+        linkedin_url = found["linkedin_url"]
+        if linkedin_url in by_linkedin_url:
+            existing = by_linkedin_url[linkedin_url]
+            if role not in existing.role.split(" / "):
+                existing.role = f"{existing.role} / {role}"
+            logger.info("ENRICH %s -> role '%s' matched the SAME real person already found "
+                       "(%s), merged rather than duplicated", lead.company_name, role, linkedin_url)
+            continue
         # Step 15(A).2 -- honest confidence: the person-match strength find_person_by_
         # role() already derived, further discounted when the ROLE itself is an AI
         # guess rather than an operator-confirmed one -- two independent, real sources
@@ -313,16 +329,18 @@ def _enrich_person_roles(db, lead, product):
         confidence = found.get("confidence", 0.5)
         if role_source == "AI_INFERRED":
             confidence = round(confidence * 0.8, 2)
-        db.add(LeadContact(
+        contact = LeadContact(
             lead_id=lead.id,
             full_name=found.get("full_name"),
             role=role,
-            linkedin_url=found["linkedin_url"],
+            linkedin_url=linkedin_url,
             source="LINKEDIN",
             confidence=confidence,
-        ))
+        )
+        db.add(contact)
+        by_linkedin_url[linkedin_url] = contact
         logger.info("ENRICH %s -> LinkedIn person for role '%s' (%s, confidence=%s): %s",
-                    lead.company_name, role, role_source, confidence, found["linkedin_url"])
+                    lead.company_name, role, role_source, confidence, linkedin_url)
 
 
 def _handle_enrich(db, payload):

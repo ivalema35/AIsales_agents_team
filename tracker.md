@@ -4099,6 +4099,26 @@ error nahi real logs me). **Real admin login se live confirm kiya**: 3 real VPS 
 karta tha) — sabke liye khaali list (in leads ke liye abhi tak koi LinkedIn-sourced
 contact nahi bana, expected — naya ENRICH chalne par banega), koi crash nahi. Phase 15(A)
 ab VPS pe genuinely live hai.
+
+**⭐ User ke kehne par VPS pe ek asli real lead pe live trigger kiya** (deploy ke turant
+baad), sirf API-level check nahi. Real lead "IMS Ahmedabad" (LinkedIn company page pehle
+se resolved, `target_person_roles` khaali — matlab AI-inferred roles use honge) pe
+`_enrich_person_roles()` direct chalaya. **Real result:** 3 real Serper searches (Owner /
+Academy Director / Tuition Center Manager) — teeno **ek hi real insaan** tak pahunche
+(Jaydev Jaswani, `linkedin.com/in/jaydevjaswani/`) — chhoti company me founder hi sabse
+zyada LinkedIn-visible hota hai, ye galat match nahi tha, safety check (wrong-company
+reject) sahi kaam kar raha tha. Lekin isse **3 alag rows** ban gayi ek hi insaan ke liye —
+lead-page pe wahi naam 3 baar dikhta.
+
+**Real, is live-test se hi pakda gaya gap, turant fix kiya (user se confirm karke):**
+`_enrich_person_roles()` ab ek run ke andar `linkedin_url` se track karta hai — agar
+doosra role SAME real person tak pahunche, naya row nahi banta, us existing contact ke
+`role` field me combine ho jaata hai ("Owner / Academy Director / Tuition Center
+Manager"). **Verified** — real Serper response ka exact shape mock karke real test se
+confirm kiya: 3 role-match ek hi real person → genuinely 1 hi merged contact banta hai.
+Purani 3 duplicate rows (isi real test se bani) VPS ke real DB me seedha merge kar di,
+naya Serper call kharch kiye bina (data-fix, dobara search nahi).
+
 - [ ] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho)
 - [ ] Step 15(B).2 — provider (Apollo.io ya equivalent) + T31 `prospect_searches` + **hard spend cap jo actually block kare**
 - [ ] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi)
