@@ -4020,6 +4020,18 @@ diya tha, dobara real evidence se confirm kiya, assume nahi kiya.
 - [x] Step 14.5 — P10 ka auto-send absence check dobara chalana (assume nahi karna) — ✅ 2026-08-25, Section 3, real re-grep se confirm
 - [x] DoD Gate P14 — ✅ 2026-08-25, MASTER §14 ke saare 5 DoD tests real evidence se pass: per-message status real SQL se match (test_phase14_step1_2.py + real production data) · real WhatsApp filled-in text, template naam kabhi nahi · follow-up stage real `outreach_sequences` row se match, terminal reason samet (test_phase14_step3.py + real production data) · copy-to-platform SAME stored `content_sections` se match, dobara regenerate nahi (test_phase14_step4.py) · P10 ka absence check dobara re-run, still clean
 
+**⭐ VPS pe poora Phase 14 deploy kiya, real live verify kiya (2026-08-25).** User ne khud
+bola "push karo aur VPS pe deploy bhi karo." Sab clean gaya — git pull (16 files), real DB
+migration (`content_sections` column add hua), real import sanity check, naya frontend
+build, 5 services restart (bos-api/scheduler/worker/poller/scraper), sab active, koi error
+nahi (real logs bhi clean the). Real HTTPS check: site 200, `/health` 401 (login required,
+expected). **Real admin login se authenticated API call karke live confirm kiya** (sirf
+HTTP status check nahi): ek real VPS lead ("Kesaria Textile Company Surat") ka
+`followup_sequences` field khaali list deta hai (crash nahi, us product ka koi cadence
+nahi hai); `cross-channel-copy` endpoint honest 404 deta hai (ye lead purane column se
+pehle outreach hua tha); real timeline API `delivery_state`/`wa_template_name` fields
+sahi return karte hain. Poora Phase 14 (14.1-14.5) ab VPS pe genuinely live hai.
+
 ### PHASE 15 — Person-Level Relevance & Prospect Sourcing *(naya paid provider — deliberately last, 15A/15B independently gate karte hain)*
 - [ ] Step 15(A).1 — product-brief se relevant role infer (human-set list ke andar hi)
 - [ ] Step 15(A).2 — multiple relevant people per company (`lead_contacts`, source+confidence honestly dikhe)
