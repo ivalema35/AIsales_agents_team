@@ -9,7 +9,7 @@ from cognition.hard_classifiers import strip_quoted_reply
 from config import Config
 from database.db_config import SessionLocal
 from database.models import (
-    AgentEvent, InboundConversation, InterestResponse, Lead, LeadFirmographics,
+    AgentEvent, InboundConversation, InterestResponse, Lead, LeadContact, LeadFirmographics,
     LeadReviewInsight, LeadScore, OutreachLog, OutreachSequence, Product, SuppressionEntry)
 from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
@@ -432,6 +432,23 @@ def get_lead(lead_id):
             "industry": firmographics.industry,
             "tech_stack": json.loads(firmographics.tech_stack) if firmographics.tech_stack else [],
         } if firmographics else None
+        # Phase 15 Step 15(A).2 -- multiple real people at this company, each with its
+        # own honest source+confidence (never rendered as if it were a single verified
+        # contact) -- was populated since Phase 7 Step 7.5 but never surfaced anywhere.
+        body["contacts"] = [
+            {
+                "id": c.id,
+                "full_name": c.full_name,
+                "role": c.role,
+                "linkedin_url": c.linkedin_url,
+                "email": c.email,
+                "phone": c.phone,
+                "source": c.source,
+                "confidence": c.confidence,
+                "is_decision_maker": bool(c.is_decision_maker),
+            }
+            for c in db.query(LeadContact).filter(LeadContact.lead_id == lead_id).all()
+        ]
         # Phase 14 Step 14.3 -- per-channel follow-up stage (at most one EMAIL + one
         # WHATSAPP row per lead, see create_sequence_for_send's own no-duplicate check).
         sequences = db.query(OutreachSequence).filter(OutreachSequence.lead_id == lead_id).all()

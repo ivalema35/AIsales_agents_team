@@ -767,8 +767,16 @@ class SerperProvider(LeadSourceProvider):
             # <Company> | LinkedIn" -- the part before the first " - " is the name.
             # None if the title doesn't follow that shape; never invent a name.
             full_name = title.split(" - ")[0].strip() or None
-            logger.info("find_person_by_role %s @ %s -> %s (%s)", role, company_name, clean, full_name)
-            return {"linkedin_url": clean, "full_name": full_name}
+            # Phase 15 Step 15(A).2 -- a real, derivable confidence, not a guess: a
+            # cleanly parsed name means the result title followed LinkedIn's own
+            # standard shape (a strong signal this really is that named person); a
+            # company-name-only match with no parseable name is real evidence too
+            # (the company name genuinely appeared in this result), just weaker --
+            # we can confirm the company link but not confidently say who it is.
+            confidence = 0.85 if full_name else 0.5
+            logger.info("find_person_by_role %s @ %s -> %s (%s, confidence=%s)",
+                       role, company_name, clean, full_name, confidence)
+            return {"linkedin_url": clean, "full_name": full_name, "confidence": confidence}
 
         logger.info("find_person_by_role %s @ %s -> no name-matched personal profile found",
                     role, company_name)

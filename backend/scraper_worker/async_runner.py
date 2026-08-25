@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 from sqlalchemy import func
 
 from database.db_config import SessionLocal
-from database.models import Lead, Product, LeadReviewInsight, LeadScore, LeadContact
+from database.models import Lead, Product, LeadReviewInsight, LeadScore, LeadContact, ProductStrategy
 from jobs.job_queue import enqueue, claim_next, mark_done, mark_failed
 from services.data_acquisition.serp_provider import SerperProvider, SOCIAL_PROFILE_HOSTS
 from services.data_acquisition.b2b_provider import HunterProvider
@@ -253,20 +253,42 @@ def _enrich_social(lead, domain):
 
 
 def _enrich_person_roles(db, lead, product):
-    """Phase 7 Step 7.5 -- role-targeted LinkedIn person discovery.
+    """Phase 7 Step 7.5 -- role-targeted LinkedIn person discovery. Extended by Phase 15
+    Step 15(A).1 -- product-relevant role inference.
 
-    Gated on TWO conditions, both required: `product.target_person_roles` set (a human
-    boundary, same precedent as target_regions/target_business_categories) AND the
-    company's own LinkedIn page already resolved on this lead. The second gate is
-    deliberate, not incidental -- company LinkedIn is a priority signal per the user
-    ("unke linkedin to hoga hi to wo must needed he"), i.e. a resolved company page is
-    what TRIGGERS the person-level lookup, not an independent best-effort attempt.
+    Role list: `product.target_person_roles` (a human boundary, same precedent as
+    target_regions/target_business_categories) when the operator has set one -- §16.2's
+    rule holds exactly as before, no role outside that list is ever targeted. When it is
+    EMPTY, this now falls back to the product's own already-computed AI role inference
+    (`product_strategies.icp.roles`) instead of doing nothing -- that list already exists
+    for every product (the ICP Strategy Agent, MASTER §6, has generated it from this
+    exact product's brief every 7 days since Phase 3.5's revival) and was never actually
+    read by anything until now, a real, previously-disclosed gap. No second LLM call --
+    this reuses that same real inference, traceable back to the product brief it read.
+
+    Gated further on the company's own LinkedIn page already resolved on this lead --
+    company LinkedIn is a priority signal per the user ("unke linkedin to hoga hi to wo
+    must needed he"), i.e. a resolved company page is what TRIGGERS the person-level
+    lookup, not an independent best-effort attempt.
 
     Idempotency: guarded by "does this lead already have a LINKEDIN-sourced contact",
     not a single boolean flag (there can be multiple roles) -- skips entirely on an
     ENRICH retry instead of re-spending Serper credits and inserting duplicate rows.
     """
     roles = json.loads(product.target_person_roles or "[]")
+    role_source = "HUMAN"
+    if not roles:
+        strategy = (
+            db.query(ProductStrategy)
+            .filter(ProductStrategy.product_id == product.id, ProductStrategy.status == "ACTIVE")
+            .order_by(ProductStrategy.created_at.desc())
+            .first()
+        )
+        if strategy:
+            icp = json.loads(strategy.icp or "{}")
+            roles = icp.get("roles") or []
+        role_source = "AI_INFERRED"
+
     if not roles or not lead.linkedin_url:
         return
 
@@ -284,15 +306,23 @@ def _enrich_person_roles(db, lead, product):
             continue
         if not found:
             continue
+        # Step 15(A).2 -- honest confidence: the person-match strength find_person_by_
+        # role() already derived, further discounted when the ROLE itself is an AI
+        # guess rather than an operator-confirmed one -- two independent, real sources
+        # of uncertainty, never collapsed into a fabricated single "verified" flag.
+        confidence = found.get("confidence", 0.5)
+        if role_source == "AI_INFERRED":
+            confidence = round(confidence * 0.8, 2)
         db.add(LeadContact(
             lead_id=lead.id,
             full_name=found.get("full_name"),
             role=role,
             linkedin_url=found["linkedin_url"],
             source="LINKEDIN",
+            confidence=confidence,
         ))
-        logger.info("ENRICH %s -> LinkedIn person for role '%s': %s",
-                    lead.company_name, role, found["linkedin_url"])
+        logger.info("ENRICH %s -> LinkedIn person for role '%s' (%s, confidence=%s): %s",
+                    lead.company_name, role, role_source, confidence, found["linkedin_url"])
 
 
 def _handle_enrich(db, payload):

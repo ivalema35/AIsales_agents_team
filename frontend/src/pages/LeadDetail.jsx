@@ -4,7 +4,7 @@ import {
   ArrowLeft, ChevronLeft, ChevronRight, Mail, Phone, Globe, MapPin, User as UserIcon, Building2,
   Gauge, AlertTriangle, Clock, Bot, CheckCircle2, XCircle, AlertCircle,
   MessageCircle, MessagesSquare, BellOff, Trophy, ThumbsDown, Share2, Copy, Send, X,
-  Check, CheckCheck,
+  Check, CheckCheck, Users, Star,
 } from "lucide-react";
 import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
@@ -740,6 +740,70 @@ function CrossChannelCopyBar({ leadId }) {
   );
 }
 
+// Phase 15 Step 15(A).2 -- a real, non-negotiable rule: a low-confidence guess must
+// NEVER render like a verified contact. Two visually distinct tiers, both always
+// showing the real number, never a bare "verified" badge with no way to tell the two
+// apart at a glance.
+function ConfidenceBadge({ confidence }) {
+  if (confidence == null) return null;
+  const pct = Math.round(confidence * 100);
+  const strong = confidence >= 0.7;
+  return (
+    <span
+      title={strong ? "A cleanly matched LinkedIn result" : "A weaker match -- verify before relying on this"}
+      className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+        strong ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+      }`}
+    >
+      {strong ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
+      {pct}% {strong ? "likely" : "unverified"}
+    </span>
+  );
+}
+
+function PeopleCard({ contacts }) {
+  if (!contacts || contacts.length === 0) {
+    return (
+      <p className="text-xs text-slate-400">
+        No individual contacts found yet at this company (needs the company's own LinkedIn
+        page resolved first).
+      </p>
+    );
+  }
+  return (
+    <div className="flex flex-col gap-2">
+      {contacts.map((c) => (
+        <div key={c.id} className="flex items-start justify-between gap-3 rounded-md bg-slate-50 p-3 text-xs">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="font-semibold text-slate-800">{c.full_name || "Name not confirmed"}</span>
+              {c.is_decision_maker ? (
+                <span className="flex items-center gap-0.5 text-amber-500" title="Flagged as a decision maker">
+                  <Star size={10} />
+                </span>
+              ) : null}
+              <ConfidenceBadge confidence={c.confidence} />
+            </div>
+            <p className="mt-0.5 text-slate-500">{c.role}</p>
+            <p className="mt-0.5 text-[10px] text-slate-400">via {c.source}</p>
+          </div>
+          {c.linkedin_url && (
+            <a
+              href={c.linkedin_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 text-slate-400 hover:text-slate-700"
+              title="Open LinkedIn profile"
+            >
+              <LinkedinIcon size={14} />
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function relativeTime(dateStr) {
   const then = new Date(dateStr.replace(" ", "T") + "Z").getTime();
   const days = Math.floor((Date.now() - then) / 86400000);
@@ -1069,6 +1133,10 @@ export default function LeadDetail() {
           </div>
         </SectionCard>
       )}
+
+      <SectionCard title="People at this company" icon={Users}>
+        <PeopleCard contacts={lead.contacts} />
+      </SectionCard>
 
       <SectionCard title="Social outreach (draft-and-queue)" icon={Share2}>
         <SocialOutreachCard lead={lead} queue={socialQueue} onRefresh={refresh} />

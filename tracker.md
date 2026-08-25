@@ -4033,9 +4033,64 @@ pehle outreach hua tha); real timeline API `delivery_state`/`wa_template_name` f
 sahi return karte hain. Poora Phase 14 (14.1-14.5) ab VPS pe genuinely live hai.
 
 ### PHASE 15 — Person-Level Relevance & Prospect Sourcing *(naya paid provider — deliberately last, 15A/15B independently gate karte hain)*
-- [ ] Step 15(A).1 — product-brief se relevant role infer (human-set list ke andar hi)
-- [ ] Step 15(A).2 — multiple relevant people per company (`lead_contacts`, source+confidence honestly dikhe)
-- [ ] Step 15(A).3 — manual outreach only (person-level autonomous send is phase me nahi)
+
+**User ne 15(A) pehle karne ka decide kiya (2026-08-25)** — koi naya cost nahi, 15(B) ke
+liye Apollo.io jaisa paid provider baad me decide hoga.
+
+**Real, previously-invisible gap jo build karte waqt mila:** `product_strategies.icp.
+roles` — ICP Strategy Agent (MASTER §6) har product ke liye har 7 din me ye field khud
+generate karta hai, Phase 3.5 se chal raha hai — lekin poore codebase me grep karke
+confirm kiya ki **iss field ko kabhi kisi ne padha hi nahi**, sirf likha jaata tha. Real
+production DB check kiya: saare 7 real products ke paas ye AI-inferred role list already
+hai (e.g. "IVinfotech -- AI Automation Solutions" -> `["Owner", "Founder", "Operations
+Manager", ...]`), aur **saare 7 products ka `target_person_roles` (human-set list) khaali
+hai** — matlab Step 7.5 ka poora person-discovery machinery aaj tak kisi bhi real lead
+ke liye kabhi trigger hi nahi hua, kyunki gate #1 (`target_person_roles` non-empty)
+kabhi satisfy nahi hua.
+
+**Step 15(A).1 — role inference.** `_enrich_person_roles()` (`scraper_worker/
+async_runner.py`) ab: agar `target_person_roles` set hai to bilkul purana behavior
+(human list hi final boundary, §16.2 rule intact). Agar KHAALI hai, to ab wahi already-
+computed AI role list (`product_strategies` ki ACTIVE row ka `icp.roles`) use karta hai —
+**koi naya LLM call nahi**, sirf ek real, already-existing inference ko pehli baar
+consume kiya. SUPERSEDED strategy kabhi nahi padhi jaati, sirf ACTIVE.
+
+**Step 15(A).2 — multiple people + honest confidence.** `find_person_by_role()` ab ek
+real, derivable confidence deta hai (0.85 agar LinkedIn result se naam clean-parse hua,
+0.5 agar sirf company-match mila naam ke bina) — koi guess nahi, seedha real match-
+strength se nikala. Jab role AI-inferred ho (human-set nahi), confidence ko 0.8x se
+discount kiya jaata hai — do alag uncertainty sources (person-match + role-guess), kabhi
+ek fake "verified" flag me collapse nahi hota. `GET /api/v1/leads/<id>` ab `contacts`
+array return karta hai (pehle `lead_contacts` table bharti thi lekin API me kahin
+exposed hi nahi thi). Frontend: naya "People at this company" card, har contact ka role +
+naam + LinkedIn link + ek do-tier confidence badge ("XX% likely" hara, "XX% unverified"
+amber) — low-confidence guess kabhi verified jaisa nahi dikhta.
+
+**Step 15(A).3 — manual outreach only.** Poore backend me `LeadContact` grep karke
+confirm kiya: sirf 2 jagah likha jaata hai (Hunter se, LinkedIn se), 1 jagah naya read
+(`api/leads.py`), **kahin bhi `LeadContact.email`/`.phone` kisi outreach-sending code se
+kabhi padha hi nahi jaata** — real send hamesha `lead.primary_email`/`primary_phone`
+(company-level fields) se hi hota hai. Verified by absence, jaisa P10 ka apna rule.
+
+**Verified — real disposable DB, real `_enrich_person_roles()` calls, ek REAL Serper call
+(Serper network sirf logic-check ke liye mock kiya, matching-behavior nahi):**
+1. Human-set roles → purana behavior unchanged, full confidence.
+2. Khaali roles → ACTIVE `ProductStrategy.icp.roles` se fallback, kabhi SUPERSEDED nahi,
+   AI-inferred confidence sahi discount ke saath.
+3. Na human roles na koi strategy → real no-op, crash nahi.
+4. Company LinkedIn resolve na ho → gated off, AI roles available hone par bhi.
+5. Idempotent — retry pe na naya Serper call, na duplicate row.
+6. `GET /leads/<id>` real, honestly alag confidence values deta hai (collapse nahi karta).
+7. **REAL Serper call** — Step 7.5 ka apna wrong-company-rejection test dobara chalaya
+   (fictional company name), abhi bhi sahi reject hota hai — zero wrong-company
+   attachment, dobara confirm kiya, assume nahi kiya.
+
+`npx vite build` clean pass.
+
+- [x] Step 15(A).1 — product-brief se relevant role infer (human-set list ke andar hi) — ✅ 2026-08-25, Section 3, real ICP-agent data ka pehli baar consumption
+- [x] Step 15(A).2 — multiple relevant people per company (`lead_contacts`, source+confidence honestly dikhe) — ✅ 2026-08-25, Section 3
+- [x] Step 15(A).3 — manual outreach only (person-level autonomous send is phase me nahi) — ✅ 2026-08-25, Section 3, real grep se verified
+- [x] DoD Gate P15(A) — ✅ 2026-08-25, MASTER §15 ke saare 15(A) DoD tests real evidence se pass: zero wrong-company attachment (real Serper re-test) · roles set hone par list ke bahar kabhi nahi, khaali hone par role real product-brief line se traceable (`icp.roles`, khud product brief se generate hua) · person-level auto-send kahin nahi (real grep)
 - [ ] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho)
 - [ ] Step 15(B).2 — provider (Apollo.io ya equivalent) + T31 `prospect_searches` + **hard spend cap jo actually block kare**
 - [ ] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi)
