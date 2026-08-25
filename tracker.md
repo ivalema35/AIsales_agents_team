@@ -3799,6 +3799,30 @@ steps (not attempted here, outside this session's access): check the phone numbe
 messaging-limit/quality status in Meta Business Manager, or contact the BSP (Fortius);
 otherwise, such holds are commonly temporary and self-resolve within hours.
 
+**Refinement, minutes later, real evidence again -- the earlier "outbound-only hold"
+theory was too broad:** the free-form test message from Isolation test 2 above DID
+arrive, just delayed rather than lost. The 3 template sends (fresh touch-1 + Level 1/2/3)
+sent well before it still had not, even after that delay had already passed. This
+narrows the real cause further: **free-form session messages are getting through (with
+lag); MARKETING-category TEMPLATE messages specifically are not**, at least not yet.
+
+The real, most likely explanation given this narrower evidence: Meta's real Business
+Messaging Policy requires marketing-consent for MARKETING-category template deliveries,
+enforced per-recipient -- a business's own internal test number (this one doubles as the
+EOD-report recipient, `EOD_REPORT_WHATSAPP_RECIPIENTS`) is not necessarily a real
+"customer" who ever went through a real marketing opt-in flow, even though the SAME
+category+number combination did deliver successfully as recently as 21 August (so this
+is not a static, always-broken consent gap -- something changed, plausibly a real
+Meta-side enforcement tightening between then and now, not something this session did).
+
+**Explicitly NOT worked around by relabeling these as `UTILITY` category** to dodge the
+consent requirement -- that would misrepresent genuinely promotional outreach content as
+transactional, against Meta's real policy and this project's own no-evasion posture, and
+risks real account/quality consequences for a cosmetic fix. The correct real fix is
+either securing real marketing opt-in for the test number, or simply allowing more time
+(the free-form message's own delay shows Meta's pipeline is actively processing, not
+dead) -- not a code or category change.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
