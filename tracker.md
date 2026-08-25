@@ -4091,6 +4091,14 @@ kabhi padha hi nahi jaata** — real send hamesha `lead.primary_email`/`primary_
 - [x] Step 15(A).2 — multiple relevant people per company (`lead_contacts`, source+confidence honestly dikhe) — ✅ 2026-08-25, Section 3
 - [x] Step 15(A).3 — manual outreach only (person-level autonomous send is phase me nahi) — ✅ 2026-08-25, Section 3, real grep se verified
 - [x] DoD Gate P15(A) — ✅ 2026-08-25, MASTER §15 ke saare 15(A) DoD tests real evidence se pass: zero wrong-company attachment (real Serper re-test) · roles set hone par list ke bahar kabhi nahi, khaali hone par role real product-brief line se traceable (`icp.roles`, khud product brief se generate hua) · person-level auto-send kahin nahi (real grep)
+
+**⭐ VPS pe deploy kiya, real live verify kiya (2026-08-25).** git pull (6 files), real DB
+migration, real import check, naya frontend build, 5 services restart, sab clean (koi
+error nahi real logs me). **Real admin login se live confirm kiya**: 3 real VPS leads pe
+`GET /leads/<id>` ab naya `contacts` field return karta hai (pehle ye field exist hi nahi
+karta tha) — sabke liye khaali list (in leads ke liye abhi tak koi LinkedIn-sourced
+contact nahi bana, expected — naya ENRICH chalne par banega), koi crash nahi. Phase 15(A)
+ab VPS pe genuinely live hai.
 - [ ] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho)
 - [ ] Step 15(B).2 — provider (Apollo.io ya equivalent) + T31 `prospect_searches` + **hard spend cap jo actually block kare**
 - [ ] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi)
