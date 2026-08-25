@@ -48,7 +48,7 @@ def run_forever(job_types, poll_interval=2):
     # This loop runs far faster than the heartbeat throttle, so its real observable beat rate
     # is the throttle window, not poll_interval -- beat() clamps to that anyway.
     beat_standalone(HEARTBEAT_NAME, status="RUNNING",
-                    detail={"job_types": sorted(job_types)}, force=True,
+                    detail={"job_types": sorted(job_types)}, is_startup=True,
                     expected_interval_seconds=poll_interval)
     while True:
         did_work = False

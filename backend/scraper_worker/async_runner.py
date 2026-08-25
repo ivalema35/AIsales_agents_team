@@ -566,7 +566,7 @@ async def run_forever(job_types=None, poll_interval=POLL_INTERVAL):
     # module already run through asyncio.to_thread.
     await asyncio.to_thread(beat_standalone, HEARTBEAT_NAME, "RUNNING",
                             {"job_types": sorted(job_types), "concurrency": MAX_CONCURRENCY},
-                            True, poll_interval)
+                            False, poll_interval, True)
 
     while True:
         results = await asyncio.gather(

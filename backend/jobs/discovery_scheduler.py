@@ -405,7 +405,7 @@ def run_forever(poll_interval=None):
 
     # 300s by default -- far slower than the other processes, which is exactly why the
     # expected interval is stored per process instead of assumed globally.
-    beat_standalone(HEARTBEAT_NAME, status="RUNNING", force=True,
+    beat_standalone(HEARTBEAT_NAME, status="RUNNING", is_startup=True,
                     expected_interval_seconds=poll_interval)
 
     while True:

@@ -942,18 +942,33 @@ kabhi update nahi) — matlab ek genuinely restart hue process ka "uptime" hames
 dikhta rehta, jab tak DB row hi delete na ho. **Ye bilkul wahi cheez hai jo Phase 6 khud fix karne
 aaya tha** (silent, invisible-without-SSH state) — is baar khud apne monitor ke andar.
 
-**Fix:** `beat()` ka SQL ab ek `CASE` check karta hai — agar last heartbeat se gap staleness
-threshold (`STALE_MULTIPLIER`, `services/system_health.py` se reuse kiya, koi nayi duplicate value
-nahi) se zyada hai, to `started_at` reset hota hai (genuine restart signal); warna preserve hota hai
-jaisa pehle tha. **Verified** — real disposable DB, real `beat()` calls: normal beat (5s gap) →
-preserved; restart-sized gap (90s, 45s threshold se upar) → sahi reset hua.
+**Pehla fix (v1, gap-heuristic) galat nikla — VPS pe deploy karke real restart se test karne par pata
+chala.** Pehla try: `beat()` ka SQL ek `CASE` check karta tha — agar last heartbeat se gap staleness
+threshold (`STALE_MULTIPLIER`) se zyada hai, to `started_at` reset. Ye v1 deploy kiya, phir **real
+`systemctl restart bos-worker`** se test kiya — **`started_at` phir bhi reset nahi hua!** Wajah: ek
+asli `systemctl restart` stop-phir-start itni fast karta hai (kuch second) ki gap threshold (45s) tak
+kabhi pahunchta hi nahi — matlab v1 sirf us case ko pakadta tha jahan process kaafi der se crashed
+pada tha, **sabse common real case (normal deploy restart) ko bilkul miss kar deta tha**. Yehi to asli
+bug tha jo fix karna tha.
+
+**Real fix (v2) — timing-guess ki jagah explicit signal.** Har process ka `run_forever()` apne loop me
+ghusne se PEHLE ek baar `beat(..., force=True)` call karta hai — ye hi wo EK jagah hai jo real, kabhi-
+galat-na-hone-wala signal deta hai "ek naya process instance abhi shuru hua hai." Naya parameter
+`is_startup=True` isi ek call par add kiya (4 real entrypoints: `jobs/worker.py`,
+`jobs/discovery_scheduler.py`, `jobs/inbound_poller.py`, `scraper_worker/async_runner.py`) — is baar
+gap-guess nahi, seedha "ye startup hai" bolna. `started_at` sirf `is_startup=True` par reset hota hai,
+kabhi timing se infer nahi hota. **Verified — real disposable DB + real `python -m` entrypoints
+(`jobs.worker`, `scraper_worker.async_runner`) chalaye, imports nahi**: normal in-loop beat → preserved
+· fast restart (1 second se kam gap, bilkul real `systemctl restart` jaisa) → sahi reset hua — yehi wo
+case hai jo v1 miss kar raha tha.
 
 - [x] DoD Gate P6 — ✅ 2026-08-25 (steps khud 2026-08-20 se complete the), MASTER §6 ke saare 4 DoD
   tests real evidence se pass: kill→DOWN + restart→UP dono real VPS process pe (`bos-worker`) ·
   activity feed real live `agent_events` se 24/25 exact match (1 tie-boundary artifact, verified real)
   · stuck-lead detection + non-stuck exclusion (Step 6.4) · ek-hi-email-per-incident + cooldown
-  (Step 6.4) · **is verification se khud ek real observability bug mila aur fix hua** (`started_at`
-  restart ke baad reset nahi hota tha)
+  (Step 6.4) · **is verification se khud ek real observability bug mila** (`started_at` restart ke baad
+  reset nahi hota tha), **pehla fix bhi galat nikla real VPS restart se test karne par, dobara sahi
+  fix kiya** — timing-guess kabhi bharosemand nahi, explicit signal hi sahi tareeka hai
 
 ---
 

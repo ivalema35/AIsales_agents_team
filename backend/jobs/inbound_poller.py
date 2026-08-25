@@ -117,7 +117,7 @@ def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.INBOUND_POLL_INTERVAL_SECONDS
     logger.info("inbound email poller started (poll=%ds, mailbox=%s)",
                poll_interval, Config.INBOUND_EMAIL_USER)
-    beat_standalone(HEARTBEAT_NAME, status="RUNNING", force=True,
+    beat_standalone(HEARTBEAT_NAME, status="RUNNING", is_startup=True,
                     expected_interval_seconds=poll_interval)
 
     while True:

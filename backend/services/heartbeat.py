@@ -31,10 +31,6 @@ import time
 
 from sqlalchemy import text
 
-# Reused from services/system_health.py (not redefined) so a real restart and the reader's
-# own DOWN-threshold can never drift onto two different numbers.
-from services.system_health import STALE_MULTIPLIER
-
 logger = logging.getLogger(__name__)
 
 # Minimum seconds between two real DB writes for the same process. A monitor that refreshes
@@ -48,12 +44,22 @@ _last_write = {}
 
 
 def beat(db, process_name, status="RUNNING", detail=None, force=False,
-         expected_interval_seconds=None):
+         expected_interval_seconds=None, is_startup=False):
     """Record that `process_name` is alive right now.
 
     Safe to call on every loop iteration — writes are throttled to at most one per
     MIN_WRITE_INTERVAL_SECONDS unless `force=True` (used for startup and for a status change,
     both of which are worth recording immediately).
+
+    `is_startup`: pass True ONLY from the single beat each process's `run_forever()` makes
+    right before entering its main loop — an explicit, unambiguous "a new OS process instance
+    is beginning" signal, used to reset `started_at` so the monitor's uptime reflects THIS
+    process, not whatever previously held the row. Deliberately not inferred from a timing
+    gap: a genuine `systemctl restart` stops and starts a process within a few seconds, well
+    under any staleness threshold, so a gap-based heuristic silently misses the single most
+    common real restart case (found live, 2026-08-25, verifying Phase 6's own DoD gate against
+    a real VPS `systemctl restart` -- `started_at` stayed frozen at the pre-restart value).
+    Implies `force=True` (a startup beat must always write immediately).
 
     `expected_interval_seconds`: how often this process expects to beat. Callers should pass
     their real loop interval (clamped up to MIN_WRITE_INTERVAL_SECONDS, since a faster loop
@@ -64,6 +70,7 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
     Returns True if a row was actually written, False if throttled or if the write failed.
     Callers are not expected to check the return value; it exists for tests.
     """
+    force = force or is_startup
     now = time.monotonic()
     last = _last_write.get(process_name)
     if not force and last is not None and (now - last) < MIN_WRITE_INTERVAL_SECONDS:
@@ -86,14 +93,9 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
 
     try:
         # started_at is preserved across an ordinary beat, so the monitor shows real uptime
-        # rather than the age of the last beat -- BUT a real restart (a genuinely new OS
-        # process reusing the same process_name) must reset it, or uptime silently reports
-        # the OLD process's age forever. Found live, 2026-08-25, verifying Phase 6's own DoD
-        # gate: stopped+restarted a real VPS service and watched `started_at` stay stuck 5
-        # days in the past. The only real signal this beat is a genuine restart (as opposed
-        # to the same process's own next beat) is the SAME staleness gap the reader itself
-        # uses to call a process DOWN -- reused via STALE_MULTIPLIER, not a second threshold.
-        db.execute(text("""
+        # rather than the age of the last beat -- but an is_startup beat always overwrites it,
+        # since that call site is the one unambiguous "a new process instance began" signal.
+        db.execute(text(f"""
             INSERT INTO system_heartbeats
                 (process_name, status, detail, expected_interval_seconds,
                  last_seen_at, started_at)
@@ -103,15 +105,10 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
                 status       = excluded.status,
                 detail       = excluded.detail,
                 expected_interval_seconds = excluded.expected_interval_seconds,
-                last_seen_at = CURRENT_TIMESTAMP,
-                started_at   = CASE
-                    WHEN (julianday(CURRENT_TIMESTAMP) - julianday(system_heartbeats.last_seen_at)) * 86400.0
-                         > system_heartbeats.expected_interval_seconds * :stale_multiplier
-                    THEN CURRENT_TIMESTAMP
-                    ELSE system_heartbeats.started_at
-                END
+                last_seen_at = CURRENT_TIMESTAMP
+                {", started_at = CURRENT_TIMESTAMP" if is_startup else ""}
         """), {"name": process_name, "status": status, "detail": payload,
-               "interval": interval, "stale_multiplier": STALE_MULTIPLIER})
+               "interval": interval})
         db.commit()
         _last_write[process_name] = now
         return True
@@ -125,13 +122,14 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
 
 
 def beat_standalone(process_name, status="RUNNING", detail=None, force=False,
-                    expected_interval_seconds=None):
+                    expected_interval_seconds=None, is_startup=False):
     """`beat()` for a caller that has no session to lend -- opens and closes its own.
 
     Used by processes whose loop does not already hold a session (`jobs.worker` closes its
     session per job; `scraper_worker.async_runner` runs an asyncio loop and must not hold a
     sync session across awaits).
     """
+    force = force or is_startup
     # Check the throttle BEFORE opening a session -- otherwise a 2s loop would open and close
     # a DB session every pass just to discover it had nothing to write.
     now = time.monotonic()
@@ -143,6 +141,6 @@ def beat_standalone(process_name, status="RUNNING", detail=None, force=False,
     db = SessionLocal()
     try:
         return beat(db, process_name, status=status, detail=detail, force=force,
-                    expected_interval_seconds=expected_interval_seconds)
+                    expected_interval_seconds=expected_interval_seconds, is_startup=is_startup)
     finally:
         db.close()
