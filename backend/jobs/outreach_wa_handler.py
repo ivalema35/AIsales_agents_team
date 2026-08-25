@@ -29,7 +29,9 @@ from services.outreach.whatsapp_templates import (
     fill_variables_for_labels,
     validate_variables,
 )
-from services.outreach.whatsapp_template_service import get_approved_followup_template
+from services.outreach.whatsapp_template_service import (
+    get_approved_followup_template, get_approved_first_touch_template,
+)
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
 
 logger = logging.getLogger(__name__)
@@ -97,9 +99,20 @@ def handle_outreach_wa(db, payload):
         variable_labels = json.loads(followup_template.variable_labels or "[]")
         values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
     else:
-        template_key = select_template(pain_points)
-        spec = TEMPLATE_LIBRARY[template_key]
-        values = fill_variables(template_key, lead_profile, pain_points)
+        # 2026-08-25 -- a real, product-scoped template (e.g. one carrying THAT product's
+        # own real demo button) wins over the shared, button-less TEMPLATE_LIBRARY
+        # default, same tiered "product-specific beats shared" rule already proven for
+        # follow-up templates. Most products have none yet, which is the normal, expected
+        # case -- falls straight through to the existing shared library, unchanged.
+        first_touch_template = get_approved_first_touch_template(db, product_id=lead.product_id)
+        if first_touch_template:
+            spec = {"name": first_touch_template.name, "language": first_touch_template.language}
+            variable_labels = json.loads(first_touch_template.variable_labels or "[]")
+            values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
+        else:
+            template_key = select_template(pain_points)
+            spec = TEMPLATE_LIBRARY[template_key]
+            values = fill_variables(template_key, lead_profile, pain_points)
 
     if not validate_variables(values):
         logger.info("OUTREACH_WA %s -> filled variables failed validation, escalating", lead.company_name)

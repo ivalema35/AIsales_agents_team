@@ -3656,6 +3656,44 @@ returns the button variant for a real lead with a real pain point; a genuine fre
 touch-1 WhatsApp send confirmed via a real `wamid` receipt using
 `ivinfotech_pain_point_outreach_btn`.
 
+### ⭐ Real gap, same session: WhatsApp buttons were SHARED across every product (2026-08-25)
+
+**Operator's exact question, minutes after the fix above shipped:** *"ab maan le kisi
+product me demo url ya video url nahi hoga to tab kya hoga?"* Answering it honestly
+surfaced a real design mismatch, not just a hypothetical: EMAIL's CTA button is resolved
+fresh from live `content_assets` on **every real send** (Step 11.1), but a WhatsApp
+button is baked into the **template itself at Meta-approval time** -- and both button
+templates built minutes earlier (`ivinfotech_pain_point_outreach_btn`,
+`followup_l1_circle_back_btn`) were submitted as SHARED (`product_id=None`). Every other
+product's leads would have received the SAME `https://ivinfotech.com` button regardless
+of whether that product had any real demo of its own -- a real, live bug this project's
+own "boundary does the safety work, not the instruction" principle exists to prevent,
+caught within the same session it was introduced.
+
+**Fixed by reusing the exact pattern already proven for follow-up templates, not a new
+design:** new `get_approved_first_touch_template(db, product_id)` in `whatsapp_
+template_service.py` -- the SAME tiered "product-scoped wins over shared" lookup
+`get_approved_followup_template()` already used (Step 13.2), just for `purpose=
+"FIRST_TOUCH"`. `jobs/outreach_wa_handler.py`'s non-followup branch now checks this
+FIRST; only falls through to the hardcoded, button-less `TEMPLATE_LIBRARY` default when
+no real product-specific (or shared) DB template exists -- which is the normal, expected
+case for every product except the one actually configured. Both button templates'
+`product_id` re-scoped to Mobile App Development (the only product with a real demo
+asset today) -- no new Meta submission needed, this is purely a local-DB scoping
+correction against an already-approved real template. `select_template()`'s own
+TEMPLATE_LIBRARY preference reverted to the plain, button-less `PAIN_POINT_HOOK` as the
+shared default (the button-carrying `PAIN_POINT_HOOK_BTN` entry removed from the
+hardcoded library entirely -- it now lives correctly as a real, product-scoped DB row
+instead of two disconnected representations of the same real template).
+
+**Verified — `test_wa_product_scoped_button.py`, real disposable DB, real `handle_
+outreach_wa()`, only the Meta network POST mocked -- 3/3 checks, plus a live re-send:**
+the product WITH its own real template gets it (button included); the product WITHOUT
+one gets `None` from the scoped lookup and correctly falls back to the shared, button-
+less default -- **never borrows another product's real link**. Re-ran the actual live
+send to the operator's own WhatsApp number after this rewiring -- still resolves to
+`ivinfotech_pain_point_outreach_btn`, confirmed via a fresh real `wamid`.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)

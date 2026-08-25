@@ -23,23 +23,22 @@ TEMPLATE_LIBRARY = {
         "variables": ["contact_name"],  # {{1}}
     },
     # Submitted live via the Create Template API (2026-08-13), Meta approval confirmed
-    # APPROVED on 2026-08-13. Superseded 2026-08-25 by "..._btn" below (same real
-    # approved wording, plus a real demo button) -- kept here, not deleted, only because
-    # its own real Meta approval still exists; select_template() never picks it anymore.
+    # APPROVED on 2026-08-13 -- this stays the real, button-less, product-agnostic
+    # fallback for select_template() below.
+    #
+    # 2026-08-25 correction: a button-carrying sibling of this template
+    # (ivinfotech_pain_point_outreach_btn, same approved body text + a real demo link)
+    # was briefly wired in here as a second TEMPLATE_LIBRARY entry and preferred by
+    # default -- real bug, caught by the operator ("agar kisi product me demo url na ho
+    # to?"): a button baked into ONE shared template at Meta-approval time would show
+    # EVERY product's leads the same one product's real demo link, since TEMPLATE_LIBRARY
+    # has no product concept at all. Reverted: that button template now lives as a real,
+    # PRODUCT-SCOPED row in the `whatsapp_templates` DB table instead (get_approved_
+    # first_touch_template() in whatsapp_template_service.py, same tiered product-first
+    # lookup already proven for follow-up templates) -- checked BEFORE this hardcoded
+    # library, real per-product buttons never end up shared across unrelated products.
     "PAIN_POINT_HOOK": {
         "name": "ivinfotech_pain_point_outreach",
-        "language": "en",
-        "variables": ["company_name", "pain_point_phrase"],  # {{1}}, {{2}}
-        "status": "APPROVED",
-    },
-    # 2026-08-25 -- same real approved body text as PAIN_POINT_HOOK above, now with a
-    # real, static demo button (https://ivinfotech.com), mirroring the button just added
-    # to the Level 1 follow-up template (whatsapp_template_service.py). A static URL
-    # button needs no {{n}} suffix/no extra send-time parameter -- Meta includes it
-    # automatically for every send of this approved template, so send_template_message()
-    # needed zero changes to pick this up.
-    "PAIN_POINT_HOOK_BTN": {
-        "name": "ivinfotech_pain_point_outreach_btn",
         "language": "en",
         "variables": ["company_name", "pain_point_phrase"],  # {{1}}, {{2}}
         "status": "APPROVED",
@@ -69,12 +68,6 @@ def select_template(pain_points: list) -> str:
         if key and TEMPLATE_LIBRARY.get(key, {}).get("status") == "APPROVED":
             return key
 
-    # PAIN_POINT_HOOK_BTN (2026-08-25) supersedes the plain PAIN_POINT_HOOK -- same real
-    # approved wording, now with a real demo button. Preferred first; PAIN_POINT_HOOK
-    # stays as a real fallback only if the button variant's own APPROVED status ever
-    # lapses (Meta can revoke/expire a template), never deleted outright.
-    if pain_points and TEMPLATE_LIBRARY.get("PAIN_POINT_HOOK_BTN", {}).get("status") == "APPROVED":
-        return "PAIN_POINT_HOOK_BTN"
     if pain_points and TEMPLATE_LIBRARY.get("PAIN_POINT_HOOK", {}).get("status") == "APPROVED":
         return "PAIN_POINT_HOOK"
 

@@ -338,6 +338,43 @@ def get_approved_followup_template(db, followup_level, product_id=None):
     )
 
 
+def get_approved_first_touch_template(db, product_id=None):
+    """Real gap the operator found live (2026-08-25): a demo/video button on a WhatsApp
+    template is baked in at Meta-approval time, unlike email's CTA (resolved fresh from
+    live content_assets on every real send) -- so a button pointing at ONE product's real
+    demo, submitted only ever as a single SHARED template, would show every other
+    product's leads a link that isn't theirs. TEMPLATE_LIBRARY (services/outreach/
+    whatsapp_templates.py) has no product concept at all and never will (it's the
+    generic/button-less fallback); a real product-specific pitch belongs here instead,
+    in the same admin-managed table + tiered lookup already proven for FOLLOW_UP
+    (get_approved_followup_template above) -- product-scoped wins over shared, exactly
+    the same rule, same reasoning.
+
+    Returns None (not an error) when no real FIRST_TOUCH template exists in this table
+    yet for this product or shared -- the caller falls back to TEMPLATE_LIBRARY, which
+    stays a fully valid, tested, button-less real send; this table is additive, not a
+    replacement for that hardcoded library.
+    """
+    base = db.query(WhatsappTemplate).filter(
+        WhatsappTemplate.purpose == "FIRST_TOUCH",
+        WhatsappTemplate.status == "APPROVED",
+        WhatsappTemplate.is_active == 1,
+    )
+    if product_id:
+        product_specific = (
+            base.filter(WhatsappTemplate.product_id == product_id)
+            .order_by(WhatsappTemplate.updated_at.desc())
+            .first()
+        )
+        if product_specific:
+            return product_specific
+    return (
+        base.filter(WhatsappTemplate.product_id.is_(None))
+        .order_by(WhatsappTemplate.updated_at.desc())
+        .first()
+    )
+
+
 FOLLOWUP_LEVEL_JOB = {
     1: "Level 1 (RE-PRESENT): assume the first touch's real asset/pitch was skimmed, not "
        "read -- a short reminder tied to their pain point, pointing back to it.",
