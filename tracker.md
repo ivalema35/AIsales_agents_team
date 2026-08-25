@@ -3577,6 +3577,56 @@ four real exit paths, including the newly-fixed Yes-escalation one.
 - [x] Step 13.4 — reply/opt-out/interest-response exit sequence at every level (real Phase 12 gap fixed) + view-without-reply documented as already-true — ✅ 2026-08-24, Section 3
 - [x] DoD Gate P13 — ✅ 2026-08-24, all 5 MASTER §9 P13 criteria proven with real evidence: 3 levels provably distinct (test_phase13_step1.py) · delay-gating unchanged/unregressed (jobs/discovery_scheduler.py's own next_run_at filter, not touched by this phase) · reply/opt-out/interest exit at levels 2/3 (test_phase13_step4.py) · unapproved WhatsApp level sends nothing, never another level's template (test_phase13_step2.py) · per-level sent/seen/replied reconciles against real SQL (real `get_variant_performance()` check, Step 13.3 above)
 
+### ⭐ Follow-up (out-of-plan, operator-driven) — WhatsApp template CTA button (2026-08-24/25)
+
+**Real gap the operator found live, mid real-time test:** just sent themself all 3 real
+follow-up levels on both channels (email + WhatsApp) — email's Level 1 had a real,
+working demo button; WhatsApp's Level 1 was plain text, no button at all. Asked directly:
+*"whatsapp me video url ya demo url nahi, aisa template banakar nahi bhej sakte he?"*
+Checked the code honestly rather than guessing: `_create_on_meta()`/`send_template_
+message()` only ever built a `BODY` component — no `HEADER`, no `BUTTONS` — a real,
+previously-unbuilt limitation, not a Meta/WhatsApp platform limitation (Meta's own
+template schema supports both).
+
+**Scoped into two real, separately-confirmable pieces before building either** (per the
+standing collaboration rule): a URL button (well-understood, same endpoints already
+proven working, no new credential) vs. a video header (needs Meta's real Resumable
+Upload API, which needs a **Meta App ID** — a credential this project has never
+configured; `WHATSAPP_WABA_ID` is a different id and doesn't substitute for it). Operator
+chose "both" — button built and shipped now; video header genuinely blocked on that
+missing credential, disclosed to the operator rather than guessed around.
+
+**Built:** new `whatsapp_templates.button_url`/`button_label` columns. `_create_on_meta()`
+now adds a real `{"type": "BUTTONS", "buttons": [{"type": "URL", ...}]}` component when a
+button is given. Deliberately a **STATIC** button (no `{{n}}` suffix) — this system's
+content assets are scoped per PRODUCT, not per lead (same as email's own CTA), so every
+real send of a given template already points at the same real, admin-approved link; Meta
+requires no per-send button parameter for a static URL button, so `send_template_
+message()` needed zero changes. `submit_template()`/`create_draft_template()`/`approve_
+draft_and_submit()` all thread the value through; the admin form (`WhatsappTemplates.jsx`)
+gained a real Button URL/label field (http(s)-only, label capped at Meta's real 25-char
+limit), validated server-side before any real Meta call.
+
+**Real end-to-end, not just unit-tested:** replaced the plain Level 1 follow-up template
+with a new one carrying a real button to `https://ivinfotech.com` (old one deactivated,
+`is_active=0`, so `get_approved_followup_template()` never selects it again) — submitted
+to Meta for real, **approved in ~2 minutes**, then a real WhatsApp send confirmed via a
+real `wamid` receipt. Only Level 1 got a button, matching the email side's own design
+(Level 2 stays a pure question with zero CTA, Level 3 stays a low-pressure list with no
+button) — not added to every level just because the capability now exists.
+
+**Verified — `test_wa_button.py`, real Flask app + authenticated session, only the real
+Meta network POST mocked (so the exact payload shape can be inspected) — 4/4 checks:** a
+real submission with a button produces the exact real Meta `BUTTONS` component shape; a
+submission with no button produces byte-identical output to before this feature existed
+(no accidental default/empty button); a non-http(s) `button_url` is rejected (422) before
+any real Meta call is attempted; a `button_label` with no `button_url` is rejected.
+
+**Still open, disclosed, not attempted without the real credential:** video header
+support needs the operator to locate/provide the Meta App ID (found in Meta Business
+Suite / developers.facebook.com, distinct from `WHATSAPP_WABA_ID`) before the Resumable
+Upload flow can even be attempted for real.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)

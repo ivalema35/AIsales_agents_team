@@ -23,7 +23,7 @@ const FOLLOWUP_LEVEL_HINT = {
 
 const EMPTY_DRAFT = {
   name: "", language: "en", category: "MARKETING", purpose: "FOLLOW_UP", followup_level: 1,
-  body_text: "", variable_labels: [], product_id: "",
+  body_text: "", variable_labels: [], product_id: "", button_url: "", button_label: "",
 };
 
 function StatTile({ icon: Icon, label, value, tone = "slate" }) {
@@ -84,6 +84,11 @@ function ProposedCard({ t, onApprove, onReject, busyId }) {
         <Sparkles size={12} className="text-violet-500" />
         <span className="text-xs font-semibold text-slate-800">{t.name}</span>
         <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
+        {t.button_url && (
+          <span title={t.button_url} className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-600">
+            Button: {t.button_label || "View"}
+          </span>
+        )}
         <Badge variant="NEUTRAL">{t.category}</Badge>
         <span className="flex items-center gap-1 text-[10px] font-medium text-slate-400">
           <Boxes size={10} /> {t.product_title || "Shared -- all products"}
@@ -474,6 +479,11 @@ export default function WhatsappTemplates() {
                     <Badge variant={STATUS_VARIANT[t.status] || "NEUTRAL"}>{t.status}</Badge>
                     {!t.is_active && <Badge variant="NEUTRAL">Disabled</Badge>}
                     <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
+        {t.button_url && (
+          <span title={t.button_url} className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-600">
+            Button: {t.button_label || "View"}
+          </span>
+        )}
                     <Badge variant="NEUTRAL">{t.category}</Badge>
                     {t.origin === "AI" && (
                       <span className="flex items-center gap-0.5 text-[10px] font-medium text-violet-500">
@@ -689,6 +699,39 @@ export default function WhatsappTemplates() {
             <p className="rounded-md bg-amber-50 px-2.5 py-1.5 text-[11px] text-amber-700">
               Body has {placeholderCount} {"{{n}}"} placeholder(s) but {draft.variable_labels.length} variable(s) listed -- these must match before submitting.
             </p>
+          )}
+
+          {/* Real feature -- WhatsApp templates can carry a static call-to-action button,
+             same as the email side's CTA/demo button. Static on purpose: content assets
+             here are scoped per product, not per lead, so every real send of this
+             template already points at the same real, approved link -- no per-lead
+             {{n}} substitution needed. */}
+          <label className="flex flex-col gap-1">
+            <span className="text-[11px] font-medium text-slate-600">Button URL (optional)</span>
+            <input
+              type="url"
+              value={draft.button_url}
+              onChange={(e) => setDraft((d) => ({ ...d, button_url: e.target.value }))}
+              placeholder="https://ivinfotech.com/demo"
+              className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+            />
+            <span className="text-[10px] text-slate-400">
+              A real, static demo/website link -- adds a clickable button below the message. Same
+              link for every real send of this template (no per-lead personalization on WhatsApp).
+            </span>
+          </label>
+          {draft.button_url && (
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-medium text-slate-600">Button label (max 25 chars)</span>
+              <input
+                type="text"
+                maxLength={25}
+                value={draft.button_label}
+                onChange={(e) => setDraft((d) => ({ ...d, button_label: e.target.value }))}
+                placeholder="View Demo"
+                className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              />
+            </label>
           )}
 
           <div className="flex items-center gap-2 border-t border-slate-100 pt-3.5">

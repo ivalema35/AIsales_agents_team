@@ -27,6 +27,8 @@ COLUMN_MIGRATIONS = [
     ("products", "cross_sell_product_ids", "TEXT DEFAULT '[]'"),
     ("leads", "reference_code", "TEXT"),
     ("whatsapp_templates", "followup_level", "INTEGER"),
+    ("whatsapp_templates", "button_url", "TEXT"),
+    ("whatsapp_templates", "button_label", "TEXT"),
 ]
 
 

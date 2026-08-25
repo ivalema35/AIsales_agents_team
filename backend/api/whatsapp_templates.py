@@ -36,6 +36,10 @@ def _serialize(row, product_titles=None):
         # Only meaningful when purpose="FOLLOW_UP"; null for FIRST_TOUCH and for any
         # FOLLOW_UP row that predates this column.
         "followup_level": row.followup_level,
+        # A real, static call-to-action button baked into the approved template. Null =
+        # no button (today's default, unchanged).
+        "button_url": row.button_url,
+        "button_label": row.button_label,
         "body_text": row.body_text,
         "variable_labels": json.loads(row.variable_labels or "[]"),
         "status": row.status,
@@ -176,6 +180,16 @@ def create_template():
     # product row so a typo'd/stale id can't silently produce an unusable scoped template.
     product_id = data.get("product_id") or None
 
+    # A real, static call-to-action button (added after the operator asked why WhatsApp
+    # follow-ups had no demo link, mirroring the email side's CTA button). Optional --
+    # None keeps today's plain-text-only behavior. Meta caps button text at 25 chars.
+    button_url = str(data.get("button_url") or "").strip() or None
+    button_label = str(data.get("button_label") or "").strip()[:25] or None
+    if button_url and not re.match(r"^https?://", button_url):
+        errors.append("button_url must be a real http(s) URL")
+    if button_label and not button_url:
+        errors.append("button_label requires button_url")
+
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -187,7 +201,8 @@ def create_template():
             return jsonify({"error": [f"a template named {name!r} already exists"]}), 422
         try:
             row = submit_template(db, name, language, category, purpose, body_text, variable_labels,
-                                  product_id, followup_level=followup_level)
+                                  product_id, followup_level=followup_level,
+                                  button_url=button_url, button_label=button_label)
         except Exception as exc:  # noqa: BLE001 - a real API failure must surface, not 500 silently
             return jsonify({"error": [f"Meta submission failed: {exc}"]}), 502
         product_titles = _product_titles_for(db, row)

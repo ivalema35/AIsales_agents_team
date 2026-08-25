@@ -405,6 +405,12 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     -- this value -- a level with no approved template sends nothing on WhatsApp rather
     -- than substituting another level's real, but wrong, text.
     followup_level    INTEGER,
+    -- A STATIC call-to-action button baked into the approved template itself -- Meta
+    -- requires no per-send parameter for a button with no {{n}} suffix, so this is set
+    -- once at submission time and every real send automatically carries it. NULL = no
+    -- button, today's behavior unchanged.
+    button_url        TEXT,
+    button_label      TEXT,
     body_text         TEXT NOT NULL,         -- with {{1}}, {{2}} placeholders, Meta's own syntax
     variable_labels   TEXT DEFAULT '[]',     -- JSON array, what each {{n}} means, e.g. ["company_name"]
     -- DRAFT: AI-authored, awaiting admin review, never yet sent to Meta (Step 9.6).

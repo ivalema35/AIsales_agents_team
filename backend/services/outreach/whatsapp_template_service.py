@@ -62,12 +62,20 @@ _EXAMPLE_VALUES = {
 }
 
 
-def _create_on_meta(name, language, category, body_text, variable_labels=None):
+def _create_on_meta(name, language, category, body_text, variable_labels=None,
+                    button_url=None, button_label=None):
     """The actual real Meta Create Template API call, shared by every path that ends in
     a real submission (a direct admin submit, or an admin approving an AI draft --
     Step 9.6). Raises on failure -- same contract as every other real send in this
     codebase (email_service.send_email, whatsapp_service.send_template_message); the
     caller decides how to surface that. Returns Meta's raw response dict.
+
+    `button_url` (real feature, added after the operator asked "WhatsApp me demo URL
+    kyun nahi" during a live Phase 13 test) -- a STATIC call-to-action button, baked into
+    the template at submission time. Deliberately static, not a {{1}}-suffixed dynamic
+    URL: this system's content assets are scoped per PRODUCT, not per lead, so every real
+    send of a given template already points at the same real, admin-approved link -- no
+    per-send parameter is needed, and Meta requires none for a button with no variable.
     """
     if not Config.WHATSAPP_TOKEN:
         raise RuntimeError("WHATSAPP_TOKEN not configured")
@@ -79,11 +87,17 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None):
         body_component["example"] = {
             "body_text": [[_EXAMPLE_VALUES.get(v, "example") for v in variable_labels]]
         }
+    components = [body_component]
+    if button_url:
+        components.append({
+            "type": "BUTTONS",
+            "buttons": [{"type": "URL", "text": (button_label or "View")[:25], "url": button_url}],
+        })
     payload = {
         "name": name,
         "language": language,
         "category": category,
-        "components": [body_component],
+        "components": components,
     }
     resp = requests.post(
         _templates_url(),
@@ -96,7 +110,7 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None):
 
 
 def submit_template(db, name, language, category, purpose, body_text, variable_labels,
-                    product_id=None, followup_level=None):
+                    product_id=None, followup_level=None, button_url=None, button_label=None):
     """Real Meta Create Template API call, for a template an admin is submitting
     directly from the dashboard form -- creates the row AND submits it to Meta in one
     step, exactly like before Step 9.6. Stores the new row as PENDING with Meta's own
@@ -110,8 +124,12 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
 
     followup_level (Phase 13 Step 13.2) is REQUIRED when purpose="FOLLOW_UP" -- validated
     by the caller (api/whatsapp_templates.py), not here, so this stays a plain write.
+
+    button_url/button_label -- a real, static call-to-action button baked into this
+    template (see _create_on_meta's own docstring for why static, not per-lead dynamic).
     """
-    data = _create_on_meta(name, language, category, body_text, variable_labels)
+    data = _create_on_meta(name, language, category, body_text, variable_labels,
+                           button_url=button_url, button_label=button_label)
 
     row = WhatsappTemplate(
         name=name,
@@ -119,6 +137,8 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
         category=category,
         purpose=purpose,
         followup_level=followup_level if purpose == "FOLLOW_UP" else None,
+        button_url=button_url,
+        button_label=button_label,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="PENDING",
@@ -176,7 +196,8 @@ def approve_draft_and_submit(db, template):
 
     variable_labels = json.loads(template.variable_labels or "[]")
     data = _create_on_meta(template.name, template.language, template.category,
-                           template.body_text, variable_labels)
+                           template.body_text, variable_labels,
+                           button_url=template.button_url, button_label=template.button_label)
     template.status = "PENDING"
     template.meta_template_id = data.get("id")
     db.commit()
