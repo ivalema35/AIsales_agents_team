@@ -3832,16 +3832,25 @@ explicitly failing, for every real marketing send with no exception, is a materi
 different signature from "some deliveries lag" -- it is a full, systematic hold on this
 message TYPE at the BSP layer, before the message is even forwarded toward Meta.
 
-**Most likely concrete cause, given that exact signature plus an Indian recipient number
-(+91 951...):** TRAI's DLT (Distributed Ledger Technology) registration requirement for
-commercial/promotional messaging to Indian numbers -- a real, government-mandated
-compliance gate many BSPs enforce for WhatsApp Marketing-category templates the same way
-they already do for promotional SMS. An unregistered account's marketing sends get held
-indefinitely by the BSP's own compliance layer, silently, with no error surfaced back to
-the API caller -- exactly what 8/8 `SUBMITTED`-forever, zero-`Failed` rows would look
-like. Real next step, outside this codebase entirely: **the operator confirming directly
-with Fortius whether IVinfotech's WABA is DLT-registered for Marketing category**, and
-completing that registration if not.
+**Most likely concrete cause considered at the time, given that exact signature plus an
+Indian recipient number (+91 951...):** TRAI's DLT (Distributed Ledger Technology)
+registration requirement for commercial/promotional messaging to Indian numbers -- a
+real, government-mandated compliance gate many BSPs enforce for WhatsApp Marketing-
+category templates the same way they already do for promotional SMS.
+
+**RESOLVED, ~45 minutes later, on its own -- the DLT theory does not hold as stated.**
+The operator asked for one more real retry. A fresh MARKETING-category send (same
+`ivinfotech_pain_point_outreach_btn` template, same Indian recipient number, sent
+2026-08-25 05:27:18) **arrived normally this time.** A genuine, government-mandated DLT
+registration gap would not have started passing traffic on its own mid-incident with no
+registration action taken -- so the earlier 8/8 `SUBMITTED`-forever signature is better
+explained by the FIRST theory considered above after all: a temporary rate/quality-based
+hold from the session's own unusual burst (5 new templates created + 15+ real sends
+within ~2 hours), which cleared once enough real time had passed. Recorded here,
+corrected rather than left standing, specifically so a future session does not read the
+DLT theory as confirmed and chase a real compliance registration that was never actually
+the problem. If this recurs, the real, cheap first check is simply **waiting roughly an
+hour and retrying** before escalating to the BSP.
 
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
