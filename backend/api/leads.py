@@ -6,13 +6,17 @@ from flask import Blueprint, jsonify, request
 from sqlalchemy import and_, or_, func, text
 
 from cognition.hard_classifiers import strip_quoted_reply
+from config import Config
 from database.db_config import SessionLocal
 from database.models import (
     AgentEvent, InboundConversation, InterestResponse, Lead, LeadFirmographics,
-    LeadReviewInsight, LeadScore, OutreachLog, Product, SuppressionEntry)
+    LeadReviewInsight, LeadScore, OutreachLog, OutreachSequence, Product, SuppressionEntry)
 from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
 from services.outreach.delivery_status import derive_delivery_state, resolve_whatsapp_display_text
+from services.sequence_service import describe_sequence_stage
+from services.outreach.email_renderer import render_email_html
+from services.outreach.text_renderer import render_plain_text
 from jobs.outreach_handler import handle_outreach_email
 from jobs.outreach_wa_handler import handle_outreach_wa
 
@@ -428,6 +432,10 @@ def get_lead(lead_id):
             "industry": firmographics.industry,
             "tech_stack": json.loads(firmographics.tech_stack) if firmographics.tech_stack else [],
         } if firmographics else None
+        # Phase 14 Step 14.3 -- per-channel follow-up stage (at most one EMAIL + one
+        # WHATSAPP row per lead, see create_sequence_for_send's own no-duplicate check).
+        sequences = db.query(OutreachSequence).filter(OutreachSequence.lead_id == lead_id).all()
+        body["followup_sequences"] = [describe_sequence_stage(seq) for seq in sequences]
         return jsonify(body)
     finally:
         db.close()
@@ -546,6 +554,60 @@ def get_lead_timeline(lead_id):
 
         events.sort(key=lambda ev: ev["timestamp"])
         return jsonify(events)
+    finally:
+        db.close()
+
+
+# Phase 14 Step 14.4 -- only EMAIL sends ever carry a structured `content_sections`
+# (Step 11.1's section list); WhatsApp has no equivalent, so it is never a copy SOURCE,
+# only one of the platforms the email's own content can be copied INTO.
+_CROSS_CHANNEL_PLATFORMS = {"EMAIL", "WHATSAPP", "INSTAGRAM", "FACEBOOK", "LINKEDIN"}
+
+
+@leads_bp.route("/<lead_id>/cross-channel-copy", methods=["GET"])
+def get_cross_channel_copy(lead_id):
+    """One canonical content object (the lead's most recent EMAIL send's stored
+    `content_sections`), rendered for whichever platform icon the operator clicked --
+    never a second LLM call, never content that drifts from what the lead actually
+    received (MASTER_DEVELOPMENT_PRD.md Phase 14 Step 14.4)."""
+    platform = (request.args.get("platform") or "").upper()
+    if platform not in _CROSS_CHANNEL_PLATFORMS:
+        return jsonify({"error": [f"platform must be one of {sorted(_CROSS_CHANNEL_PLATFORMS)}"]}), 422
+
+    db = SessionLocal()
+    try:
+        lead = db.get(Lead, lead_id)
+        if not lead:
+            return jsonify({"error": "lead not found"}), 404
+
+        log = (
+            db.query(OutreachLog)
+            .filter(OutreachLog.lead_id == lead_id, OutreachLog.channel == "EMAIL",
+                   OutreachLog.content_sections.isnot(None))
+            .order_by(OutreachLog.sent_at.desc())
+            .first()
+        )
+        if not log:
+            # A real, common case -- e.g. a lead outreached before this column existed,
+            # or one this product's cadence never emailed -- never a fabricated fallback.
+            return jsonify({"error": "no synced outreach content for this lead yet"}), 404
+
+        sections = json.loads(log.content_sections)
+        if platform == "EMAIL":
+            unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
+            content = render_email_html(sections, unsubscribe_url, headline=log.message_subject)
+            fmt = "html"
+        else:
+            content = render_plain_text(sections)
+            fmt = "text"
+
+        return jsonify({
+            "platform": platform,
+            "format": fmt,
+            "content": content,
+            "source_outreach_log_id": log.id,
+            "source_sent_at": str(log.sent_at),
+        })
     finally:
         db.close()
 

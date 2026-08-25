@@ -3919,10 +3919,106 @@ shape aur React rendering logic dono verified hain).
 
 - [x] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai) — ✅ 2026-08-25, Section 3, real webhook gap disclosed+fixed
 - [x] Step 14.2 — real WhatsApp text (template naam secondary metadata me) — ✅ 2026-08-25, Section 3, real JSON-blob assumption gap disclosed+fixed, backward-compat display for old rows
-- [ ] Step 14.3 — follow-up stage indicator (`outreach_sequences` se, terminal reason ke saath)
-- [ ] Step 14.4 — platform-icon copy, **stored `content_sections` se** (dobara LLM se generate nahi)
-- [ ] Step 14.5 — P10 ka auto-send absence check dobara chalana (assume nahi karna)
-- [ ] DoD Gate P14
+
+**Step 14.3 — follow-up stage indicator.** Naya `services/sequence_service.py`'s
+`describe_sequence_stage(seq)`: `next_step` field ka matlab hamesha "agla jo touch bhejna
+hai" hota hai — chahe sequence ACTIVE ho, COMPLETED ho, ya kisi bhi terminal_reason
+(REPLIED/SUPPRESSED/MAX_STEPS_REACHED/ESCALATED/DECLINED) se STOPPED ho, terminal state
+kabhi `next_step` ko us touch se aage nahi badhata jo actually bheja hi nahi gaya — isliye
+`next_step - 1` hamesha REAL last-sent touch deta hai, har case me sahi. Touch 1 (fresh)
+ka koi `followup_level` nahi hota (wo follow-up hai hi nahi) — sirf touch 2+ ek real level
+(1/2/3) deta hai, wahi shared `touch_number_to_followup_level()` jo har real send handler
+use karta hai, isliye display kabhi actual-sent-state se disagree nahi kar sakta.
+`GET /api/v1/leads/<id>` ab `followup_sequences` array return karta hai (per-channel, max
+1 EMAIL + 1 WHATSAPP row, jaisa `create_sequence_for_send()` ka apna no-duplicate rule
+already guarantee karta hai).
+
+**Verified — `test_phase14_step3.py`, real disposable DB, real `process_due_followup()` +
+real `handle_outreach_email()`, real Flask app se real `GET /leads/<id>` call:**
+`process_due_followup()` khud sirf ek real job ENQUEUE karta hai (production me ek alag
+worker process ise claim karke actually bhejta hai) — ye test likhte waqt pehchana gaya
+(test pehle assume kar raha tha ki wo turant bhej deta hai, jo galat tha), isliye test me
+usi real job ko **claim karke, worker jaisa hi, actually execute** kiya jaata hai, taaki
+follow-up genuinely bheja jaaye na ki sirf schedule ho. Koi sequence na ho to khaali list
+(crash nahi); touch 1 ke baad
+ACTIVE + `followup_level=None` (fresh touch, abhi koi follow-up nahi gaya); level-1
+follow-up bhejne ke baad `followup_level=1`; beech me ek real reply aane par
+COMPLETED/REPLIED, aur stage wahi last-REAL-sent touch pe ruka rehta hai (jo touch kabhi
+bheja hi nahi gaya uska level kabhi nahi dikhata); poori cadence exhaust hone par
+COMPLETED/MAX_STEPS_REACHED, `followup_level=3` (asli final level).
+
+**Real production data pe bhi confirm kiya** (naya test data nahi): lead "GameZone
+Visnagar" (jisne is session ke Phase 12 real testing me genuinely "No" click kiya tha)
+real EMAIL sequence STOPPED/DECLINED level 1 pe dikhata hai, aur uska real WHATSAPP
+sequence COMPLETED/MAX_STEPS_REACHED dikhata hai (jo sach me poori cadence khatam hone se
+match karta hai) — dono real, is session se pehle ki asli activity se.
+
+**Frontend** (`LeadDetail.jsx`): Email/WhatsApp tab bar ke saath ek chhota
+`SequenceStageBadge` — "Follow-up 1 of 3 sent" / "Follow-ups stopped — declined (said
+No)" / "Follow-ups stopped — sequence complete" jaisa human label, jo `TERMINAL_REASON_
+LABELS` se map hota hai. `npx vite build` clean pass, real dev DB ke real leads ke against
+API shape verify kiya.
+
+- [x] Step 14.3 — follow-up stage indicator (`outreach_sequences` se, terminal reason ke saath) — ✅ 2026-08-25, Section 3
+
+**Step 14.4 — cross-channel copy.** Naya `outreach_logs.content_sections` column (TEXT,
+JSON) — `jobs/outreach_handler.py` ab har EMAIL send pe apna FINAL section list (HOOK/
+PAIN_POINTS/CTA + system-appended INTEREST/SERVICES_LIST/CONTACT sab merge karke) seedha
+store karta hai. Ye EK canonical content object hi hai jisse har platform-rendering nikalti
+hai — koi doosra LLM call kabhi nahi. Naya `services/outreach/text_renderer.py`:
+`render_plain_text(sections)` — email_renderer.py ke `_render_section()` jaisa hi har
+section-type ka apna branch, lekin HTML ki jagah plain text — URL hamesha poora plain link
+banta hai (kisi bhi platform pe real button possible nahi), video ek labelled link banta
+hai, contact block condense hoke ek-line-per-entry banta hai. Naya `GET /api/v1/leads/
+<id>/cross-channel-copy?platform=EMAIL|WHATSAPP|INSTAGRAM|FACEBOOK|LINKEDIN`: lead ka
+sabse recent EMAIL send (jiska `content_sections` bhara ho) dhundta hai; EMAIL platform ke
+liye **wahi real `render_email_html()`** dobara call karta hai (real HTML re-render, LLM
+nahi), baaki 4 platforms ke liye `render_plain_text()`. Koi synced content na ho (purana
+lead, ya is column se pehle ka send) to **404, kabhi fabricated fallback nahi**.
+
+**Deliberately alag rakha gaya hai** Step 10.3(a) ke existing "Social outreach" card se —
+wo per-platform ek NAYA, bespoke message LLM se draft karta hai (apna alag queue/review
+flow), jabki ye feature EK real bheji hui email ka SAME content sirf doosre platform ke
+liye reformat karta hai, koi generation nahi. Isliye UI me bhi alag, ek chhota naya "Copy
+this lead's real outreach content for:" row, Conversation card ke neeche 5 icon buttons
+(Email/WhatsApp/Instagram/Facebook/LinkedIn) ke saath. Email ka copy real rich-HTML
+clipboard write hai (`ClipboardItem` se text/html + text/plain dono, taaki Gmail/Outlook
+compose me formatted paste ho), baaki 4 plain text.
+
+**Verified — `test_phase14_step4.py`, real disposable DB, real `handle_outreach_email()`
+(real LLM draft+QC, sirf network POST mocked), real Flask app se real endpoint call:** koi
+sync'd content na ho to 404 (fabricated fallback nahi); galat platform naam pe 422; ek
+real send ke baad `content_sections` me real HOOK/PAIN_POINTS/CTA/INTEREST types store
+hote hain; EMAIL copy real re-rendered HTML hai jisme wahi asli HOOK text verbatim milta
+hai; WhatsApp/Instagram/Facebook/LinkedIn — chaaron **ek hi identical plain text** dete
+hain (`render_plain_text()` ko seedha call karke compare kiya), koi HTML tag nahi; real
+signed Yes/No interest URLs plain full links ke roop me text me aate hain; CONTACT
+(condensed) / VIDEO (labelled link) / SERVICES_LIST bhi real-shaped section dicts se sahi
+render hote hain.
+
+**Real production data pe bhi confirm kiya**: lead "GameZone Visnagar" (jiske saare real
+sends is column se PEHLE ke hain) `cross-channel-copy` call karne par honest 404 deta hai
+— "koi retroactive backfill nahi" wala rule jo operator ko pehle hi disclose+confirm kiya
+tha, real data pe bhi sahi hold karta hai.
+
+`npx vite build` clean pass (koi naya error nahi).
+
+- [x] Step 14.4 — platform-icon copy, **stored `content_sections` se** (dobara LLM se generate nahi) — ✅ 2026-08-25, Section 3
+
+**Step 14.5 — P10 ka auto-send absence check dobara chalana.** Phase 10 Step 10.3(a) ne
+apna check isi tarah kiya tha: poore backend me `linkedin|instagram|facebook` grep karke
+confirm kiya tha ki koi bhi real send-capable code path nahi hai, sirf discovery code aur
+docstrings hain. Wahi exact check Phase 14 ke naye code ke against dobara chalaya
+(assume nahi kiya ki purana result abhi bhi valid hai) — naya `api/leads.py`'s
+`cross-channel-copy` endpoint aur naya `text_renderer.py` dono sirf ek **read-only GET**
+hain (koi `db.commit()`/`db.add()` nahi, koi outbound network call nahi — sirf stored
+content ko re-format karke JSON response me FRONTEND ko wapas dete hain, jahan se human
+khud copy-paste karke bhejta hai). `send.*(instagram|facebook|linkedin)` jaisa koi function
+naam bhi kahin nahi mila. Zero naya send-capable code path — result wahi hai jo P10 ne
+diya tha, dobara real evidence se confirm kiya, assume nahi kiya.
+
+- [x] Step 14.5 — P10 ka auto-send absence check dobara chalana (assume nahi karna) — ✅ 2026-08-25, Section 3, real re-grep se confirm
+- [x] DoD Gate P14 — ✅ 2026-08-25, MASTER §14 ke saare 5 DoD tests real evidence se pass: per-message status real SQL se match (test_phase14_step1_2.py + real production data) · real WhatsApp filled-in text, template naam kabhi nahi · follow-up stage real `outreach_sequences` row se match, terminal reason samet (test_phase14_step3.py + real production data) · copy-to-platform SAME stored `content_sections` se match, dobara regenerate nahi (test_phase14_step4.py) · P10 ka absence check dobara re-run, still clean
 
 ### PHASE 15 — Person-Level Relevance & Prospect Sourcing *(naya paid provider — deliberately last, 15A/15B independently gate karte hain)*
 - [ ] Step 15(A).1 — product-brief se relevant role infer (human-set list ke andar hi)

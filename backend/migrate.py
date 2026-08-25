@@ -29,6 +29,7 @@ COLUMN_MIGRATIONS = [
     ("whatsapp_templates", "followup_level", "INTEGER"),
     ("whatsapp_templates", "button_url", "TEXT"),
     ("whatsapp_templates", "button_label", "TEXT"),
+    ("outreach_logs", "content_sections", "TEXT"),
 ]
 
 

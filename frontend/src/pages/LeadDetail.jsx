@@ -227,7 +227,39 @@ const CONVERSATION_CHANNELS = [
   { key: "WHATSAPP", label: "WhatsApp", icon: MessageCircle },
 ];
 
-function ConversationPanel({ events }) {
+// Phase 14 Step 14.3 -- a human label for one channel's follow-up sequence stage.
+// terminal_reason values come straight from services/sequence_service.py /
+// interest_service.py -- kept in sync with that real, closed set, not guessed.
+const TERMINAL_REASON_LABELS = {
+  REPLIED: "lead replied",
+  SUPPRESSED: "suppressed",
+  MAX_STEPS_REACHED: "sequence complete",
+  ESCALATED: "escalated to hot lead",
+  DECLINED: "declined (said No)",
+};
+
+function sequenceStageLabel(seq) {
+  if (!seq) return null;
+  if (seq.status === "ACTIVE") {
+    return seq.followup_level
+      ? `Follow-up ${seq.followup_level} of ${seq.max_followup_level} sent`
+      : "Follow-ups pending";
+  }
+  const reason = TERMINAL_REASON_LABELS[seq.terminal_reason] || seq.terminal_reason || seq.status;
+  return `Follow-ups stopped — ${reason}`;
+}
+
+function SequenceStageBadge({ seq }) {
+  const label = sequenceStageLabel(seq);
+  if (!label) return null;
+  return (
+    <span className="text-[11px] font-medium text-slate-400">
+      {label}
+    </span>
+  );
+}
+
+function ConversationPanel({ events, sequences }) {
   const byChannel = useMemo(() => {
     const grouped = { EMAIL: [], WHATSAPP: [] };
     for (const e of events) {
@@ -244,6 +276,7 @@ function ConversationPanel({ events }) {
   const [tab, setTab] = useState(byChannel.EMAIL.length > 0 ? "EMAIL" : "WHATSAPP");
   const messages = byChannel[tab];
   const scrollRef = useRef(null);
+  const activeSeq = (sequences || []).find((s) => s.channel === tab);
 
   // Open scrolled to the MOST RECENT message, like every real chat app does -- the list
   // is oldest-first (a conversation reads top-to-bottom as a story), but a long real
@@ -260,20 +293,23 @@ function ConversationPanel({ events }) {
 
   return (
     <div>
-      <div className="mb-3 flex gap-1 border-b border-slate-100">
-        {CONVERSATION_CHANNELS.map(({ key, label, icon: Icon }) => (
-          <button
-            key={key}
-            onClick={() => setTab(key)}
-            className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
-              tab === key
-                ? "border-slate-800 text-slate-900"
-                : "border-transparent text-slate-400 hover:text-slate-700"
-            }`}
-          >
-            <Icon size={13} /> {label} <span className="text-slate-400">({byChannel[key].length})</span>
-          </button>
-        ))}
+      <div className="mb-3 flex items-center justify-between border-b border-slate-100">
+        <div className="flex gap-1">
+          {CONVERSATION_CHANNELS.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
+                tab === key
+                  ? "border-slate-800 text-slate-900"
+                  : "border-transparent text-slate-400 hover:text-slate-700"
+              }`}
+            >
+              <Icon size={13} /> {label} <span className="text-slate-400">({byChannel[key].length})</span>
+            </button>
+          ))}
+        </div>
+        <SequenceStageBadge seq={activeSeq} />
       </div>
 
       {messages.length === 0 ? (
@@ -636,6 +672,74 @@ function SocialOutreachCard({ lead, queue, onRefresh }) {
   );
 }
 
+// Phase 14 Step 14.4 -- deliberately separate from SocialPlatformRow/SocialOutreachCard
+// above: that Step 10.3(a) feature drafts a NEW, bespoke message per platform via a real
+// LLM call. This copies the SAME content the lead's real email already sent -- no
+// generation, just a re-render of one canonical stored object -- so it stays visually and
+// functionally distinct rather than merged into that queue UI.
+const CROSS_CHANNEL_PLATFORMS = [
+  { key: "EMAIL", label: "Email", icon: Mail },
+  { key: "WHATSAPP", label: "WhatsApp", icon: MessageCircle },
+  { key: "INSTAGRAM", label: "Instagram", icon: InstagramIcon },
+  { key: "FACEBOOK", label: "Facebook", icon: FacebookIcon },
+  { key: "LINKEDIN", label: "LinkedIn", icon: LinkedinIcon },
+];
+
+function CrossChannelCopyBar({ leadId }) {
+  const toast = useToast();
+  const [copying, setCopying] = useState(null);
+
+  async function copyFor(platform) {
+    setCopying(platform);
+    try {
+      const res = await api.getCrossChannelCopy(leadId, platform);
+      if (res.format === "html") {
+        // A real rich-HTML copy (pastes formatted into Gmail/Outlook compose etc.), with
+        // a plain-text fallback in the SAME clipboard write -- some targets only read the
+        // text/plain entry, and this must still be readable there.
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              "text/html": new Blob([res.content], { type: "text/html" }),
+              "text/plain": new Blob([res.content.replace(/<[^>]+>/g, " ")], { type: "text/plain" }),
+            }),
+          ]);
+        } catch {
+          await navigator.clipboard.writeText(res.content); // e.g. Safari/older browsers
+        }
+      } else {
+        await navigator.clipboard.writeText(res.content);
+      }
+      toast.success(`${platform === "EMAIL" ? "Email" : platform} content copied`);
+    } catch (err) {
+      if (err.message.startsWith("404")) {
+        toast.error("No synced outreach content for this lead yet — send an email first.");
+      } else {
+        toast.error(err.message.replace(/^\d+\s*/, "").replace(/^\["|"\]$/g, ""));
+      }
+    } finally {
+      setCopying(null);
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+      <span className="text-[11px] text-slate-400">Copy this lead's real outreach content for:</span>
+      {CROSS_CHANNEL_PLATFORMS.map(({ key, label, icon: Icon }) => (
+        <button
+          key={key}
+          onClick={() => copyFor(key)}
+          disabled={copying === key}
+          title={`Copy for ${label}`}
+          className="flex items-center gap-1.5 rounded-md border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Icon size={12} /> {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function relativeTime(dateStr) {
   const then = new Date(dateStr.replace(" ", "T") + "Z").getTime();
   const days = Math.floor((Date.now() - then) / 86400000);
@@ -976,7 +1080,12 @@ export default function LeadDetail() {
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
         <SectionCard title="Conversation" icon={MessagesSquare}>
           {!timeline && <p className="text-xs text-slate-400">Loading…</p>}
-          {timeline && <ConversationPanel events={timeline} />}
+          {timeline && (
+            <div className="flex flex-col gap-3">
+              <ConversationPanel events={timeline} sequences={lead?.followup_sequences} />
+              <CrossChannelCopyBar leadId={id} />
+            </div>
+          )}
         </SectionCard>
 
         <SectionCard

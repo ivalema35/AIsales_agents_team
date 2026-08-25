@@ -157,6 +157,12 @@ class OutreachLog(Base):
     # here is still AI judgment, not performance-driven (no send history exists yet to
     # learn from) -- Phase 9 reads this column back to measure candidates retrospectively.
     subject_candidates = Column(Text)
+    # Phase 14 Step 14.4 -- the exact Step 11.1 structured section list (JSON) this EMAIL
+    # was rendered from -- the one canonical content object every cross-channel copy
+    # rendering reads from (services/outreach/text_renderer.py), never a second LLM call.
+    # NULL for WHATSAPP rows (no structured sections exist for that channel) and for any
+    # EMAIL row sent before this column existed -- old sends are never backfilled.
+    content_sections = Column(Text)
 
 
 # 8. INBOUND CONVERSATIONS

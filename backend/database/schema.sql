@@ -132,6 +132,9 @@ CREATE TABLE IF NOT EXISTS outreach_logs (
     -- there, never inferred). read_at only ever marks the FIRST open; this counts every
     -- one, real signal for "opened repeatedly, never replied" escalation.
     open_count       INTEGER DEFAULT 0,
+    -- Phase 14 Step 14.4 -- the exact Step 11.1 section list (JSON) this EMAIL was
+    -- rendered from; NULL for WHATSAPP and for any EMAIL row sent before this existed.
+    content_sections TEXT,
     FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE,
     FOREIGN KEY (campaign_id) REFERENCES outreach_campaigns(id) ON DELETE SET NULL
 );

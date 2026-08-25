@@ -180,6 +180,10 @@ def handle_outreach_email(db, payload):
         # (Step 13.3). "STRUCTURED_EMAIL" = fresh touch-1; "FOLLOWUP_LEVEL_1/2/3" = which
         # of Phase 13's three follow-up conversations this was.
         variant_id=f"FOLLOWUP_LEVEL_{followup_level}" if followup_level else "STRUCTURED_EMAIL",
+        # Phase 14 Step 14.4 -- the exact same section list this send was rendered from,
+        # sections+INTEREST+SERVICES_LIST+CONTACT already merged above -- the one
+        # canonical content object every later cross-channel copy reads from.
+        content_sections=json.dumps(sections) if sections is not None else None,
     ))
     lead.status = "OUTREACHED"
     db.commit()

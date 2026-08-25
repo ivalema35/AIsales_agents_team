@@ -53,6 +53,7 @@ export const api = {
   },
   getLead: (id) => request(`/leads/${id}`),
   getLeadTimeline: (id) => request(`/leads/${id}/timeline`),
+  getCrossChannelCopy: (id, platform) => request(`/leads/${id}/cross-channel-copy?platform=${platform}`),
   getAdjacentLead: (id, params = {}) => {
     const qs = new URLSearchParams(params).toString();
     return request(`/leads/${id}/adjacent${qs ? `?${qs}` : ""}`);

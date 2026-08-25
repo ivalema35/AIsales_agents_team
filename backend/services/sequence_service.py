@@ -29,6 +29,30 @@ def touch_number_to_followup_level(touch_number: int) -> int:
     return min(max(1, touch_number - 1), MAX_FOLLOWUP_LEVEL)
 
 
+def describe_sequence_stage(seq: OutreachSequence) -> dict:
+    """Phase 14 Step 14.3 -- a lead-page-facing summary of where one channel's sequence
+    actually is. `next_step` always means "the touch about to be sent next" (see
+    create_sequence_for_send/process_due_followup above) regardless of whether the
+    sequence is ACTIVE, COMPLETED, or STOPPED -- terminal states never advance next_step
+    past the touch that was actually sent, so `next_step - 1` is always the real last
+    sent touch, for every terminal_reason (REPLIED, SUPPRESSED, MAX_STEPS_REACHED,
+    ESCALATED, DECLINED alike). Touch 1 itself has no followup_level (that's the fresh,
+    non-follow-up touch) -- only touch 2+ maps to a real level via the same shared
+    touch_number_to_followup_level() every send handler uses, so this can never disagree
+    with what was actually sent.
+    """
+    last_sent_touch = seq.next_step - 1
+    return {
+        "channel": seq.channel,
+        "status": seq.status,
+        "terminal_reason": seq.terminal_reason,
+        "last_sent_touch": last_sent_touch,
+        "followup_level": touch_number_to_followup_level(last_sent_touch) if last_sent_touch >= 2 else None,
+        "max_followup_level": MAX_FOLLOWUP_LEVEL,
+        "next_run_at": str(seq.next_run_at) if seq.status == "ACTIVE" else None,
+    }
+
+
 def create_sequence_for_send(db, lead, channel, sent_at):
     """Called right after a TOUCH 1 (fresh, non-follow-up) send succeeds. Only creates a
     row if the lead's product actually has a cadence configured -- an empty/absent
