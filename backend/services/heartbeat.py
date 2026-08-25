@@ -31,6 +31,10 @@ import time
 
 from sqlalchemy import text
 
+# Reused from services/system_health.py (not redefined) so a real restart and the reader's
+# own DOWN-threshold can never drift onto two different numbers.
+from services.system_health import STALE_MULTIPLIER
+
 logger = logging.getLogger(__name__)
 
 # Minimum seconds between two real DB writes for the same process. A monitor that refreshes
@@ -81,8 +85,14 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
                            process_name)
 
     try:
-        # started_at is set only on first insert and deliberately preserved on later updates,
-        # so the monitor can show real uptime rather than the age of the last beat.
+        # started_at is preserved across an ordinary beat, so the monitor shows real uptime
+        # rather than the age of the last beat -- BUT a real restart (a genuinely new OS
+        # process reusing the same process_name) must reset it, or uptime silently reports
+        # the OLD process's age forever. Found live, 2026-08-25, verifying Phase 6's own DoD
+        # gate: stopped+restarted a real VPS service and watched `started_at` stay stuck 5
+        # days in the past. The only real signal this beat is a genuine restart (as opposed
+        # to the same process's own next beat) is the SAME staleness gap the reader itself
+        # uses to call a process DOWN -- reused via STALE_MULTIPLIER, not a second threshold.
         db.execute(text("""
             INSERT INTO system_heartbeats
                 (process_name, status, detail, expected_interval_seconds,
@@ -93,9 +103,15 @@ def beat(db, process_name, status="RUNNING", detail=None, force=False,
                 status       = excluded.status,
                 detail       = excluded.detail,
                 expected_interval_seconds = excluded.expected_interval_seconds,
-                last_seen_at = CURRENT_TIMESTAMP
+                last_seen_at = CURRENT_TIMESTAMP,
+                started_at   = CASE
+                    WHEN (julianday(CURRENT_TIMESTAMP) - julianday(system_heartbeats.last_seen_at)) * 86400.0
+                         > system_heartbeats.expected_interval_seconds * :stale_multiplier
+                    THEN CURRENT_TIMESTAMP
+                    ELSE system_heartbeats.started_at
+                END
         """), {"name": process_name, "status": status, "detail": payload,
-               "interval": interval})
+               "interval": interval, "stale_multiplier": STALE_MULTIPLIER})
         db.commit()
         _last_write[process_name] = now
         return True

@@ -914,6 +914,47 @@ offline checks dobara chalaye — sab pass**, confirm ki kuch nahi toota.
 ✅ VPS par deploy bhi ho chuka hai (2026-08-20)**, real HTTPS se verify kiya. **Agla: Phase 7 —
 Targeting Precision & Person-Level Contacts.**
 
+### ⭐ Phase 6 — DoD Gate real evidence se close kiya (2026-08-25, 5 din baad)
+
+User ne poocha "ab age kya" — check kiya to Phase 6 ke saare 4 steps done the lekin **DoD Gate ka
+checkbox khud kabhi tick hi nahi hua tha**. Rule A.3 ("gate ko explicitly, real evidence se verify
+karna hai") follow karte hue, MASTER PRD ke 4 exact criteria ek-ek karke re-check kiye — sirf checkbox
+tick karne se pehle:
+
+1. **"Kill process → DOWN, restart → UP"** — "restart → UP" wala half kabhi documented nahi tha
+   (sirf kill→DOWN test mila). **Real live VPS pe kiya**: `bos-worker` ko genuinely `systemctl stop`
+   kiya → 53s baad `/system/live` ne sahi DOWN dikhaya → `systemctl start` kiya → 20s me sahi UP wapas
+   aaya. Dono directions ab real evidence se confirmed.
+2. **"Activity feed cross-checked against direct SQL"** — pehle sirf seeded/disposable-DB checks the
+   (Step 6.2/6.3), koi REAL live discovery/outreach event ke against nahi. **Real live VPS data se
+   kiya**: `/system/live` ka 25-row activity feed real `agent_events` table se direct SQL query karke
+   compare kiya — 24/25 rows exact match, 1 row jo pehli baar alag lagi wo bhi verify karne par real
+   nikli (2 genuine events **ek hi second** me hue the, sirf LIMIT-boundary tie-order ka farak tha,
+   koi galat data nahi).
+3. Baaki 2 criteria (stuck-lead detection, ek-hi-email-per-incident) pehle se hi real evidence se
+   proven the (Step 6.4 ka apna writeup upar dekho) — dobara nahi dohraya.
+
+**Real, is verification se hi mila naya bug — sabse zyada zaroori cheez, kyunki ye khud observability
+ka bug tha:** Test #1 chalate waqt dikha ki `bos-worker` restart karne ke baad bhi `started_at` field
+5 din purani date hi dikha raha tha (`2026-08-20`, restart `2026-08-25` ko hua tha). `services/
+heartbeat.py`'s `beat()` `started_at` ko **hamesha ke liye preserve** karta tha (sirf pehli baar set,
+kabhi update nahi) — matlab ek genuinely restart hue process ka "uptime" hamesha galat (purana)
+dikhta rehta, jab tak DB row hi delete na ho. **Ye bilkul wahi cheez hai jo Phase 6 khud fix karne
+aaya tha** (silent, invisible-without-SSH state) — is baar khud apne monitor ke andar.
+
+**Fix:** `beat()` ka SQL ab ek `CASE` check karta hai — agar last heartbeat se gap staleness
+threshold (`STALE_MULTIPLIER`, `services/system_health.py` se reuse kiya, koi nayi duplicate value
+nahi) se zyada hai, to `started_at` reset hota hai (genuine restart signal); warna preserve hota hai
+jaisa pehle tha. **Verified** — real disposable DB, real `beat()` calls: normal beat (5s gap) →
+preserved; restart-sized gap (90s, 45s threshold se upar) → sahi reset hua.
+
+- [x] DoD Gate P6 — ✅ 2026-08-25 (steps khud 2026-08-20 se complete the), MASTER §6 ke saare 4 DoD
+  tests real evidence se pass: kill→DOWN + restart→UP dono real VPS process pe (`bos-worker`) ·
+  activity feed real live `agent_events` se 24/25 exact match (1 tie-boundary artifact, verified real)
+  · stuck-lead detection + non-stuck exclusion (Step 6.4) · ek-hi-email-per-incident + cooldown
+  (Step 6.4) · **is verification se khud ek real observability bug mila aur fix hua** (`started_at`
+  restart ke baad reset nahi hota tha)
+
 ---
 
 ## 3. Ongoing Module / Step
@@ -3070,7 +3111,7 @@ Deviation formally record: tracker §A.6. Full rationale: MASTER §5A.0.
 - [x] **Step 6.2 — `api/system.py` → `GET /api/v1/system/live` — ✅ DONE 2026-08-19** (detail Section 2 me)
 - [x] **Step 6.3 — `SystemMonitor.jsx` (polling, WebSocket nahi) — ✅ DONE 2026-08-20** (detail Section 2 me)
 - [x] **Step 6.4 — stuck-state detection + admin alert — ✅ DONE 2026-08-20** (detail Section 2 me)
-- [ ] DoD Gate P6
+- [x] DoD Gate P6 — ✅ 2026-08-25, Section 3, real evidence se close kiya (5 din baad, checkbox hi tick nahi hua tha)
 - *Why first:* do real incidents (2026-08-18 ka silently-band process, 2026-08-19 ke stuck leads) sirf
   SSH se pakde gaye the — UI se dikhte hi nahi the. Ye us poori class ka systemic fix hai.
 
