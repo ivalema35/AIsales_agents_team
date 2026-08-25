@@ -3694,6 +3694,63 @@ less default -- **never borrows another product's real link**. Re-ran the actual
 send to the operator's own WhatsApp number after this rewiring -- still resolves to
 `ivinfotech_pain_point_outreach_btn`, confirmed via a fresh real `wamid`.
 
+### ⭐ VPS DEPLOYMENT — Phases 11-13 + all WhatsApp button work (2026-08-25)
+
+**Operator's explicit go-ahead** ("ab vps par deploy karo aur fir waha se email and
+whatsapp bhejge test karo") after every local push this session was deliberately
+confirm-first, never auto-deployed (tracker.md §A.5). Full standard sequence, same
+pattern as every prior real deploy this project has done: `paramiko` SSH (this dev
+machine still has no `sshpass`/`plink`), credentials only from `backend/.env`.
+
+**Pre-flight, checked before touching anything:** VPS was clean (`git status` empty, no
+uncommitted local changes to lose) on `4da5218` (pre-Batch-2), all 5 services already
+active. `sales_system.db` confirmed `git check-ignore`d -- the real production DB (3.8MB,
+actively written by the live EOD scheduler) was never at risk from the pull.
+
+**Sequence:** `git pull` (clean fast-forward, `4da5218..84c672d`, 43 files) → `migrate.py`
+(new tables/columns applied, zero data touched) → real import sanity-check (uploaded a
+real check script via SFTP rather than fighting shell quoting) → `npm install && npm run
+build` → fresh `dist/` copied to `public_html/` → all 5 services restarted → real
+`journalctl` tail on `bos-api`/`bos-worker`/`bos-scheduler` (clean restarts, zero
+errors, worker re-registered its 3 handlers, scheduler resumed its own tick) → real
+HTTPS check (`/health` → 200, `<title>AI-BOS</title>` genuinely served).
+
+**A real, non-obvious wrinkle, found and fixed before testing anything:** the 5
+WhatsApp templates built earlier today (buttons, per-product scoping) were created by
+calling `submit_template()` against the LOCAL database -- but the real Meta API call
+inside it used the SAME real `WHATSAPP_WABA_ID` VPS also uses (confirmed identical on
+both sides). So those templates were already real and APPROVED on Meta's own servers,
+but VPS's own separate local DB had no row for any of them -- `get_approved_first_touch_
+template()`/`get_approved_followup_template()` (both DB-driven, never call Meta directly
+for selection) would have found nothing and silently fallen back to the plain, button-
+less path. Fixed by inserting the exact same rows (same real `meta_template_id`s, same
+real approved wording) into VPS's own table -- not resubmitting, which Meta would have
+rejected as duplicates.
+
+**Real, live, end-to-end verification from the VPS itself, not just "services are up" —
+GameZone Visnagar (`hardikv682@gmail.com` / `9510254405`, this project's own long-running
+real-send fixture, already pointed at Mobile App Development, which VPS's own real
+`content_assets` table has BOTH a real `DEMO_URL` and — unlike local — a real
+`VIDEO_URL`, a genuine YouTube link):**
+- Fresh touch-1 EMAIL: sent on the first real attempt; fetched the actual delivered HTML
+  straight from Resend's own API and confirmed BOTH the real demo link AND a real
+  YouTube thumbnail are genuinely present (`ivinfotech.com` link: yes, `youtube`/`ytimg`
+  reference: yes, real `<table>`-based renderer: yes) -- the first real proof this
+  session that the VIDEO section renders correctly end-to-end, since local never had a
+  real video asset to test against.
+- Fresh touch-1 WHATSAPP: real send, real `wamid`, correctly resolved to the newly-
+  synced product-scoped button template.
+- Follow-up Levels 1/2/3, EMAIL: all 3 sent for real (`FOLLOWUP_LEVEL_1/2/3`, distinct
+  real subjects) -- Level 3 needed one retry (real QC rejection, same well-documented
+  variance as every other level this session, not a regression).
+- Follow-up Levels 1/2/3, WHATSAPP: all 3 sent for real, each a distinct real `wamid`,
+  each correctly resolving to its own real level-specific template
+  (`followup_l1_circle_back_btn`/`followup_l2_quick_check`/`followup_l3_standing_offer`).
+
+**VPS is now genuinely live on Phases 11-13 + every WhatsApp button/product-scoping fix
+from this session** -- not just deployed, but proven against real sends, real Resend/Meta
+API confirmation, from the production environment itself.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
