@@ -3823,6 +3823,26 @@ either securing real marketing opt-in for the test number, or simply allowing mo
 (the free-form message's own delay shows Meta's pipeline is actively processing, not
 dead) -- not a code or category change.
 
+**Confirmed with direct, authoritative evidence -- the operator pulled the real BSP
+(Fortius) delivery dashboard.** All 8 real MARKETING-type sends: status `SUBMITTED` for
+every single one, `Sent On`/`Delivery On`/`Read On` all blank, **and `Failed: 0`** -- the
+BSP's own daily summary shows Submitted=8, Sent=0, Delivered=0, Read=0, Failed=0 for
+Marketing message type specifically. Never progressing past "submitted" AND never
+explicitly failing, for every real marketing send with no exception, is a materially
+different signature from "some deliveries lag" -- it is a full, systematic hold on this
+message TYPE at the BSP layer, before the message is even forwarded toward Meta.
+
+**Most likely concrete cause, given that exact signature plus an Indian recipient number
+(+91 951...):** TRAI's DLT (Distributed Ledger Technology) registration requirement for
+commercial/promotional messaging to Indian numbers -- a real, government-mandated
+compliance gate many BSPs enforce for WhatsApp Marketing-category templates the same way
+they already do for promotional SMS. An unregistered account's marketing sends get held
+indefinitely by the BSP's own compliance layer, silently, with no error surfaced back to
+the API caller -- exactly what 8/8 `SUBMITTED`-forever, zero-`Failed` rows would look
+like. Real next step, outside this codebase entirely: **the operator confirming directly
+with Fortius whether IVinfotech's WABA is DLT-registered for Marketing category**, and
+completing that registration if not.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
