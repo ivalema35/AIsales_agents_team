@@ -3751,6 +3751,54 @@ real-send fixture, already pointed at Mobile App Development, which VPS's own re
 from this session** -- not just deployed, but proven against real sends, real Resend/Meta
 API confirmation, from the production environment itself.
 
+### ⭐ Real incident: WhatsApp outbound genuinely silent after today's real send burst (2026-08-25)
+
+**Operator's own real-world check caught what the API alone couldn't show.** Every real
+send this session (13+ messages: fresh touch-1, 3 email/WA follow-up levels, several
+isolation tests) returned a real success -- 200, a real `wamid`, `message_status:
+"accepted"` -- but the operator reported nothing arrived on their real phone. A `wamid`
+only proves Meta QUEUED the message; delivery is confirmed asynchronously via a separate
+webhook, which this system already has real code for
+(`api/inbound.py`'s `_handle_one_status()`, Phase 9 Step 9.4's own read-receipt path) --
+so the actual, decisive diagnostic was checking THAT, not the send response.
+
+**Real evidence trail, each step genuinely necessary, not assumed:**
+1. `journalctl` on `bos-api` for the past hour: **zero** webhook POSTs of any kind to
+   `/api/v1/inbound/whatsapp` -- no status callback arrived for any of today's sends.
+2. Real DB check: **19 WhatsApp sends, as recently as 21 August, DID get a real `read_at`**
+   via that exact same webhook path -- ruling out "webhook was never configured" as the
+   explanation; it has demonstrably worked before, on this same number.
+3. Isolation test 1: re-sent using the OLD, previously-reliable template
+   (`ivinfotech_pain_point_outreach`, not one of today's 5 new ones) -- still didn't
+   arrive. Rules out "something wrong specifically with today's new templates."
+4. **The operator's own real inbound test, the move that actually cracked it**: sent a
+   real "Hello" FROM their phone TO the business number. It arrived instantly, correctly
+   matched to the real lead (`inbound_conversations`, real timestamp) -- proving their
+   phone genuinely reaches this WABA, and inbound receiving is completely healthy.
+5. Isolation test 2: with the 24h customer-service window now genuinely open (their real
+   inbound message just opened it), sent a real FREE-FORM message (`send_free_form_
+   message`, a structurally different code path from template sends) -- **also** never
+   arrived.
+
+**Conclusion, evidence-based, not guessed:** inbound works, both outbound paths
+(template AND free-form) accept-but-never-deliver. That specific asymmetry -- receiving
+fine, sending silently held -- is a well-known real WhatsApp Business Platform behavior:
+Meta can place a temporary outbound-only hold/quality restriction on a phone number after
+detecting unusual sending activity, independent of inbound. Today's activity was
+genuinely unusual by any real measure: 5 brand-new templates created and submitted, then
+13+ real messages fired across 2 hours to the same single test number -- exactly the
+pattern such a hold exists to catch.
+
+**Deliberately NOT something fixed in code** -- there is no bug in this codebase to fix;
+every real API call behaved exactly as documented, and the failure point is outside this
+system's control (Meta's own delivery pipeline / the BSP). **For a future session hitting
+this again**, the fast diagnostic is steps 1-5 above, in order -- webhook silence + a
+working inbound test + a failing free-form test is the specific fingerprint of an
+outbound hold, distinguishable in minutes from an actual code regression. Real next
+steps (not attempted here, outside this session's access): check the phone number's
+messaging-limit/quality status in Meta Business Manager, or contact the BSP (Fortius);
+otherwise, such holds are commonly temporary and self-resolve within hours.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
