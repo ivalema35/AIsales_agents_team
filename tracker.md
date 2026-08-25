@@ -970,6 +970,11 @@ case hai jo v1 miss kar raha tha.
   reset nahi hota tha), **pehla fix bhi galat nikla real VPS restart se test karne par, dobara sahi
   fix kiya** — timing-guess kabhi bharosemand nahi, explicit signal hi sahi tareeka hai
 
+**v2 push + VPS deploy + real live confirm (2026-08-25).** Real `systemctl restart` (5 services,
+normal fast deploy-jaisa restart) VPS par chalaya — `/system/live` ab saare 4 processes ka
+`started_at` **sahi fresh timestamp** dikhata hai (`11:07:49`, purana 2026-08-20 wala nahi). Fix
+production par genuinely kaam kar raha hai, sirf test me nahi.
+
 ---
 
 ## 3. Ongoing Module / Step
