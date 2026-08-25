@@ -4,6 +4,7 @@ import {
   ArrowLeft, ChevronLeft, ChevronRight, Mail, Phone, Globe, MapPin, User as UserIcon, Building2,
   Gauge, AlertTriangle, Clock, Bot, CheckCircle2, XCircle, AlertCircle,
   MessageCircle, MessagesSquare, BellOff, Trophy, ThumbsDown, Share2, Copy, Send, X,
+  Check, CheckCheck,
 } from "lucide-react";
 import { api } from "../api/client";
 import Badge from "../components/ui/Badge";
@@ -51,18 +52,32 @@ const DOT_COLORS = {
   slate: { bg: "bg-slate-100", text: "text-slate-500" },
 };
 
+// Phase 14 Step 14.1 -- a real, honest per-message delivery state (never a guess: "--"
+// covers a channel/event this project genuinely has no signal for, matching
+// services/outreach/delivery_status.py's own contract). Single check = Sent, double =
+// Delivered, blue double = Seen (WhatsApp-style convention users already recognize),
+// emerald double = Replied (strongest possible signal), red X = Failed.
+function DeliveryTick({ state }) {
+  if (state === "Failed") return <XCircle size={12} className="text-red-500" />;
+  if (state === "Replied") return <CheckCheck size={12} className="text-emerald-500" />;
+  if (state === "Seen") return <CheckCheck size={12} className="text-sky-500" />;
+  if (state === "Delivered") return <CheckCheck size={12} className="text-slate-400" />;
+  if (state === "Sent") return <Check size={12} className="text-slate-400" />;
+  return null;
+}
+
 // Server sends raw agent/action_type/outcome/routed_to strings -- this is the one place
 // that turns them into an icon + color + human title, so the timeline list itself stays
 // simple (CRM_UI_UX_PLAN.md: format decisions live in one place, not scattered in JSX).
 function describeEvent(e) {
   if (e.type === "OUTREACH_SENT") {
-    const ok = e.status === "SENT";
+    const failed = e.delivery_state === "Failed";
     return {
       icon: e.channel === "WHATSAPP" ? MessageCircle : Mail,
-      color: ok ? "emerald" : "red",
+      color: failed ? "red" : "emerald",
       title: `${e.channel === "WHATSAPP" ? "WhatsApp" : "Email"} sent${e.subject ? `: ${e.subject}` : ""}`,
-      variant: ok ? "SUCCESS" : "DANGER",
-      badge: e.status,
+      variant: failed ? "DANGER" : "SUCCESS",
+      badge: e.delivery_state || e.status,
       body: e.body,
     };
   }
@@ -188,8 +203,8 @@ function MessageBubble({ event }) {
           {!outbound && event.intent_detected && (
             <Badge variant={intentVariant(event.intent_detected)}>{event.intent_detected}</Badge>
           )}
-          {outbound && event.status && event.status !== "SENT" && (
-            <Badge variant="DANGER">{event.status}</Badge>
+          {outbound && event.delivery_state === "Failed" && (
+            <Badge variant="DANGER">Failed</Badge>
           )}
         </div>
         {outbound && event.subject && (
@@ -198,8 +213,9 @@ function MessageBubble({ event }) {
           </p>
         )}
         <p className="whitespace-pre-wrap break-words leading-relaxed">{outbound ? event.body : event.message}</p>
-        <p className={`mt-1.5 text-[10px] ${outbound ? "text-slate-400" : "text-slate-400"}`}>
+        <p className={`mt-1.5 flex items-center gap-1 text-[10px] ${outbound ? "text-slate-400" : "text-slate-400"}`}>
           {dayLabel(event.timestamp.slice(0, 10))} · {timeLabel(event.timestamp)}
+          {outbound && <DeliveryTick state={event.delivery_state} />}
         </p>
       </div>
     </div>

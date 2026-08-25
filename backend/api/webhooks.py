@@ -34,6 +34,15 @@ webhooks_bp = Blueprint("webhooks", __name__, url_prefix="/api/v1/webhooks")
 # (common with image-blocking clients), so it's a legitimate second path to the same fact.
 _SEEN_EVENT_TYPES = {"email.opened", "email.clicked"}
 
+# Phase 14 Step 14.1 -- "email.delivered"/"email.bounced" were arriving on this exact
+# same webhook all along and being silently discarded (only the two types above were
+# ever read) -- a real, disclosed gap: OutreachLog.status's own column comment already
+# documented DELIVERED/BOUNCED as real values, but nothing ever wrote them. Never
+# overwrites a real "read" (open_count > 0 already means Seen, a stronger signal) or a
+# stale re-delivery of the same event.
+_DELIVERED_EVENT_TYPES = {"email.delivered"}
+_FAILED_EVENT_TYPES = {"email.bounced", "email.delivery_delayed", "email.complained"}
+
 
 @webhooks_bp.route("/resend", methods=["POST"])
 def resend_event():
@@ -44,26 +53,36 @@ def resend_event():
 
     db = SessionLocal()
     try:
-        if event_type in _SEEN_EVENT_TYPES:
-            email_id = (payload.get("data") or {}).get("email_id")
-            if email_id:
-                log = db.query(OutreachLog).filter(OutreachLog.provider_message_id == email_id).first()
-                if log:
-                    changed = False
-                    if log.read_at is None:
-                        log.read_at = datetime.utcnow()
-                        changed = True
-                    # Phase 9 Step 9.4 -- a real per-open count, distinct from read_at
-                    # (which only ever marks the first open). Only "email.opened" counts
-                    # here -- "email.clicked" already implies an open but is a different
-                    # real event, counting it too would inflate the open count.
-                    if event_type == "email.opened":
-                        log.open_count = (log.open_count or 0) + 1
-                        changed = True
-                    if changed:
-                        db.commit()
-                        logger.info("Resend %s: outreach_log %s marked read (open_count=%s)",
-                                   event_type, log.id, log.open_count)
+        email_id = (payload.get("data") or {}).get("email_id")
+        log = (
+            db.query(OutreachLog).filter(OutreachLog.provider_message_id == email_id).first()
+            if email_id else None
+        )
+        if log:
+            if event_type in _SEEN_EVENT_TYPES:
+                changed = False
+                if log.read_at is None:
+                    log.read_at = datetime.utcnow()
+                    changed = True
+                # Phase 9 Step 9.4 -- a real per-open count, distinct from read_at
+                # (which only ever marks the first open). Only "email.opened" counts
+                # here -- "email.clicked" already implies an open but is a different
+                # real event, counting it too would inflate the open count.
+                if event_type == "email.opened":
+                    log.open_count = (log.open_count or 0) + 1
+                    changed = True
+                if changed:
+                    db.commit()
+                    logger.info("Resend %s: outreach_log %s marked read (open_count=%s)",
+                               event_type, log.id, log.open_count)
+            elif event_type in _DELIVERED_EVENT_TYPES and log.status == "SENT":
+                log.status = "DELIVERED"
+                db.commit()
+                logger.info("Resend %s: outreach_log %s marked delivered", event_type, log.id)
+            elif event_type in _FAILED_EVENT_TYPES and log.status == "SENT":
+                log.status = "BOUNCED"
+                db.commit()
+                logger.info("Resend %s: outreach_log %s marked bounced", event_type, log.id)
     except Exception:  # noqa: BLE001 - never let a malformed/unexpected payload 500 a webhook
         logger.exception("failed processing Resend webhook payload")
     finally:

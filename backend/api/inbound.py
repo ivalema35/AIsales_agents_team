@@ -79,25 +79,37 @@ def mark_read(conversation_id):
 
 
 def _handle_one_status(db, status: dict):
-    """Meta's message-status callback ("sent"/"delivered"/"read"/"failed") -- only
-    "read" is acted on, since this exists specifically for the Sent/Seen/Replied
-    analytics funnel. Matched back to the OutreachLog row we created at send time via
-    `provider_message_id` (Meta's own wamid, captured in outreach_wa_handler.py /
+    """Meta's message-status callback ("sent"/"delivered"/"read"/"failed"). Phase 14
+    Step 14.1 -- "delivered" and "failed" used to be silently discarded here (only "read"
+    was ever acted on), even though Meta was already sending them on this exact same
+    webhook -- a real, disclosed gap: the PRD's own "nothing new is collected, just
+    surfaced" premise assumed OutreachLog.status was already being kept current for
+    WhatsApp, and it was not. Matched back to the OutreachLog row we created at send time
+    via `provider_message_id` (Meta's own wamid, captured in outreach_wa_handler.py /
     inbound_classify_handler.py's _send_reply_message)."""
-    if status.get("status") != "read":
-        return
     wamid = status.get("id")
-    if not wamid:
+    real_status = status.get("status")
+    if not wamid or real_status not in ("read", "delivered", "failed"):
         return
     log = db.query(OutreachLog).filter(OutreachLog.provider_message_id == wamid).first()
     if not log:
-        # A read receipt for a message sent before this tracking existed, or one this
+        # A status callback for a message sent before this tracking existed, or one this
         # system didn't send -- nothing to attach it to, not an error.
         return
-    if log.read_at is None:  # keep the FIRST read timestamp, ignore any re-delivered duplicate
+    if real_status == "read" and log.read_at is None:  # first read only, ignore a re-delivered duplicate
         log.read_at = datetime.utcnow()
         db.commit()
         logger.info("WhatsApp read receipt: outreach_log %s marked read", log.id)
+    elif real_status == "delivered" and log.status == "SENT":
+        # Never overwrite a real "read" (a stronger, later signal) or a real "failed" --
+        # this only ever moves a plain SENT row forward, never backward.
+        log.status = "DELIVERED"
+        db.commit()
+        logger.info("WhatsApp delivery receipt: outreach_log %s marked delivered", log.id)
+    elif real_status == "failed" and log.status == "SENT":
+        log.status = "FAILED"
+        db.commit()
+        logger.info("WhatsApp failure receipt: outreach_log %s marked failed", log.id)
 
 
 def _handle_one_message(db, msg: dict):

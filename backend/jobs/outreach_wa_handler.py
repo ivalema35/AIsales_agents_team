@@ -28,6 +28,7 @@ from services.outreach.whatsapp_templates import (
     fill_variables,
     fill_variables_for_labels,
     validate_variables,
+    interpolate_template,
 )
 from services.outreach.whatsapp_template_service import (
     get_approved_followup_template, get_approved_first_touch_template,
@@ -95,7 +96,8 @@ def handle_outreach_wa(db, payload):
             log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_WHATSAPP", 0.0, "LOW", "SKIPPED_NO_TEMPLATE",
                             payload={"followup_level": followup_level})
             return lead.id
-        spec = {"name": followup_template.name, "language": followup_template.language}
+        spec = {"name": followup_template.name, "language": followup_template.language,
+               "body_text": followup_template.body_text}
         variable_labels = json.loads(followup_template.variable_labels or "[]")
         values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
     else:
@@ -106,7 +108,8 @@ def handle_outreach_wa(db, payload):
         # case -- falls straight through to the existing shared library, unchanged.
         first_touch_template = get_approved_first_touch_template(db, product_id=lead.product_id)
         if first_touch_template:
-            spec = {"name": first_touch_template.name, "language": first_touch_template.language}
+            spec = {"name": first_touch_template.name, "language": first_touch_template.language,
+                   "body_text": first_touch_template.body_text}
             variable_labels = json.loads(first_touch_template.variable_labels or "[]")
             values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
         else:
@@ -131,12 +134,19 @@ def handle_outreach_wa(db, payload):
     # no leading '+') via normalize_phone() -- no manual prefixing needed.
     send_response = send_template_message(to_phone, spec["name"], spec["language"], values)
 
+    # Phase 14 Step 14.2 -- store the REAL filled-in text a lead actually received (same
+    # convention EMAIL already uses), not a {template, variables} blob a reader would
+    # have to reconstruct by hand. The template name itself still lives in `variant_id`
+    # (Step 9.1's own design) as the "secondary metadata" Step 14.2 asks for -- this
+    # column is the message content now, matching EMAIL's `message_body` 1:1.
+    real_text = interpolate_template(spec.get("body_text"), values)
+
     db.add(OutreachLog(
         id=str(uuid.uuid4()),
         lead_id=lead.id,
         channel="WHATSAPP",
         message_subject=spec["name"],
-        message_body=json.dumps({"template": spec["name"], "variables": values}),
+        message_body=real_text,
         status="SENT",
         provider_message_id=extract_wamid(send_response),
         # Phase 9 Step 9.1 (tracker.md A.8) -- the real Meta template name, in its own

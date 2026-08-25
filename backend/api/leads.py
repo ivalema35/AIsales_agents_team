@@ -12,6 +12,7 @@ from database.models import (
     LeadReviewInsight, LeadScore, OutreachLog, Product, SuppressionEntry)
 from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
+from services.outreach.delivery_status import derive_delivery_state, resolve_whatsapp_display_text
 from jobs.outreach_handler import handle_outreach_email
 from jobs.outreach_wa_handler import handle_outreach_wa
 
@@ -492,17 +493,40 @@ def get_lead_timeline(lead_id):
                 "payload": json.loads(e.payload) if e.payload else {},
             })
 
+        inbound_convs = db.query(InboundConversation).filter(InboundConversation.lead_id == lead_id).all()
+
+        # Latest real reply per channel -- all that's needed to know whether a GIVEN
+        # send predates a real reply on that same channel (Step 14.1's "Replied" state).
+        latest_reply_at_by_channel: dict[str, str] = {}
+        for conv in inbound_convs:
+            if conv.sender_type != "LEAD":
+                continue
+            ts = str(conv.created_at)
+            if ts > latest_reply_at_by_channel.get(conv.channel, ""):
+                latest_reply_at_by_channel[conv.channel] = ts
+
         for log in db.query(OutreachLog).filter(OutreachLog.lead_id == lead_id).all():
+            has_reply = str(log.sent_at) < latest_reply_at_by_channel.get(log.channel, "")
+            body = resolve_whatsapp_display_text(log) if log.channel == "WHATSAPP" else log.message_body
             events.append({
                 "type": "OUTREACH_SENT",
                 "timestamp": str(log.sent_at),
                 "channel": log.channel,
                 "subject": log.message_subject,
-                "body": log.message_body,
+                "body": body,
                 "status": log.status,
+                # Phase 14 Step 14.1 -- the real, honest per-message state (never a
+                # guess); Step 14.2 -- the real Meta template name as secondary metadata
+                # now that `body` above is the real filled-in text, not a template
+                # reference.
+                "delivery_state": derive_delivery_state(log, has_reply),
+                "wa_template_name": log.variant_id if log.channel == "WHATSAPP" else None,
+                "read_at": str(log.read_at) if log.read_at else None,
+                "open_count": log.open_count,
+                "provider_message_id": log.provider_message_id,
             })
 
-        for conv in db.query(InboundConversation).filter(InboundConversation.lead_id == lead_id).all():
+        for conv in inbound_convs:
             events.append({
                 "type": "REPLY_RECEIVED",
                 "timestamp": str(conv.created_at),

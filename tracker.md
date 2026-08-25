@@ -3853,8 +3853,72 @@ the problem. If this recurs, the real, cheap first check is simply **waiting rou
 hour and retrying** before escalating to the BSP.
 
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
-- [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
-- [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
+
+**Step 14.1 — per-message Delivered/Seen/Replied/Failed.** PRD ka apna assumption tha
+"data already collected hai, sirf surface karna hai" -- build karte waqt yeh assumption
+GALAT nikla, disclosed karke fix kiya: WhatsApp status webhook (`api/inbound.py`) aur
+Resend email webhook (`api/webhooks.py`) dono real "delivered"/"failed"/"bounced" events
+Meta/Resend se already receive kar rahe the, lekin sirf "read"/"opened"/"clicked" hi
+process hote the -- baaki silently discard ho jaate the. Dono webhooks extend kiye:
+`OutreachLog.status` ab SENT se DELIVERED/FAILED (WhatsApp) ya DELIVERED/BOUNCED (email)
+tak real move karta hai, kabhi peeche ki taraf ya ek stronger signal (read) ko overwrite
+nahi karta. Naya `services/outreach/delivery_status.py`: `derive_delivery_state(log,
+has_reply)` ek fixed priority se real state deta hai -- Replied (sabse strong, ek asli
+reply se zyada proof kuch nahi) > Seen (`read_at`) > Failed > Delivered > Sent -- kabhi
+guess nahi karta, koi signal na ho to bas "Sent" pe reh jaata hai. `api/leads.py`'s
+`get_lead_timeline()` ab har `OutreachLog` ke liye `delivery_state` compute karta hai
+(reply-detection: is lead ne is send ke BAAD, isi channel pe, koi inbound message bheja
+hai kya).
+
+**Step 14.2 — real WhatsApp text.** Yeh bhi PRD ka assumption tha ki asli filled-in text
+already `message_body` me stored hai -- yeh bhi galat nikla: WhatsApp side sirf
+`{"template": "marketing_gen", "variables": ["IV Infotech"]}` jaisa JSON blob store karta
+tha, kabhi real readable sentence nahi. Fix: `TEMPLATE_LIBRARY` ki har entry me real
+approved `body_text` add kiya (Meta se `fetch_template_wording()` se fetch karke, exact
+approved wording -- typos bhi as-is, e.g. GENERIC template: "hello {{1}}, we hear about
+you. make your buisness simpale."), naya `interpolate_template(body_text, variables)`
+helper, aur `jobs/outreach_wa_handler.py` ab se HAR naye WhatsApp send pe real
+interpolated text seedha `message_body` me store karta hai, JSON blob kabhi nahi.
+**Purane already-sent rows ke liye retroactive nahi kiya** (operator ko explicitly bataya
+aur confirm kiya, before Phase 14 start) -- unke liye naya `resolve_whatsapp_display_text
+(log)` display-time par real text reconstruct karta hai (stored row khud kabhi rewrite
+nahi hota), template ka naam nikal ke `TEMPLATE_LIBRARY` ya DB se real wording dhundta
+hai aur interpolate karta hai; agar wording resolve na ho paaye (e.g. template delete ho
+chuka) to raw stored value hi dikhata hai, kabhi galat guess nahi.
+
+**Verified — `test_phase14_step1_2.py`, real disposable DB, real `handle_outreach_wa()`/
+`handle_outreach_email()`, real Flask app + authenticated session real timeline API pe,
+real webhook payloads real routes se (sirf Meta/Resend ka actual network POST mocked):**
+ek real WhatsApp send se real filled-in text seedha `message_body` me store hota hai
+(JSON blob nahi); real timeline API `delivery_state="Sent"` + real `wa_template_name`
+sahi dikhata hai; ek real "delivered" webhook Sent → Delivered move karta hai; ek real
+reply Delivered ko override karke Replied dikhata hai; ek real "failed" webhook sirf
+UUS specific message ko Failed karta hai, doosre lead ke messages ko touch nahi karta;
+real Resend delivered/opened webhooks Sent → Delivered → Seen sahi order me move karte
+hain; ek OLD-format JSON-blob row real reconstructed text dikhata hai, raw blob nahi.
+
+**Real production data pe bhi confirm kiya** (local dev DB me 5 din pehle ke asli sends
+pe), sirf disposable test DB pe nahi: lead "IV Infotech" ke 3 purane WhatsApp rows me
+raw `message_body` abhi bhi `{"template": "marketing_gen", "variables": ["IV Infotech"]}`
+JSON blob hi hai (database me kabhi rewrite nahi kiya), lekin real timeline API unhe "hello
+IV Infotech, we hear about you. make your buisness simpale." ke real readable text ke
+roop me dikhata hai. Lead "GameZone Visnagar" (jisme is session ke real WhatsApp
+delivery-incident testing se genuine `read_at` bhara hua hai) ke real events timeline pe
+sahi "Seen" (jisne reply nahi kiya) aur "Replied" (jisne reply kiya, Seen se override
+karke) dikhate hain -- dono real, is session se pehle ki asli production activity se,
+naya test data nahi.
+
+**Frontend** (`LeadDetail.jsx`): naya `DeliveryTick` component -- WhatsApp-style single
+check (Sent), double check grey (Delivered), double check blue (Seen), double check
+emerald (Replied), red X (Failed) -- dono chat-bubble view (`MessageBubble`) aur list
+view (`describeEvent`'s badge) me wired. `npx vite build` clean pass (koi naya error
+nahi, sirf ek pre-existing unrelated lottie-web library warning). Real dev DB ke real
+data ke against direct backend call se JSON shape verify kiya (login credential na hone
+ki wajah se live browser click-through nahi ho paaya is session me, but API response
+shape aur React rendering logic dono verified hain).
+
+- [x] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai) — ✅ 2026-08-25, Section 3, real webhook gap disclosed+fixed
+- [x] Step 14.2 — real WhatsApp text (template naam secondary metadata me) — ✅ 2026-08-25, Section 3, real JSON-blob assumption gap disclosed+fixed, backward-compat display for old rows
 - [ ] Step 14.3 — follow-up stage indicator (`outreach_sequences` se, terminal reason ke saath)
 - [ ] Step 14.4 — platform-icon copy, **stored `content_sections` se** (dobara LLM se generate nahi)
 - [ ] Step 14.5 — P10 ka auto-send absence check dobara chalana (assume nahi karna)

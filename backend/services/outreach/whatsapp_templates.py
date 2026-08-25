@@ -21,6 +21,13 @@ TEMPLATE_LIBRARY = {
         "name": "marketing_gen",
         "language": "en",
         "variables": ["contact_name"],  # {{1}}
+        # Phase 14 Step 14.2 -- the REAL approved wording, fetched directly from Meta
+        # (fetch_template_wording()), kept verbatim including its own real typos. Needed
+        # so the conversation view can show the real filled-in text a lead actually
+        # received, not just the template name -- TEMPLATE_LIBRARY entries (unlike
+        # WhatsappTemplate DB rows, which already store their own real body_text) never
+        # had this recorded locally before.
+        "body_text": "hello {{1}},  we hear about you. make your buisness simpale.",
     },
     # Submitted live via the Create Template API (2026-08-13), Meta approval confirmed
     # APPROVED on 2026-08-13 -- this stays the real, button-less, product-agnostic
@@ -42,6 +49,8 @@ TEMPLATE_LIBRARY = {
         "language": "en",
         "variables": ["company_name", "pain_point_phrase"],  # {{1}}, {{2}}
         "status": "APPROVED",
+        "body_text": ("Hi {{1}}, we noticed {{2}} - this is exactly the kind of problem "
+                     "IVinfotech's software and IT solutions are built to fix. Open to a quick chat?"),
     },
 }
 
@@ -72,6 +81,20 @@ def select_template(pain_points: list) -> str:
         return "PAIN_POINT_HOOK"
 
     return "GENERIC"
+
+
+def interpolate_template(body_text: str, variables: list) -> str:
+    """Phase 14 Step 14.2 -- substitutes Meta's own {{1}}, {{2}}, ... placeholders with
+    the real values actually sent, so a stored/displayed message shows what a lead
+    genuinely received rather than a template name + a raw variable list. Never fails on
+    a missing/extra value (a placeholder with nothing to fill it just stays literal,
+    an extra value is silently unused) -- display-only, must never raise on a real,
+    already-sent historical row whose shape drifted from the current template.
+    """
+    text = body_text or ""
+    for i, value in enumerate(variables or [], start=1):
+        text = text.replace(f"{{{{{i}}}}}", str(value))
+    return text
 
 
 def _fill_value(var_name: str, lead_profile: dict, pain_points: list) -> str:
