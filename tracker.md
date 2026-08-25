@@ -3627,6 +3627,35 @@ support needs the operator to locate/provide the Meta App ID (found in Meta Busi
 Suite / developers.facebook.com, distinct from `WHATSAPP_WABA_ID`) before the Resumable
 Upload flow can even be attempted for real.
 
+**Immediate follow-up, same session: "aur first outreach msg??"** — operator correctly
+noticed the button only reached the FOLLOW-UP path. Real reason: the fresh touch-1
+WhatsApp send has never used the `whatsapp_templates` DB table at all -- `jobs/outreach_
+wa_handler.py`'s non-followup branch always calls `select_template()`/`TEMPLATE_LIBRARY`,
+a hardcoded Python dict, completely disconnected from the admin-submitted-template
+system this button feature lives in. A real, pre-existing architectural fact, not new.
+
+**Fixed with the smallest correct change, not a bigger refactor of that architecture:**
+fetched the CURRENT real approved wording of `ivinfotech_pain_point_outreach` straight
+from Meta (`fetch_template_wording()`, since it was never stored verbatim in this repo)
+and submitted a new real template, `ivinfotech_pain_point_outreach_btn` -- byte-identical
+approved body text, plus the same real static button (`https://ivinfotech.com`). New
+`TEMPLATE_LIBRARY["PAIN_POINT_HOOK_BTN"]` entry; `select_template()` now prefers it,
+falling back to the plain `PAIN_POINT_HOOK` only if the button variant's own APPROVED
+status ever lapses. The old template is left in the library, not deleted -- its own real
+Meta approval still exists.
+
+**A real, transient BSP hiccup, handled correctly rather than silently retried into a
+duplicate:** the submission call itself hit a client-side read-timeout, but the template
+had genuinely been created on Meta's side already (confirmed via a real, separate GET
+lookup -- real id, real PENDING status) -- so the local DB row was reconciled to match
+that real state directly, rather than blindly resubmitting (which Meta would have
+rejected as a duplicate name, or worse, silently created a second real template).
+
+**Verified real end-to-end:** new template approved in ~90s; `select_template()` now
+returns the button variant for a real lead with a real pain point; a genuine fresh
+touch-1 WhatsApp send confirmed via a real `wamid` receipt using
+`ivinfotech_pain_point_outreach_btn`.
+
 ### PHASE 14 — Conversation Transparency & Cross-Channel Reuse
 - [ ] Step 14.1 — per-message Delivered/Seen/Replied/Failed (data already exist karta hai, sirf surface karna hai)
 - [ ] Step 14.2 — real WhatsApp text (template naam secondary metadata me)
