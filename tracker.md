@@ -4302,7 +4302,21 @@ ab sach me kaam kar raha hai jab data available ho.
 is tarah ki queries ke liye (fresher-heavy chhote shehar) — kai logo ka real employer hi
 nahi hota (student hain), koi parsing fix ye nahi badal sakta. Aur Hunter ka free quota
 abhi khatam hai (pehle se known, hold-list item, 11 September reset) — isliye abhi sirf
-website-scraping wala fallback hi kaam karega, Hunter wala nahi.
+website-scraping wala fallback hi kaam karega, Hunter wala nahi. User ne decide kiya
+"abhi accept karo, wait karo" — koi paid Hunter plan nahi liya.
+
+**⭐ VPS pe deploy kiya, real live verify kiya (2026-08-26).** git pull (15 files), real
+DB migration (T30/T31 tables + naya settings), real import check, naya frontend build, 5
+services restart, sab clean. **Real admin login se poora real flow test kiya**: zero-
+budget → real 402 (fail-safe default sahi) · real budget set karke real search
+("Digital Marketing Executive in Ahmedabad") → 10 real prospects mile, real spend record
+hua · GET endpoints real data dete hain · real enrichment try kiya 2 alag prospects pe
+(ek real company "Vision Infotech" ke saath) — dono honest `NO_CONTACT_FOUND`, **direct
+verify kiya ki wajah wahi hai jo local pe thi**: real website mila
+(`visioninfotech.net`), real website-scrape empty aaya, real Hunter call 429 diya (same
+shared Hunter account, VPS-specific bug nahi). Test data clean kiya (10 prospects, 1
+search delete), budget wapas 0.0 safe default pe reset kiya. **Poora Phase 15 (A+B) ab
+VPS pe genuinely live hai.**
 
 ### New tables introduced by Phases 11–15 (28 → 31)
 T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)
