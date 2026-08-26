@@ -106,6 +106,14 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
         <div className="flex items-center gap-2.5 font-medium text-slate-800">
           <CompanyAvatar name={lead.company_name} />
           <span className="line-clamp-1 hover:underline">{lead.company_name}</span>
+          {lead.reference_code && (
+            <span
+              title="Reference code -- quote this in alerts/conversation to identify this lead"
+              className="shrink-0 rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-normal text-slate-500"
+            >
+              {lead.reference_code}
+            </span>
+          )}
           {lead.is_suppressed && <BellOff size={12} className="shrink-0 text-slate-400" title="Opted out -- do not contact" />}
         </div>
       </td>

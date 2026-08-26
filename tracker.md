@@ -4331,6 +4331,27 @@ end). User ne "tab hata do" bola — `frontend/src/pages/Products.jsx` se `forma
 hata diya (`MessageFormatPanel.jsx` component file khud nahi delete kiya — backend wale
 hi precedent jaisa, dead code kept rehne diya, unilaterally delete nahi kiya). `npx vite
 build` clean pass.
+
+### ⭐ Follow-up (user-flagged, 2026-08-26) — reference code Leads list + Kanban me bhi
+
+User ne bola "lead id dikhao har lead ke par taki identify karna aasan ho" — Phase 12
+Step 12.1 ka `reference_code` (jaise "LD-3F9A2B1C") isi maksad se bana tha, lekin ab tak
+sirf `LeadDetail.jsx` (ek-ek lead khol ke) pe dikhta tha, list views me nahi. Backend
+already `_serialize()` se bhejta tha (`list_leads()` aur `get_lead()` dono isi function
+ko use karte hain) — sirf frontend rendering baaki thi.
+
+**Kahan add kiya:** `Leads.jsx` (table view) — company name ke saath ek chhota mono badge.
+`LeadCard.jsx` (Dashboard ka Kanban board) — user ne khud confirm kiya chahiye, lekin
+uska card **fixed 50px height** pe hai (`PipelineKanban.jsx`'s `ROW_HEIGHT_PX` isi height
+se compute hota hai, comment khud warn karta hai "second line se layout toot sakta hai")
+— isliye naya line nahi banaya, existing region/time line me hi teesra chhota shrink-0
+element add kiya, region field (jo already truncate karta hai) hi space chhodta hai.
+
+**Verified** — real local DB check kiya: saare real leads ke paas already `reference_code`
+hai (0 missing, Phase 12 ka backfill migration pehle hi chala tha). `npx vite build` clean
+pass.
+
+### New tables introduced by Phases 11–15 (28 → 31)
 T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)
 (+ 4 columns: `products.ai_cross_sell_enabled` · `outreach_logs.content_sections` ·
 `leads.reference_code` · `whatsapp_templates.followup_level`)

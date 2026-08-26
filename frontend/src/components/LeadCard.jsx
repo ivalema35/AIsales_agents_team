@@ -116,6 +116,18 @@ export default function LeadCard({ lead }) {
           <p className="mt-0.5 flex items-baseline gap-1 text-[11px] leading-snug text-slate-500">
             <span className="min-w-0 truncate">{lead.region_location || "No region"}</span>
             {lead.updated_at && <span className="shrink-0">· {relativeTime(lead.updated_at)}</span>}
+            {/* Same fixed ROW_HEIGHT_PX constraint as everything else on this card (see
+               file header) -- shrink-0 + its own tiny font so it never wraps to a third
+               line; region is the one line-item that already truncates, so it's the one
+               that yields space when a row is tight. */}
+            {lead.reference_code && (
+              <span
+                title="Reference code -- quote this in alerts/conversation to identify this lead"
+                className="shrink-0 rounded bg-white/80 px-1 font-mono text-[9px] text-slate-400"
+              >
+                {lead.reference_code}
+              </span>
+            )}
           </p>
         </div>
         {/* One right-hand cluster, top-aligned with the name -- score, tier, and the
