@@ -4269,6 +4269,41 @@ card.
 - [x] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi) — ✅ 2026-08-26, Section 3
 - [x] DoD Gate P15(B) — ✅ 2026-08-26, MASTER §15 ke saare 15(B) DoD tests real evidence se pass: koi provider na ho to real refuse (fabricated empty result nahi) · spend cap genuinely block karta hai, chalake proven · prospect kabhi leads funnel/metric me nahi (real grep) · koi autonomous send kahin nahi (real grep)
 
+### ⭐ Follow-up (user-driven live testing, 2026-08-26) — 2 real bugs mile aur fix hue
+
+User ne local pe poora system chalu karke khud real search kiya ("Web Developer in
+Mehsana") aur 2 real cheezein pakdi:
+
+1. **Kisi ka bhi contact info nahi mil raha tha.** Real data check kiya to pata chala:
+   `current_company` me zyadatar college/university ka naam ghus raha tha ("Ganapat
+   university", "Shri Sarvajanik Science College, Mehsana") — kyunki chhote shehar
+   (Mehsana) me "Web Developer" search karne par zyadatar STUDENTS/FRESHERS milte hain,
+   jinke LinkedIn snippet me education dominate karta hai, real employer nahi. Isse
+   `find_website()` ko company hi nahi milta tha, isliye enrichment kabhi aage badhta
+   hi nahi tha.
+2. **"Mehsana" khud ek "company" ki tarah dikh raha tha kisi ek result me** — location-
+   reject list sirf bade metros (Ahmedabad/Surat/Mumbai...) cover karti thi, jo search
+   khud kiya gaya (Mehsana) uska koi check nahi tha.
+
+**Dono fix kiye:** (a) `_guess_company_from_snippet()` ab jo bhi `location` search me diya
+gaya, use bhi dynamically reject karta hai — sirf fixed metro-list nahi. (b) Education
+keywords ka reject-list badhaya (university/college/bachelor/master/degree/diploma/
+student/etc.) aur bio-prose reject bhi ("currently", "fresher", "hello, i'm...").
+
+**Verified — real regression test + real unmocked Serper calls, same "Web Developer in
+Mehsana" search dobara chalaya:** fix se pehle 10/10 results me company ya to None thi ya
+galat (college names) — fix ke baad 6/10 honestly None (genuinely koi employer text nahi
+mila, guess nahi kiya) aur 2/10 real, sahi company mili ("3iwebexperts", "NeuraBUG") jinke
+liye `find_website()` ne **real, genuine websites dhoondhe** (`3iwebexperts.com`,
+`neurabug.com`) — matlab poora pipeline (search → company-guess → website → enrichment)
+ab sach me kaam kar raha hai jab data available ho.
+
+**Honestly disclose kiya user ko**: contact-info hit-rate abhi bhi genuinely kam rahega
+is tarah ki queries ke liye (fresher-heavy chhote shehar) — kai logo ka real employer hi
+nahi hota (student hain), koi parsing fix ye nahi badal sakta. Aur Hunter ka free quota
+abhi khatam hai (pehle se known, hold-list item, 11 September reset) — isliye abhi sirf
+website-scraping wala fallback hi kaam karega, Hunter wala nahi.
+
 ### New tables introduced by Phases 11–15 (28 → 31)
 T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)
 (+ 4 columns: `products.ai_cross_sell_enabled` · `outreach_logs.content_sections` ·

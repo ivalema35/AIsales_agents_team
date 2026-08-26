@@ -64,6 +64,18 @@ _SNIPPET_LOCATION_RE = re.compile(
     r"\b(india|gujarat|maharashtra|delhi|karnataka|tamil nadu|telangana|west bengal|"
     r"ahmedabad|surat|mumbai|bangalore|pune)\b", re.IGNORECASE)
 _SNIPPET_NOISE_RE = re.compile(r"\b(view|connections?|followers?|fol|mutual|see your)\b", re.IGNORECASE)
+# Real gap found live, 2026-08-26: a student/fresher's LinkedIn snippet is often
+# dominated by their EDUCATION, not any real employer -- a college/university name was
+# repeatedly mistaken for "current_company" (e.g. "Ganapat university", "Shri
+# Sarvajanik Science College, Mehsana"). Rejected the same way a location is, never
+# treated as a real employer.
+_SNIPPET_EDUCATION_RE = re.compile(
+    r"\b(university|college|institute|school|academy|b\.?tech|m\.?tech|b\.?e\.?|student|"
+    r"bachelor|master|degree|b\.?sc|diploma)\b",
+    re.IGNORECASE)
+# A first-person bio opener ("Hello, I'm ...") or a "currently ..." status line is
+# prose, never a company name.
+_SNIPPET_BIO_RE = re.compile(r"\b(hello|hi|i'?m|i am|my name|currently|fresher)\b", re.IGNORECASE)
 
 # Sites that rank for a business name but are never the business's own site. Picking one
 # of these as `website_url` would send enrichment scraping a directory's contact page and
@@ -791,7 +803,7 @@ class SerperProvider(LeadSourceProvider):
                     role, company_name)
         return None
 
-    def _guess_company_from_snippet(self, snippet, full_name, headline):
+    def _guess_company_from_snippet(self, snippet, full_name, headline, search_location=None):
         """Best-effort ONLY -- real LinkedIn snippets mix role/company/education/location
         into one loosely-punctuated blob with no reliable delimiter (found live,
         2026-08-26: title-only parsing left current_company empty for every real result
@@ -799,6 +811,11 @@ class SerperProvider(LeadSourceProvider):
         caller (enrich_prospect_contact -> find_website) independently re-verifies any
         guess against real search results before treating it as real, so a noisy guess
         here just means enrichment quietly finds nothing, never a false company link.
+
+        `search_location` -- the SAME location string this search was run for (e.g.
+        "Mehsana") is rejected too, not just the fixed list of major metros -- found
+        live, 2026-08-26: a smaller town the fixed list didn't happen to include (real
+        example: "Mehsana" itself) leaked through as a fake "company".
         """
         if not snippet:
             return None
@@ -809,7 +826,11 @@ class SerperProvider(LeadSourceProvider):
             low = seg.lower()
             if low in ("experience", "--", "-"):
                 continue
-            if _SNIPPET_DATE_RE.search(seg) or _SNIPPET_LOCATION_RE.search(seg) or _SNIPPET_NOISE_RE.search(seg):
+            if search_location and search_location.lower() in low:
+                continue
+            if (_SNIPPET_DATE_RE.search(seg) or _SNIPPET_LOCATION_RE.search(seg)
+                   or _SNIPPET_NOISE_RE.search(seg) or _SNIPPET_EDUCATION_RE.search(seg)
+                   or _SNIPPET_BIO_RE.search(seg)):
                 continue
             if full_name and low == full_name.lower():
                 continue
@@ -905,7 +926,7 @@ class SerperProvider(LeadSourceProvider):
                 # (found live, 2026-08-26) -- fall back to a best-effort read of the
                 # snippet, which usually does.
                 current_company = self._guess_company_from_snippet(
-                    result.get("snippet", ""), full_name, headline)
+                    result.get("snippet", ""), full_name, headline, search_location=location)
 
             confidence = 0.7 if full_name else 0.4
             results.append({
