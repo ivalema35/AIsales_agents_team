@@ -3,7 +3,6 @@ import { Pencil, Plus, MapPin, ChevronDown, X } from "lucide-react";
 import { api } from "../api/client";
 import ProductForm from "../components/ProductForm";
 import Modal from "../components/ui/Modal";
-import MessageFormatPanel from "../components/MessageFormatPanel";
 import ContentLibraryPanel from "../components/ContentLibraryPanel";
 
 function StrategyView({ productId }) {
@@ -89,13 +88,18 @@ function DiscoveryToggle({ product, onChanged }) {
 
 const TABS = [
   { id: "strategy", label: "AI targeting strategy" },
-  { id: "format", label: "Message format" },
   { id: "library", label: "Content library" },
 ];
 
-// Phase 8 Step 8.5 -- format builder + content library UI, alongside the existing AI
-// strategy view rather than replacing it. Tabbed so the expanded card doesn't get
-// cluttered with three unrelated panels visible at once.
+// Phase 8 Step 8.5 -- content library UI, alongside the existing AI strategy view rather
+// than replacing it. Tabbed so the expanded card doesn't get cluttered with unrelated
+// panels visible at once. The "Message format" tab that used to live here was removed
+// (2026-08-26) -- Phase 11/13 replaced that whole admin-format-driven path with the
+// structured section engine every real email now goes through (jobs/outreach_handler.py
+// no longer calls resolve_active_format() at all), so the tab was a real, live dead end:
+// an admin could save a format here and it would never affect a single real email.
+// MessageFormatPanel.jsx itself is left in place, not deleted -- same "dead code kept,
+// not unilaterally removed" precedent the backend side of this already set.
 function ExpandedTabs({ productId }) {
   const [tab, setTab] = useState("strategy");
   return (
@@ -114,7 +118,6 @@ function ExpandedTabs({ productId }) {
         ))}
       </div>
       {tab === "strategy" && <StrategyView productId={productId} />}
-      {tab === "format" && <MessageFormatPanel productId={productId} />}
       {tab === "library" && <ContentLibraryPanel productId={productId} />}
     </div>
   );

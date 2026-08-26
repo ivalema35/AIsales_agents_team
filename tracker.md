@@ -4318,7 +4318,19 @@ shared Hunter account, VPS-specific bug nahi). Test data clean kiya (10 prospect
 search delete), budget wapas 0.0 safe default pe reset kiya. **Poora Phase 15 (A+B) ab
 VPS pe genuinely live hai.**
 
-### New tables introduced by Phases 11–15 (28 → 31)
+### ⭐ Follow-up (user-flagged, 2026-08-26) — dead "Message format" tab UI se hataya
+
+User ne poocha "kya email format feature abhi use ho raha hai?" — real code check kiya to
+confirm hua: **nahi**, `jobs/outreach_handler.py` khud kehta hai ki Phase 8 ka poora
+admin-format-driven raasta (`draft_email()`, `resolve_active_format()`,
+`message_formats` table) Phase 11/13 ke structured section engine se completely replace
+ho chuka hai, kahin se bhi call nahi hota. **Ek real gap mila isi check se**: Products
+page pe "Message format" tab **abhi bhi UI me dikhta tha** — admin agar wahan format save
+karta, to lagta kaam ho gaya, lekin real email pe koi asar nahi padta (confusing dead
+end). User ne "tab hata do" bola — `frontend/src/pages/Products.jsx` se `format` tab
+hata diya (`MessageFormatPanel.jsx` component file khud nahi delete kiya — backend wale
+hi precedent jaisa, dead code kept rehne diya, unilaterally delete nahi kiya). `npx vite
+build` clean pass.
 T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)
 (+ 4 columns: `products.ai_cross_sell_enabled` · `outreach_logs.content_sections` ·
 `leads.reference_code` · `whatsapp_templates.followup_level`)
