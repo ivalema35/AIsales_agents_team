@@ -213,6 +213,37 @@ export default function SystemToggles() {
       </div>
     </div>
 
+    {/* Phase 15 Step 15(B).2 -- a real, hard spend cap, not a soft warning. Budget
+        defaults to 0.0 (blocked) until an admin sets a real number -- same fail-safe
+        posture as "autonomous outreach off by default". */}
+    <div id="prospect-search" className="mt-5 scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-slate-800">Prospect search budget</h2>
+      <p className="mb-1 text-xs text-slate-400">
+        Governs the standalone prospect finder (criteria-driven person search, e.g. "AI developer
+        in Mehsana"). A search that would exceed the monthly budget is refused outright, not just
+        warned about. Cost-per-search is a real number you set once you know your Serper plan's
+        actual rate -- this project cannot verify that automatically.
+      </p>
+      <div className="divide-y divide-slate-100">
+        <EditableField
+          label="Monthly budget"
+          description="Total spend allowed per calendar month across all prospect searches. 0 = blocked."
+          type="number"
+          value={settings.prospect_search_monthly_budget}
+          disabled={busy}
+          onSave={(v) => update("prospect_search_monthly_budget", v)}
+        />
+        <EditableField
+          label="Cost per search"
+          description="Real cost of one prospect search (your Serper plan's actual per-call rate)."
+          type="number"
+          value={settings.prospect_search_cost_per_search}
+          disabled={busy}
+          onSave={(v) => update("prospect_search_cost_per_search", v)}
+        />
+      </div>
+    </div>
+
     {/* Phase 11 Step 11.4 -- our own contact details, shown in the contact block at the
         bottom of every outreach email. Deliberately its own card, not buried in
         "Operational settings": everything above governs how the system behaves, while

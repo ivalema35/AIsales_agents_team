@@ -63,10 +63,19 @@ COMPANY_PROFILE_URL = "company_profile_url"
 COMPANY_CONTACT_KEYS = (COMPANY_CONTACT_EMAIL, COMPANY_CONTACT_PHONE,
                         COMPANY_WEBSITE_URL, COMPANY_PROFILE_URL)
 
+# Phase 15 Step 15(B).2 -- the real per-search cost is admin-configurable rather than
+# hardcoded, since this project cannot independently verify Serper's own current billed
+# rate; the admin sets the real number once they know it. Monthly budget resets are
+# judged against `prospect_searches.created_at` directly (real spend already recorded
+# there), never a separate running counter that could drift from the real rows.
+PROSPECT_SEARCH_MONTHLY_BUDGET = "prospect_search_monthly_budget"
+PROSPECT_SEARCH_COST_PER_SEARCH = "prospect_search_cost_per_search"
+
 STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS, STUCK_ALERT_LAST_SENT_AT,
             *COMPANY_CONTACT_KEYS}
 INT_KEYS = {OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
             STUCK_ALERT_COOLDOWN_MINUTES}
+FLOAT_KEYS = {PROSPECT_SEARCH_MONTHLY_BUDGET, PROSPECT_SEARCH_COST_PER_SEARCH}
 
 
 def get_bool(db, key: str, default: bool = False) -> bool:
@@ -113,6 +122,20 @@ def set_int(db, key: str, value: int) -> None:
     set_str(db, key, str(int(value)))
 
 
+def get_float(db, key: str, default: float = 0.0) -> float:
+    row = db.get(SystemSetting, key)
+    if row is None:
+        return default
+    try:
+        return float(row.value)
+    except (TypeError, ValueError):
+        return default
+
+
+def set_float(db, key: str, value: float) -> None:
+    set_str(db, key, str(float(value)))
+
+
 def get_all(db) -> dict:
     from config import Config  # local import -- avoids a module-load-order cycle with config.py
     return {
@@ -132,4 +155,9 @@ def get_all(db) -> dict:
         # Default to empty, not to a plausible-looking placeholder: an unset contact
         # detail must render as absent, never as a wrong address a real lead might use.
         **{key: get_str(db, key, default="") for key in COMPANY_CONTACT_KEYS},
+        # Phase 15 Step 15(B).2 -- budget defaults to 0.0 (blocked), the same fail-safe
+        # posture as AUTONOMOUS_OUTREACH_ENABLED: a feature that spends real money never
+        # silently runs until a human explicitly sets a real, non-zero budget.
+        PROSPECT_SEARCH_MONTHLY_BUDGET: get_float(db, PROSPECT_SEARCH_MONTHLY_BUDGET, default=0.0),
+        PROSPECT_SEARCH_COST_PER_SEARCH: get_float(db, PROSPECT_SEARCH_COST_PER_SEARCH, default=0.01),
     }

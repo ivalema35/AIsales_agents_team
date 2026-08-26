@@ -493,6 +493,42 @@ CREATE TABLE IF NOT EXISTS interest_responses (
     UNIQUE (outreach_log_id, response)
 );
 
+-- Table 31 (Phase 15 Step 15(B).2) -- one row per real prospect-search run: the real
+-- criteria, provider, result count, and real spend -- what run_prospect_search() checks
+-- BEFORE the next search, so a configured budget genuinely blocks it. Created before
+-- Table 30 (prospects), which references it, since it is the parent row.
+CREATE TABLE IF NOT EXISTS prospect_searches (
+    id                TEXT PRIMARY KEY,
+    criteria_text     TEXT NOT NULL,
+    role_keywords     TEXT,
+    location          TEXT,
+    provider          TEXT NOT NULL,        -- "SERPER_XRAY"
+    result_count      INTEGER DEFAULT 0,
+    spend             REAL DEFAULT 0.0,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table 30 (Phase 15 Step 15(B).1) -- person-level, no parent lead. Deliberately NOT
+-- rows in `leads`, which would corrupt every funnel metric the analytics layer computes
+-- with people who never went through discovery, scoring, or ICP matching.
+CREATE TABLE IF NOT EXISTS prospects (
+    id                TEXT PRIMARY KEY,
+    search_id         TEXT NOT NULL,
+    full_name         TEXT,
+    headline          TEXT,
+    linkedin_url      TEXT NOT NULL,
+    current_company   TEXT,
+    location_text     TEXT,
+    email             TEXT,
+    phone             TEXT,
+    source            TEXT NOT NULL,        -- "SERPER_XRAY"
+    confidence        REAL,
+    enrichment_status TEXT DEFAULT 'DISCOVERED',
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (search_id) REFERENCES prospect_searches(id) ON DELETE CASCADE,
+    UNIQUE (linkedin_url)
+);
+
 -- INDEXES
 -- UNIQUE, not a plain index -- a duplicate reference_code would make "resolves to that
 -- same lead" (Phase 12 Step 12.1's own DoD promise) ambiguous. A column-level UNIQUE in
@@ -522,3 +558,5 @@ CREATE INDEX IF NOT EXISTS idx_discovery_runs_lookup  ON discovery_runs (product
 CREATE INDEX IF NOT EXISTS idx_social_queue_lead      ON social_message_queue (lead_id, platform);
 CREATE INDEX IF NOT EXISTS idx_interest_responses_lead ON interest_responses (lead_id);
 CREATE INDEX IF NOT EXISTS idx_social_queue_status    ON social_message_queue (status, created_at);
+CREATE INDEX IF NOT EXISTS idx_prospects_search       ON prospects (search_id);
+CREATE INDEX IF NOT EXISTS idx_prospect_searches_created ON prospect_searches (created_at);

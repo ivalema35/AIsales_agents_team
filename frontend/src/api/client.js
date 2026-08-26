@@ -106,6 +106,14 @@ export const api = {
   markSocialSent: (id) => request(`/social-queue/${id}/sent`, { method: "POST" }),
   dismissSocialDraft: (id) => request(`/social-queue/${id}/dismiss`, { method: "POST" }),
 
+  searchProspects: (data) => request("/prospects/search", { method: "POST", body: JSON.stringify(data) }),
+  listProspects: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/prospects${qs ? `?${qs}` : ""}`);
+  },
+  listProspectSearches: () => request("/prospects/searches"),
+  enrichProspect: (id) => request(`/prospects/${id}/enrich`, { method: "POST" }),
+
   listAlerts: () => request("/alerts"),
 
   getSystemLive: () => request("/system/live"),

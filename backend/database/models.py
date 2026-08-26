@@ -477,3 +477,41 @@ class InterestResponse(Base):
 
     __table_args__ = (UniqueConstraint("outreach_log_id", "response"),)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 30. PROSPECTS (Phase 15 Step 15(B).1) -- person-level, no parent lead. Deliberately NOT
+# rows in `leads`: a prospect never went through discovery/scoring/ICP matching, so mixing
+# it into that table would corrupt every funnel metric the analytics layer computes.
+class Prospect(Base):
+    __tablename__ = "prospects"
+    id = Column(String, primary_key=True, default=_uuid)
+    search_id = Column(String, ForeignKey("prospect_searches.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String)
+    headline = Column(String)  # the raw title/role text found alongside the match
+    linkedin_url = Column(String, nullable=False)
+    current_company = Column(String)
+    location_text = Column(String)  # raw location signal found, not a verified field
+    email = Column(String)
+    phone = Column(String)
+    source = Column(String, nullable=False)  # e.g. "SERPER_XRAY"
+    confidence = Column(REAL)
+    enrichment_status = Column(String, default="DISCOVERED")  # DISCOVERED, ENRICHED, NO_CONTACT_FOUND
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+    __table_args__ = (UniqueConstraint("linkedin_url"),)
+
+
+# 31. PROSPECT SEARCHES (Phase 15 Step 15(B).2) -- one row per real search run: the
+# criteria, the provider, how many real results it found, and the real spend incurred --
+# the source of truth run_prospect_search() checks BEFORE the next search, so a configured
+# budget genuinely blocks the next run rather than only warning after the fact.
+class ProspectSearch(Base):
+    __tablename__ = "prospect_searches"
+    id = Column(String, primary_key=True, default=_uuid)
+    criteria_text = Column(String, nullable=False)  # the raw human criteria, e.g. "AI developer in Mehsana, 3 years experience"
+    role_keywords = Column(String)
+    location = Column(String)
+    provider = Column(String, nullable=False)  # "SERPER_XRAY"
+    result_count = Column(Integer, default=0)
+    spend = Column(REAL, default=0.0)  # real cost incurred, from the admin-configured per-search rate
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())

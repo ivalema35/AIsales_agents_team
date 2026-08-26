@@ -4180,10 +4180,94 @@ confirm kiya: 3 role-match ek hi real person → genuinely 1 hi merged contact b
 Purani 3 duplicate rows (isi real test se bani) VPS ke real DB me seedha merge kar di,
 naya Serper call kharch kiye bina (data-fix, dobara search nahi).
 
-- [ ] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho)
-- [ ] Step 15(B).2 — provider (Apollo.io ya equivalent) + T31 `prospect_searches` + **hard spend cap jo actually block kare**
-- [ ] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi)
-- [ ] DoD Gate P15
+### ⭐ Phase 15(B) — Standalone Prospect Finder (2026-08-26)
+
+**Provider decision — Gemini se ek "second opinion" liya** (jaisa Phase 2 me hua tha), is
+baar TECHNICAL approach ke liye nahi, **provider SELECTION** ke liye (`suggest.txt` me
+prompt likha, user ne Gemini me le jaakar answer paste kiya, main critically evaluate
+kiya). Gemini ka core insight sahi nikla: Apollo.io/PDL/ZoomInfo jaise global B2B
+databases chhote Indian towns (jaise Mehsana) ke liye structurally weak hain — wo sab
+fundamentally LinkedIn ka hi public index crawl karte hain, koi dedicated Tier-2/3-India
+dataset nahi rakhte. **Real recommendation adopt kiya**: naya paid provider bilkul mat
+lo, existing Serper integration hi use karo — Google X-Ray search (`site:linkedin.com/in
+...`) se seedha real, public LinkedIn profiles milte hain, **zero naya cost, zero naya
+signup**. PRD khud "Apollo.io ya equivalent" kehta hai — Serper is exact provider-
+abstraction shape ka already hissa hai, to ye genuinely wahi "equivalent" hai.
+
+**Jo Gemini se reject kiya:** exact Postgres schema (ye project SQLite hai), simplistic
+`budget_guard.py` sketch (PRD ka apna Table 31 design behtar tha), aur exact pricing
+numbers (independently verify nahi kar sakta, fact ki tarah repeat nahi kiya).
+
+**Step 15(B).1 — standalone prospect finder.** Naya `SerperProvider.
+find_prospects_by_criteria(role_keywords, location, extra_keywords, max_results)` —
+bilkul Phase 15(A)'s `find_person_by_role()` jaisa hi, bas company-anchor ke bina, aur
+MULTIPLE candidates return karta hai (ek nahi). Naya Table 30 `prospects` — person-level,
+`leads` table se bilkul alag (funnel corrupt nahi hota).
+
+**Real, honest limitation jo test karte waqt khud disclose ho gayi:** X-Ray search sirf
+unhi logo ko dhoondh sakta hai jinka LinkedIn profile PUBLIC + Google-indexed ho aur TEXT
+match ho jaaye — koi real structured "experience >= 3 years" filter nahi hai jaisa ek paid
+database de sakta. Real test me confidence bhi isliye jaan-bujh kar Phase 15(A) se KAM
+rakha (0.7/0.4 vs 0.85/0.5) — is search ke paas koi company-match cross-verification nahi
+hai, weaker evidence honestly reflect hota hai.
+
+**Real bug jo pehle hi real test run se mila:** title-only se `current_company` kabhi
+nahi mila (10/10 real results me None) — real LinkedIn titles "Name - Role" format me
+aate hain, company teesra segment banke kabhi nahi aata jaisa socha tha. **Fix:** snippet
+text se bhi best-effort guess try kiya jaata hai ab (date/location/UI-noise reject karke)
+— kabhi perfect nahi, kabhi galat bhi nikalta hai (real test me "829", "Ahmedabad" jaisi
+galat values bhi mili) — lekin **safe hai** kyunki downstream `find_website()` khud is
+guess ko validate karta hai (apna real name-match check), ek galat guess bas silently
+enrichment fail kar deta hai, kabhi wrong company attach nahi karta. UI me bhi honestly
+"(best-effort guess, not verified)" likha hai.
+
+**Step 15(B).2 — provider + hard spend cap.** Naya Table 31 `prospect_searches`
+(criteria, provider, result_count, real spend per run). Naya `system_settings` me 2
+naye admin-editable values — `prospect_search_monthly_budget` (default **0.0, matlab
+blocked** — AUTONOMOUS_OUTREACH_ENABLED jaisa hi fail-safe default) aur
+`prospect_search_cost_per_search` (real Serper rate ka koi bharosemand independent-verify
+nahi ho sakta, isliye admin khud set karega). `run_prospect_search()` current-month ka
+real spend `prospect_searches` table se seedha SQL sum karke check karta hai (koi alag
+running counter nahi jo drift ho sake) — budget cross hone se PEHLE hi refuse karta hai
+(`ProspectSearchBlocked`, HTTP 402), search chalta hi nahi.
+
+**Step 15(B).3 — contact enrichment.** `enrich_prospect_contact()` bilkul WAHI real
+waterfall reuse karta hai jo companies ke liye already hai (`find_website()` → Hunter
+domain-search → website email-scrape) — koi parallel path nahi. Tier 2 fallback
+firstname.lastname pattern match bhi real scraped emails ke against hi, kabhi synthesized
+nahi.
+
+**Verified — 7 checks (`test_phase15b_final.py`, real disposable DB + real Flask app),
+saath me REAL Serper calls bhi** (search + enrichment dono real network se, sirf
+deterministic-check wale test mock kiye):
+1. Zero budget → real 402 refusal (fabricated empty result nahi).
+2. Real budget ke saath real search → real prospects save, real spend record.
+3. Same real person dobara mile → dedup, koi duplicate row nahi.
+4. **Spend cap genuinely block karta hai** — dhyan se calculate kiya budget cross karne
+   wala search, aur wo real me refuse hua (padh ke nahi, chalake proven).
+5. GET endpoints real persisted data dete hain.
+6. Enrichment real Hunter waterfall reuse karta hai.
+7. No-company prospect → honest `NO_CONTACT_FOUND`, kabhi guessed email nahi.
+
+**Real production-jaisi local dev DB pe bhi test kiya** (disposable test DB alag se):
+real `PATCH /settings` se budget set kiya, real `POST /prospects/search` chalaya — 10
+real, genuinely relevant React/Python developers Ahmedabad me mile (real names, real
+LinkedIn URLs). Baad me cleanup kiya (test rows delete, budget wapas 0.0 safe default pe).
+
+**Real absence-check** (P10/P15(A) jaisa hi pattern): poore backend me `Prospect`/
+`ProspectSearch` grep kiya — sirf 3 files me hi reference hai (`api/prospects.py`,
+`database/models.py`, `services/prospect_service.py`), koi analytics/outreach/scoring
+code inhe kabhi touch nahi karta — **funnel me kabhi nahi jaate, koi auto-send kahin
+nahi**, confirmed.
+
+`npx vite build` clean pass. Naya "Prospects" nav tab + `/prospects` page (search form +
+results + search history + spend total), Settings page me naya "Prospect search budget"
+card.
+
+- [x] Step 15(B).1 — standalone prospect finder + T30 `prospects` (leads table me nahi, funnel corrupt na ho) — ✅ 2026-08-26, Section 3
+- [x] Step 15(B).2 — provider (Serper X-Ray, Apollo.io ka "equivalent") + T31 `prospect_searches` + **hard spend cap jo actually block kare** — ✅ 2026-08-26, Section 3, real 402 se proven
+- [x] Step 15(B).3 — contact enrichment existing waterfall se (naya parallel path nahi) — ✅ 2026-08-26, Section 3
+- [x] DoD Gate P15(B) — ✅ 2026-08-26, MASTER §15 ke saare 15(B) DoD tests real evidence se pass: koi provider na ho to real refuse (fabricated empty result nahi) · spend cap genuinely block karta hai, chalake proven · prospect kabhi leads funnel/metric me nahi (real grep) · koi autonomous send kahin nahi (real grep)
 
 ### New tables introduced by Phases 11–15 (28 → 31)
 T29 `interest_responses` (P12) · T30 `prospects` (P15) · T31 `prospect_searches` (P15)

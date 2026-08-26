@@ -56,6 +56,15 @@ def _extract_city(region_location):
 SERPER_PLACES_URL = "https://google.serper.dev/places"
 SERPER_SEARCH_URL = "https://google.serper.dev/search"
 
+# Phase 15 Step 15(B).1 -- _guess_company_from_snippet()'s own reject-list: a date range,
+# an Indian state/major-city name, or LinkedIn UI chrome ("View", "500+ connections") is
+# never itself a company name.
+_SNIPPET_DATE_RE = re.compile(r"\b(19|20)\d{2}\b")
+_SNIPPET_LOCATION_RE = re.compile(
+    r"\b(india|gujarat|maharashtra|delhi|karnataka|tamil nadu|telangana|west bengal|"
+    r"ahmedabad|surat|mumbai|bangalore|pune)\b", re.IGNORECASE)
+_SNIPPET_NOISE_RE = re.compile(r"\b(view|connections?|followers?|fol|mutual|see your)\b", re.IGNORECASE)
+
 # Sites that rank for a business name but are never the business's own site. Picking one
 # of these as `website_url` would send enrichment scraping a directory's contact page and
 # harvest the directory's email instead of the lead's.
@@ -781,3 +790,134 @@ class SerperProvider(LeadSourceProvider):
         logger.info("find_person_by_role %s @ %s -> no name-matched personal profile found",
                     role, company_name)
         return None
+
+    def _guess_company_from_snippet(self, snippet, full_name, headline):
+        """Best-effort ONLY -- real LinkedIn snippets mix role/company/education/location
+        into one loosely-punctuated blob with no reliable delimiter (found live,
+        2026-08-26: title-only parsing left current_company empty for every real result
+        in a genuine test run). Never a source of a WRONG attachment by itself -- the
+        caller (enrich_prospect_contact -> find_website) independently re-verifies any
+        guess against real search results before treating it as real, so a noisy guess
+        here just means enrichment quietly finds nothing, never a false company link.
+        """
+        if not snippet:
+            return None
+        headline_words = set((headline or "").lower().replace("|", " ").split())
+        for seg in (s.strip() for s in snippet.split(".")):
+            if not seg:
+                continue
+            low = seg.lower()
+            if low in ("experience", "--", "-"):
+                continue
+            if _SNIPPET_DATE_RE.search(seg) or _SNIPPET_LOCATION_RE.search(seg) or _SNIPPET_NOISE_RE.search(seg):
+                continue
+            if full_name and low == full_name.lower():
+                continue
+            if len(seg) > 60 or len(seg) < 3:
+                continue
+            seg_words = set(low.replace("|", " ").split())
+            if headline_words and seg_words and len(seg_words & headline_words) / len(seg_words) > 0.6:
+                continue  # mostly a repeat of the already-known headline/role text
+            return seg
+        return None
+
+    def find_prospects_by_criteria(self, role_keywords, location=None, extra_keywords=None,
+                                   max_results=10):
+        """Phase 15 Step 15(B).1/15(B).2 -- a standalone, criteria-driven person search
+        (no parent company, unlike find_person_by_role above): "AI developer in Mehsana"
+        -> real candidate people. A Google X-Ray query (`site:linkedin.com/in (...)`)
+        against real, publicly Google-indexed LinkedIn profiles -- the same real
+        provider (Serper) already integrated and paid for in this project, used here as
+        the "equivalent" to a dedicated paid people-search provider (MASTER_DEVELOPMENT_
+        PRD.md Phase 15 Step 15(B).2 explicitly allows "Apollo.io or an equivalent"),
+        chosen specifically because global B2B databases like Apollo/ZoomInfo/PDL are
+        structurally weak for small Indian towns (they index the SAME public LinkedIn
+        footprint this search reads directly, with no real Tier-2/3-India-specific
+        dataset behind them) and would have meant a new paid signup for no real
+        precision gain.
+
+        Real, disclosed limitation: this can only match people whose LinkedIn profile is
+        public, Google-indexed, and contains matching TEXT -- there is no real structured
+        filter like "exactly 3 years experience" the way a dedicated people-search API's
+        own database could offer. A candidate simply not indexed, or one whose profile
+        doesn't literally contain a matching keyword, is invisible to this search --
+        never treated as "confirmed absent."
+
+        Confidence is deliberately LOWER than find_person_by_role's (0.85/0.5): that
+        search has a real cross-check (the company's own name must appear in the
+        result), giving it a genuine rejection mechanism for a wrong match. This search
+        has no such anchor -- a keyword match alone is weaker evidence, and the
+        confidence score says so honestly rather than borrowing the stronger number.
+        """
+        if not self.api_key:
+            raise RuntimeError("SERPER_API_KEY not configured")
+        if not role_keywords:
+            raise ValueError("role_keywords must be a non-empty list")
+
+        role_clause = " OR ".join(f'"{kw}"' for kw in role_keywords)
+        query = f"site:linkedin.com/in ({role_clause})"
+        if location:
+            query += f' "{location}"'
+        if extra_keywords:
+            query += " " + " ".join(f'"{kw}"' for kw in extra_keywords)
+
+        resp = requests.post(
+            SERPER_SEARCH_URL,
+            headers={"X-API-KEY": self.api_key, "Content-Type": "application/json"},
+            json={"q": query, "gl": "in", "num": max(max_results, 10)},
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        results = []
+        seen_urls = set()
+        for result in data.get("organic", []):
+            link = result.get("link", "")
+            parsed = urlparse(link)
+            host = parsed.netloc.lower().removeprefix("www.")
+            if host != "linkedin.com" and not host.endswith(".linkedin.com"):
+                continue
+            segments = [s for s in parsed.path.split("/") if s]
+            if len(segments) < 2 or segments[0].lower() != "in":
+                continue
+            clean = f"https://www.linkedin.com/in/{segments[1]}/"
+            if clean in seen_urls:
+                continue
+            seen_urls.add(clean)
+
+            title = result.get("title", "")
+            # LinkedIn's own result titles are normally "<Person> - <Role> at <Company>
+            # | LinkedIn" or "<Person> - <Role> - <Company> | LinkedIn" -- best-effort
+            # parse, never invented when the shape doesn't match.
+            parts = [p.strip() for p in title.split(" - ") if p.strip()]
+            full_name = parts[0] if parts else None
+            role_and_company = parts[1] if len(parts) > 1 else None
+            current_company = parts[2] if len(parts) > 2 else None
+            headline = role_and_company
+            if role_and_company and " at " in role_and_company:
+                role_part, _, company_part = role_and_company.partition(" at ")
+                headline = role_part.strip()
+                if not current_company:
+                    current_company = company_part.strip()
+            if not current_company:
+                # The title alone rarely carries a clean company segment in practice
+                # (found live, 2026-08-26) -- fall back to a best-effort read of the
+                # snippet, which usually does.
+                current_company = self._guess_company_from_snippet(
+                    result.get("snippet", ""), full_name, headline)
+
+            confidence = 0.7 if full_name else 0.4
+            results.append({
+                "full_name": full_name,
+                "headline": headline,
+                "current_company": current_company,
+                "linkedin_url": clean,
+                "confidence": confidence,
+            })
+            if len(results) >= max_results:
+                break
+
+        logger.info("find_prospects_by_criteria(%s, %s) -> %d candidate(s)",
+                   role_keywords, location, len(results))
+        return results
