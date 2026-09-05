@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
-import {
-  AlertTriangle, BookOpen, CheckCircle2, ChevronDown, ChevronUp, MessageSquareWarning, Sparkles,
-} from "lucide-react";
+import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, MessageSquareWarning } from "lucide-react";
 import { api } from "../api/client";
-
-// Phase 20 -- a todo item whose label is genuinely about a real signal conflict (Step
-// 20.2) gets distinct, more urgent styling than an ordinary note, so a human's eye lands
-// on it first. Matching by label text, not a fixed enum -- the strategist's labels are
-// free-text by design (Step 18.1), "Conflict"/"Tension" are just what it tends to write.
-function isConflictLabel(label) {
-  const l = (label || "").toLowerCase();
-  return l.includes("conflict") || l.includes("tension");
-}
+import TodoItemCard from "./TodoItemCard";
 
 // UI Phase 16 revision (2026-09-02): no longer rendered as a flat, cross-campaign list on
 // the Dashboard -- it moved onto each campaign's own Detail page (CampaignDetail.jsx),
 // scoped to that one campaign, per the operator's own "campaign ke around sab kuch" ask.
-// Card content/behavior below is unchanged, only where it's mounted moved.
+// Phase 21 (2026-09-05): the to-do list + single whole-day Approve button are gone --
+// this campaign's real PENDING TodoItems render via the SAME per-item TodoItemCard the
+// Dashboard's AI Manager Inbox uses (never two independently-drifting card designs),
+// each individually feedback-able/approved/dismissed. Everything else on this card
+// (watchdog banner, journal, sample-draft preview/feedback, HTML/TEXT chips) is
+// unaffected -- none of it ever went through daily_todo/approve_campaign_today.
 export function CampaignReviewCard({ campaign, onApproved }) {
   const [review, setReview] = useState(null);
   const [expanded, setExpanded] = useState(true);
-  const [approving, setApproving] = useState(false);
-  const [appliedProposal, setAppliedProposal] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [instruction, setInstruction] = useState("");
   const [revising, setRevising] = useState(false);
@@ -36,31 +29,14 @@ export function CampaignReviewCard({ campaign, onApproved }) {
     api.getCampaignDailyReview(campaign.id).then(setReview).catch((err) => setError(err.message));
   }, [campaign.id]);
 
-  // Step 18.4, un-deferred 2026-09-01 -> re-opened 2026-09-02: Approve now actually DOES
-  // something beyond sign-off -- if the strategist left a pending_proposal, the backend
-  // applies it (target_segment/lead_count_goal/strategy_angle) as part of this same call.
-  // `applied_proposal` in the response is what actually changed, so it's shown back here
-  // rather than silently trusted.
-  async function approve() {
-    setApproving(true);
-    setError(null);
-    try {
-      const result = await api.approveCampaignToday(campaign.id);
-      const applied = result.applied_proposal || null;
-      setAppliedProposal(applied);
-      // Mode/angle apply clears kickoff and changes preview — refresh so chips + iframe match.
-      if (applied?.email_render_mode || applied?.strategy_angle) {
-        const fresh = await api.getCampaignDailyReview(campaign.id);
-        setReview({ ...fresh, approved_today: true, pending_proposal: null });
-      } else {
-        setReview((r) => ({ ...r, approved_today: true, pending_proposal: null }));
-      }
-      onApproved?.();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setApproving(false);
-    }
+  // A to-do's proposal (target_segment/lead_count_goal/strategy_angle/email_render_mode)
+  // applies to the real campaign row the moment ITS OWN card is approved (TodoItemCard's
+  // own logic) -- this just drops the resolved item from the list and tells the parent
+  // page (CampaignDetail) to refresh, since the campaign's own header/progress bar may
+  // now be stale (a targeting/angle change did just land on the real row).
+  function handleTodoResolved(id) {
+    setReview((r) => ({ ...r, todo_items: r.todo_items.filter((i) => i.id !== id) }));
+    onApproved?.();
   }
 
   async function setEmailRenderMode(mode) {
@@ -101,7 +77,6 @@ export function CampaignReviewCard({ campaign, onApproved }) {
       setReview((r) => ({
         ...r,
         sample_draft: draft,
-        approved_today: false,
         ...(email_render_mode ? { email_render_mode } : {}),
         ...(sample_draft_html !== undefined ? { sample_draft_html } : {}),
       }));
@@ -162,111 +137,22 @@ export function CampaignReviewCard({ campaign, onApproved }) {
         </div>
       )}
 
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="font-display text-sm font-semibold text-ink-900">{campaign.name}</p>
-          <p className="mt-0.5 font-mono text-[10px] text-ink-500">
-            {review.metrics.sent} sent · {review.metrics.opened} opened · {review.metrics.replied} replied
-            {review.metrics.hot > 0 && <span className="text-alert-600"> · {review.metrics.hot} hot</span>}
-          </p>
-        </div>
-        {review.approved_today ? (
-          <span className="flex shrink-0 items-center gap-1 rounded-full bg-good-100 px-2.5 py-1 text-[11px] font-semibold text-good-700">
-            <CheckCircle2 size={13} /> Approved today
-          </span>
-        ) : (
-          <button
-            onClick={approve}
-            disabled={approving}
-            className="shrink-0 rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
-          >
-            {approving ? "Approving…" : "Approve"}
-          </button>
-        )}
+      <div className="min-w-0">
+        <p className="font-display text-sm font-semibold text-ink-900">{campaign.name}</p>
+        <p className="mt-0.5 font-mono text-[10px] text-ink-500">
+          {review.metrics.sent} sent · {review.metrics.opened} opened · {review.metrics.replied} replied
+          {review.metrics.hot > 0 && <span className="text-alert-600"> · {review.metrics.hot} hot</span>}
+        </p>
       </div>
 
-      {review.todo.length > 0 && (
-        <div className="mt-2.5 flex flex-col gap-1.5">
-          {review.todo.map((item, i) => {
-            const conflict = isConflictLabel(item.label);
-            return (
-              <div
-                key={i}
-                className={`flex items-start gap-2 ${conflict ? "rounded-md border border-dashed border-alert-600 bg-alert-100 p-1.5" : ""}`}
-              >
-                <span
-                  className={`flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide ${
-                    conflict ? "bg-alert-600 text-white" : "bg-parchment-raised-2 text-ink-700"
-                  }`}
-                >
-                  {conflict && <AlertTriangle size={9} />}
-                  {item.label || "Note"}
-                </span>
-                <p className="text-xs text-ink-700">{item.text}</p>
-              </div>
-            );
-          })}
+      {review.todo_items.length > 0 ? (
+        <div className="mt-2.5 flex flex-col gap-2">
+          {review.todo_items.map((item) => (
+            <TodoItemCard key={item.id} item={item} onResolved={handleTodoResolved} />
+          ))}
         </div>
-      )}
-      {review.todo.length === 0 && (
+      ) : (
         <p className="mt-2.5 text-xs text-ink-500">No fresh signals today -- nothing new to flag.</p>
-      )}
-
-      {review.pending_proposal && (
-        <div className="mt-2.5 rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-gold-700">
-              <Sparkles size={11} /> AI proposes -- applies on Approve
-            </span>
-            {/* Phase 20 Step 20.2 -- how sure the AI actually is, grounded in real signal
-                strength, not a fixed decorative number. */}
-            {review.pending_proposal.confidence != null && (
-              <span
-                title="How confident the AI is in this proposal, based on real data volume/clarity"
-                className={`shrink-0 rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold ${
-                  review.pending_proposal.confidence >= 0.7
-                    ? "bg-good-100 text-good-700"
-                    : review.pending_proposal.confidence >= 0.4
-                    ? "bg-gold-100 text-gold-700"
-                    : "bg-parchment-raised-2 text-ink-500"
-                }`}
-              >
-                {Math.round(review.pending_proposal.confidence * 100)}% confidence
-              </span>
-            )}
-          </div>
-          <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
-            {review.pending_proposal.target_segment && (
-              <p>
-                <b>Target:</b>{" "}
-                {review.pending_proposal.target_segment.industry || "—"}
-                {review.pending_proposal.target_segment.location && ` in ${review.pending_proposal.target_segment.location}`}
-              </p>
-            )}
-            {review.pending_proposal.lead_count_goal != null && (
-              <p><b>Lead count goal:</b> {review.pending_proposal.lead_count_goal}</p>
-            )}
-            {review.pending_proposal.strategy_angle && (
-              <p><b>New angle:</b> {review.pending_proposal.strategy_angle}</p>
-            )}
-            {review.pending_proposal.email_render_mode && (
-              <p><b>Email format:</b> {review.pending_proposal.email_render_mode === "TEXT" ? "Plain text" : "HTML template"}</p>
-            )}
-          </div>
-          {review.pending_proposal.rationale && (
-            <p className="mt-1.5 text-[11px] italic text-ink-500">{review.pending_proposal.rationale}</p>
-          )}
-        </div>
-      )}
-
-      {appliedProposal && (
-        <div className="mt-2.5 rounded-md bg-good-100 p-2.5 text-[11px] text-good-700">
-          <CheckCircle2 size={12} className="mr-1 inline" />
-          Applied: {appliedProposal.target_segment && `targeting ${appliedProposal.target_segment.industry || ""}${appliedProposal.target_segment.location ? ` in ${appliedProposal.target_segment.location}` : ""}`}
-          {appliedProposal.lead_count_goal != null && ` · goal ${appliedProposal.lead_count_goal} leads`}
-          {appliedProposal.strategy_angle && ` · new angle set`}
-          {appliedProposal.email_render_mode && ` · ${appliedProposal.email_render_mode === "TEXT" ? "plain text" : "HTML"} email`}
-        </div>
       )}
 
       {/* Phase 20 Step 20.1 -- the strategist's own persistent, dated narrative for this

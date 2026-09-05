@@ -20,7 +20,7 @@ from services.outreach.text_renderer import render_plain_text
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
 from services.campaign_service import (
-    check_instruction_pushback, clear_campaign_approval, resolve_auto_campaign_id,
+    check_instruction_pushback, resolve_auto_campaign_id,
     resolve_email_render_mode, format_directive_for_mode, detect_render_mode_request,
     build_sample_draft_html)
 from agents.outreach_agent import draft_structured_email, suggest_draft_improvement
@@ -896,12 +896,6 @@ def revise_outreach_draft(lead_id):
             return jsonify({"error": ["revision failed -- try again or rephrase the instruction"]}), 503
 
         suggestion = suggest_draft_improvement(db, lead_id, product_brief, pain_points, revised.get("sections"))
-
-        # A real content change invalidates any earlier same-day approval on this lead's
-        # campaign (Step 18.2) -- a stale "approved" from before this edit would be
-        # misleading about what was actually reviewed.
-        if lead.campaign_id:
-            clear_campaign_approval(db, lead.campaign_id)
 
         # Phase 20 Step 20.4 -- a separate, non-blocking check: does this instruction
         # genuinely conflict with real data this campaign/domain already has? The draft

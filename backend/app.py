@@ -27,6 +27,7 @@ from api.prospects import prospects_bp
 from api.knowledge_base import knowledge_base_bp
 from api.campaigns import campaigns_bp
 from api.strategy_insights import strategy_insights_bp
+from api.todos import todos_bp
 
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
 # the login endpoints themselves, health checks, and the handful of routes real external
@@ -90,6 +91,7 @@ def create_app():
     app.register_blueprint(knowledge_base_bp)
     app.register_blueprint(campaigns_bp)
     app.register_blueprint(strategy_insights_bp)
+    app.register_blueprint(todos_bp)
 
     @app.route("/health")
     def health():

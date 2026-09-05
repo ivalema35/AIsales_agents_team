@@ -40,6 +40,7 @@ COLUMN_MIGRATIONS = [
     ("campaigns", "watchdog_alert", "TEXT"),
     ("campaigns", "kickoff_draft", "TEXT"),
     ("campaigns", "email_render_mode", "TEXT"),
+    ("campaigns", "last_todo_signal", "TEXT"),
 ]
 
 

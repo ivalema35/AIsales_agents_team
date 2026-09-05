@@ -2247,6 +2247,115 @@ second layer of resistance to what the human actually wants.
 
 ---
 
+## 5D. Phase 21 — Unified AI To-Do Inbox (built 2026-09-05)
+
+**Why this exists.** Phase 18's daily to-do (`campaign.daily_todo`, a flat JSON array) and its structural
+proposal (`campaign.pending_strategy_proposal`) were both overwritten wholesale every time the strategist
+ran, reviewable only one campaign at a time (its own Detail page), and approved as a single whole-day bulk
+action (`approve_campaign_today()`) — no per-item identity, no per-item feedback, no per-item approval.
+Product-level "start a new campaign for X" suggestions (`generate_campaign_suggestion()`) lived in a
+completely separate place (`CampaignCalendar`'s "Suggested for today"), a second review surface for what is
+really the same kind of decision. The operator's own explicit ask (2026-09-05, verbatim intent): *"aisa koi
+specific time ya switch nahi hona chahiye AI ko — jab zaroorat lage tab to-dos review me daal dega, jab
+human ko time milega tab review kare"* — no manual on/off switch, no fixed daily cadence as the only
+trigger, to-dos visible in one place, each individually conversational (a real feedback prompt per item)
+and individually approved at the human's own pace. A second requirement, given in the same conversation:
+to-dos are explicitly of **two kinds** — campaign-scoped (follow up a lead, revise a template, retarget)
+and free-for-all/global (no campaign yet — "this product's leads are trending strong in industry X, worth a
+new campaign") — both must land in the same inbox, the same review mechanism.
+
+**Design choices confirmed with the operator before building** (AskUserQuestion, this same session):
+conversational memory stays **lightweight** — the same "current state + one new instruction" pattern
+already proven in Step 16.5 (draft revision) and Step 18.1b (kickoff draft revision), not a new stored
+multi-turn transcript (confirmed via codebase exploration: no real multi-turn chat mechanism exists
+anywhere in this project, and `cognition/llm_client.py`'s `call_json()` only ever takes one flattened
+prompt string). Persistence is a real **queue** — a new generation only ever ADDS items, an unresolved
+PENDING item is never silently overwritten.
+
+**Step 21.1 — Data model: `todo_items` (Table 36).** Replaces `campaign.daily_todo`/
+`pending_strategy_proposal`/`last_approved_date` as the live source of truth (columns kept, not deleted —
+same non-destructive precedent as every superseded column before it). One row per real to-do:
+`scope` (`CAMPAIGN` | `GLOBAL`), `campaign_id` (CAMPAIGN only) or `product_id` (GLOBAL only), `label`,
+`text` (the current state a feedback round revises), `proposal` (optional JSON — the exact same
+target_segment/lead_count_goal/strategy_angle/email_render_mode shape Step 18's proposal always had, or a
+full campaign-creation prefill for GLOBAL), `confidence`/`rationale` (Step 20.2, carried per-item now),
+`status` (`PENDING` | `APPROVED` | `DISMISSED`), `created_at`/`resolved_at`. `Campaign.last_todo_signal`
+(a small JSON fingerprint — real sent/opened/replied/hot + whether a target is set) is what Step 21.2's
+signal-driven tick diffs against.
+
+**Step 21.2 — Trigger: no switch, two automatic paths.** `DAILY_AI_LOOP_ENABLED` is removed entirely (not
+just defaulted differently) — both paths below now run unconditionally:
+- **Daily floor** (`_run_daily_plan_tick()`, unchanged 06:00 IST + once-per-day idempotency gates) —
+  guarantees at least one fresh look per live campaign per day even with zero real change, so the Inbox is
+  never silent for days.
+- **Signal-driven** (`_run_signal_driven_todo_tick()`, new — rides the existing scheduler loop, every real
+  poll, no gate of its own) — regenerates ONE specific campaign's to-do the moment its real fingerprint
+  changes (a new reply, a new hot lead, target still unset, etc.), subject to a 2-hour per-campaign cooldown
+  (an engineering cost rail, not a human-facing switch) so a burst of replies can't become a burst of LLM
+  calls.
+
+Both `generate_campaign_todo()` and `generate_campaign_suggestion()` now INSERT `TodoItem` rows instead of
+overwriting a blob — the former dedupes against already-PENDING labels for that campaign (a backstop, not
+the primary defense — the model's own "never fill space" discipline is), the latter skips inserting a
+GLOBAL item while one is already PENDING for that product.
+
+**Step 21.3 — Per-item actions, never a whole-day bulk one.** `revise_todo_item()` (new
+`TODO_ITEM_REVISION_SYSTEM_PROMPT`, same lightweight pattern) re-grounds the revision in the SAME real data
+the item was generated from and still runs Step 20.4's `check_instruction_pushback` for CAMPAIGN-scope
+items. `approve_todo_item()` is the ONLY place a proposal ever reaches a real `Campaign` row — CAMPAIGN
+scope applies it field-by-field (the exact logic `approve_campaign_today()` used to run, extracted into a
+shared `_apply_proposal_to_campaign()` helper); GLOBAL scope **never** touches a campaign row at all (the
+existing Phase 17 invariant — a campaign is always human-created), it only returns a prefill payload for
+the frontend's existing `CampaignFormModal`. `dismiss_todo_item()` resolves with nothing applied.
+
+**Step 21.4 — API.** New blueprint `api/todos.py`: `GET /api/v1/todos` (every PENDING item, both scopes,
+campaign name/product title joined in), `POST /todos/<id>/feedback|approve|dismiss`. `GET
+/campaigns/<id>/daily-review` now returns `todo_items` (this campaign's own PENDING queue) instead of
+`todo`/`pending_proposal`/`approved_today`. `POST /campaigns/<id>/approve` and `GET /campaigns/suggestions`
+are removed — no longer meaningful once approval is per-item and GLOBAL suggestions live in the same
+unified queue.
+
+**Step 21.5 — Frontend.** New `TodoInbox.jsx` takes the Dashboard's top position (the operator's own
+screenshot-driven placement decision, 2026-09-05) — every PENDING item, both scopes, one place. New shared
+`TodoItemCard.jsx` (label, conflict-styling from Step 20.2, confidence badge, proposal detail, pushback,
+per-item feedback box, Approve/Dismiss) is used identically by `TodoInbox` (unfiltered) and
+`DailyReviewPanel.jsx`'s `CampaignReviewCard` (filtered to one campaign) — one card design, never two
+independently-drifting ones. Approving a GLOBAL item opens the existing `CampaignFormModal` pre-filled.
+`CampaignCalendar`'s old "Suggested for today" section is removed (folded into the Inbox); its
+"review pending" clock icon now reflects "this campaign has a real PENDING `TodoItem`" instead of the old
+`last_approved_date` flag. `AlertsPanel`'s old "Ready to claim" (amber) section is removed — redundant with
+the Inbox's own `READY_TO_DISPATCH_COUNT` to-do signal — leaving a smaller "needs response" (red, genuinely
+time-sensitive, unrelated to AI strategy) strip directly below the Inbox.
+
+**DoD tests (gate) — ✅ all verified 2026-09-05, real DB, real LLM calls:**
+- A fresh campaign's `generate_campaign_todo()` call inserts real, individually-addressable `TodoItem` rows
+  (not a JSON blob) — verified 1:1 against the function's own return value and a direct DB query.
+- Calling `generate_campaign_todo()` again immediately does not duplicate an already-PENDING item with the
+  same label (dedup backstop) — verified (2 items after run 1, 0 new after run 2, same 2 labels).
+- The signal-driven tick does NOT regenerate when nothing real changed (verified: identical fingerprint,
+  zero new items) and DOES detect a real change (a genuine new reply flipped the fingerprint) but correctly
+  withholds regeneration while within the 2-hour cooldown (verified on an isolated test campaign); on two
+  real, pre-existing campaigns with no prior signal/item at all (the legitimate first-ever check), it
+  correctly generated real, accurately-grounded to-do content immediately — proving the "past cooldown"
+  path fires exactly when it should.
+- `generate_campaign_suggestion()` inserts a GLOBAL `TodoItem` and correctly skips a duplicate while one is
+  already PENDING for that product (verified: 1 item after two consecutive calls).
+- `get_daily_review()` returns `todo_items` and no longer exposes `todo`/`pending_proposal`/
+  `approved_today` (verified via response key inspection).
+- `revise_todo_item()` produces a real, honest `pushback` when the instruction conflicts with a real
+  validated `strategy_insights` row and the campaign's own real metrics (verified with a fabricated
+  conflict scenario — same discipline as Step 20.4's own DoD).
+- `approve_todo_item()` on a CAMPAIGN-scope item applies its proposal to the real `Campaign` row (verified:
+  `lead_count_goal` changed `None → 20` on the real row); on a GLOBAL-scope item it returns a
+  `campaign_prefill` and provably creates **no** campaign (verified: real campaign count unchanged
+  before/after).
+- `dismiss_todo_item()` resolves with `status: DISMISSED`, no side effect.
+- `AUTONOMOUS_OUTREACH_ENABLED` verified unchanged (`false`) before and after every scenario above — this
+  phase never touches it, directly or via any new code path.
+- `npm run build` clean.
+
+---
+
 ## 6. Agent system prompt library (`cognition/prompts.py`)
 
 All prompts share a guardrail preamble so the five principles and the buzzword ban are enforced everywhere. Every prompt demands **JSON only** and is called through `call_json()` with a matching schema.
@@ -2591,6 +2700,7 @@ def guard_adaptation(param_name: str):
 | **P18** | a real hot-lead reply escalates via the unchanged P4/P12 path regardless of daily-plan review state · a campaign's first-ever targeting proposal writes `target_segment`/`lead_count_goal` exactly once, later days refine rather than re-propose · no lead gets a real send without a recorded human Approve on the to-do that covers it · approving an angle/tone change is live for the very next draft, no separate propagation step · `AUTONOMOUS_OUTREACH_ENABLED=false` ⇒ approving a ready-to-dispatch to-do queues nothing real, and the switch's own value is never changed by that approval · two different real days produce provably different `daily_todo` content for an ongoing campaign · a real feedback string produces a materially different regenerated plan/draft · `DAILY_AI_LOOP_ENABLED=false` ⇒ zero to-dos ever generated |
 | **P19** | below the configured sample floor ⇒ zero new insights written · every insight's rationale traces to a real query against `outreach_logs` · the latest `ACTIVE` insight is demonstrably read by the next real plan-generation call · superseding an insight preserves the prior row · no code path writes to any prompt/model config from this phase's output (verified by absence) |
 | **P20** | a campaign's `campaign_theses` entry genuinely references real prior-day events, not a generic restatement · `confidence` is demonstrably lower on real thin/noisy data than on a real clear signal · a real conflicting-signals case produces an explicit named tension, never a silent pick · a real 3-consecutive-failure case pauses only that campaign's dispatch with one grounded question, normal dispatch unaffected · a real conflicting human instruction gets a grounded pushback, and a second explicit instruction after it is followed exactly · `AUTONOMOUS_OUTREACH_ENABLED` is never weakened by any of this |
+| **P21** | every real to-do is an individually-addressable `TodoItem` row, never a JSON blob overwritten wholesale · re-generating never duplicates an already-PENDING same-label item · the signal-driven tick fires only on a genuine real-data change (never on no-op) and respects its per-campaign cooldown · a GLOBAL item's approval provably creates zero campaigns (real count unchanged) while a CAMPAIGN item's approval provably applies to the real row · a per-item feedback round still produces a real, honest pushback on a genuine data conflict · no dashboard switch gates to-do generation any more, and `AUTONOMOUS_OUTREACH_ENABLED` is untouched throughout |
 
 Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, an AI that auto-answers a pricing question it should have escalated, or an executive layer that quietly overrides a human-locked parameter.
 

@@ -560,8 +560,25 @@ sakta tha, try/except+text-fallback add kiya; (2) kickoff-template-preview PRD m
 kiya. **Lesson**: doosre tool/session ka kaam kabhi bhi sirf tracker.md padhke "sahi hoga" maan ke aage mat
 badho — ye poori tarah verify-don't-trust discipline ka test tha, jo pass hua.
 
+**⭐ Poora session ka kaam git commit `2b804d9` me save ho gaya, 2026-09-05** — 78 files, sab kuch (campaign
+architecture, Phase 17-20, theme migration, Cursor ka kaam, audit fixes) ab safe hai. Push nahi kiya
+(sirf local) — remote push ke liye alag confirm chahiye.
+
+**⭐⭐⭐ Phase 21 (Unified AI To-Do Inbox) COMPLETE, 2026-09-05.** User ne "koi switch ya fixed time nahi
+chahiye, AI jab zaroorat lage tab to-do daale, har to-do individually prompt+approve ho" ka explicit ask
+diya — plan mode use kiya (Explore agents + clarifying questions + Hinglish artifact plan, user-approved).
+`DAILY_AI_LOOP_ENABLED` switch poori tarah hata diya — ab 2 automatic trigger hain: daily floor (roz
+guaranteed) + naya signal-driven tick (real data badalte hi turant, 2-hour cooldown se spam-rail). Naya
+Table 36 `todo_items` — har to-do apni khud ki row (CAMPAIGN ya GLOBAL scope), individually feedback+
+approve+dismiss ho sakta he — purana whole-day bulk-Approve/JSON-blob poora superseded. Naya Dashboard
+`TodoInbox.jsx` (top position, jahan "Ready to claim" tha, wo hataya kyunki AI ke apne to-do se duplicate
+tha). Real backend test se sab kuch confirm hua — dedup, signal-driven trigger + cooldown, GLOBAL approve
+kabhi campaign nahi banata, CAMPAIGN approve real row pe apply hota he, pushback abhi bhi genuine.
+`AUTONOMOUS_OUTREACH_ENABLED` poore build/test me kabhi touch nahi hua.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
-audited); Step 19.5 DONE; kickoff template preview DONE (PRD documented); HTML/TEXT email render + logo +
-INTEREST preview DONE (logo-missing fallback hardened).** Baaki: Step 16.8 (marketing content),
-email-vs-WhatsApp channel-preference lever.
+audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
+AI To-Do Inbox) DONE — sab kuch git commit `2b804d9` me hai (Phase 21 ka kaam is commit ke BAAD hua he,
+abhi tak uncommitted).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
+VPS deploy (abhi tak nahi hua), remote push (abhi tak nahi hua), Phase 21 ka kaam commit karna baaki he.

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Plus, Sparkles, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Clock } from "lucide-react";
 import { api } from "../api/client";
 import CampaignFormModal from "./CampaignFormModal";
 
@@ -47,26 +47,19 @@ export default function CampaignCalendar() {
   const [error, setError] = useState(null);
   const [formDate, setFormDate] = useState(null); // non-null (incl. "") shows the create form
   const [formPrefill, setFormPrefill] = useState(null);
-  // Step 18.1 follow-up (2026-09-02) -- proactive, product-scoped suggestions surfaced
-  // BEFORE any campaign exists, so a human can act on one in a click instead of waiting
-  // to notice a gap themselves. `_run_daily_plan_tick` already generates these daily.
-  const [suggestions, setSuggestions] = useState([]);
+  // Phase 21 -- "review pending" now means "this campaign has >=1 real PENDING to-do",
+  // not the old whole-day last_approved_date flag (that concept no longer exists -- every
+  // to-do is individually resolved in the unified AI Manager Inbox on the Dashboard, not
+  // here). A cheap single fetch, same real-item volume as the inbox itself.
+  const [campaignIdsWithPendingTodo, setCampaignIdsWithPendingTodo] = useState(new Set());
 
   useEffect(() => {
     api.listCampaigns().then(setCampaigns).catch((err) => setError(err.message));
     api.listProducts().then(setProducts).catch(() => {});
-    api.listCampaignSuggestions().then(setSuggestions).catch(() => {});
+    api.listTodos()
+      .then((items) => setCampaignIdsWithPendingTodo(new Set(items.map((i) => i.campaign_id).filter(Boolean))))
+      .catch(() => {});
   }, []);
-
-  function openFormFromSuggestion(s) {
-    setFormPrefill({
-      product_id: s.product_id,
-      target_segment: s.target_segment,
-      lead_count_goal: s.lead_count_goal,
-      suggestion: s.suggestion,
-    });
-    setFormDate(todayKey);
-  }
 
   const productTitle = useMemo(() => {
     const map = {};
@@ -128,31 +121,6 @@ export default function CampaignCalendar() {
         </div>
       </div>
 
-      {suggestions.length > 0 && (
-        <div className="mb-3 flex flex-col gap-1.5">
-          {suggestions.map((s) => (
-            <div
-              key={s.product_id}
-              className="flex items-start justify-between gap-3 rounded-lg border border-dashed border-gold-600 bg-gold-100 p-2.5"
-            >
-              <div className="flex items-start gap-2 min-w-0">
-                <Sparkles size={13} className="mt-0.5 shrink-0 text-gold-700" />
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-ink-900">{s.product_title}</p>
-                  <p className="mt-0.5 text-[11px] text-ink-700">{s.suggestion}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => openFormFromSuggestion(s)}
-                className="shrink-0 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:opacity-90"
-              >
-                Create this campaign
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
       <div className="grid grid-cols-7 gap-1.5">
         {WEEKDAYS.map((w) => (
           <div key={w} className="px-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-ink-500">
@@ -206,14 +174,10 @@ export default function CampaignCalendar() {
                   </span>
                 ) : (
                   dayCampaigns.map((c) => {
-                    // Review-pending indicator (UI Phase 16 revision, 2026-09-02) -- the
-                    // Daily Review card itself lives on this campaign's own Detail page now,
-                    // not as a flat Dashboard list, so the calendar box is what has to show
-                    // "this one needs a look today" instead. Reuses `last_approved_date`
-                    // already present on every campaign the list endpoint returns -- no
-                    // extra fetch per box.
-                    const activeStatus = ["PROPOSED", "APPROVED", "RUNNING"].includes(c.status);
-                    const reviewPending = activeStatus && c.last_approved_date !== todayKey;
+                    // Review-pending indicator (UI Phase 16 revision, 2026-09-02; Phase 21
+                    // revision 2026-09-05) -- shows whenever this campaign has a real
+                    // PENDING to-do waiting in the unified AI Manager Inbox (Dashboard).
+                    const reviewPending = campaignIdsWithPendingTodo.has(c.id);
                     return (
                       <div
                         key={c.id}
@@ -263,9 +227,6 @@ export default function CampaignCalendar() {
           onClose={() => { setFormDate(null); setFormPrefill(null); }}
           onCreated={(created) => {
             setCampaigns((prev) => [created, ...(prev || [])]);
-            // the suggestion this campaign came from (if any) is now acted-on -- drop it
-            // locally instead of waiting for a refetch, same product_id can't suggest twice.
-            setSuggestions((prev) => prev.filter((s) => s.product_id !== created.product_id));
             setFormDate(null);
             setFormPrefill(null);
           }}

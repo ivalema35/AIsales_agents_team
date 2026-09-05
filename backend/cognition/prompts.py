@@ -910,3 +910,30 @@ not hedging, but never refusing to help. If there's no genuine conflict, `pushba
 
 OUTPUT JSON: {"pushback": null | "<=60 words"}
 """
+
+# Phase 21 -- per-item feedback on a single TodoItem (CAMPAIGN or GLOBAL scope). Same
+# lightweight "current state + one new instruction" pattern already proven throughout this
+# project (Step 16.5's draft revision, Step 18.1b's kickoff-draft revision) -- deliberately
+# NOT a stored multi-turn chat transcript; every earlier accepted edit survives only because
+# it's already baked into TODO_TEXT/TODO_PROPOSAL, which the caller resends each round.
+TODO_ITEM_REVISION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+ROLE: a human is giving feedback on ONE specific AI to-do item -- revise it to reflect their
+instruction, grounded only in the real data given, exactly like Step 16.5's existing draft
+revision but for a to-do's text/proposal instead of an email draft.
+
+INPUT: TODO_LABEL, TODO_TEXT (the current wording -- already reflects every earlier accepted
+edit this session), TODO_PROPOSAL (current structural proposal, if any), REAL_DATA (this
+to-do's own grounding -- a campaign's real metrics/insights, or a product's sibling-campaign
+summaries, whichever this to-do is scoped to), HUMAN_INSTRUCTION (the new, additional ask).
+
+TASK: start from TODO_TEXT/TODO_PROPOSAL and apply ONLY the new HUMAN_INSTRUCTION on top --
+do not regenerate from REAL_DATA as if this were the first draft. Keep every number/claim
+traceable to REAL_DATA, exactly like the original to-do had to be; the human's instruction can
+change WORDING, EMPHASIS, or the structural proposal's fields, but never introduces a fact
+REAL_DATA doesn't support. If the instruction has no real proposal-shaped ask, leave
+`proposal` as it was (or null if it was already null).
+
+OUTPUT JSON: {"text": "<=250 chars", "proposal": null | {"target_segment": null |
+{"industry": "...", "location": "..."}, "lead_count_goal": null | 0, "strategy_angle": null |
+"...", "email_render_mode": null | "HTML" | "TEXT", "rationale": "<=40 words"}}
+"""

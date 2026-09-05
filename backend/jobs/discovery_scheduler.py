@@ -32,7 +32,7 @@ from sqlalchemy import func, text
 from config import Config
 from database.db_config import SessionLocal
 from database.models import (
-    Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport, OutreachSequence, Campaign)
+    Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport, OutreachSequence, Campaign, TodoItem)
 from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
@@ -41,13 +41,14 @@ from services.outreach.whatsapp_template_service import poll_all_pending
 from services.engagement_escalation_service import find_engagement_escalations
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.campaign_service import (
-    generate_campaign_todo, generate_campaign_suggestion, eligible_campaigns_for_discovery)
+    generate_campaign_todo, generate_campaign_suggestion, eligible_campaigns_for_discovery,
+    todo_signal_fingerprint)
 from services.strategy_reflection_service import run_reflection_cycle
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
     OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
     STUCK_ALERT_ENABLED, STUCK_ALERT_COOLDOWN_MINUTES, STUCK_ALERT_LAST_SENT_AT,
-    EOD_REPORT_RECIPIENTS, DAILY_AI_LOOP_ENABLED, DAILY_PLAN_LAST_RUN_DATE,
+    EOD_REPORT_RECIPIENTS, DAILY_PLAN_LAST_RUN_DATE,
     STRATEGY_REFLECTION_ENABLED, STRATEGY_REFLECTION_LAST_RUN_DATE)
 from services.heartbeat import beat, beat_standalone
 from services.system_health import (
@@ -429,17 +430,20 @@ def _run_engagement_escalation_tick(db):
 
 
 def _run_daily_plan_tick(db):
-    """Phase 18 Step 18.1 -- once per IST calendar day, after 06:00: refreshes every LIVE
-    campaign's daily_todo from today's real signals, and logs a real campaign-suggestion
-    note per active product when the data genuinely supports one. A campaign is ALWAYS
-    human-created (2026-09-01 revision, tracker.md) -- nothing in this tick ever creates
-    one. Gated by DAILY_AI_LOOP_ENABLED (default off): this spends real LLM calls even
-    though it never sends anything, so it stays an explicit opt-in, same posture as every
-    other real-cost switch in this file.
-    """
-    if not get_bool(db, DAILY_AI_LOOP_ENABLED, default=False):
-        return
+    """Phase 18 Step 18.1 -- once per IST calendar day, after 06:00: the guaranteed DAILY
+    FLOOR. Every live campaign gets a fresh to-do review even if nothing changed today, and
+    every active product gets checked for a real campaign-suggestion, so the AI Manager Inbox
+    is never silent for days. A campaign is ALWAYS human-created (2026-09-01 revision,
+    tracker.md) -- nothing in this tick ever creates one.
 
+    Phase 21 (2026-09-05): no more manual DAILY_AI_LOOP_ENABLED switch -- the user's own
+    explicit ask was "no specific time or switch, the AI should speak up whenever it judges
+    something needs attention." This tick is now unconditional (still gated by the 06:00
+    time-of-day + once-per-day idempotency checks below, which exist for cost/ordering
+    reasons, not as a human-facing on/off toggle). See also _run_signal_driven_todo_tick()
+    right below, which covers the OTHER half of that ask -- same-day, event-triggered
+    regeneration the moment something real changes, riding this same scheduler loop.
+    """
     now_ist = datetime.utcnow() + IST_OFFSET
     if (now_ist.hour, now_ist.minute) < (6, 0):
         return
@@ -464,6 +468,44 @@ def _run_daily_plan_tick(db):
     set_str(db, DAILY_PLAN_LAST_RUN_DATE, today_str)
     logger.info("daily plan tick complete -> %d campaign(s) refreshed, %d product(s) checked for a suggestion",
                len(live_campaigns), len(products))
+
+
+# Phase 21 -- how long a signal-driven regeneration must wait before re-checking the SAME
+# campaign again, even if its signal keeps changing. Pure engineering cost/spam rail (never
+# a human-facing switch) -- a burst of replies must not turn into a burst of LLM calls.
+_TODO_SIGNAL_COOLDOWN = timedelta(hours=2)
+
+
+def _run_signal_driven_todo_tick(db):
+    """Phase 21 -- the event-triggered half of "no specific time or switch": rides this
+    same scheduler loop (every real poll, no gate of its own) and regenerates a SPECIFIC
+    campaign's to-do the moment something concrete changed since the last time -- a new
+    reply, a new hot lead, a fresh watchdog alert, or a target that's still unset -- instead
+    of making a human wait for tomorrow's daily-floor tick. Cheap: reuses the exact
+    compute_campaign_metrics() every other surface already calls, diffed against
+    campaign.last_todo_signal (a small JSON snapshot, updated inside generate_campaign_todo
+    itself every time it actually runs, from EITHER tick)."""
+    live_campaigns = db.query(Campaign).filter(Campaign.status.in_(("PROPOSED", "APPROVED", "RUNNING"))).all()
+    now = datetime.utcnow()
+    for campaign in live_campaigns:
+        try:
+            current_signal = todo_signal_fingerprint(db, campaign)
+            last_signal = json.loads(campaign.last_todo_signal) if campaign.last_todo_signal else None
+            if current_signal == last_signal:
+                continue
+            most_recent_item = (
+                db.query(TodoItem)
+                .filter(TodoItem.campaign_id == campaign.id)
+                .order_by(TodoItem.created_at.desc())
+                .first()
+            )
+            if most_recent_item and most_recent_item.created_at and \
+                    now - most_recent_item.created_at < _TODO_SIGNAL_COOLDOWN:
+                continue  # cooldown -- a burst of replies must not become a burst of LLM calls
+            generate_campaign_todo(db, campaign.id)
+            logger.info("signal-driven todo tick -> campaign %s regenerated (signal changed)", campaign.id)
+        except Exception:  # noqa: BLE001 - one bad campaign must not block the rest
+            logger.exception("signal-driven todo tick: failed for campaign %s", campaign.id)
 
 
 def _run_strategy_reflection_tick(db):
@@ -518,6 +560,7 @@ def run_forever(poll_interval=None):
             _run_template_poll_tick(db)
             _run_engagement_escalation_tick(db)
             _run_daily_plan_tick(db)
+            _run_signal_driven_todo_tick(db)
             _run_strategy_reflection_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")

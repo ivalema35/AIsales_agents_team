@@ -71,18 +71,15 @@ COMPANY_CONTACT_KEYS = (COMPANY_CONTACT_EMAIL, COMPANY_CONTACT_PHONE,
 PROSPECT_SEARCH_MONTHLY_BUDGET = "prospect_search_monthly_budget"
 PROSPECT_SEARCH_COST_PER_SEARCH = "prospect_search_cost_per_search"
 
-# Phase 18 Step 18.1 -- gates the daily campaign-todo/suggestion tick, same fail-safe
-# default posture as AUTONOMOUS_OUTREACH_ENABLED. This switch does not gate any real
-# send -- generate_campaign_todo/generate_campaign_suggestion only write a todo list or
-# log a suggestion note -- but it stays default-off anyway: an LLM call the operator
-# didn't ask for yet, running on a schedule, should still need an explicit opt-in.
-DAILY_AI_LOOP_ENABLED = "daily_ai_loop_enabled"
-# ISO date (YYYY-MM-DD) the daily tick last actually ran -- internal bookkeeping, not
-# dashboard-editable, same pattern as STUCK_ALERT_LAST_SENT_AT.
+# Phase 18 Step 18.1 -- SUPERSEDED as a switch by Phase 21 (2026-09-05): the daily plan tick
+# is now unconditional (the operator's own explicit ask -- "no specific time or switch, the
+# AI should speak up whenever it judges something needs attention"). DAILY_PLAN_LAST_RUN_DATE
+# stays -- internal once-per-day bookkeeping, not dashboard-editable, same pattern as
+# STUCK_ALERT_LAST_SENT_AT -- only the human-facing on/off gate is gone.
 DAILY_PLAN_LAST_RUN_DATE = "daily_plan_last_run_date"
 
-# Phase 19 Step 19.1/19.2 -- same fail-safe default posture as DAILY_AI_LOOP_ENABLED: a
-# scheduled LLM reflection call the operator didn't ask for yet stays default-off. The
+# Phase 19 Step 19.1/19.2 -- same fail-safe default-off posture AUTONOMOUS_OUTREACH_ENABLED
+# uses: a
 # floor is operator-configurable (§19.2's own requirement -- this project's real volume is
 # small, ~40 sends/day across every product, so a per-domain floor smaller than that would
 # call a coincidence a pattern) rather than hardcoded.
@@ -179,7 +176,6 @@ def get_all(db) -> dict:
         # silently runs until a human explicitly sets a real, non-zero budget.
         PROSPECT_SEARCH_MONTHLY_BUDGET: get_float(db, PROSPECT_SEARCH_MONTHLY_BUDGET, default=0.0),
         PROSPECT_SEARCH_COST_PER_SEARCH: get_float(db, PROSPECT_SEARCH_COST_PER_SEARCH, default=0.01),
-        DAILY_AI_LOOP_ENABLED: get_bool(db, DAILY_AI_LOOP_ENABLED, default=False),
         STRATEGY_REFLECTION_ENABLED: get_bool(db, STRATEGY_REFLECTION_ENABLED, default=False),
         STRATEGY_REFLECTION_MIN_SAMPLE_FLOOR: get_int(db, STRATEGY_REFLECTION_MIN_SAMPLE_FLOOR, default=40),
     }

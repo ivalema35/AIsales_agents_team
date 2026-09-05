@@ -22,18 +22,17 @@ from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
 from cognition.prompts import (
     CAMPAIGN_TODO_SYSTEM_PROMPT, CAMPAIGN_SUGGESTION_SYSTEM_PROMPT, EXECUTION_WATCHDOG_SYSTEM_PROMPT,
-    CONVERSATIONAL_PUSHBACK_SYSTEM_PROMPT)
+    CONVERSATIONAL_PUSHBACK_SYSTEM_PROMPT, TODO_ITEM_REVISION_SYSTEM_PROMPT)
 from config import Config
 from database.models import (
     AgentEvent, Campaign, CampaignThesis, InboundConversation, Lead, LeadReviewInsight, LeadScore, OutreachLog,
-    Product)
+    Product, TodoItem)
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
 from services.reporting_service import IST_OFFSET
 from services.system_settings import get_bool, AUTONOMOUS_OUTREACH_ENABLED
 
 _KB_GAP_LOOKBACK_DAYS = 14
-_SUGGESTION_LOOKBACK_DAYS = 7
 _WATCHDOG_CONSECUTIVE_THRESHOLD = 3
 _WATCHDOG_FAILURE_STATUSES = ("FAILED", "BOUNCED")
 
@@ -220,7 +219,7 @@ def compute_campaign_lead_summary(db, campaign_id: str) -> dict:
     """Campaign Detail page (UI Phase 16 revision, 2026-09-02) -- "aaj X leads mile, Y kaam
     ke the" in the operator's own words. `found_today`/`qualified_today` are scoped to the
     real IST calendar day, matching this project's other daily-boundary logic
-    (`_run_daily_plan_tick`, `approve_campaign_today`'s `_today_ist()`) rather than a
+    (`_run_daily_plan_tick`, `generate_campaign_todo`'s own `_today_ist()`) rather than a
     rolling 24h window. "Qualified" reuses the existing Score agent's own tier judgment
     (HOT/WARM) -- no new qualification logic invented for this."""
     today = _today_ist()
@@ -485,21 +484,91 @@ def _recent_kb_gap_topics(db, product_id: str) -> list[str]:
     return topics
 
 
+# Phase 21 -- how long a signal-driven regeneration must wait before re-checking the SAME
+# campaign again, even if its signal keeps changing. Purely an engineering cost/spam rail
+# (never a human-facing switch) -- a burst of replies must not turn into a burst of LLM calls.
+_TODO_SIGNAL_COOLDOWN_HOURS = 2
+
+
+def serialize_todo_item(item: TodoItem) -> dict:
+    return {
+        "id": item.id,
+        "scope": item.scope,
+        "campaign_id": item.campaign_id,
+        "product_id": item.product_id,
+        "label": item.label,
+        "text": item.text,
+        "proposal": json.loads(item.proposal) if item.proposal else None,
+        "confidence": item.confidence,
+        "rationale": item.rationale,
+        "status": item.status,
+        "created_at": str(item.created_at),
+        "resolved_at": str(item.resolved_at) if item.resolved_at else None,
+    }
+
+
+def _apply_proposal_to_campaign(campaign: Campaign, proposal: dict) -> None:
+    """Shared field-by-field apply logic -- the ONLY place a strategist's proposal actually
+    changes a real Campaign row, used by approve_todo_item() for a CAMPAIGN-scope item.
+    Never called for a GLOBAL item (those never touch a campaign row -- see
+    approve_todo_item's own docstring)."""
+    if "target_segment" in proposal:
+        campaign.target_segment = json.dumps(proposal["target_segment"])
+    if "lead_count_goal" in proposal:
+        campaign.lead_count_goal = proposal["lead_count_goal"]
+    if "strategy_angle" in proposal:
+        campaign.strategy_angle = proposal["strategy_angle"]
+        # Angle changed -- cached kickoff template was written against the old tone; next
+        # no-lead review regenerates fresh.
+        campaign.kickoff_draft = None
+    if "email_render_mode" in proposal:
+        new_mode = proposal["email_render_mode"]
+        if resolve_email_render_mode(campaign) != new_mode:
+            campaign.email_render_mode = new_mode
+            campaign.kickoff_draft = None
+
+
+def _pending_proposal_for_campaign(db, campaign_id: str) -> dict | None:
+    """Phase 21 -- the campaign's own current PENDING "Proposal" to-do item, if any (at most
+    one can exist at a time -- generate_campaign_todo()'s own dedup guarantees that). Replaces
+    every old direct read of the now-superseded campaign.pending_strategy_proposal column."""
+    item = db.query(TodoItem).filter(
+        TodoItem.campaign_id == campaign_id, TodoItem.status == "PENDING", TodoItem.label == "Proposal",
+    ).first()
+    return json.loads(item.proposal) if item and item.proposal else None
+
+
+def todo_signal_fingerprint(db, campaign: Campaign) -> dict:
+    """Phase 21 -- the lightweight tuple _run_signal_driven_todo_tick() diffs against
+    campaign.last_todo_signal to decide "did anything real change since the last time we
+    generated a to-do for this campaign". Deliberately cheap (reuses the same
+    compute_campaign_metrics() every other surface already calls) -- no new aggregation."""
+    metrics = compute_campaign_metrics(db, campaign.id)
+    has_target = bool(json.loads(campaign.target_segment or "{}"))
+    return {**metrics, "has_target": has_target}
+
+
 def generate_campaign_todo(db, campaign_id: str) -> dict:
-    """AI Sales Manager's daily strategy review for one EXISTING (human-made) campaign.
-    Rewritten 2026-09-02 (tracker.md): no kickoff/ongoing split, no fixed to-do types --
-    one strategist reading whatever real data exists today, the same mechanism whether
-    that's nothing yet (a fresh campaign's first day) or a real track record. Never
-    creates a campaign. Returns {"todo": [...], "proposal": {...}|None,
-    "journal": {...}|None} -- also persisted onto campaign.daily_todo /
-    campaign.pending_strategy_proposal / a campaign_theses row (Phase 20 Step 20.1, one row
-    per campaign per real IST day -- an upsert, so a same-day re-run overwrites today's own
-    entry rather than duplicating it). The proposal is NOT applied to
-    target_segment/lead_count_goal/strategy_angle here -- only approve_campaign_today()
-    does that, once a human has actually seen it. The journal is different from
-    `proposal`/`todo`: it is the strategist's own persistent, dated narrative belief about
-    this campaign, carried across days regardless of whether anything today needs human
-    action."""
+    """AI Sales Manager's strategy review for one EXISTING (human-made) campaign -- called
+    both by the daily floor tick (once per IST day, unconditionally) and the signal-driven
+    tick (mid-day, only when something real changed). One strategist reading whatever real
+    data exists right now, the same mechanism whether that's nothing yet (a fresh campaign's
+    first review) or a real track record. Never creates a campaign.
+
+    Phase 21 (2026-09-05): no longer writes campaign.daily_todo/pending_strategy_proposal --
+    every real to-do (including a structural proposal, which becomes one to-do item carrying
+    a `proposal` field) is its own addressable `TodoItem` row (scope=CAMPAIGN), inserted here,
+    never overwritten. A new item is skipped if an already-PENDING item for this campaign has
+    the same label -- the model's own "never fill space with a generic observation" discipline
+    means real duplicates are rare; this is just a backstop against the SAME unresolved point
+    being re-raised every tick before a human gets to it. Returns
+    {"created_items": [...], "journal": {...}|None} -- created_items is only what THIS call
+    added, not the campaign's full pending queue (callers needing the whole queue query
+    TodoItem directly, e.g. get_daily_review()/GET /todos).
+
+    The journal (campaign_theses upsert) is unrelated to todo_items -- it is the strategist's
+    own persistent, dated narrative belief about this campaign, carried across days regardless
+    of whether anything today needs human action, and unaffected by this rewrite."""
     campaign = db.get(Campaign, campaign_id)
     if not campaign:
         raise ValueError(f"campaign {campaign_id} not found")
@@ -539,29 +608,47 @@ AUTONOMOUS_OUTREACH_ENABLED: {json.dumps(outreach_enabled)}
     except LLMError as exc:
         log_agent_event(db, "CAMPAIGN", None, "GENERATE_TODO", 0.0, "LOW", "EXECUTE",
                         payload={"campaign_id": campaign_id, "error": str(exc)})
-        # leave existing todo/proposal/journal untouched on failure
         return {
-            "todo": json.loads(campaign.daily_todo or "[]"),
-            "proposal": json.loads(campaign.pending_strategy_proposal) if campaign.pending_strategy_proposal else None,
+            "created_items": [],
             "journal": _thesis_dict(db.query(CampaignThesis).filter_by(campaign_id=campaign_id, day=today).first()),
         }
 
+    pending_labels = {
+        row[0] for row in db.query(TodoItem.label).filter(
+            TodoItem.campaign_id == campaign_id, TodoItem.status == "PENDING",
+        ).all()
+    }
+
     raw_todo = data.get("todo")
-    todo = []
-    if isinstance(raw_todo, list):
-        for item in raw_todo:
-            if not isinstance(item, dict):
-                continue
-            label = str(item.get("label", "")).strip()[:30]
-            text = str(item.get("text", "")).strip()[:250]
-            if text:
-                todo.append({"label": label or "Note", "text": text})
-
     proposal = _clean_proposal(data.get("proposal"))
-    journal = _clean_journal(data.get("journal"))
+    created_items = []
+    if isinstance(raw_todo, list):
+        for raw_item in raw_todo:
+            if not isinstance(raw_item, dict):
+                continue
+            label = str(raw_item.get("label", "")).strip()[:30] or "Note"
+            text = str(raw_item.get("text", "")).strip()[:250]
+            if not text or label in pending_labels:
+                continue
+            item = TodoItem(scope="CAMPAIGN", campaign_id=campaign_id, label=label, text=text)
+            db.add(item)
+            created_items.append(item)
+            pending_labels.add(label)  # this same call never raises the same label twice either
 
-    campaign.daily_todo = json.dumps(todo)
-    campaign.pending_strategy_proposal = json.dumps(proposal) if proposal else None
+    # A structural proposal becomes its OWN to-do item -- `proposal` field carries the JSON,
+    # `text` carries the human-readable rationale, so it renders through the exact same
+    # per-item card as every other to-do (no separate "pending_proposal" concept anymore).
+    if proposal and "Proposal" not in pending_labels:
+        proposal_item = TodoItem(
+            scope="CAMPAIGN", campaign_id=campaign_id, label="Proposal",
+            text=proposal.get("rationale") or "The AI has a structural change to propose for this campaign.",
+            proposal=json.dumps(proposal), confidence=proposal.get("confidence"),
+            rationale=proposal.get("rationale"),
+        )
+        db.add(proposal_item)
+        created_items.append(proposal_item)
+
+    journal = _clean_journal(data.get("journal"))
     if journal:
         thesis = db.query(CampaignThesis).filter_by(campaign_id=campaign_id, day=today).first()
         if thesis:
@@ -570,21 +657,38 @@ AUTONOMOUS_OUTREACH_ENABLED: {json.dumps(outreach_enabled)}
             thesis.pivot_decision = journal["pivot_decision"]
         else:
             db.add(CampaignThesis(campaign_id=campaign_id, day=today, **journal))
+
+    campaign.last_todo_signal = json.dumps(todo_signal_fingerprint(db, campaign))
     db.commit()
+    # expire_on_commit=False (db_config.py) means a freshly-added row's server_default
+    # columns (created_at) stay None on the Python side after commit unless refreshed --
+    # only matters for this call's own return value, the persisted row is correct either way.
+    for item in created_items:
+        db.refresh(item)
     log_agent_event(db, "CAMPAIGN", None, "GENERATE_TODO", 1.0, "LOW", "EXECUTE",
-                    payload={"campaign_id": campaign_id, "todo_count": len(todo), "has_proposal": bool(proposal),
-                             "has_journal": bool(journal)})
-    return {"todo": todo, "proposal": proposal, "journal": {"day": today, **journal} if journal else None}
+                    payload={"campaign_id": campaign_id, "items_created": len(created_items),
+                             "has_proposal": bool(proposal), "has_journal": bool(journal)})
+    return {
+        "created_items": [serialize_todo_item(i) for i in created_items],
+        "journal": {"day": today, **journal} if journal else None,
+    }
 
 
 def generate_campaign_suggestion(db, product_id: str) -> dict | None:
     """Notices, from real data, when a product looks worth a fresh campaign push -- never
-    creates a campaign. Logs a CAMPAIGN_SUGGESTED agent_event (existing table, no new one)
-    only when the model returns a real, non-empty suggestion. Returns
-    {"suggestion": str, "target_segment": dict|None, "lead_count_goal": int|None}, or None
-    if nothing concrete stood out. 2026-09-02: now also proposes a concrete target (not
-    just a nudge sentence) -- this is what a human clicking "Create this campaign" straight
-    from the suggestion (Dashboard) pre-fills the create form with."""
+    creates a campaign. Returns {"suggestion": str, "target_segment": dict|None,
+    "lead_count_goal": int|None}, or None if nothing concrete stood out.
+
+    Phase 21 (2026-09-05): when the model returns a real suggestion, this now inserts a
+    GLOBAL-scope `TodoItem` (product_id=product_id, no campaign_id) -- the free-for-all half
+    of the unified inbox ("this product's leads are trending strong in industry X, worth a
+    new campaign"), alongside the existing CAMPAIGN-scope items. Skips inserting if a PENDING
+    GLOBAL item already exists for this product (a human hasn't acted on the last one yet --
+    no point repeating it every tick). Still also logs the CAMPAIGN_SUGGESTED agent_event
+    (existing table, unchanged) purely for the audit trail; nothing downstream reads it as a
+    source of truth anymore -- get_live_campaign_suggestions() (the last consumer of that
+    event-derived view) is removed entirely by Phase 21 in favor of querying TodoItem directly
+    (GET /api/v1/todos, api/todos.py)."""
     product = db.get(Product, product_id)
     if not product:
         raise ValueError(f"product {product_id} not found")
@@ -632,64 +736,18 @@ PAST_CAMPAIGNS: {json.dumps(campaign_summaries, ensure_ascii=False)}
 
     log_agent_event(db, "CAMPAIGN", None, "CAMPAIGN_SUGGESTED", 1.0, "LOW", "EXECUTE",
                     payload={"product_id": product_id, **result})
+
+    already_pending = db.query(TodoItem).filter(
+        TodoItem.product_id == product_id, TodoItem.scope == "GLOBAL", TodoItem.status == "PENDING",
+    ).first()
+    if not already_pending:
+        db.add(TodoItem(
+            scope="GLOBAL", product_id=product_id, label="New campaign idea", text=suggestion,
+            proposal=json.dumps({k: v for k, v in cleaned.items() if k != "rationale"}) if cleaned else None,
+            rationale=suggestion,
+        ))
+        db.commit()
     return result
-
-
-def get_live_campaign_suggestions(db) -> list[dict]:
-    """Every active product's most recent CAMPAIGN_SUGGESTED event, if it's still "live":
-    within _SUGGESTION_LOOKBACK_DAYS AND no campaign has been created for that product
-    since the suggestion fired (a human acting on it, via this suggestion or otherwise,
-    naturally retires it -- no separate "dismissed" flag needed). Computed fresh from
-    agent_events + campaigns every call, same "never a stale cache" discipline as
-    compute_campaign_metrics."""
-    products = db.query(Product).filter(Product.is_active == 1).all()
-
-    # payload isn't queryable (JSON text) -- filter/group in Python once, same posture as
-    # _recent_kb_gap_topics; real event volume is small enough this is cheap.
-    cutoff = datetime.utcnow() - timedelta(days=_SUGGESTION_LOOKBACK_DAYS)
-    events = (
-        db.query(AgentEvent)
-        .filter(AgentEvent.action_type == "CAMPAIGN_SUGGESTED", AgentEvent.created_at >= cutoff)
-        .order_by(AgentEvent.created_at.desc())
-        .all()
-    )
-    latest_by_product = {}
-    for e in events:
-        pid = json.loads(e.payload or "{}").get("product_id")
-        if pid and pid not in latest_by_product:  # already sorted desc -- first hit is latest
-            latest_by_product[pid] = e
-
-    live = []
-    for product in products:
-        event = latest_by_product.get(product.id)
-        if not event:
-            continue
-        # Real root cause found live (2026-09-02), NOT just "same-second granularity":
-        # SQLite has no native datetime type -- `created_at` is stored as TEXT via SQL's
-        # own CURRENT_TIMESTAMP ('2026-09-02 08:56:28', no microseconds), but SQLAlchemy's
-        # sqlite dialect binds a Python datetime.datetime parameter as
-        # '2026-09-02 08:56:28.000000' (WITH microseconds). SQLite then compares both as
-        # plain strings -- and the shorter, no-microseconds stored value always sorts
-        # BEFORE the longer bound one, so `Campaign.created_at >= event.created_at` was
-        # false even for the literal same instant. Confirmed via SQLAlchemy engine echo,
-        # not guessed. Fix: format the bound value to match SQLite's own CURRENT_TIMESTAMP
-        # text shape before comparing, instead of letting the dialect add microseconds.
-        cutoff_str = event.created_at.strftime("%Y-%m-%d %H:%M:%S")
-        acted_on = db.query(Campaign).filter(
-            Campaign.product_id == product.id, Campaign.created_at >= cutoff_str
-        ).first()
-        if acted_on:
-            continue
-        payload = json.loads(event.payload or "{}")
-        live.append({
-            "product_id": product.id,
-            "product_title": product.title,
-            "suggestion": payload.get("suggestion", ""),
-            "target_segment": payload.get("target_segment"),
-            "lead_count_goal": payload.get("lead_count_goal"),
-            "created_at": str(event.created_at),
-        })
-    return live
 
 
 def get_daily_review(db, campaign_id: str) -> dict:
@@ -740,14 +798,20 @@ def get_daily_review(db, campaign_id: str) -> dict:
         sample_is_kickoff_template = sample_draft is not None
         sample_pain_points = ["[Pain Point]"] if sample_draft else []
 
+    # Phase 21 -- this campaign's own real, individually-addressable to-do queue, newest
+    # first. Replaces `todo`/`pending_proposal`/`approved_today` entirely: a structural
+    # proposal is just the one item in this list that happens to carry a `proposal` field,
+    # and there is no more single whole-day approval flag -- each item has its own status.
+    todo_items = (
+        db.query(TodoItem)
+        .filter(TodoItem.campaign_id == campaign_id, TodoItem.status == "PENDING")
+        .order_by(TodoItem.created_at.desc())
+        .all()
+    )
+
     return {
         "campaign_id": campaign.id,
-        "todo": json.loads(campaign.daily_todo or "[]"),
-        # Step 18.1/18.4 -- the strategist's latest not-yet-approved structural proposal, if
-        # any (target_segment/lead_count_goal/strategy_angle + why) -- what Approve will
-        # actually apply. current_target_segment/current_lead_count_goal are the campaign's
-        # REAL, already-in-effect values, shown alongside so the reviewer can see the diff.
-        "pending_proposal": json.loads(campaign.pending_strategy_proposal) if campaign.pending_strategy_proposal else None,
+        "todo_items": [serialize_todo_item(i) for i in todo_items],
         "current_target_segment": json.loads(campaign.target_segment or "{}"),
         "current_lead_count_goal": campaign.lead_count_goal,
         "email_render_mode": render_mode,
@@ -763,7 +827,6 @@ def get_daily_review(db, campaign_id: str) -> dict:
         # stand in for [Business Name]/[Pain Point] here, so a reviewer understands each
         # real send substitutes THAT lead's own real name/pain point, not this one's.
         "sample_pain_points": sample_pain_points,
-        "approved_today": campaign.last_approved_date == _today_ist(),
         "metrics": compute_campaign_metrics(db, campaign_id),
         # Phase 20 Step 20.1 -- today's real journal entry (if generate_campaign_todo has
         # already run today) plus recent prior days, for the AI's Journal UI.
@@ -787,12 +850,8 @@ def ensure_kickoff_draft(db, campaign: Campaign, product: Product) -> dict | Non
         except (TypeError, ValueError, json.JSONDecodeError):
             pass
 
-    pending = json.loads(campaign.pending_strategy_proposal) if campaign.pending_strategy_proposal else {}
-    tone = (
-        (pending.get("strategy_angle") if isinstance(pending, dict) else None)
-        or campaign.strategy_angle
-        or product.default_tone
-    )
+    pending = _pending_proposal_for_campaign(db, campaign.id)
+    tone = (pending or {}).get("strategy_angle") or campaign.strategy_angle or product.default_tone
     render_mode = resolve_email_render_mode(campaign)
     format_directive = format_directive_for_mode(render_mode, product.default_format)
     product_brief = {
@@ -826,8 +885,8 @@ def ensure_kickoff_draft(db, campaign: Campaign, product: Product) -> dict | Non
 
 def revise_kickoff_draft(db, campaign_id: str, instruction: str, current_draft: dict | None = None) -> dict:
     """Step 16.5 conversational revision for the kickoff template (no real lead yet).
-    Persists the revised draft on campaigns.kickoff_draft and clears same-day approval.
-    Free-text that clearly asks for HTML vs plain text flips email_render_mode first."""
+    Persists the revised draft on campaigns.kickoff_draft. Free-text that clearly asks for
+    HTML vs plain text flips email_render_mode first."""
     campaign = db.get(Campaign, campaign_id)
     if not campaign:
         raise ValueError(f"campaign {campaign_id} not found")
@@ -846,12 +905,8 @@ def revise_kickoff_draft(db, campaign_id: str, instruction: str, current_draft: 
         body = str(current_draft.get("body") or "").strip()
         previous_draft_text = f"Subject: {subject}\n\n{body}" if subject else body
 
-    pending = json.loads(campaign.pending_strategy_proposal) if campaign.pending_strategy_proposal else {}
-    tone = (
-        (pending.get("strategy_angle") if isinstance(pending, dict) else None)
-        or campaign.strategy_angle
-        or product.default_tone
-    )
+    pending = _pending_proposal_for_campaign(db, campaign.id)
+    tone = (pending or {}).get("strategy_angle") or campaign.strategy_angle or product.default_tone
     render_mode = resolve_email_render_mode(campaign)
     format_directive = format_directive_for_mode(render_mode, product.default_format)
     product_brief = {
@@ -879,7 +934,6 @@ def revise_kickoff_draft(db, campaign_id: str, instruction: str, current_draft: 
 
     suggestion = suggest_draft_improvement(db, None, product_brief, pain_points, revised.get("sections"))
     campaign.kickoff_draft = json.dumps(revised)
-    clear_campaign_approval(db, campaign_id)
     db.commit()
     pushback = check_instruction_pushback(db, campaign_id, instruction)
     return {
@@ -903,58 +957,103 @@ def set_campaign_email_render_mode(db, campaign_id: str, mode: str) -> dict:
     if resolve_email_render_mode(campaign) != mode:
         campaign.email_render_mode = mode
         campaign.kickoff_draft = None
-        clear_campaign_approval(db, campaign_id)
         db.commit()
     return {"campaign_id": campaign_id, "email_render_mode": mode}
 
 
-def approve_campaign_today(db, campaign_id: str) -> dict:
-    """Records human sign-off on today's plan AND, if the strategist left a pending
-    structural proposal (targeting/lead-count/angle), applies it onto the campaign's real
-    columns now -- Step 18.4, un-deferred 2026-09-02 (built sign-off-only on 2026-09-01,
-    reopened once the fuller loop was clarified). generate_campaign_todo() is the only
-    writer of pending_strategy_proposal; this is the only reader/clearer of it, so nothing
-    a human hasn't actually seen on the review card ever gets applied."""
-    campaign = db.get(Campaign, campaign_id)
-    if not campaign:
-        raise ValueError(f"campaign {campaign_id} not found")
+def revise_todo_item(db, todo_id: str, instruction: str) -> dict:
+    """Phase 21 -- per-item conversational feedback, the SAME lightweight "current state +
+    one new instruction" pattern already proven for drafts (Step 16.5) and the kickoff
+    template (Step 18.1b) -- never a stored multi-turn transcript, the caller's own resent
+    `text`/`proposal` IS the memory. Re-grounds the revision in the same real data the item
+    was originally generated from (a campaign's metrics/insights for CAMPAIGN scope, sibling
+    campaigns for GLOBAL) so the model can't drift from what's actually true. Runs
+    check_instruction_pushback for CAMPAIGN-scope items only (it needs a real campaign_id to
+    check against) -- a GLOBAL item has no existing campaign yet to compare data against."""
+    item = db.get(TodoItem, todo_id)
+    if not item:
+        raise ValueError(f"todo item {todo_id} not found")
+    if item.status != "PENDING":
+        raise ValueError(f"todo item {todo_id} is already {item.status}, no longer editable")
 
+    if item.scope == "CAMPAIGN":
+        campaign = db.get(Campaign, item.campaign_id)
+        real_data = {
+            "metrics": compute_campaign_metrics(db, item.campaign_id),
+            "strategy_angle": campaign.strategy_angle if campaign else None,
+        } if campaign else {}
+    else:
+        product = db.get(Product, item.product_id) if item.product_id else None
+        real_data = {
+            "sibling_campaigns": _sibling_campaign_summaries(db, item.product_id, exclude_id="")
+        } if product else {}
+
+    prompt = TODO_ITEM_REVISION_SYSTEM_PROMPT + f"""
+TODO_LABEL: {json.dumps(item.label, ensure_ascii=False)}
+TODO_TEXT: {json.dumps(item.text, ensure_ascii=False)}
+TODO_PROPOSAL: {item.proposal or "null"}
+REAL_DATA: {json.dumps(real_data, ensure_ascii=False)}
+HUMAN_INSTRUCTION: {json.dumps(instruction, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.3)
+    except LLMError as exc:
+        raise RuntimeError(f"to-do revision failed: {exc}") from exc
+
+    new_text = str(data.get("text", "")).strip()[:250] or item.text
+    new_proposal = _clean_proposal(data.get("proposal")) if data.get("proposal") else None
+
+    item.text = new_text
+    item.proposal = json.dumps(new_proposal) if new_proposal else item.proposal
+    if new_proposal and new_proposal.get("confidence") is not None:
+        item.confidence = new_proposal["confidence"]
+    db.commit()
+
+    pushback = check_instruction_pushback(db, item.campaign_id, instruction) if item.scope == "CAMPAIGN" else None
+    return {"item": serialize_todo_item(item), "pushback": pushback}
+
+
+def approve_todo_item(db, todo_id: str) -> dict:
+    """Phase 21 -- the ONLY way a to-do's `proposal` ever reaches a real Campaign row
+    (CAMPAIGN scope) -- a per-item decision, never a whole-day bulk action. GLOBAL scope
+    never touches a campaign row at all: a campaign is always human-created (Phase 17's own
+    invariant), so approving a "new campaign idea" only hands the frontend a pre-fill
+    payload for the existing CampaignFormModal -- the exact same shape/flow
+    CampaignCalendar's own "Create this campaign" button already used."""
+    item = db.get(TodoItem, todo_id)
+    if not item:
+        raise ValueError(f"todo item {todo_id} not found")
+    if item.status != "PENDING":
+        raise ValueError(f"todo item {todo_id} is already {item.status}")
+
+    proposal = json.loads(item.proposal) if item.proposal else None
     applied = None
-    if campaign.pending_strategy_proposal:
-        proposal = json.loads(campaign.pending_strategy_proposal)
-        if "target_segment" in proposal:
-            campaign.target_segment = json.dumps(proposal["target_segment"])
-        if "lead_count_goal" in proposal:
-            campaign.lead_count_goal = proposal["lead_count_goal"]
-        if "strategy_angle" in proposal:
-            campaign.strategy_angle = proposal["strategy_angle"]
-            # Angle changed -- cached kickoff template was written against the old tone;
-            # next no-lead review regenerates fresh.
-            campaign.kickoff_draft = None
-        if "email_render_mode" in proposal:
-            new_mode = proposal["email_render_mode"]
-            if resolve_email_render_mode(campaign) != new_mode:
-                campaign.email_render_mode = new_mode
-                campaign.kickoff_draft = None
-        campaign.pending_strategy_proposal = None
-        applied = proposal
+    campaign_prefill = None
+    if item.scope == "CAMPAIGN" and proposal:
+        campaign = db.get(Campaign, item.campaign_id)
+        if campaign:
+            _apply_proposal_to_campaign(campaign, proposal)
+            applied = proposal
+    elif item.scope == "GLOBAL" and proposal:
+        campaign_prefill = {**proposal, "product_id": item.product_id}
 
-    today = _today_ist()
-    campaign.last_approved_date = today
+    item.status = "APPROVED"
+    item.resolved_at = datetime.utcnow()
     db.commit()
-    log_agent_event(db, "CAMPAIGN", None, "DAILY_REVIEW_APPROVED", 1.0, "LOW", "EXECUTE",
-                    payload={"campaign_id": campaign_id, "date": today, "applied_proposal": applied})
-    return {"campaign_id": campaign_id, "approved_today": True, "date": today, "applied_proposal": applied}
+    log_agent_event(db, "CAMPAIGN", None, "TODO_ITEM_APPROVED", 1.0, "LOW", "EXECUTE",
+                    payload={"todo_id": todo_id, "scope": item.scope, "applied_proposal": applied})
+    return {"item": serialize_todo_item(item), "applied": applied, "campaign_prefill": campaign_prefill}
 
 
-def clear_campaign_approval(db, campaign_id: str) -> None:
-    """A same-day feedback revision (Step 16.5's revise-draft, reused by the daily review
-    card) changes what the human would actually be sending -- a stale 'approved' from
-    before that edit would be misleading, so any real content change today clears it.
-    Approving again is a fresh, deliberate re-confirmation, same discipline `daily_todo`
-    already has for calendar days."""
-    campaign = db.get(Campaign, campaign_id)
-    if not campaign:
-        raise ValueError(f"campaign {campaign_id} not found")
-    campaign.last_approved_date = None
+def dismiss_todo_item(db, todo_id: str) -> dict:
+    """Resolves a to-do with no change applied -- the human looked at it and decided against
+    acting, as valid an outcome as approving."""
+    item = db.get(TodoItem, todo_id)
+    if not item:
+        raise ValueError(f"todo item {todo_id} not found")
+    if item.status != "PENDING":
+        raise ValueError(f"todo item {todo_id} is already {item.status}")
+    item.status = "DISMISSED"
+    item.resolved_at = datetime.utcnow()
     db.commit()
+    return {"item": serialize_todo_item(item)}

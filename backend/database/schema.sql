@@ -593,6 +593,9 @@ CREATE TABLE IF NOT EXISTS campaigns (
     kickoff_draft     TEXT,
     -- HTML | TEXT (default HTML): designed Phase-11 template vs plain prose send/preview.
     email_render_mode TEXT DEFAULT 'HTML',
+    -- Phase 21: lightweight JSON fingerprint {"sent","opened","replied","hot","has_target"}
+    -- the signal-driven todo tick diffs against to decide whether anything real changed.
+    last_todo_signal  TEXT,
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
@@ -627,6 +630,28 @@ CREATE TABLE IF NOT EXISTS campaign_theses (
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (campaign_id, day),
     FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
+);
+
+-- Table 36 (Phase 21) -- supersedes campaigns.daily_todo/pending_strategy_proposal/
+-- last_approved_date. Every real AI to-do is its own addressable row, individually
+-- feedback-able and individually approved/dismissed -- a new generation only ADDS rows,
+-- never overwrites an unresolved one. CAMPAIGN scope ties to a real campaign; GLOBAL scope
+-- (a "start a new campaign for X" idea) ties to a product instead, no campaign yet.
+CREATE TABLE IF NOT EXISTS todo_items (
+    id              TEXT PRIMARY KEY,
+    scope           TEXT NOT NULL,          -- CAMPAIGN | GLOBAL
+    campaign_id     TEXT,                   -- CAMPAIGN only
+    product_id      TEXT,                   -- GLOBAL only
+    label           TEXT,
+    text            TEXT NOT NULL,
+    proposal        TEXT,                   -- optional JSON structural change
+    confidence      REAL,
+    rationale       TEXT,
+    status          TEXT DEFAULT 'PENDING', -- PENDING | APPROVED | DISMISSED
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    resolved_at     TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
 -- INDEXES
@@ -665,3 +690,6 @@ CREATE INDEX IF NOT EXISTS idx_campaigns_product_date ON campaigns (product_id, 
 CREATE INDEX IF NOT EXISTS idx_leads_campaign         ON leads (campaign_id);
 CREATE INDEX IF NOT EXISTS idx_strategy_insights      ON strategy_insights (product_id, domain, status);
 CREATE INDEX IF NOT EXISTS idx_campaign_theses        ON campaign_theses (campaign_id, day);
+CREATE INDEX IF NOT EXISTS idx_todo_items_status      ON todo_items (status, created_at);
+CREATE INDEX IF NOT EXISTS idx_todo_items_campaign    ON todo_items (campaign_id, status);
+CREATE INDEX IF NOT EXISTS idx_todo_items_product     ON todo_items (product_id, status);

@@ -93,14 +93,22 @@ export const api = {
     const qs = new URLSearchParams(params).toString();
     return request(`/campaigns${qs ? `?${qs}` : ""}`);
   },
-  listCampaignSuggestions: () => request("/campaigns/suggestions"),
   getCampaign: (id) => request(`/campaigns/${id}`),
   createCampaign: (data) => request("/campaigns", { method: "POST", body: JSON.stringify(data) }),
   updateCampaign: (id, data) => request(`/campaigns/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteCampaign: (id) => request(`/campaigns/${id}`, { method: "DELETE" }),
   getCampaignDailyReview: (id) => request(`/campaigns/${id}/daily-review`),
-  approveCampaignToday: (id) => request(`/campaigns/${id}/approve`, { method: "POST" }),
   clearCampaignWatchdogAlert: (id) => request(`/campaigns/${id}/watchdog/clear`, { method: "POST" }),
+
+  // Phase 21 -- the unified AI to-do inbox. listTodos() returns every PENDING item across
+  // every campaign/product; submitTodoFeedback/approveTodoItem/dismissTodoItem act on ONE
+  // item at a time (replaces the old whole-day approveCampaignToday and the separate
+  // listCampaignSuggestions -- both scopes now live in this one queue).
+  listTodos: () => request("/todos"),
+  submitTodoFeedback: (todoId, instruction) =>
+    request(`/todos/${todoId}/feedback`, { method: "POST", body: JSON.stringify({ instruction }) }),
+  approveTodoItem: (todoId) => request(`/todos/${todoId}/approve`, { method: "POST" }),
+  dismissTodoItem: (todoId) => request(`/todos/${todoId}/dismiss`, { method: "POST" }),
   reviseKickoffDraft: (campaignId, instruction, currentDraft = null) =>
     request(`/campaigns/${campaignId}/kickoff-draft/revise`, {
       method: "POST",

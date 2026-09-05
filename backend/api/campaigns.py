@@ -8,8 +8,7 @@ from database.db_config import SessionLocal
 from database.models import Campaign, Product
 from services.campaign_service import (
     compute_campaign_metrics, compute_campaign_lead_summary, get_daily_review,
-    approve_campaign_today, get_live_campaign_suggestions, clear_campaign_watchdog_alert,
-    revise_kickoff_draft, set_campaign_email_render_mode)
+    clear_campaign_watchdog_alert, revise_kickoff_draft, set_campaign_email_render_mode)
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/api/v1/campaigns")
 
@@ -46,11 +45,8 @@ def _serialize(db, campaign, with_metrics=True):
         "strategy_angle": campaign.strategy_angle,
         "email_render_mode": campaign.email_render_mode or "HTML",
         "status": campaign.status,
-        "daily_todo": json.loads(campaign.daily_todo or "[]"),
         "lead_count_goal": campaign.lead_count_goal,
-        "pending_proposal": json.loads(campaign.pending_strategy_proposal) if campaign.pending_strategy_proposal else None,
         "metrics_summary_cache": json.loads(campaign.metrics_summary or "{}"),
-        "last_approved_date": campaign.last_approved_date,
         "created_at": str(campaign.created_at),
         "updated_at": str(campaign.updated_at),
     }
@@ -73,19 +69,6 @@ def list_campaigns():
             query = query.filter(Campaign.status == status)
         rows = query.order_by(Campaign.scheduled_date.desc(), Campaign.created_at.desc()).all()
         return jsonify([_serialize(db, r) for r in rows])
-    finally:
-        db.close()
-
-
-@campaigns_bp.route("/suggestions", methods=["GET"])
-def list_suggestions():
-    """Step 18.1 follow-up (2026-09-02) -- proactive, product-scoped suggestions surfaced
-    BEFORE any campaign exists (`_run_daily_plan_tick` already generates these daily for
-    every active product; this just makes them visible + actionable). Registered before
-    `/<campaign_id>` so "suggestions" is never captured as a campaign id."""
-    db = SessionLocal()
-    try:
-        return jsonify(get_live_campaign_suggestions(db))
     finally:
         db.close()
 
@@ -205,27 +188,14 @@ def update_campaign(campaign_id):
 
 @campaigns_bp.route("/<campaign_id>/daily-review", methods=["GET"])
 def daily_review(campaign_id):
-    """Phase 18 Step 18.2 -- today's real to-do plus a real sample draft for the 2-minute
-    morning review. Read-only; approving is a separate action below."""
+    """Phase 18 Step 18.2 -- this campaign's real pending to-do items (Phase 21) plus a real
+    sample draft for the 2-minute morning review. Read-only; approving/dismissing an
+    individual item is `api/todos.py`'s job now, not this route's."""
     db = SessionLocal()
     try:
         if not db.get(Campaign, campaign_id):
             return jsonify({"error": "campaign not found"}), 404
         return jsonify(get_daily_review(db, campaign_id))
-    finally:
-        db.close()
-
-
-@campaigns_bp.route("/<campaign_id>/approve", methods=["POST"])
-def approve_daily_review(campaign_id):
-    """Records the human's daily-review approval. Deliberately does NOT trigger any real
-    send -- Step 18.4's auto-dispatch wiring doesn't exist yet; this is only the recorded
-    human sign-off."""
-    db = SessionLocal()
-    try:
-        if not db.get(Campaign, campaign_id):
-            return jsonify({"error": "campaign not found"}), 404
-        return jsonify(approve_campaign_today(db, campaign_id))
     finally:
         db.close()
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { api } from "../api/client";
+import TodoInbox from "../components/TodoInbox";
 import CampaignCalendar from "../components/CampaignCalendar";
 import AlertsPanel from "../components/AlertsPanel";
 import DashboardWidget from "../components/DashboardWidget";
@@ -9,7 +10,7 @@ import WeeklyInsightCard from "../components/WeeklyInsightCard";
 const POLL_MS = 15000;
 
 export default function Dashboard() {
-  const [alerts, setAlerts] = useState({ needs_response: [], ready_to_claim: [] });
+  const [alerts, setAlerts] = useState({ needs_response: [] });
   const [widgetIds, setWidgetIds] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,10 +46,6 @@ export default function Dashboard() {
     }
   }
 
-  function handleClaimed(leadId) {
-    setAlerts((prev) => ({ ...prev, ready_to_claim: prev.ready_to_claim.filter((a) => a.lead_id !== leadId) }));
-  }
-
   function handleContacted(leadId) {
     setAlerts((prev) => ({ ...prev, needs_response: prev.needs_response.filter((a) => a.lead_id !== leadId) }));
   }
@@ -65,7 +62,12 @@ export default function Dashboard() {
         </div>
       )}
 
-      <AlertsPanel alerts={alerts} onClaimed={handleClaimed} onContacted={handleContacted} />
+      {/* Phase 21 -- takes the Dashboard's top spot: every real, PENDING AI to-do across
+          every campaign/product, in one place. The urgent "needs response" strip (a lead
+          just replied, unrelated to AI strategy) sits right below it. */}
+      <TodoInbox />
+
+      <AlertsPanel alerts={alerts} onContacted={handleContacted} />
 
       <CampaignCalendar />
 

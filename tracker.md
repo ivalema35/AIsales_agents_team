@@ -5723,3 +5723,67 @@ audit kiya — **kisi bhi cheez ko sirf tracker.md ki narrative padhke sahi nahi
 (kickoff/render-mode dono preview-only, real send path unchanged), sahi documented tracker/memory me, aur
 sirf 3 chhoti, non-blocking documentation/robustness gaps thi jo ab fix ho gayi. Backend + frontend dono
 fresh restart karke final confirm kiya — sab 200 OK.
+
+### ✅ Poora session ka kaam git me commit kiya (2026-09-05)
+
+Itni lambi session me (campaign-first architecture, Phase 17-20, theme migration, Cursor ka kaam, audit)
+sab kuch uncommitted baitha tha — koi safety net nahi tha. User ne explicitly commit karne ko bola.
+
+**Commit `2b804d9`** — 78 files, 8746 insertions/1113 deletions. `.env` gitignored confirm kiya,
+`suggest.txt`/`discussion.md` me koi secret nahi mila (scan kiya), `backend/static/` me sirf logo PNG.
+`git add -A` se stage kiya (poora diff pehle hi audit ho chuka tha is turn me). Working tree ab clean.
+**Push NAHI kiya** — sirf local commit, remote push ke liye alag se explicit confirm chahiye hoga.
+
+### 🎉 Phase 21 — Unified AI To-Do Inbox (2026-09-05)
+
+User ne poocha "AI engine pura bana ya baki he" — jawab: dimaag 100% bana, lekin har switch off tha
+(discovery/daily-loop/reflection sab off) aur to-do system rigid tha (ek switch, ek fixed daily cadence, ek
+hi whole-day bulk-Approve). User ne clearly bola: **koi switch ya fixed time nahi chaiye** — AI ko jab
+zaroorat lage tab to-do daalna chahiye, human jab time mile tab review kare, aur har to-do individually
+prompt se refine + individually approve ho sake — jaisa Gemini/Claude se real baat. Plus: to-dos ke 2 type
+hone chahiye — campaign-specific (lead follow-up, template) aur free-for-all (koi campaign ke bina "is
+industry me boom he, naya campaign banao" wala suggestion) — dono ek hi jagah.
+
+**Plan mode use kiya** (bada architectural change tha) — 3 Explore agents se current code samjha (to-do
+storage/trigger/approval, Dashboard/DailyReviewPanel structure, conversational-memory pattern), 2
+clarifying questions poochhe (memory depth = lightweight chosen; persistence = real queue), poora plan
+artifact banaya (Hinglish, user ka explicit request) aur approve karwaya. User ne ek aur cheez clarify ki
+(screenshot ke saath): "Needs your attention" (Ready-to-claim wala) hatao, wahi Inbox aayega.
+
+**Kya bana (poora, real-tested):**
+1. **Naya Table 36 `todo_items`** — har to-do apni khud ki row (scope CAMPAIGN|GLOBAL, label, text,
+   proposal, confidence, status PENDING/APPROVED/DISMISSED) — `campaign.daily_todo`/`pending_strategy_
+   proposal`/`last_approved_date` superseded (columns kept, non-destructive).
+2. **Koi switch nahi** — `DAILY_AI_LOOP_ENABLED` poori tarah remove kiya. Do automatic trigger: (a) daily
+   floor (roz 06:00 baad, guaranteed, ab unconditional), (b) naya signal-driven tick — existing scheduler
+   loop pe hi piggyback, jab bhi kisi campaign ka real signal badle (naya reply/hot-lead/target-unset) turant
+   regenerate, 2-hour per-campaign cooldown (spam-rail, koi human switch nahi).
+3. **Per-item actions**: `revise_todo_item()` (same lightweight current-state+instruction pattern jo drafts
+   pe already tha, Step 20.4 pushback bhi reuse), `approve_todo_item()` (CAMPAIGN scope real campaign row pe
+   apply karta he; GLOBAL scope KABHI campaign nahi banata, sirf CampaignFormModal ko prefill deta he),
+   `dismiss_todo_item()`.
+4. **Naya API** `api/todos.py` — `GET /todos` (poora unified queue), `POST /todos/<id>/feedback|approve|
+   dismiss`. Purane `/campaigns/suggestions` aur `/campaigns/<id>/approve` remove kiye (ab meaningless).
+5. **Frontend**: naya `TodoInbox.jsx` Dashboard ke top pe (jahan AlertsPanel tha), shared `TodoItemCard.jsx`
+   (Dashboard aur Campaign Detail dono use karte hain — same design, kabhi alag nahi honge). `AlertsPanel`
+   se "Ready to claim" hataya (AI ke apne to-do signal se duplicate tha), sirf "needs response" (urgent
+   reply) strip bacha. `CampaignCalendar` ka "Suggested for today" hataya (ab Inbox me hi he), review-pending
+   icon ab real PENDING TodoItem pe based he.
+
+**Real test (poora backend, real DB, real LLM):**
+- Fresh campaign → real TodoItem rows bane (JSON blob nahi) ✓
+- Dobara call karne pe same-label duplicate nahi bana (dedup) ✓
+- Signal-driven tick: kuch na badle to skip ✓; real reply aane pe signal badla lekin cooldown ke andar skip
+  raha ✓; 2 REAL pehle-se-maujood campaigns (jinka kabhi signal check hi nahi hua tha) pe turant sahi,
+  accurate to-do generate hua — "past cooldown" path bhi confirm ho gaya.
+- GLOBAL suggestion: dobara call pe duplicate nahi bana ✓
+- `get_daily_review()` ab `todo_items` deta he, purane fields gone ✓
+- `revise_todo_item` pe real conflict scenario se genuine pushback mila (validated insight + real 12/25
+  number dono quote kiye) ✓
+- `approve_todo_item` CAMPAIGN: `lead_count_goal` None→20 real row pe apply hua ✓; GLOBAL: campaign count
+  bilkul unchanged raha (kabhi silently create nahi hota) ✓
+- `dismiss_todo_item` ✓
+- `AUTONOMOUS_OUTREACH_ENABLED` poore test me `false` hi raha, kabhi touch nahi hua ✓
+- `npm run build` clean ✓, backend+frontend dono fresh restart karke live confirm kiya.
+
+**PRD me poora Phase 21 section + P21 gate-table row add kiya, real DoD evidence ke saath.**

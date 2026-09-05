@@ -574,20 +574,24 @@ class Campaign(Base):
     # PROPOSED, APPROVED, RUNNING, COMPLETED, PAUSED (Step 17.5) -- PROPOSED->APPROVED only
     # via Phase 18's human review action once that exists; nothing sets it automatically yet.
     status = Column(String, default="PROPOSED")
-    daily_todo = Column(Text, default="[]")       # JSON array, open-ended real items -- Step 18.1
+    # Step 18.1 -- SUPERSEDED by Phase 21's todo_items table (2026-09-05): generate_campaign_todo()
+    # no longer writes here, every real to-do is its own addressable TodoItem row instead. Column
+    # kept, not deleted (non-destructive precedent, e.g. Step 17.6), for any historical row still
+    # holding pre-Phase-21 data.
+    daily_todo = Column(Text, default="[]")
     metrics_summary = Column(Text, default="{}")  # JSON cache, Step 17.3 -- never authoritative
     # Step 18.1/17.6 -- the AI's own proposed target lead count for this campaign's discovery
     # batch (e.g. 100). Nullable: no goal set means today's continuous cooldown-paced discovery,
     # not "no discovery." Raisable by a later day's strategist proposal once reached.
     lead_count_goal = Column(Integer)
-    # Step 18.1/18.4 -- the strategist's LATEST not-yet-approved proposal (JSON: target_segment/
-    # lead_count_goal/strategy_angle/rationale, any subset), superseded fresh each day it's
-    # regenerated, applied to the real columns above ONLY on Approve (services/campaign_service.py
-    # approve_campaign_today()), never written directly by the generator itself.
+    # Step 18.1/18.4 -- SUPERSEDED by Phase 21 (2026-09-05): a structural proposal now lives on
+    # its own TodoItem.proposal, applied by approve_todo_item() per-item. Column kept, not
+    # deleted, for the same non-destructive reason as daily_todo above.
     pending_strategy_proposal = Column(Text)
-    # Phase 18 Step 18.2 -- ISO date (YYYY-MM-DD, IST) the human last approved this
-    # campaign's daily review card. Re-approval is required every real day (content is
-    # fresh every day, so yesterday's approval can't stand in for today's).
+    # Phase 18 Step 18.2 -- SUPERSEDED by Phase 21 (2026-09-05): there is no more single
+    # whole-day approval concept once approval is per-TodoItem (each item has its own
+    # resolved_at). Column kept, not deleted, for the same non-destructive reason as
+    # daily_todo above.
     last_approved_date = Column(String)
     # Phase 20 Step 20.3 -- Execution Watchdog. NULL means normal (no active alert). Set to
     # a JSON object ({"reason","bounce_count","message","raised_at"}) the moment a real
@@ -609,6 +613,11 @@ class Campaign(Base):
     # without designed sections (email_service simple HTML fallback). Default HTML.
     # Set by AI strategist proposal, Daily Review chips, or free-text feedback.
     email_render_mode = Column(String, default="HTML")  # HTML | TEXT
+    # Phase 21 -- the lightweight fingerprint _run_signal_driven_todo_tick() diffs against to
+    # decide "did anything real change since the last to-do generation for this campaign".
+    # JSON: {"sent","opened","replied","hot","has_target"}. Updated every time
+    # generate_campaign_todo() actually runs (daily floor OR signal-driven), never otherwise.
+    last_todo_signal = Column(Text)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -659,3 +668,38 @@ class CampaignThesis(Base):
     observation = Column(Text)
     pivot_decision = Column(Text)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 36. TODO ITEMS (Phase 21) -- SUPERSEDES Step 18.1's campaign.daily_todo/pending_strategy_
+# proposal/last_approved_date. Every real to-do the AI Sales Manager raises is now its own
+# addressable row -- individually feedback-able (Step 20.4's pushback mechanism reused) and
+# individually approved/dismissed, never bundled into one whole-day bulk action. A new
+# generation only ever ADDS rows; an existing PENDING row is never silently overwritten --
+# nothing a human hasn't acted on ever disappears on its own.
+#
+# Two scopes, one table, one review queue:
+# - CAMPAIGN: tied to a real, already-existing campaign (follow-up, targeting/angle/render-mode
+#   proposal, a knowledge-gap note, a dispatch-readiness nudge -- everything
+#   generate_campaign_todo() used to write into daily_todo).
+# - GLOBAL: NOT tied to any campaign -- "this product's leads are trending strong in industry X
+#   right now, worth a new campaign" (what generate_campaign_suggestion() used to only log as an
+#   AgentEvent). Approving a GLOBAL item never creates a campaign by itself -- a campaign is
+#   always human-created (the same invariant Phase 17 established) -- it hands the frontend a
+#   pre-fill payload for the existing CampaignFormModal instead.
+class TodoItem(Base):
+    __tablename__ = "todo_items"
+    id = Column(String, primary_key=True, default=_uuid)
+    scope = Column(String, nullable=False)  # CAMPAIGN | GLOBAL
+    campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="CASCADE"))  # CAMPAIGN only
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"))    # GLOBAL only
+    label = Column(String)         # free-text, e.g. "Follow-up", "Conflict", "New campaign idea"
+    text = Column(Text, nullable=False)  # current state -- what per-item feedback revises
+    # Optional JSON structural change: target_segment/lead_count_goal/strategy_angle/
+    # email_render_mode (CAMPAIGN, applied by approve_todo_item onto the real Campaign row) or
+    # a full campaign-creation prefill (GLOBAL, handed to the frontend, never applied server-side).
+    proposal = Column(Text)
+    confidence = Column(REAL)      # Step 20.2's honest confidence, carried over per-item
+    rationale = Column(Text)
+    status = Column(String, default="PENDING")  # PENDING | APPROVED | DISMISSED
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    resolved_at = Column(TIMESTAMP)
