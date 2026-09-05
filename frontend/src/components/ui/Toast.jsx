@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 
 const VARIANT = {
-  error: { icon: AlertTriangle, chip: "bg-red-50 text-red-600", ring: "ring-red-100", text: "text-slate-800" },
-  success: { icon: CheckCircle2, chip: "bg-emerald-50 text-emerald-600", ring: "ring-emerald-100", text: "text-slate-800" },
-  info: { icon: Info, chip: "bg-slate-100 text-slate-500", ring: "ring-slate-100", text: "text-slate-800" },
+  error: { icon: AlertTriangle, chip: "bg-alert-100 text-alert-600", ring: "ring-alert-100", text: "text-ink-900" },
+  success: { icon: CheckCircle2, chip: "bg-good-100 text-good-600", ring: "ring-good-100", text: "text-ink-900" },
+  info: { icon: Info, chip: "bg-gold-100 text-gold-700", ring: "ring-gold-100", text: "text-ink-900" },
 };
 
 // One toast. Auto-dismisses UNLESS it carries an action button -- a toast offering "Force
@@ -22,7 +22,7 @@ function ToastItem({ toast, onDismiss }) {
   return (
     <div
       role="alert"
-      className={`animate-toast-in pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-xl bg-white p-3.5 shadow-lg ring-1 ring-inset ${ring}`}
+      className={`animate-toast-in pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-xl border border-line bg-parchment-raised p-3.5 shadow-lg ring-1 ring-inset ${ring}`}
     >
       {/* Icon in its own colored chip, matching ConfirmModal's language, rather than a bare
          colored icon floating in a tinted box -- reads as one consistent "alert" visual
@@ -38,7 +38,7 @@ function ToastItem({ toast, onDismiss }) {
               toast.action.onClick();
               onDismiss(toast.id);
             }}
-            className="mt-2 rounded-md bg-slate-800 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-900"
+            className="mt-2 rounded-md bg-ink-900 px-2.5 py-1 text-[11px] font-semibold text-parchment-raised shadow-sm transition-colors hover:opacity-90"
           >
             {toast.action.label}
           </button>
@@ -46,7 +46,7 @@ function ToastItem({ toast, onDismiss }) {
       </div>
       <button
         onClick={() => onDismiss(toast.id)}
-        className="shrink-0 rounded p-0.5 text-slate-300 transition-colors hover:bg-slate-100 hover:text-slate-500"
+        className="shrink-0 rounded p-0.5 text-ink-500 transition-colors hover:bg-parchment-raised-2 hover:text-ink-700"
         aria-label="Dismiss"
       >
         <X size={13} />

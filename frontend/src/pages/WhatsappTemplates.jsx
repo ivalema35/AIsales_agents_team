@@ -28,20 +28,20 @@ const EMPTY_DRAFT = {
 
 function StatTile({ icon: Icon, label, value, tone = "slate" }) {
   const toneClass = {
-    slate: "bg-slate-100 text-slate-600",
-    emerald: "bg-emerald-50 text-emerald-600",
-    amber: "bg-amber-50 text-amber-600",
-    red: "bg-red-50 text-red-600",
-    violet: "bg-violet-50 text-violet-600",
+    slate: "bg-parchment-raised-2 text-ink-700",
+    emerald: "bg-good-100 text-good-600",
+    amber: "bg-warm-100 text-warm-600",
+    red: "bg-alert-100 text-alert-600",
+    violet: "bg-gold-100 text-gold-700",
   }[tone];
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 shadow-sm">
+    <div className="flex items-center gap-3 rounded-lg border border-line bg-parchment-raised p-3.5 shadow-sm">
       <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${toneClass}`}>
         <Icon size={16} />
       </div>
       <div className="min-w-0">
-        <p className="text-lg font-semibold leading-none text-slate-900">{value}</p>
-        <p className="mt-1 truncate text-[11px] text-slate-500">{label}</p>
+        <p className="font-display text-lg font-semibold leading-none text-ink-900">{value}</p>
+        <p className="mt-1 truncate text-[11px] text-ink-500">{label}</p>
       </div>
     </div>
   );
@@ -49,27 +49,27 @@ function StatTile({ icon: Icon, label, value, tone = "slate" }) {
 
 function BuiltinCard({ t }) {
   return (
-    <div className="rounded-md border border-dashed border-slate-300 bg-slate-50/70 p-3">
+    <div className="rounded-md border border-dashed border-line bg-parchment/70 p-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-xs font-semibold text-slate-800">{t.name}</span>
+        <span className="text-xs font-semibold text-ink-900">{t.name}</span>
         <Badge variant="SUCCESS">{t.status}</Badge>
         <Badge variant="NEUTRAL">Built-in</Badge>
       </div>
       {t.body_text ? (
-        <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-slate-600">
+        <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-700">
           "{t.body_text}"
         </p>
       ) : (
-        <p className="mt-1.5 text-[11px] italic leading-relaxed text-slate-400">
+        <p className="mt-1.5 text-[11px] italic leading-relaxed text-ink-500">
           Couldn't fetch the real wording from Meta just now -- try reloading the page.
         </p>
       )}
       {t.variable_labels.length > 0 && (
-        <p className="mt-1.5 flex items-center gap-1 text-[10px] text-slate-400">
+        <p className="mt-1.5 flex items-center gap-1 font-mono text-[10px] text-ink-500">
           <Tag size={10} /> {t.variable_labels.join(", ")}
         </p>
       )}
-      <p className="mt-1.5 text-[10px] leading-relaxed text-slate-400">
+      <p className="mt-1.5 text-[10px] leading-relaxed text-ink-500">
         Managed in code, not from this dashboard -- not editable here.
       </p>
     </div>
@@ -79,31 +79,31 @@ function BuiltinCard({ t }) {
 function ProposedCard({ t, onApprove, onReject, busyId }) {
   const busy = busyId === t.id;
   return (
-    <div className="rounded-md border border-violet-200 bg-violet-50/40 p-3">
+    <div className="rounded-md border border-gold-100 bg-gold-100/40 p-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <Sparkles size={12} className="text-violet-500" />
-        <span className="text-xs font-semibold text-slate-800">{t.name}</span>
+        <Sparkles size={12} className="text-gold-500" />
+        <span className="text-xs font-semibold text-ink-900">{t.name}</span>
         <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
         {t.button_url && (
-          <span title={t.button_url} className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-600">
+          <span title={t.button_url} className="rounded bg-gold-100 px-1.5 py-0.5 text-[10px] font-medium text-gold-700">
             Button: {t.button_label || "View"}
           </span>
         )}
         <Badge variant="NEUTRAL">{t.category}</Badge>
-        <span className="flex items-center gap-1 text-[10px] font-medium text-slate-400">
+        <span className="flex items-center gap-1 font-mono text-[10px] font-medium text-ink-500">
           <Boxes size={10} /> {t.product_title || "Shared -- all products"}
         </span>
       </div>
-      <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-slate-700">
+      <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-700">
         "{t.body_text}"
       </p>
       {t.variable_labels.length > 0 && (
-        <p className="mt-1 flex items-center gap-1 text-[10px] text-slate-400">
+        <p className="mt-1 flex items-center gap-1 font-mono text-[10px] text-ink-500">
           <Tag size={10} /> {t.variable_labels.join(", ")}
         </p>
       )}
       {t.reasoning && (
-        <p className="mt-1.5 rounded bg-white/70 px-2 py-1.5 text-[11px] italic leading-relaxed text-slate-500">
+        <p className="mt-1.5 rounded bg-parchment-raised/70 px-2 py-1.5 text-[11px] italic leading-relaxed text-ink-500">
           AI's reasoning: {t.reasoning}
         </p>
       )}
@@ -111,14 +111,14 @@ function ProposedCard({ t, onApprove, onReject, busyId }) {
         <button
           onClick={() => onApprove(t)}
           disabled={busy}
-          className="flex items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900 disabled:opacity-50"
+          className="flex items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
         >
           <Check size={11} /> Approve & Submit to Meta
         </button>
         <button
           onClick={() => onReject(t)}
           disabled={busy}
-          className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium text-red-500 hover:bg-red-50 disabled:opacity-50"
+          className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium text-alert-600 hover:bg-alert-100 disabled:opacity-50"
         >
           <XIcon size={11} /> Reject
         </button>
@@ -320,15 +320,15 @@ export default function WhatsappTemplates() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
-      <h1 className="text-lg font-semibold text-slate-900">WhatsApp Templates</h1>
-      <p className="mb-5 mt-1 max-w-2xl text-xs leading-relaxed text-slate-500">
+      <h1 className="font-display text-lg font-semibold text-ink-900">WhatsApp Templates</h1>
+      <p className="mb-5 mt-1 max-w-2xl text-xs leading-relaxed text-ink-500">
         Cold WhatsApp only ever goes out via a template Meta has already approved -- this is where new
         ones get submitted and their real approval status tracked. A FOLLOW_UP template that gets
         APPROVED is automatically used for follow-up sends instead of repeating the first-touch message.
       </p>
 
       {error && (
-        <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{error}</p>
+        <p className="mb-4 rounded-md bg-alert-100 px-3 py-2 text-xs text-alert-600">{error}</p>
       )}
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
@@ -339,11 +339,11 @@ export default function WhatsappTemplates() {
         <StatTile icon={XCircle} label="Rejected" value={templates ? stats.rejected : "…"} tone="red" />
       </div>
 
-      <div className="mb-4 flex items-center gap-1 border-b border-slate-200">
+      <div className="mb-4 flex items-center gap-1 border-b border-line">
         <button
           onClick={() => setActiveTab("builtin")}
           className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
-            activeTab === "builtin" ? "border-b-2 border-slate-800 text-slate-800" : "text-slate-400 hover:text-slate-600"
+            activeTab === "builtin" ? "border-b-2 border-ink-900 text-ink-900" : "text-ink-500 hover:text-ink-700"
           }`}
         >
           Built-in {builtin ? `(${builtin.length})` : ""}
@@ -351,7 +351,7 @@ export default function WhatsappTemplates() {
         <button
           onClick={() => setActiveTab("proposed")}
           className={`flex items-center gap-1 px-3 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
-            activeTab === "proposed" ? "border-b-2 border-violet-500 text-violet-600" : "text-slate-400 hover:text-slate-600"
+            activeTab === "proposed" ? "border-b-2 border-gold-500 text-gold-700" : "text-ink-500 hover:text-ink-700"
           }`}
         >
           <Sparkles size={12} /> AI Proposed {proposed ? `(${proposed.length})` : ""}
@@ -359,7 +359,7 @@ export default function WhatsappTemplates() {
         <button
           onClick={() => setActiveTab("submitted")}
           className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
-            activeTab === "submitted" ? "border-b-2 border-slate-800 text-slate-800" : "text-slate-400 hover:text-slate-600"
+            activeTab === "submitted" ? "border-b-2 border-ink-900 text-ink-900" : "text-ink-500 hover:text-ink-700"
           }`}
         >
           Submitted {templates ? `(${submittedTemplates.length})` : ""}
@@ -368,7 +368,7 @@ export default function WhatsappTemplates() {
 
       {activeTab === "builtin" && (
         <div className="mb-6">
-          <p className="mb-3 text-[11px] text-slate-400">
+          <p className="mb-3 font-mono text-[11px] text-ink-500">
             Already live for real first-touch sends today, submitted by hand before this dashboard
             existed. Wording is fetched live from Meta -- read-only, not editable here.
           </p>
@@ -377,15 +377,15 @@ export default function WhatsappTemplates() {
               {builtin.map((t) => <BuiltinCard key={t.key} t={t} />)}
             </div>
           ) : (
-            <p className="text-xs text-slate-500">Loading…</p>
+            <p className="text-xs text-ink-500">Loading…</p>
           )}
         </div>
       )}
 
       {activeTab === "proposed" && (
         <div className="mb-6">
-          <div className="mb-3 flex items-start justify-between gap-3 rounded-md bg-slate-50 p-3">
-            <p className="text-xs leading-relaxed text-slate-500">
+          <div className="mb-3 flex items-start justify-between gap-3 rounded-md bg-parchment p-3">
+            <p className="text-xs leading-relaxed text-ink-500">
               Ask the AI to look at real send/reply data and template coverage, and propose a new
               template ONLY if a real gap or underperformer actually exists for the purpose you pick --
               it never invents a need. Nothing reaches Meta until you approve a specific draft below.
@@ -394,7 +394,7 @@ export default function WhatsappTemplates() {
               <button
                 onClick={() => askAi("FIRST_TOUCH")}
                 disabled={!!asking}
-                className="flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+                className="flex items-center justify-center gap-1.5 rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
               >
                 <Sparkles size={12} /> {asking === "FIRST_TOUCH" ? "Thinking…" : "Ask for a First Touch template"}
               </button>
@@ -406,7 +406,7 @@ export default function WhatsappTemplates() {
                   key={level}
                   onClick={() => askAi("FOLLOW_UP", level)}
                   disabled={!!asking}
-                  className="flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+                  className="flex items-center justify-center gap-1.5 rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
                 >
                   <Sparkles size={12} />
                   {asking === `FOLLOW_UP_${level}` ? "Thinking…" : `Ask for a Level ${level} follow-up template`}
@@ -417,7 +417,7 @@ export default function WhatsappTemplates() {
 
           {askResult && (
             <p className={`mb-3 rounded-md px-3 py-2 text-xs ${
-              askResult.proposed ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
+              askResult.proposed ? "bg-good-100 text-good-700" : "bg-parchment-raised-2 text-ink-700"
             }`}>
               {askResult.proposed
                 ? "A new draft was created below -- review it before approving."
@@ -432,9 +432,9 @@ export default function WhatsappTemplates() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-slate-200 py-8 text-center">
-              <Sparkles size={22} className="text-slate-300" />
-              <p className="text-xs text-slate-500">No AI-proposed drafts waiting for review.</p>
+            <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-line py-8 text-center">
+              <Sparkles size={22} className="text-ink-500" />
+              <p className="text-xs text-ink-500">No AI-proposed drafts waiting for review.</p>
             </div>
           )}
         </div>
@@ -448,17 +448,17 @@ export default function WhatsappTemplates() {
             key={p || "ALL"}
             onClick={() => setPurposeFilter(p)}
             className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              purposeFilter === p ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+              purposeFilter === p ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
             }`}
           >
             {p || "All purposes"}
           </button>
         ))}
-        <span className="mx-0.5 text-slate-200">|</span>
+        <span className="mx-0.5 text-line">|</span>
         <select
           value={productFilter}
           onChange={(e) => setProductFilter(e.target.value)}
-          className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-medium text-slate-600 focus:border-slate-400 focus:outline-none"
+          className="rounded-md border border-line bg-parchment-raised px-2 py-1 text-[11px] font-medium text-ink-700 focus:border-gold-500 focus:outline-none"
         >
           <option value="">All products</option>
           {products.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
@@ -470,43 +470,43 @@ export default function WhatsappTemplates() {
           {submittedTemplates.map((t) => (
             <div
               key={t.id}
-              className={`rounded-md border border-slate-200 bg-white p-3 shadow-sm ${!t.is_active ? "opacity-60" : ""}`}
+              className={`rounded-md border border-line bg-parchment-raised p-3 shadow-sm ${!t.is_active ? "opacity-60" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-xs font-semibold text-slate-800">{t.name}</span>
+                    <span className="text-xs font-semibold text-ink-900">{t.name}</span>
                     <Badge variant={STATUS_VARIANT[t.status] || "NEUTRAL"}>{t.status}</Badge>
                     {!t.is_active && <Badge variant="NEUTRAL">Disabled</Badge>}
                     <Badge variant="NEUTRAL">{t.purpose}{t.followup_level ? ` L${t.followup_level}` : ""}</Badge>
         {t.button_url && (
-          <span title={t.button_url} className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-600">
+          <span title={t.button_url} className="rounded bg-gold-100 px-1.5 py-0.5 text-[10px] font-medium text-gold-700">
             Button: {t.button_label || "View"}
           </span>
         )}
                     <Badge variant="NEUTRAL">{t.category}</Badge>
                     {t.origin === "AI" && (
-                      <span className="flex items-center gap-0.5 text-[10px] font-medium text-violet-500">
+                      <span className="flex items-center gap-0.5 text-[10px] font-medium text-gold-500">
                         <Sparkles size={10} /> AI-drafted
                       </span>
                     )}
-                    <span className="flex items-center gap-1 text-[10px] font-medium text-slate-400">
+                    <span className="flex items-center gap-1 font-mono text-[10px] font-medium text-ink-500">
                       <Boxes size={10} /> {t.product_title || "Shared -- all products"}
                     </span>
                   </div>
-                  <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-slate-600">
+                  <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-700">
                     {t.body_text}
                   </p>
                   {t.variable_labels.length > 0 && (
-                    <p className="mt-1 flex items-center gap-1 text-[10px] text-slate-400">
+                    <p className="mt-1 flex items-center gap-1 font-mono text-[10px] text-ink-500">
                       <Tag size={10} /> {t.variable_labels.join(", ")}
                     </p>
                   )}
                   {t.status === "REJECTED" && t.rejection_reason && (
-                    <p className="mt-1 text-[11px] text-red-600">Rejected: {t.rejection_reason}</p>
+                    <p className="mt-1 text-[11px] text-alert-600">Rejected: {t.rejection_reason}</p>
                   )}
                   {DEAD_STATUSES.includes(t.status) && (
-                    <p className="mt-1 text-[11px] text-slate-400">
+                    <p className="mt-1 font-mono text-[11px] text-ink-500">
                       {t.status === "ADMIN_REJECTED"
                         ? "Rejected before it ever reached Meta -- permanently unusable, safe to delete."
                         : "Meta declined this submission -- permanently unusable, safe to delete."}
@@ -519,7 +519,7 @@ export default function WhatsappTemplates() {
                       onClick={() => refreshOne(t.id)}
                       disabled={refreshingId === t.id}
                       title="Check real status now"
-                      className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-100 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded-md px-2 py-1 font-mono text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 disabled:opacity-50"
                     >
                       <RefreshCw size={11} className={refreshingId === t.id ? "animate-spin" : ""} />
                       Check status
@@ -530,7 +530,7 @@ export default function WhatsappTemplates() {
                       onClick={() => deleteTemplate(t)}
                       disabled={deletingId === t.id}
                       title="Delete this permanently-unusable template"
-                      className="rounded-md px-2 py-1 text-[11px] font-medium text-red-500 hover:bg-red-50 disabled:opacity-50"
+                      className="rounded-md px-2 py-1 text-[11px] font-medium text-alert-600 hover:bg-alert-100 disabled:opacity-50"
                     >
                       Delete
                     </button>
@@ -539,8 +539,8 @@ export default function WhatsappTemplates() {
                       onClick={() => toggleActive(t)}
                       disabled={togglingId === t.id}
                       title={t.is_active ? "Stop using this template" : "Allow this template to be used again"}
-                      className={`rounded-md px-2 py-1 text-[11px] font-medium hover:bg-slate-100 disabled:opacity-50 ${
-                        t.is_active ? "text-slate-500" : "text-emerald-600"
+                      className={`rounded-md px-2 py-1 text-[11px] font-medium hover:bg-parchment-raised-2 disabled:opacity-50 ${
+                        t.is_active ? "text-ink-500" : "text-good-600"
                       }`}
                     >
                       {t.is_active ? "Disable" : "Enable"}
@@ -554,9 +554,9 @@ export default function WhatsappTemplates() {
       )}
 
       {templates && submittedTemplates.length === 0 && !showAddForm && (
-        <div className="mb-4 flex flex-col items-center gap-2 rounded-md border border-dashed border-slate-200 py-8 text-center">
-          <MessageSquareText size={22} className="text-slate-300" />
-          <p className="text-xs text-slate-500">
+        <div className="mb-4 flex flex-col items-center gap-2 rounded-md border border-dashed border-line py-8 text-center">
+          <MessageSquareText size={22} className="text-ink-500" />
+          <p className="text-xs text-ink-500">
             {purposeFilter ? `No ${purposeFilter.replace("_", " ").toLowerCase()} templates submitted yet.` : "No templates submitted yet."}
           </p>
         </div>
@@ -565,41 +565,41 @@ export default function WhatsappTemplates() {
       {!showAddForm && (
         <button
           onClick={() => { setDraft((d) => ({ ...d, product_id: productFilter })); setShowAddForm(true); }}
-          className="flex w-fit items-center gap-1 rounded-md bg-slate-800 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+          className="flex w-fit items-center gap-1 rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90"
         >
           <Plus size={12} /> New template
         </button>
       )}
 
       {showAddForm && (
-        <form onSubmit={submit} className="flex flex-col gap-3.5 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-          <h3 className="text-xs font-semibold text-slate-700">New template</h3>
+        <form onSubmit={submit} className="flex flex-col gap-3.5 rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
+          <h3 className="font-display text-xs font-semibold text-ink-700">New template</h3>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <label className="flex flex-col gap-1 sm:col-span-2">
-              <span className="text-[11px] font-medium text-slate-600">Template name</span>
+              <span className="text-[11px] font-medium text-ink-700">Template name</span>
               <input
                 required
                 value={draft.name}
                 onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
                 placeholder="e.g. gamezone_followup_nudge"
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+                className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
               />
-              <span className="text-[10px] text-slate-400">Lowercase letters, digits, underscores only (Meta's own rule).</span>
+              <span className="font-mono text-[10px] text-ink-500">Lowercase letters, digits, underscores only (Meta's own rule).</span>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-slate-600">Language</span>
+              <span className="text-[11px] font-medium text-ink-700">Language</span>
               <input
                 value={draft.language}
                 onChange={(e) => setDraft((d) => ({ ...d, language: e.target.value }))}
                 placeholder="en"
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+                className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
               />
             </label>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-[11px] font-medium text-slate-600">Category</span>
+            <span className="text-[11px] font-medium text-ink-700">Category</span>
             <div className="flex flex-wrap gap-1.5">
               {CATEGORIES.map((c) => (
                 <button
@@ -607,7 +607,7 @@ export default function WhatsappTemplates() {
                   type="button"
                   onClick={() => setDraft((d) => ({ ...d, category: c }))}
                   className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
-                    draft.category === c ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                    draft.category === c ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
                   }`}
                 >
                   {c}
@@ -617,7 +617,7 @@ export default function WhatsappTemplates() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-[11px] font-medium text-slate-600">Purpose</span>
+            <span className="text-[11px] font-medium text-ink-700">Purpose</span>
             <div className="flex flex-wrap gap-1.5">
               {PURPOSES.map((p) => (
                 <button
@@ -625,7 +625,7 @@ export default function WhatsappTemplates() {
                   type="button"
                   onClick={() => setDraft((d) => ({ ...d, purpose: p }))}
                   className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
-                    draft.purpose === p ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                    draft.purpose === p ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
                   }`}
                 >
                   {p === "FOLLOW_UP" ? "Follow-up nudge" : "First touch"}
@@ -642,15 +642,15 @@ export default function WhatsappTemplates() {
                       onClick={() => setDraft((d) => ({ ...d, followup_level: level }))}
                       className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
                         draft.followup_level === level
-                          ? "bg-slate-800 text-white"
-                          : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                          ? "bg-ink-900 text-parchment-raised"
+                          : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
                       }`}
                     >
                       Level {level}
                     </button>
                   ))}
                 </div>
-                <span className="text-[10px] text-slate-400">
+                <span className="font-mono text-[10px] text-ink-500">
                   {FOLLOWUP_LEVEL_HINT[draft.followup_level]} Once approved, this is used ONLY for this
                   exact level -- if this level has no approved template, that touch sends nothing on
                   WhatsApp rather than reusing a different level's text.
@@ -660,30 +660,30 @@ export default function WhatsappTemplates() {
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="text-[11px] font-medium text-slate-600">Product</span>
+            <span className="text-[11px] font-medium text-ink-700">Product</span>
             <select
               value={draft.product_id}
               onChange={(e) => setDraft((d) => ({ ...d, product_id: e.target.value }))}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 focus:border-slate-400 focus:outline-none"
+              className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 focus:border-gold-500 focus:outline-none"
             >
               <option value="">Shared -- usable by every product (default)</option>
               {products.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
             </select>
-            <span className="text-[10px] text-slate-400">
+            <span className="font-mono text-[10px] text-ink-500">
               A product-specific template needs its own separate Meta approval -- leave this as Shared
               unless this product's pitch genuinely needs different wording.
             </span>
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-[11px] font-medium text-slate-600">Message body</span>
+            <span className="text-[11px] font-medium text-ink-700">Message body</span>
             <textarea
               required
               rows={3}
               value={draft.body_text}
               onChange={(e) => setDraft((d) => ({ ...d, body_text: e.target.value }))}
               placeholder={"Hi {{1}}, still worth a look for {{2}}?"}
-              className="w-full resize-none rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              className="w-full resize-none rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
             />
           </label>
 
@@ -696,7 +696,7 @@ export default function WhatsappTemplates() {
             placeholder="contact_name, company_name…"
           />
           {draft.body_text && countMismatch && (
-            <p className="rounded-md bg-amber-50 px-2.5 py-1.5 text-[11px] text-amber-700">
+            <p className="rounded-md bg-warm-100 px-2.5 py-1.5 text-[11px] text-warm-700">
               Body has {placeholderCount} {"{{n}}"} placeholder(s) but {draft.variable_labels.length} variable(s) listed -- these must match before submitting.
             </p>
           )}
@@ -707,45 +707,45 @@ export default function WhatsappTemplates() {
              template already points at the same real, approved link -- no per-lead
              {{n}} substitution needed. */}
           <label className="flex flex-col gap-1">
-            <span className="text-[11px] font-medium text-slate-600">Button URL (optional)</span>
+            <span className="text-[11px] font-medium text-ink-700">Button URL (optional)</span>
             <input
               type="url"
               value={draft.button_url}
               onChange={(e) => setDraft((d) => ({ ...d, button_url: e.target.value }))}
               placeholder="https://ivinfotech.com/demo"
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
             />
-            <span className="text-[10px] text-slate-400">
+            <span className="font-mono text-[10px] text-ink-500">
               A real, static demo/website link -- adds a clickable button below the message. Same
               link for every real send of this template (no per-lead personalization on WhatsApp).
             </span>
           </label>
           {draft.button_url && (
             <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-slate-600">Button label (max 25 chars)</span>
+              <span className="text-[11px] font-medium text-ink-700">Button label (max 25 chars)</span>
               <input
                 type="text"
                 maxLength={25}
                 value={draft.button_label}
                 onChange={(e) => setDraft((d) => ({ ...d, button_label: e.target.value }))}
                 placeholder="View Demo"
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+                className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
               />
             </label>
           )}
 
-          <div className="flex items-center gap-2 border-t border-slate-100 pt-3.5">
+          <div className="flex items-center gap-2 border-t border-line pt-3.5">
             <button
               type="submit"
               disabled={saving || countMismatch}
-              className="rounded-md bg-slate-800 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-md bg-ink-900 px-3.5 py-1.5 text-xs font-medium text-parchment-raised hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? "Submitting…" : "Submit to Meta"}
             </button>
             <button
               type="button"
               onClick={() => { setShowAddForm(false); setDraft(EMPTY_DRAFT); }}
-              className="rounded-md px-3.5 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-100"
+              className="rounded-md px-3.5 py-1.5 text-xs font-medium text-ink-500 hover:bg-parchment-raised-2"
             >
               Cancel
             </button>

@@ -2,15 +2,16 @@ import Badge from "./ui/Badge";
 
 // Tier hue-per-slot, reused from the shared status/tier badge system elsewhere in the
 // CRM (LeadDetail's ScoreCard, Badge.jsx) so HOT/WARM/COLD read as the same color here
-// as everywhere else -- not a table-local palette.
-const TIER_BAR_COLORS = { HOT: "#dc2626", WARM: "#d97706", COLD: "#cbd5e1" };
+// as everywhere else -- not a table-local palette. Re-tuned 2026-09-01 to the v2
+// parchment/ink-navy/gold palette's alert/warm/line-strong hex values.
+const TIER_BAR_COLORS = { HOT: "#a83b32", WARM: "#96631c", COLD: "#c7bd9f" };
 const TIER_ORDER = ["HOT", "WARM", "COLD"];
 
 // A count of zero is not information -- it's the absence of it, and a table where most
 // cells read "0" reads as broken more than it reads as empty. A muted dash says "none"
 // without competing for attention against the real counts on rows that have activity.
 function TierBadge({ variant, count }) {
-  if (!count) return <span className="text-slate-300">—</span>;
+  if (!count) return <span className="text-ink-500">—</span>;
   return <Badge variant={variant}>{count}</Badge>;
 }
 
@@ -23,7 +24,7 @@ function TierBadge({ variant, count }) {
 // rhythm down the table that read as broken rather than just "no data yet".
 function TierDistributionBar({ tierCounts, total }) {
   return (
-    <div className="mt-1.5 flex h-1.5 w-28 gap-px overflow-hidden rounded-full bg-slate-100">
+    <div className="mt-1.5 flex h-1.5 w-28 gap-px overflow-hidden rounded-full bg-parchment-raised-2">
       {total > 0 &&
         TIER_ORDER.map((t) => {
           const count = tierCounts[t] || 0;
@@ -60,7 +61,7 @@ export default function ProductTable({ rows }) {
           ))}
         </colgroup>
         <thead>
-          <tr className="border-b border-slate-200 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          <tr className="border-b border-line text-[11px] font-semibold uppercase tracking-wide text-ink-500">
             <th className="py-2.5 pr-3">Product</th>
             <th className="py-2.5 pr-3">Country</th>
             <th className="py-2.5 pr-3 text-right">Leads</th>
@@ -71,24 +72,24 @@ export default function ProductTable({ rows }) {
             <th className="py-2.5 text-right">Converted</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-line">
           {rows.map((r) => {
             const isEmpty = r.total_leads === 0;
             return (
-              <tr key={r.product_id} className={`transition-colors hover:bg-slate-50 ${isEmpty ? "opacity-45" : ""}`}>
+              <tr key={r.product_id} className={`transition-colors hover:bg-parchment-raised-2 ${isEmpty ? "opacity-45" : ""}`}>
                 <td className="py-3 pr-3">
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="font-medium leading-snug text-slate-800">{r.title}</span>
+                    <span className="font-medium leading-snug text-ink-900">{r.title}</span>
                     {!r.is_active && <Badge variant="NEUTRAL">Inactive</Badge>}
                   </div>
                   <TierDistributionBar tierCounts={r.tier_counts} total={r.total_leads} />
                 </td>
                 <td className="py-3 pr-3">
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-500">
+                  <span className="rounded-full bg-parchment-raised-2 px-2 py-0.5 text-[11px] font-medium text-ink-500">
                     {r.target_country}
                   </span>
                 </td>
-                <td className="py-3 pr-3 text-right text-sm font-semibold tabular-nums text-slate-900">
+                <td className="py-3 pr-3 text-right text-sm font-semibold tabular-nums text-ink-900">
                   {r.total_leads}
                 </td>
                 <td className="py-3 pr-3">
@@ -100,14 +101,14 @@ export default function ProductTable({ rows }) {
                 <td className="py-3 pr-3">
                   <div className="flex justify-end"><TierBadge variant="COLD" count={r.tier_counts.COLD} /></div>
                 </td>
-                <td className="py-3 pr-3 text-right tabular-nums text-slate-700">
-                  {r.outreached > 0 ? r.outreached : <span className="text-slate-300">—</span>}
+                <td className="py-3 pr-3 text-right tabular-nums text-ink-700">
+                  {r.outreached > 0 ? r.outreached : <span className="text-ink-500">—</span>}
                 </td>
                 <td className="py-3 text-right tabular-nums font-semibold">
                   {r.converted > 0 ? (
-                    <span className="text-emerald-600">{r.converted}</span>
+                    <span className="text-good-600">{r.converted}</span>
                   ) : (
-                    <span className="font-normal text-slate-300">—</span>
+                    <span className="font-normal text-ink-500">—</span>
                   )}
                 </td>
               </tr>

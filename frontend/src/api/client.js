@@ -81,6 +81,46 @@ export const api = {
   updateContentAsset: (id, data) => request(`/content-assets/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteContentAsset: (id) => request(`/content-assets/${id}`, { method: "DELETE" }),
 
+  listKnowledgeBaseItems: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/knowledge-base${qs ? `?${qs}` : ""}`);
+  },
+  createKnowledgeBaseItem: (data) => request("/knowledge-base", { method: "POST", body: JSON.stringify(data) }),
+  updateKnowledgeBaseItem: (id, data) => request(`/knowledge-base/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteKnowledgeBaseItem: (id) => request(`/knowledge-base/${id}`, { method: "DELETE" }),
+
+  listCampaigns: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/campaigns${qs ? `?${qs}` : ""}`);
+  },
+  listCampaignSuggestions: () => request("/campaigns/suggestions"),
+  getCampaign: (id) => request(`/campaigns/${id}`),
+  createCampaign: (data) => request("/campaigns", { method: "POST", body: JSON.stringify(data) }),
+  updateCampaign: (id, data) => request(`/campaigns/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteCampaign: (id) => request(`/campaigns/${id}`, { method: "DELETE" }),
+  getCampaignDailyReview: (id) => request(`/campaigns/${id}/daily-review`),
+  approveCampaignToday: (id) => request(`/campaigns/${id}/approve`, { method: "POST" }),
+  clearCampaignWatchdogAlert: (id) => request(`/campaigns/${id}/watchdog/clear`, { method: "POST" }),
+  reviseKickoffDraft: (campaignId, instruction, currentDraft = null) =>
+    request(`/campaigns/${campaignId}/kickoff-draft/revise`, {
+      method: "POST",
+      body: JSON.stringify({ instruction, current_draft: currentDraft }),
+    }),
+  setCampaignEmailRenderMode: (id, mode) =>
+    request(`/campaigns/${id}/email-render-mode`, {
+      method: "POST",
+      body: JSON.stringify({ mode }),
+    }),
+  listStrategyInsights: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/strategy-insights${qs ? `?${qs}` : ""}`);
+  },
+  reviseOutreachDraft: (leadId, instruction, currentDraft = null) =>
+    request(`/leads/${leadId}/outreach/revise-draft`, {
+      method: "POST",
+      body: JSON.stringify({ instruction, current_draft: currentDraft }),
+    }),
+
   listBuiltinWhatsappTemplates: () => request("/whatsapp-templates/builtin"),
   listWhatsappTemplates: (params = {}) => {
     const qs = new URLSearchParams(params).toString();

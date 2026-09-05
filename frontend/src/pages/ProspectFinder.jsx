@@ -21,7 +21,7 @@ function ConfidenceBadge({ confidence }) {
     <span
       title={strong ? "A cleanly parsed LinkedIn result" : "A weaker keyword match -- verify before relying on this"}
       className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
-        strong ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+        strong ? "bg-good-100 text-good-700" : "bg-warm-100 text-warm-700"
       }`}
     >
       {strong ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
@@ -48,18 +48,18 @@ function ProspectCard({ prospect, onRefresh }) {
   }
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-sm font-semibold text-slate-800">
+            <span className="text-sm font-semibold text-ink-900">
               {prospect.full_name || "Name not confirmed"}
             </span>
             <ConfidenceBadge confidence={prospect.confidence} />
           </div>
-          {prospect.headline && <p className="mt-0.5 text-xs text-slate-500">{prospect.headline}</p>}
+          {prospect.headline && <p className="mt-0.5 text-xs text-ink-500">{prospect.headline}</p>}
           {prospect.current_company && (
-            <p className="mt-0.5 text-[11px] text-slate-400">
+            <p className="mt-0.5 text-[11px] text-ink-500">
               at {prospect.current_company}
               <span className="ml-1 italic">(best-effort guess, not verified)</span>
             </p>
@@ -70,7 +70,7 @@ function ProspectCard({ prospect, onRefresh }) {
             href={prospect.linkedin_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 text-slate-400 hover:text-slate-700"
+            className="shrink-0 text-ink-500 hover:text-ink-700"
             title="Open LinkedIn profile"
           >
             <LinkedinIcon size={16} />
@@ -80,12 +80,12 @@ function ProspectCard({ prospect, onRefresh }) {
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {prospect.enrichment_status === "ENRICHED" && prospect.email && (
-          <span className="flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700">
+          <span className="flex items-center gap-1 rounded-md bg-good-100 px-2 py-1 text-xs text-good-700">
             <Mail size={12} /> {prospect.email}
           </span>
         )}
         {prospect.enrichment_status === "ENRICHED" && prospect.phone && (
-          <span className="flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700">
+          <span className="flex items-center gap-1 rounded-md bg-good-100 px-2 py-1 text-xs text-good-700">
             <Phone size={12} /> {prospect.phone}
           </span>
         )}
@@ -93,15 +93,15 @@ function ProspectCard({ prospect, onRefresh }) {
           <button
             onClick={enrich}
             disabled={enriching}
-            className="rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment-raised-2 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {enriching ? "Looking…" : "Find contact info"}
           </button>
         )}
         {prospect.enrichment_status === "NO_CONTACT_FOUND" && (
-          <span className="text-xs text-slate-400">No real contact info found</span>
+          <span className="text-xs text-ink-500">No real contact info found</span>
         )}
-        {error && <span className="text-xs text-red-600">{error}</span>}
+        {error && <span className="text-xs text-alert-600">{error}</span>}
       </div>
     </div>
   );
@@ -114,6 +114,9 @@ function SearchForm({ onSearched }) {
   const [extraKeywords, setExtraKeywords] = useState("");
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState(null);
+
+  const inputClass =
+    "w-full rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-sm text-ink-900 placeholder:text-ink-500/60 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-100";
 
   async function submit(e) {
     e.preventDefault();
@@ -137,10 +140,10 @@ function SearchForm({ onSearched }) {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <form onSubmit={submit} className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-slate-600">
+          <label className="mb-1 block text-xs font-medium text-ink-700">
             What are you looking for? (your own label for this search)
           </label>
           <input
@@ -148,11 +151,11 @@ function SearchForm({ onSearched }) {
             onChange={(e) => setCriteriaText(e.target.value)}
             placeholder="e.g. AI developer in Mehsana, 3 years experience"
             required
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            className={inputClass}
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">
+          <label className="mb-1 block text-xs font-medium text-ink-700">
             Role / skill keywords (comma-separated)
           </label>
           <input
@@ -160,27 +163,27 @@ function SearchForm({ onSearched }) {
             onChange={(e) => setRoleKeywords(e.target.value)}
             placeholder="AI Developer, Machine Learning Engineer"
             required
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            className={inputClass}
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Location</label>
+          <label className="mb-1 block text-xs font-medium text-ink-700">Location</label>
           <input
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Mehsana"
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            className={inputClass}
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-slate-600">
+          <label className="mb-1 block text-xs font-medium text-ink-700">
             Extra keywords (optional, comma-separated -- e.g. "3+ years")
           </label>
           <input
             value={extraKeywords}
             onChange={(e) => setExtraKeywords(e.target.value)}
             placeholder="3+ years"
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            className={inputClass}
           />
         </div>
       </div>
@@ -188,11 +191,11 @@ function SearchForm({ onSearched }) {
         <button
           type="submit"
           disabled={searching}
-          className="flex items-center gap-1.5 rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-1.5 rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Search size={13} /> {searching ? "Searching…" : "Search"}
         </button>
-        {error && <span className="text-xs text-red-600">{error}</span>}
+        {error && <span className="text-xs text-alert-600">{error}</span>}
       </div>
     </form>
   );
@@ -202,18 +205,18 @@ function SearchHistory({ searches }) {
   if (!searches || searches.length === 0) return null;
   const totalSpend = searches.reduce((sum, s) => sum + (s.spend || 0), 0);
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-          <Clock size={14} className="text-slate-400" /> Search history
+        <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink-900">
+          <Clock size={14} className="text-ink-500" /> Search history
         </h3>
-        <span className="text-xs text-slate-400">Total spend: {totalSpend.toFixed(2)}</span>
+        <span className="font-mono text-xs text-ink-500">Total spend: {totalSpend.toFixed(2)}</span>
       </div>
       <div className="flex flex-col gap-1.5">
         {searches.slice(0, 10).map((s) => (
           <div key={s.id} className="flex items-center justify-between text-xs">
-            <span className="text-slate-600">{s.criteria_text}</span>
-            <span className="text-slate-400">
+            <span className="text-ink-700">{s.criteria_text}</span>
+            <span className="font-mono text-ink-500">
               {s.result_count} found · {s.spend.toFixed(2)} spent · {s.created_at}
             </span>
           </div>
@@ -253,8 +256,8 @@ export default function ProspectFinder() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-6">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">Prospect Finder</h1>
-        <p className="mt-1 text-xs text-slate-500">
+        <h1 className="font-display text-lg font-semibold text-ink-900">Prospect Finder</h1>
+        <p className="mt-1 text-xs text-ink-500">
           Search for real people by role/skill/location, independent of the leads funnel --
           these never become leads or affect any funnel metric. Real LinkedIn search results
           only (Serper X-Ray) -- no synthetic or invented profiles. Set a monthly budget under
@@ -264,20 +267,20 @@ export default function ProspectFinder() {
 
       <SearchForm onSearched={handleSearched} />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-alert-600">{error}</p>}
 
       <SearchHistory searches={searches} />
 
       <div>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-          <Users size={14} className="text-slate-400" /> Prospects found
-          {prospects && <span className="text-slate-400">({prospects.length})</span>}
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-ink-900">
+          <Users size={14} className="text-ink-500" /> Prospects found
+          {prospects && <span className="text-ink-500">({prospects.length})</span>}
         </h2>
-        {!prospects && <p className="text-xs text-slate-400">Loading…</p>}
+        {!prospects && <p className="text-xs text-ink-500">Loading…</p>}
         {prospects && prospects.length === 0 && (
-          <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-white py-12 text-center">
-            <Users className="text-slate-300" size={28} />
-            <p className="text-sm text-slate-400">No prospects yet -- run a search above.</p>
+          <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-line bg-parchment-raised py-12 text-center">
+            <Users className="text-ink-500" size={28} />
+            <p className="text-sm text-ink-500">No prospects yet -- run a search above.</p>
           </div>
         )}
         {prospects && prospects.length > 0 && (

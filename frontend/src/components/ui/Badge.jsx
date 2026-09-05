@@ -1,13 +1,14 @@
-// Shared status/tier/outcome pill (CRM_UI_UX_PLAN.md §1.2) -- replaces the ad-hoc
-// TIER_STYLES-style objects that used to get re-declared per-component.
+// Shared status/tier/outcome pill (CRM_UI_UX_PLAN.md §1.3 -- design system v2, re-tuned
+// 2026-09-01 to the parchment/ink-navy/gold palette). Semantic meaning unchanged from
+// §1.2, only the hues moved to sit correctly on the new warm parchment surface.
 const VARIANTS = {
-  HOT: "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200",
-  WARM: "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200",
-  COLD: "bg-slate-100 text-slate-500 ring-1 ring-inset ring-slate-200",
-  SUCCESS: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200",
-  DANGER: "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200",
-  WARNING: "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200",
-  NEUTRAL: "bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200",
+  HOT: "bg-alert-100 text-alert-700 ring-1 ring-inset ring-alert-600/30",
+  WARM: "bg-warm-100 text-warm-700 ring-1 ring-inset ring-warm-600/30",
+  COLD: "bg-parchment-raised-2 text-ink-500 ring-1 ring-inset ring-line",
+  SUCCESS: "bg-good-100 text-good-700 ring-1 ring-inset ring-good-600/30",
+  DANGER: "bg-alert-100 text-alert-700 ring-1 ring-inset ring-alert-600/30",
+  WARNING: "bg-warm-100 text-warm-700 ring-1 ring-inset ring-warm-600/30",
+  NEUTRAL: "bg-parchment-raised-2 text-ink-700 ring-1 ring-inset ring-line",
 };
 
 export default function Badge({ variant = "NEUTRAL", children, className = "" }) {

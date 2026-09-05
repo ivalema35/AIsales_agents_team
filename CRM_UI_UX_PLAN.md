@@ -112,6 +112,79 @@ a phase done, don't assume a giant monitor.
 
 ---
 
+### 1.3 Design system v2 — Visual identity refresh (added 2026-09-01)
+
+**Why this exists.** §1.2's Tailwind `slate`/`red`/`amber`/`emerald` system is a reasonable, fairly generic
+dense-admin-dashboard palette — and that is exactly the operator's boss's complaint about the product as a
+whole, applied to its surface: it reads as a technical tool, not something a non-technical person opens and
+immediately understands. During the `discussion.md` conversation about Chapter 18's AI Sales Manager layer,
+a Hinglish, non-technical-audience explainer page was built to walk the operator (and their boss) through
+the new system, using a deliberately different visual language — warm parchment surfaces, deep-ink-navy
+text, a gold accent reserved for "this is new/AI-driven," and a serif display face paired with a humanist
+body sans. It tested exactly as intended: legible to a non-technical reader on first look. The operator's
+own conclusion, verbatim: build the *actual product* to look and feel like that page, not just this one
+explainer. §1.3 is that decision, specified as a token system the same way §1.2 already is.
+
+**This does not delete §1.2.** Every page built through UI Phase 14 was built against §1.2's tokens, and
+§1.2 stays as the accurate historical record of what those phases actually shipped in — the same
+non-destructive discipline §5B/§5C use for backend phases. §1.3 is the target for everything from UI Phase
+15 onward, and the rollout for existing pages is deliberately **incremental, not a dedicated rewrite
+sprint**: a page migrates to v2 tokens the next time it's touched for unrelated work, the same "fix it as
+each component gets touched" rule §1.2 already established for focus-ring accessibility. It must not be
+left forever either — same closing caution §2A already gives Phase 4's polish pass.
+
+**✅ Migration COMPLETE, 2026-09-05.** Every remaining page and shared component (Products, Leads,
+LeadDetail, Analytics + all chart components, WhatsApp Templates, Social Queue, Prospect Finder, System
+Monitor, Login, and every shared UI primitive) is now on v2 tokens — verified by a repo-wide scan for
+leftover v1 (`slate`/`gray`/`red`/`amber`/`emerald`/`blue`-family) Tailwind classes, which returned clean
+except one deliberate, permanent exception: `lib/statusColors.js`'s 10-value pipeline-STATUS categorical
+palette (identity hues for a chart/badge system, out of scope for this palette refresh — re-tuning it
+risks breaking dataviz colorblind-separation guarantees for no real gain, since its pastel washes already
+read fine on the new parchment surface). `lib/tierColors.js`/`lib/intentColors.js` (tier/intent semantic
+color maps) were re-tuned to the same good/warm/alert tokens `Badge.jsx` already used. `npm run build`
+clean. The "incremental, not left forever" caution above is now resolved for this pass — a genuinely new
+page still starts directly on v2, same as always.
+
+**Color roles v2** (same semantic-role discipline as §1.2 — a role maps to one token, never a mixed set):
+
+| Role | Token | Used for |
+|---|---|---|
+| Page background | `#EDE7D8` (warm parchment) | replaces `slate-50` |
+| Card surface | `#F7F2E6` | replaces `white` card background |
+| Primary text / heading | `#1D2340` (ink-navy) | replaces `slate-900` |
+| Secondary text | `#454B72` | replaces `slate-600` |
+| Muted / meta / timestamp | `#6C7093` | replaces `slate-500`/`slate-400` |
+| Border (default) | `#D9D0B8` | replaces `border-slate-200`, same "always this one, stop mixing shades" rule |
+| **Accent (new)** — gold | `#A66E1E` text / `#C0862B` mid / `#F1DFB2` wash | links, emphasis, and the one deliberate marker for "this is the new AI-driven layer" (Chapter 18 surfaces — Conversation Studio, Calendar, Daily Review, Strategy Insights) — **never** used for a status meaning |
+| HOT / danger / destructive | `#A83B32` text / `#F1DAD3` bg | Tier=HOT, escalation, dangerous toggles — re-tuned red family, kept visually and semantically distinct from the new gold accent on purpose |
+| WARM / caution | re-tuned amber family on the parchment surface | Tier=WARM, pending/needs-review |
+| COLD / muted | reuse muted-text token | Tier=COLD, disabled states |
+| Success / sent / on | `#3F7A57` text / `#DCEADD` bg | SENT status, toggle-on state |
+
+Dark mode gets the same treatment §1.2 never specified (this app had none) — ink and parchment swap roles
+consistently (dark ink-navy surface, warm parchment-tinted text), the gold accent brightens for contrast,
+and status colors re-tune the same way. Full dark-mode values live with the reference implementation, not
+duplicated here to avoid the two drifting apart.
+
+**Typography v2** — three roles, replacing the single Tailwind-default sans stack:
+- **Display** (Fraunces, weight 600–700) — page titles and section titles **only**. Never a card label,
+  never a button, never body copy — the moment Fraunces appears below a heading, the page stops reading as
+  a tool and starts reading as a document. This is the same "pick one per role and stop mixing" discipline
+  §1.2 already states for its own type scale.
+- **Body** (Work Sans, weight 400–600) — replaces the Tailwind default sans everywhere else: card titles,
+  descriptions, buttons, labels.
+- **Data / meta** (IBM Plex Mono, weight 500–600) — timestamps, reference codes, tags/badges, anything
+  tabular. This role didn't exist in §1.2 at all; it is new, and it is what gives status chips and
+  timestamps a "control-room" legibility the old system's small `text-xs slate-500` labels didn't have.
+
+**What v2 explicitly keeps from §1.2 unchanged**: the shared-primitives discipline (`Badge`/`Toggle`/
+`Modal`/`EmptyState`/`Skeleton`/`StatTile`), the spacing scale (`{2,3,4,6}`), the elevation rule
+(`shadow-sm` on cards, `shadow-xl` on overlays only), the interaction rules (visible hover/focus states,
+sub-200ms transitions, designed empty/error states), and the 1280px responsiveness floor. v2 is a palette
+and typography refresh, not a rethink of how this app is built.
+
+---
+
 ## 2. Phase-wise plan
 
 ### Phase 1 — Lead Detail Modal/Page
@@ -467,6 +540,146 @@ message shows real text; copied platform content matches the stored content of t
 
 **DoD**: a search with no provider configured says so explicitly rather than returning an empty result
 set; a prospect appears in no pipeline metric anywhere in the CRM.
+
+---
+
+## 2C. Add-on UI phases (15–18) — added 2026-09-01
+
+Phases 5–14 gave the operator surfaces to steer and understand what the system was already doing. Phases
+15–18 are the UI half of `MASTER_DEVELOPMENT_PRD.md` §5C (backend Phases 16–19), and they answer the
+question this whole block exists for: **what is the AI Sales Manager actually deciding, and can a
+non-technical person tell, at a glance, that it's genuinely working better than it was last week?**
+
+Same 1:1 pairing rule — no UI phase starts before its backend phase's DoD gate is green. **This block is
+the first to build natively against §1.3's design tokens** rather than §1.2's — Conversation Studio,
+Calendar, the Daily Review Card and the Strategy Insights panel are new surfaces with no existing §1.2
+implementation to migrate away from, so they're the natural starting point for the visual refresh.
+
+### Phase 15 — Conversation Studio  *(backend Phase 16)*
+
+**Goal**: let the operator manage what the AI is allowed to say, and reshape any single draft in one
+sentence.
+
+- **Knowledge-base editor**: plain admin form for `knowledge_base_items` (Fact / Objection / Proof /
+  Marketing Asset), one product at a time. No AI-assisted "suggest a starting entry" button anywhere near
+  this screen — §16.2's zero-fabrication rule has to hold in the UI too, not just the write API.
+- **Marketing content drafts** (Step 16.8): when the AI's own strategy flags a product needing new
+  outreach copy or a demo-video script, the draft appears here — full text/script, not a summary — with
+  the same one-box prompt-to-revise as any other draft. **Approve** is the actual write into the knowledge
+  base (`kind=MARKETING_ASSET`); until then it's a proposal, not inventory, and the UI should read that
+  way (a visible "draft — not yet part of the knowledge base" state).
+- **Draft preview with format/tone tags visible**: every preview shows, as small mono tags (§1.3), which
+  format and tone directive produced it — "HTML EMAIL · FORMAL · BULLET ROI" — so the operator can see the
+  AI's presentation decision, not just its content.
+- **One-box prompt-to-revise**: a single text field under any preview — "isko formal karo" — that
+  regenerates that draft and shows the AI's own follow-on suggestion as a distinct, dismissible card, never
+  auto-applied.
+- **WhatsApp approval state, impossible to miss**: a new AI-drafted variant carries a visible pending-
+  approval tag (gold, §1.3's accent) until it reaches the state Phase 9's template manager already tracks —
+  reusing that existing status UI rather than inventing a second indicator.
+- **Coverage-gap list**: real, recent `KB_GAP_DETECTED` events for this product, in plain language ("5 leads
+  asked for proof, none exists yet") — this is the screen a content-gap to-do (Phase 17's daily plan)
+  actually links back to.
+
+**DoD**: two real leads in different segments preview with visibly different format/tone tags for the same
+underlying fact; a real edit-prompt changes only what was asked in the regenerated preview.
+
+### Phase 16 — Campaign Calendar  *(backend Phase 17)*
+
+**Goal**: replace "which stage is this lead in" as the operator's first view with "what's running today and
+how's it doing" — without losing the ability to still ask the first question.
+
+- **Month/day calendar becomes the landing view.** Each day: campaign name (or empty) and live metric chips
+  (`Sent` / `Opened` / `Hot`) computed the way §17.3 requires — always reconcilable against real logs, never
+  a number that can silently drift from what actually happened.
+- **Click-through campaign detail**: the day's full plan, its drafted content, its real-time metrics, and
+  its lifecycle state (`PROPOSED`/`APPROVED`/`RUNNING`/`COMPLETED`/`PAUSED`) as a visible status chip.
+- **The pipeline Kanban grid is removed from the Dashboard, not demoted** — revised 2026-09-01, the
+  operator's explicit ask once the calendar was real: "wo pipeline wala kanban grid hatadena." Lead-stage
+  visibility isn't actually lost — the Leads page's own status column/badge/filter (already real,
+  untouched) still answers "which lead is in which stage," just from a different, already-existing screen.
+  `PipelineKanban.jsx`/`LeadCard.jsx` stay on disk as dead code, not deleted.
+- **A day with no campaign is visibly, calmly empty** — a real `EmptyState` (§1.2/§1.3), not a blank box;
+  most days will have no campaign until Phase 17's daily loop is enabled, and that must not read as broken.
+
+**Revised 2026-09-02 — Campaign Detail absorbs Phase 17's Daily Review card; Leads becomes a secondary
+screen, not the entry point.** The operator's own real workflow, stated directly while discovery became
+campaign-driven (§17.7 backend): *"hum calendar se campaign open karke wahi sare leads data aur progress
+dekhne wale hain... campaign-wise hi leads dekhenge... wahi se main lead page me jaunga."* Pipeline-first
+browsing (Leads page as the entry point) is explicitly out; campaign-first is in. Concretely, "click-through
+campaign detail" (this phase) is now the single screen for everything about one campaign, not just metrics:
+- **Today's find + qualification split**: real leads created today for this campaign, and how many of
+  those the existing Score agent judged worth pursuing (HOT/WARM vs COLD) — "aaj X leads mile, Y kaam ke
+  the" in the operator's own words, not a raw table.
+- **This campaign's own lead list**, each with its real pipeline status badge (reusing `LeadCard.jsx`'s
+  existing status-color mapping, not reinventing one) — click one to reach the existing Lead Detail page.
+  This is what the Leads page's own filter used to answer per-campaign; now it's answered here directly.
+- **Phase 17's Daily Review card (to-do, sample draft, Approve/Give Feedback) moves here**, scoped to this
+  one campaign, instead of living as a flat cross-campaign list on the Dashboard — "campaign ke around sab
+  kuch" is the operator's own framing, and a to-do/sample-draft about campaign X belongs on campaign X's own
+  page, not mixed into a global list. The Dashboard's Calendar keeps a lightweight per-box indicator (e.g. a
+  small "review pending" mark) so a campaign needing attention today is still visible without opening it.
+- The Leads page itself is NOT removed (`LeadDetail.jsx`'s underlying route is still how a click from here
+  actually lands) — only its role as the primary, pipeline-first entry point ends. Leads.jsx's own full
+  list+filter view stays on disk, reachable from nav, for the rare case of browsing outside any campaign
+  context (e.g. a lead currently tagged to no campaign at all).
+
+**DoD**: a real day's metric chips match direct SQL for that day; navigating from a campaign's calendar box
+opens that exact campaign's detail page, whose lead list and today's-find count both match direct SQL
+scoped to that `campaign_id` — not a Kanban-filtered view (Kanban no longer exists, per the revision above).
+
+### Phase 17 — Daily Review Card & To-Do Feed  *(backend Phase 18)*
+
+*(Location revised 2026-09-02 — see Phase 16's own revision note above: this card no longer lives as its
+own flat, cross-campaign list on the Dashboard. It renders on each campaign's own Detail page, scoped to
+that one campaign. Everything below about the card's own content/behavior is unchanged, only where it's
+mounted moved.)*
+
+**Goal**: the two minutes a human spends each morning, designed to actually take two minutes.
+
+- **One card, not a form**: today's goal in one sentence, a sample email + WhatsApp preview, the AI's own
+  one-line rationale (quoting the strategy insight behind it, when one exists), and exactly two actions —
+  **Approve & Launch** / **Give Feedback**. Feedback opens a single text field, not a settings panel.
+- **The to-do feed is the literal proof that today differs from yesterday**: typed items
+  (`FOLLOW_UP_STRATEGY` / `KNOWLEDGE_BASE_GAP` / `TEMPLATE_APPROVAL` / `MARKETING_CONTENT_GAP` / others a
+  real insight motivates), each as a real sentence about real data — never a generic checklist row. This
+  is the screen that has to make §5C.0's "roz ka to-do fixed nahi hota" claim visibly true, not just
+  architecturally true. A `MARKETING_CONTENT_GAP` item links straight to Conversation Studio's draft
+  (UI Phase 15) rather than duplicating the preview here.
+- **EOD summary card**: plain-language real numbers for that day, same register as the daily loop's own
+  spec — "40 businesses ko message gaya, 12 ne khola, 3 ne reply kiya, 1 genuinely interested tha, turant
+  bataya gaya" is the literal target sentence, not a stats table.
+- **Hot-lead alerts stay exactly where they already are** (the existing alerts panel, §2B Phase 11) and are
+  never merged into or gated by this card — a hot reply must never look like it's "waiting for review."
+- **Kill-switch visible on the same screen it governs**: `DAILY_AI_LOOP_ENABLED`'s current state shown
+  plainly above the review card, same ambiguous-kill-switch-is-a-safety-defect rule §2B Phase 9 already
+  established.
+
+**DoD**: with `DAILY_AI_LOOP_ENABLED` off, this screen shows that state plainly and no plan can be approved
+into existence; two different real days show visibly different to-do items.
+
+### Phase 18 — Strategy Insights Panel  *(backend Phase 19)*
+
+**Goal**: make the system's own learning something a non-technical person can literally read.
+
+- **"What the AI learned this week" feed**: the newest `ACTIVE` `strategy_insights` rows, each rendered as
+  one plain sentence with its real supporting numbers shown alongside, not hidden behind a tooltip —
+  "fee-loss ROI angle: 8.5% reply rate (17/200) vs. 1.5% (3/200) for the generic pitch."
+  - Component note: an honest reply-rate comparison is a real chart, not just a sentence — build it
+    following the `dataviz` skill (as §1.2 already requires for Phase 3's charts), with the sample sizes
+    shown directly on the bars rather than only in a tooltip, since a rate without its `n` is misleading on
+    this small a volume.
+- **Below-floor state is shown, not hidden**: a segment/angle combination that hasn't reached the sample
+  floor yet (§19.2) shows its real current count against the floor ("23 of 40 needed") rather than nothing
+  — an operator should never wonder whether the engine is broken versus simply still collecting data.
+- **Superseded history stays visible**, one level down (an expandable "past insights" list) — the point of
+  keeping `SUPERSEDED` rows in the schema is wasted if the UI only ever shows the latest one.
+- **Explicit "this is a suggestion" framing**: every insight card carries visible copy stating it only takes
+  effect inside a plan the operator approves (§18.5/§18.6's boundary) — the UI's own reminder that nothing
+  here self-applies.
+
+**DoD**: a real below-floor segment shows its real count against the floor, not an empty or fabricated
+insight; every rendered insight's numbers match a real query, checked against direct SQL.
 
 ---
 

@@ -14,7 +14,7 @@ from cognition.agent_events import log_agent_event
 from cognition.decision_engine import route_action
 from cognition.hard_classifiers import looks_pricing_or_legal
 from config import Config
-from database.models import InboundConversation, Lead, LeadReviewInsight, OutreachLog, Product
+from database.models import InboundConversation, KnowledgeBaseItem, Lead, LeadReviewInsight, OutreachLog, Product
 from jobs.registry import register_handler
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import add_suppression, is_suppressed
@@ -71,11 +71,11 @@ def _send_reply_message(db, conv, lead, subject, body, event_type):
     return True
 
 
-def _send_escalation_reply(db, conv, lead, message, result, pain_points, product_brief):
+def _send_escalation_reply(db, conv, lead, message, result, pain_points, product_brief, knowledge_base_items):
     """A real, grounded reply for a message that just escalated to a human -- adaptively
-    answers what the lead asked using ONLY their verified pain points and the product
-    brief, closes with a promise the team will follow up, and never leaves the lead in
-    silence. If QC rejects the draft, asks the AI to fix the SPECIFIC issues raised
+    answers what the lead asked using ONLY their verified pain points, the product
+    brief, and (Phase 16) this product's real knowledge base, and never leaves the lead
+    in silence. If QC rejects the draft, asks the AI to fix the SPECIFIC issues raised
     (up to MAX_REDRAFT_ATTEMPTS times) before falling back to a fixed, guaranteed-safe
     message -- a reply must always go out, it just must never be the QC already caught."""
     if not get_bool(db, ACKNOWLEDGMENT_REPLY_ENABLED, default=False):
@@ -90,7 +90,8 @@ def _send_escalation_reply(db, conv, lead, message, result, pain_points, product
     while not qc_result["approved"] and attempts < MAX_REDRAFT_ATTEMPTS:
         attempts += 1
         redrafted = redraft_reply(db, lead.id, message, draft_body, qc_result["rejection_reasons"],
-                                  qc_result["suggested_corrections"], pain_points, product_brief)
+                                  qc_result["suggested_corrections"], pain_points, product_brief,
+                                  knowledge_base_items)
         if not redrafted:
             break
         draft_body = redrafted
@@ -137,7 +138,17 @@ def handle_classify_inbound(db, payload):
     )
     pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
 
-    result = classify_intent(db, lead.id, conv.message_content, history, product_brief, pain_points)
+    # Phase 16 Step 16.3 -- this product's real, admin-written knowledge base (may be
+    # empty; every product's real state until an admin fills one in via Products page).
+    # Additive-only grounding: classify_intent/redraft_reply fall back to pain_points +
+    # product_brief exactly as before when this list is empty.
+    knowledge_base_items = [
+        {"kind": k.kind, "title": k.title, "body": k.body}
+        for k in db.query(KnowledgeBaseItem).filter(KnowledgeBaseItem.product_id == product.id).all()
+    ]
+
+    result = classify_intent(db, lead.id, conv.message_content, history, product_brief, pain_points,
+                             knowledge_base_items)
 
     # The AI can catch a subtler opt-out than Step 4.2's keyword match did -- if it says
     # so, suppress for real, same as the deterministic path (still the 100% rule).
@@ -151,6 +162,15 @@ def handle_classify_inbound(db, payload):
     conv.confidence = result["confidence"]
     conv.ai_suggested_response = result["suggested_reply"]
     db.commit()
+
+    # Phase 16 Step 16.7 -- a real objection/question KNOWLEDGE_BASE had nothing to
+    # ground an answer in. Logged to the existing agent_events table (no new table),
+    # read later by Phase 19's reflection engine to produce a real, data-grounded
+    # "you're missing content for this objection" to-do -- this step only detects and
+    # logs, it does not act on the gap itself.
+    if result["knowledge_gap"]:
+        log_agent_event(db, "INBOUND", lead.id, "KB_GAP_DETECTED", result["confidence"], "LOW", "EXECUTE",
+                        payload={"product_id": product.id, "topic": result["knowledge_gap_topic"]})
 
     if result["intent"] in ("STOP", "AUTO_REPLY"):
         logger.info("CLASSIFY_INBOUND %s -> %s, nothing further to do", lead.company_name, result["intent"])
@@ -172,7 +192,8 @@ def handle_classify_inbound(db, payload):
         log_agent_event(db, "INBOUND", lead.id, "ESCALATE", result["confidence"], "HIGH", "HUMAN_ESCALATION")
         logger.info("CLASSIFY_INBOUND %s -> escalated to human (intent=%s, confidence=%.2f)",
                    lead.company_name, result["intent"], result["confidence"])
-        _send_escalation_reply(db, conv, lead, conv.message_content, result, pain_points, product_brief)
+        _send_escalation_reply(db, conv, lead, conv.message_content, result, pain_points, product_brief,
+                               knowledge_base_items)
         return conv.id
 
     # Only a low-risk, high-confidence OBJECTION reaches here. Even then, nothing gets

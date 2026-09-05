@@ -23,9 +23,9 @@ const TIER_VARIANT = { HOT: "HOT", WARM: "WARM", COLD: "COLD" };
 const SCORE_BREAKDOWN_ORDER = ["icp_fit", "pain_match", "reachability", "buying_signal"];
 
 function barColor(value) {
-  if (value >= 0.7) return "bg-emerald-500";
-  if (value >= 0.4) return "bg-amber-500";
-  return "bg-slate-300";
+  if (value >= 0.7) return "bg-good-600";
+  if (value >= 0.4) return "bg-warm-600";
+  return "bg-line-strong";
 }
 
 function dayLabel(dateStr) {
@@ -46,10 +46,10 @@ function timeLabel(ts) {
 // runtime-computed string like that produces a real DOM class with no matching CSS rule,
 // so the color silently never renders (found and fixed while building this exact file).
 const DOT_COLORS = {
-  emerald: { bg: "bg-emerald-100", text: "text-emerald-600" },
-  red: { bg: "bg-red-100", text: "text-red-600" },
-  amber: { bg: "bg-amber-100", text: "text-amber-600" },
-  slate: { bg: "bg-slate-100", text: "text-slate-500" },
+  emerald: { bg: "bg-good-100", text: "text-good-700" },
+  red: { bg: "bg-alert-100", text: "text-alert-700" },
+  amber: { bg: "bg-warm-100", text: "text-warm-700" },
+  slate: { bg: "bg-parchment-raised-2", text: "text-ink-500" },
 };
 
 // Phase 14 Step 14.1 -- a real, honest per-message delivery state (never a guess: "--"
@@ -58,11 +58,11 @@ const DOT_COLORS = {
 // Delivered, blue double = Seen (WhatsApp-style convention users already recognize),
 // emerald double = Replied (strongest possible signal), red X = Failed.
 function DeliveryTick({ state }) {
-  if (state === "Failed") return <XCircle size={12} className="text-red-500" />;
-  if (state === "Replied") return <CheckCheck size={12} className="text-emerald-500" />;
-  if (state === "Seen") return <CheckCheck size={12} className="text-sky-500" />;
-  if (state === "Delivered") return <CheckCheck size={12} className="text-slate-400" />;
-  if (state === "Sent") return <Check size={12} className="text-slate-400" />;
+  if (state === "Failed") return <XCircle size={12} className="text-alert-600" />;
+  if (state === "Replied") return <CheckCheck size={12} className="text-good-600" />;
+  if (state === "Seen") return <CheckCheck size={12} className="text-ink-700" />;
+  if (state === "Delivered") return <CheckCheck size={12} className="text-ink-500" />;
+  if (state === "Sent") return <Check size={12} className="text-ink-500" />;
   return null;
 }
 
@@ -117,28 +117,28 @@ function TimelineEntry({ event }) {
   const hasDetail = d.body || d.extra;
 
   return (
-    <div className="flex gap-3 border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50">
+    <div className="flex gap-3 border-b border-line px-4 py-3 last:border-0 hover:bg-parchment-raised-2">
       <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${colors.bg}`}>
         <Icon size={13} className={colors.text} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-medium capitalize text-slate-900">{d.title}</p>
+          <p className="text-sm font-medium capitalize text-ink-900">{d.title}</p>
           {d.badge && <Badge variant={d.variant}>{d.badge}</Badge>}
         </div>
-        <p className="mt-0.5 text-[11px] text-slate-400">{timeLabel(event.timestamp)}</p>
+        <p className="mt-0.5 font-mono text-[11px] text-ink-500">{timeLabel(event.timestamp)}</p>
         {hasDetail && (
           <button
             onClick={() => setExpanded((v) => !v)}
-            className="mt-1 text-xs font-medium text-slate-400 hover:text-slate-700"
+            className="mt-1 text-xs font-medium text-ink-500 hover:text-ink-900"
           >
             {expanded ? "Hide detail" : "Show detail"}
           </button>
         )}
         {expanded && (
-          <div className="mt-2 rounded-md bg-slate-50 p-2.5 text-xs text-slate-600">
+          <div className="mt-2 rounded-md bg-parchment-raised-2 p-2.5 text-xs text-ink-700">
             {d.body && <p className="whitespace-pre-wrap break-words">{d.body}</p>}
-            {d.extra && <p className="mt-1 italic text-slate-500">{d.extra}</p>}
+            {d.extra && <p className="mt-1 italic text-ink-500">{d.extra}</p>}
           </div>
         )}
       </div>
@@ -169,7 +169,7 @@ function Timeline({ events }) {
     <div className="max-h-[560px] overflow-y-auto">
       {groups.map((g) => (
         <div key={g.day}>
-          <div className="sticky top-0 z-10 border-b border-slate-100 bg-slate-50/95 px-4 py-1.5 text-xs font-semibold text-slate-500 backdrop-blur">
+          <div className="sticky top-0 z-10 border-b border-line bg-parchment-raised-2/95 px-4 py-1.5 text-xs font-semibold text-ink-500 backdrop-blur">
             {dayLabel(g.day)}
           </div>
           {g.events.map((e, i) => (
@@ -193,11 +193,11 @@ function MessageBubble({ event }) {
     <div className={`flex ${outbound ? "justify-end" : "justify-start"}`}>
       <div
         className={`max-w-[78%] rounded-lg px-3 py-2 text-sm shadow-sm ${
-          outbound ? "bg-slate-800 text-white" : "bg-white text-slate-800 ring-1 ring-slate-200"
+          outbound ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-line"
         }`}
       >
         <div className="mb-1 flex items-center gap-2">
-          <span className={`text-[11px] font-semibold ${outbound ? "text-slate-300" : "text-slate-400"}`}>
+          <span className={`text-[11px] font-semibold ${outbound ? "text-parchment-raised/70" : "text-ink-500"}`}>
             {outbound ? "AI-BOS" : "Lead"}
           </span>
           {!outbound && event.intent_detected && (
@@ -208,12 +208,12 @@ function MessageBubble({ event }) {
           )}
         </div>
         {outbound && event.subject && (
-          <p className={`mb-1 text-xs font-semibold ${outbound ? "text-slate-200" : "text-slate-500"}`}>
+          <p className={`mb-1 text-xs font-semibold ${outbound ? "text-parchment-raised/80" : "text-ink-500"}`}>
             {event.subject}
           </p>
         )}
         <p className="whitespace-pre-wrap break-words leading-relaxed">{outbound ? event.body : event.message}</p>
-        <p className={`mt-1.5 flex items-center gap-1 text-[10px] ${outbound ? "text-slate-400" : "text-slate-400"}`}>
+        <p className={`mt-1.5 flex items-center gap-1 font-mono text-[10px] ${outbound ? "text-parchment-raised/50" : "text-ink-500"}`}>
           {dayLabel(event.timestamp.slice(0, 10))} · {timeLabel(event.timestamp)}
           {outbound && <DeliveryTick state={event.delivery_state} />}
         </p>
@@ -253,7 +253,7 @@ function SequenceStageBadge({ seq }) {
   const label = sequenceStageLabel(seq);
   if (!label) return null;
   return (
-    <span className="text-[11px] font-medium text-slate-400">
+    <span className="text-[11px] font-medium text-ink-500">
       {label}
     </span>
   );
@@ -293,7 +293,7 @@ function ConversationPanel({ events, sequences }) {
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-between border-b border-slate-100">
+      <div className="mb-3 flex items-center justify-between border-b border-line">
         <div className="flex gap-1">
           {CONVERSATION_CHANNELS.map(({ key, label, icon: Icon }) => (
             <button
@@ -301,11 +301,11 @@ function ConversationPanel({ events, sequences }) {
               onClick={() => setTab(key)}
               className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
                 tab === key
-                  ? "border-slate-800 text-slate-900"
-                  : "border-transparent text-slate-400 hover:text-slate-700"
+                  ? "border-ink-900 text-ink-900"
+                  : "border-transparent text-ink-500 hover:text-ink-700"
               }`}
             >
-              <Icon size={13} /> {label} <span className="text-slate-400">({byChannel[key].length})</span>
+              <Icon size={13} /> {label} <span className="text-ink-500">({byChannel[key].length})</span>
             </button>
           ))}
         </div>
@@ -314,11 +314,11 @@ function ConversationPanel({ events, sequences }) {
 
       {messages.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
-          <MessagesSquare className="text-slate-300" size={28} />
-          <p className="text-xs text-slate-400">No {tab === "EMAIL" ? "email" : "WhatsApp"} messages yet.</p>
+          <MessagesSquare className="text-ink-500" size={28} />
+          <p className="text-xs text-ink-500">No {tab === "EMAIL" ? "email" : "WhatsApp"} messages yet.</p>
         </div>
       ) : (
-        <div ref={scrollRef} className="flex max-h-[480px] flex-col gap-3 overflow-y-auto rounded-md bg-slate-50 p-3">
+        <div ref={scrollRef} className="flex max-h-[480px] flex-col gap-3 overflow-y-auto rounded-md bg-parchment p-3">
           {messages.map((m, i) => (
             <MessageBubble key={i} event={m} />
           ))}
@@ -332,8 +332,8 @@ function ScoreCard({ score }) {
   if (!score) {
     return (
       <div className="flex flex-col items-center gap-2 py-6 text-center">
-        <Gauge className="text-slate-300" size={28} />
-        <p className="text-xs text-slate-400">Not scored yet.</p>
+        <Gauge className="text-ink-500" size={28} />
+        <p className="text-xs text-ink-500">Not scored yet.</p>
       </div>
     );
   }
@@ -345,20 +345,20 @@ function ScoreCard({ score }) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Badge variant={TIER_VARIANT[score.tier] || "NEUTRAL"}>{score.tier}</Badge>
-        <span className="text-lg font-semibold text-slate-900">{score.score}<span className="text-xs font-normal text-slate-400">/100</span></span>
-        <span className="text-xs text-slate-400">confidence {(score.confidence ?? 0).toFixed(2)}</span>
+        <span className="font-display text-lg font-semibold text-ink-900">{score.score}<span className="text-xs font-normal text-ink-500">/100</span></span>
+        <span className="font-mono text-xs text-ink-500">confidence {(score.confidence ?? 0).toFixed(2)}</span>
       </div>
-      <p className="text-sm leading-relaxed text-slate-600">{score.justification}</p>
+      <p className="text-sm leading-relaxed text-ink-700">{score.justification}</p>
       <div className="flex flex-col gap-2">
         {orderedKeys.map((key) => {
           const value = breakdown[key] || 0;
           return (
             <div key={key} className="flex items-center gap-2 text-xs">
-              <span className="w-24 shrink-0 capitalize text-slate-500">{key.replace(/_/g, " ")}</span>
-              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+              <span className="w-24 shrink-0 capitalize text-ink-500">{key.replace(/_/g, " ")}</span>
+              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-parchment-raised-2">
                 <div className={`h-full rounded-full transition-all ${barColor(value)}`} style={{ width: `${Math.round(value * 100)}%` }} />
               </div>
-              <span className="w-8 text-right font-medium text-slate-500">{Math.round(value * 100)}%</span>
+              <span className="w-8 text-right font-medium font-mono text-ink-500">{Math.round(value * 100)}%</span>
             </div>
           );
         })}
@@ -406,14 +406,14 @@ function ContactInfoForm({ lead, onSaved, onCancel }) {
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {EDITABLE_FIELDS.map(([key, label, Icon]) => (
         <label key={key} className="flex flex-col gap-1">
-          <span className="flex items-center gap-1 text-xs font-medium text-slate-500">
-            <Icon size={12} className="text-slate-400" /> {label}
+          <span className="flex items-center gap-1 text-xs font-medium text-ink-500">
+            <Icon size={12} className="text-ink-500" /> {label}
           </span>
           <input
             value={form[key]}
             placeholder="Not set"
             onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-            className="rounded-md border border-slate-200 px-2.5 py-1.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400"
+            className="rounded-md border border-line px-2.5 py-1.5 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
         </label>
       ))}
@@ -421,17 +421,17 @@ function ContactInfoForm({ lead, onSaved, onCancel }) {
         <button
           onClick={save}
           disabled={!dirty || saving}
-          className="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {saving ? "Saving…" : "Save changes"}
         </button>
         <button
           onClick={onCancel}
-          className="rounded-md px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-100"
+          className="rounded-md px-3 py-1.5 text-xs font-medium text-ink-500 transition-colors hover:bg-parchment-raised-2"
         >
           Cancel
         </button>
-        {error && <span className="text-xs text-red-600">{error}</span>}
+        {error && <span className="text-xs text-alert-600">{error}</span>}
       </div>
     </div>
   );
@@ -445,16 +445,16 @@ function ContactInfoDisplay({ lead, onEdit }) {
     <div className="flex flex-col gap-2.5">
       {EDITABLE_FIELDS.map(([key, label, Icon]) => (
         <div key={key} className="flex items-center gap-2.5 text-sm">
-          <Icon size={13} className="shrink-0 text-slate-400" />
-          <span className="w-28 shrink-0 text-xs text-slate-500">{label}</span>
-          <span className={lead[key] ? "truncate text-slate-800" : "text-slate-300"}>
+          <Icon size={13} className="shrink-0 text-ink-500" />
+          <span className="w-28 shrink-0 text-xs text-ink-500">{label}</span>
+          <span className={lead[key] ? "truncate text-ink-700" : "text-ink-500"}>
             {lead[key] || "Not set"}
           </span>
         </div>
       ))}
       <button
         onClick={onEdit}
-        className="mt-2 w-fit rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
+        className="mt-2 w-fit rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment"
       >
         Edit details
       </button>
@@ -478,10 +478,10 @@ function ContactSection({ lead, onSaved }) {
 
 function SectionCard({ title, icon: Icon, children, headerExtra }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-          <Icon size={15} className="text-slate-400" /> {title}
+    <div className="rounded-lg border border-line bg-parchment-raised shadow-sm">
+      <div className="flex items-center justify-between border-b border-line px-4 py-3">
+        <h2 className="flex items-center gap-2 font-display text-sm font-semibold text-ink-700">
+          <Icon size={15} className="text-ink-500" /> {title}
         </h2>
         {headerExtra}
       </div>
@@ -556,13 +556,13 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
   const Icon = platform.Icon;
 
   return (
-    <div className="rounded-md border border-slate-200 p-3">
+    <div className="rounded-md border border-line p-3">
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
-          <Icon size={14} className="text-slate-400" /> {platform.label}
+        <div className="flex items-center gap-2 text-sm font-medium text-ink-700">
+          <Icon size={14} className="text-ink-500" /> {platform.label}
         </div>
         <a href={profileUrl} target="_blank" rel="noopener noreferrer"
-           className="text-xs text-slate-400 hover:text-slate-700 hover:underline">
+           className="text-xs text-ink-500 hover:text-gold-700 hover:underline">
           Open profile
         </a>
       </div>
@@ -571,7 +571,7 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
         <button
           onClick={requestDraft}
           disabled={drafting}
-          className="mt-2 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="mt-2 rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
         >
           {drafting ? "Drafting…" : `Draft ${platform.label} message`}
         </button>
@@ -579,16 +579,16 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
 
       {queueItem && queueItem.status === "QUEUED" && (
         <div className="mt-2 flex flex-col gap-2">
-          <p className="whitespace-pre-wrap rounded-md bg-slate-50 p-2.5 text-xs text-slate-700">
+          <p className="whitespace-pre-wrap rounded-md bg-parchment p-2.5 text-xs text-ink-700">
             {queueItem.message_text}
           </p>
           {queueItem.reasoning && (
-            <p className="text-[11px] italic text-slate-400">Why: {queueItem.reasoning}</p>
+            <p className="text-[11px] italic text-ink-500">Why: {queueItem.reasoning}</p>
           )}
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={copyText}
-              className="flex items-center gap-1 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
+              className="flex items-center gap-1 rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment"
             >
               <Copy size={12} /> {copied ? "Copied" : "Copy text"}
             </button>
@@ -596,14 +596,14 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
               onClick={markSent}
               disabled={acting}
               title="Confirm you sent this manually from your own account"
-              className="flex items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Send size={12} /> Mark as Sent
             </button>
             <button
               onClick={dismissDraft}
               disabled={acting}
-              className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium text-ink-500 transition-colors hover:bg-parchment hover:text-ink-700 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <X size={12} /> Dismiss
             </button>
@@ -613,11 +613,11 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
 
       {queueItem && queueItem.status === "SENT" && (
         <div className="mt-2 flex items-center justify-between gap-2">
-          <span className="text-xs text-emerald-600">Sent {relativeTime(queueItem.sent_at)}</span>
+          <span className="font-mono text-xs text-good-600">Sent {relativeTime(queueItem.sent_at)}</span>
           <button
             onClick={requestDraft}
             disabled={drafting}
-            className="text-xs font-medium text-slate-500 hover:text-slate-800 disabled:opacity-40"
+            className="text-xs font-medium text-ink-500 hover:text-ink-900 disabled:opacity-40"
           >
             {drafting ? "Drafting…" : "Draft another"}
           </button>
@@ -629,14 +629,14 @@ function SocialPlatformRow({ platform, profileUrl, leadId, queueItem, onRefresh 
           <button
             onClick={requestDraft}
             disabled={drafting}
-            className="text-xs font-medium text-slate-500 hover:text-slate-800 disabled:opacity-40"
+            className="text-xs font-medium text-ink-500 hover:text-ink-900 disabled:opacity-40"
           >
             {drafting ? "Drafting…" : "Draft another"}
           </button>
         </div>
       )}
 
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-xs text-alert-600">{error}</p>}
     </div>
   );
 }
@@ -645,7 +645,7 @@ function SocialOutreachCard({ lead, queue, onRefresh }) {
   const platforms = SOCIAL_PLATFORMS.filter((p) => lead[p.urlField]);
   if (platforms.length === 0) {
     return (
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-ink-500">
         No LinkedIn, Instagram, or Facebook profile on file for this lead -- add one under
         "Contact & profile" to enable drafting.
       </p>
@@ -723,15 +723,15 @@ function CrossChannelCopyBar({ leadId }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-      <span className="text-[11px] text-slate-400">Copy this lead's real outreach content for:</span>
+    <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
+      <span className="text-[11px] text-ink-500">Copy this lead's real outreach content for:</span>
       {CROSS_CHANNEL_PLATFORMS.map(({ key, label, icon: Icon }) => (
         <button
           key={key}
           onClick={() => copyFor(key)}
           disabled={copying === key}
           title={`Copy for ${label}`}
-          className="flex items-center gap-1.5 rounded-md border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-[11px] font-medium text-ink-700 transition-colors hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Icon size={12} /> {label}
         </button>
@@ -752,7 +752,7 @@ function ConfidenceBadge({ confidence }) {
     <span
       title={strong ? "A cleanly matched LinkedIn result" : "A weaker match -- verify before relying on this"}
       className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
-        strong ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+        strong ? "bg-good-100 text-good-700" : "bg-warm-100 text-warm-700"
       }`}
     >
       {strong ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
@@ -764,7 +764,7 @@ function ConfidenceBadge({ confidence }) {
 function PeopleCard({ contacts }) {
   if (!contacts || contacts.length === 0) {
     return (
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-ink-500">
         No individual contacts found yet at this company (needs the company's own LinkedIn
         page resolved first).
       </p>
@@ -773,26 +773,26 @@ function PeopleCard({ contacts }) {
   return (
     <div className="flex flex-col gap-2">
       {contacts.map((c) => (
-        <div key={c.id} className="flex items-start justify-between gap-3 rounded-md bg-slate-50 p-3 text-xs">
+        <div key={c.id} className="flex items-start justify-between gap-3 rounded-md bg-parchment p-3 text-xs">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="font-semibold text-slate-800">{c.full_name || "Name not confirmed"}</span>
+              <span className="font-semibold text-ink-700">{c.full_name || "Name not confirmed"}</span>
               {c.is_decision_maker ? (
-                <span className="flex items-center gap-0.5 text-amber-500" title="Flagged as a decision maker">
+                <span className="flex items-center gap-0.5 text-warm-600" title="Flagged as a decision maker">
                   <Star size={10} />
                 </span>
               ) : null}
               <ConfidenceBadge confidence={c.confidence} />
             </div>
-            <p className="mt-0.5 text-slate-500">{c.role}</p>
-            <p className="mt-0.5 text-[10px] text-slate-400">via {c.source}</p>
+            <p className="mt-0.5 text-ink-500">{c.role}</p>
+            <p className="mt-0.5 font-mono text-[10px] text-ink-500">via {c.source}</p>
           </div>
           {c.linkedin_url && (
             <a
               href={c.linkedin_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 text-slate-400 hover:text-slate-700"
+              className="shrink-0 text-ink-500 hover:text-gold-700"
               title="Open LinkedIn profile"
             >
               <LinkedinIcon size={14} />
@@ -920,26 +920,26 @@ export default function LeadDetail() {
     }
   }
 
-  if (error) return <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-red-600">{error}</div>;
-  if (!lead) return <div className="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-slate-400">Loading…</div>;
+  if (error) return <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-alert-600">{error}</div>;
+  if (!lead) return <div className="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-ink-500">Loading…</div>;
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-6">
       <div className="flex items-center justify-between gap-3">
-        <Link to="/" className="flex w-fit items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800">
+        <Link to="/" className="flex w-fit items-center gap-1 text-xs font-medium text-ink-500 hover:text-ink-900">
           <ArrowLeft size={13} /> Back to dashboard
         </Link>
 
         {adjacent && (
           <div className="flex items-center gap-2">
             {adjacent.total > 0 && (
-              <span className="text-xs text-slate-400">Lead {adjacent.position} of {adjacent.total}</span>
+              <span className="font-mono text-xs text-ink-500">Lead {adjacent.position} of {adjacent.total}</span>
             )}
             <button
               onClick={() => goTo(adjacent.prev.id)}
               disabled={!adjacent.prev}
               title={adjacent.prev ? adjacent.prev.company_name : undefined}
-              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex items-center gap-1 rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs font-medium text-ink-700 hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft size={13} /> Previous
             </button>
@@ -947,7 +947,7 @@ export default function LeadDetail() {
               onClick={() => goTo(adjacent.next.id)}
               disabled={!adjacent.next}
               title={adjacent.next ? adjacent.next.company_name : undefined}
-              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex items-center gap-1 rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs font-medium text-ink-700 hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next <ChevronRight size={13} />
             </button>
@@ -955,57 +955,57 @@ export default function LeadDetail() {
         )}
       </div>
 
-      <div className="flex items-start justify-between gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-3 rounded-lg border border-line bg-parchment-raised p-5 shadow-sm">
         <div className="flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-parchment-raised-2 text-sm font-semibold text-ink-700">
             {lead.company_name.slice(0, 2).toUpperCase()}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold text-slate-900">{lead.company_name}</h1>
+              <h1 className="font-display text-lg font-semibold text-ink-900">{lead.company_name}</h1>
               {lead.reference_code && (
                 <span
                   title="Reference code -- quote this in alerts/conversation to identify this lead"
-                  className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-500"
+                  className="rounded bg-parchment-raised-2 px-1.5 py-0.5 font-mono text-[11px] text-ink-500"
                 >
                   {lead.reference_code}
                 </span>
               )}
             </div>
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-500">
               {lead.region_location && (
                 <span className="flex items-center gap-1"><MapPin size={12} /> {lead.region_location}</span>
               )}
               {lead.primary_email && (
-                <a href={`mailto:${lead.primary_email}`} className="flex items-center gap-1 hover:text-slate-800 hover:underline">
+                <a href={`mailto:${lead.primary_email}`} className="flex items-center gap-1 hover:text-gold-700 hover:underline">
                   <Mail size={12} /> {lead.primary_email}
                 </a>
               )}
               {lead.primary_phone && (
-                <a href={`tel:${lead.primary_phone}`} className="flex items-center gap-1 hover:text-slate-800 hover:underline">
+                <a href={`tel:${lead.primary_phone}`} className="flex items-center gap-1 hover:text-gold-700 hover:underline">
                   <Phone size={12} /> {lead.primary_phone}
                 </a>
               )}
               {lead.instagram_url && (
                 <a href={lead.instagram_url} target="_blank" rel="noopener noreferrer"
-                   title="Instagram" className="flex items-center text-slate-400 hover:text-slate-800">
+                   title="Instagram" className="flex items-center text-ink-500 hover:text-gold-700">
                   <InstagramIcon size={13} />
                 </a>
               )}
               {lead.facebook_url && (
                 <a href={lead.facebook_url} target="_blank" rel="noopener noreferrer"
-                   title="Facebook" className="flex items-center text-slate-400 hover:text-slate-800">
+                   title="Facebook" className="flex items-center text-ink-500 hover:text-gold-700">
                   <FacebookIcon size={13} />
                 </a>
               )}
               {lead.linkedin_url && (
                 <a href={lead.linkedin_url} target="_blank" rel="noopener noreferrer"
-                   title="LinkedIn" className="flex items-center text-slate-400 hover:text-slate-800">
+                   title="LinkedIn" className="flex items-center text-ink-500 hover:text-gold-700">
                   <LinkedinIcon size={13} />
                 </a>
               )}
-              <span className="text-slate-300">·</span>
-              <span>Added {relativeTime(lead.created_at)}</span>
+              <span className="text-ink-500">·</span>
+              <span className="font-mono">Added {relativeTime(lead.created_at)}</span>
             </div>
           </div>
         </div>
@@ -1014,7 +1014,7 @@ export default function LeadDetail() {
             {lead.interest_state === "YES" && (
               <span
                 title={`Clicked "Yes, tell me more" on a real outreach send${lead.interest_state_at ? ` (${relativeTime(lead.interest_state_at)})` : ""}`}
-                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-good-100 px-2 py-0.5 text-[11px] font-semibold text-good-700 ring-1 ring-inset ring-good-600/30"
               >
                 <CheckCircle2 size={11} /> Said Yes
               </span>
@@ -1022,7 +1022,7 @@ export default function LeadDetail() {
             {lead.interest_state === "NO" && (
               <span
                 title={`Clicked "Not right now" -- declined this pitch, still contactable (NOT unsubscribed)${lead.interest_state_at ? ` (${relativeTime(lead.interest_state_at)})` : ""}`}
-                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700 ring-1 ring-inset ring-blue-200"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold-100 px-2 py-0.5 text-[11px] font-semibold text-gold-700 ring-1 ring-inset ring-gold-600/30"
               >
                 <XCircle size={11} /> Said No
               </span>
@@ -1030,7 +1030,7 @@ export default function LeadDetail() {
             {lead.is_suppressed && (
               <span
                 title="This lead's email/phone is in the suppression list -- no future outreach will be sent"
-                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500 ring-1 ring-inset ring-slate-200"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-parchment-raised-2 px-2 py-0.5 text-[11px] font-semibold text-ink-500 ring-1 ring-inset ring-line"
               >
                 <BellOff size={11} /> Opted out
               </span>
@@ -1045,7 +1045,7 @@ export default function LeadDetail() {
               onClick={markContacted}
               disabled={markingContacted}
               title="Moves this lead to Engaged and clears it off the Dashboard's alerts"
-              className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md bg-alert-600 px-3 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {markingContacted ? "Marking…" : "Mark as Contacted"}
             </button>
@@ -1054,7 +1054,7 @@ export default function LeadDetail() {
             <button
               onClick={() => sendOutreach()}
               disabled={sendInFlight}
-              className="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {sendInFlight ? "Sending…" : "Send Outreach Now"}
             </button>
@@ -1068,7 +1068,7 @@ export default function LeadDetail() {
                 onClick={() => closeDeal("CONVERTED")}
                 disabled={closingStatus}
                 title="Mark as a won deal"
-                className="flex items-center gap-1 rounded-md bg-emerald-50 px-2.5 py-1.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200 transition-colors hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex items-center gap-1 rounded-md bg-good-100 px-2.5 py-1.5 text-xs font-medium text-good-700 ring-1 ring-inset ring-good-600/30 transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Trophy size={12} /> Mark Converted
               </button>
@@ -1076,7 +1076,7 @@ export default function LeadDetail() {
                 onClick={() => closeDeal("REJECTED")}
                 disabled={closingStatus}
                 title="Mark as a lost deal"
-                className="flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-slate-500 ring-1 ring-inset ring-slate-200 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex items-center gap-1 rounded-md bg-parchment-raised px-2.5 py-1.5 text-xs font-medium text-ink-500 ring-1 ring-inset ring-line transition-colors hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ThumbsDown size={12} /> Mark Lost
               </button>
@@ -1089,9 +1089,9 @@ export default function LeadDetail() {
          banner here used to sit on the page forever with no way to act on it; the toast
          version can also offer a real next step (Force send anyway). */}
       {sendResult && (
-        <div className="-mt-3 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs shadow-sm">
+        <div className="-mt-3 flex flex-wrap gap-3 rounded-lg border border-line bg-parchment-raised px-4 py-2 text-xs shadow-sm">
           {Object.entries(sendResult).map(([channel, r]) => (
-            <span key={channel} className={r.status === "SENT" ? "text-emerald-600" : "text-amber-600"}>
+            <span key={channel} className={r.status === "SENT" ? "text-good-600" : "text-warm-600"}>
               {channel}: {r.status === "SENT" ? "Sent ✓" : `Escalated (${r.reason || "needs review"})`}
             </span>
           ))}
@@ -1119,14 +1119,14 @@ export default function LeadDetail() {
         <SectionCard title="Verified pain points" icon={AlertTriangle}>
           <div className="flex flex-col gap-2">
             {lead.pain_points.map((p, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-md bg-slate-50 p-3 text-xs">
+              <div key={i} className="flex items-start gap-3 rounded-md bg-parchment p-3 text-xs">
                 <div className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${barColor(p.severity_0_1 || 0)}`} />
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-slate-800">{p.code.replace(/_/g, " ")}</span>
-                    <span className="text-slate-400">severity {Math.round((p.severity_0_1 || 0) * 100)}%</span>
+                    <span className="font-semibold text-ink-700">{p.code.replace(/_/g, " ")}</span>
+                    <span className="font-mono text-ink-500">severity {Math.round((p.severity_0_1 || 0) * 100)}%</span>
                   </div>
-                  <p className="mt-1 italic text-slate-600">&ldquo;{p.evidence_quote}&rdquo;</p>
+                  <p className="mt-1 italic text-ink-700">&ldquo;{p.evidence_quote}&rdquo;</p>
                 </div>
               </div>
             ))}
@@ -1147,7 +1147,7 @@ export default function LeadDetail() {
          scrollable, so this is a pure layout choice, not a data dependency between them. */}
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
         <SectionCard title="Conversation" icon={MessagesSquare}>
-          {!timeline && <p className="text-xs text-slate-400">Loading…</p>}
+          {!timeline && <p className="text-xs text-ink-500">Loading…</p>}
           {timeline && (
             <div className="flex flex-col gap-3">
               <ConversationPanel events={timeline} sequences={lead?.followup_sequences} />
@@ -1159,17 +1159,17 @@ export default function LeadDetail() {
         <SectionCard
           title="Timeline"
           icon={Clock}
-          headerExtra={<span className="text-xs text-slate-400">{timeline ? `${timeline.length} events` : ""}</span>}
+          headerExtra={<span className="text-xs text-ink-500">{timeline ? `${timeline.length} events` : ""}</span>}
         >
-          {!timeline && <p className="text-xs text-slate-400">Loading…</p>}
+          {!timeline && <p className="text-xs text-ink-500">Loading…</p>}
           {timeline && timeline.length === 0 && (
             <div className="flex flex-col items-center gap-2 py-6 text-center">
-              <Clock className="text-slate-300" size={28} />
-              <p className="text-xs text-slate-400">No activity yet.</p>
+              <Clock className="text-ink-500" size={28} />
+              <p className="text-xs text-ink-500">No activity yet.</p>
             </div>
           )}
           {timeline && timeline.length > 0 && (
-            <div className="-mx-4 -mb-4 rounded-b-lg border-t border-slate-100">
+            <div className="-mx-4 -mb-4 rounded-b-lg border-t border-line">
               <Timeline events={timeline} />
             </div>
           )}

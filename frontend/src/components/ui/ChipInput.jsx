@@ -4,10 +4,10 @@ import { X } from "lucide-react";
 export function FieldLabel({ icon: Icon, children, hint }) {
   return (
     <div className="mb-1.5">
-      <span className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
-        <Icon size={13} className="text-slate-400" /> {children}
+      <span className="flex items-center gap-1.5 text-xs font-medium text-ink-700">
+        <Icon size={13} className="text-ink-500" /> {children}
       </span>
-      {hint && <p className="mt-0.5 text-[11px] leading-relaxed text-slate-400">{hint}</p>}
+      {hint && <p className="mt-0.5 text-[11px] leading-relaxed text-ink-500">{hint}</p>}
     </div>
   );
 }
@@ -42,14 +42,14 @@ export default function ChipInput({ icon, label, hint, values, onChange, placeho
   return (
     <label className="flex flex-col">
       <FieldLabel icon={icon} hint={hint}>{label}</FieldLabel>
-      <div className="flex flex-wrap items-center gap-1.5 rounded-md border border-slate-300 px-2 py-1.5 focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-100">
+      <div className="flex flex-wrap items-center gap-1.5 rounded-md border border-line bg-parchment-raised-2 px-2 py-1.5 focus-within:border-gold-500 focus-within:ring-2 focus-within:ring-gold-100">
         {values.map((v) => (
-          <span key={v} className="flex items-center gap-1 rounded bg-slate-100 px-2 py-1 text-xs text-slate-700">
+          <span key={v} className="flex items-center gap-1 rounded bg-parchment px-2 py-1 text-xs text-ink-700">
             {v}
             <button
               type="button"
               onClick={() => remove(v)}
-              className="text-slate-400 hover:text-slate-700"
+              className="text-ink-500 hover:text-ink-900"
               aria-label={`Remove ${v}`}
             >
               <X size={11} />
@@ -62,7 +62,7 @@ export default function ChipInput({ icon, label, hint, values, onChange, placeho
           onKeyDown={handleKeyDown}
           onBlur={commit}
           placeholder={values.length === 0 ? placeholder : "Add another…"}
-          className="min-w-[110px] flex-1 border-none px-1 py-1 text-sm text-slate-800 placeholder:text-slate-300 outline-none"
+          className="min-w-[110px] flex-1 border-none bg-transparent px-1 py-1 text-sm text-ink-900 placeholder:text-ink-500/50 outline-none"
         />
       </div>
     </label>

@@ -3,7 +3,7 @@
 
 **Merges:** Technical PRD v3 (Execution Infrastructure) + Intelligence PRD v2 (Cognitive Brain Layer)
 **Audience:** A software engineer or a coding agent (Claude Code / Cursor) building production code section by section.
-**Build model:** 15 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green. Phases 1–5 are the original build (§5); Phases 6–10 (§5A) were added 2026-08-19 from real post-launch requirements; Phases 11–15 (§5B) were added 2026-08-22 from a second round of the same, after Phases 6–9 were live on real leads.
+**Build model:** 19 phases, each gated by a Definition-of-Done (DoD) test suite. Do not advance until the gate is green. Phases 1–5 are the original build (§5); Phases 6–10 (§5A) were added 2026-08-19 from real post-launch requirements; Phases 11–15 (§5B) were added 2026-08-22 from a second round of the same, after Phases 6–9 were live on real leads; Phases 16–19 (§5C) were added 2026-09-01 from a strategic-direction discussion (the operator's boss reviewed the live system and called it "automation, not AI") — see `discussion.md` for the full raw conversation this section formalizes.
 
 ---
 
@@ -13,10 +13,11 @@
 - **Section 5** is the *build order*: Phases 1→5, each step listing (a) files to create, (b) a focused code blueprint showing the non-obvious logic and its failure handling, and (c) the DoD tests that open the gate.
 - **Section 5A** is the *add-on build order*: Phases 6→10, added 2026-08-19 from real post-launch requirements plus every previously-deferred item. It follows the same step + DoD-gate structure as §5. Read §5A.0 before reordering anything there — the sequence encodes real dependencies, and it carries one open decision about Phase 5's position that needs the user's confirmation.
 - **Section 5B** is the *second add-on build order*: Phases 11→15, added 2026-08-22 after Phases 6–9 shipped and ran on real leads. Where §5A answered "I can't see, steer, or measure the system", §5B answers a later problem — the message reads competently but not persuasively, can't be answered in one click, repeats itself across touches, drifts between channels, and often reaches someone who can't judge the pitch. Read §5B.0 before reordering.
+- **Section 5C** is the *third add-on build order*: Phases 16→19, added 2026-09-01 from a different kind of requirement — not a missing feature but a missing **layer**. §5A and §5B both made the existing execution pipeline see better and speak better; §5C sits a new AI Sales Manager mind above that pipeline — a persuasive, knowledge-base-grounded conversation engine, a campaign/calendar grouping layer, a daily AI-plans/human-reviews loop, and a weekly strategy-reflection engine — without rewriting or replacing anything Phases 1–15 already proved. Read §5C.0 before reordering; it also records where Chapter 18's cognitive contract (Intelligence PRD) and CRM_UI_UX_PLAN's §2C diverge from `discussion.md`'s raw brainstorm and why.
 - **Section 6** is the *agent prompt library* — copy-pasteable Python string constants.
 - **Section 7** is the *command cheat sheet*.
 - **Section 8** is the *Executive Business Layer* (Chapter 15 / AI-BOS): the governance layer sitting above Cognitive + Execution — revenue/CAC ceilings, dual sales-mode routing, capacity throttling, client lifecycle, decision simulation, cross-agent governance, and self-evolution boundaries.
-- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P15).
+- **Section 9** covers cross-cutting concerns and the full phase-gate checklist (P1–P19).
 - Code blocks are **blueprints**: they carry the critical logic (routing, atomic claims, cleanup, validation) verbatim and leave routine bodies (field mapping, selectors, styling) for you to fill.
 
 **Three-layer contract:** the Executive layer *governs* (sets revenue/CAC ceilings, capacity throttles, sales-mode routing, and can pause or veto any campaign — Chapter 15 / §8); the Cognitive layer *decides* (emits structured intent + a confidence score); the Execution layer *acts* (Flask/SQLite/Playwright/an in-process discovery scheduler). Every autonomous decision passes the Decision Engine (§4.2) before the Execution layer touches a channel, and every Executive-level ceiling or override passes the Cross-Agent Governance Hierarchy (§8.7) first.
@@ -1543,6 +1544,709 @@ existing enrichment waterfall rather than a parallel one, so suppression, normal
 
 ---
 
+## 5C. Add-on phase plan (Phases 16–19) — added 2026-09-01
+
+**Origin.** The operator showed the live, 15-phase system to their boss. The boss's real verdict:
+*"this is automation, not AI — it never decides anything itself,"* the built system is maybe 20% of the
+original vision, the pipeline/Kanban view isn't the right primary view, and the email/WhatsApp copy is
+generic enough that nobody remembers it. The operator then spent a full session (2026-08-26 through
+2026-09-01) turning that verdict into a scoped design, first with ChatGPT, then in direct discussion here
+(captured raw in `discussion.md`), then cross-checked against a dedicated architecture consultation
+(`suggest.txt`). §5C formalizes the result of that process into the same step + DoD-gate structure every
+other phase in this document uses.
+
+**What this block deliberately is not.** Nowhere in this section does the AI rewrite its own prompts,
+retrain itself, or take an action a human never approved. Every one of Phases 16–19 follows the exact
+governance shape the operator converged on after several rounds of clarification in `discussion.md`: **AI
+proposes the strategy, drafts the content, and writes down what it learned; a human reviews and approves
+before anything reaches a real business.** A fully self-modifying, unsupervised learning loop was
+considered and explicitly rejected — real B2B outreach data is slow (a reply can land three days later)
+and this project's own daily send caps keep sample sizes small, so a system that rewrote its own behavior
+without review would drift on noise, not signal. The one invariant that stays completely untouched by
+this whole block is Phase 4/12's **immediate human escalation on a genuinely hot reply** — nothing here
+ever makes a hot lead wait for a daily cycle.
+
+### 5C.0 Sequencing logic (read this before reordering anything)
+
+The order is forced by four real dependencies, same discipline as §5A.0/§5B.0:
+
+1. **The conversation itself is the most visible complaint, and it needs nothing built first.** The
+   boss's sharpest single line was that replies are generic and forgettable. Phase 16 (Conversation Engine
+   + Knowledge Base) fixes exactly that, and it can ship against the existing lead/product/outreach tables
+   as they are today — no new grouping concept required. It goes first because it's both the highest-value
+   fix and the one with zero upstream dependency.
+2. **A campaign is a grouping layer, and grouping needs something to group.** Phase 17 (Campaign Entity &
+   Calendar) sits *around* Phase 16's richer conversations and the existing discovery/outreach pipeline —
+   it cannot usefully exist before there is something worth grouping and dating.
+3. **A daily review loop needs something to review.** Phase 18 (Daily AI-Plan / Human-Review Loop) proposes
+   and dispatches *campaigns* every morning — it is meaningless before Phase 17's `campaigns` table and
+   calendar UI exist to hold what gets proposed.
+4. **Reflection needs real telemetry, and real telemetry needs real days to have happened.** Phase 19
+   (Strategy Reflection Engine) reads back outcome data grouped by campaign/segment/angle. Building it
+   before Phases 16–18 ran for real would give it nothing genuine to learn from — the exact trap this
+   project already avoided once by putting Phase 15(B)'s new paid provider last (§5B.0, point 4). This is
+   the same lesson applied to time instead of money: **this project sends roughly 40 email + 40 WhatsApp
+   messages a day across every product combined, so one specific segment+angle combination can easily take
+   weeks to reach a sample size worth reflecting on.** Phase 19 is specified to fail closed on that — see
+   Step 19.2.
+
+**Relationship to the existing per-product targeting system.** This is the one integration question the
+architecture consultation (`suggest.txt`) did not answer, and it needs an explicit decision here: a
+**campaign does not replace or duplicate** `products.target_regions` / `target_business_categories` /
+`target_person_roles`, or the existing ICP Strategy Agent that already re-infers an ICP every 7 days
+(`product_strategies`, consumed since Phase 15(A)) — those keep governing the always-on discovery
+pipeline exactly as they do today. A campaign's `target_segment` is a **separate, deliberately
+unconstrained** decision layered on top: set directly by a human when the campaign is created, or (once
+Phase 18 exists) proposed by the AI planner from real strategy reasoning — in neither case validated
+against the product's existing targeting fields. **Revision, 2026-09-01**: an earlier draft of this
+section required `target_segment` to resolve inside those existing fields; the operator explicitly
+rejected that constraint — a campaign is allowed to genuinely explore a new region, category, or angle
+the product's standing configuration doesn't cover, because oversight here comes from the human
+review/approval step (§18.4), not from a schema-level restriction. Step 17.2 (below) reflects this.
+
+**Revision, 2026-09-02 — discovery becomes campaign-gated, superseding the "always-on... exactly as they do
+today" sentence above.** The operator's own mental model, given directly while building this: *"campaign
+banega tab discovery ko campaign id milegi... jab tak koi campaign nahi banega tab tak lead nahi aayenge"*
+— a campaign is meant to be the trigger for new-lead discovery, not an optional grouping bolted onto a
+pipeline that runs regardless. This is a deliberate, explicit change from the paragraph above (kept, not
+deleted, so the reasoning that was later overridden stays legible): the always-on, continuous,
+cooldown-paced discovery tick (§3 Step 3.5) now only fires for a product when that product has at least one
+`campaigns` row in an active status (`PROPOSED`/`APPROVED`/`RUNNING`) — see Step 17.6 (superseded same day
+by 17.7 below). `products.target_regions`
+/ `target_business_categories` and the ICP Strategy Agent's own query generation are UNCHANGED and still
+define *what* gets searched; only *whether* the search runs at all is now gated on campaign existence.
+
+**Revision, same day, 2026-09-02 — WHAT gets searched changes too, not just whether (see Step 17.7).** The
+operator went further: *"discovery bhi campaign specific hogi campaign id ke saath, isliye ye lead ki
+campaign ki hai wo pata chale... hum pipeline ke basis par nahi ab campaign ke basis par kaam kar rahe
+hain."* The sentence just above (product-level targeting still defines what gets searched) is superseded --
+each active campaign's OWN `target_segment` now defines what it searches for, not the product's standing
+config. `products.target_regions`/`target_business_categories` and the ICP Strategy Agent keep existing
+(Products page still shows them; a campaign's own kickoff proposal, Step 18.1, still reads them as a
+helpful prior) but no longer drive the real-time search themselves.
+
+Existing leads already in the pipeline (any status, any product, tagged to a campaign or not) are completely
+unaffected — follow-ups, replies, hot-lead escalation, scoring, and every other Phase 1-15 mechanism keeps
+running exactly as before regardless of any campaign's current state (Step 18.5's "hot-lead escalation stays
+completely outside this loop" principle extends to all of these, not just Phase 18's own loop).
+
+### 5C.1 New data-layer objects introduced across Phases 16–19
+
+Phases 16–19 add Tables **32–34 (total 34)**, plus one column on `leads`. No table introduced in §5, §5A or
+§5B is altered in shape — this block only adds.
+
+| # | Table | Phase | Purpose |
+|---|-------|-------|---------|
+| 32 | `knowledge_base_items` | 16 | one consolidated table for product facts, objection answers, real proof and (Step 16.8) approved marketing assets — a `kind` column (`FACT` / `OBJECTION` / `PROOF` / `MARKETING_ASSET`) distinguishes them rather than four separate tables, matching this project's existing preference for the leanest schema that carries the real information (the same call already made for `prospects`/`prospect_searches` in §5B) |
+| 33 | `campaigns` | 17 | one row per dated, strategy-angled grouping — name, `scheduled_date`, `target_segment` (JSON, human-set at creation or AI-proposed via Step 18.1's daily strategist once discovery activity is zero — deliberately not constrained to the product's existing targeting fields, per §5C.0's 2026-09-01 revision), `strategy_angle`, lifecycle `status`, `lead_count_goal` (int, nullable — Step 18.1/17.6, the AI-proposed target this campaign's discovery batch stops at, raisable by a later proposal), AI-generated `daily_todo` (JSON, open-ended real items — see Step 18.1), `last_approved_date`, and a `metrics_summary` cache (JSON) that Step 17.3 requires stay recomputable from real logs, never authoritative on its own |
+| 34 | `strategy_insights` | 19 | one row per learned strategy rule, grouped by `(product_id, domain)` and pooled across every real campaign that targeted that domain — `domain` text, `winning_angle`/`losing_angle` (simplified 2026-09-02 from a 4-field spec that also had a separate `winning_tone`: this project's `Campaign` model has no tone axis distinct from `strategy_angle`, so a second column would only restate the first), a `confidence` float, a `rationale` grounded in the real numbers that produced it, and a `status` (`ACTIVE` / `SUPERSEDED`) — this reuses the **exact** "most recent ACTIVE row wins" pattern already proven in `product_strategies` (consumed by Phase 15(A)'s `_enrich_person_roles`), not a new pattern |
+
+New column: `leads.campaign_id`, nullable FK → `campaigns.id`. Nullable is load-bearing, not incidental —
+every lead the existing discovery pipeline creates outside a campaign context must keep behaving
+byte-identically to today (Step 17.1's DoD).
+
+**Two things this block deliberately does NOT add a table for**, same discipline as §5B.1:
+- **Knowledge-base coverage gaps** (Step 16.7) log a `KB_GAP_DETECTED` row to the existing `agent_events`
+  table (Phase 6) rather than a new one — this is exactly the kind of observability event that table
+  already exists to hold.
+- **A newly AI-drafted WhatsApp template's approval state** reuses the approval-status tracking Phase 9
+  Step 9.6 already built for the autonomous template-creation-and-approval loop — Step 16.6 surfaces that
+  existing state in the daily to-do, it does not invent a second one.
+
+---
+
+### PHASE 16 — Persuasive Conversation Engine & Knowledge Base
+
+**Goal:** make a reply that a lead actually wants to keep reading — grounded, specific, and adapted to who
+it's talking to — while keeping the zero-hallucination guarantee Chapters 16/17 already established
+completely intact.
+
+**Why today's reply reads "flat".** It's flat on purpose. `agents/outreach_agent.py`'s reply-drafting rule
+is deliberately conservative: write only from verified `pain_points` + `product_brief`, never commit to a
+number or a date the operator hasn't set, and close with the same safe line every time. That was the right
+call to avoid inventing facts — but it also means the AI has almost nothing *specific* to say back with,
+so every reply sounds like every other reply. The fix is not to loosen the safety rule; it's to give the
+AI a real, bounded, admin-authored body of specific things it's actually allowed to say.
+
+**Step 16.1 — Knowledge base schema & admin UI.** New Table 32 `knowledge_base_items`
+(`product_id`, `kind` ∈ `{FACT, OBJECTION, PROOF}`, `title`, `body`, timestamps). A new Settings/Products
+sub-tab lets the operator add/edit rows per product — plain text in, plain text out, no LLM in the loop at
+write time.
+
+**Step 16.2 — Zero-fabricated-content rule, enforced not just stated.** Every row in
+`knowledge_base_items` must be operator-authored. Nothing seeds this table with AI-generated placeholder
+content, ever — not even a "starter example." This is a direct, deliberate correction of the architecture
+consultation's own illustrative examples (`suggest.txt` used an invented Ahmedabad testimonial to explain
+the *shape* of a proof entry — that string itself must never become a real database row). The write path
+has no code route that inserts a `knowledge_base_items` row from an LLM call; only the admin-facing API
+does.
+
+**Step 16.3 — 3-step reply structure.** The reply-drafting prompt (extends the existing grounded-drafting
+rule in `agents/inbound_agent.py`) is restructured into **Mirror & Validate → one concrete insight pulled
+from `knowledge_base_items` → a low-friction, situation-specific next step** — replacing the current single
+mandatory closing line with a set of context-appropriate soft CTAs. Every fact used in step 2 must trace to
+a real `knowledge_base_items` row or the existing `pain_points`/`product_brief` grounding; nothing new is
+invented at generation time. The existing zero-hallucination validation gate is extended, not replaced.
+
+**Step 16.4 — Format & tone directives, generated not fixed.** Phase 11's `sections` contract
+(`draft_email()`'s `HOOK`/`PAIN_POINTS`/`SOLUTION`/... blocks) gains two optional directives —
+`format_directive` (e.g. HTML+bullets vs. short plain text) and `tone_directive` (e.g. formal/ROI-driven
+vs. casual/emotional) — sourced from the active campaign's `strategy_angle` once Phase 17 exists, falling
+back to a per-product default before that. The same underlying fact set can render as a 3-bullet formal
+HTML email to one segment and a 2-line casual WhatsApp message to another — the fact stays fixed, the
+presentation adapts.
+
+**Step 16.5 — Conversational template revision.** A human reviewing any AI-drafted preview (email or
+WhatsApp) can submit a free-text instruction — *"isko formal karo"*, *"ek bullet ROI ka add karo"* — which
+reuses the existing draft-then-QC pipeline to regenerate that one draft. The regenerated draft still passes
+through the unchanged QC veto (Step 11.6) before it can be marked approved. After regenerating, the AI adds
+**one of its own suggestions** for a further improvement (never auto-applied, always a separate proposal
+the human can accept or ignore) — this is the concrete mechanism behind "AI reviews, human decides, AI
+suggests back."
+
+**Step 16.6 — WhatsApp new-variant approval flag.** Any time Step 16.4/16.5 produces a WhatsApp template
+variant that has not yet reached the approved state Phase 9 Step 9.6 already tracks, it is surfaced as a
+to-do item rather than silently blocked or silently sent — "this is a new template, get it approved first"
+— so an operator never discovers a missing approval by way of a failed real send.
+
+**Step 16.7 — Knowledge-base coverage-gap detector.** When `jobs/inbound_classify_handler.py` classifies a
+real reply as an objection/question with no matching `knowledge_base_items` row to ground an answer in
+(confidence below the grounding threshold), it logs a `KB_GAP_DETECTED` event to the existing
+`agent_events` table — product id, a short description of the unanswered question, and how many real leads
+have hit it. This is read by Phase 19's reflection engine to produce the "you're missing a demo video for
+this objection" class of to-do; Phase 16 only detects and logs, it does not yet act on the gap.
+
+**Step 16.8 — Marketing content creation (outreach copy + demo-video scripts), AI-strategy-triggered.**
+This is where Step 16.7's gap detection stops being passive. `knowledge_base_items` gains a fourth `kind`,
+`MARKETING_ASSET` — a longer-form, campaign-grade piece (persuasive outreach copy, or a demo-video
+script/storyboard, never a full generated video: no video-generation provider is added by this step, the
+same "new paid provider needs its own explicit decision" discipline §5B.0/§5C.0 already establish). The
+trigger is not a human clicking "generate" and not a fixed schedule — it is the AI's own judgment, made
+from real signals exactly like Step 16.7's and Phase 19's: a product whose `knowledge_base_items` is thin
+on `PROOF`/`MARKETING_ASSET` rows, or whose real reply/conversion rate is trailing its peers (once Phase 19
+has enough telemetry to say so), is proposed as needing new content — surfaced as a `MARKETING_CONTENT_GAP`
+item in Step 18.1's daily to-do, the same mechanism Step 18.1 was already written to be extensible for
+("any further types a real insight motivates"). A human can redirect it with a free-text prompt through the
+exact Step 16.5 revision mechanism ("make it more energetic", "lead with the ROI number") before approving.
+
+**The creative bar is explicit, and so is its boundary.** The operator's own requirement is that this
+content must never read as generic, templated AI copy — it has to be distinctive enough to out-perform
+whatever a competitor is likely sending. That bar governs **execution only**: angle, hook, structure,
+pacing, the shape of the story. It does not license a second fact source. Every claim inside a marketing
+asset must still trace to `product_brief`/`pain_points`/existing `knowledge_base_items` — Step 16.2's
+zero-fabrication rule is not loosened for this step, and this step deliberately adds **no competitor-
+research capability**: "beat the competition" is scoped as a creative-quality target the AI is instructed
+to aim for, never a claim about a specific named competitor the system has no real data on.
+
+**Approval writes to the knowledge base — but only through the existing admin write path.** A human
+reviewing a drafted marketing asset can approve it, and approval is what performs the actual
+`knowledge_base_items` insert (`kind=MARKETING_ASSET`) — routed through the same admin-facing write API
+Step 16.2 already restricts writes to. The LLM itself never inserts a row directly; it only produces a
+draft that sits pending until a human's approval action writes it. This keeps Step 16.2's invariant
+("zero rows trace to an LLM write path") true under this new capability rather than carving an exception
+into it. Once saved, the asset is real, reusable grounding — future outreach (Step 16.3) and future
+reflection (Phase 19) can cite it exactly like any admin-typed row, because by the time it's citable, a
+human made it real.
+
+**DoD tests (gate):**
+- Zero rows in `knowledge_base_items` trace to an LLM call rather than the admin-write API — verified by
+  absence of any non-admin write path, not by inspecting existing rows.
+- Two real leads in different segments produce **provably different** rendered format/tone for the same
+  underlying product fact — checked against the real rendered HTML/WhatsApp text, not the prompt that
+  asked for it.
+- A real free-text edit prompt changes only what was asked, and the regenerated draft still fails QC when
+  it should (QC re-run with a deliberately bad instruction) — the veto stays absolute under the new path.
+- A new, not-yet-approved WhatsApp variant is surfaced as a to-do and **cannot be dispatched** until it
+  reaches the approval state Phase 9.6 already defines.
+- A real unanswered objection produces exactly one `KB_GAP_DETECTED` event, not a fabricated "grounded"
+  answer that only looks specific.
+- A drafted `MARKETING_ASSET` (outreach copy or demo-video script) contains zero claim that doesn't trace
+  to real `product_brief`/`pain_points`/existing `knowledge_base_items` grounding — checked against the
+  real generated artifact, not the prompt that requested it.
+- A `MARKETING_ASSET` row in `knowledge_base_items` exists **only** after a real human approval action —
+  verified by absence of any path where an LLM call writes one directly.
+
+---
+
+### PHASE 17 — Campaign Entity & Calendar Grouping Layer
+
+**Goal:** give the operator a date-based view of "what is running and how is it doing" without inventing a
+second targeting system or disturbing anything Phases 1–15 already proved.
+
+**Why a grouping layer, not a rewrite.** The boss's second complaint was the primary view itself — pipeline
+Kanban shows "which stage is this lead in," never "what campaign is running today and how is it going."
+Rebuilding targeting/discovery/outreach around a new `campaigns` concept would risk the exact thing this
+project's own history warns against (§5B.0's "don't re-solve a solved problem"). Instead, Phase 17 wraps a
+thin, dated, strategy-angled grouping around the existing pipeline.
+
+**Step 17.1 — `campaigns` table + `leads.campaign_id`.** New Table 33 `campaigns`
+(see §5C.1) and a nullable `leads.campaign_id`. *(Note, 2026-09-02: the sentence that used to stand here —
+"every lead created today keeps campaign_id null and behaves exactly as it does today, whether or not a
+campaign is active" — is superseded by Step 17.7 below: discovery itself is now campaign-DRIVEN, so a
+newly-discovered lead's `campaign_id` comes directly from the `DISCOVER` job that found it, deterministic,
+never guessed. `campaign_id` stays nullable and a null value still behaves identically to today for any
+lead that has one (a manually-added lead with no campaign context, or a legacy row) — nothing about a
+lead's own lifecycle changed, only whether/how new leads get created and tagged did.)*
+
+**Step 17.2 — `target_segment` is a free, campaign-owned decision, not a validated subset.**
+*(Revised 2026-09-01 — see §5C.0.)* A campaign's `target_segment` (JSON, e.g.
+`{"industry": "...", "location": "...", "size": "..."}`) is set directly by whoever creates the
+campaign — a human today, an AI proposal once Phase 18's planner exists — and is **not** checked against
+that product's `target_regions`/`target_business_categories`/`target_person_roles`. A campaign is allowed
+to genuinely explore a region, category, or angle the product's standing configuration doesn't cover;
+the always-on discovery pipeline's own targeting is untouched either way (Step 17.1's isolation already
+guarantees that). Oversight on a campaign's target_segment comes from the human review/approval step
+(§18.4's daily loop), not a creation-time schema check.
+
+**Step 17.3 — Calendar data contract.** Each day's per-campaign metrics (`sent`/`opened`/`replied`/`hot`)
+are computed live from `outreach_logs` and `leads` joined through `campaign_id` — the `metrics_summary`
+cache column exists purely for calendar-view read performance and must be recomputable from those same
+real tables at any time, never the source of truth on its own.
+
+**Step 17.4 — Calendar becomes the primary view; Kanban is removed.** *(Revised 2026-09-01 — the operator
+explicitly asked for the grid to be removed, not demoted, once the calendar existed: "wo pipeline wala
+kanban grid hatadena.")* Paired 1:1 with CRM_UI_UX_PLAN's UI Phase 16: the month/day calendar (one box
+per day, campaign name + live metric chips) replaces `PipelineKanban` as the Dashboard's primary view —
+`Dashboard.jsx`'s Pipeline section (the Kanban itself plus its product/tier/date filter row) is removed
+entirely. Nothing about "which lead is in which stage" is actually lost: the existing Leads page already
+has its own independent status column, badge, and filter (`Leads.jsx`, untouched), so lead-stage
+visibility survives on a different, already-real screen. `PipelineKanban.jsx`/`LeadCard.jsx` stay on disk
+as dead code rather than being deleted, matching this project's standing "dead code kept, not
+unilaterally removed" precedent (§A, `MessageFormatPanel.jsx`).
+
+**Step 17.5 — Campaign lifecycle.** `status` ∈ `{PROPOSED, APPROVED, RUNNING, COMPLETED, PAUSED}`.
+`PROPOSED`→`APPROVED` only happens through Phase 18's human review action (never automatically); pausing or
+completing a campaign only changes its own row and never deletes, reassigns, or orphans the leads already
+tagged with its `campaign_id` — those leads simply stop receiving new campaign-driven touches and continue
+to exist in the pipeline exactly as any other lead does.
+
+**Step 17.6 — Campaign-gated, bounded Discovery.** *(New, 2026-09-02 — see §5C.0's revision note. Superseded
+the same day by Step 17.7 below — kept here, not deleted, so the intermediate reasoning stays legible.)*
+This first pass added a per-product GATE (skip a product entirely unless it has ≥1 active campaign) and a
+per-campaign BOUND (`lead_count_goal`), layered on top of the *existing* product-wide query×region search.
+Its real gap, found the same day: with 2+ active campaigns for one product, the gate let discovery run but
+`resolve_auto_campaign_id()` couldn't say which campaign a new lead belonged to, so it landed
+`campaign_id = NULL` — an orphaned lead. The operator's own correction: *"discovery bhi campaign specific
+hogi campaign id ke saath"* — every lead must be campaign-linked from the moment it's created, and Leads
+becomes a secondary/detail view, not the primary way work gets browsed (Campaign Calendar → one campaign's
+own leads + progress is). Step 17.7 is the real fix.
+
+**Step 17.7 — Discovery is campaign-DRIVEN, not just campaign-gated.** *(New, 2026-09-02.)* Reworks
+`_run_discovery_tick()` (§3 Step 3.5) so each active campaign with a real `target_segment` runs its **own**
+search, using its **own** `target_segment.industry` as the query and `target_segment.location` as the
+region — not the product's standing `target_regions`/ICP-Strategy-Agent queries, which stay defined and
+unused by this tick (Products page's own strategy tab still reads them directly; dead-code-kept, not
+deleted — same precedent as `PipelineKanban.jsx`). Concretely:
+- `services/campaign_service.py`'s new `eligible_campaigns_for_discovery(db, product_id)` replaces Step
+  17.6's single yes/no gate with a **list** of this product's active campaigns that (a) have both
+  `target_segment.industry` and `.location` set, and (b) haven't hit their own `lead_count_goal` yet (no
+  goal = no bound). Each eligible campaign gets its own `DISCOVER` job this tick, budget permitting.
+- The `DISCOVER` job payload itself now carries `campaign_id` (`{product_id, campaign_id, query, location}`).
+  `scraper_worker/async_runner.py`'s `_handle_discover()` tags every lead it creates directly from that
+  field — **deterministic, not guessed** — `resolve_auto_campaign_id()` stays only as the fallback for a
+  job with no `campaign_id` (a manually-enqueued or legacy job).
+- This is what actually resolves Step 17.6's 2+-campaigns gap: there is no ambiguity to resolve, because
+  there is no longer one shared search to attribute — each campaign runs independently and every lead it
+  finds is unambiguously its own by construction.
+- Cooldown tracking (`discovery_runs`) moves from `(product_id, query, region)` to also carrying
+  `campaign_id`, so two campaigns sharing a query/region never share one clock, and a campaign whose target
+  changes later (a strategy-refinement proposal, Step 18.1) starts a fresh cooldown for its new pair rather
+  than inheriting the old one's timer.
+
+Existing dedup (`(product_id, company_name)`, `scraper_worker/async_runner.py`) is untouched and still
+prevents the same business being created twice for a product, regardless of which campaign found it.
+
+**DoD tests (gate):**
+- With zero campaigns ever active for a product, no `DISCOVER` job fires for that product on a real tick.
+- Two campaigns active for the SAME product, each with a real, different `target_segment`, each fire their
+  **own** `DISCOVER` job this tick with their own query/location — verified against real enqueued job
+  payloads, not assumed from the eligibility list alone.
+- A lead created by a real `DISCOVER` job carries the `campaign_id` from that exact job's payload — checked
+  directly, not inferred from `resolve_auto_campaign_id()` running afterward.
+- A campaign with an empty or half-set `target_segment` (only industry, or only location) fires no
+  `DISCOVER` job for itself, while a sibling campaign for the same product with a complete target still
+  fires normally.
+- A campaign's own `lead_count_goal`, once reached, stops firing for that campaign specifically, while a
+  sibling campaign for the same product with room left keeps firing.
+- Existing leads (any status, tagged to a campaign or not) are provably unaffected by any campaign's
+  current state — re-run of the relevant P2/P3/P9 follow-up/escalation checks, not assumed still passing.
+- A campaign's `target_segment` may freely name a region/category/angle outside the product's configured
+  targeting fields (no validation blocks it) — and doing so **never writes back to or mutates**
+  `products.target_regions`/`target_business_categories`/`target_person_roles`, verified by creating such
+  a campaign and confirming the product's own targeting configuration is byte-identical afterward.
+- Calendar metric chips for a real day reconcile exactly against direct SQL on `outreach_logs`/`leads` for
+  that day — not the cached column read in isolation.
+- Pausing/completing a campaign leaves every one of its tagged leads fully intact and still visible on the
+  Leads page's own status filter (Kanban itself was removed, Step 17.4).
+
+---
+
+### PHASE 18 — Daily AI-Plan / Human-Review Loop
+
+**Goal:** the AI plans the day's work and drafts its content; a human spends about two minutes approving or
+redirecting it before anything real goes out — and a genuinely hot reply **never** waits for that cycle.
+
+**Why a scheduled batch, not a chat.** The operator's own repeated clarification across `discussion.md` was
+specific: AI builds the whole strategy, human only reviews/approves or gives feedback for AI to
+incorporate — never the other way around, and never fully unattended either. A once-daily
+generate-then-review checkpoint is the concrete shape of that governance rule; it reuses this project's
+existing in-process scheduler pattern (`jobs/discovery_scheduler.py`, the documented n8n replacement noted
+at the top of this file) rather than introducing a second scheduling mechanism.
+
+**Step 18.1 — Daily strategist, open-ended (not a fixed to-do menu).** *(Revised 2026-09-01: this
+originally said the job itself "writes a new PROPOSED campaign" — the operator corrected that mid-build, a
+campaign is ALWAYS human-created, this job never creates one. Revised again 2026-09-02, a bigger correction:
+an intermediate design modeled this as a one-time "kickoff" step separate from a fixed-type ongoing
+generator — the operator corrected that too, directly: "isme koi boundary nahi ki AI kya sochega, kitna
+sochega." There is no kickoff/ongoing split and no closed set of to-do types. One sentence governs this
+whole step now: a scheduled job (`jobs/discovery_scheduler.py`'s `_run_daily_plan_tick()`) runs once per IST
+day for every EXISTING, human-made, active campaign, and asks the AI — genuinely open-ended, like a real
+sales manager reviewing the account fresh each morning — "what does today's real data say we should do
+next?"* Gated by `DAILY_AI_LOOP_ENABLED` (Step 18.7).
+
+**What "real data" means, concretely, and why day 1 looks different from day 20 — same mechanism, not two
+paths.** The prompt is handed: this campaign's own real metrics and `daily_todo` history so far, any open
+`KB_GAP_DETECTED` events (Step 16.7), AND — new, 2026-09-02 — a summary of every OTHER campaign (past or
+active) for the SAME product: their `target_segment`, `strategy_angle`, and real sent/opened/replied/hot
+counts (reusing the exact data `generate_campaign_suggestion()` already fetches for its own, narrower
+purpose). A campaign with none of its own data yet and no sibling campaigns naturally has nothing to say but
+targeting — which real business type(s), which region, and a `lead_count_goal` (Step 17.7) — written into
+`target_segment` (Step 17.2's existing free-JSON field, previously unused by any prompt; this is what makes
+it real). A campaign with real outcomes, or a same-product sibling with real outcomes, naturally has more to
+say: a segment/region worth continuing or expanding into a fresh region, a channel that's outperforming, a
+subject line or angle that's underperforming and should change, a new email/WhatsApp template worth
+proposing (reusing Phase 9 Step 9.6's existing template-approval flow for WhatsApp specifically), a
+follow-up push for leads showing engagement, a `lead_count_goal` raise once the current one is met and the
+segment is still producing. **None of this is a fixed enum the AI picks from** — each item is a real,
+specific sentence traceable to the actual numbers/history behind it, the same zero-fabrication discipline
+every other prompt in this project already holds to; only the CONTENT is open, never the requirement that
+it be true. Two different real days must produce genuinely different `daily_todo` content — this is the
+literal mechanism behind "har din ka to-do fixed nahi hota."
+
+**Architecture note — this is a system-level Manager delegating to workers, not an LLM that outputs
+text and stops.** This step is the AI Sales Manager's "brain" — see
+[[project_ai_sales_manager_persona_vision]]. Its decisions don't sit as a suggestion for a human to manually
+carry out elsewhere: once approved (Step 18.4), they flow structurally into the existing job-queue/scheduler
+machinery (§3, §5A) that already drives the specialist worker agents (Discovery, Enrich, Review, Score,
+Outreach, QC) — the same "hath-pair" framing that memory entry establishes. The delegation glue is
+deterministic Python (the job queue), not a second LLM call per handoff, and that is a deliberate choice,
+not a shortfall — a heavier literal agent-to-agent framework is unneeded complexity for a well-bounded
+pipeline. What matters, and what every DoD check below verifies, is that an approved decision provably
+reaches a real worker action, not that a second AI reasons about making the call.
+
+**Explicit non-lever, flagged rather than silently ignored.** A real insight this step can surface — e.g.
+"email is outperforming WhatsApp for this campaign" — currently has no execution lever: outreach channel
+selection (`_run_outreach_tick`) is generic capacity-based, not campaign-strategy-aware. Until a
+campaign-level channel-preference field is built, this class of insight is informational only in the to-do
+text, not yet something Approve can act on. Noted here so it is a known, tracked gap, not an accidental one.
+
+**Step 18.2 — Morning review card.** *(As shipped, `DailyReviewPanel.jsx`.)* A dashboard card
+surfaces each live campaign's to-do list, a sample email + WhatsApp draft preview, and two actions —
+**Approve** or **Give Feedback**. Campaign `email_render_mode` (`HTML` default | `TEXT`) drives whether
+the preview is the designed Phase-11 HTML iframe or plain subject/body, and the same mode governs
+whether real sends attach designed `sections` or body-only simple HTML (2026-09-05).
+
+**Step 18.1b — Kickoff template preview.** *(Built 2026-09-05.)* Before this, a brand-new campaign with
+no lead tagged yet showed `sample_draft: null` on the review card — a human had nothing concrete to react
+to until real discovery produced a lead. `ensure_kickoff_draft()`/`revise_kickoff_draft()`
+(`services/campaign_service.py`) draft the SAME Step 11.1 structured email against literal
+`[Business Name]`/`[Pain Point]` placeholder tokens instead of a real lead — the model is explicitly
+instructed to keep those tokens verbatim and never invent a fictional business, city, or pain claim (same
+zero-fabrication discipline as every other drafting prompt). Cached on `campaigns.kickoff_draft`
+(cleared whenever `strategy_angle` or `email_render_mode` changes, so the next preview regenerates
+against the fresh tone/format); revised via the existing Step 16.5 conversational mechanism through
+`POST /campaigns/<id>/kickoff-draft/revise` (own route, reuses `check_instruction_pushback` — Step 20.4's
+push-back applies here too). `get_daily_review()` returns `sample_is_kickoff_template: true` in this
+case so the frontend captions it as a template, not a real worked example. Never queues a send, never
+touches a real lead — purely a preview/proposal artifact a human reviews before any lead exists.
+
+**Step 18.3 — Feedback regeneration.** *(As shipped.)* Feedback text re-runs the relevant draft/strategy
+generator with the feedback appended as an additional constraint, reusing Step 16.5's exact
+conversational-revision mechanism (`previous_draft_text` threading so a second round of feedback never
+forgets the first).
+
+**Step 18.4 — Approval acts differently depending on what was proposed, but always through existing
+machinery, never a new path.** *(Un-deferred, 2026-09-02 — built as sign-off-only on 2026-09-01, reopened
+after the operator clarified the fuller loop this section describes; this is this step's ORIGINAL intent,
+not a new one.)*
+- **Approving a targeting/`lead_count_goal` proposal** writes it onto the campaign's own row —
+  `target_segment` and `lead_count_goal` — which Step 17.7's `eligible_campaigns_for_discovery()` reads
+  directly; discovery for that campaign starts (or resumes, if the goal was raised) on the next tick, using
+  this campaign's own target_segment as the search itself, not just as a gate.
+- **Approving an angle/subject/tone change** writes the new text onto `campaign.strategy_angle`. This needs
+  no separate propagation step: every future draft for this campaign's leads — a fresh touch-1 for a newly
+  qualified lead, or a due follow-up touch for someone who already didn't reply — already resolves
+  `tone_directive` as "this campaign's `strategy_angle`, falling back to the product's `default_tone`" at
+  the moment it drafts (`jobs/outreach_handler.py`, fixed 2026-09-02 to match the pattern Step 16.5's
+  revise-draft and this campaign's own daily-review sample draft already used). The new angle is live the
+  next time anything is drafted, automatically, with no "resend everyone" action needed.
+- **Approving a ready-to-send to-do** (qualified leads exist, template content is settled) queues those
+  specific leads for a real send — reusing `services/lead_service.py`'s existing `claim_lead_for_outreach()`
+  / `_run_outreach_tick()` machinery unchanged, no new send path. **This still passes through the existing,
+  unmodified `AUTONOMOUS_OUTREACH_ENABLED` kill switch** ([[project_autonomous_outreach_kill_switch]]) — the
+  switch itself is never flipped by any AI or Approve action. When a to-do is ready to dispatch but the
+  switch is off, this is surfaced through the SAME open-ended strategist that writes every other to-do (Step
+  18.1) — fed `READY_TO_DISPATCH_COUNT` (the real count of this campaign's SCORED HOT/WARM leads, the exact
+  set `_run_outreach_tick()` would claim) and `AUTONOMOUS_OUTREACH_ENABLED`'s current value, and instructed
+  to say so in its own words, grounded in the real number, when both signals apply — **never a fixed or
+  generic system-banner sentence** (the operator's own explicit correction, 2026-09-02: *"ye ek generic
+  hardcode nahi rahega... wo system ko pura control karega"*). Turning the switch on stays the operator's
+  own explicit, manual Settings action either way, same as it is today.
+
+**Step 18.5 — Hot-lead escalation stays completely outside this loop.** Phase 4's inbound classifier and
+Phase 12's interest-capture alerting keep firing exactly as they do today, on every reply, all day, whether
+or not a daily plan has been reviewed yet. This is stated explicitly because it is the one real tension the
+operator and Claude surfaced and resolved during the `discussion.md` conversation — a "review once a day"
+model must never be read as "hot replies wait a day too." Nothing in Phase 18 sits between an inbound
+message and the existing escalation path.
+
+**Step 18.6 — EOD summary.** Extends the existing nightly report machinery (§5 Phase 4) with real numbers
+for that day's campaign(s), written in plain, non-technical language — "aaj 40 businesses ko message gaya,
+12 ne khola, 3 ne reply kiya, 1 genuinely interested tha, turant bataya gaya" is the literal register this
+targets, not a metrics table.
+
+**Step 18.7 — Kill-switch.** New `DAILY_AI_LOOP_ENABLED`, default `false`, following the exact posture
+already established for `AUTONOMOUS_OUTREACH_ENABLED` — the daily loop ships disabled and stays disabled
+until the operator explicitly turns it on.
+
+**DoD tests (gate):**
+- A real hot-lead reply triggers the existing Phase 4/12 alert path **regardless of daily-plan review
+  state** — P4 and P12's exact gates re-run same-day as a plan sits unreviewed, and both still pass.
+- No lead ever gets a real send without a real, recorded human Approve action on the specific to-do that
+  covers it — verified by absence, not by trusting the UI didn't show a button.
+- A campaign's first-ever targeting proposal (Step 18.1, when it has no data yet) writes `target_segment`/
+  `lead_count_goal` exactly ONCE — a later day's tick refines or extends it, never blindly re-proposes it even
+  though the daily tick keeps running for that campaign.
+- Two different real days produce **provably different** `daily_todo` content for an ongoing campaign — not
+  the same list with a new date stamped on it.
+- A real feedback string produces a materially changed regenerated plan/draft, not the original re-shown.
+- With `AUTONOMOUS_OUTREACH_ENABLED=false`, approving a ready-to-dispatch to-do queues nothing real, and the
+  to-do list visibly says why — the switch's own value is never changed by this approval action.
+- With `DAILY_AI_LOOP_ENABLED=false`, zero to-dos (kickoff or ongoing) are ever generated — a human-created
+  campaign with the loop off shows no AI content until it's turned on.
+- A real product with thin/underperforming `MARKETING_ASSET`/`PROOF` coverage produces a
+  `MARKETING_CONTENT_GAP` to-do item traceable to that real signal (Step 16.8) — not a generic
+  "improve marketing" placeholder with nothing real behind it.
+
+---
+
+### PHASE 19 — Strategy Reflection & Learning Engine
+
+**Goal:** the system genuinely gets better at this specific business over time, from its own real outcome
+data — safely, explainably, and honestly about how long that takes.
+
+**Why "Structured Hypothesis & Reflection Memory," not self-modification.** The architecture consultation
+(`suggest.txt`) proposed exactly this pattern and it survives scrutiny: telemetry is aggregated, an LLM
+reflection pass turns it into a small number of **explicit, inspectable rules**, and those rules are
+injected into the next plan as data, not as a code or prompt change. Nothing about the AI's own
+decision-making logic is rewritten — only the *inputs* it's given get richer over time. This is the
+"achievable version" both sides of the `discussion.md` conversation converged on: AI does the analysis and
+proposes the rule, a human can see and override it, and the system that generates tomorrow's plan is
+unchanged code reading richer data.
+
+**Step 19.1 — Telemetry aggregation.** *(Built 2026-09-02 — see tracker.md. Simplified from grouping by
+"the tone_directive/format_directive actually used": `outreach_logs` never captured which directive a given
+send actually used, and the operator's own correction — "har product ke liye nahi, har campaign based data
+ko analysis karke strategy banaye" — pointed at a cleaner unit anyway.)* `aggregate_campaign_telemetry()`
+(`services/strategy_reflection_service.py`) takes every real campaign with at least one real send as ONE
+row — its product, its `target_segment.industry` (the `domain`), its `strategy_angle`, and Step 17.3's own
+`compute_campaign_metrics()` (never re-derived) — no new tracking column added anywhere. `group_by_domain()`
+pools these by `(product_id, domain)`: however many real campaigns for one product have targeted the same
+business vertical, regardless of exactly when or which angle each one tried.
+
+**Step 19.2 — Minimum-sample floor (fail closed, not a weak guess).** Because this project's real daily
+volume is roughly 40 email + 40 WhatsApp sends across *every* product combined (not per segment), a single
+specific angle+domain combination can take weeks to cross a meaningful sample size. New
+`STRATEGY_REFLECTION_MIN_SAMPLE_FLOOR` system setting (default 40, operator-configurable, same dashboard
+pattern as `DISCOVERY_COOLDOWN_HOURS`) — a `(product, domain)` pool's total real `sent` count must reach it
+before Step 19.3 runs for that pool; below it, `run_reflection_cycle()` writes **nothing** for that domain
+this cycle. Gated by new `STRATEGY_REFLECTION_ENABLED` (default off, same fail-safe posture as
+`DAILY_AI_LOOP_ENABLED`).
+
+**Step 19.3 — Reflection prompt → `strategy_insights` write.** *(Table 34 simplified to 3 comparison fields
+— `winning_angle`/`losing_angle`/`confidence` — dropping a separate `winning_tone` column: this project's
+`Campaign` model has no field distinguishing "tone" from "angle," `strategy_angle` is the one free-text axis
+a campaign has, so a second column would only ever restate the first.)* For domain pools that cleared the
+floor, `STRATEGY_REFLECTION_SYSTEM_PROMPT` compares real angles' real reply/open rates and writes a new
+Table 34 row only when there's a genuine, meaningful gap (`has_insight: false` for a real null result — never
+a manufactured winner) — `rationale` must quote the real numbers (real-tested: a 48%-vs-4% reply-rate gap,
+80%-vs-20% open-rate gap, produced a correctly-grounded rationale quoting both). The previous `ACTIVE` row
+for that same `(product, domain)` is marked `SUPERSEDED`, not deleted (real-tested: exactly one `ACTIVE` row
+survives a second real cycle run).
+
+**Step 19.4 — Insight + gap injection into the next plan.** *(Built 2026-09-02.)* Step 18.1's
+`generate_campaign_todo()` reads `get_active_insights_for_product()` — every `ACTIVE` insight for the WHOLE
+product, not one already-known domain (a fresh campaign doesn't know its own domain yet until the strategist
+picks one, so this is part of what informs that pick, the same way `SIBLING_CAMPAIGNS` already does) — and
+any open `KB_GAP_DETECTED` events (Step 16.7) as direct inputs. Real-tested end to end: a brand-new,
+zero-data campaign for a product with a real `ACTIVE` insight ("dental clinics" domain, casual/local-trust
+angle winning 48% vs 4%) correctly proposed that exact validated angle, quoting the real numbers in its own
+`rationale` — not a generic or re-guessed angle. This is the literal mechanism connecting "AI seekhta hai" to
+"kal ka plan usse alag hai."
+
+**Step 19.5 — Human-visible weekly insight card.** *(Built 2026-09-05.)* A simple card ("is hafte
+coaching-institute leads ke liye 'fee-loss ROI' angle ne generic pitch se 3x zyada reply laaya") surfaces
+the newest `ACTIVE` insights in the same plain language as Step 18.6's EOD summary — so the improvement
+Chapter 18 promises is something the operator can actually *see*, not just something the system claims is
+happening internally. Read-only `GET /api/v1/strategy-insights` (+ optional `product_id`/`limit`); Dashboard
+`WeeklyInsightCard` renders newest ACTIVE rows with domain, winning/losing angle, rationale, confidence.
+Empty state is intentional when reflection hasn't cleared the sample floor yet. No write UI — Step 19.6.
+
+**Step 19.6 — Explicit non-goal.** No prompt, weight, or piece of code anywhere in this system is ever
+modified by Phase 19's own output. An insight is inert data until a future daily plan (Step 18.1) reads it
+and a human approves the plan that used it (Step 18.4) — the loop is fully auditable end to end: which
+insight, from which real numbers, used in which plan, approved by whom.
+
+**DoD tests (gate) — ✅ all real-tested 2026-09-02, see tracker.md:**
+- Below the configured sample floor, a real combination produces **zero** new `strategy_insights` rows —
+  verified live: two real domains checked in one cycle, one cleared the floor (insight written), one didn't
+  (correctly skipped, counted in the cycle's own `below_floor` result).
+- Every written insight's `rationale` contains numbers traceable to a real `SELECT` against `outreach_logs`
+  for that exact combination — verified against real fabricated telemetry (25 sent/5 opened/1 replied vs.
+  25 sent/20 opened/12 replied); the written rationale quoted both real rates correctly.
+- The most recent `ACTIVE` insight for a matching product/domain is demonstrably present in the next real
+  plan-generation call's input (Step 19.4) — verified: a brand-new campaign's own real `generate_campaign_
+  todo()` call proposed exactly the validated winning angle, not a re-guess.
+- Superseding an insight leaves the prior row intact with `status=SUPERSEDED` — verified: a second real
+  cycle run against unchanged data left exactly one `ACTIVE` row and one `SUPERSEDED` row, not two `ACTIVE`s.
+- No code path anywhere writes to `cognition/prompts.py`, any agent's system prompt, or any model
+  configuration from Phase 19's own output — verified by absence (grep across the module).
+- **Step 19.5 (human-visible weekly insight card) — ✅ built 2026-09-05.** Real-tested: empty `[]` when
+  no ACTIVE rows; with a real inserted insight for IV Classes / coaching institutes, `GET /api/v1/strategy-
+  insights` returned product_title + domain + winning/losing angle + rationale + confidence; product_id
+  filter works; row cleaned after test. Frontend `WeeklyInsightCard` on Dashboard; `npm run build` ✓.
+  Read-only API only (no POST/PATCH/DELETE) — Step 19.6 held.
+
+---
+
+### PHASE 20 — AI Manager Cognitive Depth
+
+**Goal:** close the real gap between "a structured LLM call that returns a good answer" and "feels like a
+genuine, continuous-thinking sales manager" — without the architecture change that does NOT close that gap.
+
+**Why not a tool-calling / ReAct agent loop (the question this phase answers first).** The operator directly
+rejected "just an LLM call, we want a real AI agent manager" and asked for an independent second opinion
+(2026-09-02) — a real, structured question given to Gemini via `suggest.txt` (this project's established
+architecture-consultation channel, same one that originally proposed Phase 19's reflection pattern),
+comparing today's single-call-with-pre-assembled-context pattern against a genuine multi-turn, tool-using
+loop (the model itself calling `get_metrics`/`get_insights`/etc. across turns). **Gemini's verdict, verbatim
+in spirit:** *"90% engineering theater — decision quality won't improve 1%, latency/cost/failure points will
+roughly 4x."* The reasoning: tool-calling earns its cost when the search space is large/unknown (searching
+the open internet, thousands of files); this system's daily per-campaign data is small and bounded
+(~1,500-2,500 tokens), and handing a model that fits-in-context data as pre-assembled context lets it reason
+over the whole picture at once — splitting it into sequential tool calls adds real round-trip latency and
+real failure surface (tool-argument parsing, a stalled loop) while arriving at the same decision the single
+call already reaches, because the data and the rules are identical either way. This directly reconfirms
+`discussion.md`'s own 2026-08-26 resolution (§5C.0's cited "achievable version") — an operator's own explicit
+confirmation from three sessions ago that a single real-data-grounded LLM call, human-approved, was the
+right shape, not something to reopen without new information. There is now real, independent, external
+confirmation of that call, not just Claude's own.
+
+**What the "feels like automation" complaint is actually about, then.** Gemini's own diagnosis, and the real
+gap this phase closes: not the call shape, but three concrete absences —
+1. **No persistent thesis across days** — Step 18.1's strategist starts every day from real *data* but no
+   *narrative*; it has never said, in its own words, "here's what I believed yesterday, here's what actually
+   happened, here's what I'm changing." `strategy_insights` (Phase 19) is the wrong table for this — that's
+   a cross-campaign, validated, floor-gated RULE, not a single campaign's own evolving story.
+2. **The AI is invisible during real execution** — once a plan is approved, deterministic Python (the
+   existing job-queue/`_run_outreach_tick`) carries it out with zero real-time judgment; a real anomaly
+   (e.g. a bounce spike) gets no reaction until a human happens to notice.
+3. **The AI never pushes back** — a human's instruction is applied as given, even when the AI's own real
+   data contradicts it; a plain Approve/Feedback UI has no room for the AI to say "here's why I'd reconsider
+   this."
+
+**Step 20.1 — Campaign Thesis Journal.** New Table 35 `campaign_theses` (`campaign_id`, `day` [IST date],
+`hypothesis`, `observation`, `pivot_decision`, `created_at`) — one row per real day Step 18.1's strategist
+runs for a campaign. Each run reads the campaign's OWN prior journal entries (not just its raw metrics) as
+additional context, and writes a new entry in its own voice: what it believed going into today, what the
+real numbers since then actually showed, and what it's doing differently as a result (or explicitly "no
+change, still testing X"). This is what a human-visible narrative ("Day 1: hypothesis X. Day 4: video CTA
+outperformed the call-CTA, scaling it up.") is built from — the literal mechanism connecting real outcomes
+to a legible, continuous strategist voice instead of a same-shape-every-day to-do list.
+
+**Step 20.2 — Confidence & Conflict Flagging.** *(Claude's own addition, requested alongside Gemini's three.)*
+Every strategy proposal (Step 18.1's `proposal` field) gains a real `confidence` (0.0-1.0) the model must
+justify from the actual signals behind it — thin/noisy data means honestly low confidence, not an inflated
+number to look decisive. More importantly: when two real signals genuinely conflict (e.g. a floor-validated
+`strategy_insights` row recommends angle A for this domain, but this specific campaign's own early real
+data is trending toward angle B), the strategist is instructed to say so explicitly — name the tension, not
+silently pick one and hide the disagreement — surfaced on the Daily Review card as a distinct, flagged item
+so a human's attention goes to genuinely uncertain calls, not spread evenly across every proposal regardless
+of how settled it is.
+
+**Step 20.3 — Execution Watchdog.** A single, targeted, event-triggered LLM check (not a continuous
+supervising loop — same "bounded, single-shot" discipline Gemini's own verdict favors) fires when a real
+anomaly threshold is crossed mid-dispatch for one campaign — e.g. 3 consecutive real send failures/bounces
+within that campaign's batch. It pauses further sends for that specific campaign and asks one real, grounded
+question referencing the real numbers ("bounce rate hit X% on this batch, likely cause Y — skip the rest of
+today's batch, or continue?") rather than the existing mechanical loop blindly working through the remainder.
+Scoped narrowly: this watches for anomalies in already-approved, already-dispatching work, it does not
+re-open strategy or bypass `AUTONOMOUS_OUTREACH_ENABLED` in either direction.
+
+**Step 20.4 — Conversational Review (push-back).** The Daily Review Card's feedback box (already built,
+Step 16.5's mechanism) gains real push-back behavior: when a human's free-text instruction conflicts with
+real data the strategist already has (e.g. "target Ahmedabad" when Ahmedabad's own real sample there already
+showed a weak result, or the addressable list there is nearly exhausted), the regenerated response leads
+with that grounded disagreement and a concrete alternative, in one exchange, before finalizing — instead of
+silently complying. The human still has the final word (a second explicit instruction after seeing the
+pushback is followed exactly, per this project's existing "human review is real, not theater" and "AI never
+overrides an explicit human instruction" invariants) — this adds judgment to the FIRST response, not a
+second layer of resistance to what the human actually wants.
+
+**DoD tests (gate):**
+- A campaign's `campaign_theses` row on day N genuinely references real events from day N-1's own metrics —
+  not a generic restatement, checked against the real numbers each day actually had. **✅ VERIFIED
+  2026-09-05**, real campaign ("Ahmedabad App Development Push"), real LLM call: a backdated prior entry's
+  claim ("15 sends is too small to evaluate traction") was directly quoted back alongside that day's actual
+  metrics (15 sent, 0 opened, 0 replied, 0 hot) in the next entry's `observation` — a genuine cross-day
+  comparison, not a restatement. Same-day re-run confirmed as an upsert (row count stayed at 2, never 3) and
+  a fresh campaign's first-ever run correctly left `observation`/`pivot_decision` null (nothing yet to
+  compare against). Test-only rows deleted afterward — real DB left with no fabricated backdated state.
+- A proposal's `confidence` is demonstrably lower on a real thin/noisy-data run than on a real clear-signal
+  run — not a constant value regardless of input. **✅ VERIFIED 2026-09-05**: the real existing campaign
+  (15 sent, 0 opened/replied) produced `confidence: 0.35`; a temporary campaign built with real, strong
+  fabricated activity data (25 sent/20 opened/12 replied) produced `confidence: 0.85` — same prompt, same
+  code path, confidence genuinely tracked the real signal strength.
+- A real conflicting-signals scenario (a validated insight vs. this campaign's own contrary early data)
+  produces an explicit, named tension in the to-do — not a silent pick of one side. **✅ VERIFIED
+  2026-09-05**: a temporary `strategy_insights` row (winning_angle "Formal, ROI-focused... pricing upfront")
+  was inserted against a campaign whose OWN real data (12/25 replies) was trending strong on its current
+  "Casual, local-trust focused" angle instead. Output carried a distinct `{"label": "Conflict", ...}` to-do
+  item naming both real signals and the tension between them, plus a `proposal` to resolve it toward the
+  validated insight with a rationale quoting both. Temp campaign/leads/logs/insight all deleted afterward —
+  real DB left with only the 1 genuine pre-existing campaign, no orphaned test rows.
+- A real 3-consecutive-failure scenario pauses that campaign's remaining dispatch and produces one grounded
+  question quoting the real bounce count — normal dispatch (no anomaly) is completely unaffected, verified
+  by a real control run. **✅ VERIFIED 2026-09-05**: 2 temp campaigns (an "anomaly" one, a "control" one),
+  each seeded with real OutreachLog rows. 1/3 and 2/3 consecutive real bounces correctly did NOT trigger; the
+  3rd correctly did, producing a real LLM message quoting the actual count/channel/segment and asking
+  whether to keep pausing or continue. Re-checking an already-alerted campaign returned the SAME alert
+  (no duplicate LLM call). `clear_campaign_watchdog_alert()` correctly removed a campaign from the paused
+  set. **Incident during this test** (see `feedback`/reference memory
+  `project_autonomous_outreach_kill_switch` for the full writeup): the first attempt verified the
+  paused-campaign skip by briefly flipping `AUTONOMOUS_OUTREACH_ENABLED` and calling the real
+  `_run_outreach_tick()` — which scans the ENTIRE real leads table, not just test rows, and claimed 46 real
+  pre-existing leads before the switch was restored. No real send occurred (no worker process was running to
+  act on the resulting job rows, confirmed via `tasklist` before and after), and the exact 46 leads/80 job
+  rows were identified and reverted byte-for-byte. The skip logic itself was then re-verified safely by
+  checking the exact `paused_campaign_ids` set-membership condition directly against the two test campaigns,
+  without ever re-exercising the live tick against the real table.
+- A real conflicting human instruction produces a grounded pushback response quoting real data — a second,
+  explicit human instruction after that pushback is followed exactly, never re-argued a second time. **✅
+  VERIFIED 2026-09-05**: a temp campaign with a real, strong 12/25-reply track record on "Casual,
+  local-trust focused" plus a validated `strategy_insights` row naming that exact angle as the winner (and
+  "Formal, ROI-focused... pricing upfront" as the real loser) — an instruction asking to move TOWARD the
+  losing angle produced a real pushback naming both the validated insight (with its real confidence) and the
+  campaign's own real 12/25 number, plus a concrete alternative. A purely stylistic instruction ("fix a
+  typo, make it shorter") correctly produced no pushback — never manufactured a disagreement to seem
+  vigilant. A lead with no campaign is a safe no-op. The underlying draft always still regenerates from the
+  human's instruction unchanged either way (this check is additive, never blocking) — the existing Step
+  16.5 revise-draft flow itself was not modified.
+- Nothing in this phase weakens `AUTONOMOUS_OUTREACH_ENABLED` — the watchdog can only ever pause dispatch,
+  never start one the switch wouldn't already allow.
+
+---
+
 ## 6. Agent system prompt library (`cognition/prompts.py`)
 
 All prompts share a guardrail preamble so the five principles and the buzzword ban are enforced everywhere. Every prompt demands **JSON only** and is called through `call_json()` with a matching schema.
@@ -1882,6 +2586,11 @@ def guard_adaptation(param_name: str):
 | **P13** | the three levels produce provably different real LLM output · no level fires before its configured delay · reply/opt-out/interest-response exit the sequence at **levels 2 and 3**, not only level 1 · unapproved WhatsApp template ⇒ that level sends nothing, **never another level's template** · per-level sent/seen/replied reconciles against direct SQL |
 | **P14** | per-message status matches direct SQL on every channel, `—` where a channel genuinely can't report · WhatsApp shows real filled-in text, never the template name · follow-up stage matches the real `outreach_sequences` row including terminal reason · copy-to-platform matches the **stored** `content_sections`, never a regenerated message · P10's auto-send absence check re-run and still green |
 | **P15** | **zero wrong-company person attachments** (P7's exact test re-run) · role never invented outside a non-empty `target_person_roles`; when unset, traceable to a real product-brief line · unconfigured provider ⇒ **refused**, never an empty result masquerading as a real search · spend cap genuinely blocks the next search, proven by hitting it · a prospect never enters the leads funnel or any pipeline metric · no autonomous send to a person-level contact (verified by absence) |
+| **P16** | zero `knowledge_base_items` rows trace to an LLM write path · two real leads in different segments produce provably different rendered format/tone for the same fact · a real edit-prompt changes only what was asked and still fails QC when it should · a not-yet-approved WhatsApp variant cannot dispatch · a real unanswered objection logs one `KB_GAP_DETECTED` event rather than a fabricated grounded answer |
+| **P17** | zero active campaigns for a product ⇒ discovery does NOT fire for it · TWO campaigns for the same product, each with a real different `target_segment`, each fire their OWN real `DISCOVER` job this tick (Step 17.7, 2026-09-02 — supersedes Step 17.6's single-gate model) · a lead created by a real `DISCOVER` job carries the `campaign_id` from that exact job's payload, never guessed afterward · a campaign's own `lead_count_goal` stops only that campaign's discovery once reached, a sibling with room left keeps firing · existing leads (any status, campaign-tagged or not) provably unaffected by any campaign's state (P2/P3/P9 re-run) · a `target_segment` outside a product's configured targeting fields is allowed, and never writes back to that product's own targeting config · calendar metrics reconcile against direct SQL, not the cache alone · pausing/completing a campaign leaves its tagged leads fully intact on the Leads page |
+| **P18** | a real hot-lead reply escalates via the unchanged P4/P12 path regardless of daily-plan review state · a campaign's first-ever targeting proposal writes `target_segment`/`lead_count_goal` exactly once, later days refine rather than re-propose · no lead gets a real send without a recorded human Approve on the to-do that covers it · approving an angle/tone change is live for the very next draft, no separate propagation step · `AUTONOMOUS_OUTREACH_ENABLED=false` ⇒ approving a ready-to-dispatch to-do queues nothing real, and the switch's own value is never changed by that approval · two different real days produce provably different `daily_todo` content for an ongoing campaign · a real feedback string produces a materially different regenerated plan/draft · `DAILY_AI_LOOP_ENABLED=false` ⇒ zero to-dos ever generated |
+| **P19** | below the configured sample floor ⇒ zero new insights written · every insight's rationale traces to a real query against `outreach_logs` · the latest `ACTIVE` insight is demonstrably read by the next real plan-generation call · superseding an insight preserves the prior row · no code path writes to any prompt/model config from this phase's output (verified by absence) |
+| **P20** | a campaign's `campaign_theses` entry genuinely references real prior-day events, not a generic restatement · `confidence` is demonstrably lower on real thin/noisy data than on a real clear signal · a real conflicting-signals case produces an explicit named tension, never a silent pick · a real 3-consecutive-failure case pauses only that campaign's dispatch with one grounded question, normal dispatch unaffected · a real conflicting human instruction gets a grounded pushback, and a second explicit instruction after it is followed exactly · `AUTONOMOUS_OUTREACH_ENABLED` is never weakened by any of this |
 
 Build strictly in order. Each gate exists because skipping it produces a bug that's invisible in development and expensive in production — a double-send, a leaked browser farm, a non-compliant email, an AI that auto-answers a pricing question it should have escalated, or an executive layer that quietly overrides a human-locked parameter.
 
@@ -1895,3 +2604,13 @@ one of those phrasings comes from a real failure already recorded in this projec
 that asked for the right thing and got the wrong output twice (tracker.md 2026-08-21), and a quota that
 was documented and still ran out mid-verification. A gate that can be passed by reading code is not a
 gate.
+
+**P16–P19 note:** this block's gates protect a different failure mode than P1–P15 — not "did the wrong
+thing happen to a real business," but **"did the system quietly cross the human-review boundary it was
+designed never to cross."** P18's gate on an unapproved plan and P19's gate on a below-floor insight are
+both **negative** guarantees in the P6–P10 style (verified by absence, not by a passing assertion), because
+a single silently-auto-dispatched campaign or a single fabricated-pattern insight would undermine the exact
+governance model — "AI proposes, human approves" — the whole block exists to implement. P16's zero-fabricated-
+knowledge-base gate exists for the same reason §5C.0 states outright: the architecture consultation that
+informed this design used an invented testimonial as an illustrative example, and that example must never
+be mistaken for a real seed row.

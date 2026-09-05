@@ -19,7 +19,7 @@ from agents.outreach_agent import draft_structured_email, draft_followup_email
 from agents.quality_controller_agent import review_draft
 from cognition.agent_events import log_agent_event
 from config import Config
-from database.models import Lead, Product, LeadReviewInsight, OutreachLog
+from database.models import Campaign, Lead, Product, LeadReviewInsight, OutreachLog
 from jobs.registry import register_handler
 from services.message_format_service import get_available_assets
 from services.outreach.company_contact import build_contact_section
@@ -28,6 +28,7 @@ from services.outreach.interest_links import build_interest_urls
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
+from services.campaign_service import resolve_email_render_mode, format_directive_for_mode
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +57,18 @@ def handle_outreach_email(db, payload):
     product = db.get(Product, lead.product_id)
     if not product:
         raise ValueError(f"product {lead.product_id} not found for lead {lead.id}")
+
+    # Real gap fixed 2026-09-02: this is the actual real-send path, but it was the only
+    # one of four places touching tone_directive that never looked at the lead's tagged
+    # campaign -- api/leads.py's revise-draft and campaign_service.py's daily-review/
+    # todo-generation already use "campaign's own strategy_angle, falling back to the
+    # product's default_tone" (same fallback chain repeated here for consistency); a
+    # campaign's angle was previously invisible to what a real lead was actually sent.
+    campaign = db.get(Campaign, lead.campaign_id) if lead.campaign_id else None
+    tone_directive = (campaign.strategy_angle if campaign and campaign.strategy_angle else None) \
+        or product.default_tone
+    render_mode = resolve_email_render_mode(campaign) if campaign else "HTML"
+    format_directive = format_directive_for_mode(render_mode, product.default_format)
 
     insight = (
         db.query(LeadReviewInsight)
@@ -102,12 +115,16 @@ def handle_outreach_email(db, payload):
         if followup_level:
             draft = draft_followup_email(db, lead.id, product_brief, lead_profile, pain_points,
                                          followup_level, qc_feedback=qc_feedback,
-                                         content_assets=content_assets)
+                                         content_assets=content_assets,
+                                         tone_directive=tone_directive,
+                                         format_directive=format_directive)
         else:
             cross_sell_products = get_cross_sell_products(db, lead.product_id)
             draft = draft_structured_email(db, lead.id, product_brief, lead_profile, pain_points,
                                            qc_feedback=qc_feedback, content_assets=content_assets,
-                                           cross_sell_products=cross_sell_products)
+                                           cross_sell_products=cross_sell_products,
+                                           tone_directive=tone_directive,
+                                           format_directive=format_directive)
         if not draft:
             break
         qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief,
@@ -148,8 +165,9 @@ def handle_outreach_email(db, payload):
     # them for QC to judge, and handing QC more surface it was never told about is exactly
     # what produced the Step 11.6 bug (it once misread the CTA section as an unreviewed
     # extra). Every EMAIL draft now carries `sections` (touch-1 and every follow-up level
-    # alike), so this always runs.
-    sections = draft.get("sections")
+    # alike), so this always runs -- EXCEPT campaign email_render_mode=TEXT, which sends
+    # body text only (email_service simple HTML fallback, not the designed Phase 11 template).
+    sections = draft.get("sections") if render_mode == "HTML" else None
     if sections is not None:
         sections = sections + [{"type": "INTEREST", **build_interest_urls(lead.id, outreach_log_id)}]
         if followup_level == 3:

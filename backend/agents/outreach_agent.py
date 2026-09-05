@@ -13,7 +13,7 @@ from cognition.llm_client import call_json, LLMError
 from cognition.prompts import (
     OUTREACH_AGENT_SYSTEM_PROMPT, OUTREACH_SECTIONS_SYSTEM_PROMPT,
     FOLLOWUP_LEVEL_SYSTEM_PROMPT, FOLLOWUP_LEVEL_1_WITH_ASSET, FOLLOWUP_LEVEL_1_NO_ASSET,
-    FOLLOWUP_LEVEL_2, FOLLOWUP_LEVEL_3,
+    FOLLOWUP_LEVEL_2, FOLLOWUP_LEVEL_3, DRAFT_IMPROVEMENT_SUGGESTION_SYSTEM_PROMPT,
 )
 
 # Deterministic backstop, not just a prompt instruction: the prompt already tells the
@@ -191,6 +191,18 @@ def _clean_line(value, limit=300) -> str:
     return str(value or "").strip()[:limit]
 
 
+# Phase 16 Step 16.4 -- the model chooses WHICH pre-built, email-safe layout to render a
+# bullet section with, never raw markup itself. Any value outside this set (including a
+# missing key -- every caller/prompt that predates this field) coerces to the exact
+# rendering this project already had, so nothing changes when the model doesn't choose.
+_VALID_LAYOUTS = {"BADGE_LIST", "PROSE"}
+
+
+def _clean_layout(value) -> str:
+    value = str(value or "").strip().upper()
+    return value if value in _VALID_LAYOUTS else "BADGE_LIST"
+
+
 def _clean_bullets(value) -> list[str]:
     """A bullet list is a real list. A model that returns a newline-joined string instead
     (which happens) is coerced rather than dropped -- losing a whole section to a
@@ -260,11 +272,13 @@ def _assemble_sections(data: dict, content_assets, cross_sell_products=None) -> 
 
     pain_points = _clean_bullets(data.get("pain_points"))
     if pain_points:
-        sections.append({"type": "PAIN_POINTS", "items": pain_points})
+        sections.append({"type": "PAIN_POINTS", "items": pain_points,
+                         "layout": _clean_layout(data.get("pain_points_layout"))})
 
     solution_points = _clean_bullets(data.get("solution_points"))
     if solution_points:
-        sections.append({"type": "SOLUTION", "items": solution_points})
+        sections.append({"type": "SOLUTION", "items": solution_points,
+                         "layout": _clean_layout(data.get("solution_points_layout"))})
 
     sections += _asset_sections(content_assets)
 
@@ -323,7 +337,10 @@ def _sections_to_text(sections: list[dict]) -> str:
         if kind == "HOOK":
             parts.append(section["text"])
         elif kind in ("PAIN_POINTS", "SOLUTION"):
-            parts.append("\n".join(f"- {item}" for item in section["items"]))
+            if section.get("layout") == "PROSE":
+                parts.append(" ".join(item.rstrip(".") + "." for item in section["items"]))
+            else:
+                parts.append("\n".join(f"- {item}" for item in section["items"]))
         elif kind == "CTA":
             cta = [section.get("headline", ""), section.get("subtext", "")]
             if section.get("button_url"):
@@ -344,7 +361,11 @@ def _sections_to_text(sections: list[dict]) -> str:
 
 def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
                            qc_feedback: str | None = None, content_assets: list | None = None,
-                           cross_sell_products: list | None = None):
+                           cross_sell_products: list | None = None, tone_directive: str | None = None,
+                           format_directive: str | None = None,
+                           human_revision_instruction: str | None = None,
+                           previous_draft_text: str | None = None,
+                           kickoff_template_preview: bool = False):
     """Phase 11 Step 11.1. Returns {subject, subject_candidates, body, sections, hook_type,
     confidence}, or None if drafting failed or produced nothing usable.
 
@@ -358,12 +379,59 @@ def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict,
     invented service structurally impossible here, the same boundary the content library
     already provides for URLs. Absent or empty means no cross-sell line at all, and the
     prompt below is then byte-identical to before this parameter existed.
+
+    `tone_directive`/`format_directive` (Phase 16 Step 16.4): the product's optional
+    `default_tone`/`default_format` free-text guidelines (e.g. "Urgent & ROI-driven" /
+    "short, plain text, no bullets") -- changes HOW the email is written, never WHAT it
+    claims (facts still come only from PRODUCT/PAIN_POINTS as already required). Both
+    None for every product until an admin sets one, in which case the prompt below is
+    byte-identical to before this parameter existed.
+
+    `human_revision_instruction` (Phase 16 Step 16.5): a reviewer's own free-text edit
+    request on an existing preview ("isko formal karo") -- regenerates the WHOLE draft
+    with that one instruction applied, same "targeted fix, not a blind re-roll" posture
+    as `qc_feedback`, but from a human's stylistic ask rather than QC's rejection.
+
+    `previous_draft_text` -- the subject+body of the draft this instruction is editing,
+    when this is the SECOND (or later) round of feedback in the same session. Without
+    it, every revision call regenerates from PRODUCT/PAIN_POINTS/LEAD fresh and only
+    knows about the CURRENT instruction -- a real gap the operator caught live
+    (2026-09-01): asking for "make it casual" then, separately, "add an emoji" silently
+    dropped the casual tone the first edit had already applied, because the second call
+    had no memory of it. When provided, the model edits THAT text in place instead of
+    re-deriving a new draft from the underlying facts, so every earlier accepted change
+    survives every later one.
+
+    `kickoff_template_preview` (2026-09-05, Step 18.1b intent): when True, LEAD/PAIN_POINTS
+    carry literal [Business Name]/[Pain Point] tokens for a campaign with no real leads
+    yet -- the model must keep those tokens, never invent a fictional business or pain.
+    lead_id may be None in that path (events log without a lead).
     """
     prompt = OUTREACH_SECTIONS_SYSTEM_PROMPT + f"""
 PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
 LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
+"""
+    if kickoff_template_preview:
+        prompt += """
+KICKOFF_TEMPLATE_PREVIEW -- this is NOT a real lead. LEAD.company_name is the literal
+token "[Business Name]" and PAIN_POINTS contain the literal token "[Pain Point]". Keep
+those exact tokens in the draft wherever a real send would put that lead's company name
+or pain. Do NOT invent a fictional business name, city, person, or pain claim. Every
+PRODUCT fact still comes only from PRODUCT above. Real sends later substitute each lead's
+own real name and pain -- this preview only shows shape/tone/angle for human review.
+"""
+    if tone_directive or format_directive:
+        prompt += f"""
+TONE_AND_FORMAT: the admin has set a preferred style for this product's outreach.
+{f"TONE: {tone_directive}" if tone_directive else ""}
+{f"FORMAT: {format_directive}" if format_directive else ""}
+Write the email in this style throughout (word choice, sentence length), while keeping
+every fact grounded in PRODUCT/PAIN_POINTS/LEAD exactly as already required -- this
+changes HOW it's said, never WHAT is claimed. If FORMAT above asks for something
+short/plain-text/no-bullets, that is exactly when to choose "PROSE" for
+pain_points_layout/solution_points_layout instead of the default "BADGE_LIST".
 """
     if cross_sell_products:
         prompt += f"""
@@ -374,6 +442,35 @@ relevant to THIS lead, and you may never name a service outside this list:
 """
     if qc_feedback:
         prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+    if human_revision_instruction:
+        if previous_draft_text:
+            prompt += f"""
+CURRENT_DRAFT -- this already reflects every earlier edit the human has asked for in this
+session (tone, format, additions, everything):
+{previous_draft_text}
+
+A HUMAN REVIEWER asked for this ADDITIONAL, NEW change, on top of CURRENT_DRAFT above:
+{human_revision_instruction}
+Start from CURRENT_DRAFT and apply ONLY this new instruction to it -- do not regenerate
+from PRODUCT/PAIN_POINTS/LEAD as if this were the first draft. Every earlier accepted
+change (tone, emojis, structure, anything) must still be present in your output unless
+this new instruction specifically contradicts it. Apply the new instruction precisely and
+LITERALLY, including style choices you might not default to (emojis, exclamation marks, a
+more casual/bold voice) if that is what was asked -- a request applied only partially is a
+failure to follow it. Keep every FACT and grounding exactly as already required; only
+style/tone/format changes at the reviewer's explicit request.
+"""
+        else:
+            prompt += f"""
+A HUMAN REVIEWER asked for this specific change to the draft: {human_revision_instruction}
+Apply it precisely and LITERALLY -- this is a targeted edit, not a full rewrite from
+scratch, and not a suggestion you may soften or partially apply. This overrides any
+default stylistic instinct elsewhere in this prompt that would normally pull the other
+way (e.g. if asked for emojis, exclamation marks, or a more casual/bold style than you
+would otherwise choose, use them for real -- a request applied only partially is a
+failure to follow the instruction). Keep every FACT and grounding exactly as already
+required; only style/tone/format changes at the reviewer's explicit request.
+"""
 
     try:
         data = call_json(prompt, temperature=0.4)
@@ -421,6 +518,26 @@ relevant to THIS lead, and you may never name a service outside this list:
     return draft
 
 
+def suggest_draft_improvement(db, lead_id, product_brief: dict, pain_points: list, sections: list) -> str:
+    """Phase 16 Step 16.5 -- called AFTER a human's own revision (draft_structured_email's
+    `human_revision_instruction`) has already been applied. Proposes ONE further, concrete
+    improvement the human did not ask for -- shown as a separate, dismissible card, never
+    auto-applied. Returns "" on any LLM error or when the model genuinely has nothing to
+    add (both treated the same by the caller: no suggestion shown)."""
+    prompt = DRAFT_IMPROVEMENT_SUGGESTION_SYSTEM_PROMPT + f"""
+PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
+PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
+CURRENT_DRAFT_SECTIONS: {json.dumps(sections, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.5)
+    except LLMError as exc:
+        log_agent_event(db, "OUTREACH", lead_id, "SUGGEST_IMPROVEMENT", 0.0, "LOW", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return ""
+    return str(data.get("suggestion", ""))[:250]
+
+
 # ---------------------------------------------------------------------------
 # Phase 13 Step 13.1 -- level-aware follow-up drafting. Replaces draft_email()'s old
 # is_followup=True path: that path wrote one generic "brief nudge" instruction regardless
@@ -438,10 +555,15 @@ relevant to THIS lead, and you may never name a service outside this list:
 
 def draft_followup_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
                          followup_level: int, qc_feedback: str | None = None,
-                         content_assets: list | None = None):
+                         content_assets: list | None = None, tone_directive: str | None = None,
+                         format_directive: str | None = None):
     """followup_level: 1 (re-present the asset), 2 (ask an open question), or 3 (standing
     offer -- the products list itself is appended by the caller, not drafted here).
     Returns {subject, subject_candidates, body, sections, hook_type, confidence}, or None.
+
+    `tone_directive`/`format_directive` (Phase 16 Step 16.4) -- see draft_structured_
+    email()'s own docstring; same optional style guideline, applied consistently across
+    every touch of this product's sequence, not just touch 1.
     """
     has_asset = bool(_pick_asset(content_assets, "VIDEO_URL") or _pick_asset(content_assets, CTA_BUTTON_ASSET_TYPE))
     level_instruction = {
@@ -456,6 +578,14 @@ LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
 """ + level_instruction
+    if tone_directive or format_directive:
+        prompt += f"""
+TONE_AND_FORMAT: the admin has set a preferred style for this product's outreach.
+{f"TONE: {tone_directive}" if tone_directive else ""}
+{f"FORMAT: {format_directive}" if format_directive else ""}
+Write in this style throughout, while keeping every fact grounded exactly as already
+required -- this changes HOW it's said, never WHAT is claimed.
+"""
     if qc_feedback:
         prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
 

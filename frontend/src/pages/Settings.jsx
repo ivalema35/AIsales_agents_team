@@ -33,19 +33,19 @@ function EnvField({ setting, onSaved }) {
   }
 
   return (
-    <div className="flex flex-col gap-1.5 border-b border-slate-100 py-3 last:border-0">
+    <div className="flex flex-col gap-1.5 border-b border-line py-3 last:border-0">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-1.5">
-          <span className="text-sm font-medium text-slate-800">{setting.label}</span>
+          <span className="text-sm font-medium text-ink-900">{setting.label}</span>
           <span className="group relative">
-            <Info size={13} className="mt-0.5 text-slate-300 hover:text-slate-500" />
-            <span className="pointer-events-none absolute left-1/2 top-5 z-20 w-64 -translate-x-1/2 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] leading-relaxed text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+            <Info size={13} className="mt-0.5 text-ink-500 hover:text-ink-700" />
+            <span className="pointer-events-none absolute left-1/2 top-5 z-20 w-64 -translate-x-1/2 rounded-md bg-ink-900 px-2.5 py-1.5 text-[11px] leading-relaxed text-parchment-raised opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
               {setting.hint}
             </span>
           </span>
         </div>
         {setting.is_secret && (
-          <span className={`shrink-0 text-[11px] font-medium ${setting.configured ? "text-emerald-600" : "text-amber-600"}`}>
+          <span className={`shrink-0 text-[11px] font-medium ${setting.configured ? "text-good-600" : "text-warm-600"}`}>
             {setting.configured ? `Configured (${setting.masked})` : "Not set"}
           </span>
         )}
@@ -69,17 +69,17 @@ function EnvField({ setting, onSaved }) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder={setting.is_secret ? "Enter a new value to replace it" : ""}
-          className="min-w-0 flex-1 rounded-md border border-slate-200 px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="min-w-0 flex-1 rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
         />
         <button
           onClick={save}
           disabled={!dirty || saving}
-          className="shrink-0 rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+          className="shrink-0 rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {saving ? "Saving…" : "Save"}
         </button>
       </div>
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span className="text-xs text-alert-600">{error}</span>}
     </div>
   );
 }
@@ -131,7 +131,7 @@ export default function Settings() {
           <a
             key={item.id}
             href={`#${item.id}`}
-            className="rounded-md px-2.5 py-1.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            className="rounded-md px-2.5 py-1.5 text-sm text-ink-500 transition-colors hover:bg-parchment-raised-2 hover:text-ink-900"
           >
             {item.label}
           </a>
@@ -140,16 +140,16 @@ export default function Settings() {
 
       <div className="flex min-w-0 flex-1 flex-col gap-6">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">Settings</h1>
-          <p className="mt-0.5 text-sm text-slate-500">
+          <h1 className="font-display text-lg font-semibold text-ink-900">Settings</h1>
+          <p className="mt-0.5 text-sm text-ink-500">
             System switches take effect on the next scheduler tick. Everything below that
-            (API keys, provider config) is saved to <code className="rounded bg-slate-100 px-1 py-0.5 text-xs">.env</code> and
+            (API keys, provider config) is saved to <code className="rounded bg-parchment-raised-2 px-1 py-0.5 text-xs">.env</code> and
             needs a backend restart to apply.
           </p>
         </div>
 
         {savedNote && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-xs text-amber-800">
+          <div className="rounded-lg border border-warm-600 bg-warm-100 px-4 py-2.5 text-xs text-warm-700">
             Saved to .env -- these values are only read when a backend process starts, so
             restart the affected process(es) for this to actually take effect.
           </div>
@@ -157,14 +157,14 @@ export default function Settings() {
 
         <SystemToggles />
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {!envSettings && !error && <p className="text-sm text-slate-400">Loading…</p>}
+        {error && <p className="text-sm text-alert-600">{error}</p>}
+        {!envSettings && !error && <p className="text-sm text-ink-500">Loading…</p>}
 
         {envSettings && (
           <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
             {categories.map(({ name, id, items }) => (
-              <div key={id} id={id} className="h-fit scroll-mt-20 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                <h3 className="mb-1 text-sm font-semibold text-slate-800">{name}</h3>
+              <div key={id} id={id} className="h-fit scroll-mt-20 rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
+                <h3 className="mb-1 text-sm font-semibold text-ink-900">{name}</h3>
                 <div>
                   {items.map((s) => (
                     <EnvField key={s.key} setting={s} onSaved={handleSaved} />

@@ -105,7 +105,7 @@ export default function Login({ onLoggedIn }) {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#14161a] p-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#ede7d8] p-4">
       {/* Ambient background in the logo's own tones (slate #4e535a / gray #adb0b4) --
          not a generic purple gradient, which read as off-brand against the actual logo.
          The AI-sales flat-icon chips + circuit lines live HERE, on the page canvas
@@ -113,25 +113,25 @@ export default function Login({ onLoggedIn }) {
          the first pass put them inside the left panel instead. */}
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="animate-login-orb absolute -left-32 -top-32 h-[32rem] w-[32rem] rounded-full bg-[#4e535a]/40 blur-[110px]"
+          className="animate-login-orb absolute -left-32 -top-32 h-[32rem] w-[32rem] rounded-full bg-[#454b72]/25 blur-[110px]"
         />
         <div
-          className="animate-login-orb absolute -bottom-40 -right-20 h-[28rem] w-[28rem] rounded-full bg-[#4e535a]/30 blur-[110px]"
+          className="animate-login-orb absolute -bottom-40 -right-20 h-[28rem] w-[28rem] rounded-full bg-[#c0862b]/20 blur-[110px]"
           style={{ animationDelay: "-3s" }}
         />
         <div
-          className="animate-login-orb absolute bottom-1/3 left-1/4 h-72 w-72 rounded-full bg-[#adb0b4]/10 blur-[90px]"
+          className="animate-login-orb absolute bottom-1/3 left-1/4 h-72 w-72 rounded-full bg-[#a66e1e]/15 blur-[90px]"
           style={{ animationDelay: "-6s" }}
         />
-        <div className="absolute inset-0 opacity-[0.05]" style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+        <div className="absolute inset-0 opacity-[0.06]" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, #1d2340 1px, transparent 0)",
           backgroundSize: "24px 24px",
         }} />
 
         {/* Circuit-trace lines drawn loosely toward the card, echoing the logo's own
            circuit detail -- spans the whole viewport, not just the card's bounds. */}
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <g stroke="#adb0b4" strokeWidth="0.15" fill="none" opacity="0.3">
+          <g stroke="#c0862b" strokeWidth="0.15" fill="none" opacity="0.35">
             <path className="animate-login-dash" d="M20,20 L38,32" />
             <path className="animate-login-dash" d="M80,24 L64,34" />
             <path className="animate-login-dash" d="M14,80 L32,68" />
@@ -144,7 +144,7 @@ export default function Login({ onLoggedIn }) {
         {ORBIT_CHIPS.map(({ Icon, delay, ...pos }, i) => (
           <div
             key={i}
-            className="animate-login-chip absolute hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-[#c3c5c8] shadow-lg backdrop-blur-sm md:flex"
+            className="animate-login-chip absolute hidden h-11 w-11 items-center justify-center rounded-xl border border-[#d9d0b8] bg-[#f7f2e6]/80 text-[#8a5a18] shadow-lg backdrop-blur-sm md:flex"
             style={{ ...pos, animationDelay: delay }}
           >
             <Icon size={18} strokeWidth={1.75} />
@@ -153,17 +153,17 @@ export default function Login({ onLoggedIn }) {
       </div>
 
       <div
-        className={`animate-login-card-in relative grid w-full max-w-4xl grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-[0_20px_70px_-15px_rgba(0,0,0,0.55)] ring-1 ring-white/10 md:grid-cols-2 ${
+        className={`animate-login-card-in relative grid w-full max-w-4xl grid-cols-1 overflow-hidden rounded-2xl bg-[#f7f2e6] shadow-[0_20px_70px_-15px_rgba(29,35,64,0.25)] ring-1 ring-[#d9d0b8] md:grid-cols-2 ${
           shake ? "animate-login-shake" : ""
         }`}
       >
         {/* Left: brand + character, logo-matched slate/charcoal */}
-        <div className="relative hidden flex-col items-center justify-center gap-5 overflow-hidden bg-gradient-to-br from-[#3a3e44] via-[#2a2d32] to-[#17181b] p-10 md:flex">
-          <div className="absolute inset-0 opacity-[0.06]" style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+        <div className="relative hidden flex-col items-center justify-center gap-5 overflow-hidden bg-gradient-to-br from-[#1d2340] via-[#454b72] to-[#1d2340] p-10 md:flex">
+          <div className="absolute inset-0 opacity-[0.08]" style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, #f1dfb2 1px, transparent 0)",
             backgroundSize: "22px 22px",
           }} />
-          <div className="absolute -bottom-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#adb0b4]/15 blur-[80px]" />
+          <div className="absolute -bottom-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#c0862b]/20 blur-[80px]" />
 
           <div className="animate-login-bob relative z-10 w-52 drop-shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
             <Lottie
@@ -175,27 +175,27 @@ export default function Login({ onLoggedIn }) {
             />
           </div>
           <div className="relative z-10 text-center">
-            <p className="text-xl font-semibold tracking-tight text-white">AI-BOS</p>
-            <p className="mt-1.5 text-sm text-[#c3c5c8]">Enterprise AI Business Operating System</p>
+            <p className="font-display text-xl font-semibold tracking-tight text-[#f7f2e6]">AI-BOS</p>
+            <p className="mt-1.5 text-sm text-[#f1dfb2]">Enterprise AI Business Operating System</p>
           </div>
         </div>
 
         {/* Right: form */}
         <div className="flex flex-col justify-center p-8 sm:p-10">
-          <div className="mb-8 flex items-center gap-2 md:hidden">
-            <img src="/logo.png" alt="AI-BOS" className="h-8 w-8" />
-            <span className="text-base font-semibold text-slate-900">AI-BOS</span>
+          <div className="mb-8 flex items-center gap-2.5 md:hidden">
+            <img src="/logo.png" alt="" className="h-8 w-8 object-contain mix-blend-multiply" />
+            <span className="font-display text-base font-semibold tracking-tight text-ink-900">AI-BOS</span>
           </div>
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Welcome back</h1>
-            <p className="mt-1.5 text-sm text-slate-500">Sign in to access the sales dashboard.</p>
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-ink-900">Welcome back</h1>
+            <p className="mt-1.5 text-sm text-ink-500">Sign in to access the sales dashboard.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="username" className="text-sm font-medium text-slate-700">Username</label>
+              <label htmlFor="username" className="text-sm font-medium text-ink-700">Username</label>
               <div className="relative">
-                <User size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <User size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500" />
                 <input
                   id="username"
                   type="text"
@@ -204,7 +204,7 @@ export default function Login({ onLoggedIn }) {
                   onChange={(e) => setUsername(e.target.value)}
                   onFocus={() => playSegment("follow", false)}
                   onBlur={idle}
-                  className="w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3.5 text-sm text-slate-900 outline-none transition-all focus:border-[#4e535a] focus:ring-4 focus:ring-[#4e535a]/10"
+                  className="w-full rounded-lg border border-line py-2.5 pl-10 pr-3.5 text-sm text-ink-900 outline-none transition-all focus:border-gold-500 focus:ring-4 focus:ring-gold-100"
                   placeholder="admin"
                   required
                 />
@@ -212,9 +212,9 @@ export default function Login({ onLoggedIn }) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
+              <label htmlFor="password" className="text-sm font-medium text-ink-700">Password</label>
               <div className="relative">
-                <Lock size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Lock size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500" />
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -223,7 +223,7 @@ export default function Login({ onLoggedIn }) {
                   onChange={(e) => setPassword(e.target.value)}
                   onFocus={handlePasswordFocus}
                   onBlur={handlePasswordBlur}
-                  className="w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-10 text-sm text-slate-900 outline-none transition-all focus:border-[#4e535a] focus:ring-4 focus:ring-[#4e535a]/10"
+                  className="w-full rounded-lg border border-line py-2.5 pl-10 pr-10 text-sm text-ink-900 outline-none transition-all focus:border-gold-500 focus:ring-4 focus:ring-gold-100"
                   placeholder="••••••••"
                   required
                 />
@@ -241,7 +241,7 @@ export default function Login({ onLoggedIn }) {
                   // to its focus -- is now completely undisturbed by this click.
                   onMouseDown={(e) => e.preventDefault()}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-500 transition-colors hover:text-ink-700"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -249,7 +249,7 @@ export default function Login({ onLoggedIn }) {
             </div>
 
             {error && (
-              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-inset ring-red-200">
+              <p className="rounded-lg bg-alert-100 px-3 py-2 text-sm text-alert-700 ring-1 ring-inset ring-alert-600/30">
                 {error}
               </p>
             )}
@@ -257,14 +257,14 @@ export default function Login({ onLoggedIn }) {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#3a3e44] to-[#565c64] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#4e535a]/25 transition-all hover:shadow-xl hover:shadow-[#4e535a]/35 hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100"
+              className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-ink-900 px-4 py-2.5 text-sm font-semibold text-parchment-raised shadow-lg shadow-[#1d2340]/20 transition-all hover:opacity-90 hover:shadow-xl hover:shadow-[#1d2340]/25 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100"
             >
               {loading ? <Loader2 size={15} className="animate-spin" /> : <Lock size={15} />}
               {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
 
-          <p className="mt-8 text-center text-xs text-slate-400">Secured session · IVinfotech</p>
+          <p className="mt-8 text-center font-mono text-xs text-ink-500">Secured session · IVinfotech</p>
         </div>
       </div>
     </div>

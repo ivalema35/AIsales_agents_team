@@ -7,6 +7,8 @@ const EMPTY = {
   title: "",
   description: "",
   value_proposition: "",
+  default_tone: "",
+  default_format: "",
   target_regions: [],
   target_country: "IN",
   target_business_categories: [],
@@ -32,6 +34,8 @@ function toFormState(product) {
     title: product.title || "",
     description: product.description || "",
     value_proposition: product.value_proposition || "",
+    default_tone: product.default_tone || "",
+    default_format: product.default_format || "",
     target_regions: product.target_regions || [],
     target_country: product.target_country || "IN",
     target_business_categories: product.target_business_categories || [],
@@ -41,7 +45,7 @@ function toFormState(product) {
 }
 
 const inputClass =
-  "rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-100";
+  "rounded-md border border-line bg-parchment-raised px-3 py-2 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none";
 
 // Dynamic product registration (MASTER PRD §5 Step 4.4) -- adding a new product/service
 // here is all that's needed for the discovery scheduler to start targeting it; no code
@@ -76,6 +80,8 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
         title: form.title,
         description: form.description,
         value_proposition: form.value_proposition || undefined,
+        default_tone: form.default_tone || undefined,
+        default_format: form.default_format || undefined,
         target_regions: form.target_regions,
         target_country: form.target_country || "IN",
         target_business_categories: form.target_business_categories,
@@ -100,13 +106,13 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
   return (
     <form
       onSubmit={handleSubmit}
-      className={isEdit ? "flex flex-col gap-5" : "flex flex-col gap-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"}
+      className={isEdit ? "flex flex-col gap-5" : "flex flex-col gap-5 rounded-lg border border-line bg-parchment-raised p-5 shadow-sm"}
     >
-      {!isEdit && <h3 className="text-sm font-semibold text-slate-800">Add a product / service</h3>}
-      {error && <p className="rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{error}</p>}
+      {!isEdit && <h3 className="text-sm font-semibold text-ink-900">Add a product / service</h3>}
+      {error && <p className="rounded-md bg-alert-100 px-3 py-2 text-xs text-alert-700">{error}</p>}
 
       <div className="flex flex-col gap-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Basic details</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Basic details</p>
 
         <label className="flex flex-col">
           <FieldLabel icon={Building2}>Title</FieldLabel>
@@ -145,8 +151,38 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
         </label>
       </div>
 
-      <div className="flex flex-col gap-4 border-t border-slate-100 pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Targeting</p>
+      <div className="flex flex-col gap-4 border-t border-line pt-4">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+          AI writing style (Phase 16 Step 16.4)
+        </p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <label className="flex flex-col">
+            <FieldLabel icon={Sparkles} hint="Optional -- leave blank for today's default drafting style.">
+              Default tone
+            </FieldLabel>
+            <input
+              value={form.default_tone}
+              onChange={(e) => update("default_tone", e.target.value)}
+              className={inputClass}
+              placeholder="e.g. Urgent & ROI-driven, short and punchy"
+            />
+          </label>
+          <label className="flex flex-col">
+            <FieldLabel icon={Layers} hint="Optional -- leave blank for today's default structure.">
+              Default format
+            </FieldLabel>
+            <input
+              value={form.default_format}
+              onChange={(e) => update("default_format", e.target.value)}
+              className={inputClass}
+              placeholder="e.g. Short plain text, no bullet points"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 border-t border-line pt-4">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Targeting</p>
 
         <ChipInput
           icon={MapPin}
@@ -188,8 +224,8 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
                 onClick={() => { update("target_country", c.code); setCustomCountry(false); }}
                 className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
                   !customCountry && form.target_country === c.code
-                    ? "bg-slate-800 text-white"
-                    : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                    ? "bg-ink-900 text-parchment-raised"
+                    : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment-raised-2"
                 }`}
               >
                 {c.code}
@@ -199,7 +235,7 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
               type="button"
               onClick={() => setCustomCountry(true)}
               className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                customCountry ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                customCountry ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment-raised-2"
               }`}
             >
               Other
@@ -217,8 +253,8 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
         </label>
       </div>
 
-      <div className="flex flex-col gap-3 border-t border-slate-100 pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Cross-sell</p>
+      <div className="flex flex-col gap-3 border-t border-line pt-4">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Cross-sell</p>
         <label className="flex flex-col">
           <FieldLabel
             icon={Layers}
@@ -227,13 +263,13 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
             Also mention these products, if relevant
           </FieldLabel>
           {otherProducts.length === 0 ? (
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-ink-500">
               No other products yet -- add another product first to enable cross-sell here.
             </p>
           ) : (
-            <div className="mt-1 flex flex-col gap-1.5 rounded-md border border-slate-200 p-2.5">
+            <div className="mt-1 flex flex-col gap-1.5 rounded-md border border-line p-2.5">
               {otherProducts.map((p) => (
-                <label key={p.id} className="flex items-center gap-2 text-sm text-slate-700">
+                <label key={p.id} className="flex items-center gap-2 text-sm text-ink-700">
                   <input
                     type="checkbox"
                     checked={form.cross_sell_product_ids.includes(p.id)}
@@ -245,7 +281,7 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
                           : form.cross_sell_product_ids.filter((id) => id !== p.id)
                       )
                     }
-                    className="rounded border-slate-300"
+                    className="rounded border-line"
                   />
                   {p.title}
                 </label>
@@ -255,11 +291,11 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
         </label>
       </div>
 
-      <div className="flex items-center gap-2 border-t border-slate-100 pt-4">
+      <div className="flex items-center gap-2 border-t border-line pt-4">
         <button
           type="submit"
           disabled={submitting}
-          className="flex items-center gap-1.5 self-start rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-900 disabled:opacity-50"
+          className="flex items-center gap-1.5 self-start rounded-md bg-ink-900 px-4 py-2 text-sm font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:opacity-50"
         >
           {isEdit ? <Save size={14} /> : <Plus size={14} />}
           {submitting ? "Saving…" : isEdit ? "Save changes" : "Add product"}
@@ -268,7 +304,7 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            className="rounded-md px-4 py-2 text-sm font-medium text-ink-700 hover:bg-parchment-raised-2"
           >
             Cancel
           </button>

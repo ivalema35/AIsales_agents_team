@@ -6,17 +6,17 @@ function Toggle({ label, description, checked, onChange, disabled, dangerous }) 
   // Inline styles for the track color and knob position -- not Tailwind utility
   // classes -- so there's zero ambiguity about which state renders which way
   // (a user-reported bug had the knob look "on" while the setting was actually off).
-  const trackColor = checked ? (dangerous ? "#dc2626" : "#059669") : "#d1d5db";
+  const trackColor = checked ? (dangerous ? "#a83b32" : "#3f7a57") : "#c7bd9f";
   const knobLeft = checked ? "22px" : "2px";
 
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <div>
-        <p className="text-sm font-medium text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500">{description}</p>
+        <p className="text-sm font-medium text-ink-900">{label}</p>
+        <p className="text-xs text-ink-500">{description}</p>
       </div>
       <div className="flex items-center gap-2">
-        <span className={`text-xs font-semibold ${checked ? "text-slate-900" : "text-slate-400"}`}>
+        <span className={`text-xs font-semibold ${checked ? "text-ink-900" : "text-ink-500"}`}>
           {checked ? "ON" : "OFF"}
         </span>
         <button
@@ -57,8 +57,8 @@ function EditableField({ label, description, value, type, onSave, disabled }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <div className="min-w-0">
-        <p className="text-sm font-medium text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500">{description}</p>
+        <p className="text-sm font-medium text-ink-900">{label}</p>
+        <p className="text-xs text-ink-500">{description}</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <input
@@ -66,14 +66,14 @@ function EditableField({ label, description, value, type, onSave, disabled }) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           disabled={disabled}
-          className={`rounded-md border border-slate-200 px-2 py-1 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 ${
+          className={`rounded-md border border-line bg-parchment-raised px-2 py-1 text-sm text-ink-900 focus:border-gold-500 focus:outline-none ${
             type === "number" ? "w-16" : "w-56"
           }`}
         />
         <button
           onClick={save}
           disabled={!dirty || saving || disabled}
-          className="rounded-md bg-slate-800 px-2.5 py-1 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-md bg-ink-900 px-2.5 py-1 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {saving ? "…" : "Save"}
         </button>
@@ -126,10 +126,10 @@ export default function SystemToggles() {
 
   return (
     <>
-    <div id="system-controls" className="scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-1 text-sm font-semibold text-slate-800">System controls</h2>
-      {error && <p className="mb-2 text-xs text-red-600">{error}</p>}
-      <div className="divide-y divide-slate-100">
+    <div id="system-controls" className="scroll-mt-20 rounded-xl border border-line bg-parchment-raised p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-ink-900">System controls</h2>
+      {error && <p className="mb-2 text-xs text-alert-600">{error}</p>}
+      <div className="divide-y divide-line">
         <Toggle
           label="Discovery"
           description="AI searches for and scores new leads across your products."
@@ -164,12 +164,12 @@ export default function SystemToggles() {
       </div>
     </div>
 
-    <div id="operational-settings" className="mt-5 scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-1 text-sm font-semibold text-slate-800">Operational settings</h2>
-      <p className="mb-1 text-xs text-slate-400">
+    <div id="operational-settings" className="mt-5 scroll-mt-20 rounded-xl border border-line bg-parchment-raised p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-ink-900">Operational settings</h2>
+      <p className="mb-1 text-xs text-ink-500">
         Used to be .env-only (needed a restart to change) -- now dashboard-editable, takes effect on the next tick.
       </p>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-line">
         <EditableField
           label="EOD report email recipients"
           description="Comma-separated. Who gets the daily executive report by email."
@@ -216,15 +216,15 @@ export default function SystemToggles() {
     {/* Phase 15 Step 15(B).2 -- a real, hard spend cap, not a soft warning. Budget
         defaults to 0.0 (blocked) until an admin sets a real number -- same fail-safe
         posture as "autonomous outreach off by default". */}
-    <div id="prospect-search" className="mt-5 scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-1 text-sm font-semibold text-slate-800">Prospect search budget</h2>
-      <p className="mb-1 text-xs text-slate-400">
+    <div id="prospect-search" className="mt-5 scroll-mt-20 rounded-xl border border-line bg-parchment-raised p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-ink-900">Prospect search budget</h2>
+      <p className="mb-1 text-xs text-ink-500">
         Governs the standalone prospect finder (criteria-driven person search, e.g. "AI developer
         in Mehsana"). A search that would exceed the monthly budget is refused outright, not just
         warned about. Cost-per-search is a real number you set once you know your Serper plan's
         actual rate -- this project cannot verify that automatically.
       </p>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-line">
         <EditableField
           label="Monthly budget"
           description="Total spend allowed per calendar month across all prospect searches. 0 = blocked."
@@ -248,13 +248,13 @@ export default function SystemToggles() {
         bottom of every outreach email. Deliberately its own card, not buried in
         "Operational settings": everything above governs how the system behaves, while
         these are the only values here that a real lead actually reads. */}
-    <div id="company-contact" className="mt-5 scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-1 text-sm font-semibold text-slate-800">Company contact details</h2>
-      <p className="mb-1 text-xs text-slate-400">
+    <div id="company-contact" className="mt-5 scroll-mt-20 rounded-xl border border-line bg-parchment-raised p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-ink-900">Company contact details</h2>
+      <p className="mb-1 text-xs text-ink-500">
         Shown to leads in the &ldquo;Get in touch&rdquo; block of every outreach email. Leave a field
         empty to leave that line out entirely &mdash; nothing is ever shown as blank or guessed.
       </p>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-line">
         <EditableField
           label="Contact email"
           description="The address a lead should reply to or write to. Shown as a mailto link."

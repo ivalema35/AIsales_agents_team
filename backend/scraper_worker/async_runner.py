@@ -19,6 +19,7 @@ from sqlalchemy import func
 from database.db_config import SessionLocal
 from database.models import Lead, Product, LeadReviewInsight, LeadScore, LeadContact, ProductStrategy
 from jobs.job_queue import enqueue, claim_next, mark_done, mark_failed
+from services.campaign_service import resolve_auto_campaign_id
 from services.data_acquisition.serp_provider import SerperProvider, SOCIAL_PROFILE_HOSTS
 from services.data_acquisition.b2b_provider import HunterProvider
 from services.data_acquisition.website_scraper import (
@@ -84,6 +85,14 @@ def _handle_discover(db, payload):
 
     results = SerperProvider().discover(query, location=location)
 
+    # Discovery is now campaign-driven (Step 17.7, 2026-09-02, MASTER_DEVELOPMENT_PRD.md
+    # §5C.0's revision): the scheduler scopes every real DISCOVER job to one specific
+    # campaign (its own target_segment IS the query/location), so campaign_id arrives
+    # directly in the payload -- deterministic, no guessing needed. resolve_auto_campaign_id
+    # stays only as a fallback for a job with no campaign_id (a manually-enqueued/legacy
+    # job), same non-guessing posture it already had.
+    campaign_id = payload.get("campaign_id") or resolve_auto_campaign_id(db, product_id)
+
     created = 0
     skipped_wrong_city = 0
     for row in results:
@@ -117,6 +126,7 @@ def _handle_discover(db, payload):
             region_location=row.get("region_location"),
             source=row.get("source"),
             status="DISCOVERED",
+            campaign_id=campaign_id,
         )
         db.add(lead)
         db.commit()

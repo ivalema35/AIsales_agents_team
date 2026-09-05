@@ -49,6 +49,14 @@ class Product(Base):
     # Phase 11 Step 11.5 (tracker.md A.10) -- other products the admin chose to cross-sell
     # alongside this one. Empty = no cross-sell, today's behavior unchanged.
     cross_sell_product_ids = Column(Text, default="[]")      # JSON array of product ids
+    # Phase 16 Step 16.4 -- free-text guidelines (same "shape, not rigid template"
+    # precedent as message_formats.sections, tracker.md A.7), NOT a fixed dropdown enum,
+    # e.g. "Urgent & ROI-driven, short and punchy" or "Formal HTML email with bullet
+    # points". NULL/empty = today's unchanged default drafting behavior. Once Phase 17's
+    # campaigns exist, a campaign's own strategy_angle becomes an ADDITIONAL directive
+    # source layered on top of these, not a replacement for them.
+    default_tone = Column(Text)
+    default_format = Column(Text)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -76,6 +84,10 @@ class Lead(Base):
     region_location = Column(String)
     sales_route = Column(String, default="UNASSIGNED")
     # UNASSIGNED, SAAS_PRODUCT, CUSTOM_DEV — set by dual_sales_engine.py (§8.2)
+    # Phase 17 Step 17.1 -- nullable, and deliberately so: every lead the existing
+    # autonomous discovery pipeline creates has no campaign context and keeps this NULL,
+    # behaving byte-identically to before this column existed (P17 DoD).
+    campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="SET NULL"))
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
@@ -315,6 +327,17 @@ class DiscoveryRun(Base):
     product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     query = Column(String, nullable=False)
     region = Column(String, nullable=False)
+    # Step 17.7 (2026-09-02) -- discovery is now campaign-driven: the (query, region) pair
+    # comes straight from one campaign's own target_segment, so cooldown tracking is scoped
+    # per-campaign, not per-product -- two campaigns for the same product that happen to
+    # share a query/region must NOT share one cooldown clock. Nullable: a legacy row (from
+    # before this column existed) or a manually-enqueued job with no campaign context still
+    # has somewhere to live. The old (product_id, query, region) UNIQUE constraint above is
+    # left in place rather than migrated (SQLite can't ALTER a constraint without a full
+    # table rebuild) -- a real but low-probability collision risk on an existing DB if two
+    # campaigns for the same product ever propose the identical query+region (the Step 18.1
+    # diversity rule already steers away from this).
+    campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="CASCADE"))
     last_run_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
 
@@ -514,4 +537,125 @@ class ProspectSearch(Base):
     provider = Column(String, nullable=False)  # "SERPER_XRAY"
     result_count = Column(Integer, default=0)
     spend = Column(REAL, default=0.0)  # real cost incurred, from the admin-configured per-search rate
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 32. KNOWLEDGE BASE ITEMS (Phase 16 Step 16.1/16.2/16.8) -- product facts, objection
+# answers, real proof, and (Step 16.8, human-approved only) marketing assets the AI
+# selects from when replying or drafting -- never a prompt it paraphrases. Zero-
+# fabrication rule: this table has exactly one write path, api/knowledge_base.py's
+# admin-facing CRUD -- no LLM call anywhere in this codebase inserts a row here.
+class KnowledgeBaseItem(Base):
+    __tablename__ = "knowledge_base_items"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    kind = Column(String, nullable=False)  # FACT, OBJECTION, PROOF, MARKETING_ASSET
+    title = Column(String, nullable=False)
+    body = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 33. CAMPAIGNS (Phase 17 Step 17.1) -- a dated, strategy-angled grouping layered on top
+# of the existing pipeline, never a second targeting system. `target_segment` is a free
+# JSON object set by a human at creation (or, once Phase 18 exists, proposed by the AI
+# planner) -- deliberately NOT validated against the product's own target_regions/
+# target_business_categories/target_person_roles (revised 2026-09-01, tracker.md): the
+# operator wants a campaign able to genuinely explore a segment outside the product's
+# standing config, with oversight coming from human review, not a schema constraint.
+class Campaign(Base):
+    __tablename__ = "campaigns"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    name = Column(String, nullable=False)
+    scheduled_date = Column(DATE)
+    target_segment = Column(Text, default="{}")  # free JSON object, no fixed shape
+    strategy_angle = Column(Text)
+    # PROPOSED, APPROVED, RUNNING, COMPLETED, PAUSED (Step 17.5) -- PROPOSED->APPROVED only
+    # via Phase 18's human review action once that exists; nothing sets it automatically yet.
+    status = Column(String, default="PROPOSED")
+    daily_todo = Column(Text, default="[]")       # JSON array, open-ended real items -- Step 18.1
+    metrics_summary = Column(Text, default="{}")  # JSON cache, Step 17.3 -- never authoritative
+    # Step 18.1/17.6 -- the AI's own proposed target lead count for this campaign's discovery
+    # batch (e.g. 100). Nullable: no goal set means today's continuous cooldown-paced discovery,
+    # not "no discovery." Raisable by a later day's strategist proposal once reached.
+    lead_count_goal = Column(Integer)
+    # Step 18.1/18.4 -- the strategist's LATEST not-yet-approved proposal (JSON: target_segment/
+    # lead_count_goal/strategy_angle/rationale, any subset), superseded fresh each day it's
+    # regenerated, applied to the real columns above ONLY on Approve (services/campaign_service.py
+    # approve_campaign_today()), never written directly by the generator itself.
+    pending_strategy_proposal = Column(Text)
+    # Phase 18 Step 18.2 -- ISO date (YYYY-MM-DD, IST) the human last approved this
+    # campaign's daily review card. Re-approval is required every real day (content is
+    # fresh every day, so yesterday's approval can't stand in for today's).
+    last_approved_date = Column(String)
+    # Phase 20 Step 20.3 -- Execution Watchdog. NULL means normal (no active alert). Set to
+    # a JSON object ({"reason","bounce_count","message","raised_at"}) the moment a real
+    # anomaly (3 consecutive real send failures/bounces) is detected for this campaign's own
+    # batch -- while set, _run_outreach_tick skips claiming further leads for THIS campaign
+    # only (every other campaign is unaffected). Cleared only by a human action
+    # (services/campaign_service.py clear_campaign_watchdog_alert()), never by the system
+    # re-checking on its own -- this is a real pause requiring real review, not a cooldown.
+    watchdog_alert = Column(Text)
+    # Kickoff template preview (built 2026-09-05 from Step 18.1b intent): JSON draft
+    # (subject/body/sections) shown on the daily review when this campaign has no real
+    # leads yet. Uses literal [Business Name]/[Pain Point] placeholders -- never invents
+    # a fictional business. Once a real lead is tagged, get_daily_review prefers that lead's
+    # sample instead. Cleared when strategy_angle is applied/changed so the next review
+    # regenerates against the new angle.
+    kickoff_draft = Column(Text)
+    # HTML vs plain-text email render (2026-09-05): HTML = Phase 11 designed sections +
+    # render_email_html for preview and send; TEXT = prose draft, plain preview, send
+    # without designed sections (email_service simple HTML fallback). Default HTML.
+    # Set by AI strategist proposal, Daily Review chips, or free-text feedback.
+    email_render_mode = Column(String, default="HTML")  # HTML | TEXT
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 34. STRATEGY INSIGHTS (Phase 19 Step 19.1-19.3) -- one row per learned strategy rule,
+# reusing the EXACT "most recent ACTIVE row wins, superseded rows kept not deleted" pattern
+# already proven in ProductStrategy (Phase 7, consumed since Phase 15(A)). Grouped by
+# (product_id, domain) -- `domain` is the real business vertical (campaign.target_segment's
+# own `industry` value) real campaigns for this product have actually targeted, POOLED
+# across however many campaigns tried it, not a single campaign's own result. Simplified
+# from the original 4-field spec (winning/losing angle + a separate winning_tone) to just
+# winning/losing angle -- this project's Campaign model has no field distinguishing "tone"
+# from "angle" (`strategy_angle` is the one free-text axis a campaign has), so a second
+# column for the same real data would carry nothing a human couldn't already read in
+# `winning_angle` itself.
+class StrategyInsight(Base):
+    __tablename__ = "strategy_insights"
+    id = Column(String, primary_key=True, default=_uuid)
+    product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    domain = Column(String, nullable=False)
+    winning_angle = Column(Text, nullable=False)
+    losing_angle = Column(Text)
+    confidence = Column(REAL)
+    # Must quote the real aggregated numbers it was computed from -- Step 19.3's own gate,
+    # enforced by prompt instruction + real-testing, not a schema constraint.
+    rationale = Column(Text, nullable=False)
+    status = Column(String, default="ACTIVE")  # ACTIVE, SUPERSEDED
+    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+
+# 35. CAMPAIGN THESES (Phase 20 Step 20.1) -- one row per real IST day Step 18.1's strategist
+# runs for a campaign: what it believed going in (`hypothesis`), what today's real numbers
+# actually showed (`observation`), and what it's doing differently as a result
+# (`pivot_decision`, or an explicit "no change, still testing X"). Deliberately separate from
+# `strategy_insights` (Table 34) -- that is a cross-campaign, floor-gated, validated RULE; this
+# is one campaign's own evolving, day-by-day narrative, real even when there's nothing yet
+# validated enough to write as a rule. One row per (campaign_id, day) -- a same-day feedback
+# regeneration updates this day's row rather than creating a second one for the same date.
+class CampaignThesis(Base):
+    __tablename__ = "campaign_theses"
+    __table_args__ = (
+        UniqueConstraint("campaign_id", "day", name="uq_campaign_thesis_day"),
+    )
+    id = Column(String, primary_key=True, default=_uuid)
+    campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="CASCADE"), nullable=False)
+    day = Column(String, nullable=False)  # ISO date (YYYY-MM-DD, IST)
+    hypothesis = Column(Text, nullable=False)
+    observation = Column(Text)
+    pivot_decision = Column(Text)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())

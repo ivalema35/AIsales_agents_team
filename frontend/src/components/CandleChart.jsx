@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { SERIES, INK } from "../lib/chartColors";
+import { SERIES } from "../lib/chartColors";
+
+// Chart chrome fills (axis ticks, grid, labels) -- parchment/ink tokens as hex for SVG.
+// Series hues stay on SERIES; do not retune categorical data color here.
+const CHROME = {
+  primary: "#1d2340",   // ink-900
+  secondary: "#454b72", // ink-700
+  muted: "#6c7093",     // ink-500
+  grid: "#d9d0b8",      // line
+  todayBand: "#fbf8f0", // parchment-raised-2
+};
 
 // Builds an SVG path for a bar whose top corners are rounded and whose baseline stays
 // square -- same mark spec as the funnel/channel bars (4px rounded data-end only), just
@@ -47,13 +57,13 @@ export default function CandleChart({ data }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
-        <span className="flex items-center gap-1.5 text-xs text-slate-600">
+        <span className="flex items-center gap-1.5 text-xs text-ink-700">
           <span className="h-2 w-2 rounded-full" style={{ backgroundColor: SERIES.blue }} />
           Leads discovered
         </span>
         <button
           onClick={() => setShowTable((v) => !v)}
-          className="text-xs font-medium text-slate-500 hover:text-slate-800"
+          className="text-xs font-medium text-ink-500 hover:text-ink-900"
         >
           {showTable ? "View as chart" : "View as table"}
         </button>
@@ -63,16 +73,16 @@ export default function CandleChart({ data }) {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-500">
+              <tr className="border-b border-line text-ink-500">
                 <th className="py-2 pr-3 font-medium">Day</th>
                 <th className="py-2 pr-3 text-right font-medium">Leads discovered</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {data.map((d) => (
                 <tr key={d.period_end}>
-                  <td className="py-1.5 pr-3 text-slate-700">{d.period_end}</td>
-                  <td className="py-1.5 pr-3 text-right tabular-nums text-slate-700">{d.leads_discovered}</td>
+                  <td className="py-1.5 pr-3 text-ink-700">{d.period_end}</td>
+                  <td className="py-1.5 pr-3 text-right font-mono tabular-nums text-ink-700">{d.leads_discovered}</td>
                 </tr>
               ))}
             </tbody>
@@ -91,8 +101,8 @@ export default function CandleChart({ data }) {
 
         {gridValues.map((v) => (
           <g key={v}>
-            <line x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} stroke={INK.grid} strokeWidth="1" />
-            <text x={PAD.left - 8} y={y(v)} textAnchor="end" dominantBaseline="middle" fontSize="10" fill={INK.muted}>
+            <line x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} stroke={CHROME.grid} strokeWidth="1" />
+            <text x={PAD.left - 8} y={y(v)} textAnchor="end" dominantBaseline="middle" fontSize="10" fontFamily="IBM Plex Mono, ui-monospace, monospace" fill={CHROME.muted}>
               {v}
             </text>
           </g>
@@ -114,7 +124,7 @@ export default function CandleChart({ data }) {
               {/* Today's column gets a faint standing band, so "where are we now" reads
                  at a glance without a legend entry for a single highlighted day. */}
               {isToday && (
-                <rect x={cx - slot / 2 + 1} y={PAD.top} width={slot - 2} height={plotH} fill="#f1f5f9" rx="4" />
+                <rect x={cx - slot / 2 + 1} y={PAD.top} width={slot - 2} height={plotH} fill={CHROME.todayBand} rx="4" />
               )}
               {i % labelEvery === 0 && (
                 <text
@@ -123,7 +133,7 @@ export default function CandleChart({ data }) {
                   textAnchor="middle"
                   fontSize="9"
                   fontWeight={isToday ? "700" : "400"}
-                  fill={isToday ? INK.secondary : INK.muted}
+                  fill={isToday ? CHROME.secondary : CHROME.muted}
                 >
                   {isToday ? "Today" : d.period_end.slice(5)}
                 </text>
@@ -148,8 +158,9 @@ export default function CandleChart({ data }) {
                     y={y(value) - 8}
                     textAnchor="middle"
                     fontSize="11"
+                    fontFamily="IBM Plex Mono, ui-monospace, monospace"
                     fontWeight={isHover ? "700" : "600"}
-                    fill={isHover ? INK.primary : INK.secondary}
+                    fill={isHover ? CHROME.primary : CHROME.secondary}
                   >
                     {value}
                   </text>
@@ -157,7 +168,7 @@ export default function CandleChart({ data }) {
               ) : (
                 // Zero day: a short flat tick on the baseline reads as "no data" without
                 // a floating "0" competing for attention against real values.
-                <line x1={cx - 5} x2={cx + 5} y1={y(0)} y2={y(0)} stroke={INK.grid} strokeWidth="2" />
+                <line x1={cx - 5} x2={cx + 5} y1={y(0)} y2={y(0)} stroke={CHROME.grid} strokeWidth="2" />
               )}
             </g>
           );

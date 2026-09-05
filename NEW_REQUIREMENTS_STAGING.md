@@ -466,3 +466,134 @@ User ke original words (raw): "dekh hume email temaplete degined chahiye jese ho
 
 ---
 
+## ✅ BATCH 3 — ITEM 18 MERGED into the PRD docs (2026-09-01)
+
+User ne confirm kiya: "ab bari he iss naye system ka PRD banane ka." Batch 3 ka raw capture Batch 1/2 se
+alag jagah hua — ek poori strategic-discussion process ke through, isliye yahan verbatim copy karne ke
+bajaye us process ke dono source documents ka reference diya ja raha hai (dono is repo me maujood hain):
+
+- **`discussion.md`** — poori raw conversation, 2026-08-26 se 2026-09-01 tak: boss ka feedback ("automation
+  hai, AI nahi"), ChatGPT ka proposed AI-Manager/Employee model, user ke 4 clarification rounds (hybrid
+  hot-lead escalation, "3 cheezein nahi — pura naya AI layer", "AI hi sab strategy banayega"), aur is
+  session ke sabse recent round ki specificity (roz ka to-do fixed nahi, format/tone bhi AI decide kare,
+  prompt-se-template-edit, WhatsApp approval-suggestion, knowledge-base content-gap to-dos).
+- **`suggest.txt`** — is session ka teesra Gemini-consultation round (pehla: Phase 2 review-text-extraction;
+  dusra: Phase 15(B) provider-selection): ek "Structured Hypothesis & Reflection Memory" learning
+  architecture, knowledge-base + 3-step conversation design, Daily AI-Plans/Human-Reviews loop, aur ek
+  non-breaking `campaigns` schema — Claude ke apne critical evaluation (schema-dialect mismatch, unrealistic
+  sprint estimates, real send-volume/sample-size concern, aur ek zaroori correction ki illustrative fake
+  testimonial kabhi real content nahi ban sakta) ke saath.
+
+**Kahan likha gaya:**
+- `MASTER_DEVELOPMENT_PRD.md` **§5C** — naye **Phase 16–19**, har phase ke steps + DoD gate
+  (§9 ki gate table me **P16–P19** bhi add, aur §0 ke build-model/table-count references bhi correct kiye).
+- `AI_Sales_Intelligence_PRD_v2.md` **Chapter 18** — cognitive contract (knowledge base as inventory not a
+  bigger prompt, format/tone as a real decision, campaign as a unit of memory not just scheduling, daily
+  loop as §8's existing escalation protocol applied one level up, reflection as supervised hypothesis-
+  writing not self-modification).
+- `CRM_UI_UX_PLAN.md` **§1.3** — naya design-system v2 (parchment/ink-navy/gold palette, Fraunces + Work
+  Sans + IBM Plex Mono typography, incremental migration — is discussion ke liye bana ek explainer artifact
+  hi is naye visual identity ka source hai) — **plus §2C**, UI **Phase 15–18**, har ek apne backend phase ke
+  saath 1:1 paired, aur pehla block jo natively v2 tokens pe banega.
+
+**Item → Phase mapping:**
+
+| Kya | Phase |
+| :-- | :-- |
+| Knowledge base (facts/objections/proof) + 3-step reply structure + zero-fabrication rule | **Phase 16** (UI Phase 15) |
+| Format/tone directives — AI khud decide kare, segment ke hisaab se | **Phase 16** Step 16.4 |
+| Human prompt se template edit + AI ka apna improvement suggestion | **Phase 16** Step 16.5 |
+| WhatsApp naye template ke liye approval-flag (existing Phase 9.6 machinery reuse) | **Phase 16** Step 16.6 |
+| Knowledge-base content-gap detection (video/case-study missing jaisa) | **Phase 16** Step 16.7 |
+| Campaign entity + calendar grouping (existing targeting system replace nahi karta; campaign ka apna target_segment free hai — human/AI set kare, 2026-09-01 revision) | **Phase 17** (UI Phase 16) |
+| Roz ka AI-plan / human 2-min review loop, feedback-se-regenerate | **Phase 18** (UI Phase 17) |
+| Hot-lead turant-escalation — poori tarah unchanged, daily loop se bahar | **Phase 18** Step 18.5 |
+| EOD summary, plain language, real numbers | **Phase 18** Step 18.6 |
+| Weekly reflection engine — real telemetry se naya insight, sample-size floor ke saath | **Phase 19** (UI Phase 18) |
+
+**Naye data-layer objects (31 → 34):** T32 `knowledge_base_items` (Phase 16), T33 `campaigns` (Phase 17),
+T34 `strategy_insights` (Phase 19). Naya column: `leads.campaign_id`. **Do cheezon ke liye jaanbujh ke koi
+nayi table nahi banayi** — knowledge-base coverage-gaps existing `agent_events` table me log hote hain, aur
+naye WhatsApp variant ka approval-state Phase 9 Step 9.6 ki already-existing machinery reuse karta hai.
+
+**Sequencing (§5C.0 me poora reasoning):** 16 → 17 → 18 → 19 — Conversation Engine pehle (sabse zyada
+visible impact, zero upstream dependency), Campaign grouping doosra (Conversation Engine + existing
+pipeline ke upar hi baithta hai), Daily Loop teesra (Campaign ke bina meaningless), Reflection Engine sabse
+aakhir me (real telemetry chahiye jo pehle teen se aayegi — isi wajah se jo Phase 15(B) me naya paid
+provider sabse aakhir tha, wahi discipline yahan volume/samay pe apply hui).
+
+**Kya explicitly discuss/reject hua:** Poori tarah unsupervised, khud-se-apna-code/prompt badalne wala AI —
+explicitly reject kiya gaya (real B2B reply data slow/noisy hota hai, is project ke real daily caps [~40
+email + ~40 WhatsApp] itna volume nahi dete ki blind-trust safe ho). Jo build ho raha hai wo hamesha "AI
+proposes, human approves" wala safe version hai — poori is discussion ka final, confirmed governance model.
+
+---
+
+### Item 19 — Product-level marketing content creation (outreach + demo video) — genuinely creative, competitor-beating, kabhi generic nahi — `MERGED` (2026-09-01)
+
+**User ke original words (raw):** "isme ek aur mjor cheez add karni he perticular product ke marketing
+content creation ka idea de jo outreach me bhi kam ayr demo video ke liye aur ye aisa nahi ki generic ho
+out of the box marketing content ho jo competitor ki marketing ko beat kare ye bhi majo point he isse add
+karna he"
+
+**Samajh:** Ek particular product ke liye AI khud **marketing content** create kare — do jagah kaam aaye:
+(1) outreach me (email/WhatsApp copy ke liye), aur (2) **demo video** banane ke liye (script/talking-
+points/storyboard). Sabse zaroori shart: ye content **generic/templated/"out of the box" AI-copy jaisa
+kabhi na lage** — genuinely creative hona chahiye, itna ki **competitor ki marketing ko beat kare**. Ye
+Phase 16 (Conversation Engine + Knowledge Base) se related hai lekin usse **alag** hai — Phase 16 grounded
+REPLIES banata hai (lead ke sawaal ka jawab), ye naya ask **proactive, creative marketing ASSETS** banane
+ki baat kar raha hai (jo pehle se taiyar ho, outreach/video dono me reuse ho sake).
+
+**Claude ka technical note (raw ke saath, abhi sirf reference, build nahi kiya):**
+- **Zero-fabrication rule ke saath tension, resolve karna hoga.** Phase 16 Step 16.2 ka hard rule hai:
+  `knowledge_base_items` me sirf 100% admin-authored content jaata hai, AI kabhi khud seed nahi karta. Ye
+  naya ask "creative, competitor-beating content" maangta hai — do cheezein alag rakhni hongi: AI
+  **creative ho sakta hai ANGLE/HOOK/STRUCTURE/STORYTELLING me** (kaise kaha jaaye), lekin **fact kabhi
+  invent nahi kar sakta** (kya kaha jaaye — wahi real `product_brief`/`pain_points`/`knowledge_base_items`
+  se aana chahiye). Ek clean loop ban sakta hai: AI ek marketing-content **draft** banaye → human review
+  karke edit/approve kare → **approved version hi** `knowledge_base_items` (naya `kind` — e.g.
+  `MARKETING_ASSET`) me save ho, taaki future outreach/reflection engine (Phase 19) use isi real, human-
+  approved content ko reuse kar sake. Yehi "AI proposes, human approves" wala pattern hai jo poore Phase
+  16–19 block me already established hai.
+- **"Demo video" — do bilkul alag scope ho sakte hain, decide karna padega.** (a) AI ek real **script/
+  storyboard/talking-points document** likhe (text output), jisse human khud video banaye — ye is
+  project ke apne established "draft-and-queue" pattern jaisa hai (Phase 10 ka LinkedIn/IG precedent: AI
+  sab kare, human hi execute kare jahan platform-risk ho) — **zero naya technical/provider risk**. (b) AI
+  khud ek **real video generate** kare kisi video-generation API/tool se — ye ek poora naya, paid,
+  external provider integration hai (Phase 15(B) ka wahi lesson yaad rakhna: naya paid provider bina
+  explicit selection/confirm ke shuru nahi karna). **(a) safe default lagta hai jab tak user khud (b)
+  explicitly na maange.**
+- **"Competitor ko beat kare" — iska matlab clarify karna zaroori hai.** Kya isme **real competitor data**
+  chahiye (admin khud competitor ki website/marketing note kare, ek naya knowledge-base kind ke roop me —
+  jaise pehle se `product_core`/`objection_battlecards` hai, ek naya `COMPETITOR_CONTEXT` ho sakta hai)?
+  Ya iska matlab sirf ek **creative-quality bar** hai (generic AI-SaaS copy se genuinely better/sharper
+  likhna, koi literal competitor-comparison research nahi)? Pehla wala ek naya real data-input/research
+  capability hai; doosra sirf ek prompt/creative-direction improvement hai — scope bahut alag hai dono me.
+
+**Open questions — resolved (2026-09-01, user answered):**
+- **Demo video**: script/storyboard (text) — AI likhta hai, human khud video banata hai. Zero naya paid
+  provider.
+- **"Competitor beat kare"**: sirf ek creative-quality bar — koi real competitor research/data-input nahi,
+  bas generic AI-SaaS copy se genuinely sharper likhna.
+- **Trigger**: na sirf on-demand, na sirf daily-plan-coupled — **AI khud, apni strategy se, decide kare
+  aaj kis product ko naya marketing content chahiye** (real purane data se — jaise us product ka thin/
+  underperforming content), khud draft bhi bana de. User ise ek prompt dekar redirect/change kar sake.
+  "Out of the box, best" quality hamesha bar rehni chahiye, trigger chahe jo bhi ho.
+- **KB reuse**: haan — approve hote hi `knowledge_base_items` me save ho, future outreach/reflection
+  engine isi real, approved content ko reuse kar sake.
+
+**Kahan likha gaya (2026-09-01):**
+- `MASTER_DEVELOPMENT_PRD.md` **§5C, Phase 16 Step 16.8** (marketing-content creation capability, naya
+  `knowledge_base_items` kind `MARKETING_ASSET`) — Phase 16 aur Phase 18 dono ke DoD gates me naya
+  criteria add.
+- `AI_Sales_Intelligence_PRD_v2.md` **Chapter 18 §18.6** (naya subsection — marketing content ek
+  strategic decision hai, support-ticket nahi).
+- `CRM_UI_UX_PLAN.md` **UI Phase 15** (Conversation Studio) aur **UI Phase 17** (Daily Review Card & To-Do
+  Feed) dono me naya bullet.
+
+Ye ek naya standalone phase nahi bana — Phase 16 (knowledge base/content) aur Phase 18 (daily-strategy
+to-do) dono ka hi tight extension hai, bilkul Item 17 (AI cross-sell) jis tarah Phase 11 me ek naya step
+ban ke fold hua tha, usi precedent se.
+
+---
+

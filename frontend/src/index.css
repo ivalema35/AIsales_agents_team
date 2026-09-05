@@ -1,14 +1,50 @@
 @import "tailwindcss";
 
+/* CRM_UI_UX_PLAN.md section 1.3 -- Design system v2 (added 2026-09-01). Same warm
+   parchment, ink-navy, gold palette as the Chapter 18 explainer artifact this was
+   modeled on. Section 1.2's slate/red/amber/emerald tokens stay valid on pages not yet
+   migrated; this block only adds new tokens, it does not redefine the existing ones. */
+@theme {
+  --color-parchment: #ede7d8;
+  --color-parchment-raised: #f7f2e6;
+  --color-parchment-raised-2: #fbf8f0;
+  --color-ink-900: #1d2340;
+  --color-ink-700: #454b72;
+  --color-ink-500: #6c7093;
+  --color-line: #d9d0b8;
+  --color-line-strong: #c7bd9f;
+  --color-gold-700: #8a5a18;
+  --color-gold-600: #a66e1e;
+  --color-gold-500: #c0862b;
+  --color-gold-100: #f1dfb2;
+  --color-good-700: #2e5b3d;
+  --color-good-600: #3f7a57;
+  --color-good-100: #dceadd;
+  --color-alert-700: #8e2f27;
+  --color-alert-600: #a83b32;
+  --color-alert-100: #f1dad3;
+  --color-warm-700: #8a6d1e;
+  --color-warm-600: #96631c;
+  --color-warm-100: #f1e4c4;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  background: #f3f4f6;
-  color: #111827;
+  font-family: var(--font-sans);
+  background: var(--color-parchment);
+  color: var(--color-ink-700);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
 }
 
 #root {

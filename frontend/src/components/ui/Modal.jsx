@@ -14,16 +14,16 @@ export default function Modal({ title, onClose, children, maxWidth = "max-w-lg" 
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/40 p-4" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
-        className={`max-h-[90vh] w-full ${maxWidth} overflow-y-auto rounded-lg bg-white shadow-xl`}
+        className={`max-h-[90vh] w-full ${maxWidth} overflow-y-auto rounded-lg border border-line bg-parchment-raised shadow-xl`}
       >
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
-          <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-          <button onClick={onClose} className="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
+        <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
+          <h3 className="font-display text-sm font-semibold text-ink-900">{title}</h3>
+          <button onClick={onClose} className="rounded-md p-1 text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-700">
             <X size={16} />
           </button>
         </div>

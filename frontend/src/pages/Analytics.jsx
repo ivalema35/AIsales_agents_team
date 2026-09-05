@@ -10,10 +10,10 @@ import OutreachPeriodPicker from "../components/OutreachPeriodPicker";
 
 function StatTile({ label, value, sub }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-xs font-medium text-slate-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-slate-900">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-slate-400">{sub}</p>}
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
+      <p className="text-xs font-medium text-ink-500">{label}</p>
+      <p className="mt-1 font-mono text-2xl font-semibold text-ink-900">{value}</p>
+      {sub && <p className="mt-0.5 text-xs text-ink-500">{sub}</p>}
     </div>
   );
 }
@@ -24,16 +24,16 @@ function StatTile({ label, value, sub }) {
 function Card({ title, widgetId, pinned, onTogglePin, children }) {
   const isPinned = widgetId && pinned.includes(widgetId);
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
+        <h3 className="font-display text-sm font-semibold text-ink-900">{title}</h3>
         {widgetId && (
           <button
             onClick={() => onTogglePin(widgetId)}
             className={`flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
               isPinned
-                ? "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 hover:bg-emerald-100"
-                : "text-slate-400 ring-1 ring-inset ring-slate-200 hover:bg-slate-50 hover:text-slate-700"
+                ? "bg-good-100 text-good-700 ring-1 ring-inset ring-good-600/30 hover:opacity-90"
+                : "text-ink-500 ring-1 ring-inset ring-line hover:bg-parchment-raised-2 hover:text-ink-700"
             }`}
           >
             {isPinned ? <Check size={11} /> : <Plus size={11} />}
@@ -88,7 +88,7 @@ export default function Analytics() {
     }
   }
 
-  if (error) return <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-red-600">{error}</div>;
+  if (error) return <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-alert-600">{error}</div>;
 
   const totalReplies = channels ? channels.EMAIL.replies + channels.WHATSAPP.replies : null;
   const totalSent = channels ? channels.EMAIL.sent + channels.WHATSAPP.sent : null;
@@ -96,8 +96,8 @@ export default function Analytics() {
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">Analytics</h1>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <h1 className="font-display text-lg font-semibold text-ink-900">Analytics</h1>
+        <p className="mt-0.5 text-sm text-ink-500">
           Real numbers, computed fresh on every load -- nothing cached or estimated. Pin any chart to
           the Dashboard with "Add to Home".
         </p>
@@ -126,7 +126,7 @@ export default function Analytics() {
               key={g}
               onClick={() => setRange(g)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                range === g ? "bg-slate-800 text-white" : "text-slate-500 hover:bg-slate-100"
+                range === g ? "bg-ink-900 text-parchment-raised" : "text-ink-500 hover:bg-parchment-raised-2"
               }`}
             >
               {g === "week" ? "Weekly" : "Monthly"}
@@ -137,7 +137,7 @@ export default function Analytics() {
       </Card>
 
       <Card title="Sent, seen &amp; replied" widgetId="outreach_funnel" pinned={pinned} onTogglePin={togglePin}>
-        <p className="mb-3 -mt-1 text-xs text-slate-400">
+        <p className="mb-3 -mt-1 text-xs text-ink-500">
           Of the messages sent in the selected period: how many were later seen, and how many got a reply.
         </p>
         <OutreachPeriodPicker onChange={loadOutreachFunnel} />

@@ -41,25 +41,25 @@ function QueueCard({ item, onRefresh }) {
   }
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-          <Icon size={14} className="text-slate-400" /> {item.platform}
-          <span className="text-slate-300">·</span>
-          <Link to={`/leads/${item.lead_id}`} className="text-slate-600 hover:text-slate-900 hover:underline">
+        <div className="flex items-center gap-2 text-sm font-semibold text-ink-900">
+          <Icon size={14} className="text-ink-500" /> {item.platform}
+          <span className="text-ink-500">·</span>
+          <Link to={`/leads/${item.lead_id}`} className="text-ink-700 hover:text-ink-900 hover:underline">
             {item.lead_company_name || item.lead_id}
           </Link>
         </div>
-        <span className="text-[11px] text-slate-400">{new Date(item.created_at.replace(" ", "T") + "Z").toLocaleString()}</span>
+        <span className="font-mono text-[11px] text-ink-500">{new Date(item.created_at.replace(" ", "T") + "Z").toLocaleString()}</span>
       </div>
-      <p className="mt-2.5 whitespace-pre-wrap rounded-md bg-slate-50 p-3 text-xs leading-relaxed text-slate-700">
+      <p className="mt-2.5 whitespace-pre-wrap rounded-md bg-parchment-raised-2 p-3 text-xs leading-relaxed text-ink-700">
         {item.message_text}
       </p>
-      {item.reasoning && <p className="mt-1.5 text-[11px] italic text-slate-400">Why: {item.reasoning}</p>}
+      {item.reasoning && <p className="mt-1.5 text-[11px] italic text-ink-500">Why: {item.reasoning}</p>}
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <button
           onClick={copyText}
-          className="flex items-center gap-1 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
+          className="flex items-center gap-1 rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment-raised-2"
         >
           <Copy size={12} /> {copied ? "Copied" : "Copy text"}
         </button>
@@ -67,18 +67,18 @@ function QueueCard({ item, onRefresh }) {
           onClick={() => act(api.markSocialSent)}
           disabled={acting}
           title="Confirm you sent this manually from your own account"
-          className="flex items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-xs font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Send size={12} /> Mark as Sent
         </button>
         <button
           onClick={() => act(api.dismissSocialDraft)}
           disabled={acting}
-          className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium text-ink-500 transition-colors hover:bg-parchment-raised-2 hover:text-ink-700 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <X size={12} /> Dismiss
         </button>
-        {error && <span className="text-xs text-red-600">{error}</span>}
+        {error && <span className="text-xs text-alert-600">{error}</span>}
       </div>
     </div>
   );
@@ -97,21 +97,21 @@ export default function SocialQueue() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-6">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">Social Outreach Queue</h1>
-        <p className="mt-1 text-xs text-slate-500">
+        <h1 className="font-display text-lg font-semibold text-ink-900">Social Outreach Queue</h1>
+        <p className="mt-1 text-xs text-ink-500">
           AI-drafted LinkedIn / Instagram / Facebook messages, QC-approved and waiting for a human to
           send manually from their own real account, then mark sent here. Draft a new one from any
           lead's own page under "Social outreach".
         </p>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {!items && !error && <p className="text-sm text-slate-400">Loading…</p>}
+      {error && <p className="text-sm text-alert-600">{error}</p>}
+      {!items && !error && <p className="text-sm text-ink-500">Loading…</p>}
 
       {items && items.length === 0 && (
-        <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-white py-12 text-center">
-          <CheckCircle2 className="text-slate-300" size={28} />
-          <p className="text-sm text-slate-400">Nothing queued right now.</p>
+        <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-line bg-parchment-raised py-12 text-center">
+          <CheckCircle2 className="text-ink-500" size={28} />
+          <p className="text-sm text-ink-500">Nothing queued right now.</p>
         </div>
       )}
 

@@ -46,7 +46,7 @@ function TrendWidget() {
             key={g}
             onClick={() => setRange(g)}
             className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-              range === g ? "bg-slate-800 text-white" : "text-slate-500 hover:bg-slate-100"
+              range === g ? "bg-ink-900 text-parchment-raised hover:opacity-90" : "text-ink-500 hover:bg-parchment-raised-2"
             }`}
           >
             {g === "week" ? "Weekly" : "Monthly"}
@@ -93,13 +93,13 @@ export default function DashboardWidget({ id, onRemove }) {
   const Body = BODIES[id];
   if (!Body) return null;
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold text-slate-800">{TITLES[id]}</h3>
+        <h3 className="font-display text-sm font-semibold text-ink-900">{TITLES[id]}</h3>
         <button
           onClick={() => onRemove(id)}
           title="Remove from Dashboard"
-          className="rounded-md p-1 text-slate-300 transition-colors hover:bg-slate-100 hover:text-slate-600"
+          className="rounded-md p-1 text-ink-500 transition-colors hover:bg-parchment-raised-2 hover:text-ink-700"
         >
           <X size={14} />
         </button>

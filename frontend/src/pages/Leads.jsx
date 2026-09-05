@@ -20,18 +20,18 @@ const TIERS = ["HOT", "WARM", "COLD"];
 // Bolder filled version of Badge.jsx's tier colors -- a selected filter pill needs to
 // read as "active/pressed," which the light Badge tint alone doesn't convey.
 const TIER_PILL_ACTIVE = {
-  HOT: "bg-red-600 text-white ring-1 ring-inset ring-red-600",
-  WARM: "bg-amber-500 text-white ring-1 ring-inset ring-amber-500",
-  COLD: "bg-slate-600 text-white ring-1 ring-inset ring-slate-600",
+  HOT: "bg-alert-600 text-white ring-1 ring-inset ring-alert-600",
+  WARM: "bg-warm-600 text-white ring-1 ring-inset ring-warm-600",
+  COLD: "bg-ink-700 text-white ring-1 ring-inset ring-ink-700",
 };
-const TIER_PILL_INACTIVE = "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50";
+const TIER_PILL_INACTIVE = "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment";
 
 function FilterSelect({ value, onChange, options, placeholder }) {
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 focus:border-slate-400 focus:outline-none"
+      className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs font-medium text-ink-700 focus:border-gold-500 focus:outline-none"
     >
       <option value="">{placeholder}</option>
       {options.map((o) => (
@@ -43,7 +43,7 @@ function FilterSelect({ value, onChange, options, placeholder }) {
 
 function CompanyAvatar({ name }) {
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-semibold text-slate-500">
+    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-parchment-raised-2 text-[10px] font-semibold text-ink-500">
       {name.slice(0, 2).toUpperCase()}
     </div>
   );
@@ -62,8 +62,8 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
   // whether you're looking at the board or this table, not a plain badge in one and a
   // colored card in the other. Opted-out overrides tier here too, same priority as the
   // card.
-  const rowBg = lead.is_suppressed ? "bg-slate-100" : tier ? TIER_BG[tier] : "";
-  const accentColor = lead.is_suppressed ? "#94a3b8" : tier ? TIER_BORDER[tier] : null;
+  const rowBg = lead.is_suppressed ? "bg-parchment-raised-2" : tier ? TIER_BG[tier] : "";
+  const accentColor = lead.is_suppressed ? "#6c7093" : tier ? TIER_BORDER[tier] : null;
 
   function openLead() {
     navigate(`/leads/${lead.id}${filterQs ? `?${filterQs}` : ""}`);
@@ -103,21 +103,21 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
         className={`px-4 py-2.5 ${accentColor ? "border-l-[3px]" : ""}`}
         style={accentColor ? { borderLeftColor: accentColor } : undefined}
       >
-        <div className="flex items-center gap-2.5 font-medium text-slate-800">
+        <div className="flex items-center gap-2.5 font-medium text-ink-900">
           <CompanyAvatar name={lead.company_name} />
           <span className="line-clamp-1 hover:underline">{lead.company_name}</span>
           {lead.reference_code && (
             <span
               title="Reference code -- quote this in alerts/conversation to identify this lead"
-              className="shrink-0 rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-normal text-slate-500"
+              className="shrink-0 rounded bg-parchment-raised-2 px-1.5 py-0.5 font-mono text-[10px] font-normal text-ink-500"
             >
               {lead.reference_code}
             </span>
           )}
-          {lead.is_suppressed && <BellOff size={12} className="shrink-0 text-slate-400" title="Opted out -- do not contact" />}
+          {lead.is_suppressed && <BellOff size={12} className="shrink-0 text-ink-500" title="Opted out -- do not contact" />}
         </div>
       </td>
-      <td className="max-w-[160px] truncate px-4 py-2.5 text-slate-500">{productTitle(lead.product_id)}</td>
+      <td className="max-w-[160px] truncate px-4 py-2.5 text-ink-500">{productTitle(lead.product_id)}</td>
       <td className="px-4 py-2.5">
         <span className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusBadgeClass(lead.status)}`}>
           {lead.status.replace(/_/g, " ")}
@@ -131,14 +131,14 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
         ) : lead.score ? (
           <Badge variant={lead.score.tier}>{lead.score.tier}</Badge>
         ) : (
-          <span className="text-slate-300">—</span>
+          <span className="text-ink-500/40">—</span>
         )}
       </td>
-      <td className="px-4 py-2.5 text-right tabular-nums text-slate-700">
-        {lead.score ? lead.score.score : <span className="text-slate-300">—</span>}
+      <td className="px-4 py-2.5 text-right tabular-nums text-ink-700">
+        {lead.score ? lead.score.score : <span className="text-ink-500/40">—</span>}
       </td>
       <td className="px-4 py-2.5">
-        <div className="flex items-center gap-2.5 text-[11px] text-slate-400">
+        <div className="flex items-center gap-2.5 text-[11px] text-ink-500">
           {lead.primary_email && <span title={lead.primary_email}><Mail size={12} /></span>}
           {(lead.primary_phone || lead.whatsapp_number) && <span title={lead.primary_phone || lead.whatsapp_number}><Phone size={12} /></span>}
           {lead.instagram_url && <span title="Instagram"><InstagramIcon size={12} /></span>}
@@ -146,19 +146,19 @@ function LeadRow({ lead, productTitle, filterQs, onSent }) {
           {lead.linkedin_url && <span title="LinkedIn"><LinkedinIcon size={12} /></span>}
           {!lead.primary_email && !lead.primary_phone && !lead.whatsapp_number &&
            !lead.instagram_url && !lead.facebook_url && !lead.linkedin_url && (
-            <span className="text-slate-300">—</span>
+            <span className="text-ink-500/40">—</span>
           )}
         </div>
       </td>
-      <td className="max-w-[180px] truncate px-4 py-2.5 text-slate-500">{lead.region_location || "—"}</td>
-      <td className="whitespace-nowrap px-4 py-2.5 text-slate-500">{relativeTime(lead.created_at)}</td>
+      <td className="max-w-[180px] truncate px-4 py-2.5 text-ink-500">{lead.region_location || "—"}</td>
+      <td className="whitespace-nowrap px-4 py-2.5 font-mono text-ink-500">{relativeTime(lead.created_at)}</td>
       <td className="px-4 py-2.5">
         {canSend && (
           <button
             onClick={sendOutreach}
             disabled={sending}
             title="Send Outreach Now"
-            className="flex h-6 w-6 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-6 w-6 items-center justify-center rounded-md text-ink-500 transition-colors hover:bg-parchment-raised-2 hover:text-ink-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Send size={13} />
           </button>
@@ -245,27 +245,27 @@ export default function Leads() {
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">Leads</h1>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <h1 className="font-display text-lg font-semibold text-ink-900">Leads</h1>
+        <p className="mt-0.5 text-sm text-ink-500">
           {data ? `${data.total} lead${data.total === 1 ? "" : "s"}${anyFilterActive ? " matching filters" : " total"}` : "Loading…"}
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3 rounded-lg border border-line bg-parchment-raised p-4 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative min-w-[240px] flex-1">
-            <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-500" />
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search company, ref code, email, phone, region…"
-              className="w-full rounded-md border border-slate-200 bg-white py-1.5 pl-8 pr-8 text-xs text-slate-700 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none"
+              className="w-full rounded-md border border-line bg-parchment-raised py-1.5 pl-8 pr-8 text-xs text-ink-700 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
             />
             {searchInput && (
               <button
                 onClick={() => setSearchInput("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-600"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-500/40 hover:text-ink-700"
                 aria-label="Clear search"
               >
                 <X size={13} />
@@ -286,8 +286,8 @@ export default function Leads() {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-          <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Tier</span>
+        <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
+          <span className="text-[11px] font-medium uppercase tracking-wide text-ink-500">Tier</span>
           {TIERS.map((t) => (
             <button
               key={t}
@@ -302,7 +302,7 @@ export default function Leads() {
           {anyFilterActive && (
             <button
               onClick={clearAll}
-              className="ml-auto flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-slate-700"
+              className="ml-auto flex items-center gap-1 text-[11px] font-medium text-ink-500 hover:text-ink-700"
             >
               <X size={12} /> Clear filters
             </button>
@@ -311,15 +311,15 @@ export default function Leads() {
       </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="rounded-lg bg-alert-100 px-4 py-3 text-sm text-alert-700 ring-1 ring-alert-600/20">
           Couldn't reach the backend: {error}
         </div>
       )}
 
-      <div className={`overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm transition-opacity ${loading ? "opacity-60" : ""}`}>
+      <div className={`overflow-x-auto rounded-lg border border-line bg-parchment-raised shadow-sm transition-opacity ${loading ? "opacity-60" : ""}`}>
         <table className="w-full min-w-[1000px] text-left text-xs">
           <thead>
-            <tr className="border-b border-slate-200 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            <tr className="border-b border-line text-[11px] font-semibold uppercase tracking-wide text-ink-500">
               <th className="px-4 py-2.5">Company</th>
               <th className="px-4 py-2.5">Product</th>
               <th className="px-4 py-2.5">Status</th>
@@ -336,15 +336,15 @@ export default function Leads() {
              against another read as one merged block instead of two distinct leads
              (user feedback). A visibly darker, slightly thicker divider fixes that
              regardless of what color sits on either side of it. */}
-          <tbody className="divide-y-2 divide-slate-200">
+          <tbody className="divide-y-2 divide-line">
             {!loading && data?.leads.length === 0 && (
               <tr>
                 <td colSpan={9} className="px-4 py-12">
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <Users className="text-slate-300" size={28} />
-                    <p className="text-slate-400">No leads match these filters.</p>
+                    <Users className="text-ink-500/40" size={28} />
+                    <p className="text-ink-500">No leads match these filters.</p>
                     {anyFilterActive && (
-                      <button onClick={clearAll} className="text-[11px] font-medium text-slate-500 hover:text-slate-800 hover:underline">
+                      <button onClick={clearAll} className="text-[11px] font-medium text-ink-500 hover:text-ink-900 hover:underline">
                         Clear filters
                       </button>
                     )}
@@ -361,21 +361,21 @@ export default function Leads() {
 
       {data && data.total_pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-ink-500">
             Page {data.page} of {data.total_pages}
           </p>
           <div className="flex gap-2">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={data.page <= 1}
-              className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md border border-line bg-parchment-raised px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
             >
               ← Previous
             </button>
             <button
               onClick={() => setPage((p) => Math.min(data.total_pages, p + 1))}
               disabled={data.page >= data.total_pages}
-              className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md border border-line bg-parchment-raised px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next →
             </button>

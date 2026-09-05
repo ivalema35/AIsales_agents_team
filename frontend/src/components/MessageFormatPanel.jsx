@@ -68,7 +68,7 @@ export default function MessageFormatPanel({ productId }) {
             key={c}
             onClick={() => { setChannel(c); setEditing(false); }}
             className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              channel === c ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+              channel === c ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
             }`}
           >
             {c}
@@ -76,18 +76,18 @@ export default function MessageFormatPanel({ productId }) {
         ))}
       </div>
 
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-alert-600">{error}</p>}
 
       {!editing && channel === "WHATSAPP" && (
-        <div className="flex items-center justify-between gap-3 rounded-md bg-slate-50 p-3">
-          <p className="text-xs leading-relaxed text-slate-500">
+        <div className="flex items-center justify-between gap-3 rounded-md bg-parchment p-3">
+          <p className="text-xs leading-relaxed text-ink-500">
             WhatsApp cold-outreach doesn't use a free-form format -- it always sends via a
             Meta-approved template instead. Templates are shared across every product, so
             they're managed in one place, not per product.
           </p>
           <Link
             to={`/whatsapp-templates?product_id=${productId}`}
-            className="flex shrink-0 items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+            className="flex shrink-0 items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90"
           >
             Manage WhatsApp Templates <ArrowUpRight size={12} />
           </Link>
@@ -97,30 +97,30 @@ export default function MessageFormatPanel({ productId }) {
       {!editing && channel === "EMAIL" && (
         <>
           {active ? (
-            <div className="rounded-md bg-slate-50 p-3">
+            <div className="rounded-md bg-parchment p-3">
               <div className="mb-2 flex items-center justify-between">
                 <Badge variant="SUCCESS">v{active.version} · ACTIVE</Badge>
                 <div className="flex gap-2">
-                  <button onClick={startEdit} className="text-[11px] font-medium text-slate-600 hover:text-slate-900">
+                  <button onClick={startEdit} className="text-[11px] font-medium text-ink-700 hover:text-ink-900">
                     Edit (new version)
                   </button>
-                  <button onClick={clearFormat} disabled={saving} className="text-[11px] font-medium text-red-500 hover:text-red-700">
+                  <button onClick={clearFormat} disabled={saving} className="text-[11px] font-medium text-alert-600 hover:text-alert-700">
                     Clear (revert to free-form)
                   </button>
                 </div>
               </div>
-              <ol className="list-decimal space-y-1 pl-4 text-xs text-slate-700">
+              <ol className="list-decimal space-y-1 pl-4 text-xs text-ink-700">
                 {active.sections.map((s, i) => <li key={i}>{s}</li>)}
               </ol>
             </div>
           ) : (
-            <div className="flex items-center justify-between rounded-md bg-slate-50 p-3">
-              <p className="text-xs text-slate-500">
+            <div className="flex items-center justify-between rounded-md bg-parchment p-3">
+              <p className="text-xs text-ink-500">
                 No format set for {channel} -- the AI drafts freely (today's default behavior).
               </p>
               <button
                 onClick={startEdit}
-                className="flex shrink-0 items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+                className="flex shrink-0 items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90"
               >
                 <Plus size={12} /> Define a format
               </button>
@@ -131,16 +131,16 @@ export default function MessageFormatPanel({ productId }) {
             <div>
               <button
                 onClick={() => setShowHistory((v) => !v)}
-                className="flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-slate-600"
+                className="flex items-center gap-1 text-[11px] font-medium text-ink-500 hover:text-ink-700"
               >
                 <History size={11} /> {showHistory ? "Hide" : "Show"} {history.length} superseded version{history.length > 1 ? "s" : ""}
               </button>
               {showHistory && (
                 <div className="mt-2 flex flex-col gap-2">
                   {history.map((f) => (
-                    <div key={f.id} className="rounded-md border border-slate-100 p-2">
+                    <div key={f.id} className="rounded-md border border-line p-2">
                       <Badge variant="NEUTRAL">v{f.version}</Badge>
-                      <ol className="mt-1 list-decimal space-y-0.5 pl-4 text-[11px] text-slate-400">
+                      <ol className="mt-1 list-decimal space-y-0.5 pl-4 text-[11px] text-ink-500">
                         {f.sections.map((s, i) => <li key={i}>{s}</li>)}
                       </ol>
                     </div>
@@ -153,7 +153,7 @@ export default function MessageFormatPanel({ productId }) {
       )}
 
       {editing && (
-        <div className="flex flex-col gap-2 rounded-md border border-slate-200 p-3">
+        <div className="flex flex-col gap-2 rounded-md border border-line p-3">
           <ChipInput
             icon={ListOrdered}
             label="Format sections (guidelines, in order)"
@@ -166,13 +166,13 @@ export default function MessageFormatPanel({ productId }) {
             <button
               onClick={save}
               disabled={saving || draftSections.length === 0}
-              className="flex items-center gap-1.5 rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-900 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
             >
               <Save size={12} /> {saving ? "Saving…" : "Save as new version"}
             </button>
             <button
               onClick={() => setEditing(false)}
-              className="flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-100"
+              className="flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-ink-500 hover:bg-parchment-raised-2"
             >
               <X size={12} /> Cancel
             </button>

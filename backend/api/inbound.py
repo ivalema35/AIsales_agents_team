@@ -10,7 +10,8 @@ from flask import Blueprint, jsonify, request
 
 from config import Config
 from database.db_config import SessionLocal
-from database.models import InboundConversation, OutreachLog
+from database.models import InboundConversation, Lead, OutreachLog
+from services.campaign_service import evaluate_execution_watchdog
 from services.data_acquisition.website_scraper import normalize_mobile
 from services.inbound_service import record_inbound
 
@@ -110,6 +111,11 @@ def _handle_one_status(db, status: dict):
         log.status = "FAILED"
         db.commit()
         logger.info("WhatsApp failure receipt: outreach_log %s marked failed", log.id)
+        # Phase 20 Step 20.3 -- same Execution Watchdog check as a real Resend bounce
+        # (api/webhooks.py) -- a real WhatsApp delivery failure is the same kind of event.
+        lead = db.get(Lead, log.lead_id)
+        if lead and lead.campaign_id:
+            evaluate_execution_watchdog(db, lead.campaign_id)
 
 
 def _handle_one_message(db, msg: dict):

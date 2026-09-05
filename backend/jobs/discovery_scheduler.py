@@ -31,7 +31,8 @@ from sqlalchemy import func, text
 
 from config import Config
 from database.db_config import SessionLocal
-from database.models import Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport, OutreachSequence
+from database.models import (
+    Product, ProductStrategy, DiscoveryRun, Lead, LeadScore, DailyReport, OutreachSequence, Campaign)
 from jobs.job_queue import enqueue
 from agents.icp_strategy_agent import generate_strategy
 from services.lead_service import claim_lead_for_outreach
@@ -39,11 +40,15 @@ from services.sequence_service import process_due_followup
 from services.outreach.whatsapp_template_service import poll_all_pending
 from services.engagement_escalation_service import find_engagement_escalations
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
+from services.campaign_service import (
+    generate_campaign_todo, generate_campaign_suggestion, eligible_campaigns_for_discovery)
+from services.strategy_reflection_service import run_reflection_cycle
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
     OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
     STUCK_ALERT_ENABLED, STUCK_ALERT_COOLDOWN_MINUTES, STUCK_ALERT_LAST_SENT_AT,
-    EOD_REPORT_RECIPIENTS)
+    EOD_REPORT_RECIPIENTS, DAILY_AI_LOOP_ENABLED, DAILY_PLAN_LAST_RUN_DATE,
+    STRATEGY_REFLECTION_ENABLED, STRATEGY_REFLECTION_LAST_RUN_DATE)
 from services.heartbeat import beat, beat_standalone
 from services.system_health import (
     get_process_states, find_stuck_leads, find_stuck_jobs, count_dead_jobs)
@@ -118,8 +123,10 @@ def _refresh_strategy_if_stale(db, product):
 
 
 def _run_discovery_tick(db):
-    """Fires at most MAX_DISCOVER_PER_TICK DISCOVER jobs this tick, oldest-due
-    (product, query, region) combo first, respecting each combo's own cooldown so the
+    """Fires at most MAX_DISCOVER_PER_TICK DISCOVER jobs this tick, oldest-due product
+    first, then each of that product's eligible campaigns (Step 17.7, 2026-09-02 --
+    discovery is campaign-driven: a campaign's own target_segment IS the query/region,
+    not the product's standing config), respecting each campaign's own cooldown so the
     same search isn't repeated needlessly (and so API budget isn't burned in one burst).
 
     Dashboard kill-switch: does nothing unless system_settings.discovery_enabled is
@@ -160,36 +167,49 @@ def _run_discovery_tick(db):
         if fired >= Config.MAX_DISCOVER_PER_TICK:
             break
 
-        regions = json.loads(product.target_regions or "[]")
-        if not regions:
-            continue  # nothing to do until the user sets at least one region for this product
+        # Step 17.7 (2026-09-02, MASTER_DEVELOPMENT_PRD.md §5C.0 revision, supersedes
+        # Step 17.6's own product-level gate): discovery is now campaign-DRIVEN, not just
+        # campaign-gated -- each active campaign with a real target_segment runs its OWN
+        # search, using its OWN industry+location, not the product's standing target_
+        # regions/ICP-strategy queries (that machinery, `_refresh_strategy_if_stale`/
+        # `_active_strategy_queries` below, stays defined but is no longer called from
+        # here -- Products page's own "AI targeting strategy" tab still reads product_
+        # strategies directly, dead-code-kept, not deleted). A product with zero eligible
+        # campaigns (none active, or none with a real target yet, or all goals already
+        # met) is silently skipped -- not an error, just nothing to search for right now.
+        campaigns = eligible_campaigns_for_discovery(db, product.id)
 
-        _refresh_strategy_if_stale(db, product)
-        queries, _ = _active_strategy_queries(db, product.id)
-
-        for query in queries:
+        for campaign in campaigns:
             if fired >= Config.MAX_DISCOVER_PER_TICK:
                 break
-            for region in regions:
-                if fired >= Config.MAX_DISCOVER_PER_TICK:
-                    break
 
-                run = db.query(DiscoveryRun).filter(
-                    DiscoveryRun.product_id == product.id,
-                    DiscoveryRun.query == query,
-                    DiscoveryRun.region == region,
-                ).first()
-                if run and datetime.utcnow() - run.last_run_at < timedelta(hours=cooldown_hours):
-                    continue
+            target = json.loads(campaign.target_segment or "{}")
+            query = target["industry"]
+            region = target["location"]
 
-                enqueue(db, "DISCOVER", {"product_id": product.id, "query": query, "location": region})
-                if run:
-                    run.last_run_at = datetime.utcnow()
-                else:
-                    db.add(DiscoveryRun(product_id=product.id, query=query, region=region))
-                db.commit()
-                fired += 1
-                logger.info("DISCOVER queued: product=%s query=%r region=%s", product.title, query, region)
+            # Cooldown tracked per campaign now (Step 17.7) -- two campaigns for the same
+            # product never share one clock, and a campaign whose target changes later
+            # (a strategy-refinement to-do) starts a fresh, unblocked cooldown for its new
+            # (query, region) pair rather than inheriting the old one's timer.
+            run = db.query(DiscoveryRun).filter(
+                DiscoveryRun.campaign_id == campaign.id,
+                DiscoveryRun.query == query,
+                DiscoveryRun.region == region,
+            ).first()
+            if run and datetime.utcnow() - run.last_run_at < timedelta(hours=cooldown_hours):
+                continue
+
+            enqueue(db, "DISCOVER", {
+                "product_id": product.id, "campaign_id": campaign.id, "query": query, "location": region,
+            })
+            if run:
+                run.last_run_at = datetime.utcnow()
+            else:
+                db.add(DiscoveryRun(product_id=product.id, campaign_id=campaign.id, query=query, region=region))
+            db.commit()
+            fired += 1
+            logger.info("DISCOVER queued: product=%s campaign=%s query=%r region=%s",
+                       product.title, campaign.name, query, region)
 
     return fired
 
@@ -232,10 +252,21 @@ def _run_outreach_tick(db):
         .all()
     )
 
+    # Phase 20 Step 20.3 -- Execution Watchdog: a campaign with an active alert (3
+    # consecutive real send failures/bounces, see services/campaign_service.py
+    # evaluate_execution_watchdog()) is paused for further claims until a human clears it.
+    # Every other campaign's leads are claimed exactly as normal -- this never touches
+    # AUTONOMOUS_OUTREACH_ENABLED, it only ever narrows what this tick claims.
+    paused_campaign_ids = {
+        row[0] for row in db.query(Campaign.id).filter(Campaign.watchdog_alert.isnot(None)).all()
+    }
+
     claimed_count = 0
     for lead in candidates:
         if remaining["EMAIL"] <= 0 and remaining["WHATSAPP"] <= 0:
             break
+        if lead.campaign_id and lead.campaign_id in paused_campaign_ids:
+            continue
         allowed = {ch for ch in ("EMAIL", "WHATSAPP") if remaining[ch] > 0}
         run_after = datetime.utcnow() + timedelta(seconds=claimed_count * Config.OUTREACH_STAGGER_SECONDS)
         channels = claim_lead_for_outreach(db, lead.id, run_after=run_after, allowed_channels=allowed)
@@ -397,6 +428,70 @@ def _run_engagement_escalation_tick(db):
                    len(escalated))
 
 
+def _run_daily_plan_tick(db):
+    """Phase 18 Step 18.1 -- once per IST calendar day, after 06:00: refreshes every LIVE
+    campaign's daily_todo from today's real signals, and logs a real campaign-suggestion
+    note per active product when the data genuinely supports one. A campaign is ALWAYS
+    human-created (2026-09-01 revision, tracker.md) -- nothing in this tick ever creates
+    one. Gated by DAILY_AI_LOOP_ENABLED (default off): this spends real LLM calls even
+    though it never sends anything, so it stays an explicit opt-in, same posture as every
+    other real-cost switch in this file.
+    """
+    if not get_bool(db, DAILY_AI_LOOP_ENABLED, default=False):
+        return
+
+    now_ist = datetime.utcnow() + IST_OFFSET
+    if (now_ist.hour, now_ist.minute) < (6, 0):
+        return
+    today_str = now_ist.strftime("%Y-%m-%d")
+    if get_str(db, DAILY_PLAN_LAST_RUN_DATE, default="") == today_str:
+        return  # already ran today -- idempotent, same pattern as _run_eod_report_tick
+
+    live_campaigns = db.query(Campaign).filter(Campaign.status.in_(("PROPOSED", "APPROVED", "RUNNING"))).all()
+    for campaign in live_campaigns:
+        try:
+            generate_campaign_todo(db, campaign.id)
+        except Exception:  # noqa: BLE001 - one bad campaign must not block the rest
+            logger.exception("daily plan tick: failed to refresh todo for campaign %s", campaign.id)
+
+    products = db.query(Product).filter(Product.is_active == 1).all()
+    for product in products:
+        try:
+            generate_campaign_suggestion(db, product.id)
+        except Exception:  # noqa: BLE001
+            logger.exception("daily plan tick: failed to generate suggestion for product %s", product.id)
+
+    set_str(db, DAILY_PLAN_LAST_RUN_DATE, today_str)
+    logger.info("daily plan tick complete -> %d campaign(s) refreshed, %d product(s) checked for a suggestion",
+               len(live_campaigns), len(products))
+
+
+def _run_strategy_reflection_tick(db):
+    """Phase 19 Step 19.1-19.3 -- once per IST calendar day, after 07:00 (after the daily
+    plan tick's own 06:00 gate, so a fresh day's telemetry reflects yesterday's approved
+    changes before reflection runs against it -- not load-bearing, just sane ordering).
+    Gated by STRATEGY_REFLECTION_ENABLED (default off), same fail-safe posture as
+    DAILY_AI_LOOP_ENABLED -- run_reflection_cycle() itself also checks this and is a safe
+    no-op either way, this tick-level check just avoids the idempotency bookkeeping when
+    the feature is off."""
+    if not get_bool(db, STRATEGY_REFLECTION_ENABLED, default=False):
+        return
+
+    now_ist = datetime.utcnow() + IST_OFFSET
+    if (now_ist.hour, now_ist.minute) < (7, 0):
+        return
+    today_str = now_ist.strftime("%Y-%m-%d")
+    if get_str(db, STRATEGY_REFLECTION_LAST_RUN_DATE, default="") == today_str:
+        return  # already ran today -- idempotent, same pattern as _run_daily_plan_tick
+
+    try:
+        result = run_reflection_cycle(db)
+        logger.info("strategy reflection tick complete -> %s", result)
+    except Exception:  # noqa: BLE001 - one bad cycle must not crash the scheduler
+        logger.exception("strategy reflection tick failed")
+    set_str(db, STRATEGY_REFLECTION_LAST_RUN_DATE, today_str)
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
@@ -422,6 +517,8 @@ def run_forever(poll_interval=None):
             _run_stuck_alert_tick(db)
             _run_template_poll_tick(db)
             _run_engagement_escalation_tick(db)
+            _run_daily_plan_tick(db)
+            _run_strategy_reflection_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
             # Surface a failing tick to the monitor instead of only to the log -- a scheduler

@@ -9,7 +9,7 @@ from cognition.hard_classifiers import strip_quoted_reply
 from config import Config
 from database.db_config import SessionLocal
 from database.models import (
-    AgentEvent, InboundConversation, InterestResponse, Lead, LeadContact, LeadFirmographics,
+    AgentEvent, Campaign, InboundConversation, InterestResponse, Lead, LeadContact, LeadFirmographics,
     LeadReviewInsight, LeadScore, OutreachLog, OutreachSequence, Product, SuppressionEntry)
 from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
@@ -17,6 +17,13 @@ from services.outreach.delivery_status import derive_delivery_state, resolve_wha
 from services.sequence_service import describe_sequence_stage
 from services.outreach.email_renderer import render_email_html
 from services.outreach.text_renderer import render_plain_text
+from services.message_format_service import get_available_assets
+from services.outreach.cross_sell import get_cross_sell_products
+from services.campaign_service import (
+    check_instruction_pushback, clear_campaign_approval, resolve_auto_campaign_id,
+    resolve_email_render_mode, format_directive_for_mode, detect_render_mode_request,
+    build_sample_draft_html)
+from agents.outreach_agent import draft_structured_email, suggest_draft_improvement
 from jobs.outreach_handler import handle_outreach_email
 from jobs.outreach_wa_handler import handle_outreach_wa
 
@@ -39,6 +46,12 @@ def _apply_filters(db, query, args):
     product_id = args.get("product_id")
     if product_id:
         query = query.filter(Lead.product_id == product_id)
+
+    # Campaign Detail page (UI Phase 16 revision, 2026-09-02) -- a campaign's own lead list
+    # is now the primary way leads get browsed, so this filter needs to exist.
+    campaign_id = args.get("campaign_id")
+    if campaign_id:
+        query = query.filter(Lead.campaign_id == campaign_id)
 
     status = args.get("status")
     if status:
@@ -94,6 +107,7 @@ def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=
         "status": lead.status,
         "source": lead.source,
         "region_location": lead.region_location,
+        "campaign_id": lead.campaign_id,
         "sales_route": lead.sales_route,
         "created_at": str(lead.created_at),
         "updated_at": str(lead.updated_at),
@@ -649,6 +663,19 @@ def create_lead():
         if not product:
             return jsonify({"error": [f"product_id '{data['product_id']}' does not exist"]}), 422
 
+        # campaign_id (2026-09-02): an explicit value here always wins (a human adding
+        # this one lead by hand knows which campaign it's for, even in the 2+-active
+        # edge case resolve_auto_campaign_id() itself refuses to guess) -- an empty body
+        # falls back to the same one-active-campaign auto-match Discovery uses, so a
+        # manually-added lead never behaves differently from a discovered one.
+        if "campaign_id" in data and data["campaign_id"]:
+            campaign = db.get(Campaign, data["campaign_id"])
+            if not campaign or campaign.product_id != data["product_id"]:
+                return jsonify({"error": ["campaign_id must be an existing campaign for this same product"]}), 422
+            campaign_id = campaign.id
+        else:
+            campaign_id = resolve_auto_campaign_id(db, data["product_id"])
+
         lead = Lead(
             product_id=data["product_id"],
             company_name=data["company_name"],
@@ -660,6 +687,7 @@ def create_lead():
             contact_person_role=data.get("contact_person_role"),
             source=data.get("source"),
             region_location=data.get("region_location"),
+            campaign_id=campaign_id,
         )
         db.add(lead)
         db.commit()
@@ -776,6 +804,119 @@ def trigger_outreach(lead_id):
 
         db.refresh(lead)
         return jsonify({"lead_id": lead_id, "lead_status": lead.status, "results": results})
+    finally:
+        db.close()
+
+
+@leads_bp.route("/<lead_id>/outreach/revise-draft", methods=["POST"])
+def revise_outreach_draft(lead_id):
+    """Phase 16 Step 16.5 -- a human reviewing an AI-drafted preview submits a free-text
+    instruction ("isko formal karo") and gets back a regenerated draft plus the AI's own
+    separate, dismissible improvement suggestion. Preview only -- does NOT send anything
+    and does NOT touch the lead's status; the existing trigger_outreach()/scheduled send
+    paths are what actually dispatch a draft, unchanged.
+    """
+    data = request.get_json(silent=True) or {}
+    instruction = str(data.get("instruction") or "").strip()
+    if not instruction:
+        return jsonify({"error": ["instruction is required"]}), 422
+
+    # Phase 16 Step 16.5 follow-up (2026-09-01, user-flagged real gap): a SECOND (or
+    # later) round of feedback in the same session must build on the draft the human is
+    # actually looking at, not silently re-derive a fresh one from the underlying facts
+    # -- otherwise an earlier accepted edit (e.g. "make it casual") gets dropped the
+    # moment a later, unrelated edit ("add an emoji") is requested. The caller sends back
+    # the CURRENT draft it's displaying; absent on the first revision, which still
+    # behaves exactly as before this existed.
+    current_draft = data.get("current_draft")
+    previous_draft_text = None
+    if isinstance(current_draft, dict) and current_draft.get("body"):
+        subject = str(current_draft.get("subject") or "").strip()
+        body = str(current_draft.get("body") or "").strip()
+        previous_draft_text = f"Subject: {subject}\n\n{body}" if subject else body
+
+    db = SessionLocal()
+    try:
+        lead = db.get(Lead, lead_id)
+        if not lead:
+            return jsonify({"error": "lead not found"}), 404
+        product = db.get(Product, lead.product_id)
+        if not product:
+            return jsonify({"error": "product not found"}), 404
+
+        insight = (
+            db.query(LeadReviewInsight)
+            .filter(LeadReviewInsight.lead_id == lead_id)
+            .order_by(LeadReviewInsight.analyzed_at.desc())
+            .first()
+        )
+        pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+        product_brief = {
+            "title": product.title,
+            "description": product.description,
+            "value_proposition": product.value_proposition,
+        }
+        lead_profile = {
+            "company_name": lead.company_name,
+            "contact_person_name": lead.contact_person_name,
+            "contact_person_role": lead.contact_person_role,
+        }
+        content_assets = get_available_assets(db, lead.product_id) or None
+        cross_sell_products = get_cross_sell_products(db, lead.product_id)
+
+        # A lead tagged to a campaign (Phase 18 Step 18.2's daily-review sample draft)
+        # should revise with that SAME campaign's strategy_angle as its tone -- otherwise
+        # a "give feedback" edit would silently drop back to the product's generic
+        # default_tone, inconsistent with the draft the human is actually looking at.
+        campaign = db.get(Campaign, lead.campaign_id) if lead.campaign_id else None
+        tone_directive = (campaign.strategy_angle if campaign and campaign.strategy_angle else None) \
+            or product.default_tone
+
+        # Free-text that clearly asks for HTML vs plain text flips the campaign's
+        # email_render_mode, then regenerates with the matching format directive.
+        if campaign:
+            requested_mode = detect_render_mode_request(instruction)
+            if requested_mode and requested_mode != resolve_email_render_mode(campaign):
+                campaign.email_render_mode = requested_mode
+                campaign.kickoff_draft = None
+            render_mode = resolve_email_render_mode(campaign)
+            format_directive = format_directive_for_mode(render_mode, product.default_format)
+        else:
+            render_mode = "HTML"
+            format_directive = product.default_format
+
+        revised = draft_structured_email(
+            db, lead_id, product_brief, lead_profile, pain_points,
+            content_assets=content_assets, cross_sell_products=cross_sell_products,
+            tone_directive=tone_directive, format_directive=format_directive,
+            human_revision_instruction=instruction,
+            previous_draft_text=previous_draft_text,
+        )
+        if not revised:
+            return jsonify({"error": ["revision failed -- try again or rephrase the instruction"]}), 503
+
+        suggestion = suggest_draft_improvement(db, lead_id, product_brief, pain_points, revised.get("sections"))
+
+        # A real content change invalidates any earlier same-day approval on this lead's
+        # campaign (Step 18.2) -- a stale "approved" from before this edit would be
+        # misleading about what was actually reviewed.
+        if lead.campaign_id:
+            clear_campaign_approval(db, lead.campaign_id)
+
+        # Phase 20 Step 20.4 -- a separate, non-blocking check: does this instruction
+        # genuinely conflict with real data this campaign/domain already has? The draft
+        # above already regenerated from the human's instruction unchanged either way --
+        # this only decides whether the AI's own honest disagreement is ALSO worth
+        # surfacing in this same response, never a second round-trip or a block.
+        pushback = check_instruction_pushback(db, lead.campaign_id, instruction) if lead.campaign_id else None
+
+        return jsonify({
+            "draft": revised,
+            "ai_suggestion": suggestion or None,
+            "pushback": pushback,
+            "email_render_mode": render_mode,
+            "sample_draft_html": build_sample_draft_html(render_mode, revised),
+        })
     finally:
         db.close()
 

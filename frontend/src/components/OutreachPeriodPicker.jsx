@@ -36,7 +36,7 @@ export default function OutreachPeriodPicker({ onChange }) {
             key={p.key}
             onClick={() => setPreset(p.key)}
             className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-              preset === p.key ? "bg-slate-800 text-white" : "text-slate-500 hover:bg-slate-100"
+              preset === p.key ? "bg-ink-900 text-parchment-raised hover:opacity-90" : "text-ink-500 hover:bg-parchment-raised-2"
             }`}
           >
             {p.label}
@@ -50,20 +50,20 @@ export default function OutreachPeriodPicker({ onChange }) {
             value={customStart}
             max={customEnd}
             onChange={(e) => setCustomStart(e.target.value)}
-            className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-700"
+            className="rounded-md border border-line bg-parchment-raised-2 px-2 py-1 font-mono text-xs text-ink-700 focus:border-gold-500 focus:outline-none"
           />
-          <span className="text-xs text-slate-400">to</span>
+          <span className="text-xs text-ink-500">to</span>
           <input
             type="date"
             value={customEnd}
             min={customStart}
             max={todayIST()}
             onChange={(e) => setCustomEnd(e.target.value)}
-            className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-700"
+            className="rounded-md border border-line bg-parchment-raised-2 px-2 py-1 font-mono text-xs text-ink-700 focus:border-gold-500 focus:outline-none"
           />
           <button
             onClick={() => onChange(customStart, customEnd)}
-            className="rounded-md bg-slate-800 px-2.5 py-1 text-xs font-medium text-white hover:bg-slate-700"
+            className="rounded-md bg-ink-900 px-2.5 py-1 text-xs font-medium text-parchment-raised hover:opacity-90"
           >
             Apply
           </button>

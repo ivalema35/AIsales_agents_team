@@ -52,26 +52,26 @@ export default function ContentLibraryPanel({ productId }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-alert-600">{error}</p>}
 
       {assets && assets.length > 0 && (
         <div className="flex flex-col gap-2">
           {assets.map((a) => (
-            <div key={a.id} className="flex items-center justify-between gap-2 rounded-md bg-slate-50 p-2.5">
+            <div key={a.id} className="flex items-center justify-between gap-2 rounded-md bg-parchment p-2.5">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <Badge variant={a.is_active ? "SUCCESS" : "NEUTRAL"}>{a.asset_type}</Badge>
-                  <span className="truncate text-xs font-medium text-slate-700">{a.title}</span>
+                  <span className="truncate text-xs font-medium text-ink-700">{a.title}</span>
                 </div>
-                <p className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-slate-400">
+                <p className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-ink-500">
                   <Link2 size={10} className="shrink-0" /> {a.value}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                <button onClick={() => toggleActive(a)} className="text-[11px] font-medium text-slate-500 hover:text-slate-800">
+                <button onClick={() => toggleActive(a)} className="text-[11px] font-medium text-ink-500 hover:text-ink-900">
                   {a.is_active ? "Deactivate" : "Activate"}
                 </button>
-                <button onClick={() => remove(a)} title="Delete" className="text-slate-300 hover:text-red-500">
+                <button onClick={() => remove(a)} title="Delete" className="text-ink-500 hover:text-alert-600">
                   <Trash2 size={13} />
                 </button>
               </div>
@@ -81,20 +81,20 @@ export default function ContentLibraryPanel({ productId }) {
       )}
 
       {assets && assets.length === 0 && !showAddForm && (
-        <p className="text-xs text-slate-500">No content assets for this product yet -- the AI has nothing to select from.</p>
+        <p className="text-xs text-ink-500">No content assets for this product yet -- the AI has nothing to select from.</p>
       )}
 
       {!showAddForm && (
         <button
           onClick={() => setShowAddForm(true)}
-          className="flex w-fit items-center gap-1 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-slate-900"
+          className="flex w-fit items-center gap-1 rounded-md bg-ink-900 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90"
         >
           <Plus size={12} /> Add asset
         </button>
       )}
 
       {showAddForm && (
-        <form onSubmit={addAsset} className="flex flex-col gap-2 rounded-md border border-slate-200 p-3">
+        <form onSubmit={addAsset} className="flex flex-col gap-2 rounded-md border border-line p-3">
           <div className="flex flex-wrap gap-1.5">
             {ASSET_TYPES.map((t) => (
               <button
@@ -102,7 +102,7 @@ export default function ContentLibraryPanel({ productId }) {
                 type="button"
                 onClick={() => setDraft((d) => ({ ...d, asset_type: t }))}
                 className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
-                  draft.asset_type === t ? "bg-slate-800 text-white" : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                  draft.asset_type === t ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
                 }`}
               >
                 {t}
@@ -114,14 +114,14 @@ export default function ContentLibraryPanel({ productId }) {
             value={draft.title}
             onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
             placeholder="Title (e.g. Live product demo)"
-            className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+            className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
           <input
             required
             value={draft.value}
             onChange={(e) => setDraft((d) => ({ ...d, value: e.target.value }))}
             placeholder={draft.asset_type === "TEXT_BLOCK" ? "The text itself" : "https://…"}
-            className="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+            className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
           <ChipInput
             icon={Link2}
@@ -135,14 +135,14 @@ export default function ContentLibraryPanel({ productId }) {
             <button
               type="submit"
               disabled={saving}
-              className="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-900 disabled:opacity-50"
+              className="rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
             >
               {saving ? "Saving…" : "Save asset"}
             </button>
             <button
               type="button"
               onClick={() => { setShowAddForm(false); setDraft(EMPTY_DRAFT); }}
-              className="rounded-md px-3 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-100"
+              className="rounded-md px-3 py-1.5 text-xs font-medium text-ink-500 hover:bg-parchment-raised-2"
             >
               Cancel
             </button>

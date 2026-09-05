@@ -24,6 +24,9 @@ from api.content_assets import content_assets_bp
 from api.whatsapp_templates import whatsapp_templates_bp
 from api.social_queue import social_queue_bp
 from api.prospects import prospects_bp
+from api.knowledge_base import knowledge_base_bp
+from api.campaigns import campaigns_bp
+from api.strategy_insights import strategy_insights_bp
 
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
 # the login endpoints themselves, health checks, and the handful of routes real external
@@ -39,6 +42,9 @@ _PUBLIC_PREFIXES = (
     "/api/v1/webhooks/",
     "/unsubscribe/",
     "/interest/",
+    # Brand logo used in outbound email HTML -- recipients' mail clients must fetch this
+    # without a CRM session cookie (2026-09-05).
+    "/static/brand/",
 )
 
 
@@ -81,6 +87,9 @@ def create_app():
     app.register_blueprint(whatsapp_templates_bp)
     app.register_blueprint(social_queue_bp)
     app.register_blueprint(prospects_bp)
+    app.register_blueprint(knowledge_base_bp)
+    app.register_blueprint(campaigns_bp)
+    app.register_blueprint(strategy_insights_bp)
 
     @app.route("/health")
     def health():

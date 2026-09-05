@@ -58,10 +58,10 @@ export default function SystemStatusDot() {
   }, []);
 
   const dot = {
-    LOADING: "bg-slate-300",
-    OK: "bg-emerald-500",
-    PROBLEM: "bg-amber-500",
-    UNREACHABLE: "bg-red-500",
+    LOADING: "bg-ink-500/40",
+    OK: "bg-good-600",
+    PROBLEM: "bg-warm-600",
+    UNREACHABLE: "bg-alert-600",
   }[state];
 
   return (
@@ -73,12 +73,12 @@ export default function SystemStatusDot() {
       aria-label={`System status: ${detail || "checking"}. Discovery: ${
         discoveryOn === null ? "checking" : discoveryOn ? "ON" : "OFF"
       }.`}
-      className="group flex items-center rounded-full transition-colors hover:bg-slate-100"
+      className="group flex shrink-0 items-center rounded-full transition-colors hover:bg-parchment-raised-2"
     >
       {/* One unified chip, not two floating pieces -- a shared pill with an internal
          divider reads as a single designed "status" widget instead of bare dots sitting
          next to an unrelated badge. */}
-      <span className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 py-1 pl-2.5 pr-1 transition-colors group-hover:border-slate-300 group-hover:bg-white">
+      <span className="flex items-center gap-2 whitespace-nowrap rounded-full border border-line bg-parchment-raised-2 py-1 pl-2.5 pr-1 transition-colors group-hover:border-line-strong group-hover:bg-parchment-raised">
         {/* Two dots, same meaning, staggered pulse -- the second starts its animation half
            a cycle behind the first (animationDelay), so they blink alternately rather than
            together. Static dots (LOADING) skip the animation entirely -- nothing to
@@ -99,16 +99,16 @@ export default function SystemStatusDot() {
 
         {/* Divider, not a gap -- makes clear the badge belongs to this same chip rather
            than being a second, unrelated element that happens to sit nearby. */}
-        {discoveryOn !== null && <span className="h-3.5 w-px shrink-0 bg-slate-200" />}
+        {discoveryOn !== null && <span className="h-3.5 w-px shrink-0 bg-line" />}
 
         {/* Labelled, not another bare dot -- a color alone forces the operator to remember
            what it means; the word does not. */}
         {discoveryOn !== null && (
           <span
-            className={`rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-tight ring-1 ring-inset ${
+            className={`rounded-full px-2 py-0.5 text-[11px] font-semibold tracking-tight ring-1 ring-inset ${
               discoveryOn
-                ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
-                : "bg-slate-100 text-slate-500 ring-slate-200"
+                ? "bg-good-100 text-good-700 ring-good-600/30"
+                : "bg-parchment-raised text-ink-500 ring-line"
             }`}
           >
             Discovery {discoveryOn ? "ON" : "OFF"}

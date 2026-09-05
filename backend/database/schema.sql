@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS products (
     -- Empty = no cross-sell at all (today's behavior, unchanged), same "empty means
     -- unchanged" convention as target_business_categories/followup_cadence_days above.
     cross_sell_product_ids      TEXT DEFAULT '[]',  -- JSON array of product ids
+    -- Phase 16 Step 16.4: free-text style guidelines the AI writes outreach in (never a
+    -- fixed dropdown enum) -- NULL for every product until an admin sets one, in which
+    -- case drafting behaves exactly as before this column existed.
+    default_tone         TEXT,
+    default_format       TEXT,
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -54,9 +59,15 @@ CREATE TABLE IF NOT EXISTS leads (
     region_location      TEXT,
     sales_route          TEXT DEFAULT 'UNASSIGNED',
       -- UNASSIGNED, SAAS_PRODUCT, CUSTOM_DEV — set by dual_sales_engine.py (§8.2)
+    -- Phase 17 Step 17.1: nullable, and deliberately so -- every lead the existing
+    -- autonomous discovery pipeline creates has no campaign context and stays NULL here,
+    -- behaving byte-identically to before this column existed. ON DELETE SET NULL (not
+    -- CASCADE): deleting a campaign must never delete real leads.
+    campaign_id          TEXT,
     created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL
 );
 
 -- 3. FIRMOGRAPHICS
@@ -275,9 +286,13 @@ CREATE TABLE IF NOT EXISTS discovery_runs (
     product_id    TEXT NOT NULL,
     query         TEXT NOT NULL,
     region        TEXT NOT NULL,
+    -- Step 17.7 (2026-09-02): discovery is campaign-driven -- cooldown is tracked per
+    -- campaign, not per product, so two campaigns never share one clock.
+    campaign_id   TEXT,
     last_run_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (product_id, query, region),
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
 );
 
 -- 19. SYSTEM SETTINGS  (Step 4.4: dashboard-controlled runtime switches, e.g. discovery/
@@ -529,6 +544,91 @@ CREATE TABLE IF NOT EXISTS prospects (
     UNIQUE (linkedin_url)
 );
 
+-- Table 32 (Phase 16 Step 16.1/16.2/16.8) -- product facts, objection answers, real
+-- proof, and (Step 16.8) human-approved marketing assets the AI selects from. Zero-
+-- fabrication rule: this table has exactly one write path, api/knowledge_base.py's
+-- admin CRUD -- no LLM call anywhere in this codebase inserts a row here.
+CREATE TABLE IF NOT EXISTS knowledge_base_items (
+    id                TEXT PRIMARY KEY,
+    product_id        TEXT NOT NULL,
+    kind              TEXT NOT NULL,         -- FACT, OBJECTION, PROOF, MARKETING_ASSET
+    title             TEXT NOT NULL,
+    body              TEXT NOT NULL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- Table 33 (Phase 17 Step 17.1) -- dated, strategy-angled campaign grouping. target_segment
+-- is a free JSON object (no fixed shape, no validation against a product's own targeting
+-- fields -- revised 2026-09-01, see MASTER_DEVELOPMENT_PRD.md §5C.0/tracker.md).
+CREATE TABLE IF NOT EXISTS campaigns (
+    id                TEXT PRIMARY KEY,
+    product_id        TEXT NOT NULL,
+    name              TEXT NOT NULL,
+    scheduled_date    DATE,
+    target_segment    TEXT DEFAULT '{}',
+    strategy_angle    TEXT,
+    status            TEXT DEFAULT 'PROPOSED',
+    daily_todo        TEXT DEFAULT '[]',
+    metrics_summary   TEXT DEFAULT '{}',
+    -- Step 18.1/17.6: AI-proposed target lead count for this campaign's discovery batch.
+    lead_count_goal    INTEGER,
+    -- Step 18.1/18.4: the strategist's latest not-yet-approved proposal (JSON), applied to
+    -- the real columns above only on Approve, never written directly by the generator.
+    pending_strategy_proposal TEXT,
+    -- Phase 18 Step 18.2: ISO date (YYYY-MM-DD, IST) of the human's last daily-review
+    -- approval -- must be re-approved every real day, never carries over from yesterday.
+    last_approved_date TEXT,
+    -- Phase 20 Step 20.3 (Execution Watchdog): NULL = normal. Set to a JSON alert the
+    -- moment 3 consecutive real send failures/bounces are detected for this campaign's own
+    -- batch -- while set, outreach claiming skips THIS campaign only. Cleared only by a
+    -- human action, never by the system re-checking on its own.
+    watchdog_alert    TEXT,
+    -- Kickoff template preview (Step 18.1b intent, built 2026-09-05): JSON sample email
+    -- (subject/body/sections) for a campaign that has NO real leads yet -- literal
+    -- [Business Name]/[Pain Point] placeholders, never a fabricated company. Cleared /
+    -- regenerated when strategy_angle changes. Once a real lead is tagged, daily review
+    -- prefers that lead's real sample draft instead.
+    kickoff_draft     TEXT,
+    -- HTML | TEXT (default HTML): designed Phase-11 template vs plain prose send/preview.
+    email_render_mode TEXT DEFAULT 'HTML',
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- Table 34 (Phase 19 Step 19.1-19.3) -- one row per learned strategy rule, grouped by
+-- (product_id, domain) and pooled across every campaign that targeted that domain.
+-- "Most recent ACTIVE row wins" pattern, same as product_strategies.
+CREATE TABLE IF NOT EXISTS strategy_insights (
+    id              TEXT PRIMARY KEY,
+    product_id      TEXT NOT NULL,
+    domain          TEXT NOT NULL,
+    winning_angle   TEXT NOT NULL,
+    losing_angle    TEXT,
+    confidence      REAL,
+    rationale       TEXT NOT NULL,
+    status          TEXT DEFAULT 'ACTIVE',
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- Table 35 (Phase 20 Step 20.1) -- one row per real day a campaign's strategist ran, its own
+-- evolving narrative (hypothesis -> observation -> pivot), distinct from strategy_insights'
+-- cross-campaign validated rules. One row per (campaign_id, day).
+CREATE TABLE IF NOT EXISTS campaign_theses (
+    id              TEXT PRIMARY KEY,
+    campaign_id     TEXT NOT NULL,
+    day             TEXT NOT NULL,
+    hypothesis      TEXT NOT NULL,
+    observation     TEXT,
+    pivot_decision  TEXT,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (campaign_id, day),
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
+);
+
 -- INDEXES
 -- UNIQUE, not a plain index -- a duplicate reference_code would make "resolves to that
 -- same lead" (Phase 12 Step 12.1's own DoD promise) ambiguous. A column-level UNIQUE in
@@ -560,3 +660,8 @@ CREATE INDEX IF NOT EXISTS idx_interest_responses_lead ON interest_responses (le
 CREATE INDEX IF NOT EXISTS idx_social_queue_status    ON social_message_queue (status, created_at);
 CREATE INDEX IF NOT EXISTS idx_prospects_search       ON prospects (search_id);
 CREATE INDEX IF NOT EXISTS idx_prospect_searches_created ON prospect_searches (created_at);
+CREATE INDEX IF NOT EXISTS idx_kb_items_product_kind  ON knowledge_base_items (product_id, kind);
+CREATE INDEX IF NOT EXISTS idx_campaigns_product_date ON campaigns (product_id, scheduled_date);
+CREATE INDEX IF NOT EXISTS idx_leads_campaign         ON leads (campaign_id);
+CREATE INDEX IF NOT EXISTS idx_strategy_insights      ON strategy_insights (product_id, domain, status);
+CREATE INDEX IF NOT EXISTS idx_campaign_theses        ON campaign_theses (campaign_id, day);

@@ -25,6 +25,8 @@ def _serialize(product):
         "target_business_categories": json.loads(product.target_business_categories or "[]"),
         "target_person_roles": json.loads(product.target_person_roles or "[]"),
         "cross_sell_product_ids": json.loads(product.cross_sell_product_ids or "[]"),
+        "default_tone": product.default_tone,
+        "default_format": product.default_format,
         "created_at": str(product.created_at),
         "updated_at": str(product.updated_at),
     }
@@ -154,6 +156,8 @@ def create_product():
             description=data["description"],
             value_proposition=data.get("value_proposition"),
             priority=data.get("priority", 1),
+            default_tone=data.get("default_tone"),
+            default_format=data.get("default_format"),
         )
         if target_keywords is not None:
             product.target_keywords = target_keywords
@@ -207,6 +211,10 @@ def update_product(product_id):
             product.description = data["description"]
         if "value_proposition" in data:
             product.value_proposition = data["value_proposition"]
+        if "default_tone" in data:
+            product.default_tone = data["default_tone"]
+        if "default_format" in data:
+            product.default_format = data["default_format"]
         if "priority" in data:
             product.priority = data["priority"]
         if "is_active" in data:

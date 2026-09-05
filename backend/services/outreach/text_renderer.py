@@ -16,13 +16,24 @@ def _bullets(items, prefix="-") -> str:
     return "\n".join(f"{prefix} {item}" for item in items or [] if item)
 
 
+def _prose(items) -> str:
+    return " ".join(item.rstrip(".") + "." for item in items or [] if item)
+
+
 def _render_one(section: dict) -> str:
     kind = section.get("type")
     if kind == "HOOK":
         return (section.get("text") or "").strip()
     if kind == "PAIN_POINTS":
+        # Phase 16 Step 16.4 -- same model-chosen layout email_renderer.py honors, so a
+        # product's WhatsApp/social copy reads consistently with its email, not bulleted
+        # in one channel and prose in another for the same draft.
+        if section.get("layout") == "PROSE":
+            return _prose(section.get("items"))
         return _bullets(section.get("items"))
     if kind == "SOLUTION":
+        if section.get("layout") == "PROSE":
+            return _prose(section.get("items"))
         return _bullets(section.get("items"), prefix="✓")
     if kind == "SERVICES_LIST":
         body = _bullets(section.get("items"), prefix="•")

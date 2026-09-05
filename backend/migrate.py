@@ -30,6 +30,16 @@ COLUMN_MIGRATIONS = [
     ("whatsapp_templates", "button_url", "TEXT"),
     ("whatsapp_templates", "button_label", "TEXT"),
     ("outreach_logs", "content_sections", "TEXT"),
+    ("products", "default_tone", "TEXT"),
+    ("products", "default_format", "TEXT"),
+    ("leads", "campaign_id", "TEXT"),
+    ("campaigns", "last_approved_date", "TEXT"),
+    ("campaigns", "lead_count_goal", "INTEGER"),
+    ("campaigns", "pending_strategy_proposal", "TEXT"),
+    ("discovery_runs", "campaign_id", "TEXT"),
+    ("campaigns", "watchdog_alert", "TEXT"),
+    ("campaigns", "kickoff_draft", "TEXT"),
+    ("campaigns", "email_render_mode", "TEXT"),
 ]
 
 

@@ -35,7 +35,7 @@ export default function FunnelChart({ data, getHref }) {
             key={s.stage}
             {...rowProps}
             className={`group flex items-center gap-3 ${isEmpty ? "opacity-40" : ""} ${
-              getHref && s.count > 0 ? "-mx-1 rounded-md px-1 py-0.5 transition-colors hover:bg-slate-50" : ""
+              getHref && s.count > 0 ? "-mx-1 rounded-md px-1 py-0.5 transition-colors hover:bg-parchment-raised-2" : ""
             }`}
           >
             <span
@@ -43,7 +43,7 @@ export default function FunnelChart({ data, getHref }) {
             >
               {s.stage.replace(/_/g, " ")}
             </span>
-            <div className="h-4 flex-1 overflow-hidden rounded-md bg-slate-100">
+            <div className="h-4 flex-1 overflow-hidden rounded-md bg-parchment-raised-2">
               {/* Mark spec: bar grows from a square baseline, only the data-end (right)
                  gets a 4px round -- rounding BOTH ends turned a short/small-value bar
                  into a blob/circle instead of a recognizably short bar (found live). */}
@@ -53,12 +53,12 @@ export default function FunnelChart({ data, getHref }) {
                 title={`${s.stage.replace(/_/g, " ")}: ${s.count} lead${s.count === 1 ? "" : "s"}`}
               />
             </div>
-            <span className="w-12 shrink-0 text-right text-xs font-semibold tabular-nums text-slate-700">{s.count}</span>
+            <span className="w-12 shrink-0 text-right font-mono text-xs font-semibold tabular-nums text-ink-700">{s.count}</span>
           </Row>
         );
       })}
       {data.rejected > 0 && (
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-ink-500">
           + {data.rejected} rejected (dropped out, not part of the ordered funnel above)
         </p>
       )}

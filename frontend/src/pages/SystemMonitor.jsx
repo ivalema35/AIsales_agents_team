@@ -32,11 +32,11 @@ const PROCESS_BLURB = {
 };
 
 const STATE_UI = {
-  UP: { dot: "bg-emerald-500", ring: "ring-emerald-200", label: "Running", variant: "SUCCESS" },
-  ERROR: { dot: "bg-amber-500", ring: "ring-amber-200", label: "Erroring", variant: "WARNING" },
-  DOWN: { dot: "bg-red-500", ring: "ring-red-200", label: "Down", variant: "DANGER" },
-  NEVER_SEEN: { dot: "bg-slate-300", ring: "ring-slate-200", label: "Never started", variant: "NEUTRAL" },
-  UNKNOWN_PROCESS: { dot: "bg-slate-300", ring: "ring-slate-200", label: "Unknown", variant: "NEUTRAL" },
+  UP: { dot: "bg-good-600", ring: "ring-good-600/30", label: "Running", variant: "SUCCESS" },
+  ERROR: { dot: "bg-warm-600", ring: "ring-warm-600/30", label: "Erroring", variant: "WARNING" },
+  DOWN: { dot: "bg-alert-600", ring: "ring-alert-600/30", label: "Down", variant: "DANGER" },
+  NEVER_SEEN: { dot: "bg-line-strong", ring: "ring-line", label: "Never started", variant: "NEUTRAL" },
+  UNKNOWN_PROCESS: { dot: "bg-line-strong", ring: "ring-line", label: "Unknown", variant: "NEUTRAL" },
 };
 
 // A process being UP says nothing about whether it's actually DOING anything right now --
@@ -87,42 +87,42 @@ function ProcessCard({ proc }) {
   const uptime = humanUptime(proc.started_at);
 
   return (
-    <div className={`rounded-xl border border-slate-200 bg-white p-4 ring-1 ring-inset ${ui.ring}`}>
+    <div className={`rounded-xl border border-line bg-parchment-raised p-4 ring-1 ring-inset ${ui.ring}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${ui.dot}`} />
-            <h3 className="truncate text-sm font-semibold text-slate-900">
+            <h3 className="truncate text-sm font-semibold text-ink-900">
               {PROCESS_LABELS[proc.name] || proc.name}
             </h3>
           </div>
-          <p className="mt-1 text-[11px] leading-snug text-slate-500">
+          <p className="mt-1 text-[11px] leading-snug text-ink-500">
             {PROCESS_BLURB[proc.name] || proc.name}
           </p>
         </div>
         <Badge variant={ui.variant}>{ui.label}</Badge>
       </div>
 
-      <dl className="mt-3 space-y-1 border-t border-slate-100 pt-3 text-xs">
+      <dl className="mt-3 space-y-1 border-t border-line pt-3 text-xs">
         <div className="flex justify-between gap-2">
-          <dt className="text-slate-500">Last seen</dt>
-          <dd className="font-medium text-slate-700">{humanAge(proc.age_seconds)}</dd>
+          <dt className="text-ink-500">Last seen</dt>
+          <dd className="font-mono font-medium text-ink-700">{humanAge(proc.age_seconds)}</dd>
         </div>
         {/* Uptime, not just "healthy": a process crash-looping under systemd's Restart=always
             shows "Running" on every poll -- only a resetting uptime reveals it. */}
         <div className="flex justify-between gap-2">
-          <dt className="text-slate-500">Uptime</dt>
-          <dd className="font-medium text-slate-700">{uptime || "—"}</dd>
+          <dt className="text-ink-500">Uptime</dt>
+          <dd className="font-mono font-medium text-ink-700">{uptime || "—"}</dd>
         </div>
         {proc.expected_interval_seconds && (
           <div className="flex justify-between gap-2">
-            <dt className="text-slate-500">Beats every</dt>
-            <dd className="font-medium text-slate-700">{proc.expected_interval_seconds}s</dd>
+            <dt className="text-ink-500">Beats every</dt>
+            <dd className="font-mono font-medium text-ink-700">{proc.expected_interval_seconds}s</dd>
           </div>
         )}
       </dl>
 
-      <p className="mt-2 truncate font-mono text-[10px] text-slate-400" title={proc.name}>
+      <p className="mt-2 truncate font-mono text-[10px] text-ink-500" title={proc.name}>
         {proc.name}
       </p>
     </div>
@@ -132,9 +132,9 @@ function ProcessCard({ proc }) {
 function AutomationToggles({ toggles }) {
   const entries = Object.entries(TOGGLE_LABELS);
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="text-sm font-semibold text-slate-900">Automation</h2>
-      <p className="mt-1 text-xs text-slate-500">
+    <section className="rounded-xl border border-line bg-parchment-raised p-5">
+      <h2 className="text-sm font-semibold text-ink-900">Automation</h2>
+      <p className="mt-1 text-xs text-ink-500">
         What's actually turned on right now -- a process can be running and still doing
         nothing if its switch is off.
       </p>
@@ -146,11 +146,11 @@ function AutomationToggles({ toggles }) {
               key={key}
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${
                 on
-                  ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
-                  : "bg-slate-100 text-slate-500 ring-slate-200"
+                  ? "bg-good-100 text-good-700 ring-good-600/30"
+                  : "bg-parchment-raised-2 text-ink-500 ring-line"
               }`}
             >
-              <span className={`h-1.5 w-1.5 rounded-full ${on ? "bg-emerald-500" : "bg-slate-400"}`} />
+              <span className={`h-1.5 w-1.5 rounded-full ${on ? "bg-good-600" : "bg-line-strong"}`} />
               {label}: {on ? "ON" : "OFF"}
             </span>
           );
@@ -167,11 +167,11 @@ function JobBoard({ jobs }) {
   const types = Object.entries(jobs?.by_type || {});
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="text-sm font-semibold text-slate-900">Job queue</h2>
+    <section className="rounded-xl border border-line bg-parchment-raised p-5">
+      <h2 className="text-sm font-semibold text-ink-900">Job queue</h2>
 
       {present.length === 0 ? (
-        <p className="mt-3 text-xs text-slate-400">No jobs in the queue.</p>
+        <p className="mt-3 text-xs text-ink-500">No jobs in the queue.</p>
       ) : (
         <div className="mt-3 flex flex-wrap gap-2">
           {present.map((s) => {
@@ -182,13 +182,13 @@ function JobBoard({ jobs }) {
               <div
                 key={s}
                 className={`rounded-lg px-3 py-2 ring-1 ring-inset ${
-                  dead ? "bg-red-50 ring-red-200" : "bg-slate-50 ring-slate-200"
+                  dead ? "bg-alert-100 ring-alert-600/30" : "bg-parchment-raised-2 ring-line"
                 }`}
               >
-                <div className={`text-lg font-semibold ${dead ? "text-red-700" : "text-slate-900"}`}>
+                <div className={`font-mono text-lg font-semibold ${dead ? "text-alert-700" : "text-ink-900"}`}>
                   {byStatus[s].toLocaleString()}
                 </div>
-                <div className={`text-[11px] font-medium ${dead ? "text-red-600" : "text-slate-500"}`}>
+                <div className={`text-[11px] font-medium ${dead ? "text-alert-600" : "text-ink-500"}`}>
                   {dead && <AlertTriangle size={11} className="mr-0.5 inline align-[-1px]" />}
                   {s === "DEAD" ? "Stuck" : s.charAt(0) + s.slice(1).toLowerCase()}
                 </div>
@@ -202,7 +202,7 @@ function JobBoard({ jobs }) {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-slate-200 text-left text-[11px] uppercase tracking-wide text-slate-400">
+              <tr className="border-b border-line text-left text-[11px] uppercase tracking-wide text-ink-500">
                 <th className="pb-1.5 font-medium">Type</th>
                 {present.map((s) => (
                   <th key={s} className="pb-1.5 text-right font-medium">
@@ -211,18 +211,18 @@ function JobBoard({ jobs }) {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {types.map(([type, counts]) => (
                 <tr key={type}>
-                  <td className="py-1.5 font-mono text-[11px] text-slate-700">{type}</td>
+                  <td className="py-1.5 font-mono text-[11px] text-ink-700">{type}</td>
                   {present.map((s) => (
                     <td
                       key={s}
-                      className={`py-1.5 text-right tabular-nums ${
-                        s === "DEAD" && counts[s] ? "font-semibold text-red-600" : "text-slate-600"
+                      className={`py-1.5 text-right font-mono tabular-nums ${
+                        s === "DEAD" && counts[s] ? "font-semibold text-alert-600" : "text-ink-700"
                       }`}
                     >
-                      {counts[s] ?? <span className="text-slate-300">–</span>}
+                      {counts[s] ?? <span className="text-ink-500">–</span>}
                     </td>
                   ))}
                 </tr>
@@ -237,30 +237,30 @@ function JobBoard({ jobs }) {
 
 function ActivityFeed({ activity }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
+    <section className="rounded-xl border border-line bg-parchment-raised p-5">
       <div className="flex items-center gap-2">
-        <Activity size={15} className="text-slate-400" />
-        <h2 className="text-sm font-semibold text-slate-900">Live activity</h2>
+        <Activity size={15} className="text-ink-500" />
+        <h2 className="text-sm font-semibold text-ink-900">Live activity</h2>
       </div>
 
       {activity.length === 0 ? (
-        <p className="mt-3 text-xs text-slate-400">
+        <p className="mt-3 text-xs text-ink-500">
           Nothing has happened yet. The system is connected and idle.
         </p>
       ) : (
-        <ul className="mt-3 divide-y divide-slate-100">
+        <ul className="mt-3 divide-y divide-line">
           {activity.map((a, i) => (
             <li key={i} className="flex items-baseline gap-3 py-2 text-xs">
-              <span className="w-16 shrink-0 font-mono text-[11px] text-slate-400">
+              <span className="w-16 shrink-0 font-mono text-[11px] text-ink-500">
                 {clockTime(a.created_at)}
               </span>
-              <span className="w-24 shrink-0 font-semibold text-slate-700">{a.agent}</span>
-              <span className="min-w-0 flex-1 truncate text-slate-600">
-                {a.company_name || <span className="italic text-slate-400">product-level</span>}
-                <span className="text-slate-400"> · {a.action_type}</span>
+              <span className="w-24 shrink-0 font-semibold text-ink-700">{a.agent}</span>
+              <span className="min-w-0 flex-1 truncate text-ink-700">
+                {a.company_name || <span className="italic text-ink-500">product-level</span>}
+                <span className="text-ink-500"> · {a.action_type}</span>
               </span>
               {a.outcome && (
-                <span className="shrink-0 text-[11px] text-slate-500">{a.outcome}</span>
+                <span className="shrink-0 text-[11px] text-ink-500">{a.outcome}</span>
               )}
             </li>
           ))}
@@ -302,7 +302,7 @@ export default function SystemMonitor() {
   if (!data && !error) {
     return (
       <main className="mx-auto max-w-7xl px-6 py-8">
-        <div className="flex items-center gap-2 text-sm text-slate-400">
+        <div className="flex items-center gap-2 text-sm text-ink-500">
           <RefreshCw size={14} className="animate-spin" />
           Loading system state…
         </div>
@@ -317,22 +317,22 @@ export default function SystemMonitor() {
     <main className="mx-auto max-w-7xl space-y-5 px-6 py-8">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-slate-900">System</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="font-display text-lg font-semibold tracking-tight text-ink-900">System</h1>
+          <p className="text-xs text-ink-500">
             What the background system is doing right now. Refreshes every {POLL_MS / 1000}s.
           </p>
         </div>
-        <div className="text-right text-[11px] text-slate-400">
+        <div className="text-right font-mono text-[11px] text-ink-500">
           {lastOk ? `Updated ${lastOk.toLocaleTimeString()}` : "Not yet updated"}
         </div>
       </header>
 
       {error && (
-        <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+        <div className="flex items-start gap-2 rounded-lg border border-alert-600/30 bg-alert-100 px-4 py-3 text-sm text-alert-700">
           <AlertTriangle size={16} className="mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold">Can’t reach the backend</p>
-            <p className="mt-0.5 text-xs text-red-700">
+            <p className="mt-0.5 text-xs text-alert-700">
               {error}
               {data && " — showing the last known state below, which may be out of date."}
             </p>
@@ -341,7 +341,7 @@ export default function SystemMonitor() {
       )}
 
       {!error && problems.length > 0 && (
-        <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="flex items-start gap-2 rounded-lg border border-warm-600/30 bg-warm-100 px-4 py-3 text-sm text-warm-700">
           <AlertTriangle size={16} className="mt-0.5 shrink-0" />
           <p>
             <span className="font-semibold">
@@ -354,9 +354,9 @@ export default function SystemMonitor() {
 
       <section>
         <div className="mb-2 flex items-baseline justify-between">
-          <h2 className="text-sm font-semibold text-slate-900">Background processes</h2>
-          <span className="text-[11px] text-slate-400">
-            API: <span className="font-semibold text-emerald-600">up</span>
+          <h2 className="text-sm font-semibold text-ink-900">Background processes</h2>
+          <span className="font-mono text-[11px] text-ink-500">
+            API: <span className="font-semibold text-good-600">up</span>
           </span>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -370,12 +370,12 @@ export default function SystemMonitor() {
 
       <div className="grid gap-5 lg:grid-cols-2">
         <JobBoard jobs={data?.jobs} />
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-slate-900">Leads mid-outreach</h2>
-          <p className="mt-3 text-3xl font-semibold text-slate-900">
+        <section className="rounded-xl border border-line bg-parchment-raised p-5">
+          <h2 className="text-sm font-semibold text-ink-900">Leads mid-outreach</h2>
+          <p className="mt-3 font-mono text-3xl font-semibold text-ink-900">
             {data?.leads_in_flight ?? "—"}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-ink-500">
             Currently being sent to. A lead sitting here for a long time means a send was
             interrupted — Step 6.4 will flag those automatically.
           </p>

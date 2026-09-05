@@ -83,14 +83,14 @@ export default function LeadCard({ lead }) {
       tabIndex={0}
       onClick={openLead}
       onKeyDown={(e) => { if (e.key === "Enter") openLead(); }}
-      className={`min-h-[50px] cursor-pointer rounded-md border border-slate-100 px-2.5 py-2 shadow-sm transition-all hover:-translate-y-px hover:border-slate-300 hover:shadow focus:outline-none focus:ring-2 focus:ring-slate-300 ${
+      className={`min-h-[50px] cursor-pointer rounded-md border border-line px-2.5 py-2 shadow-sm transition-all hover:-translate-y-px hover:border-line-strong hover:shadow focus:outline-none focus:ring-2 focus:ring-gold-100 ${
         lead.is_suppressed
-          ? "border-l-[3px] bg-slate-100"
-          : tier ? `${TIER_BG[tier]} border-l-[3px]` : "bg-white"
+          ? "border-l-[3px] bg-parchment-raised-2"
+          : tier ? `${TIER_BG[tier]} border-l-[3px]` : "bg-parchment-raised"
       }`}
       style={
         lead.is_suppressed
-          ? { borderLeftColor: "#94a3b8" }
+          ? { borderLeftColor: "#6c7093" }
           : tier ? { borderLeftColor: TIER_BORDER[tier] } : undefined
       }
     >
@@ -99,13 +99,13 @@ export default function LeadCard({ lead }) {
          before this it had NO visible signal anywhere in the CRM (found live: the only
          way to discover it was opening the conversation and noticing intent='STOP'). */}
       {lead.is_suppressed && (
-        <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-slate-500">
+        <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-ink-500">
           <BellOff size={11} /> Opted out -- do not contact
         </div>
       )}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-medium leading-snug text-slate-800">{lead.company_name}</p>
+          <p className="truncate text-xs font-medium leading-snug text-ink-900">{lead.company_name}</p>
           {/* flex row, not one truncated string -- a single `truncate` on "region · time"
              clips the WHOLE line at the container edge, so a long region silently ate the
              time suffix entirely (found live: "1d ago" never rendered behind a long
@@ -113,9 +113,9 @@ export default function LeadCard({ lead }) {
              stays visible regardless of how long the region text is. Still one line --
              PipelineKanban.jsx's column height is computed from this card's exact fixed
              height (ROW_HEIGHT_PX); a second line here would silently break that math. */}
-          <p className="mt-0.5 flex items-baseline gap-1 text-[11px] leading-snug text-slate-500">
+          <p className="mt-0.5 flex items-baseline gap-1 text-[11px] leading-snug text-ink-500">
             <span className="min-w-0 truncate">{lead.region_location || "No region"}</span>
-            {lead.updated_at && <span className="shrink-0">· {relativeTime(lead.updated_at)}</span>}
+            {lead.updated_at && <span className="shrink-0 font-mono">· {relativeTime(lead.updated_at)}</span>}
             {/* Same fixed ROW_HEIGHT_PX constraint as everything else on this card (see
                file header) -- shrink-0 + its own tiny font so it never wraps to a third
                line; region is the one line-item that already truncates, so it's the one
@@ -123,7 +123,7 @@ export default function LeadCard({ lead }) {
             {lead.reference_code && (
               <span
                 title="Reference code -- quote this in alerts/conversation to identify this lead"
-                className="shrink-0 rounded bg-white/80 px-1 font-mono text-[9px] text-slate-400"
+                className="shrink-0 rounded bg-parchment-raised/80 px-1 font-mono text-[9px] text-ink-500"
               >
                 {lead.reference_code}
               </span>
@@ -136,7 +136,7 @@ export default function LeadCard({ lead }) {
            which is what made the row read as cluttered/misaligned before. */}
         <div className="flex shrink-0 items-center gap-1.5">
           {lead.score && (
-            <span className="rounded bg-white/80 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-slate-600">
+            <span className="rounded bg-parchment-raised/80 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-ink-700">
               {lead.score.score}
             </span>
           )}
@@ -155,7 +155,7 @@ export default function LeadCard({ lead }) {
               onClick={sendOutreach}
               disabled={sendInFlight}
               title={sendInFlight ? "Sending…" : "Send Outreach Now"}
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-white hover:text-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-ink-500 transition-colors hover:bg-parchment-raised hover:text-ink-900 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Send size={13} />
             </button>
@@ -166,7 +166,7 @@ export default function LeadCard({ lead }) {
       {result && (
         <div className="mt-1.5 flex flex-wrap gap-x-3 text-[10px]">
           {Object.entries(result).map(([channel, r]) => (
-            <span key={channel} className={r.status === "SENT" ? "text-emerald-600" : "text-amber-600"}>
+            <span key={channel} className={r.status === "SENT" ? "text-good-600" : "text-warm-600"}>
               {channel}: {r.status === "SENT" ? "Sent ✓" : `Escalated (${r.reason || "needs review"})`}
             </span>
           ))}

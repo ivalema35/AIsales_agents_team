@@ -12,7 +12,8 @@ from cognition.prompts import INBOUND_CLASSIFIER_SYSTEM_PROMPT, REPLY_REDRAFT_SY
 VALID_INTENTS = {"INTERESTED", "DEMO_REQUESTED", "OBJECTION", "STOP", "AUTO_REPLY"}
 
 
-def classify_intent(db, lead_id, message: str, history: list, product_brief: dict, pain_points: list = None):
+def classify_intent(db, lead_id, message: str, history: list, product_brief: dict, pain_points: list = None,
+                    knowledge_base_items: list = None):
     """Returns {intent, confidence, suppress_immediately, escalate_to_human,
     suggested_reply}. Fails toward caution on any LLM error: intent falls back to
     OBJECTION (never a silent INTERESTED/DEMO_REQUESTED guess) with confidence 0.0 and
@@ -23,12 +24,19 @@ def classify_intent(db, lead_id, message: str, history: list, product_brief: dic
     (same data outreach_agent.py drafts from) instead of the AI inferring generic
     problems from the product brief alone -- without it, a reply can invent plausible-
     sounding but unverified framing (see tracker.md Step 4.3 GameZone Visnagar bug).
+
+    `knowledge_base_items` (Phase 16 Step 16.3) is this product's real, admin-written
+    knowledge_base_items rows (title+body dicts) -- an ADDITIONAL, optional grounding
+    source the prompt may cite for its "one concrete insight" step. Never required: an
+    empty/None list (every product's real state until an admin fills one in) leaves the
+    reply grounded exactly as it always was, in pain_points + product_brief alone.
     """
     prompt = INBOUND_CLASSIFIER_SYSTEM_PROMPT + f"""
 MESSAGE: {json.dumps(message, ensure_ascii=False)}
 PRIOR_CONVERSATION: {json.dumps(history, ensure_ascii=False)}
 PRODUCT_BRIEF: {json.dumps(product_brief, ensure_ascii=False)}
 LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
+KNOWLEDGE_BASE: {json.dumps(knowledge_base_items or [], ensure_ascii=False)}
 """
     try:
         data = call_json(prompt, temperature=0.2)
@@ -50,6 +58,10 @@ LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
     suppress_immediately = data.get("suppress_immediately") is True
     escalate_to_human = data.get("escalate_to_human") is True
     suggested_reply = str(data.get("suggested_reply", ""))[:600]
+    # Phase 16 Step 16.7 -- only meaningful together; a gap with no topic tells
+    # jobs/inbound_classify_handler.py's KB_GAP_DETECTED logger nothing useful.
+    knowledge_gap = data.get("knowledge_gap") is True
+    knowledge_gap_topic = str(data.get("knowledge_gap_topic", ""))[:150] if knowledge_gap else ""
 
     result = {
         "intent": intent,
@@ -57,6 +69,8 @@ LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
         "suppress_immediately": suppress_immediately,
         "escalate_to_human": escalate_to_human,
         "suggested_reply": suggested_reply,
+        "knowledge_gap": knowledge_gap and bool(knowledge_gap_topic),
+        "knowledge_gap_topic": knowledge_gap_topic,
     }
 
     log_agent_event(db, "INBOUND", lead_id, "CLASSIFY_INTENT", confidence,
@@ -67,12 +81,14 @@ LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
 
 
 def redraft_reply(db, lead_id, message: str, prior_draft: str, rejection_reasons: list,
-                  suggested_corrections: str, pain_points: list, product_brief: dict) -> str:
+                  suggested_corrections: str, pain_points: list, product_brief: dict,
+                  knowledge_base_items: list = None) -> str:
     """Asks the model to fix a QC-rejected suggested_reply using QC's own feedback,
     instead of giving up -- a reply must always eventually go out for an escalated
     message (tracker.md Step 4.3: "reply karna jaruri he"). Returns "" on any LLM error
     (the caller falls back to a fixed, non-AI-generated message in that case, never an
-    ungrounded/re-guessed reply)."""
+    ungrounded/re-guessed reply). `knowledge_base_items` -- see classify_intent's own
+    docstring; same optional, additive grounding source, same safe-when-empty behavior."""
     prompt = REPLY_REDRAFT_SYSTEM_PROMPT + f"""
 LEAD_MESSAGE: {json.dumps(message, ensure_ascii=False)}
 PRIOR_DRAFT: {json.dumps(prior_draft, ensure_ascii=False)}
@@ -80,6 +96,7 @@ QC_REJECTION_REASONS: {json.dumps(rejection_reasons, ensure_ascii=False)}
 QC_SUGGESTED_CORRECTIONS: {json.dumps(suggested_corrections, ensure_ascii=False)}
 LEAD_PAIN_POINTS: {json.dumps(pain_points or [], ensure_ascii=False)}
 PRODUCT_BRIEF: {json.dumps(product_brief or {}, ensure_ascii=False)}
+KNOWLEDGE_BASE: {json.dumps(knowledge_base_items or [], ensure_ascii=False)}
 """
     try:
         data = call_json(prompt, temperature=0.2)

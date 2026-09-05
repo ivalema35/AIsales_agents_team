@@ -1002,17 +1002,163 @@ alone:
 
 ---
 
+## Chapter 18: The AI Sales Manager — Knowledge, Strategy & the Daily Review Loop
+
+*(Added 2026-09-01. Companion build specification: `MASTER_DEVELOPMENT_PRD.md` §5C, Phases 16–19. Raw
+source conversation: `discussion.md`, cross-checked against a dedicated architecture consultation,
+`suggest.txt`. Chapter 16 widened the brain. Chapter 17 sharpened it. Chapter 18 gives it a memory and a
+morning.)*
+
+### 18.0 Why this chapter exists
+
+Chapters 16 and 17 answer every question about whether one message is correct — well-targeted, measured,
+persuasively composed, consistent across channels, relevant to the right person. Chapter 18 answers a
+question none of the previous seventeen chapters ask: **who decided to send it, and will the system say
+something different tomorrow because of what happened today?**
+
+The operator's boss put the gap precisely, watching a version of the system Chapter 17 already made
+correct: *"this is automation, not AI — it never decides anything itself."* Correctness was never the
+complaint. A system that behaves identically on day 40 as it did on day 1, however well each individual
+message reads, is executing a plan — it is not making one.
+
+### 18.1 A knowledge base is inventory, not a bigger prompt
+
+`pain_points` and `product_brief` (§7's memory architecture) ground a message in what is *true*. They were
+never meant to carry the breadth needed to sound like a specific person who has answered this exact
+objection before — that would overload a narrow, structural grounding mechanism with a job it wasn't built
+for. `knowledge_base_items` (Phase 16) is a separate, broader inventory the AI **selects from**, not a
+prompt it paraphrases: a fact, an objection answer, or a proof point is either a real row an operator wrote
+or it does not exist to be cited. This is the same "drop the slot rather than fabricate" principle §16.2
+established for a missing content asset, extended one layer further — the AI cannot fabricate a citation
+any more than it can fabricate a video link. §16.7's coverage-gap detector is the honest complement: where
+inventory is missing, the system says so (as a to-do for a human), rather than answering as if it had
+something to say.
+
+### 18.2 Format and tone are decisions, not defaults
+
+Through Chapter 17, "how a message is shaped" was a fixed structural contract — the same section order,
+rendered the same way, for every recipient. Phase 16 makes shape itself a decision: the same underlying
+fact can be composed as three formal bullet points in an HTML email for a CTO evaluating ROI, or two casual
+sentences in a WhatsApp message for a coaching-institute owner who thinks in terms of parents and fees. The
+Outreach Agent's job grows from *"write the message"* to *"write the message, and choose its register for
+this specific recipient"* — a real inference with real inputs (the segment, the active campaign's
+`strategy_angle`), not a template swapped by a lookup table. Chapter 17's zero-hallucination and structural
+QC review both apply unchanged to whichever shape is chosen; format is a presentation decision layered on
+top of an unchanged truthfulness contract, never a way around it.
+
+### 18.3 A campaign is a unit of memory, not just a unit of scheduling
+
+It would be a mistake to read `campaigns` (Phase 17) as a calendar feature. Its cognitive job is to be the
+thing a strategy decision *attaches to*. The existing ICP Strategy Agent (§5A / `product_strategies`, live
+since Phase 15(A)) keeps answering **who** the always-on discovery pipeline should target, re-inferred
+every 7 days — that *targeting logic* (which region, which category) is completely untouched by Phase 17.
+**Revised 2026-09-02 (Step 17.6):** whether that logic ever runs at all is not untouched — discovery for a
+product now only fires while that product has an active campaign, and stops once that campaign's
+`lead_count_goal` is reached. A campaign answers a different
+question: **what did we say to them, and why, this time** — its `strategy_angle` is a dated, reviewable
+hypothesis, not a targeting definition, and (revised 2026-09-01, §5C.0) its `target_segment` is a
+**deliberately free** decision too, set by a human at creation or proposed by the AI planner's kickoff
+strategy (§18.1a) — never validated against the ICP Agent's own fields. The operator was explicit that a
+campaign must be able to genuinely explore a segment the standing configuration doesn't cover; oversight
+lives in the human review step (§18.4), not in a targeting-schema constraint. What stays true either way:
+a campaign never rewrites the ICP Agent's own targeting config, so the two coexist without competing.
+This is also what makes Phase 19's reflection engine possible at all — without a campaign to attach an
+angle and a tone to, there is nothing stable to group outcome data by.
+
+### 18.4 The Daily Loop is this project's existing escalation protocol, applied one level up
+
+§8's Human-AI Collaboration & Escalation Protocol already establishes the shape this project uses whenever
+autonomy needs a human checkpoint: the AI acts, a defined trigger routes the outcome to a human, the human
+decides, the AI continues from there. §8.1's four triggers govern individual replies. Phase 18's daily
+review card is the **same pattern**, one level up the stack — the trigger is not a lead's reply, it is a
+new day; the human's action is not "claim this lead," it is "approve this plan or send it back with
+feedback"; and the AI's continuation is the same drafted, QC-checked outreach machinery Chapters 11–17
+already built. Reading Phase 18 as "a new UI feature" undersells it — it is §8's own protocol, generalised
+from message-level escalation to plan-level governance.
+
+**This makes explicit the one boundary that must never move.** §8.1's Mandatory Human Escalation Triggers
+— a demo request, a pricing question, hostile/legal language, low classifier confidence — are entirely
+**inbound, real-time, and per-reply**. Phase 18's once-daily plan review is **outbound, scheduled, and
+per-campaign**. These are different axes, and the `discussion.md` conversation spent an entire round
+resolving the risk of confusing them: a "review the plan once a day" cadence must never be read as "hot
+replies also wait a day." Nothing in Phase 18 sits between an inbound message and §8.1's existing alert
+path — a genuinely interested reply escalates in real time on the same day it arrives, exactly as it does
+today, regardless of whether that day's outbound plan has been reviewed yet.
+
+### 18.5 Reflection is supervised hypothesis-writing, not self-modification
+
+§6's Learning Engine already does automated A/B copy optimisation at the level of individual template
+variants. Phase 19's Strategy Reflection Engine operates one layer above that — not "which of these two
+subject lines won," but "which *category* of angle and tone tends to work for this kind of business, and
+why." The architecture deliberately stops short of the AI rewriting its own prompts, its own weights, or
+its own code: a reflection pass produces a `strategy_insights` row — an inspectable hypothesis with a
+`confidence` and a `rationale` traceable to real aggregated numbers — and that row is *inert data* until a
+future Phase 18 plan reads it and a human approves the plan that used it. This is the concrete, buildable
+version of what the operator asked for across several rounds of `discussion.md` clarification: an AI that
+"seekhta hai" (learns) from its own real outcomes and proposes what to try next, while the actual decision
+to act on that proposal always passes through a human — never a fully unsupervised, continuously
+self-rewriting agent, which real B2B reply latency and this project's own modest daily send volume would
+make unsafe to trust blind.
+
+### 18.6 Marketing content is a strategic decision, not a support-ticket queue
+
+A related but distinct capability, added the same day as the rest of this chapter's specification: the AI
+does not wait to be asked for outreach copy or a demo-video script. It decides, from the same class of real
+signal §18.5's reflection engine and §16.7's coverage-gap detector already read — a product whose knowledge
+base is thin on proof, or whose real performance is trailing — that a specific product needs new marketing
+content *today*, drafts it, and offers it as one more item in the daily plan a human reviews (§18.4). This
+is worth naming as its own principle rather than folding silently into §18.1's inventory: a demo-video
+script and a piece of outreach copy are still **inventory**, in exactly §18.1's sense — the AI composes
+them from real product truth, never invents a fact to make them punchier — but *deciding a product needs
+one* is a genuine strategic judgment, the same kind of judgment §18.4's daily loop already trusts the AI to
+make about targeting and cadence.
+
+**The creative bar this content is held to is deliberately real and deliberately bounded.** The operator's
+own standard — content specific and sharp enough to out-compete whatever a rival sends, never generic
+AI-boilerplate — governs *how the true facts are told*, not *what facts exist*. This project adds no
+competitor-research capability alongside it: "beat the competition" is a creative-execution target the
+generation prompt is held to, not a claim grounded in real data about any named competitor. And the
+governance loop stays identical to everything else in this chapter — a drafted asset is not real inventory
+until a human approves it, at which point (and not before) it becomes a citable `knowledge_base_items` row
+the conversation engine (§16.3) and future reflection (§18.5) can both draw on.
+
+### 18.7 What this chapter does not change
+
+Stated explicitly, same discipline as §17.7:
+
+- **§8.1's Mandatory Human Escalation Triggers fire exactly as they do today**, on every reply, regardless
+  of daily-plan review state — §18.4 states this as the chapter's one non-negotiable boundary.
+- **QC's veto is still absolute** (§2, §8, §17.1) and still fails closed. A daily plan's drafted content
+  passes through the same QC review as any other draft before it can be marked approved.
+- **The autonomous-outreach kill-switch still gates every real send**; Phase 18 adds a second, equally
+  default-off switch (`DAILY_AI_LOOP_ENABLED`) rather than replacing or loosening the first one.
+- **The ICP Strategy Agent's own targeting config is unchanged** — a campaign's `target_segment` can
+  freely explore beyond it (§18.3, revised 2026-09-01), but never writes back to or mutates
+  `products.target_regions`/`target_business_categories`/`target_person_roles` themselves.
+- **No `strategy_insights` row, however confident, ever writes to a prompt, a model configuration, or any
+  other piece of code** — §18.5's boundary is enforced the same way Phase 19's DoD gate enforces it: by
+  absence, not by policy alone.
+- **A `MARKETING_ASSET` becomes real inventory only after a human approves it** — §18.6's creative
+  latitude is about tone and structure, never a second route to inventing a fact the rest of this chapter
+  refuses to invent.
+
+---
+
 ## Conclusion & Architectural Sign-Off
 
 This **AI Sales Intelligence PRD v2** defines the complete cognitive, decision-making, and organizational framework required to transform the technical plumbing (Flask, SQLite, Playwright, and — as actually implemented, per the v2.2 amendment — an in-process discovery scheduler rather than n8n) into an **autonomous, enterprise-grade AI Sales Team** — and, with Chapter 15, extends that framework upward into a governing **Executive Business Layer (AI-BOS)** that turns the sales team into a revenue-and-capacity-aware business operating system.
 
-By separating the **Technical Execution Layer (PRD v3)**, the **Cognitive Brain Layer (Chapters 1–12)**, the **Enterprise Executive Layer (Chapter 15)**, the **Multi-Channel Engagement & Adaptive Messaging Layer (Chapter 16)**, and the **Message Composition, Declared Intent & Person-Level Relevance layer (Chapter 17)**, the system achieves maximum modularity, zero-hallucination reliability, strict compliance, and scalable human-AI collaboration — with every layer's autonomy bounded by the one above it, and every channel's autonomy bounded by what that channel's own platform and jurisdiction actually permit.
+By separating the **Technical Execution Layer (PRD v3)**, the **Cognitive Brain Layer (Chapters 1–12)**, the **Enterprise Executive Layer (Chapter 15)**, the **Multi-Channel Engagement & Adaptive Messaging Layer (Chapter 16)**, the **Message Composition, Declared Intent & Person-Level Relevance layer (Chapter 17)**, and the **AI Sales Manager — Knowledge, Strategy & Daily Review Loop (Chapter 18)**, the system achieves maximum modularity, zero-hallucination reliability, strict compliance, and scalable human-AI collaboration — with every layer's autonomy bounded by the one above it, and every channel's autonomy bounded by what that channel's own platform and jurisdiction actually permit.
 
-**On the progression of Chapters 15 → 16 → 17.** Each was written from a different vantage point, and
+**On the progression of Chapters 15 → 16 → 17 → 18.** Each was written from a different vantage point, and
 the sequence is worth reading as one argument. Chapter 15 added a layer *above* the brain to govern it.
 Chapter 16 *widened* the brain, from an operator who could not yet see it work. Chapter 17 *sharpens*
 it, from the same operator watching it work correctly and finding that correctness was not sufficient —
 a message can be truthful, compliant, well-targeted and measured, and still fail to persuade, fail to be
 answerable in one click, repeat itself, contradict itself across channels, or land in front of someone
-with no basis to judge it. Chapters 16 and 17 together make the point that an autonomous system's
-maturity is measured by the *quality* of the problems its operator is left with.
+with no basis to judge it. Chapter 18 *gives the brain a memory* — from the same operator's own boss
+finding that even a persuasive, correct system was still just automation, because nothing about it
+decided or learned. Chapters 16, 17 and 18 together make the point that an autonomous system's maturity
+is measured by the *quality* of the problems its operator is left with — and Chapter 18 is careful to
+solve "does it decide and learn" without ever touching "does a human still see everything that matters,
+the moment it matters" (§8.1), which stays exactly as strict as it has been since Chapter 4.

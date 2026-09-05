@@ -22,8 +22,9 @@ import logging
 from flask import Blueprint, jsonify, request
 
 from database.db_config import SessionLocal
-from database.models import OutreachLog
+from database.models import Lead, OutreachLog
 from datetime import datetime
+from services.campaign_service import evaluate_execution_watchdog
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +84,11 @@ def resend_event():
                 log.status = "BOUNCED"
                 db.commit()
                 logger.info("Resend %s: outreach_log %s marked bounced", event_type, log.id)
+                # Phase 20 Step 20.3 -- a real bounce is exactly the event that can trigger
+                # the Execution Watchdog; the lead's own campaign_id (if any) decides scope.
+                lead = db.get(Lead, log.lead_id)
+                if lead and lead.campaign_id:
+                    evaluate_execution_watchdog(db, lead.campaign_id)
     except Exception:  # noqa: BLE001 - never let a malformed/unexpected payload 500 a webhook
         logger.exception("failed processing Resend webhook payload")
     finally:
