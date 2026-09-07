@@ -6364,3 +6364,9 @@ User correction: todos must come from AI Manager only (no Python-invented rows),
 - `create_campaign` immediately calls `generate_campaign_todo` (no wait for 06:00).
 - Signal fingerprint includes `tagged_lead_count` + `campaign_status`; urgent changes skip 2h cooldown so leads arriving same day re-run AI Manager.
 - Approve-handler / dismiss-on-Mark-approved still resolve AI-written `Approve campaign` cards.
+
+### Campaign preview: WhatsApp template review (2026-09-07)
+
+User catch: Daily Review only showed Email (Formatted/Simple) — no way to review the WhatsApp first-touch template that real sends use.
+
+**Fix:** `build_sample_whatsapp_preview` in `campaign_service.py` (same selection as `outreach_wa_handler` first touch). `get_daily_review` returns `sample_whatsapp`. `DailyReviewPanel`: Email | WhatsApp tabs; WA shows filled body + link to WhatsApp Templates.

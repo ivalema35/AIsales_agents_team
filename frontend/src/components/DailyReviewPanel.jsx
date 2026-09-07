@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, MessageSquareWarning } from "lucide-react";
 import { api } from "../api/client";
 import TodoItemCard from "./TodoItemCard";
@@ -24,6 +25,8 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   const [clearingWatchdog, setClearingWatchdog] = useState(false);
   const [journalExpanded, setJournalExpanded] = useState(false);
   const [settingMode, setSettingMode] = useState(false);
+  // Email vs WhatsApp preview — Formatted/Simple chips only apply to email.
+  const [previewChannel, setPreviewChannel] = useState("email");
 
   useEffect(() => {
     api.getCampaignDailyReview(campaign.id).then(setReview).catch((err) => setError(err.message));
@@ -195,7 +198,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
         </div>
       )}
 
-      {review.sample_draft ? (
+      {(review.sample_draft || review.sample_whatsapp) ? (
         <div className="mt-4 border-t border-line pt-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <button
@@ -204,129 +207,191 @@ export function CampaignReviewCard({ campaign, onApproved }) {
             >
               {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
               {review.sample_is_kickoff_template
-                ? "Preview: starter message template"
-                : `Preview: sample message${review.sample_lead_company ? ` for ${review.sample_lead_company}` : ""}`}
+                ? "Preview: starter message templates"
+                : `Preview: sample messages${review.sample_lead_company ? ` for ${review.sample_lead_company}` : ""}`}
             </button>
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                disabled={settingMode || review.email_render_mode === "HTML"}
-                onClick={() => setEmailRenderMode("HTML")}
-                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
-                  review.email_render_mode === "HTML"
-                    ? "bg-ink-900 text-parchment-raised"
-                    : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
-                }`}
-              >
-                Formatted email
-              </button>
-              <button
-                type="button"
-                disabled={settingMode || review.email_render_mode === "TEXT"}
-                onClick={() => setEmailRenderMode("TEXT")}
-                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
-                  review.email_render_mode === "TEXT"
-                    ? "bg-ink-900 text-parchment-raised"
-                    : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
-                }`}
-              >
-                Simple text
-              </button>
-            </div>
           </div>
+
           {expanded && (
             <div className="mt-2 flex flex-col gap-2.5">
-              <p className="text-[10px] italic text-ink-500">
-                {review.sample_is_kickoff_template ? (
+              <div className="flex flex-wrap items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPreviewChannel("email")}
+                  className={`rounded-md px-2.5 py-1 text-[11px] font-semibold ${
+                    previewChannel === "email"
+                      ? "bg-ink-900 text-parchment-raised"
+                      : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
+                  }`}
+                >
+                  Email
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewChannel("whatsapp")}
+                  disabled={!review.sample_whatsapp}
+                  className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 ${
+                    previewChannel === "whatsapp"
+                      ? "bg-ink-900 text-parchment-raised"
+                      : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
+                  }`}
+                >
+                  WhatsApp
+                </button>
+                {previewChannel === "email" && review.sample_draft && (
                   <>
-                    No leads tagged yet -- this is a <span className="font-medium">template</span> using
-                    literal <span className="font-medium">[Business Name]</span> and{" "}
-                    <span className="font-medium">[Pain Point]</span>. Shape and tone only; each real
-                    send later fills that lead&apos;s own name and pain. Give feedback below to reshape
-                    it before Approve.
-                  </>
-                ) : (
-                  <>
-                    This is a real, worked example -- not a copy sent as-is. [Business Name] here ={" "}
-                    <span className="font-medium">{review.sample_lead_company}</span>
-                    {review.sample_pain_points?.length > 0 && (
-                      <> · [Pain Point] here = <span className="font-medium">{review.sample_pain_points[0]}</span></>
-                    )}
-                    . Each real lead&apos;s own message uses their own real business name and pain point.
-                  </>
-                )}
-              </p>
-              {review.email_render_mode === "HTML" && review.sample_draft_html ? (
-                <div className="overflow-hidden rounded-md border border-line bg-white">
-                  <iframe
-                    title="Email HTML preview"
-                    srcDoc={review.sample_draft_html}
-                    sandbox=""
-                    className="h-[420px] w-full border-0 bg-white"
-                  />
-                </div>
-              ) : (
-                <div className="rounded-md bg-parchment-raised-2 p-2.5">
-                  <p className="text-xs font-semibold text-ink-900">{review.sample_draft.subject}</p>
-                  <p className="mt-1 whitespace-pre-line text-xs text-ink-700">{review.sample_draft.body}</p>
-                </div>
-              )}
-
-              {/* Phase 20 Step 20.4 -- an honest, additive disagreement when the instruction
-                  above genuinely conflicted with real data. The draft already reflects the
-                  instruction as given; this never blocks or undoes that, it's shown
-                  alongside so a human sees the AI's real reaction, not silent compliance. */}
-              {pushback && (
-                <div className="rounded-md border border-dashed border-alert-600 bg-alert-100 p-2.5">
-                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-alert-700">
-                    <MessageSquareWarning size={11} /> AI&apos;s honest take
-                  </span>
-                  <p className="mt-1 text-xs text-ink-900">{pushback}</p>
-                </div>
-              )}
-
-              {aiSuggestion && (
-                <div className="rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
-                  <span className="text-[11px] font-semibold text-gold-700">
-                    AI also suggests
-                  </span>
-                  <p className="mt-1 text-xs text-ink-900">{aiSuggestion}</p>
-                </div>
-              )}
-
-              {showFeedback ? (
-                <form onSubmit={submitFeedback} className="flex flex-col gap-1.5">
-                  <input
-                    autoFocus
-                    value={instruction}
-                    onChange={(e) => setInstruction(e.target.value)}
-                    placeholder="e.g. isko formal karo, ek ROI line add karo"
-                    className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
-                  />
-                  <div className="flex items-center gap-2">
+                    <span className="mx-1 text-ink-500">·</span>
                     <button
-                      type="submit"
-                      disabled={revising || !instruction.trim()}
-                      className="rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                      type="button"
+                      disabled={settingMode || review.email_render_mode === "HTML"}
+                      onClick={() => setEmailRenderMode("HTML")}
+                      className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
+                        review.email_render_mode === "HTML"
+                          ? "bg-ink-900 text-parchment-raised"
+                          : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
+                      }`}
                     >
-                      {revising ? "Revising…" : "Regenerate"}
+                      Formatted
                     </button>
                     <button
                       type="button"
-                      onClick={() => setShowFeedback(false)}
-                      className="text-[11px] font-medium text-ink-500 hover:text-ink-900"
+                      disabled={settingMode || review.email_render_mode === "TEXT"}
+                      onClick={() => setEmailRenderMode("TEXT")}
+                      className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
+                        review.email_render_mode === "TEXT"
+                          ? "bg-ink-900 text-parchment-raised"
+                          : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
+                      }`}
                     >
-                      Cancel
+                      Simple text
                     </button>
+                  </>
+                )}
+              </div>
+
+              {previewChannel === "email" && review.sample_draft && (
+                <>
+                  <p className="text-[10px] italic text-ink-500">
+                    {review.sample_is_kickoff_template ? (
+                      <>
+                        No leads tagged yet -- this is a <span className="font-medium">template</span> using
+                        literal <span className="font-medium">[Business Name]</span> and{" "}
+                        <span className="font-medium">[Pain Point]</span>. Shape and tone only; each real
+                        send later fills that lead&apos;s own name and pain. Give feedback below to reshape
+                        it before Approve.
+                      </>
+                    ) : (
+                      <>
+                        This is a real, worked email example -- not a copy sent as-is. [Business Name] here ={" "}
+                        <span className="font-medium">{review.sample_lead_company}</span>
+                        {review.sample_pain_points?.length > 0 && (
+                          <> · [Pain Point] here = <span className="font-medium">{review.sample_pain_points[0]}</span></>
+                        )}
+                        . Each real lead&apos;s own message uses their own real business name and pain point.
+                      </>
+                    )}
+                  </p>
+                  {review.email_render_mode === "HTML" && review.sample_draft_html ? (
+                    <div className="overflow-hidden rounded-md border border-line bg-white">
+                      <iframe
+                        title="Email HTML preview"
+                        srcDoc={review.sample_draft_html}
+                        sandbox=""
+                        className="h-[420px] w-full border-0 bg-white"
+                      />
+                    </div>
+                  ) : (
+                    <div className="rounded-md bg-parchment-raised-2 p-2.5">
+                      <p className="text-xs font-semibold text-ink-900">{review.sample_draft.subject}</p>
+                      <p className="mt-1 whitespace-pre-line text-xs text-ink-700">{review.sample_draft.body}</p>
+                    </div>
+                  )}
+
+                  {pushback && (
+                    <div className="rounded-md border border-dashed border-alert-600 bg-alert-100 p-2.5">
+                      <span className="flex items-center gap-1.5 text-[11px] font-semibold text-alert-700">
+                        <MessageSquareWarning size={11} /> AI&apos;s honest take
+                      </span>
+                      <p className="mt-1 text-xs text-ink-900">{pushback}</p>
+                    </div>
+                  )}
+
+                  {aiSuggestion && (
+                    <div className="rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
+                      <span className="text-[11px] font-semibold text-gold-700">
+                        AI also suggests
+                      </span>
+                      <p className="mt-1 text-xs text-ink-900">{aiSuggestion}</p>
+                    </div>
+                  )}
+
+                  {showFeedback ? (
+                    <form onSubmit={submitFeedback} className="flex flex-col gap-1.5">
+                      <input
+                        autoFocus
+                        value={instruction}
+                        onChange={(e) => setInstruction(e.target.value)}
+                        placeholder="e.g. isko formal karo, ek ROI line add karo"
+                        className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="submit"
+                          disabled={revising || !instruction.trim()}
+                          className="rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                        >
+                          {revising ? "Revising…" : "Regenerate"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowFeedback(false)}
+                          className="text-[11px] font-medium text-ink-500 hover:text-ink-900"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <button
+                      onClick={() => setShowFeedback(true)}
+                      className="w-fit text-[11px] font-medium text-ink-500 hover:text-ink-900"
+                    >
+                      Give feedback
+                    </button>
+                  )}
+                </>
+              )}
+
+              {previewChannel === "whatsapp" && review.sample_whatsapp && (
+                <>
+                  <p className="text-[10px] italic text-ink-500">
+                    Filled first-touch WhatsApp for{" "}
+                    <span className="font-medium">{review.sample_whatsapp.filled_for}</span>
+                    {" "}using template{" "}
+                    <span className="font-medium">{review.sample_whatsapp.template_name}</span>
+                    {review.sample_whatsapp.source === "library"
+                      ? " (shared library)"
+                      : review.sample_whatsapp.source === "product"
+                        ? " (this product)"
+                        : " (shared approved)"}.
+                    Real sends use this same template — wording is Meta-approved, not free-drafted.
+                  </p>
+                  <div className="rounded-md border border-line bg-parchment p-3">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+                      WhatsApp · {review.sample_whatsapp.template_name}
+                    </p>
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink-800">
+                      {review.sample_whatsapp.body}
+                    </p>
                   </div>
-                </form>
-              ) : (
-                <button
-                  onClick={() => setShowFeedback(true)}
-                  className="w-fit text-[11px] font-medium text-ink-500 hover:text-ink-900"
-                >
-                  Give feedback
-                </button>
+                  <p className="text-[11px] text-ink-600">{review.sample_whatsapp.manage_hint}</p>
+                  <Link
+                    to="/whatsapp-templates"
+                    className="w-fit text-[11px] font-medium text-ink-700 underline decoration-line underline-offset-2 hover:text-ink-900"
+                  >
+                    Open WhatsApp Templates
+                  </Link>
+                </>
               )}
             </div>
           )}

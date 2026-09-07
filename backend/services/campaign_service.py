@@ -967,6 +967,64 @@ PAST_CAMPAIGNS: {json.dumps(campaign_summaries, ensure_ascii=False)}
     return result
 
 
+def build_sample_whatsapp_preview(db, product, sample_lead, pain_points: list) -> dict | None:
+    """What the first WhatsApp touch would look like for this campaign's sample lead —
+    same selection path as jobs/outreach_wa_handler.py's first-touch branch (product-
+    scoped APPROVED template, else TEMPLATE_LIBRARY). Read-only preview for Daily Review;
+    never sends, never invents Meta-unapproved copy."""
+    from services.outreach.whatsapp_template_service import get_approved_first_touch_template
+    from services.outreach.whatsapp_templates import (
+        TEMPLATE_LIBRARY, select_template, fill_variables, fill_variables_for_labels,
+        interpolate_template,
+    )
+
+    if sample_lead:
+        lead_profile = {
+            "company_name": sample_lead.company_name,
+            "contact_person_name": sample_lead.contact_person_name,
+        }
+        company_label = sample_lead.company_name
+    else:
+        lead_profile = {
+            "company_name": "[Business Name]",
+            "contact_person_name": "[Contact Name]",
+        }
+        # Library pain filler expects dicts with evidence_quote when using fill_variables
+        pain_points = [{"evidence_quote": "[Pain Point]"}]
+        company_label = "[Business Name]"
+
+    product_id = product.id if product else None
+    first_touch = get_approved_first_touch_template(db, product_id=product_id)
+    if first_touch:
+        body_text = first_touch.body_text or ""
+        labels = json.loads(first_touch.variable_labels or "[]")
+        values = fill_variables_for_labels(labels, lead_profile, pain_points or [])
+        return {
+            "template_name": first_touch.name,
+            "purpose": "FIRST_TOUCH",
+            "source": "product" if first_touch.product_id else "shared",
+            "body": interpolate_template(body_text, values),
+            "body_template": body_text,
+            "filled_for": company_label,
+            "manage_hint": "This is the approved WhatsApp first-touch template that real sends use. "
+                           "To change wording, go to WhatsApp Templates — Meta must re-approve edits.",
+        }
+
+    key = select_template(pain_points or [])
+    spec = TEMPLATE_LIBRARY[key]
+    values = fill_variables(key, lead_profile, pain_points or [])
+    return {
+        "template_name": spec["name"],
+        "purpose": "FIRST_TOUCH",
+        "source": "library",
+        "body": interpolate_template(spec.get("body_text") or "", values),
+        "body_template": spec.get("body_text") or "",
+        "filled_for": company_label,
+        "manage_hint": "Using the shared WhatsApp library template. Add a product-specific "
+                       "approved template under WhatsApp Templates if you want a custom first touch.",
+    }
+
+
 def get_daily_review(db, campaign_id: str) -> dict:
     """Phase 18 Step 18.2 -- the 2-minute morning review: today's real to-do (Step 18.1)
     plus ONE real sample draft for this campaign, so the human sees actual content, not
@@ -988,6 +1046,7 @@ def get_daily_review(db, campaign_id: str) -> dict:
     sample_draft = None
     sample_pain_points = []
     sample_is_kickoff_template = False
+    raw_pain_points = []
     if sample_lead:
         insight = (
             db.query(LeadReviewInsight)
@@ -995,7 +1054,7 @@ def get_daily_review(db, campaign_id: str) -> dict:
             .order_by(LeadReviewInsight.analyzed_at.desc())
             .first()
         )
-        pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+        raw_pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
         product_brief = {"title": product.title, "description": product.description,
                          "value_proposition": product.value_proposition}
         lead_profile = {"company_name": sample_lead.company_name,
@@ -1003,17 +1062,19 @@ def get_daily_review(db, campaign_id: str) -> dict:
                         "contact_person_role": sample_lead.contact_person_role}
         content_assets = get_available_assets(db, product.id) or None
         sample_draft = draft_structured_email(
-            db, sample_lead.id, product_brief, lead_profile, pain_points,
+            db, sample_lead.id, product_brief, lead_profile, raw_pain_points,
             content_assets=content_assets,
             tone_directive=campaign.strategy_angle or product.default_tone,
             format_directive=format_directive,
         )
-        sample_pain_points = [_pain_point_text(p) for p in pain_points]
+        sample_pain_points = [_pain_point_text(p) for p in raw_pain_points]
     else:
         # No real lead yet -- Step 18.1b kickoff template preview (cached on campaign).
         sample_draft = ensure_kickoff_draft(db, campaign, product)
         sample_is_kickoff_template = sample_draft is not None
         sample_pain_points = ["[Pain Point]"] if sample_draft else []
+
+    sample_whatsapp = build_sample_whatsapp_preview(db, product, sample_lead, raw_pain_points)
 
     # Phase 21 -- this campaign's own real, individually-addressable to-do queue, newest
     # first. Replaces `todo`/`pending_proposal`/`approved_today` entirely: a structural
@@ -1035,6 +1096,8 @@ def get_daily_review(db, campaign_id: str) -> dict:
         "sample_draft": sample_draft,
         # HTML mode only: real Phase 11 designed preview (preview-only unsubscribe #).
         "sample_draft_html": build_sample_draft_html(render_mode, sample_draft),
+        # First-touch WhatsApp preview (same template selection as a real WA send).
+        "sample_whatsapp": sample_whatsapp,
         "sample_lead_id": sample_lead.id if sample_lead else None,
         "sample_lead_company": sample_lead.company_name if sample_lead else ("[Business Name]" if sample_is_kickoff_template else None),
         "sample_is_kickoff_template": sample_is_kickoff_template,
