@@ -6085,3 +6085,30 @@ User feedback: Timeline showed backend jargon (`SCORING - Score`, `HUMAN_ESCALAT
 - Status badges: `Needs your review` / `Reviews checked` / `Done` -- never SCREAMING_SNAKE.
 - Score/review payloads summarized (`Marked COLD - 35/100`); opaque JSON hidden from default detail.
 - Confidence via existing `confidencePlain`; expand link `More about this`.
+
+### 🐛 Real bug: signal-driven tick missed a half-set→full-set target change (2026-09-07)
+
+User ne apni real campaign pe pucha "AI ne mujhe Discovery on karne ke liye bola hi nahi" — investigate
+karne se **2 alag wajah** mili, dono real:
+
+1. **Meri apni process ki galti**: pichla fix karte waqt maine purana "Discovery off" note seedha
+   script se dismiss kar diya tha (testing cleanup) — user ne wo kabhi dashboard pe dekha hi nahi.
+2. **Ek genuinely alag system bug** (isi din ka pehla bug, industry/location wala, use dobara ek
+   ALAG jagah): `todo_signal_fingerprint()` — jo function decide karta he "kuch change hua ya nahi,
+   mid-day recheck chalau ya nahi" — ab bhi wahi purani coarse check use kar raha tha:
+   `has_target = bool(target_segment)`. Location-only target aur fully-set target dono ke liye ye
+   `True` hi rehta he (dict kabhi khali nahi tha) — matlab jab user ne Proposal approve kiya (target
+   half-set se full-set hua), signal "same" dikha, aur system **2.5+ ghante** chup raha jab tak
+   Discovery-off nudge dena chahiye tha turant (agle poll me).
+
+**Fix**: `todo_signal_fingerprint()` ko bhi wahi 3 explicit ground-truth flags dena (`target_has_
+industry`, `target_has_location`, `lead_count_goal_set`) jo prompt khud check karta he, coarse
+`has_target` boolean ki jagah. Local test se verify kiya (half-set → full-set transition pe fingerprint
+change hota he, pehle nahi hota tha).
+
+**Deploy + real automatic verify (koi manual trigger nahi)**: commit `e093b79`, VPS pull + import
+sanity + 5 services restart. Restart hote hi scheduler ka pehla tick khud chala — log me seedha dikha:
+`"signal-driven todo tick -> campaign 238a...regenerated (signal changed)"`. Real campaign pe naya
+PENDING "Discovery off" to-do turant ban gaya, bilkul sahi wording ke sath ("targeted at multiple local
+business types in Mehsana..."). **Poora loop ab genuinely automatic he — koi manual intervention nahi
+lagi verify karne ke liye.**

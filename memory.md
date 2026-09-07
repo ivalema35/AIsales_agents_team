@@ -657,11 +657,21 @@ hi is-turn ke proposed target ko already-real maan kar "Discovery off" bhi bol r
 kiya. 3 scenario test kiye (sirf industry / sirf lead-count / kuch nahi), sab sahi. Commit `4c0d4ba`,
 VPS deploy + services restart.
 
+**🐛 Real bug: signal-tick half-set→full-set target change miss kar raha tha, 2026-09-07** — user ne
+apni real campaign pe pucha "AI ne Discovery on karne bola hi nahi." 2 wajah mili: (1) maine khud
+purana "Discovery off" note script se dismiss kar diya tha testing ke dauraan (user ne kabhi dekha
+nahi) — meri process ki galti; (2) genuine alag bug — `todo_signal_fingerprint()` bhi wahi purani
+coarse `has_target = bool(target_segment)` check use kar raha tha jo prompt me pehle hi fix ki thi,
+isliye half-set→full-set change (Proposal approve) ko "kuch nahi badla" samajh raha tha, aur system
+2.5+ ghante chup raha. Fix: `target_has_industry`/`target_has_location`/`lead_count_goal_set` explicit
+flags. **Real automatic verify** (koi manual trigger nahi) — restart ke turant baad scheduler ne khud
+signal change detect kiya, naya "Discovery off" to-do turant bana. Commit `e093b79`, deployed.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
-+ AI Manager setup-completion for partial campaign targets (industry/location/lead-count, any
-combination) — **sab kuch VPS par LIVE he** (commit `4c0d4ba`, deployed 2026-09-07).** Baaki: Step 16.8
++ AI Manager setup-completion for partial campaign targets (any combination) + signal-tick fingerprint
+fix — **sab kuch VPS par LIVE he** (commit `e093b79`, deployed 2026-09-07).** Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, saare 8
 products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi active na ho).
