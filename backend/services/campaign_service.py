@@ -254,6 +254,34 @@ def _ready_to_dispatch_count(db, campaign_id: str) -> int:
     ).count()
 
 
+def _campaign_operational_readiness(db, campaign, product) -> list[dict]:
+    """2026-09-07, user's own real architectural complaint: every real blocker found this
+    session (Discovery off, a half-set target, now product.is_active) needed its OWN
+    hand-written prompt paragraph before the strategist would ever mention it -- a genuine
+    AI Sales Manager reviewing an account wouldn't need a developer to separately teach it
+    about each new way things can be silently broken; it would actually check the account's
+    real operational state. This is that check, as real code (never inferred by the model
+    from scattered raw fields) -- a plain list of {name, ok, detail}. CAMPAIGN_TODO_SYSTEM_
+    PROMPT gets ONE general instruction to surface any `ok: false` entry, rather than one
+    hardcoded paragraph per gate -- so a FUTURE gate only needs a new entry appended here,
+    never another round of prompt surgery.
+
+    Deliberately separate from the existing READY_TO_DISPATCH_COUNT/DISCOVERY_ENABLED
+    signals below (proven, carefully worded, left untouched) -- this covers gates NOT
+    already handled by those two, starting with the one just found live."""
+    checks = [{
+        "name": "product_active",
+        "ok": bool(product.is_active),
+        "detail": (
+            "Product is active." if product.is_active else
+            f'Product "{product.title}" is INACTIVE -- discovery only ever scans active '
+            "products, so this campaign is never even considered for a real search, "
+            "regardless of how its own target/Discovery settings are set."
+        ),
+    }]
+    return checks
+
+
 def evaluate_execution_watchdog(db, campaign_id: str | None) -> dict | None:
     """Phase 20 Step 20.3 -- a single, event-triggered anomaly check, called right after a
     real OutreachLog transitions to FAILED/BOUNCED (api/webhooks.py's Resend handler,
@@ -571,14 +599,21 @@ def todo_signal_fingerprint(db, campaign: Campaign) -> dict:
     by human approval, and the "Discovery is off" reminder that should have followed within
     one poll interval never fired -- would have sat silent until tomorrow's daily floor tick.
     Now mirrors the same three explicit ground-truth flags the prompt itself checks, so ANY
-    real change to any of them is a real change here too."""
+    real change to any of them is a real change here too.
+
+    2026-09-07 follow-up: also folds in _campaign_operational_readiness()'s own `ok` values
+    (starting with product.is_active) -- a product being switched active later must also
+    wake this campaign's mid-day check, not just wait for tomorrow's daily floor."""
     metrics = compute_campaign_metrics(db, campaign.id)
     target = json.loads(campaign.target_segment or "{}")
+    product = db.get(Product, campaign.product_id)
+    readiness = _campaign_operational_readiness(db, campaign, product) if product else []
     return {
         **metrics,
         "target_has_industry": bool(target.get("industry")),
         "target_has_location": bool(target.get("location")),
         "lead_count_goal_set": campaign.lead_count_goal is not None,
+        "operational_readiness": {c["name"]: c["ok"] for c in readiness},
     }
 
 
@@ -644,6 +679,7 @@ def generate_campaign_todo(db, campaign_id: str) -> dict:
     # same ground-truth-flag treatment as the two above (never inferred from whether the
     # column happens to be non-null in some other unrelated code path).
     lead_count_goal_set = campaign.lead_count_goal is not None
+    operational_readiness = _campaign_operational_readiness(db, campaign, product)
 
     prompt = CAMPAIGN_TODO_SYSTEM_PROMPT + f"""
 CAMPAIGN_NAME: {json.dumps(campaign.name, ensure_ascii=False)}
@@ -664,6 +700,7 @@ SIBLING_CAMPAIGNS: {json.dumps(sibling_campaigns, ensure_ascii=False)}
 READY_TO_DISPATCH_COUNT: {json.dumps(ready_to_dispatch_count)}
 AUTONOMOUS_OUTREACH_ENABLED: {json.dumps(outreach_enabled)}
 DISCOVERY_ENABLED: {json.dumps(discovery_enabled)}
+OPERATIONAL_READINESS: {json.dumps(operational_readiness, ensure_ascii=False)}
 """
     try:
         data = call_json(prompt, temperature=0.3)
