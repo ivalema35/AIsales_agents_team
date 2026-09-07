@@ -6340,3 +6340,27 @@ User asked where approval is — badge said `Waiting for your OK` but AI Sales Man
 2. **AI Manager todo Approve** — only when PENDING `TodoItem`s exist (targeting/goal proposals).
 
 **Fix:** `Approve campaign` action box on Campaign Detail when status is PROPOSED; clarify empty AI Manager copy so it doesn't look like campaign approval lives there.
+
+### VPS deploy — campaign Draft/Approve UX (2026-09-07)
+
+User: deploy. Commit `4a48577` pushed. VPS `git pull --ff-only` `0cab2d7..4a48577` (frontend-only), DB mtime unchanged, `npm run build` ? live JS `index-CRVtVovP.js`. `AUTONOMOUS_OUTREACH_ENABLED=false` untouched. No service restart (no backend change in this pull).
+
+### AI Manager missing Approve/Review todos (2026-09-07)
+
+User catch: Dashboard Inbox / Calendar never asked to approve a Draft campaign or review email/WA before first send -- even after leads existed.
+
+**Root cause:** `CAMPAIGN_STATUS` was never passed into `generate_campaign_todo`; prompt's \"setup complete + nothing to react to\" path left `todo` empty; standing human-review cues were not Python ground truth.
+
+**Fix:** `_ensure_standing_review_todos` always creates fixed-label non-blocker todos `Approve campaign` (status PROPOSED) and `Review messages` (leads>0 and sent==0). Inbox Approve on `Approve campaign` flips status to APPROVED; Campaign page Mark as approved dismisses the matching todo. Calendar chip label Draft. Prompt note so LLM does not duplicate.
+
+### AI Manager todos — no hardcode, same-day when needed (2026-09-07)
+
+User correction: todos must come from AI Manager only (no Python-invented rows), but when needed (Approve campaign / Review messages) they must appear same day — not wait for tomorrow.
+
+**Reverted** `_ensure_standing_review_todos` hardcode.
+
+**Kept (AI-only path):**
+- Pass `CAMPAIGN_STATUS` + `TAGGED_LEAD_COUNT` into prompt; explicit fixed-label instructions for Approve campaign / Review messages; third-case no longer forces empty todo when those apply.
+- `create_campaign` immediately calls `generate_campaign_todo` (no wait for 06:00).
+- Signal fingerprint includes `tagged_lead_count` + `campaign_status`; urgent changes skip 2h cooldown so leads arriving same day re-run AI Manager.
+- Approve-handler / dismiss-on-Mark-approved still resolve AI-written `Approve campaign` cards.

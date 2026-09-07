@@ -131,6 +131,12 @@ ACTIVE_CAMPAIGN_STATUSES = ("PROPOSED", "APPROVED", "RUNNING")
 # see generate_campaign_todo()'s use of this alongside operational_readiness's own labels.
 _FIXED_BLOCKER_LABELS = {"Discovery off", "Ready to send"}
 
+# Exact labels the AI Manager must use when it raises these cues (so Approve / Campaign-page
+# Mark as approved can resolve the matching Inbox card). The AI writes the text; Python
+# never invents these to-do rows.
+_APPROVE_CAMPAIGN_LABEL = "Approve campaign"
+_REVIEW_MESSAGES_LABEL = "Review messages"
+
 
 def resolve_auto_campaign_id(db, product_id: str) -> str | None:
     """A new lead for a product auto-joins that product's own campaign -- but only when
@@ -682,13 +688,37 @@ def todo_signal_fingerprint(db, campaign: Campaign) -> dict:
     target = json.loads(campaign.target_segment or "{}")
     product = db.get(Product, campaign.product_id)
     readiness = _campaign_operational_readiness(db, campaign, product) if product else []
+    tagged_lead_count = db.query(Lead).filter(Lead.campaign_id == campaign.id).count()
     return {
         **metrics,
         "target_has_industry": bool(target.get("industry")),
         "target_has_location": bool(target.get("location")),
         "lead_count_goal_set": campaign.lead_count_goal is not None,
+        "campaign_status": campaign.status,
+        # 2026-09-07 -- without this, leads arriving (0→N) while sent stays 0 left the
+        # fingerprint unchanged, so signal-driven tick never re-ran the AI Manager same day.
+        "tagged_lead_count": tagged_lead_count,
         "operational_readiness": {c["name"]: c["ok"] for c in readiness},
     }
+
+
+def dismiss_pending_todos_by_label(db, campaign_id: str, label: str) -> int:
+    """Resolve PENDING todos with this exact label for one campaign (e.g. after the human
+    Marks as approved on the Campaign page, the matching Inbox card should not keep asking)."""
+    rows = (
+        db.query(TodoItem)
+        .filter(
+            TodoItem.campaign_id == campaign_id,
+            TodoItem.status == "PENDING",
+            TodoItem.label == label,
+        )
+        .all()
+    )
+    now = datetime.utcnow()
+    for item in rows:
+        item.status = "APPROVED"
+        item.resolved_at = now
+    return len(rows)
 
 
 def generate_campaign_todo(db, campaign_id: str) -> dict:
@@ -757,11 +787,13 @@ def generate_campaign_todo(db, campaign_id: str) -> dict:
 
     prompt = CAMPAIGN_TODO_SYSTEM_PROMPT + f"""
 CAMPAIGN_NAME: {json.dumps(campaign.name, ensure_ascii=False)}
+CAMPAIGN_STATUS: {json.dumps(campaign.status)}
 TARGET_SEGMENT: {json.dumps(target_segment, ensure_ascii=False)}
 TARGET_HAS_INDUSTRY: {json.dumps(target_has_industry)}
 TARGET_HAS_LOCATION: {json.dumps(target_has_location)}
 LEAD_COUNT_GOAL_SET: {json.dumps(lead_count_goal_set)}
 LEAD_COUNT_GOAL: {json.dumps(campaign.lead_count_goal)}
+TAGGED_LEAD_COUNT: {json.dumps(db.query(Lead).filter(Lead.campaign_id == campaign_id).count())}
 STRATEGY_ANGLE: {json.dumps(campaign.strategy_angle or "", ensure_ascii=False)}
 PRODUCT_BRIEF: {json.dumps({"title": product.title, "description": product.description}, ensure_ascii=False)}
 PRODUCT_TARGET_REGIONS: {json.dumps(json.loads(product.target_regions or "[]"), ensure_ascii=False)}
@@ -1214,7 +1246,14 @@ def approve_todo_item(db, todo_id: str) -> dict:
     proposal = json.loads(item.proposal) if item.proposal else None
     applied = None
     campaign_prefill = None
-    if item.scope == "CAMPAIGN" and proposal:
+    if item.scope == "CAMPAIGN" and item.label == _APPROVE_CAMPAIGN_LABEL:
+        # Dashboard Inbox Approve on this standing cue IS the formal campaign OK -- same
+        # outcome as Campaign Detail's "Mark as approved" button.
+        campaign = db.get(Campaign, item.campaign_id)
+        if campaign and campaign.status == "PROPOSED":
+            campaign.status = "APPROVED"
+            applied = {"status": "APPROVED"}
+    elif item.scope == "CAMPAIGN" and proposal:
         campaign = db.get(Campaign, item.campaign_id)
         if campaign:
             _apply_proposal_to_campaign(campaign, proposal)

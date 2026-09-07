@@ -35,9 +35,10 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
   // GLOBAL always has a real action (opens the campaign-creation form); a CAMPAIGN item
-  // only has one when it actually carries a structural proposal to apply -- a plain
-  // observation (e.g. "Discovery off", a Copy note) has nothing for Approve to do.
-  const hasAction = item.scope === "GLOBAL" || !!proposal;
+  // has one when it carries a structural proposal OR is the standing "Approve campaign"
+  // cue (that actually flips campaign status to APPROVED on Approve).
+  const hasAction =
+    item.scope === "GLOBAL" || !!proposal || item.label === "Approve campaign";
 
   async function submitFeedback(e) {
     e.preventDefault();
@@ -112,6 +113,9 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           </button>
         </div>
         <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
+          {appliedResult.status === "APPROVED" && (
+            <p><b>Campaign status:</b> Marked approved</p>
+          )}
           {appliedResult.target_segment && (
             <p>
               <b>Target set:</b> {industryLabel(appliedResult.target_segment) || "—"}

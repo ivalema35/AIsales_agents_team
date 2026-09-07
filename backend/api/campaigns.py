@@ -9,7 +9,8 @@ from database.models import Campaign, Product
 from services.campaign_service import (
     compute_campaign_metrics, compute_campaign_lead_summary, get_daily_review,
     clear_campaign_watchdog_alert, revise_kickoff_draft, set_campaign_email_render_mode,
-    campaign_blocking_status)
+    campaign_blocking_status, dismiss_pending_todos_by_label, _APPROVE_CAMPAIGN_LABEL,
+    generate_campaign_todo)
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/api/v1/campaigns")
 
@@ -145,6 +146,14 @@ def create_campaign():
         db.add(campaign)
         db.commit()
         db.refresh(campaign)
+        # 2026-09-07 -- user catch: do not make a human wait for tomorrow's 06:00 daily
+        # floor (or a mid-day signal tick) to hear from the AI Manager on a brand-new
+        # campaign. First review runs now; failures must not roll back create.
+        try:
+            generate_campaign_todo(db, campaign.id)
+        except Exception:
+            pass
+        db.refresh(campaign)
         return jsonify(_serialize(db, campaign)), 201
     finally:
         db.close()
@@ -183,7 +192,12 @@ def update_campaign(campaign_id):
         if "strategy_angle" in data:
             campaign.strategy_angle = data["strategy_angle"]
         if "status" in data:
+            prev_status = campaign.status
             campaign.status = data["status"]
+            # Campaign Detail "Mark as approved" -- clear the matching Inbox cue so it
+            # does not keep asking after the human already OK'd the plan on the page.
+            if prev_status == "PROPOSED" and data["status"] == "APPROVED":
+                dismiss_pending_todos_by_label(db, campaign.id, _APPROVE_CAMPAIGN_LABEL)
 
         db.commit()
         db.refresh(campaign)

@@ -504,13 +504,20 @@ def _run_signal_driven_todo_tick(db):
             last_signal = json.loads(campaign.last_todo_signal) if campaign.last_todo_signal else None
             if current_signal == last_signal:
                 continue
+            # Same-day human-review cues (Draft status, first leads arriving) must not wait
+            # out the spam cooldown -- that was the "kal wait kyun" gap. Cooldown still
+            # applies to ordinary metric noise (opens/replies churn).
+            urgent_keys = ("campaign_status", "tagged_lead_count")
+            urgent_change = last_signal is None or any(
+                current_signal.get(k) != last_signal.get(k) for k in urgent_keys
+            )
             most_recent_item = (
                 db.query(TodoItem)
                 .filter(TodoItem.campaign_id == campaign.id)
                 .order_by(TodoItem.created_at.desc())
                 .first()
             )
-            if most_recent_item and most_recent_item.created_at and \
+            if (not urgent_change) and most_recent_item and most_recent_item.created_at and \
                     now - most_recent_item.created_at < _TODO_SIGNAL_COOLDOWN:
                 continue  # cooldown -- a burst of replies must not become a burst of LLM calls
             generate_campaign_todo(db, campaign.id)

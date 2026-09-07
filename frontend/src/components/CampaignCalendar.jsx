@@ -27,7 +27,7 @@ function buildMonthGrid(year, month) {
 }
 
 const STATUS_LABEL = {
-  PROPOSED: "Proposed",
+  PROPOSED: "Draft",
   APPROVED: "Approved",
   RUNNING: "Running",
   COMPLETED: "Completed",
