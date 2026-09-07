@@ -30,7 +30,7 @@ from database.models import (
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
 from services.reporting_service import IST_OFFSET
-from services.system_settings import get_bool, AUTONOMOUS_OUTREACH_ENABLED
+from services.system_settings import get_bool, AUTONOMOUS_OUTREACH_ENABLED, DISCOVERY_ENABLED
 
 _KB_GAP_LOOKBACK_DAYS = 14
 _WATCHDOG_CONSECUTIVE_THRESHOLD = 3
@@ -579,6 +579,10 @@ def generate_campaign_todo(db, campaign_id: str) -> dict:
     sibling_campaigns = _sibling_campaign_summaries(db, campaign.product_id, exclude_id=campaign_id)
     ready_to_dispatch_count = _ready_to_dispatch_count(db, campaign_id)
     outreach_enabled = get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED)
+    # 2026-09-07, user-flagged real gap: approving a targeting decision closed no loop back
+    # to the human about what's still blocking it from actually finding leads -- the AI has
+    # full visibility into DISCOVERY_ENABLED already, it just wasn't being told to use it.
+    discovery_enabled = get_bool(db, DISCOVERY_ENABLED, default=False)
     # Step 19.4 -- local import to avoid a module-load cycle (strategy_reflection_service
     # itself imports compute_campaign_metrics from this module), same pattern
     # system_settings.get_all() already uses for its own Config import.
@@ -602,6 +606,7 @@ PRIOR_JOURNAL: {json.dumps(prior_journal, ensure_ascii=False)}
 SIBLING_CAMPAIGNS: {json.dumps(sibling_campaigns, ensure_ascii=False)}
 READY_TO_DISPATCH_COUNT: {json.dumps(ready_to_dispatch_count)}
 AUTONOMOUS_OUTREACH_ENABLED: {json.dumps(outreach_enabled)}
+DISCOVERY_ENABLED: {json.dumps(discovery_enabled)}
 """
     try:
         data = call_json(prompt, temperature=0.3)

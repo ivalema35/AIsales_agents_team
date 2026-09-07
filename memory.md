@@ -576,9 +576,29 @@ tha). Real backend test se sab kuch confirm hua — dedup, signal-driven trigger
 kabhi campaign nahi banata, CAMPAIGN approve real row pe apply hota he, pushback abhi bhi genuine.
 `AUTONOMOUS_OUTREACH_ENABLED` poore build/test me kabhi touch nahi hua.
 
+**⭐⭐ Poore 5 services (backend, frontend, discovery_scheduler, worker, async_runner) local me chalaye,
+2026-09-07** — user ne khud "sare services run karo" bola. Turant real activity hui (daily-floor tick
+automatically chala, real to-dos bane). **User ne screenshot se ek real bug pakda**: campaign ka targeting
+Proposal approve karne ke baad, agla tick chala to AI ne WAHI decision phir se thoda alag wording me
+duplicate to-do bana diya — kyunki `CAMPAIGN_TODO_SYSTEM_PROMPT` me "target set + abhi bhi zero real data"
+wala teesra case cover hi nahi tha (sirf "no target"/"real data hai" 2 case the). Prompt me teesra case add
+kiya — ab is situation me `todo` empty rehta he, journal me hi "wait kar rahe hain" likha jaata he. Real
+test se confirm kiya (dobara chalaya, `created_items: 0`, journal sahi likha gaya).
+
+**⭐⭐⭐ AI Manager persona ka ek real, important gap band hua, 2026-09-07** — user ne pointed out: "campaign
+approve kiya, kuch dikha nahi, aur AI ko Discovery-off ka pata he to wo khud kyu nahi batata? nahi to
+to-dos bekar hain." [[project_ai_sales_manager_persona_vision]] ka core hi yehi tha — AI ko system-level
+control/visibility real karna, sirf sochna nahi. 3 fix: (1) naya `DISCOVERY_ENABLED` signal prompt me,
+AI ab khud fixed-label `"Discovery off"` to-do banata he jab kisi targeted campaign ke liye discovery band
+ho (2 real campaigns pe test kiya, dono ne sahi grounded message diya); (2) Approve pe ab real "Applied"
+confirmation dikhta he (pehle silently gayab ho jaata tha); (3) Calendar pe target (industry·location)
+dikhta he. Ye teeno mila ke "AI batayega, human decide karega" wala loop ab genuinely close hota he.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
-AI To-Do Inbox) DONE — sab kuch git commit `2b804d9` me hai (Phase 21 ka kaam is commit ke BAAD hua he,
-abhi tak uncommitted).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
-VPS deploy (abhi tak nahi hua), remote push (abhi tak nahi hua), Phase 21 ka kaam commit karna baaki he.
+AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI —
+commits `2b804d9` aur `b7d035c` me sab safe he, aaj (7 Sept) ka kaam abhi uncommitted.** Baaki: Step 16.8
+(marketing content), email-vs-WhatsApp channel-preference lever, VPS deploy (abhi tak nahi hua), remote
+push (abhi tak nahi hua), aaj ka kaam commit karna baaki he, saare 8
+products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi active na ho).

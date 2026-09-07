@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertTriangle, MessageSquareWarning, Sparkles } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MessageSquareWarning, Sparkles, X } from "lucide-react";
 import { api } from "../api/client";
 
 // Phase 21 -- a todo item whose label is genuinely about a real signal conflict (Step
@@ -25,9 +25,18 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   const [pushback, setPushback] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  // 2026-09-07, user-flagged real gap: approving used to just silently remove the card --
+  // no confirmation of WHAT actually changed on the real campaign. Now a CAMPAIGN-scope
+  // approval with a real applied proposal shows a persistent "Applied" summary instead of
+  // vanishing, until the human explicitly closes it.
+  const [appliedResult, setAppliedResult] = useState(null);
 
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
+  // GLOBAL always has a real action (opens the campaign-creation form); a CAMPAIGN item
+  // only has one when it actually carries a structural proposal to apply -- a plain
+  // observation (e.g. "Discovery off", a Copy note) has nothing for Approve to do.
+  const hasAction = item.scope === "GLOBAL" || !!proposal;
 
   async function submitFeedback(e) {
     e.preventDefault();
@@ -52,10 +61,22 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
     setError(null);
     try {
       const result = await api.approveTodoItem(item.id);
-      if (item.scope === "GLOBAL" && result.campaign_prefill) {
-        onApproveGlobal?.({ ...result.campaign_prefill, suggestion: item.text }, item);
+      if (item.scope === "GLOBAL") {
+        // Opening the pre-filled campaign form IS the confirmation here -- nothing was
+        // applied server-side for a GLOBAL item, so there's nothing else to show inline.
+        if (result.campaign_prefill) {
+          onApproveGlobal?.({ ...result.campaign_prefill, suggestion: item.text }, item);
+        }
+        onResolved?.(item.id);
+      } else if (result.applied) {
+        // A real structural change landed on the real campaign row -- show exactly what,
+        // don't just make the card vanish. Stays until the human closes it.
+        setAppliedResult(result.applied);
+        setBusy(false);
+      } else {
+        // A plain note with no proposal attached -- nothing to confirm, just resolve.
+        onResolved?.(item.id);
       }
-      onResolved?.(item.id);
     } catch (err) {
       setError(err.message);
       setBusy(false);
@@ -72,6 +93,38 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
       setError(err.message);
       setBusy(false);
     }
+  }
+
+  if (appliedResult) {
+    return (
+      <div className="rounded-lg border border-good-600/40 bg-good-100 p-3">
+        <div className="flex items-start justify-between gap-2">
+          <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-good-700">
+            <CheckCircle2 size={12} /> Applied to this campaign
+          </span>
+          <button
+            onClick={() => onResolved?.(item.id)}
+            className="shrink-0 rounded-md p-1 text-good-700 hover:bg-good-100"
+            aria-label="Close"
+          >
+            <X size={13} />
+          </button>
+        </div>
+        <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
+          {appliedResult.target_segment && (
+            <p>
+              <b>Target set:</b> {appliedResult.target_segment.industry || "—"}
+              {appliedResult.target_segment.location && ` in ${appliedResult.target_segment.location}`}
+            </p>
+          )}
+          {appliedResult.lead_count_goal != null && <p><b>Lead count goal set:</b> {appliedResult.lead_count_goal}</p>}
+          {appliedResult.strategy_angle && <p><b>New angle set:</b> {appliedResult.strategy_angle}</p>}
+          {appliedResult.email_render_mode && (
+            <p><b>Email format set:</b> {appliedResult.email_render_mode === "TEXT" ? "Plain text" : "HTML template"}</p>
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -111,20 +164,39 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           )}
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
-          <button
-            onClick={dismiss}
-            disabled={busy}
-            className="rounded-md px-2.5 py-1.5 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:opacity-50"
-          >
-            Dismiss
-          </button>
-          <button
-            onClick={approve}
-            disabled={busy}
-            className="rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
-          >
-            {busy ? "Working…" : item.scope === "GLOBAL" ? "Create campaign…" : "Approve"}
-          </button>
+          {/* 2026-09-07, user-flagged real gap: "Approve" implied it would DO something
+              even for a pure observation with no proposal attached (e.g. "Discovery off"
+              -- that switch lives in Settings, not on this campaign, so Approve had
+              nothing to actually apply). Approve/Dismiss then behaved identically and
+              silently, which is worse than confusing -- it looked like acting when it
+              wasn't. A to-do with no real lever gets one honest "Got it" instead. */}
+          {hasAction ? (
+            <>
+              <button
+                onClick={dismiss}
+                disabled={busy}
+                className="rounded-md px-2.5 py-1.5 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:opacity-50"
+              >
+                Dismiss
+              </button>
+              <button
+                onClick={approve}
+                disabled={busy}
+                className="rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
+              >
+                {busy ? "Working…" : item.scope === "GLOBAL" ? "Create campaign…" : "Approve"}
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={dismiss}
+              disabled={busy}
+              title="Nothing here for the system to apply on its own -- this just clears it from your inbox"
+              className="rounded-md bg-parchment-raised-2 px-3 py-1.5 text-[11px] font-semibold text-ink-700 hover:bg-line disabled:opacity-50"
+            >
+              {busy ? "Working…" : "Got it"}
+            </button>
+          )}
         </div>
       </div>
 

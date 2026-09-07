@@ -5787,3 +5787,68 @@ artifact banaya (Hinglish, user ka explicit request) aur approve karwaya. User n
 - `npm run build` clean ✓, backend+frontend dono fresh restart karke live confirm kiya.
 
 **PRD me poora Phase 21 section + P21 gate-table row add kiya, real DoD evidence ke saath.**
+
+### ✅ Poore 5 services local me chalaye + Phase 21 ka ek real live bug mila aur fix kiya (2026-09-07)
+
+User ne kaha "sare services local me run karo" — backend, frontend, aur teeno background process
+(`jobs.discovery_scheduler`, `jobs.worker`, `scraper_worker.async_runner`) fresh start kiye, har ek real
+evidence se verify kiya (health check, real log output, real DB state). 2 duplicate purani Flask instances
+mili (session ke baar-baar restart se) — clean kiya.
+
+**Turant real activity hui** — scheduler start hote hi daily-floor tick automatically chala (Phase 21 ka
+switch-hataya-hua design exactly jaisa design kiya tha), 2 real campaigns ka to-do refresh hua.
+
+**⚠️ Real bug mila (user ne khud screenshot se pakda)**: "test" campaign ka targeting-Proposal approve karne
+ke baad (target_segment + lead_count_goal real row pe sahi apply ho gaya tha), agla tick chala to AI ne
+**wahi targeting decision phir se, thoda alag wording me** ek naya to-do bana diya ("Targeting setup" vs
+"Targeting") — label-based dedup match nahi hua kyunki labels free-text hain, exact match nahi tha.
+
+**Root cause**: `CAMPAIGN_TODO_SYSTEM_PROMPT` me sirf 2 case the — "target set nahi he" aur "real data he" —
+ek teesra genuine case cover nahi tha: **"target ab set he, lekin abhi bhi bilkul koi real data nahi
+aaya"** (discovery off he isliye 0 sends). Is gap me AI phir se targeting-jaisa kuch bana raha tha.
+
+**Fix**: Prompt me explicit teesra case add kiya — target already set + genuinely kuch naya nahi to `todo`
+empty rahega, journal me hi "abhi bhi wait kar rahe hain data ka" likha jayega (jo journal ka hi kaam he,
+duplicate to-do nahi). **Real test se confirm kiya** — usi "test" campaign pe dobara `generate_campaign_todo`
+chalaya, is baar `created_items: 0` aaya, journal me sahi likha "Prior hypothesis targeted Edmonton barber
+shops... sent count still at 0, no performance data has arrived" — bilkul jaisa design kiya tha.
+
+Purane 2 duplicate stale to-do items dismiss kiye (`dismiss_todo_item` se, seedha delete nahi). Saare 4
+backend processes fresh restart kiye fix ke saath, sab clean (koi error nahi is baar).
+
+### ✅ "Discovery off" proactive nudge + real Approve confirmation + Calendar target display (2026-09-07)
+
+User ne ek **genuinely important gap** pakda: "mene campaign approve kiya, kuch dikha nahi, aur AI ko pata
+he Discovery off he to wo khud kyu nahi batata? Nahi to to-dos bekar jayenge." Bilkul sahi point — AI ke
+paas system-level visibility already thi (`DISCOVERY_ENABLED` switch), bas usse strategist ko batana nahi
+tha.
+
+**3 real fix (backend + frontend dono):**
+1. **AI ab khud bolta he** — `CAMPAIGN_TODO_SYSTEM_PROMPT` me naya `DISCOVERY_ENABLED` input add kiya
+   (exact same pattern jo `READY_TO_DISPATCH_COUNT`/`AUTONOMOUS_OUTREACH_ENABLED` ke liye already tha).
+   Ab jab bhi kisi campaign ka real target set ho **aur** Discovery globally off ho, AI ek fixed-label
+   `"Discovery off"` to-do banata he, apni awaaz me, real target quote karke (jaise "targeted at barber
+   shops in Edmonton... turn it on in Settings"). Fixed label isliye rakha (baaki sab free-text he) taaki
+   dedup reliably kaam kare — same signal baar-baar duplicate na bane.
+2. **Approve pe ab real confirmation dikhta he** — `TodoItemCard.jsx` me naya "Applied" green state — jab
+   koi CAMPAIGN-scope proposal approve ho aur real campaign row pe kuch apply ho, card silently gayab nahi
+   hota, balki "✅ Applied to this campaign: Target set to X, Lead goal Y" dikhata he, jab tak human khud
+   close na kare.
+3. **Calendar pe target dikhta he** — `CampaignCalendar.jsx` ke campaign box me ab target (industry ·
+   location) bhi dikhta he jab set ho — Target icon ke saath.
+
+**Real test se confirm kiya** (dono real campaigns pe): "test" campaign → *"This campaign is targeted at
+barber shops in Edmonton, Canada and ready, but discovery is switched off system-wide..."*; Ahmedabad
+campaign → *"targeted at retail/services in Ahmedabad, but discovery is switched off..."* — dono real,
+grounded, apni awaaz me. Saare 4 backend process fix ke saath fresh restart kiye. Safety switches
+(`autonomous_outreach_enabled`, `discovery_enabled`) poore is kaam me kabhi touch nahi hue, dono `false`
+hi rahe — sirf AI ab unke baare me BOLTA he, khud badalta nahi.
+
+**Follow-up sawaal se ek aur real UX gap mila**: user ne poocha "agar Discovery on kiye bina hi in
+'Discovery off' to-dos ko Approve kar du to kya hoga?" — jawab dhundha to pata chala: **kuch nahi hota**.
+Ye to-dos koi `proposal` carry nahi karte (Discovery ek GLOBAL system_settings switch he, campaign ki field
+nahi, isliye Approve ke paas apply karne layak kuch hai hi nahi) — matlab Approve aur Dismiss dono is case
+me EXACT same silently resolve karte hain, koi real farak nahi. Ye misleading UI thi (Approve implies
+kuch hoga). **Fix**: `TodoItemCard.jsx` me `hasAction` check add kiya — jab koi real proposal ho (ya
+GLOBAL scope, jo hamesha campaign-form kholta he) tabhi Approve/Dismiss ka pair dikhega; plain observation
+(jaise "Discovery off", "Copy" notes) pe ab sirf ek honest **"Got it"** button dikhta he.

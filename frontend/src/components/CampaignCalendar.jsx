@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Plus, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Clock, Target } from "lucide-react";
 import { api } from "../api/client";
 import CampaignFormModal from "./CampaignFormModal";
 
@@ -199,6 +199,17 @@ export default function CampaignCalendar() {
                         <p className="truncate text-[9px] text-ink-500">
                           {productTitle[c.product_id] || "—"} · {STATUS_LABEL[c.status] || c.status}
                         </p>
+                        {/* 2026-09-07, user-flagged real gap: approving a targeting proposal
+                            changed the real campaign row, but nowhere on the calendar showed
+                            it -- a human had no quick way to confirm "yes, this campaign is
+                            now actually targeted." */}
+                        {(c.target_segment?.industry || c.target_segment?.location) && (
+                          <p className="flex items-center gap-1 truncate text-[9px] text-gold-700">
+                            <Target size={9} className="shrink-0" />
+                            {c.target_segment.industry || "—"}
+                            {c.target_segment.location && ` · ${c.target_segment.location}`}
+                          </p>
+                        )}
                         <div className="mt-0.5 flex flex-wrap gap-1 font-mono text-[9px] text-gold-700">
                           <span>{c.metrics.sent} sent</span>
                           <span>{c.metrics.opened} opened</span>

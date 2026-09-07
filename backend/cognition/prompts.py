@@ -647,6 +647,8 @@ with no grounded answer available) logged against this product recently, SIBLING
 -- every OTHER real campaign (past or active) for this SAME product, each with its own
 target_segment, strategy_angle, and real outcome counts, if any exist --
 READY_TO_DISPATCH_COUNT / AUTONOMOUS_OUTREACH_ENABLED (real counts/state, see below),
+DISCOVERY_ENABLED (real system-wide switch state, see below -- whether the discovery pipeline
+that turns a real target into real leads is currently running at all),
 STRATEGY_INSIGHTS -- learned rules (Phase 19) for domains this product has ALREADY cleared a
 real minimum-sample floor on, each with a winning_angle (and losing_angle/confidence/
 rationale when real data supports them), and PRIOR_JOURNAL -- this SAME campaign's own dated
@@ -692,6 +694,14 @@ TASK, two situations, same underlying judgment:
   template genuinely worth drafting. Only act on what the real numbers actually show --
   with low/zero send volume, a performance judgment is not yet meaningful, skip it (a
   knowledge-base gap is never skipped for low volume, it's real regardless).
+- **TARGET_SEGMENT is already set, but there is still nothing else real to react to yet**
+  (zero sends, zero replies, no sibling/insight worth a new angle) -- this is a real THIRD
+  case, not the same as "no target yet." A target that was already just proposed/approved
+  is a settled fact now, not something to re-propose in slightly different wording every
+  time this runs -- that reads as the AI forgetting its own last decision, which is worse
+  than saying nothing. In this case `todo` is empty and `proposal` is null (PRIOR_JOURNAL's
+  own hypothesis already covers "waiting for real data" -- that is what the journal is for,
+  a repeated to-do item is not needed to say the same thing).
 
 **CONFLICT (Phase 20 Step 20.2)**: sometimes two real signals genuinely disagree -- e.g.
 STRATEGY_INSIGHTS has a validated `winning_angle` for this campaign's own domain, but this
@@ -721,6 +731,21 @@ it to the person running this campaign, grounded only in the real number given. 
 mention the switch; you can never claim to have changed it, propose changing it, or imply
 anything was sent -- it is a human-only action, always. If READY_TO_DISPATCH_COUNT is 0, or
 AUTONOMOUS_OUTREACH_ENABLED is already true, there is nothing to say about this signal.
+
+**TARGET_SEGMENT / DISCOVERY_ENABLED** (the operator's own real complaint this fixes: a
+targeting decision that quietly goes nowhere because a human has to separately remember a
+switch exists): if this campaign has a real TARGET_SEGMENT set (both industry and location
+non-empty) and DISCOVERY_ENABLED is false, the discovery pipeline that would actually turn
+this target into real leads is not running for ANY campaign right now -- this campaign will
+sit fully targeted and find nothing until a human turns it on. Say so as a real `todo` item,
+label it exactly `"Discovery off"` (a fixed label here, on purpose -- this is the one signal
+worth keeping consistent across runs so a human always recognizes it as the same point, not a
+new one each time), in your own voice, naming this campaign's own real target -- e.g. this
+campaign is targeted at [industry] in [location] and ready, but discovery is switched off
+system-wide, turn it on in Settings if that's wanted. Same rule as
+READY_TO_DISPATCH_COUNT above: you can mention the switch, you can never claim to have
+changed it. If TARGET_SEGMENT isn't set yet, or DISCOVERY_ENABLED is already true, there is
+nothing to say about this signal.
 
 `proposal` is null unless there's a real, concrete structural change worth the human's
 approval this run -- at most ONE coherent proposal per day (never several competing
