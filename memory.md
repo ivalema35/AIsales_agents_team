@@ -712,7 +712,11 @@ ho jaata tha bhale hi real problem (product inactive) abhi bhi sach ho. **Fix**:
 koi TodoItem bana hi nahi, phir bhi sahi blockers dikhata he — matlab genuinely to-do-lifecycle-
 independent. Commit `07ea1be`, VPS deploy.
 
-**Sab kuch VPS par LIVE he** (commit `07ea1be`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
+**Cursor se Campaign Detail redesign, 2026-09-07** — `CampaignDetail.jsx`/`DailyReviewPanel.jsx`/
+`statusColors.js` non-technical banaye (status meaning jaise "Waiting for your OK", Stage/Priority
+column leads table me, duplicate metrics hataye). Verify+deploy kiya (frontend-only), commit `af51b7a`.
+
+**Sab kuch VPS par LIVE he** (commit `af51b7a`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
 content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se
 disconnected hain (separate manual page), is campaign ka product abhi bhi `is_active=0` he (user ko
 batana hai activate karna he ya nahi), saare 8 products `is_active=0` hain.
