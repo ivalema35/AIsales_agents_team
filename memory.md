@@ -625,6 +625,17 @@ me UI change karvaya (4 numbered step cards, plain labels jaise "Cities or areas
 categories ka honest wording) content-wise intact he, Cursor ne sirf simpler labels + section-level
 blurb me convert kiya. Build clean, commit `955bd65` GitHub pe push kiya.
 
+**⚠️⚠️ Live VPS se saara purana lead data safely wipe kiya, 2026-09-07** — user naya real campaign start
+karne wale the, usse pehle "products/templates chodke lead ka data hatao" bola. Is session ka pehla
+genuinely destructive/irreversible live-prod-DB operation — poori discipline follow ki: user se exact
+scope confirm kiya (discovery history + EOD reports bhi saaf, par Prospect Finder ka alag data chhoda),
+real counts liye pehle (707 leads, campaigns pehle se hi 0 the), **full `.backup` snapshot liya pehle**
+(`/root/db_backups/sales_system_pre_lead_wipe_20260907_055925.db`, verify kiya valid he), 4 background
+services stop kiye delete ke dauraan, delete app ke apne `SessionLocal` se chalaya (FK cascade ke liye),
+real before/after verify kiya — Products(9)/Templates(5)/Prospect Finder(53+8) bilkul unchanged,
+leads/scores/outreach/replies/jobs/discovery-logs/EOD-reports sab 0. Services restart, clean, safety
+switches untouched. **VPS ab genuinely clean slate he naye campaign ke liye.**
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified

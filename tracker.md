@@ -5959,3 +5959,38 @@ sirf ek explanatory line kam hui — flagging for the record, koi action nahi li
 (`be6c8dc..01d599d`, clean), `npm run build` (naya hash `index-CWhSfayJ.js`), `dist` → `public_html`
 sync + chown. Backend/DB touch nahi, service restart ki zaroorat nahi. Real verify: naya JS hash + API
 401 (healthy) live confirm.
+
+### ⚠️ Live VPS DB se saara purana lead data wipe kiya, naya campaign start karne se pehle (2026-09-07)
+
+User: "naya campaign live me add karne ja raha hu, uske pehle products/templates chodke lead ka data
+remove karo safely." Ye pehla genuinely **destructive, irreversible live-prod-DB operation** tha is
+poore session me — poori ehtiyaat (caution) se kiya:
+
+1. **Scope confirm kiya user se** (2 sawaal): discovery history (84 rows) + daily EOD reports (21 rows)
+   bhi saaf karne hain (haan bola) vs Prospect Finder ka manual search data (53 prospects + 8 searches,
+   alag feature) chhod dena (haan, chhoda).
+2. **Real live counts liye pehle** (`leads=707` — 215 rejected/487 scored/4 outreached/1 hot,
+   `outreach_logs=117`, `inbound_conversations=33`, `jobs=2451` sab `DONE`, `agent_events=2214`,
+   `discovery_runs=84`, `daily_reports=21`). **Campaigns pehle se 0 the** — koi purani campaign delete
+   karne ka sawaal hi nahi tha, ye literally pehli real campaign hogi.
+3. **Full DB backup pehle** — `sqlite3 .backup` (WAL-safe) command se `/root/db_backups/
+   sales_system_pre_lead_wipe_20260907_055925.db` banaya, backup me `leads` count (707) verify kiya
+   real hai — recovery ka rasta hamesha khula rakha.
+4. **4 background services stop kiye** (`bos-worker`/`bos-scraper`/`bos-scheduler`/`bos-poller`) delete
+   ke dauraan kisi race se bachne ke liye (`bos-api` chalta raha, read-mostly safe).
+5. **Delete app ke apne `SessionLocal` se chalaya** (raw sqlite3 CLI se nahi) — taaki `PRAGMA
+   foreign_keys=ON` (jo app har connection pe set karta he) active rahe aur `leads` delete karte hi
+   `lead_firmographics`/`lead_review_insights`/`lead_scores`/`outreach_logs`/`inbound_conversations`/
+   `client_lifecycle`/`lead_contacts`/`outreach_sequences`/`social_message_queue`
+   **automatically cascade** ho. Manually saaf kiya (in par FK nahi laga hota): `agent_events WHERE
+   lead_id IS NOT NULL` (2186), `jobs` (2451, sab DONE), `discovery_runs` (84), `daily_reports` (21).
+6. **Real before/after verify** (ek hi script me): saare lead-tied tables 0 pe aa gaye; `agent_events`
+   2214→28 (baaki 28 campaign/product-level events hain, lead_id NULL, sahi preserve hue);
+   `products` 9→9, `whatsapp_templates` 5→5, `message_formats` 5→5, `prospects` 53→53,
+   `prospect_searches` 8→8 — **bilkul unchanged, jaisa promise kiya tha.**
+7. **4 services restart**, sab `active`, `journalctl` clean (koi traceback/error nahi), real HTTPS
+   verify (`401`, healthy). Safety switches touch hi nahi hue.
+
+**Result: live VPS ab genuinely clean slate he naye campaign ke liye** — Products/Templates/Prospect
+Finder intact, purana lead pipeline data (leads, scores, outreach history, replies, jobs, discovery
+logs, EOD reports) poora saaf, aur ek real, verified backup file recovery ke liye maujood he.
