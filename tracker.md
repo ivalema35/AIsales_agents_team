@@ -5939,3 +5939,7 @@ Safety switches left untouched: both `False`. No backend service restart (static
 `ProductForm.jsx`: 4 numbered step cards (What / Email style / Who / Cross-sell), 2-col
 grids, plain labels (no Phase jargon), country pills show full names, wider edit modal
 (`max-w-4xl`). Same fields/API — layout + copy only.
+
+**VPS deploy turant** (user: "haa") — frontend-only, `git pull --ff-only` (`d7edc9e..be6c8dc`, clean),
+`npm run build` (naya hash `index-DUHHOq7T.js`), `dist` → `public_html` sync + chown. Backend/DB touch
+nahi, service restart ki zaroorat nahi. Real verify: naya JS hash live serve ho raha he.
