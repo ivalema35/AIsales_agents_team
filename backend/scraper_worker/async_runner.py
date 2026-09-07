@@ -17,7 +17,8 @@ from urllib.parse import urlparse
 from sqlalchemy import func
 
 from database.db_config import SessionLocal
-from database.models import Lead, Product, LeadReviewInsight, LeadScore, LeadContact, ProductStrategy
+from database.models import (
+    Lead, Product, LeadReviewInsight, LeadScore, LeadContact, LeadFirmographics, ProductStrategy)
 from jobs.job_queue import enqueue, claim_next, mark_done, mark_failed
 from services.campaign_service import resolve_auto_campaign_id
 from services.data_acquisition.serp_provider import SerperProvider, SOCIAL_PROFILE_HOSTS
@@ -487,18 +488,35 @@ def _handle_score(db, payload):
         "target_keywords": json.loads(product.target_keywords or "[]"),
         "value_proposition": product.value_proposition,
     }
+    # 2026-09-07, user's real correction after a first, too-narrow fix: "website" was only
+    # ONE example of a real fact that can matter -- hardcoding just that one field repeats
+    # the exact whack-a-mole mistake already fixed once this session for the AI Manager's
+    # own to-do checks (_campaign_operational_readiness). The general version: pass EVERY
+    # real fact already gathered about this lead during discovery/enrichment, and let the
+    # model itself decide which ones its own PRODUCT_BRIEF makes relevant -- never
+    # pre-select one fact as "the" signal to hardcode reasoning around.
+    firmographics = db.query(LeadFirmographics).filter(LeadFirmographics.lead_id == lead.id).first()
     lead_profile = {
         "company_name": lead.company_name,
         "region_location": lead.region_location,
         "has_email": bool(lead.primary_email),
         "has_phone": bool(lead.primary_phone),
-        # 2026-09-07, user-caught real gap: a lead already having (or not having) the exact
-        # thing a product builds/replaces is sometimes the single strongest fit signal there
-        # is (e.g. a Website Development product wants leads with NO site; a "modernize your
-        # old website" product wants the opposite) -- this was silently never given to the
-        # scoring agent at all, so it could never factor this in, for any product.
+        "has_whatsapp": bool(lead.whatsapp_number),
         "has_website": bool(lead.website_url),
+        "has_social_media_presence": bool(lead.instagram_url or lead.facebook_url or lead.linkedin_url),
+        "contact_person_role": lead.contact_person_role,
     }
+    if firmographics:
+        if firmographics.industry:
+            lead_profile["industry"] = firmographics.industry
+        if firmographics.company_size_range:
+            lead_profile["company_size_range"] = firmographics.company_size_range
+        tech_stack = json.loads(firmographics.tech_stack or "[]")
+        if tech_stack:
+            lead_profile["tech_stack"] = tech_stack
+    if insight and insight.average_rating is not None:
+        lead_profile["average_review_rating"] = insight.average_rating
+        lead_profile["total_reviews_count"] = insight.total_reviews_count
 
     result, route = score_lead(db, lead.id, product_brief, lead_profile, pain_points)
 
