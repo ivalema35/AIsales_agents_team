@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Target, Users } from "lucide-react";
+import { ArrowLeft, Target, Users, Check } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass, statusLabel } from "../lib/statusColors";
 import { industryLabel } from "../lib/targetSegment";
+import { useConfirm } from "../lib/ConfirmContext";
+import { useToast } from "../lib/ToastContext";
 
 const CAMPAIGN_STATUS = {
   PROPOSED: {
-    label: "Waiting for your OK",
-    blurb: "AI proposed this campaign — approve it when the plan looks right.",
+    label: "Draft",
+    blurb: "Still marked draft — finding leads does not mean it was formally approved.",
   },
   APPROVED: {
     label: "Approved",
-    blurb: "Ready to run when discovery and outreach are enabled.",
+    blurb: "You formally approved this plan.",
   },
   RUNNING: {
     label: "Running",
@@ -53,10 +55,13 @@ function shortLocation(text) {
 export default function CampaignDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const confirm = useConfirm();
+  const toast = useToast();
   const [campaign, setCampaign] = useState(null);
   const [product, setProduct] = useState(null);
   const [leads, setLeads] = useState(null);
   const [error, setError] = useState(null);
+  const [approving, setApproving] = useState(false);
 
   function refresh() {
     api.getCampaign(id).then(setCampaign).catch((err) => setError(err.message));
@@ -70,6 +75,27 @@ export default function CampaignDetail() {
       api.getProduct(campaign.product_id).then(setProduct).catch(() => {});
     }
   }, [campaign?.product_id]);
+
+  async function approveCampaign() {
+    const ok = await confirm({
+      title: "Approve this campaign?",
+      message:
+        `Mark "${campaign.name}" as approved? This only updates the campaign status label. ` +
+        `Leads can already be found while status is still Draft — approving does not start discovery by itself.`,
+      confirmLabel: "Mark as approved",
+    });
+    if (!ok) return;
+    setApproving(true);
+    try {
+      const updated = await api.updateCampaign(id, { status: "APPROVED" });
+      setCampaign(updated);
+      toast.success("Campaign approved");
+    } catch (err) {
+      toast.error(err.message.replace(/^\d+\s*/, ""));
+    } finally {
+      setApproving(false);
+    }
+  }
 
   if (error) {
     return (
@@ -162,6 +188,30 @@ export default function CampaignDetail() {
           <StatChip label="Replied" value={replied} />
           {hot > 0 && <StatChip label="Hot interest" value={hot} emphasize />}
         </div>
+
+        {campaign.status === "PROPOSED" && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-parchment px-4 py-3">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-ink-900">
+                {found > 0 ? "Mark this plan as approved?" : "Approve this campaign plan?"}
+              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-ink-600">
+                {found > 0
+                  ? `Leads already appeared because discovery also runs on draft campaigns once targeting is set — not because status was Approved. Formally approving just records that you're happy with this plan (${found} lead${found === 1 ? "" : "s"} so far).`
+                  : "Discovery can find leads even while status is Draft, as soon as who-to-target is set. Approving is your formal OK on the plan — it is separate from AI suggestion Approves below."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={approveCampaign}
+              disabled={approving}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-ink-900 px-4 py-2 text-xs font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
+            >
+              <Check size={14} />
+              {approving ? "Approving…" : "Mark as approved"}
+            </button>
+          </div>
+        )}
       </div>
 
       <CampaignReviewCard campaign={campaign} onApproved={refresh} />

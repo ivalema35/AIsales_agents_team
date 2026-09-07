@@ -153,7 +153,9 @@ export function CampaignReviewCard({ campaign, onApproved }) {
         </div>
       ) : (
         <p className="mt-4 rounded-md border border-line bg-parchment px-3 py-2.5 text-sm text-ink-600">
-          Nothing new to decide today — the campaign is on track with no fresh flags.
+          {campaign.status === "PROPOSED"
+            ? "No AI suggestions waiting right now. Campaign status can still say Draft even after leads are found — use Mark as approved at the top if you want to formally OK the plan."
+            : "Nothing new to decide today — no fresh AI suggestions for this campaign."}
         </p>
       )}
 

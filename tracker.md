@@ -6330,3 +6330,13 @@ experienced salesperson jaisa."
 me 2 baar hua he (AI Manager checks, ab scoring), isliye ek general lesson ke roop me record kiya taaki
 future sessions "example = spec nahi, example = principle" samjhe. Commit `c3aca94`, VPS deploy + 5
 services restart.
+
+### Campaign approval UX gap (2026-09-07)
+
+User asked where approval is — badge said `Waiting for your OK` but AI Sales Manager said nothing to decide (no todo cards).
+
+**Truth:** two different approvals existed in product language but only one had UI:
+1. **Campaign status** `PROPOSED` ? `APPROVED` — backend `PUT /campaigns/<id>` supported it; **no frontend button** (Phase 18 comment never wired).
+2. **AI Manager todo Approve** — only when PENDING `TodoItem`s exist (targeting/goal proposals).
+
+**Fix:** `Approve campaign` action box on Campaign Detail when status is PROPOSED; clarify empty AI Manager copy so it doesn't look like campaign approval lives there.
