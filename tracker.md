@@ -6026,3 +6026,27 @@ pe** purana galat "Discovery off" to-do dismiss kiya, naya generate kiya — AI 
 propose kiya, Mehsana unchanged, confidence 0.24, aur ek "Targeting" note jo bilkul sahi transparently
 bata raha he ki target abhi bhi incomplete he. Real, verified fix — user ke apne pehle real campaign
 banate hi mila aur turant fix hua.
+
+### Follow-up: fix generalize kiya sabhi 3 setup fields ke liye (2026-09-07)
+
+User ne turant sahi generalize kiya: "sirf business type add ho, ya sirf lead numbers add ho, ya kuch
+add na ho — AI Manager khud handle kare, user approval ke saath." Bilkul sahi — pichla fix sirf
+industry/location ke liye tha, `LEAD_COUNT_GOAL` teesra setup field bhi isi tarah "human deliberately
+chhod sakta he, AI decide kare" ka case tha.
+
+**Fix**: `LEAD_COUNT_GOAL_SET` teesra explicit computed boolean add kiya (`TARGET_HAS_INDUSTRY`/
+`TARGET_HAS_LOCATION` ke sath). Prompt ke purane 2 alag "half-set"/"neither-set" case ko ek unified
+"SETUP incomplete" case me merge kiya — ab jo bhi in teeno me se missing ho (koi bhi combination:
+sirf industry, sirf location, sirf lead count, do missing, teeno missing), AI sirf missing wale
+propose karta he, jo already diya he wo kabhi nahi chhedta.
+
+**Local test se ek aur real gap mila aur turant fix kiya**: "kuch bhi set na ho" wale case me AI apne
+hi is-turn ke PROPOSED (abhi approve nahi hue) target ko already-real maan kar "Discovery off" bhi bol
+raha tha — premature. Prompt me explicit line add ki: "never react to a target THIS SAME run is
+proposing... it may never be approved at all." Re-test se confirm kiya, fix ho gaya.
+
+**Real verify — 3 local test campaigns, teeno scenario**: (1) sirf industry set → location + lead
+count propose hue, industry untouched; (2) sirf lead count (75) set → industry + location propose
+hue, 75 bilkul untouched (proposal me `lead_count_goal` key hi nahi tha, matlab apply logic use touch
+nahi karega); (3) kuch set nahi → teeno propose hue, koi premature "Discovery off" nahi. Commit
+`4c0d4ba`, VPS deploy + import sanity + 5 services restart, sab clean, real HTTPS verify.

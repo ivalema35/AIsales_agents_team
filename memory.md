@@ -649,10 +649,19 @@ mat badlo." Verify kiya local test campaign pe + real live campaign pe (purana g
 karke naya generate kiya) — dono jagah sahi kaam kiya (Mehsana unchanged, industry khud pick kiya,
 honest low confidence). Commit `3316072`, VPS deploy + backend services restart.
 
+**Follow-up, isi din**: user ne fix ko generalize karne ko bola — sirf industry/location nahi, `lead_
+count_goal` bhi teesra "human deliberately chhod sakta he, AI decide kare" field hai. `LEAD_COUNT_GOAL_
+SET` teesra explicit boolean add kiya, purane 2 case ko ek "SETUP incomplete" case me merge kiya (jo
+bhi in 3 me se missing ho, sirf wahi propose, baaki untouched). Local test se ek aur gap mila (AI apne
+hi is-turn ke proposed target ko already-real maan kar "Discovery off" bhi bol raha tha) — turant fix
+kiya. 3 scenario test kiye (sirf industry / sirf lead-count / kuch nahi), sab sahi. Commit `4c0d4ba`,
+VPS deploy + services restart.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
-AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI —
-**sab kuch ab VPS par bhi LIVE he** (commit `459f31b`, deployed 2026-09-07).** Baaki: Step 16.8
+AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
++ AI Manager setup-completion for partial campaign targets (industry/location/lead-count, any
+combination) — **sab kuch VPS par LIVE he** (commit `4c0d4ba`, deployed 2026-09-07).** Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, saare 8
 products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi active na ho).
