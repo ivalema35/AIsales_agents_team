@@ -246,8 +246,20 @@ export default function Products() {
       </div>
 
       {editingProduct && (
-        <Modal title={`Edit — ${editingProduct.title}`} onClose={() => setEditingProduct(null)}>
-          <ProductForm product={editingProduct} allProducts={products} onSaved={handleSaved} onCancel={() => setEditingProduct(null)} />
+        <Modal
+          title="Edit product"
+          onClose={() => setEditingProduct(null)}
+          maxWidth="max-w-4xl"
+        >
+          <p className="mb-4 -mt-1 text-xs text-ink-500">
+            {editingProduct.title}
+          </p>
+          <ProductForm
+            product={editingProduct}
+            allProducts={products}
+            onSaved={handleSaved}
+            onCancel={() => setEditingProduct(null)}
+          />
         </Modal>
       )}
     </div>

@@ -5933,3 +5933,9 @@ Frontend-only. Local commit `3b66997` (git push to origin blocked this session -
 VPS: `CampaignCalendar.jsx` uploaded, `npm run build`, `dist` -> `public_html` + chown.
 Live: `https://sales.ivinfotech.com` `<title>AI-BOS</title>`, JS `index-Ckh51cwh.js`, http 200.
 Safety switches left untouched: both `False`. No backend service restart (static only).
+
+### Product form: horizontal + non-tech UX — 2026-09-07
+
+`ProductForm.jsx`: 4 numbered step cards (What / Email style / Who / Cross-sell), 2-col
+grids, plain labels (no Phase jargon), country pills show full names, wider edit modal
+(`max-w-4xl`). Same fields/API — layout + copy only.

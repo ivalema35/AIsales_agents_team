@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Building2, FileText, Sparkles, MapPin, Globe2, Tag, UserCircle2, Plus, Save, Layers } from "lucide-react";
+import {
+  Building2, FileText, Sparkles, MapPin, Globe2, Tag, UserCircle2, Plus, Save, Layers, MessageSquare,
+} from "lucide-react";
 import { api } from "../api/client";
 import ChipInput, { FieldLabel } from "./ui/ChipInput";
 
@@ -45,7 +47,27 @@ function toFormState(product) {
 }
 
 const inputClass =
-  "rounded-md border border-line bg-parchment-raised px-3 py-2 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none";
+  "w-full rounded-lg border border-line bg-parchment-raised-2 px-3 py-2.5 text-sm text-ink-900 placeholder:text-ink-500/60 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-100";
+
+function StepCard({ step, title, blurb, children }) {
+  return (
+    <section className="rounded-xl border border-line bg-parchment-raised-2/60 p-4 sm:p-5">
+      <div className="mb-4 flex gap-3">
+        <span
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-600 font-mono text-xs font-bold text-white"
+          aria-hidden
+        >
+          {step}
+        </span>
+        <div className="min-w-0">
+          <h3 className="font-display text-sm font-semibold text-ink-900">{title}</h3>
+          <p className="mt-0.5 text-[12px] leading-relaxed text-ink-500">{blurb}</p>
+        </div>
+      </div>
+      {children}
+    </section>
+  );
+}
 
 // Dynamic product registration (MASTER PRD §5 Step 4.4) -- adding a new product/service
 // here is all that's needed for the discovery scheduler to start targeting it; no code
@@ -106,179 +128,208 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
   return (
     <form
       onSubmit={handleSubmit}
-      className={isEdit ? "flex flex-col gap-5" : "flex flex-col gap-5 rounded-lg border border-line bg-parchment-raised p-5 shadow-sm"}
+      className={
+        isEdit
+          ? "flex flex-col gap-4"
+          : "flex flex-col gap-4 rounded-xl border border-line bg-parchment-raised p-5 shadow-sm"
+      }
     >
-      {!isEdit && <h3 className="text-sm font-semibold text-ink-900">Add a product / service</h3>}
-      {error && <p className="rounded-md bg-alert-100 px-3 py-2 text-xs text-alert-700">{error}</p>}
+      {!isEdit && (
+        <div>
+          <h3 className="font-display text-base font-semibold text-ink-900">Add a product</h3>
+          <p className="mt-1 text-xs text-ink-500">
+            Tell us what you sell in plain words. The AI uses this to find matching businesses and write emails.
+          </p>
+        </div>
+      )}
+      {error && <p className="rounded-lg bg-alert-100 px-3 py-2 text-xs text-alert-700">{error}</p>}
 
-      <div className="flex flex-col gap-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Basic details</p>
+      <StepCard
+        step={1}
+        title="What are you selling?"
+        blurb="Start with a clear name and a short description. This is the most important part."
+      >
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <label className="flex flex-col lg:col-span-2">
+            <FieldLabel icon={Building2}>Product name</FieldLabel>
+            <input
+              required
+              value={form.title}
+              onChange={(e) => update("title", e.target.value)}
+              className={inputClass}
+              placeholder="e.g. Barber shop management software"
+            />
+          </label>
 
-        <label className="flex flex-col">
-          <FieldLabel icon={Building2}>Title</FieldLabel>
-          <input
-            required
-            value={form.title}
-            onChange={(e) => update("title", e.target.value)}
-            className={inputClass}
-            placeholder="e.g. IVinfotech -- Website Development"
-          />
-        </label>
+          <label className="flex flex-col lg:col-span-2">
+            <FieldLabel icon={FileText} hint="In simple words: what it does, and who it helps.">
+              What does it do?
+            </FieldLabel>
+            <textarea
+              required
+              rows={3}
+              value={form.description}
+              onChange={(e) => update("description", e.target.value)}
+              className={inputClass}
+              placeholder="e.g. Online booking, payments, staff commissions, and reports in one place for salon owners."
+            />
+          </label>
 
-        <label className="flex flex-col">
-          <FieldLabel icon={FileText} hint="What it is, who it's for -- the AI reads this to decide who to target.">
-            Description
-          </FieldLabel>
-          <textarea
-            required
-            rows={3}
-            value={form.description}
-            onChange={(e) => update("description", e.target.value)}
-            className={inputClass}
-            placeholder="Describe the product/service in a few sentences"
-          />
-        </label>
+          <label className="flex flex-col lg:col-span-2">
+            <FieldLabel icon={Sparkles} hint="Optional. One short line a customer would remember.">
+              Why pick you? (optional)
+            </FieldLabel>
+            <input
+              value={form.value_proposition}
+              onChange={(e) => update("value_proposition", e.target.value)}
+              className={inputClass}
+              placeholder="e.g. Save 5 hours a week on booking and payroll"
+            />
+          </label>
+        </div>
+      </StepCard>
 
-        <label className="flex flex-col">
-          <FieldLabel icon={Sparkles} hint="Optional -- one line on why a customer would pick this.">
-            Value proposition
-          </FieldLabel>
-          <input
-            value={form.value_proposition}
-            onChange={(e) => update("value_proposition", e.target.value)}
-            className={inputClass}
-          />
-        </label>
-      </div>
-
-      <div className="flex flex-col gap-4 border-t border-line pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">
-          AI writing style (Phase 16 Step 16.4)
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <StepCard
+        step={2}
+        title="How should emails sound?"
+        blurb="Optional. Leave blank if you're happy with the normal style."
+      >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="flex flex-col">
-            <FieldLabel icon={Sparkles} hint="Optional -- leave blank for today's default drafting style.">
-              Default tone
+            <FieldLabel icon={MessageSquare} hint="e.g. friendly and short, or formal and ROI-focused.">
+              Tone of voice
             </FieldLabel>
             <input
               value={form.default_tone}
               onChange={(e) => update("default_tone", e.target.value)}
               className={inputClass}
-              placeholder="e.g. Urgent & ROI-driven, short and punchy"
+              placeholder="Friendly, short, and clear"
             />
           </label>
           <label className="flex flex-col">
-            <FieldLabel icon={Layers} hint="Optional -- leave blank for today's default structure.">
-              Default format
+            <FieldLabel icon={Layers} hint="e.g. short paragraphs, or with a clear bullet list.">
+              Email layout style
             </FieldLabel>
             <input
               value={form.default_format}
               onChange={(e) => update("default_format", e.target.value)}
               className={inputClass}
-              placeholder="e.g. Short plain text, no bullet points"
+              placeholder="Short plain text, no long bullet lists"
             />
           </label>
         </div>
-      </div>
+      </StepCard>
 
-      <div className="flex flex-col gap-4 border-t border-line pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Targeting</p>
+      <StepCard
+        step={3}
+        title="Who do you usually sell to?"
+        blurb="Optional hints for the AI when it suggests a campaign. Each campaign can still pick its own target later."
+      >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* 2026-09-07, user-flagged real mismatch: these two fields' copy still described
+              pre-Step-17.7 behavior ("discovery searches each region", "the AI only searches
+              these exact categories") -- since discovery became campaign-driven, a campaign's
+              own target_segment (CampaignFormModal) is what actually runs, not these. Relabeled
+              + rewritten so a non-technical user doesn't believe setting these here locks what
+              gets searched. */}
+          <ChipInput
+            icon={MapPin}
+            label="Cities or areas"
+            hint="Type a place and press Enter. Example: Edmonton, Ahmedabad."
+            values={form.target_regions}
+            onChange={(v) => update("target_regions", v)}
+            placeholder="Add a city…"
+          />
 
-        {/* 2026-09-07, user-flagged real mismatch: these two fields' copy still described
-            pre-Step-17.7 behavior ("discovery searches each region", "the AI only searches
-            these exact categories") -- since discovery became campaign-driven, a campaign's
-            own target_segment (CampaignFormModal) is what actually runs, not these. Relabeled
-            + rewritten so a non-technical user doesn't believe setting these here locks what
-            gets searched. */}
-        <ChipInput
-          icon={MapPin}
-          label="Usual regions for this product"
-          hint="Optional -- helps your AI Sales Manager suggest good targets when it proposes a new campaign for this product. Each campaign sets its own real target when created (can be different from this list)."
-          values={form.target_regions}
-          onChange={(v) => update("target_regions", v)}
-          placeholder="Ahmedabad, Surat, Vadodara…"
-        />
+          <ChipInput
+            icon={Tag}
+            label="Types of businesses"
+            hint="Type a business type and press Enter. Example: barber shop, dental clinic."
+            values={form.target_business_categories}
+            onChange={(v) => update("target_business_categories", v)}
+            placeholder="Add a business type…"
+          />
 
-        <ChipInput
-          icon={Tag}
-          label="Usual business types for this product"
-          hint="Optional -- the kind of businesses this product usually fits, e.g. “dental clinic, law firm”. Helps your AI Sales Manager's suggestions stay relevant -- it does not lock a campaign's actual search to only these."
-          values={form.target_business_categories}
-          onChange={(v) => update("target_business_categories", v)}
-          placeholder="dental clinic, law firm…"
-        />
+          <ChipInput
+            icon={UserCircle2}
+            label="People to contact"
+            hint="Job titles to look for when finding a person. Example: Owner, Manager."
+            values={form.target_person_roles}
+            onChange={(v) => update("target_person_roles", v)}
+            placeholder="Add a role…"
+          />
 
-        <ChipInput
-          icon={UserCircle2}
-          label="Target person roles"
-          hint="Optional -- job titles to prioritize when the AI finds person-level contacts (e.g. LinkedIn)."
-          values={form.target_person_roles}
-          onChange={(v) => update("target_person_roles", v)}
-          placeholder="CEO, Property Manager…"
-        />
-
-        <label className="flex flex-col">
-          <FieldLabel icon={Globe2} hint="Controls how leads' phone numbers get parsed for WhatsApp.">
-            Target country
-          </FieldLabel>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {COMMON_COUNTRIES.map((c) => (
+          <label className="flex flex-col">
+            <FieldLabel icon={Globe2} hint="Used so WhatsApp numbers are formatted for the right country.">
+              Country for phone numbers
+            </FieldLabel>
+            <div className="flex flex-wrap items-center gap-1.5">
+              {COMMON_COUNTRIES.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  title={c.label}
+                  onClick={() => { update("target_country", c.code); setCustomCountry(false); }}
+                  className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                    !customCountry && form.target_country === c.code
+                      ? "bg-ink-900 text-parchment-raised"
+                      : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
               <button
-                key={c.code}
                 type="button"
-                title={c.label}
-                onClick={() => { update("target_country", c.code); setCustomCountry(false); }}
-                className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                  !customCountry && form.target_country === c.code
+                onClick={() => setCustomCountry(true)}
+                className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                  customCountry
                     ? "bg-ink-900 text-parchment-raised"
-                    : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment-raised-2"
+                    : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment"
                 }`}
               >
-                {c.code}
+                Other
               </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setCustomCountry(true)}
-              className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                customCountry ? "bg-ink-900 text-parchment-raised" : "bg-parchment-raised text-ink-700 ring-1 ring-inset ring-line hover:bg-parchment-raised-2"
-              }`}
-            >
-              Other
-            </button>
-            {customCountry && (
-              <input
-                value={form.target_country}
-                onChange={(e) => update("target_country", e.target.value.toUpperCase())}
-                maxLength={2}
-                className={`w-16 uppercase ${inputClass}`}
-                placeholder="IN"
-              />
-            )}
-          </div>
-        </label>
-      </div>
+              {customCountry && (
+                <input
+                  value={form.target_country}
+                  onChange={(e) => update("target_country", e.target.value.toUpperCase())}
+                  maxLength={2}
+                  className={`w-16 uppercase ${inputClass}`}
+                  placeholder="IN"
+                  aria-label="Two-letter country code"
+                />
+              )}
+            </div>
+          </label>
+        </div>
+      </StepCard>
 
-      <div className="flex flex-col gap-3 border-t border-line pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Cross-sell</p>
-        <label className="flex flex-col">
-          <FieldLabel
-            icon={Layers}
-            hint="Optional. When this product isn't the right fit for a lead, the AI may mention ONE of these other products instead -- whichever genuinely fits -- as one short line, never a link or a second pitch. Pick none to leave this off entirely."
-          >
-            Also mention these products, if relevant
-          </FieldLabel>
-          {otherProducts.length === 0 ? (
-            <p className="mt-1 text-xs text-ink-500">
-              No other products yet -- add another product first to enable cross-sell here.
-            </p>
-          ) : (
-            <div className="mt-1 flex flex-col gap-1.5 rounded-md border border-line p-2.5">
-              {otherProducts.map((p) => (
-                <label key={p.id} className="flex items-center gap-2 text-sm text-ink-700">
+      <StepCard
+        step={4}
+        title="Mention other products?"
+        blurb="Optional. If this product isn't a fit, the AI may gently mention one of these instead — never a hard pitch."
+      >
+        {otherProducts.length === 0 ? (
+          <p className="text-xs text-ink-500">
+            Add another product first if you want cross-sell options here.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {otherProducts.map((p) => {
+              const checked = form.cross_sell_product_ids.includes(p.id);
+              return (
+                <label
+                  key={p.id}
+                  className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+                    checked
+                      ? "border-gold-500 bg-gold-100 text-ink-900"
+                      : "border-line bg-parchment-raised text-ink-700 hover:border-gold-500/50"
+                  }`}
+                >
                   <input
                     type="checkbox"
-                    checked={form.cross_sell_product_ids.includes(p.id)}
+                    checked={checked}
                     onChange={(e) =>
                       update(
                         "cross_sell_product_ids",
@@ -287,21 +338,21 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
                           : form.cross_sell_product_ids.filter((id) => id !== p.id)
                       )
                     }
-                    className="rounded border-line"
+                    className="mt-0.5 rounded border-line"
                   />
-                  {p.title}
+                  <span className="min-w-0 leading-snug">{p.title}</span>
                 </label>
-              ))}
-            </div>
-          )}
-        </label>
-      </div>
+              );
+            })}
+          </div>
+        )}
+      </StepCard>
 
-      <div className="flex items-center gap-2 border-t border-line pt-4">
+      <div className="sticky bottom-0 -mx-1 flex items-center gap-2 border-t border-line bg-parchment-raised px-1 pt-4">
         <button
           type="submit"
           disabled={submitting}
-          className="flex items-center gap-1.5 self-start rounded-md bg-ink-900 px-4 py-2 text-sm font-medium text-parchment-raised transition-colors hover:opacity-90 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-ink-900 px-4 py-2.5 text-sm font-semibold text-parchment-raised transition-colors hover:opacity-90 disabled:opacity-50"
         >
           {isEdit ? <Save size={14} /> : <Plus size={14} />}
           {submitting ? "Saving…" : isEdit ? "Save changes" : "Add product"}
@@ -310,7 +361,7 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-4 py-2 text-sm font-medium text-ink-700 hover:bg-parchment-raised-2"
+            className="rounded-lg px-4 py-2.5 text-sm font-medium text-ink-700 hover:bg-parchment-raised-2"
           >
             Cancel
           </button>
