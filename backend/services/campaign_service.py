@@ -604,12 +604,19 @@ def generate_campaign_todo(db, campaign_id: str) -> dict:
     # prompt has ground truth instead of guessing completeness from an object's keys.
     target_has_industry = bool(target_segment.get("industry"))
     target_has_location = bool(target_segment.get("location"))
+    # 2026-09-07 follow-up, same user ask generalized: "sirf business type add ho, sirf lead
+    # numbers add ho, ya kuch add na ho -- AI Manager khud handle kare, approval ke saath" --
+    # LEAD_COUNT_GOAL is the third setup field a human may likewise leave for the AI to pick,
+    # same ground-truth-flag treatment as the two above (never inferred from whether the
+    # column happens to be non-null in some other unrelated code path).
+    lead_count_goal_set = campaign.lead_count_goal is not None
 
     prompt = CAMPAIGN_TODO_SYSTEM_PROMPT + f"""
 CAMPAIGN_NAME: {json.dumps(campaign.name, ensure_ascii=False)}
 TARGET_SEGMENT: {json.dumps(target_segment, ensure_ascii=False)}
 TARGET_HAS_INDUSTRY: {json.dumps(target_has_industry)}
 TARGET_HAS_LOCATION: {json.dumps(target_has_location)}
+LEAD_COUNT_GOAL_SET: {json.dumps(lead_count_goal_set)}
 LEAD_COUNT_GOAL: {json.dumps(campaign.lead_count_goal)}
 STRATEGY_ANGLE: {json.dumps(campaign.strategy_angle or "", ensure_ascii=False)}
 PRODUCT_BRIEF: {json.dumps({"title": product.title, "description": product.description}, ensure_ascii=False)}

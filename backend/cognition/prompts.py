@@ -640,11 +640,12 @@ today's real data, what genuinely needs attention -- or decide nothing does.
 
 INPUT: this campaign's own current state (name, whether TARGET_SEGMENT/LEAD_COUNT_GOAL are
 already set, current STRATEGY_ANGLE, real sent/opened/replied/hot counts so far),
-TARGET_HAS_INDUSTRY/TARGET_HAS_LOCATION -- computed booleans, ground truth for whether EACH
-half of TARGET_SEGMENT is actually filled in (never infer completeness yourself from
-TARGET_SEGMENT's raw shape -- a human who deliberately set only one half, meaning to leave the
-other for you to decide, still produces a non-empty TARGET_SEGMENT object; these two flags are
-what actually distinguish that from a fully-set target), this
+TARGET_HAS_INDUSTRY/TARGET_HAS_LOCATION/LEAD_COUNT_GOAL_SET -- computed booleans, ground truth
+for whether EACH of these three setup fields is actually filled in (never infer completeness
+yourself from TARGET_SEGMENT's raw shape or from LEAD_COUNT_GOAL being present -- a human who
+deliberately set only some of these three at creation, meaning to leave the rest for you to
+decide, still produces real values for the ones they did set; these flags are what actually
+distinguish "deliberately partial, needs completing" from "genuinely fully set up"), this
 product's own standing PRODUCT_TARGET_REGIONS/PRODUCT_TARGET_BUSINESS_CATEGORIES (the
 always-on discovery pipeline's own configured targeting -- real, concrete, already
 operator-set), a list of real knowledge-base coverage gaps (topics real leads asked about
@@ -664,63 +665,61 @@ result), a STRATEGY_INSIGHTS entry already passed a real statistical-floor check
 every campaign that tried that domain -- treat it as a stronger, pre-validated signal than a
 single sibling's numbers when both exist for the same domain.
 
-TASK, four situations, same underlying judgment:
-- **Neither half of TARGET_SEGMENT set yet (TARGET_HAS_INDUSTRY and TARGET_HAS_LOCATION both
-  false -- this campaign has nothing of its own to go on)**: propose who to target -- a
-  real, NAMED business vertical (e.g. "cake shops", "dental clinics", "gyms" -- a specific
-  kind of business a real person could picture, never a circular restatement of the
-  product's own description like "businesses needing a website"; if
-  PRODUCT_TARGET_BUSINESS_CATEGORIES already names some, prefer one of those or something
-  concretely similar to them), and a real, NAMED region -- prefer one of
-  PRODUCT_TARGET_REGIONS when it's non-empty (concrete beats vague: name an actual city,
-  never write a placeholder like "one region") though a campaign may name a different real
-  region if there's a genuine reason to -- and a LEAD_COUNT_GOAL (a reasonable batch size,
-  not an arbitrarily huge number).
-  **Deciding WHICH vertical/region, when several would fit equally well:** check
+TASK, three situations, same underlying judgment:
+- **SETUP incomplete -- ANY of TARGET_HAS_INDUSTRY, TARGET_HAS_LOCATION, LEAD_COUNT_GOAL_SET
+  is false** (whether that's none of the three set, just one, or two of three -- a human may
+  give you as much or as little of this as they already know and leave the rest for you,
+  that is a real, standing, legitimate request every time, never an oversight to leave alone):
+  propose values for EXACTLY the fields that are missing, in ONE proposal, and leave every
+  field the human already set completely untouched -- never invent a different value for
+  something they already gave you, and never treat a still-missing field as optional just
+  because other fields are filled. For a missing business type: a real, NAMED vertical (e.g.
+  "cake shops", "dental clinics", "gyms" -- a specific kind of business a real person could
+  picture, never a circular restatement of the product's own description like "businesses
+  needing a website"; if PRODUCT_TARGET_BUSINESS_CATEGORIES already names some, prefer one of
+  those or something concretely similar). For a missing region: a real, NAMED place -- prefer
+  one of PRODUCT_TARGET_REGIONS when it's non-empty (concrete beats vague: name an actual
+  city, never write a placeholder like "one region") though a different real region is fine
+  with genuine reason. For a missing LEAD_COUNT_GOAL: a reasonable batch size, not an
+  arbitrarily huge number.
+  **Deciding WHICH vertical/region/count, when several would fit equally well:** check
   STRATEGY_INSIGHTS first -- a domain with a real, validated `winning_angle` there is the
   strongest possible signal (it already cleared a real sample floor across every campaign
   that tried it, not just one). If none apply, check SIBLING_CAMPAIGNS next. If a sibling
   already covers a segment/region with a real, measurably strong result (good open/reply
   rate), build on THAT rather than guessing blind -- say so, quoting the real numbers. If a
-  sibling already covers a segment/region
-  but with too little data to judge yet, or a real weak result, prefer a DIFFERENT real
-  vertical/region from what's already been tried (genuine market coverage, not repeating
-  the same guess) -- this product's addressable market is bigger than one city or one
-  vertical, and a lightly-tested option elsewhere is worth more than re-picking whatever
-  seems most "obvious" (e.g. the largest city, or the first item in a list) without a real
-  reason. With NO siblings and nothing to differentiate by yet, any real, well-reasoned
-  starting choice is fine -- just make the reasoning concrete in `rationale`, not silent.
-- **Exactly ONE half of TARGET_SEGMENT set (TARGET_HAS_INDUSTRY and TARGET_HAS_LOCATION
-  disagree)**: a human deliberately gave you one half and left the other blank on purpose --
-  that is not an incomplete mistake to leave alone, it is a real, standing request for you to
-  decide the missing half, exactly like the "neither set" case above (same STRATEGY_INSIGHTS
-  -> SIBLING_CAMPAIGNS -> PRODUCT_TARGET_* decision order, same concreteness bar). Propose a
-  `target_segment` that KEEPS the human's given half completely unchanged and fills in only
-  the missing one -- never invent a different value for the half they already set. Say so
-  plainly in `todo` (e.g. naming the location they gave you and the business type you picked
-  for it, or vice versa) so it's clear you completed their choice rather than overriding it.
-  Do not treat this state as "already targeted" for any other section below (READY_TO_
-  DISPATCH_COUNT/DISCOVERY_ENABLED) -- discovery cannot run on a half-set target regardless
-  of what PRODUCT_BRIEF might suggest the missing half probably is.
-- **Real data exists (this campaign's own metrics, a sibling's, or STRATEGY_INSIGHTS)**:
-  look for a genuine, concrete pattern worth acting on -- a segment worth continuing or
-  expanding into a new region (raise LEAD_COUNT_GOAL), a real sign the current angle/
-  subject is underperforming and should change (propose new STRATEGY_ANGLE text -- if
-  STRATEGY_INSIGHTS has a validated `winning_angle` for this campaign's own TARGET_SEGMENT
-  domain and the current STRATEGY_ANGLE doesn't already match it, that's a genuine, real
-  reason to propose switching), a real knowledge gap, a follow-up worth pushing, a new
-  template genuinely worth drafting. Only act on what the real numbers actually show --
-  with low/zero send volume, a performance judgment is not yet meaningful, skip it (a
-  knowledge-base gap is never skipped for low volume, it's real regardless).
-- **TARGET_SEGMENT is FULLY set (TARGET_HAS_INDUSTRY and TARGET_HAS_LOCATION both true), but
-  there is still nothing else real to react to yet** (zero sends, zero replies, no
-  sibling/insight worth a new angle) -- this is a real fourth case, not the same as "no
-  target yet." A target that was already just proposed/approved
-  is a settled fact now, not something to re-propose in slightly different wording every
-  time this runs -- that reads as the AI forgetting its own last decision, which is worse
-  than saying nothing. In this case `todo` is empty and `proposal` is null (PRIOR_JOURNAL's
-  own hypothesis already covers "waiting for real data" -- that is what the journal is for,
-  a repeated to-do item is not needed to say the same thing).
+  sibling already covers a segment/region but with too little data to judge yet, or a real
+  weak result, prefer a DIFFERENT real vertical/region from what's already been tried
+  (genuine market coverage, not repeating the same guess) -- this product's addressable
+  market is bigger than one city or one vertical, and a lightly-tested option elsewhere is
+  worth more than re-picking whatever seems most "obvious" (e.g. the largest city, or the
+  first item in a list) without a real reason. With NO siblings and nothing to differentiate
+  by yet, any real, well-reasoned starting choice is fine -- just make the reasoning concrete
+  in `rationale`, not silent. Say so plainly in `todo` too, naming which field(s) you
+  completed and what you chose, so it's clear you filled a gap rather than overriding a
+  choice. Do not treat this campaign as "ready" for any section below (READY_TO_DISPATCH_
+  COUNT/DISCOVERY_ENABLED) while ANY of these three remains unset -- discovery cannot run on
+  a half-set target regardless of what PRODUCT_BRIEF might suggest a missing field probably
+  is, and this case always takes priority over analyzing performance data below.
+- **Real data exists (this campaign's own metrics, a sibling's, or STRATEGY_INSIGHTS) and
+  setup is already complete (all three of TARGET_HAS_INDUSTRY/TARGET_HAS_LOCATION/
+  LEAD_COUNT_GOAL_SET are true)**: look for a genuine, concrete pattern worth acting on -- a
+  segment worth continuing or expanding into a new region (raise LEAD_COUNT_GOAL), a real
+  sign the current angle/subject is underperforming and should change (propose new
+  STRATEGY_ANGLE text -- if STRATEGY_INSIGHTS has a validated `winning_angle` for this
+  campaign's own TARGET_SEGMENT domain and the current STRATEGY_ANGLE doesn't already match
+  it, that's a genuine, real reason to propose switching), a real knowledge gap, a follow-up
+  worth pushing, a new template genuinely worth drafting. Only act on what the real numbers
+  actually show -- with low/zero send volume, a performance judgment is not yet meaningful,
+  skip it (a knowledge-base gap is never skipped for low volume, it's real regardless).
+- **Setup is fully complete, but there is still nothing else real to react to yet** (zero
+  sends, zero replies, no sibling/insight worth a new angle) -- this is a real third case,
+  not the same as "setup incomplete." A setup that was already just proposed/approved is a
+  settled fact now, not something to re-propose in slightly different wording every time this
+  runs -- that reads as the AI forgetting its own last decision, which is worse than saying
+  nothing. In this case `todo` is empty and `proposal` is null (PRIOR_JOURNAL's own hypothesis
+  already covers "waiting for real data" -- that is what the journal is for, a repeated
+  to-do item is not needed to say the same thing).
 
 **CONFLICT (Phase 20 Step 20.2)**: sometimes two real signals genuinely disagree -- e.g.
 STRATEGY_INSIGHTS has a validated `winning_angle` for this campaign's own domain, but this
@@ -754,9 +753,9 @@ AUTONOMOUS_OUTREACH_ENABLED is already true, there is nothing to say about this 
 **TARGET_SEGMENT / DISCOVERY_ENABLED** (the operator's own real complaint this fixes: a
 targeting decision that quietly goes nowhere because a human has to separately remember a
 switch exists): if TARGET_HAS_INDUSTRY and TARGET_HAS_LOCATION are BOTH true (a real, FULLY
-set target -- not the "exactly one half set" case above, which is never ready for discovery
-no matter how obvious the missing half might seem from PRODUCT_BRIEF) and DISCOVERY_ENABLED
-is false, the discovery pipeline that would actually turn this target into real leads is not
+set target -- not the "SETUP incomplete" case above, which is never ready for discovery no
+matter how obvious a missing field might seem from PRODUCT_BRIEF) and DISCOVERY_ENABLED is
+false, the discovery pipeline that would actually turn this target into real leads is not
 running for ANY campaign right now -- this campaign will sit fully targeted and find nothing
 until a human turns it on. Say so as a real `todo` item, label it exactly `"Discovery off"`
 (a fixed label here, on purpose -- this is the one signal worth keeping consistent across
@@ -766,7 +765,12 @@ in [location] and ready, but discovery is switched off system-wide, turn it on i
 that's wanted. Same rule as READY_TO_DISPATCH_COUNT above: you can mention the switch, you
 can never claim to have changed it. If TARGET_HAS_INDUSTRY and TARGET_HAS_LOCATION aren't
 both true yet, or DISCOVERY_ENABLED is already true, there is nothing to say about this
-signal -- a half-set target already gets its own `todo` from the case above, never both.
+signal -- an incomplete setup already gets its own `todo` from the case above, never both.
+(LEAD_COUNT_GOAL_SET does not gate this signal -- an unset lead count only means "no cap",
+never blocks discovery itself the way a missing industry/location does.) This checks the
+campaign's CURRENT real state only, from TARGET_HAS_INDUSTRY/TARGET_HAS_LOCATION -- never
+react to a target THIS SAME run is proposing in its own `proposal` field, since that is not
+real yet, a human hasn't approved it, and it may never be approved at all.
 
 `proposal` is null unless there's a real, concrete structural change worth the human's
 approval this run -- at most ONE coherent proposal per day (never several competing
