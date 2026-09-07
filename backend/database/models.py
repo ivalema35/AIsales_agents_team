@@ -700,6 +700,11 @@ class TodoItem(Base):
     proposal = Column(Text)
     confidence = Column(REAL)      # Step 20.2's honest confidence, carried over per-item
     rationale = Column(Text)
+    # 2026-09-07: a real, structural blocker (Discovery off, ready-to-send-but-outreach-off,
+    # an OPERATIONAL_READINESS failure) vs an ordinary strategic note/proposal -- computed in
+    # Python from a fixed set of known labels, never left to the model to self-classify.
+    # Drives the Campaign Calendar's red "needs action" alert (vs the routine gold clock).
+    is_blocker = Column(Integer, default=0)
     status = Column(String, default="PENDING")  # PENDING | APPROVED | DISMISSED
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     resolved_at = Column(TIMESTAMP)

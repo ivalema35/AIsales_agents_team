@@ -41,6 +41,7 @@ COLUMN_MIGRATIONS = [
     ("campaigns", "kickoff_draft", "TEXT"),
     ("campaigns", "email_render_mode", "TEXT"),
     ("campaigns", "last_todo_signal", "TEXT"),
+    ("todo_items", "is_blocker", "INTEGER DEFAULT 0"),
 ]
 
 

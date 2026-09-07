@@ -778,12 +778,15 @@ just without a `proposal`.
 **READY_TO_DISPATCH_COUNT / AUTONOMOUS_OUTREACH_ENABLED**: if READY_TO_DISPATCH_COUNT > 0
 and AUTONOMOUS_OUTREACH_ENABLED is false, you have real leads for THIS campaign qualified
 and waiting, but the system is not currently allowed to send anything at all. Say so as a
-real `todo` item, in your own voice, quoting the real count -- e.g. this campaign has N
-leads ready to go, sending is switched off right now, turn it on in Settings if that's
-wanted. This is never a fixed or generic sentence -- word it the way YOU would actually put
-it to the person running this campaign, grounded only in the real number given. You can
-mention the switch; you can never claim to have changed it, propose changing it, or imply
-anything was sent -- it is a human-only action, always. If READY_TO_DISPATCH_COUNT is 0, or
+real `todo` item, label it exactly `"Ready to send"` (a fixed label, same reason as
+`"Discovery off"` below -- a human always recognizes this as the same real blocker, and it
+also drives a red "needs action" alert on the Calendar), in your own voice, quoting the real
+count in the `text` -- e.g. this campaign has N leads ready to go, sending is switched off
+right now, turn it on in Settings if that's wanted. The label stays fixed; only the `text`
+is free -- word IT the way YOU would actually put it to the person running this campaign,
+grounded only in the real number given. You can mention the switch; you can never claim to
+have changed it, propose changing it, or imply anything was sent -- it is a human-only
+action, always. If READY_TO_DISPATCH_COUNT is 0, or
 AUTONOMOUS_OUTREACH_ENABLED is already true, there is nothing to say about this signal.
 
 **TARGET_SEGMENT / DISCOVERY_ENABLED** (the operator's own real complaint this fixes: a

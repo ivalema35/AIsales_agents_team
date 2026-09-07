@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Plus, Clock, Target } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Clock, Target, AlertTriangle } from "lucide-react";
 import { api } from "../api/client";
 import CampaignFormModal from "./CampaignFormModal";
+import TodoItemCard from "./TodoItemCard";
+import Modal from "./ui/Modal";
 import { industryLabel } from "../lib/targetSegment";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -48,19 +50,45 @@ export default function CampaignCalendar() {
   const [error, setError] = useState(null);
   const [formDate, setFormDate] = useState(null); // non-null (incl. "") shows the create form
   const [formPrefill, setFormPrefill] = useState(null);
-  // Phase 21 -- "review pending" now means "this campaign has >=1 real PENDING to-do",
-  // not the old whole-day last_approved_date flag (that concept no longer exists -- every
-  // to-do is individually resolved in the unified AI Manager Inbox on the Dashboard, not
-  // here). A cheap single fetch, same real-item volume as the inbox itself.
-  const [campaignIdsWithPendingTodo, setCampaignIdsWithPendingTodo] = useState(new Set());
+  // Phase 21 -- "review pending" means "this campaign has >=1 real PENDING to-do", not the
+  // old whole-day last_approved_date flag (that concept no longer exists -- every to-do is
+  // individually resolved in the unified AI Manager Inbox on the Dashboard, not here). Keyed
+  // by campaign_id so the same fetch also powers the blocker popup below -- one source of
+  // truth, not two separate lookups drifting apart.
+  const [campaignTodos, setCampaignTodos] = useState({});
+  // 2026-09-07, user's explicit ask: a campaign with a real "must act" blocker (Discovery
+  // off, product inactive, ready-to-send-but-outreach-off) shouldn't blend in with an
+  // ordinary "something to review" note -- it needs its own unmistakable red alert on the
+  // calendar itself, not just a chip inside the Dashboard inbox someone might not open.
+  const [blockerCampaignId, setBlockerCampaignId] = useState(null);
 
   useEffect(() => {
     api.listCampaigns().then(setCampaigns).catch((err) => setError(err.message));
     api.listProducts().then(setProducts).catch(() => {});
-    api.listTodos()
-      .then((items) => setCampaignIdsWithPendingTodo(new Set(items.map((i) => i.campaign_id).filter(Boolean))))
-      .catch(() => {});
+    refreshTodos();
   }, []);
+
+  function refreshTodos() {
+    api.listTodos()
+      .then((items) => {
+        const byCampaign = {};
+        for (const item of items) {
+          if (!item.campaign_id) continue;
+          (byCampaign[item.campaign_id] ||= []).push(item);
+        }
+        setCampaignTodos(byCampaign);
+      })
+      .catch(() => {});
+  }
+
+  const campaignIdsWithPendingTodo = useMemo(() => new Set(Object.keys(campaignTodos)), [campaignTodos]);
+  const campaignIdsWithBlocker = useMemo(() => {
+    const s = new Set();
+    for (const [cid, items] of Object.entries(campaignTodos)) {
+      if (items.some((i) => i.is_blocker)) s.add(cid);
+    }
+    return s;
+  }, [campaignTodos]);
 
   const productTitle = useMemo(() => {
     const map = {};
@@ -228,7 +256,10 @@ export default function CampaignCalendar() {
                       // Review-pending indicator (UI Phase 16 revision, 2026-09-02; Phase 21
                       // revision 2026-09-05) -- shows whenever this campaign has a real
                       // PENDING to-do waiting in the unified AI Manager Inbox (Dashboard).
-                      const reviewPending = campaignIdsWithPendingTodo.has(c.id);
+                      // A real blocker (is_blocker) gets its own louder red alert instead --
+                      // the two never show together, red already implies "needs a look".
+                      const hasBlocker = campaignIdsWithBlocker.has(c.id);
+                      const reviewPending = !hasBlocker && campaignIdsWithPendingTodo.has(c.id);
                       return (
                         <div
                           key={c.id}
@@ -237,14 +268,29 @@ export default function CampaignCalendar() {
                           onClick={() => navigate(`/campaigns/${c.id}`)}
                           onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate(`/campaigns/${c.id}`)}
                           title="Open campaign"
-                          className="cursor-pointer rounded-md border border-line/60 bg-parchment-raised px-1.5 py-1 shadow-sm hover:border-gold-500 hover:bg-parchment-raised-2"
+                          className={`cursor-pointer rounded-md border px-1.5 py-1 shadow-sm hover:bg-parchment-raised-2 ${
+                            hasBlocker
+                              ? "border-alert-600 bg-alert-100 hover:border-alert-600"
+                              : "border-line/60 bg-parchment-raised hover:border-gold-500"
+                          }`}
                         >
                           <div className="flex items-start justify-between gap-1">
                             <p className="truncate text-[11px] font-semibold text-ink-900" title={c.name}>
                               {c.name}
                             </p>
-                            {reviewPending && (
-                              <Clock size={10} className="mt-0.5 shrink-0 text-gold-700" aria-label="Review pending" />
+                            {hasBlocker ? (
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setBlockerCampaignId(c.id); }}
+                                title="Needs action -- click for details"
+                                className="flex shrink-0 items-center gap-0.5 rounded-full bg-alert-600 px-1.5 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wide text-white hover:opacity-90"
+                              >
+                                <AlertTriangle size={9} /> Action needed
+                              </button>
+                            ) : (
+                              reviewPending && (
+                                <Clock size={10} className="mt-0.5 shrink-0 text-gold-700" aria-label="Review pending" />
+                              )
                             )}
                           </div>
                           <p className="truncate text-[9px] text-ink-500">
@@ -294,6 +340,35 @@ export default function CampaignCalendar() {
             setFormPrefill(null);
           }}
         />
+      )}
+
+      {blockerCampaignId && (
+        <Modal
+          title={`Needs action — ${(campaigns || []).find((c) => c.id === blockerCampaignId)?.name || "Campaign"}`}
+          onClose={() => setBlockerCampaignId(null)}
+        >
+          <div className="flex flex-col gap-3">
+            {(campaignTodos[blockerCampaignId] || []).length === 0 ? (
+              <p className="text-xs text-ink-500">Nothing pending for this campaign right now.</p>
+            ) : (
+              (campaignTodos[blockerCampaignId] || []).map((item) => (
+                <TodoItemCard
+                  key={item.id}
+                  item={item}
+                  onResolved={(id) => {
+                    setCampaignTodos((prev) => {
+                      const remaining = (prev[blockerCampaignId] || []).filter((i) => i.id !== id);
+                      const next = { ...prev };
+                      if (remaining.length) next[blockerCampaignId] = remaining;
+                      else delete next[blockerCampaignId];
+                      return next;
+                    });
+                  }}
+                />
+              ))
+            )}
+          </div>
+        </Modal>
       )}
     </div>
   );

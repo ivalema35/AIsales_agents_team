@@ -126,6 +126,11 @@ def _pain_point_text(item) -> str:
 # (DailyReviewPanel.jsx) -- COMPLETED/PAUSED campaigns never claim new leads.
 ACTIVE_CAMPAIGN_STATUSES = ("PROPOSED", "APPROVED", "RUNNING")
 
+# 2026-09-07 -- the two hand-written to-do labels (outside OPERATIONAL_READINESS) that
+# represent a real, structural "must act" blocker rather than an ordinary strategic note --
+# see generate_campaign_todo()'s use of this alongside operational_readiness's own labels.
+_FIXED_BLOCKER_LABELS = {"Discovery off", "Ready to send"}
+
 
 def resolve_auto_campaign_id(db, product_id: str) -> str | None:
     """A new lead for a product auto-joins that product's own campaign -- but only when
@@ -566,6 +571,7 @@ def serialize_todo_item(item: TodoItem) -> dict:
         "proposal": json.loads(item.proposal) if item.proposal else None,
         "confidence": item.confidence,
         "rationale": item.rationale,
+        "is_blocker": bool(item.is_blocker),
         "status": item.status,
         "created_at": str(item.created_at),
         "resolved_at": str(item.resolved_at) if item.resolved_at else None,
@@ -739,6 +745,15 @@ OPERATIONAL_READINESS: {json.dumps(operational_readiness, ensure_ascii=False)}
         ).all()
     }
 
+    # 2026-09-07 -- which labels represent a real, structural "must act" blocker (drives the
+    # Calendar's red alert) vs an ordinary strategic note. Computed here in Python from a
+    # fixed set of known labels, never left to the model to self-classify: "Discovery off"/
+    # "Ready to send" are the two hand-written fixed-label signals above, and every
+    # OPERATIONAL_READINESS check's own `label` is blocker-worthy by definition (that's the
+    # whole point of that list) regardless of its current `ok` value -- a check that's
+    # currently ok just never produces a todo item with that label in the first place.
+    blocker_labels = _FIXED_BLOCKER_LABELS | {c["label"] for c in operational_readiness}
+
     raw_todo = data.get("todo")
     proposal = _clean_proposal(data.get("proposal"))
     created_items = []
@@ -750,7 +765,10 @@ OPERATIONAL_READINESS: {json.dumps(operational_readiness, ensure_ascii=False)}
             text = str(raw_item.get("text", "")).strip()[:250]
             if not text or label in pending_labels:
                 continue
-            item = TodoItem(scope="CAMPAIGN", campaign_id=campaign_id, label=label, text=text)
+            item = TodoItem(
+                scope="CAMPAIGN", campaign_id=campaign_id, label=label, text=text,
+                is_blocker=label in blocker_labels,
+            )
             db.add(item)
             created_items.append(item)
             pending_labels.add(label)  # this same call never raises the same label twice either

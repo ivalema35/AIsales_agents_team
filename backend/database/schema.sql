@@ -647,6 +647,11 @@ CREATE TABLE IF NOT EXISTS todo_items (
     proposal        TEXT,                   -- optional JSON structural change
     confidence      REAL,
     rationale       TEXT,
+    -- 2026-09-07: a real, structural blocker (Discovery off, ready-to-send-but-outreach-
+    -- off, an OPERATIONAL_READINESS failure) vs an ordinary strategic note/proposal.
+    -- Computed in Python from a fixed set of known labels, never left to the model to
+    -- self-classify -- drives the Calendar's red "needs action" alert.
+    is_blocker      INTEGER DEFAULT 0,
     status          TEXT DEFAULT 'PENDING', -- PENDING | APPROVED | DISMISSED
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     resolved_at     TIMESTAMP,
