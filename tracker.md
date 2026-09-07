@@ -5943,3 +5943,14 @@ grids, plain labels (no Phase jargon), country pills show full names, wider edit
 **VPS deploy turant** (user: "haa") — frontend-only, `git pull --ff-only` (`d7edc9e..be6c8dc`, clean),
 `npm run build` (naya hash `index-DUHHOq7T.js`), `dist` → `public_html` sync + chown. Backend/DB touch
 nahi, service restart ki zaroorat nahi. Real verify: naya JS hash live serve ho raha he.
+
+### New campaign form: same non-tech horizontal UX — 2026-09-07
+
+`CampaignFormModal.jsx`: 4 numbered step cards (What / When / Who / Style), 2-col grids,
+wider modal (`max-w-4xl`), plain labels. Same create API — layout + copy only.
+
+Note: is redesign me pichli baar (mismatch-fix) wali line — "this is what THIS campaign actually
+searches for, alag ho sakta he product ke Usual regions/business types se" — Step 3 ke blurb se
+hat gayi ("Optional. Know your target? Fill it in. Leave blank and the AI can propose one..." — khud
+me clear he, bas dusre form ka cross-reference nahi karta). Functionality/backend bilkul unaffected,
+sirf ek explanatory line kam hui — flagging for the record, koi action nahi liya.
