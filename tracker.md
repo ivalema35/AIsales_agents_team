@@ -6112,3 +6112,36 @@ sanity + 5 services restart. Restart hote hi scheduler ka pehla tick khud chala 
 PENDING "Discovery off" to-do turant ban gaya, bilkul sahi wording ke sath ("targeted at multiple local
 business types in Mehsana..."). **Poora loop ab genuinely automatic he — koi manual intervention nahi
 lagi verify karne ke liye.**
+
+### 🐛 Real bug: "multiple business types" ek vague string ban raha tha, real names nahi (2026-09-07)
+
+User ne pucha "ye to AI Manager ka kaam he, konse business type target karne he — mene sirf 'multiple'
+bola tha, konse-konse aayenge AI khud strategy se decide karega." Bilkul sahi point — check kiya to
+real bug mila: jab user ne pehle "target multiple business types" feedback diya tha, `TODO_ITEM_
+REVISION_SYSTEM_PROMPT`'s OUTPUT schema me `industry` sirf ek **single string** accept karta tha —
+model ne isliye literal string **"multiple local business types"** likh diya (idea ka summary, real
+naam nahi) — jo khud discovery ka **search query** ban jata he (`_run_discovery_tick`'s `query = target
+["industry"]`), aur ye vague string search me kuch nahi milega.
+
+**Fix (5 files, backend + frontend)**:
+1. `TODO_ITEM_REVISION_SYSTEM_PROMPT` + `CAMPAIGN_TODO_SYSTEM_PROMPT` — `target_segment.industry` ab
+   **single string YA real names ka JSON array** ho sakta he, explicit instruction ke saath "kabhi
+   summary phrase mat likho, hamesha asli naam do, ek ho ya kayi."
+2. `campaign_service.py`'s `_clean_proposal()` — ab `industry` ko validate karta he (non-empty string
+   ya non-empty list-of-strings), malformed value kabhi real Campaign row tak nahi pahunchti.
+3. `discovery_scheduler.py`'s `_run_discovery_tick()` — ab industry list pe loop karta he, har naam ka
+   **apna alag real DISCOVER job + apna cooldown** (`DiscoveryRun` pehle se hi (campaign, query, region)
+   se key ho raha tha, koi schema change nahi lagi).
+4. Frontend — naya shared helper `lib/targetSegment.js`'s `industryLabel()`, 4 jagah wire kiya
+   (CampaignCalendar, CampaignDetail, TodoItemCard x2) — array ko comma-joined dikhata he.
+
+**Verify — local test, exact user scenario reproduce kiya**: "target multiple business types" feedback
+dene par ab AI ne `["coaching classes", "tuition institutes", "academies"]` propose kiya (pehle
+"multiple local business types" vague string aata tha). `npm run build` clean, commit `3a59006`, VPS
+deploy (backend + frontend, 5 services restart) + real HTTPS verify.
+
+**Real live campaign bhi fix ki** (existing "Approve" flow use karke, khud koi naam nahi choose kiya —
+AI se hi decide karvaya): revise->approve lifecycle chalaya, final applied target: `{"industry":
+["dental clinics", "gyms", "salons"], "location": "Mehsana"}` — 3 real, concrete business types, Mehsana
+aur lead_count_goal/strategy_angle bilkul unchanged. Agla Discovery tick ab in teeno ke liye alag-alag
+real search chalayega.

@@ -667,11 +667,25 @@ isliye half-set→full-set change (Proposal approve) ko "kuch nahi badla" samajh
 flags. **Real automatic verify** (koi manual trigger nahi) — restart ke turant baad scheduler ne khud
 signal change detect kiya, naya "Discovery off" to-do turant bana. Commit `e093b79`, deployed.
 
+**🐛 Real bug: "multiple business types" vague string ban raha tha, real names nahi, 2026-09-07** —
+user ne pointed out "AI Manager ka kaam he konse business type target karne he, mene sirf 'multiple'
+bola tha." Bug mila: `industry` field sirf single-string schema tha, isliye "target multiple business
+types" feedback pe model ne literal string **"multiple local business types"** likh diya (jo khud
+search query ban jata he — kuch nahi milta). Fix: `industry` ab string YA real-names ka array ho sakta
+he (`TODO_ITEM_REVISION_SYSTEM_PROMPT`/`CAMPAIGN_TODO_SYSTEM_PROMPT`/`_clean_proposal` validation),
+discovery ab list pe loop karta he (har naam ka apna search+cooldown, DiscoveryRun already isi shape
+ke liye ready tha). Frontend me shared `industryLabel()` helper 4 jagah wire kiya. Local test se
+verify: same feedback ab `["coaching classes", "tuition institutes", "academies"]` deta he. **Real live
+campaign bhi fix ki** (existing Approve flow se hi, khud koi naam nahi chuna) — final target:
+`["dental clinics", "gyms", "salons"]` + Mehsana. Commit `3a59006`, VPS deploy + real verify.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
-+ AI Manager setup-completion for partial campaign targets (any combination) + signal-tick fingerprint
-fix — **sab kuch VPS par LIVE he** (commit `e093b79`, deployed 2026-09-07).** Baaki: Step 16.8
-(marketing content), email-vs-WhatsApp channel-preference lever, saare 8
-products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi active na ho).
++ AI Manager setup-completion for partial campaign targets + signal-tick fingerprint fix + real
+multi-vertical targeting (industry as array of named types) — **sab kuch VPS par LIVE he** (commit
+`3a59006`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp
+channel-preference lever, WhatsApp template to-dos abhi unified inbox se disconnected hain (separate
+manual page), saare 8 products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi
+active na ho).
