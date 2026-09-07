@@ -716,7 +716,20 @@ independent. Commit `07ea1be`, VPS deploy.
 `statusColors.js` non-technical banaye (status meaning jaise "Waiting for your OK", Stage/Priority
 column leads table me, duplicate metrics hataye). Verify+deploy kiya (frontend-only), commit `af51b7a`.
 
-**Sab kuch VPS par LIVE he** (commit `af51b7a`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
+**User ne khud "AI Automation Solutions" product active kar diya** (kab exactly pata nahi, but confirm
+hua) — real Discovery chal gaya, **10 real gyms Mehsana me mile** (target: dental clinics/gyms/salons).
+
+**🐛 Real bug mila: scoring agent ko lead ka website status pata hi nahi chalta tha, 2026-09-07** — user
+ne apne real 10 leads dekh kar pucha "Website Development jaise product ke liye lead ke paas website
+NAHI honi chahiye, waise sahi qualify ho raha he?" Check kiya: `lead_profile` (scoring ko jata he) me
+`website_url` KABHI include hi nahi hota tha, kisi bhi product ke liye. Fix: `has_website` add kiya,
+prompt ko bola "sirf tab use karo jab product khud website-relevant ho." Verify (local): same lead,
+Website Development product ke against — website nahi=95/HOT, website hai=35/COLD. Commit `7af771f`,
+deployed. **Real 10 gym leads ka status bhi check kiya** — scoring honest/discriminating tha (zyada tar
+COLD, "gym AI-automation ke liye weak match" — sahi reasoning), par isse ye bhi pata chala ki AI
+strategist ka "gyms" vertical pick is specific product ke liye best nahi tha shayad — separate issue,
+abhi touch nahi kiya.
+
+**Sab kuch VPS par LIVE he** (commit `7af771f`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
 content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se
-disconnected hain (separate manual page), is campaign ka product abhi bhi `is_active=0` he (user ko
-batana hai activate karna he ya nahi), saare 8 products `is_active=0` hain.
+disconnected hain (separate manual page).

@@ -6273,3 +6273,33 @@ User feedback on campaign page (`Ai automaion Push`): Proposed/SCORED/Tier jargo
 - `CampaignDetail.jsx`: snapshot header with status meaning (`Waiting for your OK`), `Who this targets`, labeled stat chips, leads table -> `Businesses in this campaign` with Stage (`Ready to contact` not SCORED), Priority (tier + score/100 + High/Worth a look/Low).
 - `statusColors.js`: shared `STATUS_LABELS` + `statusLabel()`.
 - `DailyReviewPanel.jsx`: `AI Sales Manager` card (no duplicate campaign name/metrics), friendlier empty/journal/preview/mode chips (Formatted email / Simple text).
+
+### 🐛 Real bug: scoring agent ko lead ka website status pata hi nahi chalta tha (2026-09-07)
+
+User ne apna real campaign ke 10 discovered leads (Mehsana ke gyms) dekh kar pucha: "Website Development
+jaise product ke liye, lead ke paas website NAHI honi chahiye — waise hi ye is campaign ke product ke
+liye sahi se qualify ho rahe he?" Code check kiya to real gap mila: `scraper_worker/async_runner.py`'s
+`_handle_score()` jo `lead_profile` scoring agent ko bhejta he, usme sirf `company_name`,
+`region_location`, `has_email`, `has_phone` tha — **`website_url` kabhi bheja hi nahi jata tha, kisi bhi
+product ke liye**. Matlab agar koi Website Development product hota, to scoring agent ko pata hi nahi
+chalta ki lead ke paas already website he ya nahi — jo iske liye sabse zaroori signal hona chahiye tha.
+
+**Fix**: `lead_profile` me `has_website: bool(lead.website_url)` add kiya. `SCORING_AGENT_SYSTEM_PROMPT`
+ko instruction diya — ye signal **sirf tab use karo jab product brief khud isse relevant banaye**:
+website-banane-wale product ke liye "website nahi hai" positive signal; website-redesign product ke
+liye ulta; kisi bhi aur (jaise AI automation, CRM) product ke liye bilkul irrelevant/neutral, kabhi
+invent na karo.
+
+**Verify — local test, exact real scenario**: ek hi lead ko "Website Development" product ke against
+score kiya, sirf `has_website` badal ke — **website nahi (False) → 95 score, HOT**; **website hai
+(True) → 35 score, COLD**, dono ki justification bilkul sahi reason bata rahi he. Ek doosra test
+(AI Automation product) confirm karta he ki irrelevant product ke liye ye factor decision ko wrongly
+skew nahi karta.
+
+**Is campaign ke real 10 leads (gyms) ka status bhi check kiya**: scoring agent honest tha — zyada tar
+COLD (15-35), ek WARM (58), justification saaf: "gym is not a clear match for AI automation of
+business-process/support workflows." Matlab scoring khud discriminating/grounded he (blindly sabko HOT
+nahi de raha), par ye alag se ye bhi dikhata he ki AI strategist ka "gyms" vertical pick shayad is
+specific product ke liye best choice nahi tha — separate observation, abhi fix nahi kiya.
+
+Commit `7af771f`, VPS deploy (backend-only, 5 services restart).
