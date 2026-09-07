@@ -6192,3 +6192,25 @@ concreteness ("turn it on in Settings" wala pattern).
 inactive"**, text: *"This campaign is blocked because 'IVinfotech -- AI Automation Solutions' is turned
 off on the Products page... Turn the product on there if you want this campaign to find leads."* Commit
 `1013dff`, VPS deploy + 5 services restart.
+
+### Standing rule: plain language across POORE AI Manager prompt family (2026-09-07)
+
+User ne isse ek general standard bana diya: "aise hi har to-dos jo AI deta he wo non-tech ko asani se
+samajh aaye aisa hona chahiye." Sirf ek to-do fix karna kaafi nahi tha — ye ab hamesha ke liye lagu hona
+chahiye.
+
+**Fix**: naya `AI_MANAGER_PLAIN_LANGUAGE_RULE` (prompts.py) — 5 prompts me prepend kiya jo seedha human
+dashboard pe text likhte hain: `CAMPAIGN_TODO_SYSTEM_PROMPT`, `CAMPAIGN_SUGGESTION_SYSTEM_PROMPT`,
+`TODO_ITEM_REVISION_SYSTEM_PROMPT`, `EXECUTION_WATCHDOG_SYSTEM_PROMPT`,
+`CONVERSATIONAL_PUSHBACK_SYSTEM_PROMPT` (outreach/scoring/QC prompts touch nahi kiye — wo ya third
+party ke liye hain ya kabhi human ko dikhte hi nahi). Concrete test diya AI ko: *"could a developer
+explaining this to a non-technical shopkeeper use this exact sentence unchanged?"* — real in-app
+features (Discovery, Autonomous Outreach, Settings, product naam) allowed hain, wo jargon nahi.
+
+`_campaign_operational_readiness()`'s docstring me bhi same rule likha — kyunki uske `label`/`detail`
+strings Python me haath se likhe jaate hain, LLM generate nahi karta, isliye prompt-side rule akela
+kaafi nahi tha.
+
+**Permanent memory me save kiya** (`feedback_ai_manager_plain_language.md`) taaki future sessions bhi
+ye standing rule follow karein. Local verify kiya — output quality clean rahi. Commit `24f4825`, VPS
+deploy + 5 services restart.

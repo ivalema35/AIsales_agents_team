@@ -697,8 +697,9 @@ audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render 
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
 + AI Manager setup-completion for partial campaign targets + signal-tick fingerprint fix + real
 multi-vertical targeting + extensible OPERATIONAL_READINESS architecture (label ab human-readable
-"Product inactive", `name` sirf internal id) — **sab kuch VPS par LIVE he** (commit `1013dff`, deployed
-2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
-WhatsApp template to-dos abhi unified inbox se disconnected hain (separate manual page), is campaign
-ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya nahi), saare 8 products
-`is_active=0` hain.
+"Product inactive", `name` sirf internal id) + **standing plain-language rule poore AI Manager prompt
+family me** (`AI_MANAGER_PLAIN_LANGUAGE_RULE`, 5 prompts, permanent memory me bhi save) — **sab kuch
+VPS par LIVE he** (commit `24f4825`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content),
+email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se disconnected
+hain (separate manual page), is campaign ka product abhi bhi `is_active=0` he (user ko batana hai
+activate karna he ya nahi), saare 8 products `is_active=0` hain.
