@@ -308,6 +308,53 @@ def _campaign_operational_readiness(db, campaign, product) -> list[dict]:
     return checks
 
 
+def campaign_blocking_status(db, campaign: Campaign) -> list[dict]:
+    """2026-09-07, user's real, sharp correction to the Calendar red-alert feature: "Got it"
+    on a to-do dismisses a NOTIFICATION, it does not fix the real problem -- an alert that
+    disappears the moment a human acknowledges it, while the campaign is still genuinely
+    stuck, is worse than useless, it's actively misleading (their own words: "AI ab tak
+    alert dikhayega jab tak wo solve na ho jaye, chahe koi bhi ruka hua ho usme"). The
+    to_do_items table's `is_blocker`/PENDING status is a dismissible reminder; this function
+    is the opposite -- a LIVE fact, recomputed fresh every call, completely independent of
+    whether any TodoItem was ever created, approved, or dismissed for this campaign. The
+    Calendar's red alert is driven by THIS, never by to-do state.
+
+    Returns only the CURRENTLY true blockers (already filtered to the ones a human would
+    need to act on) as [{label, detail}, ...] -- empty when nothing is actually blocking
+    this campaign right now. Folds in the two hand-written signals (Discovery off,
+    ready-to-send-but-outreach-off) alongside operational_readiness's own checks, so a
+    single call covers every real blocker this campaign could have."""
+    product = db.get(Product, campaign.product_id)
+    if not product:
+        return []
+    target = json.loads(campaign.target_segment or "{}")
+    target_ready = bool(target.get("industry")) and bool(target.get("location"))
+
+    blockers = [
+        {"label": c["label"], "detail": c["detail"]}
+        for c in _campaign_operational_readiness(db, campaign, product) if not c["ok"]
+    ]
+
+    if target_ready and not get_bool(db, DISCOVERY_ENABLED, default=False):
+        blockers.append({
+            "label": "Discovery off",
+            "detail": "This campaign is fully targeted and ready, but Discovery is switched "
+                      "off system-wide, so it will not find any leads until someone turns it "
+                      "on in Settings.",
+        })
+
+    ready_count = _ready_to_dispatch_count(db, campaign.id)
+    if ready_count > 0 and not get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED):
+        blockers.append({
+            "label": "Ready to send",
+            "detail": f"This campaign has {ready_count} lead{'s' if ready_count != 1 else ''} "
+                      "ready to contact, but sending is switched off system-wide -- turn on "
+                      "Autonomous Outreach in Settings if you want them to actually go out.",
+        })
+
+    return blockers
+
+
 def evaluate_execution_watchdog(db, campaign_id: str | None) -> dict | None:
     """Phase 20 Step 20.3 -- a single, event-triggered anomaly check, called right after a
     real OutreachLog transitions to FAILED/BOUNCED (api/webhooks.py's Resend handler,

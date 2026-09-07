@@ -56,10 +56,14 @@ export default function CampaignCalendar() {
   // by campaign_id so the same fetch also powers the blocker popup below -- one source of
   // truth, not two separate lookups drifting apart.
   const [campaignTodos, setCampaignTodos] = useState({});
-  // 2026-09-07, user's explicit ask: a campaign with a real "must act" blocker (Discovery
-  // off, product inactive, ready-to-send-but-outreach-off) shouldn't blend in with an
-  // ordinary "something to review" note -- it needs its own unmistakable red alert on the
-  // calendar itself, not just a chip inside the Dashboard inbox someone might not open.
+  // 2026-09-07, user's explicit ask, then a sharp correction the SAME day: a campaign with a
+  // real "must act" blocker needs its own unmistakable red alert -- but the user caught that
+  // tying it to a to-do's PENDING status was wrong: clicking "Got it" dismisses a
+  // notification, it does not fix the real problem, so the alert must never disappear just
+  // because a human acknowledged it. `blocking_issues` now comes from each campaign object
+  // itself (`campaign_blocking_status()`, backend/services/campaign_service.py) -- a LIVE
+  // fact recomputed on every campaigns fetch, completely independent of any to-do's
+  // approve/dismiss state.
   const [blockerCampaignId, setBlockerCampaignId] = useState(null);
 
   useEffect(() => {
@@ -84,11 +88,11 @@ export default function CampaignCalendar() {
   const campaignIdsWithPendingTodo = useMemo(() => new Set(Object.keys(campaignTodos)), [campaignTodos]);
   const campaignIdsWithBlocker = useMemo(() => {
     const s = new Set();
-    for (const [cid, items] of Object.entries(campaignTodos)) {
-      if (items.some((i) => i.is_blocker)) s.add(cid);
+    for (const c of campaigns || []) {
+      if (c.blocking_issues && c.blocking_issues.length > 0) s.add(c.id);
     }
     return s;
-  }, [campaignTodos]);
+  }, [campaigns]);
 
   const productTitle = useMemo(() => {
     const map = {};
@@ -347,25 +351,45 @@ export default function CampaignCalendar() {
           title={`Needs action — ${(campaigns || []).find((c) => c.id === blockerCampaignId)?.name || "Campaign"}`}
           onClose={() => setBlockerCampaignId(null)}
         >
-          <div className="flex flex-col gap-3">
-            {(campaignTodos[blockerCampaignId] || []).length === 0 ? (
-              <p className="text-xs text-ink-500">Nothing pending for this campaign right now.</p>
-            ) : (
-              (campaignTodos[blockerCampaignId] || []).map((item) => (
-                <TodoItemCard
-                  key={item.id}
-                  item={item}
-                  onResolved={(id) => {
-                    setCampaignTodos((prev) => {
-                      const remaining = (prev[blockerCampaignId] || []).filter((i) => i.id !== id);
-                      const next = { ...prev };
-                      if (remaining.length) next[blockerCampaignId] = remaining;
-                      else delete next[blockerCampaignId];
-                      return next;
-                    });
-                  }}
-                />
-              ))
+          <div className="flex flex-col gap-4">
+            {/* Live, real blockers -- shown for as long as they're actually true, whether
+                or not a human already clicked "Got it" on the matching to-do below. This is
+                what stays honest even after a notification gets dismissed. */}
+            {((campaigns || []).find((c) => c.id === blockerCampaignId)?.blocking_issues || []).length > 0 && (
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-wide text-alert-600">
+                  Currently blocking this campaign
+                </span>
+                {((campaigns || []).find((c) => c.id === blockerCampaignId)?.blocking_issues || []).map((b) => (
+                  <div key={b.label} className="rounded-lg border border-dashed border-alert-600 bg-alert-100 p-2.5">
+                    <p className="font-mono text-[9px] font-semibold uppercase tracking-wide text-alert-600">{b.label}</p>
+                    <p className="mt-1 text-xs text-ink-900">{b.detail}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {(campaignTodos[blockerCampaignId] || []).length > 0 && (
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-wide text-ink-500">
+                  Pending to-dos
+                </span>
+                {(campaignTodos[blockerCampaignId] || []).map((item) => (
+                  <TodoItemCard
+                    key={item.id}
+                    item={item}
+                    onResolved={(id) => {
+                      setCampaignTodos((prev) => {
+                        const remaining = (prev[blockerCampaignId] || []).filter((i) => i.id !== id);
+                        const next = { ...prev };
+                        if (remaining.length) next[blockerCampaignId] = remaining;
+                        else delete next[blockerCampaignId];
+                        return next;
+                      });
+                    }}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </Modal>

@@ -8,7 +8,8 @@ from database.db_config import SessionLocal
 from database.models import Campaign, Product
 from services.campaign_service import (
     compute_campaign_metrics, compute_campaign_lead_summary, get_daily_review,
-    clear_campaign_watchdog_alert, revise_kickoff_draft, set_campaign_email_render_mode)
+    clear_campaign_watchdog_alert, revise_kickoff_draft, set_campaign_email_render_mode,
+    campaign_blocking_status)
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/api/v1/campaigns")
 
@@ -53,6 +54,11 @@ def _serialize(db, campaign, with_metrics=True):
     if with_metrics:
         data["metrics"] = compute_campaign_metrics(db, campaign.id)
         data["lead_summary"] = compute_campaign_lead_summary(db, campaign.id)
+        # 2026-09-07 -- a LIVE, recomputed-every-request fact, deliberately independent of
+        # to_do_items/is_blocker: dismissing a to-do ("Got it") must never silence this
+        # while the real underlying problem is still true. See campaign_blocking_status()'s
+        # own docstring for the user's exact complaint this fixes.
+        data["blocking_issues"] = campaign_blocking_status(db, campaign)
     return data
 
 
