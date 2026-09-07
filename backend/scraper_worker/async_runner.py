@@ -492,6 +492,12 @@ def _handle_score(db, payload):
         "region_location": lead.region_location,
         "has_email": bool(lead.primary_email),
         "has_phone": bool(lead.primary_phone),
+        # 2026-09-07, user-caught real gap: a lead already having (or not having) the exact
+        # thing a product builds/replaces is sometimes the single strongest fit signal there
+        # is (e.g. a Website Development product wants leads with NO site; a "modernize your
+        # old website" product wants the opposite) -- this was silently never given to the
+        # scoring agent at all, so it could never factor this in, for any product.
+        "has_website": bool(lead.website_url),
     }
 
     result, route = score_lead(db, lead.id, product_brief, lead_profile, pain_points)
