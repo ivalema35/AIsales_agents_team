@@ -5914,6 +5914,13 @@ pe he, jo Product ke categories se bilkul match na bhi ho to backend deliberatel
 Dono form ab same naam use karte he ("Usual regions/business types") taaki relationship clear ho.
 `npm run build` clean pass.
 
+**VPS deploy turant** (user: "haa kardo") — frontend-only, `git pull --ff-only` (`0898659..d7edc9e`,
+clean), `npm run build` (naya hash `index-DkemUuOd.js`), `dist` → `public_html` sync + chown. Backend/DB
+touch nahi hua, service restart ki zaroorat nahi thi. Real verify: naya JS hash live serve ho raha he.
+Isi beech ye bhi confirm kiya ki Cursor ke calendar-highlight commits (`3b66997`/`0898659`) VPS par
+already clean git state me the (`git status` khali, `HEAD` origin se match) — koi SFTP-drift bacha nahi
+tha, safe.
+
 ### ? Campaign calendar: Today highlight + UX polish � 2026-09-07
 
 `CampaignCalendar.jsx`: aaj ka din gold pill + Today label + stronger cell border/bg;

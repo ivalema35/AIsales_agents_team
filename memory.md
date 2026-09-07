@@ -613,7 +613,11 @@ ke fields ab sirf AI-suggestion prompt me background context hain (jo function y
 karta tha, wo kahi call hi nahi hota — dead code, confirmed). Non-technical user Product page pe category
 set karke sochega "ab sirf yehi search hoga" — galat. **Fix**: dono field rename + honest hint
 ("helps suggestions... does not lock actual search"), aur `CampaignFormModal.jsx` me ek line add ki jo
-dono form ke fields ka relationship clarify kare. Copy-only fix, backend/data untouched.
+dono form ke fields ka relationship clarify kare. Copy-only fix, backend/data untouched. **VPS pe bhi
+deploy kiya** (`d7edc9e`, frontend-only, backend/DB touch nahi, naya hash `index-DkemUuOd.js` live
+confirmed). Isi check me ye bhi pata chala ki beech me Cursor ne calendar "Today highlight" feature
+khud commit + VPS deploy kiya tha (`3b66997`/`0898659`) — verify kiya, VPS ka git state clean/synced
+hai, koi SFTP-drift nahi bacha.
 
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
