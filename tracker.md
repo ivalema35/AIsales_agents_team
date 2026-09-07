@@ -5852,3 +5852,31 @@ me EXACT same silently resolve karte hain, koi real farak nahi. Ye misleading UI
 kuch hoga). **Fix**: `TodoItemCard.jsx` me `hasAction` check add kiya — jab koi real proposal ho (ya
 GLOBAL scope, jo hamesha campaign-form kholta he) tabhi Approve/Dismiss ka pair dikhega; plain observation
 (jaise "Discovery off", "Copy" notes) pe ab sirf ek honest **"Got it"** button dikhta he.
+
+### ✅ VPS live deploy — Phase 20 + Phase 21 + saare follow-up fix, ek saath (2026-09-07)
+
+User ne explicit bola "ab isse live me VPS me deploy karo." VPS check karne par pata chala **2 poore
+phases kabhi push hi nahi hue the** — `origin/main`/VPS dono `b645a38` (Phase 20 se pehle) pe atke the.
+Established cycle (`A.5`) poora follow kiya:
+
+1. Aaj ke 4 follow-up fix commit kiye (`459f31b`) → `git push origin main` (3 commits ek saath: Phase 20,
+   Phase 21, aaj ke fixes — 81 files, 9633 insertions).
+2. VPS pe `git status` se pehle confirm kiya `backend/sales_system.db*` git-untracked he (safe) — phir
+   `git merge origin/main --ff-only` (clean fast-forward, koi conflict nahi, DB touch nahi hua).
+3. `migrate.py` VPS ke real prod DB par chalaya — naya `todo_items` table, `campaign_theses`,
+   `strategy_insights`, `knowledge_base` tables aur `campaigns.last_todo_signal` column sab clean add
+   hue ("Schema applied", koi error nahi).
+4. Import sanity-check (`create_app()`) services touch karne se PEHLE — clean pass.
+5. **Safety switches VPS par verify kiye services restart karne se pehle**: `AUTONOMOUS_OUTREACH_ENABLED
+   = False`, `DISCOVERY_ENABLED = False` — dono confirmed off, is deploy me kabhi touch nahi hue.
+6. Frontend build VPS par hi (`npm install && npm run build`) — naya hash `index-DgbgW8FJ.js`. `dist/` →
+   `public_html/` copy + `chown sales8657:nobody`.
+7. **5 services restart** (`bos-api`, `bos-worker`, `bos-scraper`, `bos-scheduler`, `bos-poller`) — sab
+   `active`, `journalctl` me koi traceback/import-error nahi, sab normal startup logs. `bos-scheduler` ne
+   restart ke turant baad hi ek real daily-plan-tick chalaya (naye no-switch design ka live proof).
+8. Real HTTPS verify: `/api/v1/todos` → `401` (registered + auth-gated, `404` nahi — naya blueprint live
+   confirm), homepage `<title>AI-BOS</title>` + naya JS hash serve ho raha he.
+
+**Result:** VPS ab pura Phase 20 + Phase 21 (Unified AI To-Do Inbox, no-switch daily+signal-driven
+generation, per-item approve/dismiss/feedback) + aaj ke saare fixes ke saath live he. Koi naya issue nahi
+mila — clean deploy. `AUTONOMOUS_OUTREACH_ENABLED`/`DISCOVERY_ENABLED` dono still `False` real VPS par.

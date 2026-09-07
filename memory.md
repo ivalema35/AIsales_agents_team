@@ -594,11 +594,19 @@ ho (2 real campaigns pe test kiya, dono ne sahi grounded message diya); (2) Appr
 confirmation dikhta he (pehle silently gayab ho jaata tha); (3) Calendar pe target (industry·location)
 dikhta he. Ye teeno mila ke "AI batayega, human decide karega" wala loop ab genuinely close hota he.
 
+**🚀 VPS live deploy, 2026-09-07** — user ne bola "ab isse live me VPS me deploy karo." VPS check karne
+par pata chala 2 poore phases (20 + 21) kabhi push hi nahi hue the — VPS `b645a38` (Phase 20 se pehle) pe
+atka tha. Aaj ke 4 fix commit (`459f31b`) → push (3 commits, 81 files) → VPS `git pull --ff-only` (DB
+untouched, safe) → `migrate.py` (naya `todo_items`/`campaign_theses`/`strategy_insights`/
+`knowledge_base` tables clean add) → import sanity-check → **safety switches verify kiye restart se
+PEHLE** (`AUTONOMOUS_OUTREACH_ENABLED=False`, `DISCOVERY_ENABLED=False`, dono confirmed) → frontend
+build + `public_html` sync → 5 services restart (sab `active`, koi traceback nahi) → real HTTPS verify
+(`/api/v1/todos` → 401 registered, naya JS hash serve ho raha). **Clean deploy, koi naya issue nahi.**
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI —
-commits `2b804d9` aur `b7d035c` me sab safe he, aaj (7 Sept) ka kaam abhi uncommitted.** Baaki: Step 16.8
-(marketing content), email-vs-WhatsApp channel-preference lever, VPS deploy (abhi tak nahi hua), remote
-push (abhi tak nahi hua), aaj ka kaam commit karna baaki he, saare 8
+**sab kuch ab VPS par bhi LIVE he** (commit `459f31b`, deployed 2026-09-07).** Baaki: Step 16.8
+(marketing content), email-vs-WhatsApp channel-preference lever, saare 8
 products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi active na ho).
