@@ -619,6 +619,12 @@ confirmed). Isi check me ye bhi pata chala ki beech me Cursor ne calendar "Today
 khud commit + VPS deploy kiya tha (`3b66997`/`0898659`) — verify kiya, VPS ka git state clean/synced
 hai, koi SFTP-drift nahi bacha.
 
+**Cursor se Product form redesign, 2026-09-07** — user ne khud Cursor se `ProductForm.jsx`/`Products.jsx`
+me UI change karvaya (4 numbered step cards, plain labels jaise "Cities or areas"/"Types of businesses"/
+"People to contact", wider edit modal). Maine verify kiya — mera pichla mismatch-fix (Target regions/
+categories ka honest wording) content-wise intact he, Cursor ne sirf simpler labels + section-level
+blurb me convert kiya. Build clean, commit `955bd65` GitHub pe push kiya.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
