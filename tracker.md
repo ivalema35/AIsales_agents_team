@@ -6050,3 +6050,38 @@ count propose hue, industry untouched; (2) sirf lead count (75) set → industry
 hue, 75 bilkul untouched (proposal me `lead_count_goal` key hi nahi tha, matlab apply logic use touch
 nahi karega); (3) kuch set nahi → teeno propose hue, koi premature "Discovery off" nahi. Commit
 `4c0d4ba`, VPS deploy + import sanity + 5 services restart, sab clean, real HTTPS verify.
+
+### Lead Detail Score card — non-tech redesign (2026-09-07)
+
+User feedback on SHASVI CREATIONS lead: Score panel showed `confidence 0.42`, jargon labels (Icp Fit), and broken bars at **2000% / 1500%**.
+
+**Root cause:** UI treated `scoring_breakdown` values as 0-1 floats and multiplied by 100. LLM often returns 0-100 point contributions (e.g. icp_fit=20, reachability=15 summing toward score 35), so bars overflowed.
+
+**Fix (`LeadDetail.jsx` ScoreCard only):**
+- Normalize factors: <=1 keep as fraction; 1-100 treat as percent points; cap display at 100%.
+- Section title -> **Lead strength**.
+- Plain copy: tier meaning (High priority / Worth a look / Low priority), overall score meter out of 100, confidence as "How sure: Somewhat sure" + percent -- never raw 0.42.
+- Factors as questions ("Right kind of business?", etc.) + Weak/Fair/Good/Strong chips + correct %.
+
+### Lead Detail Contact card — non-tech redesign (2026-09-07)
+
+User feedback: Contact & profile was a flat 11-row list full of `Not set` (esp. empty socials), jargon `Region` for a full address, and non-clickable email/phone.
+
+**Fix (`LeadDetail.jsx`):**
+- Section title -> **Who & how to reach**.
+- Snapshot strip: company, contact person cue, chips (Can contact / Email ready / Missing name), `N of 11 details filled`.
+- Grouped sections: Who / How to reach / Online / Location.
+- Empty socials collapsed to one line (no 4x "Not set").
+- Email / phone / WhatsApp / URLs are clickable; WhatsApp falls back to phone with plain explanation.
+- Edit form uses the same groups + helpful placeholders.
+
+### Lead Detail Timeline — non-tech redesign (2026-09-07)
+
+User feedback: Timeline showed backend jargon (`SCORING - Score`, `HUMAN_ESCALATION`, `ANALYZED`) and raw confidence decimals / JSON detail dumps.
+
+**Fix (`LeadDetail.jsx` `describeEvent` + Timeline UI):**
+- Section title -> **What happened**; header `N updates`.
+- Action titles in plain English (e.g. `Scored this lead`, `Checked public reviews`).
+- Status badges: `Needs your review` / `Reviews checked` / `Done` -- never SCREAMING_SNAKE.
+- Score/review payloads summarized (`Marked COLD - 35/100`); opaque JSON hidden from default detail.
+- Confidence via existing `confidencePlain`; expand link `More about this`.

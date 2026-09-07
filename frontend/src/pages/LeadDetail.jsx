@@ -15,12 +15,71 @@ import { InstagramIcon, FacebookIcon, LinkedinIcon } from "../lib/socialIcons";
 
 const TIER_VARIANT = { HOT: "HOT", WARM: "WARM", COLD: "COLD" };
 
-// Fixed, meaningful order -- Object.entries() on the raw JSON gave alphabetical order
-// (Buying Signal, Icp Fit, Pain Match, Reachability), which has no relationship to how a
-// rep should actually scan the breakdown. This order matches how scoring_agent.py itself
-// reasons about fit: is this the right business, does their pain match what we sell, can
-// we reach them, are they showing buying intent.
-const SCORE_BREAKDOWN_ORDER = ["icp_fit", "pain_match", "reachability", "buying_signal"];
+// Fixed order matches how scoring reasons about fit. Labels are plain-language for
+// non-technical users -- never show raw keys like "icp_fit" in the UI.
+const SCORE_FACTORS = [
+  {
+    key: "icp_fit",
+    label: "Right kind of business?",
+    hint: "Does this company match who we usually sell to?",
+  },
+  {
+    key: "pain_match",
+    label: "Has a problem we solve?",
+    hint: "Did we find a clear pain point our product addresses?",
+  },
+  {
+    key: "reachability",
+    label: "Can we reach them?",
+    hint: "Do we have email, phone, or social to contact them?",
+  },
+  {
+    key: "buying_signal",
+    label: "Showing interest to buy?",
+    hint: "Any sign they are actively looking or ready to buy?",
+  },
+];
+
+const TIER_PLAIN = {
+  HOT: {
+    title: "High priority",
+    blurb: "Strong fit — worth contacting soon.",
+  },
+  WARM: {
+    title: "Worth a look",
+    blurb: "Decent fit — a good candidate when you have time.",
+  },
+  COLD: {
+    title: "Low priority for now",
+    blurb: "Weak fit or little buying signal — skip unless something changes.",
+  },
+};
+
+// LLM sometimes returns 0–1 floats, sometimes 0–100 points (e.g. 20 + 15 = score 35).
+// Never multiply a 0–100 value by 100 again — that produced the broken "2000%" bars.
+function normalizeScoreFactor(raw) {
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  if (n <= 1) return n;
+  if (n <= 100) return Math.min(1, n / 100);
+  return 1;
+}
+
+function factorStrength(normalized) {
+  if (normalized <= 0) return { label: "None", tone: "text-ink-500 bg-parchment-raised-2" };
+  if (normalized < 0.25) return { label: "Weak", tone: "text-ink-600 bg-parchment-raised-2" };
+  if (normalized < 0.5) return { label: "Fair", tone: "text-warm-800 bg-warm-100" };
+  if (normalized < 0.75) return { label: "Good", tone: "text-good-800 bg-good-100" };
+  return { label: "Strong", tone: "text-good-800 bg-good-100" };
+}
+
+function confidencePlain(confidence) {
+  const c = Math.max(0, Math.min(1, Number(confidence) || 0));
+  const pct = Math.round(c * 100);
+  if (c >= 0.7) return { label: "Quite sure", detail: `${pct}% sure about this read`, pct };
+  if (c >= 0.4) return { label: "Somewhat sure", detail: `${pct}% sure — treat as a guide, not gospel`, pct };
+  return { label: "Not very sure", detail: `Only ${pct}% sure — double-check before acting`, pct };
+}
 
 function barColor(value) {
   if (value >= 0.7) return "bg-good-600";
@@ -67,45 +126,190 @@ function DeliveryTick({ state }) {
 }
 
 // Server sends raw agent/action_type/outcome/routed_to strings -- this is the one place
-// that turns them into an icon + color + human title, so the timeline list itself stays
-// simple (CRM_UI_UX_PLAN.md: format decisions live in one place, not scattered in JSX).
+// that turns them into plain-language copy a non-tech user can scan (never show
+// HUMAN_ESCALATION / ANALYZED / SCORING · Score as-is).
+const ACTION_TITLES = {
+  SCORE: "Scored this lead",
+  ANALYZE_REVIEWS: "Checked public reviews",
+  DRAFT_EMAIL: "Drafted an email",
+  DRAFT_EMAIL_SECTIONS: "Drafted an email",
+  DRAFT_FOLLOWUP_EMAIL: "Drafted a follow-up email",
+  DRAFT_SOCIAL: "Drafted a social message",
+  DISPATCH_EMAIL: "Tried to send email",
+  DISPATCH_WHATSAPP: "Tried to send WhatsApp",
+  CLASSIFY_INTENT: "Read their reply",
+  REVIEW_DRAFT: "Checked the draft before send",
+  REVIEW_SOCIAL_DRAFT: "Checked the social draft",
+  REVIEW_TEMPLATE_DRAFT: "Checked a template draft",
+  ESCALATE: "Flagged for you",
+  KB_GAP_DETECTED: "Found a knowledge gap",
+  REDRAFT_REPLY: "Rewrote a reply draft",
+  SUGGEST_IMPROVEMENT: "Suggested an improvement",
+};
+
+const STATUS_PLAIN = {
+  HUMAN_ESCALATION: {
+    label: "Needs your review",
+    variant: "WARNING",
+    blurb: "AI was not sure enough to act alone — take a look before outreach.",
+  },
+  EXECUTE: { label: "Done", variant: "SUCCESS", blurb: null },
+  QC_REVIEW: {
+    label: "Needs quality check",
+    variant: "WARNING",
+    blurb: "Draft or decision should be checked before it goes out.",
+  },
+  IMMEDIATE_EXECUTE: { label: "Handled right away", variant: "SUCCESS", blurb: null },
+  ANALYZED: { label: "Reviews checked", variant: "SUCCESS", blurb: null },
+  APPROVED: { label: "Approved", variant: "SUCCESS", blurb: null },
+  REJECTED: { label: "Rejected", variant: "DANGER", blurb: "Did not pass the quality check." },
+  LLM_FAILED: {
+    label: "AI couldn't finish",
+    variant: "DANGER",
+    blurb: "Something went wrong with the AI call — you may need to retry.",
+  },
+  NO_INPUT: {
+    label: "Nothing to check",
+    variant: "NEUTRAL",
+    blurb: "No reviews or input were available for this step.",
+  },
+  DRAFTED: { label: "Draft ready", variant: "SUCCESS", blurb: null },
+  EMPTY_DRAFT: { label: "Draft was empty", variant: "WARNING", blurb: null },
+  SENT: { label: "Sent", variant: "SUCCESS", blurb: null },
+  SKIPPED_NO_TEMPLATE: {
+    label: "Skipped — no template",
+    variant: "WARNING",
+    blurb: "WhatsApp needs an approved template before it can send.",
+  },
+};
+
+const INTENT_PLAIN = {
+  INTERESTED: "Interested",
+  DEMO_REQUESTED: "Wants a demo",
+  STOP: "Asked to stop",
+  OBJECTION: "Has a concern",
+  QUESTION: "Asked a question",
+  NEUTRAL: "Neutral reply",
+  OTHER: "Other",
+};
+
+const DELIVERY_PLAIN = {
+  Failed: "Failed to send",
+  Replied: "They replied",
+  Seen: "Seen",
+  Delivered: "Delivered",
+  Sent: "Sent",
+};
+
+function statusPlain(raw) {
+  if (!raw) return null;
+  if (STATUS_PLAIN[raw]) return STATUS_PLAIN[raw];
+  // Unknown backend codes: title-case without SCREAMING_SNAKE
+  return {
+    label: raw.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+    variant: "NEUTRAL",
+    blurb: null,
+  };
+}
+
+function formatAgentPayload(actionType, payload) {
+  if (!payload || typeof payload !== "object") return null;
+  const parts = [];
+  if (actionType === "SCORE") {
+    if (payload.tier != null || payload.score != null) {
+      parts.push(
+        `Marked ${payload.tier || "—"} · ${payload.score != null ? `${payload.score}/100` : "no score"}`
+      );
+    }
+  }
+  if (actionType === "ANALYZE_REVIEWS") {
+    if (payload.snippet_count != null) parts.push(`Looked at ${payload.snippet_count} review snippet${payload.snippet_count === 1 ? "" : "s"}`);
+    if (payload.pain_point_count != null) {
+      parts.push(
+        payload.pain_point_count === 0
+          ? "No clear pain points found"
+          : `Found ${payload.pain_point_count} pain point${payload.pain_point_count === 1 ? "" : "s"}`
+      );
+    }
+  }
+  if (payload.error) parts.push(`Error: ${String(payload.error).slice(0, 120)}`);
+  if (parts.length) return parts.join(" · ");
+  // Last resort: skip raw JSON dump for empty or opaque payloads
+  const keys = Object.keys(payload);
+  if (!keys.length) return null;
+  return null;
+}
+
 function describeEvent(e) {
   if (e.type === "OUTREACH_SENT") {
     const failed = e.delivery_state === "Failed";
+    const channel = e.channel === "WHATSAPP" ? "WhatsApp" : "Email";
+    const delivery = DELIVERY_PLAIN[e.delivery_state] || e.delivery_state || e.status;
     return {
       icon: e.channel === "WHATSAPP" ? MessageCircle : Mail,
       color: failed ? "red" : "emerald",
-      title: `${e.channel === "WHATSAPP" ? "WhatsApp" : "Email"} sent${e.subject ? `: ${e.subject}` : ""}`,
+      title: failed ? `${channel} did not send` : `${channel} sent`,
+      summary: e.subject || null,
       variant: failed ? "DANGER" : "SUCCESS",
-      badge: e.delivery_state || e.status,
+      badge: delivery,
+      blurb: null,
       body: e.body,
+      extra: null,
     };
   }
   if (e.type === "REPLY_RECEIVED") {
     const positive = ["INTERESTED", "DEMO_REQUESTED"].includes(e.intent_detected);
     const negative = e.intent_detected === "STOP";
+    const channel = e.channel === "WHATSAPP" ? "WhatsApp" : "Email";
+    const intentLabel = INTENT_PLAIN[e.intent_detected] || (e.intent_detected
+      ? e.intent_detected.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
+      : null);
     return {
       icon: e.channel === "WHATSAPP" ? MessageCircle : Mail,
       color: negative ? "red" : positive ? "emerald" : "slate",
-      title: `${e.channel === "WHATSAPP" ? "WhatsApp" : "Email"} reply${e.intent_detected ? ` — ${e.intent_detected}` : ""}`,
+      title: `${channel} reply received`,
+      summary: intentLabel ? `They seem: ${intentLabel}` : "Reply received — intent not classified yet",
       variant: negative ? "DANGER" : positive ? "SUCCESS" : "NEUTRAL",
-      badge: e.intent_detected || "unclassified",
+      badge: intentLabel || "Unclassified",
+      blurb: null,
       body: e.message,
-      extra: e.ai_suggested_response ? `AI draft reply: ${e.ai_suggested_response}` : null,
+      extra: e.ai_suggested_response ? `Suggested reply: ${e.ai_suggested_response}` : null,
     };
   }
+
   // AGENT_EVENT
-  const escalated = e.routed_to === "HUMAN_ESCALATION";
-  const rejected = e.outcome === "REJECTED";
-  const good = ["APPROVED", "EXECUTE", "SENT"].includes(e.outcome);
+  const statusKey = e.outcome || e.routed_to || "";
+  const status = statusPlain(statusKey);
+  const escalated = e.routed_to === "HUMAN_ESCALATION" || e.outcome === "HUMAN_ESCALATION";
+  const rejected = e.outcome === "REJECTED" || statusKey === "REJECTED";
+  const failed = statusKey === "LLM_FAILED";
+  const good = ["APPROVED", "EXECUTE", "SENT", "ANALYZED", "DRAFTED", "IMMEDIATE_EXECUTE"].includes(statusKey);
+
+  const title =
+    ACTION_TITLES[e.action_type] ||
+    (e.action_type
+      ? e.action_type.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
+      : "System update");
+
+  const payloadSummary = formatAgentPayload(e.action_type, e.payload);
+  let confLine = null;
+  if (e.confidence != null && Number.isFinite(Number(e.confidence))) {
+    const conf = confidencePlain(e.confidence);
+    confLine = `How sure: ${conf.label} (${conf.pct}%)`;
+  }
+
   return {
-    icon: escalated ? AlertCircle : rejected ? XCircle : good ? CheckCircle2 : Bot,
-    color: escalated ? "amber" : rejected ? "red" : good ? "emerald" : "slate",
-    title: `${e.agent} · ${e.action_type.replace(/_/g, " ").toLowerCase()}`,
-    variant: escalated ? "WARNING" : rejected ? "DANGER" : good ? "SUCCESS" : "NEUTRAL",
-    badge: e.outcome || e.routed_to || "",
-    body: e.payload && Object.keys(e.payload).length ? JSON.stringify(e.payload) : null,
-    extra: e.confidence != null ? `confidence ${e.confidence.toFixed(2)}` : null,
+    icon: escalated ? AlertCircle : rejected || failed ? XCircle : good ? CheckCircle2 : Bot,
+    color: escalated ? "amber" : rejected || failed ? "red" : good ? "emerald" : "slate",
+    title,
+    summary: payloadSummary || status?.blurb || null,
+    variant: status?.variant || (escalated ? "WARNING" : rejected || failed ? "DANGER" : good ? "SUCCESS" : "NEUTRAL"),
+    badge: status?.label || null,
+    blurb: payloadSummary ? status?.blurb : null,
+    body: null,
+    extra: [confLine, e.payload && Object.keys(e.payload).length && !payloadSummary
+      ? null // intentionally hide opaque JSON from non-tech users
+      : null].filter(Boolean).join(" · ") || (confLine || null),
   };
 }
 
@@ -114,31 +318,36 @@ function TimelineEntry({ event }) {
   const d = describeEvent(event);
   const Icon = d.icon;
   const colors = DOT_COLORS[d.color] || DOT_COLORS.slate;
-  const hasDetail = d.body || d.extra;
+  const hasDetail = d.body || d.extra || d.blurb;
 
   return (
-    <div className="flex gap-3 border-b border-line px-4 py-3 last:border-0 hover:bg-parchment-raised-2">
-      <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${colors.bg}`}>
-        <Icon size={13} className={colors.text} />
+    <div className="flex gap-3 border-b border-line px-4 py-3.5 last:border-0 hover:bg-parchment/60">
+      <div className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${colors.bg}`}>
+        <Icon size={14} className={colors.text} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-medium capitalize text-ink-900">{d.title}</p>
+          <p className="text-sm font-medium text-ink-900">{d.title}</p>
           {d.badge && <Badge variant={d.variant}>{d.badge}</Badge>}
         </div>
-        <p className="mt-0.5 font-mono text-[11px] text-ink-500">{timeLabel(event.timestamp)}</p>
+        {d.summary && (
+          <p className="mt-1 text-sm leading-snug text-ink-600">{d.summary}</p>
+        )}
+        <p className="mt-1 text-[11px] text-ink-500">{timeLabel(event.timestamp)}</p>
         {hasDetail && (
           <button
+            type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="mt-1 text-xs font-medium text-ink-500 hover:text-ink-900"
+            className="mt-1.5 text-xs font-medium text-ink-500 underline decoration-line underline-offset-2 hover:text-ink-900"
           >
-            {expanded ? "Hide detail" : "Show detail"}
+            {expanded ? "Hide more" : "More about this"}
           </button>
         )}
         {expanded && (
-          <div className="mt-2 rounded-md bg-parchment-raised-2 p-2.5 text-xs text-ink-700">
+          <div className="mt-2 rounded-md border border-line bg-parchment p-2.5 text-xs leading-relaxed text-ink-700">
+            {d.blurb && <p className="mb-1.5 text-ink-600">{d.blurb}</p>}
             {d.body && <p className="whitespace-pre-wrap break-words">{d.body}</p>}
-            {d.extra && <p className="mt-1 italic text-ink-500">{d.extra}</p>}
+            {d.extra && <p className={`${d.body || d.blurb ? "mt-1.5" : ""} text-ink-500`}>{d.extra}</p>}
           </div>
         )}
       </div>
@@ -333,53 +542,224 @@ function ScoreCard({ score }) {
     return (
       <div className="flex flex-col items-center gap-2 py-6 text-center">
         <Gauge className="text-ink-500" size={28} />
-        <p className="text-xs text-ink-500">Not scored yet.</p>
+        <p className="text-sm font-medium text-ink-700">Not scored yet</p>
+        <p className="max-w-xs text-xs leading-relaxed text-ink-500">
+          Once scoring runs, you will see how strong this lead looks and why — in plain language.
+        </p>
       </div>
     );
   }
+
+  const tierKey = score.tier in TIER_PLAIN ? score.tier : "COLD";
+  const tierCopy = TIER_PLAIN[tierKey];
+  const conf = confidencePlain(score.confidence);
+  const points = Math.max(0, Math.min(100, Number(score.score) || 0));
   const breakdown = score.scoring_breakdown || {};
-  const orderedKeys = [...SCORE_BREAKDOWN_ORDER.filter((k) => k in breakdown),
-    ...Object.keys(breakdown).filter((k) => !SCORE_BREAKDOWN_ORDER.includes(k))];
+
+  const knownKeys = new Set(SCORE_FACTORS.map((f) => f.key));
+  const extraKeys = Object.keys(breakdown).filter((k) => !knownKeys.has(k));
+  const factors = [
+    ...SCORE_FACTORS.map((meta) => ({
+      ...meta,
+      raw: breakdown[meta.key],
+      present: meta.key in breakdown,
+    })),
+    ...extraKeys.map((key) => ({
+      key,
+      label: key.replace(/_/g, " "),
+      hint: null,
+      raw: breakdown[key],
+      present: true,
+    })),
+  ].filter((f) => f.present);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <Badge variant={TIER_VARIANT[score.tier] || "NEUTRAL"}>{score.tier}</Badge>
-        <span className="font-display text-lg font-semibold text-ink-900">{score.score}<span className="text-xs font-normal text-ink-500">/100</span></span>
-        <span className="font-mono text-xs text-ink-500">confidence {(score.confidence ?? 0).toFixed(2)}</span>
-      </div>
-      <p className="text-sm leading-relaxed text-ink-700">{score.justification}</p>
-      <div className="flex flex-col gap-2">
-        {orderedKeys.map((key) => {
-          const value = breakdown[key] || 0;
-          return (
-            <div key={key} className="flex items-center gap-2 text-xs">
-              <span className="w-24 shrink-0 capitalize text-ink-500">{key.replace(/_/g, " ")}</span>
-              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-parchment-raised-2">
-                <div className={`h-full rounded-full transition-all ${barColor(value)}`} style={{ width: `${Math.round(value * 100)}%` }} />
-              </div>
-              <span className="w-8 text-right font-medium font-mono text-ink-500">{Math.round(value * 100)}%</span>
+    <div className="flex flex-col gap-5">
+      {/* Overall read — what a non-tech user should grasp first */}
+      <div className="rounded-md border border-line bg-parchment p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant={TIER_VARIANT[score.tier] || "NEUTRAL"}>{score.tier}</Badge>
+              <span className="font-display text-base font-semibold text-ink-900">{tierCopy.title}</span>
             </div>
-          );
-        })}
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{tierCopy.blurb}</p>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="font-display text-3xl font-semibold tabular-nums leading-none text-ink-900">
+              {points}
+              <span className="ml-1 text-sm font-normal text-ink-500">/ 100</span>
+            </p>
+            <p className="mt-1 text-[11px] uppercase tracking-wide text-ink-500">Overall score</p>
+          </div>
+        </div>
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-parchment-raised-2">
+          <div
+            className={`h-full rounded-full transition-all ${barColor(points / 100)}`}
+            style={{ width: `${points}%` }}
+          />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <span className={`rounded-md px-2 py-0.5 font-medium ${
+            conf.pct >= 70 ? "bg-good-100 text-good-800"
+              : conf.pct >= 40 ? "bg-warm-100 text-warm-800"
+                : "bg-parchment-raised-2 text-ink-600"
+          }`}>
+            How sure: {conf.label}
+          </span>
+          <span className="text-ink-500">{conf.detail}</span>
+        </div>
       </div>
+
+      {score.justification && (
+        <div>
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+            Why this score
+          </p>
+          <p className="text-sm leading-relaxed text-ink-700">{score.justification}</p>
+        </div>
+      )}
+
+      {factors.length > 0 && (
+        <div>
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+            What we checked
+          </p>
+          <div className="flex flex-col gap-3">
+            {factors.map((f) => {
+              const normalized = normalizeScoreFactor(f.raw);
+              const pct = Math.round(normalized * 100);
+              const strength = factorStrength(normalized);
+              return (
+                <div key={f.key} className="flex flex-col gap-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-ink-800">{f.label}</p>
+                      {f.hint && (
+                        <p className="text-[11px] leading-snug text-ink-500">{f.hint}</p>
+                      )}
+                    </div>
+                    <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold ${strength.tone}`}>
+                      {strength.label}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-parchment-raised-2">
+                      <div
+                        className={`h-full rounded-full transition-all ${barColor(normalized)}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="w-9 shrink-0 text-right text-[11px] tabular-nums text-ink-500">
+                      {pct}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-const EDITABLE_FIELDS = [
-  ["company_name", "Company name", Building2],
-  ["contact_person_name", "Contact person", UserIcon],
-  ["contact_person_role", "Role", UserIcon],
-  ["primary_email", "Email", Mail],
-  ["primary_phone", "Phone", Phone],
-  ["whatsapp_number", "WhatsApp number", MessageCircle],
-  ["website_url", "Website", Globe],
-  ["instagram_url", "Instagram", InstagramIcon],
-  ["facebook_url", "Facebook", FacebookIcon],
-  ["linkedin_url", "LinkedIn", LinkedinIcon],
-  ["region_location", "Region", MapPin],
+// Grouped for non-tech scanning: who → how to reach → online → where.
+// Flat "Not set" lists hide what matters (can we contact them?) under empty social rows.
+const CONTACT_FIELD_GROUPS = [
+  {
+    id: "who",
+    title: "Who they are",
+    fields: [
+      ["company_name", "Company", Building2, "Business or shop name"],
+      ["contact_person_name", "Contact person", UserIcon, "Person you would talk to"],
+      ["contact_person_role", "Their role", UserIcon, "Owner, manager, etc."],
+    ],
+  },
+  {
+    id: "reach",
+    title: "How to reach them",
+    fields: [
+      ["primary_email", "Email", Mail, "name@company.com"],
+      ["primary_phone", "Phone", Phone, "+91 …"],
+      ["whatsapp_number", "WhatsApp", MessageCircle, "Leave blank to use phone"],
+    ],
+  },
+  {
+    id: "online",
+    title: "Online presence",
+    fields: [
+      ["website_url", "Website", Globe, "https://…"],
+      ["instagram_url", "Instagram", InstagramIcon, "Profile link"],
+      ["facebook_url", "Facebook", FacebookIcon, "Page link"],
+      ["linkedin_url", "LinkedIn", LinkedinIcon, "Profile or company page"],
+    ],
+  },
+  {
+    id: "where",
+    title: "Location",
+    fields: [
+      ["region_location", "Address / area", MapPin, "City, area, or full address"],
+    ],
+  },
 ];
+
+const EDITABLE_FIELDS = CONTACT_FIELD_GROUPS.flatMap((g) =>
+  g.fields.map(([key, label, Icon, placeholder]) => [key, label, Icon, placeholder])
+);
+
+function shortUrlLabel(url) {
+  try {
+    const u = new URL(url.startsWith("http") ? url : `https://${url}`);
+    const path = u.pathname === "/" ? "" : u.pathname.replace(/\/$/, "");
+    const host = u.hostname.replace(/^www\./, "");
+    const full = `${host}${path}`;
+    return full.length > 42 ? `${full.slice(0, 40)}…` : full;
+  } catch {
+    return url.length > 42 ? `${url.slice(0, 40)}…` : url;
+  }
+}
+
+function contactHref(key, value) {
+  if (!value) return null;
+  if (key === "primary_email") return `mailto:${value}`;
+  if (key === "primary_phone") {
+    const digits = value.replace(/[^\d+]/g, "");
+    return digits ? `tel:${digits}` : null;
+  }
+  if (key === "whatsapp_number") {
+    const digits = value.replace(/\D/g, "");
+    return digits ? `https://wa.me/${digits}` : null;
+  }
+  if (key === "website_url" || key === "instagram_url" || key === "facebook_url" || key === "linkedin_url") {
+    return value.startsWith("http") ? value : `https://${value}`;
+  }
+  return null;
+}
+
+function ContactValue({ fieldKey, value, emptyHint }) {
+  if (!value) {
+    return <span className="text-sm text-ink-500">{emptyHint || "Not added yet"}</span>;
+  }
+  const href = contactHref(fieldKey, value);
+  const isLink = Boolean(href);
+  const label =
+    fieldKey.endsWith("_url") || fieldKey === "website_url" ? shortUrlLabel(value) : value;
+
+  if (!isLink) {
+    return <span className="text-sm break-words text-ink-800">{label}</span>;
+  }
+  return (
+    <a
+      href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+      className="text-sm break-all font-medium text-ink-800 underline decoration-line underline-offset-2 hover:text-ink-900"
+    >
+      {label}
+    </a>
+  );
+}
 
 function ContactInfoForm({ lead, onSaved, onCancel }) {
   const [form, setForm] = useState(() =>
@@ -403,21 +783,33 @@ function ContactInfoForm({ lead, onSaved, onCancel }) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {EDITABLE_FIELDS.map(([key, label, Icon]) => (
-        <label key={key} className="flex flex-col gap-1">
-          <span className="flex items-center gap-1 text-xs font-medium text-ink-500">
-            <Icon size={12} className="text-ink-500" /> {label}
-          </span>
-          <input
-            value={form[key]}
-            placeholder="Not set"
-            onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-            className="rounded-md border border-line px-2.5 py-1.5 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
-          />
-        </label>
+    <div className="flex flex-col gap-5">
+      {CONTACT_FIELD_GROUPS.map((group) => (
+        <div key={group.id}>
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+            {group.title}
+          </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {group.fields.map(([key, label, Icon, placeholder]) => (
+              <label
+                key={key}
+                className={`flex flex-col gap-1 ${group.id === "where" ? "sm:col-span-2" : ""}`}
+              >
+                <span className="flex items-center gap-1 text-xs font-medium text-ink-600">
+                  <Icon size={12} className="text-ink-500" /> {label}
+                </span>
+                <input
+                  value={form[key]}
+                  placeholder={placeholder}
+                  onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                  className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+                />
+              </label>
+            ))}
+          </div>
+        </div>
       ))}
-      <div className="col-span-1 flex items-center gap-2 pt-1 sm:col-span-2">
+      <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
         <button
           onClick={save}
           disabled={!dirty || saving}
@@ -437,24 +829,167 @@ function ContactInfoForm({ lead, onSaved, onCancel }) {
   );
 }
 
-// Read-only by default (clean, scannable, matches how a CRM should display data at rest)
-// -- the always-open input form this replaced looked "formy" even when nobody was
-// editing anything. "Edit details" switches to ContactInfoForm above.
 function ContactInfoDisplay({ lead, onEdit }) {
+  const filledCount = EDITABLE_FIELDS.filter(([key]) => Boolean(lead[key])).length;
+  const totalCount = EDITABLE_FIELDS.length;
+  const hasEmail = Boolean(lead.primary_email);
+  const hasPhone = Boolean(lead.primary_phone);
+  const hasWhatsApp = Boolean(lead.whatsapp_number || lead.primary_phone);
+  const hasPerson = Boolean(lead.contact_person_name);
+  const reachReady = hasEmail || hasPhone;
+
+  const onlineFields = CONTACT_FIELD_GROUPS.find((g) => g.id === "online").fields;
+  const onlineFilled = onlineFields.filter(([key]) => Boolean(lead[key]));
+  const onlineMissing = onlineFields.filter(([key]) => !lead[key]).map(([, label]) => label);
+
   return (
-    <div className="flex flex-col gap-2.5">
-      {EDITABLE_FIELDS.map(([key, label, Icon]) => (
-        <div key={key} className="flex items-center gap-2.5 text-sm">
-          <Icon size={13} className="shrink-0 text-ink-500" />
-          <span className="w-28 shrink-0 text-xs text-ink-500">{label}</span>
-          <span className={lead[key] ? "truncate text-ink-700" : "text-ink-500"}>
-            {lead[key] || "Not set"}
+    <div className="flex flex-col gap-4">
+      {/* Snapshot — what a non-tech user should grasp first */}
+      <div className="rounded-md border border-line bg-parchment p-4">
+        <p className="font-display text-base font-semibold text-ink-900">
+          {lead.company_name || "Unnamed company"}
+        </p>
+        <p className="mt-1 text-sm text-ink-600">
+          {hasPerson
+            ? `${lead.contact_person_name}${lead.contact_person_role ? ` · ${lead.contact_person_role}` : ""}`
+            : "No contact person named yet — add a name so outreach feels personal."}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${
+            reachReady ? "bg-good-100 text-good-800" : "bg-alert-100 text-alert-700"
+          }`}>
+            {reachReady ? "Can contact" : "No way to contact yet"}
           </span>
+          {hasEmail && (
+            <span className="rounded-md bg-parchment-raised-2 px-2 py-0.5 text-[11px] font-medium text-ink-600">
+              Email ready
+            </span>
+          )}
+          {hasPhone && (
+            <span className="rounded-md bg-parchment-raised-2 px-2 py-0.5 text-[11px] font-medium text-ink-600">
+              Phone ready
+            </span>
+          )}
+          {hasWhatsApp && (
+            <span className="rounded-md bg-parchment-raised-2 px-2 py-0.5 text-[11px] font-medium text-ink-600">
+              WhatsApp possible
+            </span>
+          )}
+          {!hasPerson && (
+            <span className="rounded-md bg-warm-100 px-2 py-0.5 text-[11px] font-medium text-warm-800">
+              Missing name
+            </span>
+          )}
         </div>
-      ))}
+        <p className="mt-2 text-[11px] text-ink-500">
+          {filledCount} of {totalCount} details filled
+        </p>
+      </div>
+
+      {/* Who */}
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+          Who they are
+        </p>
+        <div className="flex flex-col gap-2.5">
+          {CONTACT_FIELD_GROUPS.find((g) => g.id === "who").fields.map(([key, label, Icon]) => (
+            <div key={key} className="flex items-start gap-2.5">
+              <Icon size={14} className="mt-0.5 shrink-0 text-ink-500" />
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] text-ink-500">{label}</p>
+                <ContactValue
+                  fieldKey={key}
+                  value={lead[key]}
+                  emptyHint={key === "contact_person_name" ? "Add a name" : "Not added yet"}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Reach — always show all three; empty ones are the actionable gaps */}
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+          How to reach them
+        </p>
+        <div className="flex flex-col gap-2.5">
+          {CONTACT_FIELD_GROUPS.find((g) => g.id === "reach").fields.map(([key, label, Icon]) => {
+            const value = lead[key];
+            const waFallback = key === "whatsapp_number" && !value && lead.primary_phone;
+            return (
+              <div key={key} className="flex items-start gap-2.5">
+                <Icon size={14} className="mt-0.5 shrink-0 text-ink-500" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] text-ink-500">{label}</p>
+                  {waFallback ? (
+                    <p className="text-sm text-ink-600">
+                      Uses phone ({lead.primary_phone}) unless you set a separate number
+                    </p>
+                  ) : (
+                    <ContactValue
+                      fieldKey={key}
+                      value={value}
+                      emptyHint={key === "primary_email" ? "Add an email" : key === "primary_phone" ? "Add a phone" : "Not added yet"}
+                    />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Online — filled links first; missing collapsed into one line (no 4× "Not set") */}
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+          Online presence
+        </p>
+        {onlineFilled.length === 0 ? (
+          <p className="text-sm text-ink-500">
+            No website or social links yet. Add them if you find a page while researching.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2.5">
+            {onlineFilled.map(([key, label, Icon]) => (
+              <div key={key} className="flex items-start gap-2.5">
+                <Icon size={14} className="mt-0.5 shrink-0 text-ink-500" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] text-ink-500">{label}</p>
+                  <ContactValue fieldKey={key} value={lead[key]} />
+                </div>
+              </div>
+            ))}
+            {onlineMissing.length > 0 && (
+              <p className="text-[11px] text-ink-500">
+                Not added: {onlineMissing.join(", ")}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Location */}
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-500">
+          Location
+        </p>
+        <div className="flex items-start gap-2.5">
+          <MapPin size={14} className="mt-0.5 shrink-0 text-ink-500" />
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] text-ink-500">Address / area</p>
+            <ContactValue
+              fieldKey="region_location"
+              value={lead.region_location}
+              emptyHint="No address or area on file"
+            />
+          </div>
+        </div>
+      </div>
+
       <button
         onClick={onEdit}
-        className="mt-2 w-fit rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment"
+        className="w-fit rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-700 transition-colors hover:bg-parchment"
       >
         Edit details
       </button>
@@ -1099,7 +1634,7 @@ export default function LeadDetail() {
       )}
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <SectionCard title="Contact & profile" icon={UserIcon}>
+        <SectionCard title="Who & how to reach" icon={UserIcon}>
           {/* Real bug, found live: PATCH /leads/<id> only ever returns the bare
              contact/profile fields it actually changed -- never pain_points/
              review_insight/firmographics/score.scoring_breakdown, which only the
@@ -1110,7 +1645,7 @@ export default function LeadDetail() {
              ones anyway, so a merge is strictly correct, not just a workaround. */}
           <ContactSection lead={lead} onSaved={(updated) => setLead((prev) => ({ ...prev, ...updated }))} />
         </SectionCard>
-        <SectionCard title="Score" icon={Gauge}>
+        <SectionCard title="Lead strength" icon={Gauge}>
           <ScoreCard score={lead.score} />
         </SectionCard>
       </div>
@@ -1157,15 +1692,24 @@ export default function LeadDetail() {
         </SectionCard>
 
         <SectionCard
-          title="Timeline"
+          title="What happened"
           icon={Clock}
-          headerExtra={<span className="text-xs text-ink-500">{timeline ? `${timeline.length} events` : ""}</span>}
+          headerExtra={
+            <span className="text-xs text-ink-500">
+              {timeline
+                ? `${timeline.length} update${timeline.length === 1 ? "" : "s"}`
+                : ""}
+            </span>
+          }
         >
           {!timeline && <p className="text-xs text-ink-500">Loading…</p>}
           {timeline && timeline.length === 0 && (
             <div className="flex flex-col items-center gap-2 py-6 text-center">
               <Clock className="text-ink-500" size={28} />
-              <p className="text-xs text-ink-500">No activity yet.</p>
+              <p className="text-sm font-medium text-ink-700">No activity yet</p>
+              <p className="max-w-xs text-xs leading-relaxed text-ink-500">
+                Scoring, review checks, sends, and replies will show up here in plain language.
+              </p>
             </div>
           )}
           {timeline && timeline.length > 0 && (
