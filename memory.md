@@ -679,13 +679,25 @@ verify: same feedback ab `["coaching classes", "tuition institutes", "academies"
 campaign bhi fix ki** (existing Approve flow se hi, khud koi naam nahi chuna) — final target:
 `["dental clinics", "gyms", "salons"]` + Mehsana. Commit `3a59006`, VPS deploy + real verify.
 
+**⭐⭐⭐ Sabse zaroori architectural fix is session ka, 2026-09-07** — user ne saaf criticism di: "AI
+Manager kis kaam ka, wo real AI agent hona chahiye jo khud dekhe aur bataye, sirf LLM calling nahi." Har
+naye blocker (Discovery off, half-set target, product.is_active) ko fix karne ka tarika har baar SAME
+tha — ek naya hardcoded prompt paragraph. Ye whack-a-mole he, scalable nahi. **Real fix**:
+`_campaign_operational_readiness()` — ek genuinely extensible `[{name, ok, detail}]` checklist (Python
+code se computed), prompt ko ek hi GENERAL instruction diya ("jaha ok:false ho wo real blocker he, uska
+detail use karke bolo") — koi bhi FUTURE gate sirf list me entry add karne se turant AI ko dikhega,
+koi prompt-surgery nahi chahiye. Verify kiya (2 local scenario + real live campaign manual confirm) —
+naya `"product_active"` to-do bilkul sahi bana. Commit `6a7a840`, deployed. **Future session ke liye
+yaad rakhna**: koi naya gap milte hi "ek aur hardcoded paragraph" mat likhna — `_campaign_operational_
+readiness()` ki list me entry add karna, ye ab established pattern he.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
 + AI Manager setup-completion for partial campaign targets + signal-tick fingerprint fix + real
-multi-vertical targeting (industry as array of named types) — **sab kuch VPS par LIVE he** (commit
-`3a59006`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp
+multi-vertical targeting + extensible OPERATIONAL_READINESS architecture — **sab kuch VPS par LIVE he**
+(commit `6a7a840`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp
 channel-preference lever, WhatsApp template to-dos abhi unified inbox se disconnected hain (separate
-manual page), saare 8 products `is_active=0` hain (GLOBAL suggestions kabhi nahi aayenge jab tak koi
-active na ho).
+manual page), is campaign ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya
+nahi), saare 8 products `is_active=0` hain.

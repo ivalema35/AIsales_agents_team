@@ -6145,3 +6145,34 @@ AI se hi decide karvaya): revise->approve lifecycle chalaya, final applied targe
 ["dental clinics", "gyms", "salons"], "location": "Mehsana"}` — 3 real, concrete business types, Mehsana
 aur lead_count_goal/strategy_angle bilkul unchanged. Agla Discovery tick ab in teeno ke liye alag-alag
 real search chalayega.
+
+### ⭐⭐⭐ Architectural fix: whack-a-mole se hatke, ek asli extensible AI agent (2026-09-07)
+
+User ne bahot saaf, seedha aur sahi criticism di: **"AI Manager kis kaam ka, wo to dos kyu nahi de raha
+he, wo ek real AI agent hona chahiye jo sab dekhe aur bataye — sirf LLM calling nahi."** Ye poore session
+ka sabse important architectural feedback tha. Har baar jab koi naya real blocker mila (Discovery off,
+half-set target, ab abhi product.is_active) — usko fix karne ka tarika har baar **same tha**: ek naya
+hand-written prompt paragraph likhna us EXACT signal ke liye. Ye scalable nahi he — koi bhi NAYA,
+anticipate na kiya hua blocker (jaisa `product.is_active` — koi bhi pehle iska socha hi nahi tha) AI ko
+kabhi dikhega hi nahi jab tak koi developer usko specifically prompt me sikhaye.
+
+**Real architectural fix**: `_campaign_operational_readiness(db, campaign, product)` naya function —
+real, computed `[{name, ok, detail}, ...]` list (Python code se, LLM se guess nahi) — abhi 1 check
+(`product_active`), par **design hi extensible** he: koi bhi future gate bas is list me ek naya entry
+add karne se AI ko turant dikhega, **koi prompt-surgery ki zaroorat nahi**. Prompt ko ek **general
+instruction** diya, har specific gate ke liye alag paragraph nahi: "OPERATIONAL_READINESS ka har entry
+dekho, jaha `ok: false` he wo real blocker he, uska `detail` use karke bolo — tumhe pehle se pata hone
+ki zaroorat nahi ki ye check kya matlab rakhta he." `todo_signal_fingerprint()` me bhi fold kiya (product
+baad me active ho to bhi mid-day check jaage, kal tak wait na kare).
+
+**Verify — 2 local scenario**: (1) inactive product wali campaign → naya `"product_active"` to-do sahi
+bana, detail bilkul clear; (2) same campaign active product ke saath → koi false-positive nahi, sirf
+"Discovery off" (jo real he) aaya. **Real live campaign pe manual verify** (cooldown abhi 2-hour window
+me tha isliye scheduler khud abhi nahi chala, expected) — turant confirm kiya: *"Product 'IVinfotech --
+AI Automation Solutions' is inactive, so discovery never scans it and this campaign won't be considered
+for a real search until that changes."* Commit `6a7a840`, VPS deploy + 5 services restart.
+
+**Ye poore session ka sabse zaroori design-level fix he** — ab AI Manager genuinely ek "operational
+health-check" system he, na ki hardcoded if-else ka collection. `MEMORY.md`/persistent memory me is
+insight ko record karna zaroori he taaki future sessions ISI pattern ko follow karein — koi bhi naya
+gap milne par "ek aur hardcoded paragraph" nahi, "OPERATIONAL_READINESS list me ek entry add karo."
