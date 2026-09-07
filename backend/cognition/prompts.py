@@ -677,8 +677,14 @@ TASK, three situations, same underlying judgment:
   "cake shops", "dental clinics", "gyms" -- a specific kind of business a real person could
   picture, never a circular restatement of the product's own description like "businesses
   needing a website"; if PRODUCT_TARGET_BUSINESS_CATEGORIES already names some, prefer one of
-  those or something concretely similar). For a missing region: a real, NAMED place -- prefer
-  one of PRODUCT_TARGET_REGIONS when it's non-empty (concrete beats vague: name an actual
+  those or something concretely similar). `industry` is normally one such vertical, but becomes
+  a JSON ARRAY of several real, concrete, named verticals when there's a genuine reason this
+  campaign should search more than one at once (e.g. PRODUCT_TARGET_BUSINESS_CATEGORIES already
+  names several, or the addressable market genuinely spans more than one clear vertical) --
+  every entry must be an actual named business type someone could picture, never a summary
+  phrase like "multiple business types" standing in for actually choosing them. For a missing
+  region: a real, NAMED place -- prefer one of PRODUCT_TARGET_REGIONS when it's non-empty
+  (concrete beats vague: name an actual
   city, never write a placeholder like "one region") though a different real region is fine
   with genuine reason. For a missing LEAD_COUNT_GOAL: a reasonable batch size, not an
   arbitrarily huge number.
@@ -809,7 +815,8 @@ this campaign, kept across days, not a summary of today's to-dos):
   change is also offered as today's `proposal` for human approval.
 
 OUTPUT JSON: {"todo": [{"label": "...", "text": "..."}],
-"proposal": null | {"target_segment": null | {"industry": "...", "location": "..."},
+"proposal": null | {"target_segment": null |
+{"industry": "..." | ["...", "..."], "location": "..."},
 "lead_count_goal": null | 0, "strategy_angle": null | "...",
 "email_render_mode": null | "HTML" | "TEXT", "rationale": "<=40 words",
 "confidence": 0.0},
@@ -983,7 +990,21 @@ change WORDING, EMPHASIS, or the structural proposal's fields, but never introdu
 REAL_DATA doesn't support. If the instruction has no real proposal-shaped ask, leave
 `proposal` as it was (or null if it was already null).
 
+**target_segment.industry -- one vertical, or several, but always REAL, NAMED ones**: when the
+instruction asks for a single business type, `industry` is one concrete, named vertical (e.g.
+"dental clinics" -- never a vague summary phrase like "local businesses"). When the instruction
+genuinely asks for MORE THAN ONE vertical under this same campaign (e.g. "target multiple
+business types", "don't limit to just one"), `industry` becomes a JSON ARRAY of real, concrete,
+named verticals chosen with the same judgment as a single one would be (e.g. ["dental clinics",
+"gyms", "salons"] -- each one a specific kind of business a real person could picture, picked
+for a genuine reason, never a placeholder describing the idea of "multiple" instead of actually
+naming them). Each array entry becomes its own real, independent discovery search under this
+one campaign. Never write a summary/category-of-categories string ("multiple local business
+types", "various businesses") in place of actually choosing and naming them -- that produces a
+search term nothing can be found for.
+
 OUTPUT JSON: {"text": "<=250 chars", "proposal": null | {"target_segment": null |
-{"industry": "...", "location": "..."}, "lead_count_goal": null | 0, "strategy_angle": null |
-"...", "email_render_mode": null | "HTML" | "TEXT", "rationale": "<=40 words"}}
+{"industry": "..." | ["...", "..."], "location": "..."}, "lead_count_goal": null | 0,
+"strategy_angle": null | "...", "email_render_mode": null | "HTML" | "TEXT",
+"rationale": "<=40 words"}}
 """

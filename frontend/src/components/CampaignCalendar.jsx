@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Plus, Clock, Target } from "lucide-react";
 import { api } from "../api/client";
 import CampaignFormModal from "./CampaignFormModal";
+import { industryLabel } from "../lib/targetSegment";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -256,7 +257,7 @@ export default function CampaignCalendar() {
                           {(c.target_segment?.industry || c.target_segment?.location) && (
                             <p className="flex items-center gap-1 truncate text-[9px] text-gold-700">
                               <Target size={9} className="shrink-0" />
-                              {c.target_segment.industry || "—"}
+                              {industryLabel(c.target_segment) || "—"}
                               {c.target_segment.location && ` · ${c.target_segment.location}`}
                             </p>
                           )}

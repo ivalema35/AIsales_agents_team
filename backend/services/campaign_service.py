@@ -400,7 +400,23 @@ def _clean_proposal(raw) -> dict | None:
     cleaned = {}
     target_segment = raw.get("target_segment")
     if isinstance(target_segment, dict) and target_segment:
-        cleaned["target_segment"] = target_segment
+        # 2026-09-07, user-caught real bug: a human's "target multiple business types"
+        # instruction produced the literal string "multiple local business types" as
+        # `industry` -- the schema only allowed one string, so the model wrote a summary
+        # phrase instead of actually naming several. `industry` may now be a real vertical
+        # (str) or a list of them -- validated here so a malformed value (empty list, list
+        # of non-strings, blank string) never reaches a real Campaign row silently.
+        industry = target_segment.get("industry")
+        if isinstance(industry, list):
+            names = [v.strip() for v in industry if isinstance(v, str) and v.strip()]
+            if names:
+                target_segment = {**target_segment, "industry": names}
+            else:
+                target_segment = {k: v for k, v in target_segment.items() if k != "industry"}
+        elif isinstance(industry, str) and not industry.strip():
+            target_segment = {k: v for k, v in target_segment.items() if k != "industry"}
+        if target_segment:
+            cleaned["target_segment"] = target_segment
     lead_count_goal = raw.get("lead_count_goal")
     if isinstance(lead_count_goal, (int, float)) and not isinstance(lead_count_goal, bool) and lead_count_goal > 0:
         cleaned["lead_count_goal"] = int(lead_count_goal)

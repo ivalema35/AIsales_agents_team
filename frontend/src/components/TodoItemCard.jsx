@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AlertTriangle, CheckCircle2, MessageSquareWarning, Sparkles, X } from "lucide-react";
 import { api } from "../api/client";
+import { industryLabel } from "../lib/targetSegment";
 
 // Phase 21 -- a todo item whose label is genuinely about a real signal conflict (Step
 // 20.2) gets distinct, more urgent styling than an ordinary note, so a human's eye lands
@@ -113,7 +114,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
           {appliedResult.target_segment && (
             <p>
-              <b>Target set:</b> {appliedResult.target_segment.industry || "—"}
+              <b>Target set:</b> {industryLabel(appliedResult.target_segment) || "—"}
               {appliedResult.target_segment.location && ` in ${appliedResult.target_segment.location}`}
             </p>
           )}
@@ -211,7 +212,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             {proposal.target_segment && (
               <p>
                 <b>Target:</b>{" "}
-                {proposal.target_segment.industry || "—"}
+                {industryLabel(proposal.target_segment) || "—"}
                 {proposal.target_segment.location && ` in ${proposal.target_segment.location}`}
               </p>
             )}

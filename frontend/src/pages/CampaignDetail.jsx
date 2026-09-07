@@ -5,6 +5,7 @@ import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass } from "../lib/statusColors";
+import { industryLabel } from "../lib/targetSegment";
 
 const STATUS_LABEL = {
   PROPOSED: "Proposed",
@@ -79,7 +80,7 @@ export default function CampaignDetail() {
         {hasTarget && (
           <p className="mt-3 flex items-center gap-1.5 text-sm text-ink-700">
             <Target size={14} className="text-ink-500" />
-            {target.industry || "—"}
+            {industryLabel(target) || "—"}
             {target.location && ` in ${target.location}`}
           </p>
         )}
