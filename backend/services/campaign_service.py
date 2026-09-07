@@ -542,10 +542,28 @@ def todo_signal_fingerprint(db, campaign: Campaign) -> dict:
     """Phase 21 -- the lightweight tuple _run_signal_driven_todo_tick() diffs against
     campaign.last_todo_signal to decide "did anything real change since the last time we
     generated a to-do for this campaign". Deliberately cheap (reuses the same
-    compute_campaign_metrics() every other surface already calls) -- no new aggregation."""
+    compute_campaign_metrics() every other surface already calls) -- no new aggregation.
+
+    2026-09-07, user-caught real bug: this used to collapse TARGET_SEGMENT down to one
+    coarse `has_target = bool(target_segment)` flag -- the SAME imprecision already fixed in
+    generate_campaign_todo()'s own prompt logic, just hiding in this SEPARATE signal-diffing
+    function too. A campaign going from "only location set" to "industry+location+lead_count
+    all set" (a human approving the AI's own completion proposal) is a real, important
+    change -- but `bool(target_segment)` is True both before and after (the dict was never
+    empty), so the fingerprint looked unchanged and the mid-day tick silently never re-ran
+    for this campaign. Found live: a real campaign's target went from half-set to fully-set
+    by human approval, and the "Discovery is off" reminder that should have followed within
+    one poll interval never fired -- would have sat silent until tomorrow's daily floor tick.
+    Now mirrors the same three explicit ground-truth flags the prompt itself checks, so ANY
+    real change to any of them is a real change here too."""
     metrics = compute_campaign_metrics(db, campaign.id)
-    has_target = bool(json.loads(campaign.target_segment or "{}"))
-    return {**metrics, "has_target": has_target}
+    target = json.loads(campaign.target_segment or "{}")
+    return {
+        **metrics,
+        "target_has_industry": bool(target.get("industry")),
+        "target_has_location": bool(target.get("location")),
+        "lead_count_goal_set": campaign.lead_count_goal is not None,
+    }
 
 
 def generate_campaign_todo(db, campaign_id: str) -> dict:
