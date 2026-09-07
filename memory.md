@@ -698,8 +698,11 @@ AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + 
 + AI Manager setup-completion for partial campaign targets + signal-tick fingerprint fix + real
 multi-vertical targeting + extensible OPERATIONAL_READINESS architecture (label ab human-readable
 "Product inactive", `name` sirf internal id) + **standing plain-language rule poore AI Manager prompt
-family me** (`AI_MANAGER_PLAIN_LANGUAGE_RULE`, 5 prompts, permanent memory me bhi save) — **sab kuch
-VPS par LIVE he** (commit `24f4825`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content),
-email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se disconnected
-hain (separate manual page), is campaign ka product abhi bhi `is_active=0` he (user ko batana hai
-activate karna he ya nahi), saare 8 products `is_active=0` hain.
+family me** (`AI_MANAGER_PLAIN_LANGUAGE_RULE`, 5 prompts, permanent memory me bhi save) + **Calendar pe
+red "Action needed" alert + popup** (naya `todo_items.is_blocker` column, Python-computed, "Discovery
+off"/"Ready to send"/har OPERATIONAL_READINESS label ke liye — click se popup me `TodoItemCard` reuse
+karke seedha Approve/Dismiss ho sakta he) — **sab kuch VPS par LIVE he** (commit `3e26eb4`, deployed
+2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
+WhatsApp template to-dos abhi unified inbox se disconnected hain (separate manual page), is campaign
+ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya nahi), saare 8 products
+`is_active=0` hain.

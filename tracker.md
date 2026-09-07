@@ -6214,3 +6214,28 @@ kaafi nahi tha.
 **Permanent memory me save kiya** (`feedback_ai_manager_plain_language.md`) taaki future sessions bhi
 ye standing rule follow karein. Local verify kiya — output quality clean rahi. Commit `24f4825`, VPS
 deploy + 5 services restart.
+
+### Naya feature: Calendar pe red "Action needed" alert + popup (2026-09-07)
+
+User ne poocha "jab tak kuch aur na badle, to-do wapas nahi aayega" — usi baat se ek naya, real feature
+mangi: jis campaign me **real blocker** (must-act) ho, uska Calendar box **red alert** dikhaye, click
+karne par popup me pending to-dos dikhein, koi duplicate nahi.
+
+**Fix (naya DB column + backend logic + frontend UI)**:
+1. `todo_items.is_blocker` naya column (`migrate.py` COLUMN_MIGRATIONS) — Python code se compute hota
+   he (LLM khud classify nahi karta), ek fixed set se: `"Discovery off"`, `"Ready to send"` (naya fixed
+   label diya READY_TO_DISPATCH_COUNT ko, "Discovery off" jaisa hi pattern), aur har
+   OPERATIONAL_READINESS check ka apna `label`. Normal strategic notes/proposals blocker nahi hote.
+2. `serialize_todo_item()` me `is_blocker` field add kiya, API se frontend tak flow karta he.
+3. `CampaignCalendar.jsx` — jis campaign me pending blocker ho, gold clock ki jagah **red "Action
+   needed" badge** dikhta he. Click karne par ek popup (existing generic `Modal` reuse kiya) khulta he
+   jisme us campaign ke saare pending to-dos **same `TodoItemCard`** se dikhte hain (Dashboard inbox
+   jaisa hi) — Approve/Dismiss/Got it seedha wahi se kar sakte ho, calendar chhode bina.
+4. Duplicate ka sawaal hi nahi — existing PENDING-label dedup mechanism (already proven is poore
+   session) yahan bhi lagu he, popup sirf real, current PENDING items dikhata he.
+
+**Real verify**: local test se `is_blocker=True` correctly compute+serialize hua ek inactive-product
+scenario pe. VPS deploy (migration + backend + frontend, 5 services restart) ke baad **real live
+campaign** pe fresh "Product inactive" to-do generate kiya (purana wala already dismissed tha) — DB me
+confirm kiya `is_blocker=1, status=PENDING`. Ab Calendar pe red alert real dikhna chahiye. Commit
+`3e26eb4`.
