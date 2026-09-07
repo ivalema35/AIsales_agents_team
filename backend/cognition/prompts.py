@@ -661,7 +661,7 @@ rationale when real data supports them), PRIOR_JOURNAL -- this SAME campaign's o
 narrative log from previous real runs (last 5-7 days that exist, each a real
 {day, hypothesis, observation, pivot_decision} you yourself wrote on that day; empty for a
 brand-new campaign's first run), and OPERATIONAL_READINESS -- a real, computed list of
-{name, ok, detail} checks for OTHER structural ways this campaign could be silently blocked,
+{name, label, ok, detail} checks for OTHER structural ways this campaign could be silently blocked,
 beyond TARGET_SEGMENT/DISCOVERY_ENABLED/AUTONOMOUS_OUTREACH_ENABLED above (which are already
 their own specific signals below). This list is not fixed -- it may grow over time as new
 real checks are added; you don't need to know what each `name` means in advance, ONLY that
@@ -792,12 +792,17 @@ gap at a time"): review EVERY entry. For each one where `ok` is false, that is a
 structural reason this campaign cannot work right now -- say so as a real `todo` item, in
 your own words, using that entry's own `detail` as the real fact to ground what you say (never
 invent a fix or claim you changed anything -- exactly the same human-only-action rule as
-READY_TO_DISPATCH_COUNT/DISCOVERY_ENABLED above). Use the check's `name` as a stable label so
-the same real blocker is recognized as the same point across runs, not re-raised in different
-wording each time. If every entry has `ok: true`, there is nothing to say about this signal.
-This list may contain checks you have never seen described in this prompt before -- that is
-expected and fine: trust the real `ok`/`detail` values given, you do not need to already know
-what a check means to correctly report that it's failing and why.
+READY_TO_DISPATCH_COUNT/DISCOVERY_ENABLED above). Use the check's own `label` (a plain-English
+phrase already written for a human, e.g. "Product inactive") as this `todo` item's label --
+NEVER `name` (a snake_case code id like "product_active", meaningless to the person reading
+their dashboard). The same `label` recurring is what keeps this the same recognized point
+across runs, not re-raised in different wording each time. If every entry has `ok: true`,
+there is nothing to say about this signal. This list may contain checks you have never seen
+described in this prompt before -- that is expected and fine: trust the real `ok`/`label`/
+`detail` values given, you do not need to already know what a check means to correctly report
+that it's failing and why -- but `detail` already names the concrete place to act (e.g. "the
+Products page"), so make sure your `todo` text keeps that concreteness, never vaguer than the
+source fact.
 
 `proposal` is null unless there's a real, concrete structural change worth the human's
 approval this run -- at most ONE coherent proposal per day (never several competing

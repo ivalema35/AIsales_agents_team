@@ -268,15 +268,28 @@ def _campaign_operational_readiness(db, campaign, product) -> list[dict]:
 
     Deliberately separate from the existing READY_TO_DISPATCH_COUNT/DISCOVERY_ENABLED
     signals below (proven, carefully worded, left untouched) -- this covers gates NOT
-    already handled by those two, starting with the one just found live."""
+    already handled by those two, starting with the one just found live.
+
+    2026-09-07 follow-up, same user's next real complaint: the first version used `name`
+    (a snake_case code identifier, "product_active") as the to-do's actual LABEL -- a
+    non-technical human read "PRODUCT_ACTIVE" on their dashboard and had no idea what it
+    meant or what to do about it (their own words: "mujhe hi samajh nahi aa raha AI kya
+    chahta hai"). `name` stays a stable internal id (still fine for code/logs); `label` is
+    now a SEPARATE, plain-English phrase for the human-facing card -- same precedent as the
+    hand-written "Discovery off" label elsewhere in this same prompt. `detail` also now
+    names the exact real place to act (the Products page), matching "Discovery off"'s own
+    "turn it on in Settings" concreteness -- a note that doesn't say WHERE to go is just as
+    useless as one with no explanation at all."""
     checks = [{
         "name": "product_active",
+        "label": "Product inactive",
         "ok": bool(product.is_active),
         "detail": (
             "Product is active." if product.is_active else
-            f'Product "{product.title}" is INACTIVE -- discovery only ever scans active '
-            "products, so this campaign is never even considered for a real search, "
-            "regardless of how its own target/Discovery settings are set."
+            f'The product this campaign is for, "{product.title}", is turned off on the '
+            "Products page -- discovery only ever looks at active products, so this "
+            "campaign will never be searched no matter what its own target says. Go to "
+            "the Products page and turn it on if you want this campaign to find leads."
         ),
     }]
     return checks
