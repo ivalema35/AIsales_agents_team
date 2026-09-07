@@ -5954,3 +5954,8 @@ searches for, alag ho sakta he product ke Usual regions/business types se" — S
 hat gayi ("Optional. Know your target? Fill it in. Leave blank and the AI can propose one..." — khud
 me clear he, bas dusre form ka cross-reference nahi karta). Functionality/backend bilkul unaffected,
 sirf ek explanatory line kam hui — flagging for the record, koi action nahi liya.
+
+**VPS deploy turant** (user: "isse bhi add karo aur deploy karo") — frontend-only, `git pull --ff-only`
+(`be6c8dc..01d599d`, clean), `npm run build` (naya hash `index-CWhSfayJ.js`), `dist` → `public_html`
+sync + chown. Backend/DB touch nahi, service restart ki zaroorat nahi. Real verify: naya JS hash + API
+401 (healthy) live confirm.
