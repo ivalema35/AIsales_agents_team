@@ -636,6 +636,19 @@ real before/after verify kiya — Products(9)/Templates(5)/Prospect Finder(53+8)
 leads/scores/outreach/replies/jobs/discovery-logs/EOD-reports sab 0. Services restart, clean, safety
 switches untouched. **VPS ab genuinely clean slate he naye campaign ke liye.**
 
+**🐛 Real bug mila + fix: AI Manager half-set target ko galat "complete" samajh raha tha, 2026-09-07** —
+user ne apni PEHLI real campaign banayi, sirf Region (Mehsana) bhara, Business type jaanbujh kar khali
+chhoda ("ye AI Manager ka kaam hai"). Bilkul sahi expectation — par real bug mila: `generate_campaign_
+todo()` half-set target ko "already targeted" samajh raha tha (kyunki `target_segment` object non-empty
+tha), jabki asli discovery machinery (`eligible_campaigns_for_discovery`) ko DONO fields chahiye — ye
+campaign kabhi discovery se pick hi nahi hota, aur AI ne ye missing-piece wali asli baat kabhi batayi
+nahi (PRODUCT_BRIEF se khud "AI automation" guess karke sab-set-hai jaisa bol diya). **Fix**:
+`TARGET_HAS_INDUSTRY`/`TARGET_HAS_LOCATION` explicit computed booleans (model ko khud infer nahi karne
+diya), prompt me naya case "exactly one half set → missing half khud decide karo, diya hua half kabhi
+mat badlo." Verify kiya local test campaign pe + real live campaign pe (purana galat to-do dismiss
+karke naya generate kiya) — dono jagah sahi kaam kiya (Mehsana unchanged, industry khud pick kiya,
+honest low confidence). Commit `3316072`, VPS deploy + backend services restart.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified

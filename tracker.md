@@ -5994,3 +5994,35 @@ poore session me — poori ehtiyaat (caution) se kiya:
 **Result: live VPS ab genuinely clean slate he naye campaign ke liye** — Products/Templates/Prospect
 Finder intact, purana lead pipeline data (leads, scores, outreach history, replies, jobs, discovery
 logs, EOD reports) poora saaf, aur ek real, verified backup file recovery ke liye maujood he.
+
+### 🐛 Real bug: AI Manager half-set target ko "already targeted" samajh raha tha (2026-09-07)
+
+User ne apni **pehli real campaign** banayi ("Ai automaion Push") — sirf **Region: Mehsana** bhara,
+**Business type khali chhoda**, ye kehte hue "ye to optional he na, business type decide karna to AI
+Manager ka kaam hai." Bilkul sahi point — campaign form ka apna copy bhi yehi bolta he
+("leave blank, AI Sales Manager will propose"). Maine trigger kiya to real bug mila: `generate_
+campaign_todo()` ne is campaign ko **"already targeted"** samjha (`target_segment` non-empty tha, sirf
+`{"location": "Mehsana"}`) aur "Discovery off" bola, jabki `eligible_campaigns_for_discovery()` ko
+**dono** (industry + location) chahiye — is campaign ko discovery kabhi pick hi nahi karta, hamesha ke
+liye, aur AI ne ye missing-industry wali asli problem kabhi flag nahi ki (balki PRODUCT_BRIEF se khud
+"AI automation" guess karke jaise sab set ho gaya ho aisa bol diya).
+
+**Root cause**: prompt ke TASK section me sirf 2 case the — "target bilkul nahi" vs "target set" —
+"set" hone ka matlab kabhi precisely define nahi kiya gaya tha (model raw JSON ke shape se khud guess
+kar raha tha). Ek human jaanbujh kar sirf ek half deke doosra AI par chhodta he — ye ek genuinely
+alag, legitimate case he jo cover hi nahi hua tha.
+
+**Fix**: `campaign_service.py` me `TARGET_HAS_INDUSTRY`/`TARGET_HAS_LOCATION` explicit Python-computed
+booleans add kiye (same pattern jo `DISCOVERY_ENABLED`/`AUTONOMOUS_OUTREACH_ENABLED` ke liye already
+tha — model ko khud infer nahi karne dena, ground truth dena). `CAMPAIGN_TODO_SYSTEM_PROMPT` me naya
+teesra TASK case add kiya: "exactly one half set" → missing half khud decide karo (STRATEGY_INSIGHTS →
+SIBLING_CAMPAIGNS → PRODUCT_TARGET_* order se), human ka diya hua half **kabhi mat badlo**, aur
+"Discovery off"/"already targeted" wale cases ko explicitly dono flags true hone par gate kiya.
+
+**Verify kiya do jagah**: (1) local dev DB me bilkul isi shape ka test campaign banake — AI ne sahi
+"coaching institutes" propose kiya, Mehsana unchanged rakha, confidence honestly low (0.3); (2) VPS
+deploy (`3316072`, backend-only, 5 services restart, import sanity clean) ke baad **real live campaign
+pe** purana galat "Discovery off" to-do dismiss kiya, naya generate kiya — AI ne "dental clinics"
+propose kiya, Mehsana unchanged, confidence 0.24, aur ek "Targeting" note jo bilkul sahi transparently
+bata raha he ki target abhi bhi incomplete he. Real, verified fix — user ke apne pehle real campaign
+banate hi mila aur turant fix hua.
