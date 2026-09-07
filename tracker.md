@@ -6239,3 +6239,28 @@ scenario pe. VPS deploy (migration + backend + frontend, 5 services restart) ke 
 campaign** pe fresh "Product inactive" to-do generate kiya (purana wala already dismissed tha) — DB me
 confirm kiya `is_blocker=1, status=PENDING`. Ab Calendar pe red alert real dikhna chahiye. Commit
 `3e26eb4`.
+
+### ⭐⭐⭐ Real design flaw pakda: "Got it" alert ko hi gayab kar deta tha (2026-09-07)
+
+User ne turant is-blocker feature me ek **genuinely serious flaw** pakda: "waha pe Got it kar diya to
+alert chala gaya, fir iska matlab kya — alert dikhna chahiye ki campaign ruka hua he, chahe maine to-do
+me se Got it kar diya ho, AI tab tak dikhayega jab tak wo solve na ho jaye." Bilkul sahi — maine red alert
+ko `TodoItem.is_blocker` PENDING status se tie kiya tha, matlab ek baar "Got it" click karte hi (jo sirf
+ek NOTIFICATION dismiss karta he, real problem fix nahi karta) — alert bhi gayab ho jaata, jabki product
+abhi bhi inactive hi tha.
+
+**Real fix — poora decouple kiya to-do lifecycle se**: naya `campaign_blocking_status(db, campaign)`
+function — **LIVE, har call pe fresh compute hota he**, `todo_items` table ko chhuta hi nahi. Isme fold
+kiya: `_campaign_operational_readiness()` ke saare `ok:false` checks, plus 2 hand-written signal
+(Discovery off jab target fully set ho, Ready-to-send jab leads ready ho aur outreach off ho). `GET
+/campaigns` response me naya `blocking_issues` field wire kiya (har request pe fresh compute).
+
+**`CampaignCalendar.jsx`** ab red alert `campaign.blocking_issues` se derive karta he — `TodoItem` state
+se bilkul nahi. Popup me ab 2 alag section: "Currently blocking this campaign" (live facts, hamesha
+dikhte hain jab tak sach hain) + "Pending to-dos" (dismissable notifications, TodoItemCard).
+
+**Verify — sabse strong possible test**: ek campaign banayi jiske liye **kabhi koi TodoItem bana hi
+nahi** (zero to-do history) — phir bhi `campaign_blocking_status()` ne sahi "Product inactive" aur
+"Discovery off" dikhaya. Matlab ye check to-do dismiss/approve se **bilkul independent** he, sirf real
+condition pe depend karta he. Real live campaign pe bhi confirm kiya — `blocking_issues` = ["Product
+inactive"], bina kisi to-do state pe depend kiye. Commit `07ea1be`, VPS deploy + 5 services restart.

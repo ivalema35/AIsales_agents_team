@@ -701,8 +701,18 @@ multi-vertical targeting + extensible OPERATIONAL_READINESS architecture (label 
 family me** (`AI_MANAGER_PLAIN_LANGUAGE_RULE`, 5 prompts, permanent memory me bhi save) + **Calendar pe
 red "Action needed" alert + popup** (naya `todo_items.is_blocker` column, Python-computed, "Discovery
 off"/"Ready to send"/har OPERATIONAL_READINESS label ke liye — click se popup me `TodoItemCard` reuse
-karke seedha Approve/Dismiss ho sakta he) — **sab kuch VPS par LIVE he** (commit `3e26eb4`, deployed
-2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
-WhatsApp template to-dos abhi unified inbox se disconnected hain (separate manual page), is campaign
-ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya nahi), saare 8 products
-`is_active=0` hain.
+karke seedha Approve/Dismiss ho sakta he).
+
+**⭐⭐⭐ Turant ek real design flaw pakda, isi din**: user ne bola "Got it kiya to alert chala gaya, matlab
+kya, alert to tab tak dikhna chahiye jab tak asli problem solve na ho, to-do dismiss karne se nahi."
+Bilkul sahi — red alert `TodoItem.is_blocker` PENDING status se tied tha, jo "Got it" pe silently gayab
+ho jaata tha bhale hi real problem (product inactive) abhi bhi sach ho. **Fix**: naya
+`campaign_blocking_status()` — poori tarah `todo_items` se decoupled, LIVE recompute har request pe,
+`GET /campaigns` ke naye `blocking_issues` field se aata he. Verify kiya: ek campaign jiske liye kabhi
+koi TodoItem bana hi nahi, phir bhi sahi blockers dikhata he — matlab genuinely to-do-lifecycle-
+independent. Commit `07ea1be`, VPS deploy.
+
+**Sab kuch VPS par LIVE he** (commit `07ea1be`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
+content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se
+disconnected hain (separate manual page), is campaign ka product abhi bhi `is_active=0` he (user ko
+batana hai activate karna he ya nahi), saare 8 products `is_active=0` hain.
