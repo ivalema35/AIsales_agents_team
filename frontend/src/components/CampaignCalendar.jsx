@@ -78,6 +78,8 @@ export default function CampaignCalendar() {
 
   const grid = useMemo(() => buildMonthGrid(cursor.year, cursor.month), [cursor]);
   const todayKey = toDateKey(new Date());
+  const viewingCurrentMonth =
+    cursor.year === new Date().getFullYear() && cursor.month === new Date().getMonth();
   const monthLabel = new Date(cursor.year, cursor.month, 1).toLocaleDateString("en-US", {
     month: "long", year: "numeric",
   });
@@ -89,20 +91,33 @@ export default function CampaignCalendar() {
     });
   }
 
+  function goToday() {
+    const now = new Date();
+    setCursor({ year: now.getFullYear(), month: now.getMonth() });
+  }
+
   if (error) return <p className="text-xs text-alert-600">Couldn't reach the backend: {error}</p>;
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display text-lg font-semibold text-ink-900">{monthLabel}</h2>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center rounded-lg border border-line bg-parchment-raised p-0.5">
             <button
               onClick={() => shiftMonth(-1)}
               className="rounded-md p-1.5 text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900"
               aria-label="Previous month"
             >
               <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={goToday}
+              disabled={viewingCurrentMonth}
+              className="rounded-md px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-ink-700 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:cursor-default disabled:opacity-40"
+              title="Jump to this month"
+            >
+              Today
             </button>
             <button
               onClick={() => shiftMonth(1)}
@@ -121,107 +136,143 @@ export default function CampaignCalendar() {
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1.5">
-        {WEEKDAYS.map((w) => (
-          <div key={w} className="px-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-ink-500">
-            {w}
-          </div>
-        ))}
-
-        {campaigns === null &&
-          Array.from({ length: 7 }).map((_, i) => (
-            <div key={i} className="h-24 animate-pulse rounded-lg bg-parchment-raised-2" />
+      <div className="overflow-hidden rounded-xl border border-line bg-parchment-raised p-2 sm:p-3">
+        <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+          {WEEKDAYS.map((w) => (
+            <div
+              key={w}
+              className="px-1 pb-2 text-center font-mono text-[10px] font-semibold uppercase tracking-wide text-ink-500"
+            >
+              {w}
+            </div>
           ))}
 
-        {campaigns !== null &&
-          grid.map((d) => {
-            const key = toDateKey(d);
-            const inMonth = d.getMonth() === cursor.month;
-            const dayCampaigns = campaignsByDate[key] || [];
-            const isToday = key === todayKey;
-            const isPast = key < todayKey;
-            const clickableEmpty = dayCampaigns.length === 0 && inMonth && !isPast;
-            return (
-              <div
-                key={key}
-                role={clickableEmpty ? "button" : undefined}
-                tabIndex={clickableEmpty ? 0 : undefined}
-                onClick={clickableEmpty ? () => { setFormPrefill(null); setFormDate(key); } : undefined}
-                onKeyDown={
-                  clickableEmpty
-                    ? (e) => (e.key === "Enter" || e.key === " ") && (setFormPrefill(null), setFormDate(key))
-                    : undefined
-                }
-                title={clickableEmpty ? "Click to start a campaign on this day" : undefined}
-                className={`group flex min-h-24 flex-col gap-1 rounded-lg border p-1.5 ${
-                  dayCampaigns.length > 0
-                    ? "border-gold-500 bg-gold-100"
-                    : "border-line bg-parchment-raised"
-                } ${inMonth ? "" : "opacity-40"} ${
-                  clickableEmpty ? "cursor-pointer hover:border-gold-500 hover:bg-gold-100/60" : ""
-                }`}
-              >
-                <span
-                  className={`font-mono text-[10px] ${
-                    isToday ? "font-bold text-gold-700" : "text-ink-500"
+          {campaigns === null &&
+            Array.from({ length: 14 }).map((_, i) => (
+              <div key={i} className="h-24 animate-pulse rounded-lg bg-parchment-raised-2" />
+            ))}
+
+          {campaigns !== null &&
+            grid.map((d) => {
+              const key = toDateKey(d);
+              const inMonth = d.getMonth() === cursor.month;
+              const dayCampaigns = campaignsByDate[key] || [];
+              const isToday = key === todayKey;
+              const isPast = key < todayKey;
+              const clickableEmpty = dayCampaigns.length === 0 && inMonth && !isPast;
+              return (
+                <div
+                  key={key}
+                  role={clickableEmpty ? "button" : undefined}
+                  tabIndex={clickableEmpty ? 0 : undefined}
+                  onClick={clickableEmpty ? () => { setFormPrefill(null); setFormDate(key); } : undefined}
+                  onKeyDown={
+                    clickableEmpty
+                      ? (e) => (e.key === "Enter" || e.key === " ") && (setFormPrefill(null), setFormDate(key))
+                      : undefined
+                  }
+                  title={
+                    isToday
+                      ? (clickableEmpty ? "Today -- click to start a campaign" : "Today")
+                      : clickableEmpty
+                      ? "Click to start a campaign on this day"
+                      : undefined
+                  }
+                  className={`group relative flex min-h-24 flex-col gap-1 rounded-lg border p-1.5 transition-colors ${
+                    isToday
+                      ? "border-gold-600 bg-gold-100 shadow-[inset_0_0_0_1px_rgba(184,137,44,0.35)]"
+                      : dayCampaigns.length > 0
+                      ? "border-gold-500 bg-gold-100/80"
+                      : "border-line bg-parchment-raised-2"
+                  } ${inMonth ? "" : "opacity-35"} ${
+                    isPast && inMonth && !isToday && dayCampaigns.length === 0 ? "opacity-55" : ""
+                  } ${
+                    clickableEmpty
+                      ? "cursor-pointer hover:border-gold-600 hover:bg-gold-100"
+                      : ""
                   }`}
                 >
-                  {d.getDate()}
-                </span>
-                {dayCampaigns.length === 0 ? (
-                  <span className="hidden text-[10px] font-medium text-gold-700 group-hover:inline">
-                    {clickableEmpty ? "+ Add" : ""}
-                  </span>
-                ) : (
-                  dayCampaigns.map((c) => {
-                    // Review-pending indicator (UI Phase 16 revision, 2026-09-02; Phase 21
-                    // revision 2026-09-05) -- shows whenever this campaign has a real
-                    // PENDING to-do waiting in the unified AI Manager Inbox (Dashboard).
-                    const reviewPending = campaignIdsWithPendingTodo.has(c.id);
-                    return (
-                      <div
-                        key={c.id}
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => navigate(`/campaigns/${c.id}`)}
-                        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate(`/campaigns/${c.id}`)}
-                        title="Open campaign"
-                        className="cursor-pointer rounded-md bg-parchment-raised-2 px-1.5 py-1 hover:bg-parchment-raised"
+                  <div className="flex items-start justify-between gap-1">
+                    {isToday ? (
+                      <span className="inline-flex items-center gap-1">
+                        <span className="rounded-md bg-gold-600 px-1.5 py-0.5 font-mono text-[10px] font-bold leading-none text-white">
+                          {d.getDate()}
+                        </span>
+                        <span className="hidden font-mono text-[8px] font-semibold uppercase tracking-wide text-gold-700 sm:inline">
+                          Today
+                        </span>
+                      </span>
+                    ) : (
+                      <span
+                        className={`font-mono text-[10px] ${
+                          inMonth ? "font-medium text-ink-700" : "text-ink-500"
+                        }`}
                       >
-                        <div className="flex items-start justify-between gap-1">
-                          <p className="truncate text-[11px] font-semibold text-ink-900" title={c.name}>
-                            {c.name}
+                        {d.getDate()}
+                      </span>
+                    )}
+                  </div>
+                  {dayCampaigns.length === 0 ? (
+                    clickableEmpty && (
+                      <span
+                        className={`mt-auto text-[10px] font-medium text-gold-700 ${
+                          isToday ? "opacity-90" : "opacity-0 group-hover:opacity-100"
+                        }`}
+                      >
+                        + Add
+                      </span>
+                    )
+                  ) : (
+                    dayCampaigns.map((c) => {
+                      // Review-pending indicator (UI Phase 16 revision, 2026-09-02; Phase 21
+                      // revision 2026-09-05) -- shows whenever this campaign has a real
+                      // PENDING to-do waiting in the unified AI Manager Inbox (Dashboard).
+                      const reviewPending = campaignIdsWithPendingTodo.has(c.id);
+                      return (
+                        <div
+                          key={c.id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => navigate(`/campaigns/${c.id}`)}
+                          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate(`/campaigns/${c.id}`)}
+                          title="Open campaign"
+                          className="cursor-pointer rounded-md border border-line/60 bg-parchment-raised px-1.5 py-1 shadow-sm hover:border-gold-500 hover:bg-parchment-raised-2"
+                        >
+                          <div className="flex items-start justify-between gap-1">
+                            <p className="truncate text-[11px] font-semibold text-ink-900" title={c.name}>
+                              {c.name}
+                            </p>
+                            {reviewPending && (
+                              <Clock size={10} className="mt-0.5 shrink-0 text-gold-700" aria-label="Review pending" />
+                            )}
+                          </div>
+                          <p className="truncate text-[9px] text-ink-500">
+                            {productTitle[c.product_id] || "—"} · {STATUS_LABEL[c.status] || c.status}
                           </p>
-                          {reviewPending && (
-                            <Clock size={10} className="mt-0.5 shrink-0 text-gold-700" aria-label="Review pending" />
+                          {/* 2026-09-07, user-flagged real gap: approving a targeting proposal
+                              changed the real campaign row, but nowhere on the calendar showed
+                              it -- a human had no quick way to confirm "yes, this campaign is
+                              now actually targeted." */}
+                          {(c.target_segment?.industry || c.target_segment?.location) && (
+                            <p className="flex items-center gap-1 truncate text-[9px] text-gold-700">
+                              <Target size={9} className="shrink-0" />
+                              {c.target_segment.industry || "—"}
+                              {c.target_segment.location && ` · ${c.target_segment.location}`}
+                            </p>
                           )}
+                          <div className="mt-0.5 flex flex-wrap gap-1 font-mono text-[9px] text-gold-700">
+                            <span>{c.metrics.sent} sent</span>
+                            <span>{c.metrics.opened} opened</span>
+                            {c.metrics.hot > 0 && <span className="text-alert-600">{c.metrics.hot} hot</span>}
+                          </div>
                         </div>
-                        <p className="truncate text-[9px] text-ink-500">
-                          {productTitle[c.product_id] || "—"} · {STATUS_LABEL[c.status] || c.status}
-                        </p>
-                        {/* 2026-09-07, user-flagged real gap: approving a targeting proposal
-                            changed the real campaign row, but nowhere on the calendar showed
-                            it -- a human had no quick way to confirm "yes, this campaign is
-                            now actually targeted." */}
-                        {(c.target_segment?.industry || c.target_segment?.location) && (
-                          <p className="flex items-center gap-1 truncate text-[9px] text-gold-700">
-                            <Target size={9} className="shrink-0" />
-                            {c.target_segment.industry || "—"}
-                            {c.target_segment.location && ` · ${c.target_segment.location}`}
-                          </p>
-                        )}
-                        <div className="mt-0.5 flex flex-wrap gap-1 font-mono text-[9px] text-gold-700">
-                          <span>{c.metrics.sent} sent</span>
-                          <span>{c.metrics.opened} opened</span>
-                          {c.metrics.hot > 0 && <span className="text-alert-600">{c.metrics.hot} hot</span>}
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            );
-          })}
+                      );
+                    })
+                  )}
+                </div>
+              );
+            })}
+        </div>
       </div>
 
       {campaigns !== null && campaigns.length === 0 && (

@@ -5880,3 +5880,9 @@ Established cycle (`A.5`) poora follow kiya:
 **Result:** VPS ab pura Phase 20 + Phase 21 (Unified AI To-Do Inbox, no-switch daily+signal-driven
 generation, per-item approve/dismiss/feedback) + aaj ke saare fixes ke saath live he. Koi naya issue nahi
 mila â€” clean deploy. `AUTONOMOUS_OUTREACH_ENABLED`/`DISCOVERY_ENABLED` dono still `False` real VPS par.
+
+### ? Campaign calendar: Today highlight + UX polish — 2026-09-07
+
+`CampaignCalendar.jsx`: aaj ka din gold pill + Today label + stronger cell border/bg;
+header me Today jump button; framed grid; past days muted; empty today pe `+ Add` always
+visible; campaign chips thode clearer.
