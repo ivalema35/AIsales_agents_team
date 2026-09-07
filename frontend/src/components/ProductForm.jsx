@@ -184,10 +184,16 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
       <div className="flex flex-col gap-4 border-t border-line pt-4">
         <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Targeting</p>
 
+        {/* 2026-09-07, user-flagged real mismatch: these two fields' copy still described
+            pre-Step-17.7 behavior ("discovery searches each region", "the AI only searches
+            these exact categories") -- since discovery became campaign-driven, a campaign's
+            own target_segment (CampaignFormModal) is what actually runs, not these. Relabeled
+            + rewritten so a non-technical user doesn't believe setting these here locks what
+            gets searched. */}
         <ChipInput
           icon={MapPin}
-          label="Target regions"
-          hint="Type a city and press Enter -- discovery searches each region separately."
+          label="Usual regions for this product"
+          hint="Optional -- helps your AI Sales Manager suggest good targets when it proposes a new campaign for this product. Each campaign sets its own real target when created (can be different from this list)."
           values={form.target_regions}
           onChange={(v) => update("target_regions", v)}
           placeholder="Ahmedabad, Surat, Vadodara…"
@@ -195,8 +201,8 @@ export default function ProductForm({ product, allProducts = [], onCreated, onSa
 
         <ChipInput
           icon={Tag}
-          label="Target business categories"
-          hint="Optional -- a boundary, not a suggestion. If set, the AI only searches these exact categories; leave empty to let it choose verticals freely."
+          label="Usual business types for this product"
+          hint="Optional -- the kind of businesses this product usually fits, e.g. “dental clinic, law firm”. Helps your AI Sales Manager's suggestions stay relevant -- it does not lock a campaign's actual search to only these."
           values={form.target_business_categories}
           onChange={(v) => update("target_business_categories", v)}
           placeholder="dental clinic, law firm…"

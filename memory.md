@@ -603,6 +603,18 @@ PEHLE** (`AUTONOMOUS_OUTREACH_ENABLED=False`, `DISCOVERY_ENABLED=False`, dono co
 build + `public_html` sync → 5 services restart (sab `active`, koi traceback nahi) → real HTTPS verify
 (`/api/v1/todos` → 401 registered, naya JS hash serve ho raha). **Clean deploy, koi naya issue nahi.**
 
+**🔍 Real mismatch mila — Product form ke targeting copy stale tha, 2026-09-07** — user ne poocha "New
+campaign form aur Product form me mismatch to nahi, non-technical ke liye easy hona chahiye." Genuine
+factual gap mila: `ProductForm.jsx`'s "Target regions"/"Target business categories" hint abhi bhi
+**pre-Step-17.7 behavior** describe karta tha ("discovery searches each region", "AI only searches
+these exact categories" — hard boundary hone ka claim). Par Step 17.7 (2026-09-02) ne discovery ko
+campaign-driven bana diya tha — asli search sirf Campaign ke apne `target_segment` se chalta he, Product
+ke fields ab sirf AI-suggestion prompt me background context hain (jo function ye "boundary" enforce
+karta tha, wo kahi call hi nahi hota — dead code, confirmed). Non-technical user Product page pe category
+set karke sochega "ab sirf yehi search hoga" — galat. **Fix**: dono field rename + honest hint
+("helps suggestions... does not lock actual search"), aur `CampaignFormModal.jsx` me ek line add ki jo
+dono form ke fields ka relationship clarify kare. Copy-only fix, backend/data untouched.
+
 **Bottom line for a fresh session:** Naya kaam start karne se pehle — ye file padho, phir `tracker.md` ka
 latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; theme DONE (independently
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified

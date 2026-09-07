@@ -5881,7 +5881,40 @@ Established cycle (`A.5`) poora follow kiya:
 generation, per-item approve/dismiss/feedback) + aaj ke saare fixes ke saath live he. Koi naya issue nahi
 mila — clean deploy. `AUTONOMOUS_OUTREACH_ENABLED`/`DISCOVERY_ENABLED` dono still `False` real VPS par.
 
-### ? Campaign calendar: Today highlight + UX polish � 2026-09-07
+### ✅ Real mismatch mila: Product form ke targeting fields ka copy stale tha (2026-09-07)
+
+User ne poocha "New campaign form aur Product form ke details me koi mismatch to nahi, aur non-technical
+user ke liye easy hona chahiye." Dono form + backend padhne se ek **genuine, factual mismatch** mila —
+sirf perception ka issue nahi.
+
+**Asli problem**: `ProductForm.jsx` ke "Target regions"/"Target business categories" fields ka hint text
+abhi bhi **Step 17.7 (2026-09-02) se pehle wala behavior** describe karta tha — "discovery searches each
+region separately" aur "the AI only searches these exact categories" (ek hard boundary hone ka claim).
+Lekin Step 17.7 ne discovery ko **campaign-driven** bana diya — ab sirf Campaign ka apna `target_segment`
+(is form ke "Business type"/"Region" fields) actual search chalata he; Product ke regions/categories sirf
+AI ke campaign-suggestion prompt me background context ban ke reh gaye (`PRODUCT_TARGET_REGIONS`/
+`PRODUCT_TARGET_BUSINESS_CATEGORIES` — `campaign_service.py`). Backend me confirm kiya: jo function
+(`_refresh_strategy_if_stale`) ye "boundary" enforce karta tha, wo ab kahi se call hi nahi hota (dead
+code, `discovery_scheduler.py` line 175-176 ka apna comment isse confirm karta he). `target_person_roles`
+alag he — wo genuinely abhi bhi live he (`scraper_worker/async_runner.py`'s `_enrich_person_roles`).
+
+**Matlab non-technical user ke liye**: Product page pe "dental clinic, law firm" set karke wo sochega
+"ab sirf yehi search hoga" — **galat**, kyunki asli control Campaign form ke apne "Business type" field
+pe he, jo Product ke categories se bilkul match na bhi ho to backend deliberately validate nahi karta
+(`api/campaigns.py` line 100-104 ka apna comment).
+
+**Fix (2 files, copy-only, no backend/data change)**:
+1. `ProductForm.jsx` — dono field ko rename kiya ("Usual regions for this product" / "Usual business
+   types for this product") aur hint honest kiya: ab explicitly bolta he "helps your AI Sales Manager's
+   suggestions... does not lock a campaign's actual search to only these."
+2. `CampaignFormModal.jsx` — "Who should this target?" box me ek line add ki: "This is what THIS
+   campaign actually searches for -- it can be different from your product's own 'Usual regions/business
+   types' (set on the Products page, which are just background hints for the AI)."
+
+Dono form ab same naam use karte he ("Usual regions/business types") taaki relationship clear ho.
+`npm run build` clean pass.
+
+### ? Campaign calendar: Today highlight + UX polish � 2026-09-07
 
 `CampaignCalendar.jsx`: aaj ka din gold pill + Today label + stronger cell border/bg;
 header me Today jump button; framed grid; past days muted; empty today pe `+ Add` always

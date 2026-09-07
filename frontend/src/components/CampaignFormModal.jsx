@@ -182,7 +182,9 @@ export default function CampaignFormModal({ products, defaultDate, prefill, onCr
             <span className="-mt-1.5 text-[11px] leading-relaxed text-ink-500">
               Optional -- know exactly who you want? Type it below. Leave it blank and your AI Sales
               Manager will propose a target within a day (you'll review it on the Daily Review card
-              before anything happens).
+              before anything happens). This is what THIS campaign actually searches for -- it can be
+              different from your product's own "Usual regions/business types" (set on the Products
+              page, which are just background hints for the AI).
             </span>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <input
