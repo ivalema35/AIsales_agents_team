@@ -5886,3 +5886,10 @@ mila — clean deploy. `AUTONOMOUS_OUTREACH_ENABLED`/`DISCOVERY_ENABLED` dono st
 `CampaignCalendar.jsx`: aaj ka din gold pill + Today label + stronger cell border/bg;
 header me Today jump button; framed grid; past days muted; empty today pe `+ Add` always
 visible; campaign chips thode clearer.
+
+### VPS deploy -- calendar Today highlight (2026-09-07)
+
+Frontend-only. Local commit `3b66997` (git push to origin blocked this session -- file SFTP'd).
+VPS: `CampaignCalendar.jsx` uploaded, `npm run build`, `dist` -> `public_html` + chown.
+Live: `https://sales.ivinfotech.com` `<title>AI-BOS</title>`, JS `index-Ckh51cwh.js`, http 200.
+Safety switches left untouched: both `False`. No backend service restart (static only).
