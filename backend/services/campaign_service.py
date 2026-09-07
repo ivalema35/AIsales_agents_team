@@ -591,9 +591,25 @@ def generate_campaign_todo(db, campaign_id: str) -> dict:
     today = _today_ist()
     prior_journal = _recent_journal_entries(db, campaign_id)
 
+    target_segment = json.loads(campaign.target_segment or "{}")
+    # 2026-09-07, user-flagged real gap: a human who deliberately sets ONLY location (or
+    # only industry) and leaves the other for the AI to decide -- a genuinely intended,
+    # legitimate use of "optional" -- produced a target_segment dict that IS non-empty, so
+    # the model judged it as "already targeted" and never noticed the missing half. Real
+    # live campaign found with target_segment={"location": "Mehsana"}: eligible_campaigns_
+    # for_discovery() requires BOTH fields and would silently never pick it up, forever,
+    # while the model's own "Discovery off" note described it as fully targeted anyway
+    # (inferring the missing industry from PRODUCT_BRIEF rather than flagging it). Computed
+    # explicitly here (not left for the model to infer from the raw JSON's shape) so the
+    # prompt has ground truth instead of guessing completeness from an object's keys.
+    target_has_industry = bool(target_segment.get("industry"))
+    target_has_location = bool(target_segment.get("location"))
+
     prompt = CAMPAIGN_TODO_SYSTEM_PROMPT + f"""
 CAMPAIGN_NAME: {json.dumps(campaign.name, ensure_ascii=False)}
-TARGET_SEGMENT: {json.dumps(json.loads(campaign.target_segment or "{}"), ensure_ascii=False)}
+TARGET_SEGMENT: {json.dumps(target_segment, ensure_ascii=False)}
+TARGET_HAS_INDUSTRY: {json.dumps(target_has_industry)}
+TARGET_HAS_LOCATION: {json.dumps(target_has_location)}
 LEAD_COUNT_GOAL: {json.dumps(campaign.lead_count_goal)}
 STRATEGY_ANGLE: {json.dumps(campaign.strategy_angle or "", ensure_ascii=False)}
 PRODUCT_BRIEF: {json.dumps({"title": product.title, "description": product.description}, ensure_ascii=False)}
