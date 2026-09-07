@@ -6176,3 +6176,19 @@ for a real search until that changes."* Commit `6a7a840`, VPS deploy + 5 service
 health-check" system he, na ki hardcoded if-else ka collection. `MEMORY.md`/persistent memory me is
 insight ko record karna zaroori he taaki future sessions ISI pattern ko follow karein — koi bhi naya
 gap milne par "ek aur hardcoded paragraph" nahi, "OPERATIONAL_READINESS list me ek entry add karo."
+
+### Follow-up: to-do ka label khud technical/confusing tha (2026-09-07)
+
+User ne screenshot dikhaya — naya to-do card **"PRODUCT_ACTIVE"** label dikha raha tha (raw snake_case
+code identifier), aur khud user ne bola "mujhe hi samajh nahi aa raha AI kya chahta hai." Bilkul sahi —
+maine `name` field (jo internal stable-id ke liye tha) seedha `label` ke roop me use kar diya tha.
+
+**Fix**: har check ko ab `label` (plain-English phrase, jaise "Product inactive") separately milta he
+`name` (internal id, "product_active") se — prompt ko explicitly bola `label` use karo, kabhi `name`
+nahi. `detail` text me ab exact jagah bhi naam se batayi ("Products page"), "Discovery off" jaisi hi
+concreteness ("turn it on in Settings" wala pattern).
+
+**Real live verify**: purana confusing to-do dismiss karke naya generate kiya — ab label **"Product
+inactive"**, text: *"This campaign is blocked because 'IVinfotech -- AI Automation Solutions' is turned
+off on the Products page... Turn the product on there if you want this campaign to find leads."* Commit
+`1013dff`, VPS deploy + 5 services restart.

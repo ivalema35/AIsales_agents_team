@@ -696,8 +696,9 @@ latest section dekho, phir collaboration protocol follow karo. **Phase 20 DONE; 
 audited); Step 19.5 DONE; kickoff template preview DONE; HTML/TEXT email render DONE; Phase 21 (Unified
 AI To-Do Inbox) DONE + duplicate-todo bug fix + Discovery-off proactive nudge + Approve-confirmation UI
 + AI Manager setup-completion for partial campaign targets + signal-tick fingerprint fix + real
-multi-vertical targeting + extensible OPERATIONAL_READINESS architecture — **sab kuch VPS par LIVE he**
-(commit `6a7a840`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp
-channel-preference lever, WhatsApp template to-dos abhi unified inbox se disconnected hain (separate
-manual page), is campaign ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya
-nahi), saare 8 products `is_active=0` hain.
+multi-vertical targeting + extensible OPERATIONAL_READINESS architecture (label ab human-readable
+"Product inactive", `name` sirf internal id) — **sab kuch VPS par LIVE he** (commit `1013dff`, deployed
+2026-09-07).** Baaki: Step 16.8 (marketing content), email-vs-WhatsApp channel-preference lever,
+WhatsApp template to-dos abhi unified inbox se disconnected hain (separate manual page), is campaign
+ka product abhi bhi `is_active=0` he (user ko batana hai activate karna he ya nahi), saare 8 products
+`is_active=0` hain.
