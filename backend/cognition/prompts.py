@@ -16,6 +16,29 @@ NON-NEGOTIABLE RULES (apply to every output):
 5. Output VALID JSON ONLY. No markdown, no prose outside the JSON object.
 """
 
+# 2026-09-07, the operator's own explicit standing rule, given twice in one session (once
+# after "PRODUCT_ACTIVE" leaked to a real to-do's label): every prompt in the "AI Sales
+# Manager" family -- the one that writes text a real, non-technical business owner reads
+# directly on their dashboard (never a developer, never an internal log) -- prepends this,
+# on top of GUARDRAIL_PREAMBLE. NOT used by outreach/scoring/QC/strategy prompts whose
+# output is either sent to a third party (already covered by GUARDRAIL_PREAMBLE's own
+# voice rules) or never shown to a human at all.
+AI_MANAGER_PLAIN_LANGUAGE_RULE = """
+PLAIN LANGUAGE, ALWAYS: every `todo`/`suggestion`/`text` you write, and every to-do's
+`label`, is read directly by a real business owner with no technical background -- never a
+developer, never an internal log. Before writing, silently check: would this exact wording
+make sense to someone who has never seen this codebase or heard words like "target_segment",
+"campaign_id", "API", "backend", "database", "schema", "endpoint", "payload", a raw status
+code (e.g. "PROPOSED", "SCORED"), or a snake_case/camelCase identifier? If yes, rewrite it in
+the words a person would actually use talking to a colleague. This does NOT ban a real,
+named feature the product's own screens already show the user by that name (e.g. "Discovery",
+"Autonomous Outreach", "Settings", a product's own title, a real city or business type) --
+those are the opposite of jargon, they're how this person already thinks about their own
+business. The line to check against is simple: could a developer explaining this to a
+non-technical shopkeeper use this exact sentence unchanged? If not, it needs a rewrite before
+it reaches a `todo`, `label`, `suggestion`, or `text` field.
+"""
+
 ICP_STRATEGY_AGENT_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
 ROLE: ICP & Strategy Agent — audience intelligence.
 
@@ -633,7 +656,7 @@ OUTPUT JSON: {"approved": true or false, "confidence_score": 0.0,
 # experienced sales manager reviewing the account (see tracker.md / MASTER_DEVELOPMENT_
 # PRD.md Step 18.1's 2026-09-02 revision). A campaign with no data yet naturally has
 # nothing to say but targeting; a campaign with real outcomes naturally has more to say.
-CAMPAIGN_TODO_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+CAMPAIGN_TODO_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
 ROLE: AI Sales Manager, daily strategy review for one campaign -- an experienced sales
 manager's morning read of the account, not a fixed checklist generator. Decide, from
 today's real data, what genuinely needs attention -- or decide nothing does.
@@ -854,7 +877,7 @@ OUTPUT JSON: {"todo": [{"label": "...", "text": "..."}],
 # attached (2026-09-02: the whole point of surfacing this BEFORE a campaign exists is so a
 # human can act on it in one click, which needs a real target, not just a vague nudge) --
 # or says nothing. A human still has to actually create the campaign.
-CAMPAIGN_SUGGESTION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+CAMPAIGN_SUGGESTION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
 ROLE: Campaign Suggestion Generator. You never create a campaign yourself -- a human
 always does. Your only job is to notice, from real data, when a product looks worth a
 fresh campaign push, and say so with a real, concrete target -- or say nothing.
@@ -932,7 +955,7 @@ OUTPUT JSON: {"has_insight": true|false, "winning_angle": null | "...",
 # evaluate_execution_watchdog() enforces that), and never touches AUTONOMOUS_OUTREACH_
 # ENABLED in either direction -- it can only ever pause further sends for the one affected
 # campaign, a human always makes the actual continue/stop call.
-EXECUTION_WATCHDOG_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+EXECUTION_WATCHDOG_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
 ROLE: Execution Watchdog -- a real anomaly just occurred mid-dispatch for one specific
 campaign (its most recent real sends all failed or bounced). Write ONE grounded, honest
 message flagging this to the human running the campaign, in your own voice.
@@ -966,7 +989,7 @@ OUTPUT JSON: {"message": "<=50 words"}
 # in that same response. Never blocks, never overrides -- a human's instruction is always
 # honored (this project's existing "AI never overrides an explicit human instruction"
 # invariant, unchanged); this only adds the AI's own honest reaction alongside compliance.
-CONVERSATIONAL_PUSHBACK_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+CONVERSATIONAL_PUSHBACK_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
 ROLE: a human just gave a free-text instruction for how to revise one outreach draft. Before
 it's applied, decide honestly: does this instruction genuinely conflict with real, concrete
 data you already have about this exact campaign/domain -- not a matter of taste, a REAL
@@ -999,7 +1022,7 @@ OUTPUT JSON: {"pushback": null | "<=60 words"}
 # project (Step 16.5's draft revision, Step 18.1b's kickoff-draft revision) -- deliberately
 # NOT a stored multi-turn chat transcript; every earlier accepted edit survives only because
 # it's already baked into TODO_TEXT/TODO_PROPOSAL, which the caller resends each round.
-TODO_ITEM_REVISION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
+TODO_ITEM_REVISION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
 ROLE: a human is giving feedback on ONE specific AI to-do item -- revise it to reflect their
 instruction, grounded only in the real data given, exactly like Step 16.5's existing draft
 revision but for a to-do's text/proposal instead of an email draft.

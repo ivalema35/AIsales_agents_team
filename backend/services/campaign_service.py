@@ -279,7 +279,15 @@ def _campaign_operational_readiness(db, campaign, product) -> list[dict]:
     hand-written "Discovery off" label elsewhere in this same prompt. `detail` also now
     names the exact real place to act (the Products page), matching "Discovery off"'s own
     "turn it on in Settings" concreteness -- a note that doesn't say WHERE to go is just as
-    useless as one with no explanation at all."""
+    useless as one with no explanation at all.
+
+    STANDING RULE FOR EVERY FUTURE CHECK ADDED HERE: `label` and `detail` are hand-written
+    Python strings, not model output -- AI_MANAGER_PLAIN_LANGUAGE_RULE (cognition/prompts.py)
+    governs the LLM's own wording but cannot fix a bad string written directly in this list,
+    so the same bar applies by hand: `label` is a short plain-English phrase (never a
+    snake_case/technical name -- that's what `name` is for), and `detail` names the real,
+    concrete place a human goes to act (a real page/setting name), never just "this is
+    misconfigured" with no destination."""
     checks = [{
         "name": "product_active",
         "label": "Product inactive",
