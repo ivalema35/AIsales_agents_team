@@ -117,16 +117,16 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   if (!review) return <div className="h-16 animate-pulse rounded-lg bg-parchment-raised-2" />;
 
   return (
-    <div className="rounded-lg border border-line bg-parchment-raised p-3">
+    <div className="rounded-xl border border-line bg-parchment-raised p-5 shadow-sm">
       {error && (
         <p className="mb-2 text-xs text-alert-600">{error}</p>
       )}
       {review.watchdog_alert && (
-        <div className="mb-3 rounded-md border border-alert-600 bg-alert-100 p-2.5">
-          <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-alert-600">
-            <AlertTriangle size={12} /> Execution paused -- {review.watchdog_alert.bounce_count} consecutive failures
+        <div className="mb-4 rounded-md border border-alert-600 bg-alert-100 p-3">
+          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-alert-700">
+            <AlertTriangle size={13} /> Sending paused — {review.watchdog_alert.bounce_count} sends failed in a row
           </span>
-          <p className="mt-1.5 text-xs text-ink-900">{review.watchdog_alert.message}</p>
+          <p className="mt-1.5 text-xs leading-relaxed text-ink-900">{review.watchdog_alert.message}</p>
           <button
             onClick={resumeSending}
             disabled={clearingWatchdog}
@@ -138,21 +138,23 @@ export function CampaignReviewCard({ campaign, onApproved }) {
       )}
 
       <div className="min-w-0">
-        <p className="font-display text-sm font-semibold text-ink-900">{campaign.name}</p>
-        <p className="mt-0.5 font-mono text-[10px] text-ink-500">
-          {review.metrics.sent} sent · {review.metrics.opened} opened · {review.metrics.replied} replied
-          {review.metrics.hot > 0 && <span className="text-alert-600"> · {review.metrics.hot} hot</span>}
+        <h2 className="font-display text-lg font-semibold text-ink-900">AI Sales Manager</h2>
+        <p className="mt-0.5 text-xs text-ink-500">
+          Suggestions, notes, and a sample message for this campaign — review and approve what you agree with.
         </p>
       </div>
 
       {review.todo_items.length > 0 ? (
-        <div className="mt-2.5 flex flex-col gap-2">
+        <div className="mt-4 flex flex-col gap-2">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Needs your decision</p>
           {review.todo_items.map((item) => (
             <TodoItemCard key={item.id} item={item} onResolved={handleTodoResolved} />
           ))}
         </div>
       ) : (
-        <p className="mt-2.5 text-xs text-ink-500">No fresh signals today -- nothing new to flag.</p>
+        <p className="mt-4 rounded-md border border-line bg-parchment px-3 py-2.5 text-sm text-ink-600">
+          Nothing new to decide today — the campaign is on track with no fresh flags.
+        </p>
       )}
 
       {/* Phase 20 Step 20.1 -- the strategist's own persistent, dated narrative for this
@@ -160,25 +162,29 @@ export function CampaignReviewCard({ campaign, onApproved }) {
           if generate_campaign_todo hasn't run today (e.g. a review opened before the
           daily tick) -- in that case there's simply nothing to show, no placeholder. */}
       {(review.journal || review.recent_journal?.length > 0) && (
-        <div className="mt-2.5 border-t border-line pt-2.5">
+        <div className="mt-4 border-t border-line pt-4">
           <button
             onClick={() => setJournalExpanded((e) => !e)}
-            className="flex items-center gap-1 text-[11px] font-medium text-ink-500 hover:text-ink-900"
+            className="flex items-center gap-1.5 text-xs font-medium text-ink-600 hover:text-ink-900"
           >
-            {journalExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-            <BookOpen size={12} /> AI's journal
+            {journalExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+            <BookOpen size={13} /> AI&apos;s notes on this campaign
           </button>
           {journalExpanded && (
             <div className="mt-2 flex flex-col gap-2">
               {[...(review.recent_journal || []), ...(review.journal ? [review.journal] : [])].map((entry, i) => (
-                <div key={entry.day ?? i} className="rounded-md bg-parchment-raised-2 p-2.5">
-                  <p className="font-mono text-[9px] font-semibold uppercase tracking-wide text-ink-500">{entry.day}</p>
-                  <p className="mt-1 text-xs text-ink-900">{entry.hypothesis}</p>
+                <div key={entry.day ?? i} className="rounded-md border border-line bg-parchment p-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-500">{entry.day}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-900">{entry.hypothesis}</p>
                   {entry.observation && (
-                    <p className="mt-1 text-xs text-ink-700"><b>Observed:</b> {entry.observation}</p>
+                    <p className="mt-1.5 text-xs text-ink-700">
+                      <span className="font-semibold text-ink-600">What we saw:</span> {entry.observation}
+                    </p>
                   )}
                   {entry.pivot_decision && (
-                    <p className="mt-1 text-xs text-gold-700"><b>Pivoting:</b> {entry.pivot_decision}</p>
+                    <p className="mt-1 text-xs text-gold-700">
+                      <span className="font-semibold">Changing approach:</span> {entry.pivot_decision}
+                    </p>
                   )}
                 </div>
               ))}
@@ -188,41 +194,41 @@ export function CampaignReviewCard({ campaign, onApproved }) {
       )}
 
       {review.sample_draft ? (
-        <div className="mt-2.5 border-t border-line pt-2.5">
+        <div className="mt-4 border-t border-line pt-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <button
               onClick={() => setExpanded((e) => !e)}
-              className="flex items-center gap-1 text-[11px] font-medium text-ink-500 hover:text-ink-900"
+              className="flex items-center gap-1.5 text-xs font-medium text-ink-600 hover:text-ink-900"
             >
-              {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
               {review.sample_is_kickoff_template
-                ? "Kickoff template preview"
-                : `Sample draft ${review.sample_lead_company ? `-- for ${review.sample_lead_company}` : ""}`}
+                ? "Preview: starter message template"
+                : `Preview: sample message${review.sample_lead_company ? ` for ${review.sample_lead_company}` : ""}`}
             </button>
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 disabled={settingMode || review.email_render_mode === "HTML"}
                 onClick={() => setEmailRenderMode("HTML")}
-                className={`rounded-md px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide disabled:opacity-60 ${
+                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
                   review.email_render_mode === "HTML"
                     ? "bg-ink-900 text-parchment-raised"
                     : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
                 }`}
               >
-                HTML template
+                Formatted email
               </button>
               <button
                 type="button"
                 disabled={settingMode || review.email_render_mode === "TEXT"}
                 onClick={() => setEmailRenderMode("TEXT")}
-                className={`rounded-md px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide disabled:opacity-60 ${
+                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold disabled:opacity-60 ${
                   review.email_render_mode === "TEXT"
                     ? "bg-ink-900 text-parchment-raised"
                     : "bg-parchment-raised-2 text-ink-500 hover:text-ink-900"
                 }`}
               >
-                Plain text
+                Simple text
               </button>
             </div>
           </div>
@@ -270,8 +276,8 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                   alongside so a human sees the AI's real reaction, not silent compliance. */}
               {pushback && (
                 <div className="rounded-md border border-dashed border-alert-600 bg-alert-100 p-2.5">
-                  <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-alert-600">
-                    <MessageSquareWarning size={11} /> AI's honest take
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-alert-700">
+                    <MessageSquareWarning size={11} /> AI&apos;s honest take
                   </span>
                   <p className="mt-1 text-xs text-ink-900">{pushback}</p>
                 </div>
@@ -279,8 +285,8 @@ export function CampaignReviewCard({ campaign, onApproved }) {
 
               {aiSuggestion && (
                 <div className="rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
-                  <span className="font-mono text-[9px] font-semibold uppercase tracking-wide text-gold-700">
-                    AI's own suggestion
+                  <span className="text-[11px] font-semibold text-gold-700">
+                    AI also suggests
                   </span>
                   <p className="mt-1 text-xs text-ink-900">{aiSuggestion}</p>
                 </div>
@@ -324,8 +330,8 @@ export function CampaignReviewCard({ campaign, onApproved }) {
           )}
         </div>
       ) : (
-        <p className="mt-2.5 border-t border-line pt-2.5 text-[11px] text-ink-500">
-          No template preview yet -- drafting failed or is still loading. Refresh to retry.
+        <p className="mt-4 border-t border-line pt-4 text-xs text-ink-500">
+          No message preview yet — drafting may still be loading. Refresh the page to try again.
         </p>
       )}
     </div>

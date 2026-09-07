@@ -21,10 +21,32 @@ export const STATUS_COLORS = {
   REJECTED: { hex: "#9ca3af", badge: "bg-slate-100 text-slate-400 ring-1 ring-inset ring-slate-200" },
 };
 
+// Plain-language labels for non-tech users -- never show raw SCORED/OUTREACHING in UI copy.
+export const STATUS_LABELS = {
+  DISCOVERED: "Just found",
+  ENRICHED: "Details gathered",
+  REVIEWED: "Reviews checked",
+  SCORED: "Ready to contact",
+  OUTREACHING: "Being contacted",
+  OUTREACHED: "Message sent",
+  ENGAGED: "In conversation",
+  HOT_LEAD: "Hot interest",
+  CONVERTED: "Won",
+  REJECTED: "Lost",
+};
+
 export function statusHex(status) {
   return STATUS_COLORS[status]?.hex || "#94a3b8";
 }
 
 export function statusBadgeClass(status) {
   return STATUS_COLORS[status]?.badge || STATUS_COLORS.DISCOVERED.badge;
+}
+
+export function statusLabel(status) {
+  if (!status) return "—";
+  return (
+    STATUS_LABELS[status] ||
+    status.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
+  );
 }

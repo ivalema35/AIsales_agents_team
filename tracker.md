@@ -6264,3 +6264,12 @@ nahi** (zero to-do history) — phir bhi `campaign_blocking_status()` ne sahi "P
 "Discovery off" dikhaya. Matlab ye check to-do dismiss/approve se **bilkul independent** he, sirf real
 condition pe depend karta he. Real live campaign pe bhi confirm kiya — `blocking_issues` = ["Product
 inactive"], bina kisi to-do state pe depend kiye. Commit `07ea1be`, VPS deploy + 5 services restart.
+
+### Campaign Detail — non-tech redesign (2026-09-07)
+
+User feedback on campaign page (`Ai automaion Push`): Proposed/SCORED/Tier jargon, mono stats dump, duplicate metrics in review card, long Region addresses.
+
+**Fix:**
+- `CampaignDetail.jsx`: snapshot header with status meaning (`Waiting for your OK`), `Who this targets`, labeled stat chips, leads table -> `Businesses in this campaign` with Stage (`Ready to contact` not SCORED), Priority (tier + score/100 + High/Worth a look/Low).
+- `statusColors.js`: shared `STATUS_LABELS` + `statusLabel()`.
+- `DailyReviewPanel.jsx`: `AI Sales Manager` card (no duplicate campaign name/metrics), friendlier empty/journal/preview/mode chips (Formatted email / Simple text).

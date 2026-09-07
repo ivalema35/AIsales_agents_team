@@ -1,19 +1,47 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Target } from "lucide-react";
+import { ArrowLeft, Target, Users } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import Badge from "../components/ui/Badge";
-import { statusBadgeClass } from "../lib/statusColors";
+import { statusBadgeClass, statusLabel } from "../lib/statusColors";
 import { industryLabel } from "../lib/targetSegment";
 
-const STATUS_LABEL = {
-  PROPOSED: "Proposed",
-  APPROVED: "Approved",
-  RUNNING: "Running",
-  COMPLETED: "Completed",
-  PAUSED: "Paused",
+const CAMPAIGN_STATUS = {
+  PROPOSED: {
+    label: "Waiting for your OK",
+    blurb: "AI proposed this campaign — approve it when the plan looks right.",
+  },
+  APPROVED: {
+    label: "Approved",
+    blurb: "Ready to run when discovery and outreach are enabled.",
+  },
+  RUNNING: {
+    label: "Running",
+    blurb: "Actively finding and working leads for this campaign.",
+  },
+  COMPLETED: {
+    label: "Finished",
+    blurb: "This campaign has reached its goal or been closed out.",
+  },
+  PAUSED: {
+    label: "Paused",
+    blurb: "On hold — nothing new will go out until you resume.",
+  },
 };
+
+const TIER_PLAIN = {
+  HOT: "High priority",
+  WARM: "Worth a look",
+  COLD: "Low priority",
+};
+
+function shortLocation(text) {
+  if (!text) return null;
+  const t = String(text).trim();
+  if (t.length <= 56) return t;
+  return `${t.slice(0, 54)}…`;
+}
 
 // UI Phase 16 revision (2026-09-02) -- "hum calendar se campaign open karke wahi sare leads
 // data aur progress dekhne wale hain... campaign-wise hi leads dekhenge... wahi se main lead
@@ -59,6 +87,16 @@ export default function CampaignDetail() {
   const goal = campaign.lead_count_goal;
   const found = campaign.lead_summary?.total || 0;
   const progressPct = goal ? Math.min(100, Math.round((found / goal) * 100)) : 0;
+  const statusMeta = CAMPAIGN_STATUS[campaign.status] || {
+    label: campaign.status,
+    blurb: null,
+  };
+  const foundToday = campaign.lead_summary?.found_today || 0;
+  const qualifiedToday = campaign.lead_summary?.qualified_today || 0;
+  const sent = campaign.metrics?.sent || 0;
+  const opened = campaign.metrics?.opened || 0;
+  const replied = campaign.metrics?.replied || 0;
+  const hot = campaign.metrics?.hot || 0;
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-6">
@@ -66,94 +104,170 @@ export default function CampaignDetail() {
         <ArrowLeft size={13} /> Back to Dashboard
       </Link>
 
-      <div className="rounded-xl border border-line bg-parchment-raised p-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
+      {/* Campaign snapshot — what a non-tech user should grasp first */}
+      <div className="rounded-xl border border-line bg-parchment-raised p-5 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
             <h1 className="font-display text-xl font-semibold text-ink-900">{campaign.name}</h1>
             <p className="mt-1 text-sm text-ink-500">{product?.title || "…"}</p>
           </div>
-          <span className="shrink-0 rounded-full bg-gold-100 px-3 py-1 text-xs font-semibold text-gold-700">
-            {STATUS_LABEL[campaign.status] || campaign.status}
-          </span>
+          <div className="shrink-0 text-right">
+            <span className="inline-flex rounded-full bg-gold-100 px-3 py-1 text-xs font-semibold text-gold-700">
+              {statusMeta.label}
+            </span>
+            {statusMeta.blurb && (
+              <p className="mt-1.5 max-w-[14rem] text-[11px] leading-snug text-ink-500">{statusMeta.blurb}</p>
+            )}
+          </div>
         </div>
 
-        {hasTarget && (
-          <p className="mt-3 flex items-center gap-1.5 text-sm text-ink-700">
-            <Target size={14} className="text-ink-500" />
-            {industryLabel(target) || "—"}
-            {target.location && ` in ${target.location}`}
-          </p>
+        {hasTarget ? (
+          <div className="mt-4 rounded-md border border-line bg-parchment p-3">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">Who this targets</p>
+            <p className="mt-1 flex items-start gap-1.5 text-sm text-ink-800">
+              <Target size={14} className="mt-0.5 shrink-0 text-ink-500" />
+              <span>
+                {industryLabel(target) || "Businesses"}
+                {target.location ? ` in ${target.location}` : ""}
+              </span>
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-md border border-dashed border-line bg-parchment p-3">
+            <p className="text-sm text-ink-600">
+              Targeting not set yet — approve an AI suggestion below, or edit who this campaign should find.
+            </p>
+          </div>
         )}
 
         {goal != null && (
-          <div className="mt-3">
-            <div className="flex items-center justify-between text-xs text-ink-500">
-              <span>{found} of {goal} leads found</span>
-              <span>{progressPct}%</span>
+          <div className="mt-4">
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="font-medium text-ink-700">
+                {found} of {goal} leads found
+              </span>
+              <span className="tabular-nums text-ink-500">{progressPct}% of goal</span>
             </div>
-            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-parchment-raised-2">
-              <div className="h-full bg-gold-600" style={{ width: `${progressPct}%` }} />
+            <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-parchment-raised-2">
+              <div className="h-full rounded-full bg-gold-600 transition-all" style={{ width: `${progressPct}%` }} />
             </div>
           </div>
         )}
 
-        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-line pt-4 font-mono text-xs text-ink-700">
-          <span>{campaign.lead_summary?.found_today || 0} found today</span>
-          <span>{campaign.lead_summary?.qualified_today || 0} qualified today</span>
-          <span className="text-ink-500">·</span>
-          <span>{campaign.metrics?.sent || 0} sent</span>
-          <span>{campaign.metrics?.opened || 0} opened</span>
-          <span>{campaign.metrics?.replied || 0} replied</span>
-          {campaign.metrics?.hot > 0 && <span className="text-alert-600">{campaign.metrics.hot} hot</span>}
+        <div className="mt-4 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-3 lg:grid-cols-6">
+          <StatChip label="Found today" value={foundToday} />
+          <StatChip label="Worth pursuing today" value={qualifiedToday} hint="Warm or hot after scoring" />
+          <StatChip label="Messages sent" value={sent} />
+          <StatChip label="Opened" value={opened} />
+          <StatChip label="Replied" value={replied} />
+          {hot > 0 && <StatChip label="Hot interest" value={hot} emphasize />}
         </div>
       </div>
 
       <CampaignReviewCard campaign={campaign} onApproved={refresh} />
 
-      <div>
-        <h2 className="mb-3 font-display text-lg font-semibold text-ink-900">Leads</h2>
+      <div className="rounded-xl border border-line bg-parchment-raised p-5 shadow-sm">
+        <div className="mb-1 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
+              <Users size={18} className="text-ink-500" />
+              Businesses in this campaign
+            </h2>
+            <p className="mt-0.5 text-xs text-ink-500">
+              Click a row to open the full lead page. Priority shows how strong the fit looks.
+            </p>
+          </div>
+          {leads && leads.length > 0 && (
+            <span className="text-xs tabular-nums text-ink-500">
+              {leads.length} business{leads.length === 1 ? "" : "es"}
+            </span>
+          )}
+        </div>
+
         {leads === null ? (
-          <div className="h-16 animate-pulse rounded-lg bg-parchment-raised-2" />
+          <div className="mt-3 h-16 animate-pulse rounded-lg bg-parchment-raised-2" />
         ) : leads.length === 0 ? (
-          <p className="text-xs text-ink-500">No leads yet -- discovery hasn't found any for this campaign.</p>
+          <div className="mt-4 flex flex-col items-center gap-2 py-8 text-center">
+            <Users className="text-ink-500" size={28} />
+            <p className="text-sm font-medium text-ink-700">No businesses found yet</p>
+            <p className="max-w-sm text-xs leading-relaxed text-ink-500">
+              Discovery will list companies here once it finds matches for this campaign&apos;s target.
+            </p>
+          </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-line">
+          <div className="mt-3 overflow-x-auto rounded-lg border border-line">
             <table className="w-full text-left text-xs">
               <thead className="bg-parchment-raised-2 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
                 <tr>
-                  <th className="px-3 py-2">Business</th>
-                  <th className="px-3 py-2">Region</th>
-                  <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Tier</th>
+                  <th className="px-3 py-2.5">Business</th>
+                  <th className="px-3 py-2.5">Location</th>
+                  <th className="px-3 py-2.5">Stage</th>
+                  <th className="px-3 py-2.5">Priority</th>
                 </tr>
               </thead>
               <tbody>
-                {leads.map((l) => (
-                  <tr
-                    key={l.id}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => navigate(`/leads/${l.id}`)}
-                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate(`/leads/${l.id}`)}
-                    className="cursor-pointer border-t border-line bg-parchment-raised hover:bg-parchment-raised-2"
-                  >
-                    <td className="px-3 py-2 font-medium text-ink-900">{l.company_name}</td>
-                    <td className="px-3 py-2 text-ink-500">{l.region_location || "—"}</td>
-                    <td className="px-3 py-2">
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClass(l.status)}`}>
-                        {l.status}
-                      </span>
-                    </td>
-                    <td className="px-3 py-2">
-                      {l.score ? <Badge variant={l.score.tier}>{l.score.tier}</Badge> : <span className="text-ink-500">—</span>}
-                    </td>
-                  </tr>
-                ))}
+                {leads.map((l) => {
+                  const tier = l.score?.tier;
+                  const points = l.score?.score;
+                  return (
+                    <tr
+                      key={l.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => navigate(`/leads/${l.id}`)}
+                      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate(`/leads/${l.id}`)}
+                      className="cursor-pointer border-t border-line bg-parchment-raised hover:bg-parchment"
+                    >
+                      <td className="px-3 py-2.5 font-medium text-ink-900">{l.company_name}</td>
+                      <td className="max-w-[14rem] px-3 py-2.5 text-ink-500" title={l.region_location || undefined}>
+                        {shortLocation(l.region_location) || "—"}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClass(l.status)}`}>
+                          {statusLabel(l.status)}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {tier ? (
+                          <div className="flex flex-col gap-0.5">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <Badge variant={tier}>{tier}</Badge>
+                              {points != null && (
+                                <span className="tabular-nums text-[11px] text-ink-500">{points}/100</span>
+                              )}
+                            </div>
+                            <span className="text-[10px] text-ink-500">{TIER_PLAIN[tier] || ""}</span>
+                          </div>
+                        ) : (
+                          <span className="text-ink-500">Not scored yet</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function StatChip({ label, value, hint, emphasize }) {
+  return (
+    <div
+      className={`rounded-md border px-2.5 py-2 ${
+        emphasize ? "border-alert-600/30 bg-alert-100/50" : "border-line bg-parchment"
+      }`}
+      title={hint}
+    >
+      <p className={`text-[10px] font-medium uppercase tracking-wide ${emphasize ? "text-alert-700" : "text-ink-500"}`}>
+        {label}
+      </p>
+      <p className={`mt-0.5 font-display text-lg font-semibold tabular-nums ${emphasize ? "text-alert-700" : "text-ink-900"}`}>
+        {value}
+      </p>
     </div>
   );
 }
