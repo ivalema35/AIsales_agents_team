@@ -730,6 +730,16 @@ COLD, "gym AI-automation ke liye weak match" — sahi reasoning), par isse ye bh
 strategist ka "gyms" vertical pick is specific product ke liye best nahi tha shayad — separate issue,
 abhi touch nahi kiya.
 
-**Sab kuch VPS par LIVE he** (commit `7af771f`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
+**⭐⭐⭐ Turant sahi correction, isi din**: user ne bola "mene sirf example diya tha, hardcode nahi karna
+tha" — bilkul sahi, `has_website` field + special-case prompt paragraph EXACT wahi whack-a-mole mistake
+thi jo isi din pehle AI Manager checks me fix ki thi. **General fix**: `lead_profile` ab har real fact
+include karta he (website/WhatsApp/social presence, firmographics, review rating — jab mile), prompt
+me koi ek field hardcode nahi, general instruction: "jo real fact mila, PRODUCT_BRIEF se decide karo
+relevant he ya nahi." **Verify — naya example jo kabhi prompt me nahi tha**: "Online Reputation
+Management" product, low rating (2.1★)=85/HOT, high rating (4.8★)=72/WARM — bina hardcoding ke sahi
+kaam kiya. Permanent memory me save kiya (`feedback_example_means_generalize.md`) — is session me
+2nd baar yehi pattern, ab ek general lesson he. Commit `c3aca94`, deployed.
+
+**Sab kuch VPS par LIVE he** (commit `c3aca94`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
 content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se
 disconnected hain (separate manual page).

@@ -6303,3 +6303,30 @@ nahi de raha), par ye alag se ye bhi dikhata he ki AI strategist ka "gyms" verti
 specific product ke liye best choice nahi tha — separate observation, abhi fix nahi kiya.
 
 Commit `7af771f`, VPS deploy (backend-only, 5 services restart).
+
+### ⭐⭐⭐ Turant sahi correction: "example diya tha, hardcode nahi karna tha" (2026-09-07)
+
+User ne turant, saaf bola: **"mene sirf example diya tha ki aise scoring ho, isse hardcoded nahi karna
+tha."** Bilkul sahi — `has_website` field + "website-building vs redesign vs unrelated" wala prompt
+paragraph EXACT wahi whack-a-mole mistake thi jo isi din pehle `_campaign_operational_readiness()` se
+fix ki thi, bas is baar scoring agent me.
+
+**Real general fix**: `lead_profile` ab **har real fact** include karta he jo discovery/enrichment ne
+is lead ke baare me pehle se dhoonda he — website/WhatsApp/social-media presence, firmographics
+(industry, company size, tech stack) jab mile, review rating/count jab mile — sirf tab jab real data
+ho, kabhi fabricate nahi. Prompt me ab koi ek field ka naam nahi liya — general instruction he: "jo bhi
+real fact mila he, PRODUCT_BRIEF se decide karo ye is SPECIFIC product ke liye relevant he ya nahi, ek
+experienced salesperson jaisa."
+
+**Verify — 3 bilkul alag scenario, sirf website nahi**:
+1. Website Development — website nahi (88/HOT) vs website hai (25/COLD) — pehle jaisa hi sahi.
+2. **Naya example jo kabhi prompt me mention nahi kiya** — "Online Reputation Management" product —
+   low Google rating (2.1★) → 85/HOT ("low rating is a direct buying signal"); high rating (4.8★) →
+   72/WARM. Bina kisi review-rating-specific hardcoding ke, sahi kaam kiya.
+3. Unrelated product (AI automation) — irrelevant facts (website, rating) present the, par score
+   business-type fit se drive hua, in facts se nahi.
+
+**Permanent memory me bhi save kiya** (`feedback_example_means_generalize.md`) — ye pattern is session
+me 2 baar hua he (AI Manager checks, ab scoring), isliye ek general lesson ke roop me record kiya taaki
+future sessions "example = spec nahi, example = principle" samjhe. Commit `c3aca94`, VPS deploy + 5
+services restart.
