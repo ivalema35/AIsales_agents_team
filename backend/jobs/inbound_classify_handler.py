@@ -17,6 +17,7 @@ from config import Config
 from database.models import InboundConversation, KnowledgeBaseItem, Lead, LeadReviewInsight, OutreachLog, Product
 from jobs.registry import register_handler
 from services.outreach.email_service import send_email, extract_resend_id
+from services.outreach.pain_points import confident_pain_points
 from services.outreach.suppression import add_suppression, is_suppressed
 from services.outreach.whatsapp_service import send_free_form_message, extract_wamid
 from services.phone_utils import normalize_phone
@@ -137,6 +138,7 @@ def handle_classify_inbound(db, payload):
         .first()
     )
     pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+    pain_points = confident_pain_points(pain_points)
 
     # Phase 16 Step 16.3 -- this product's real, admin-written knowledge base (may be
     # empty; every product's real state until an admin fills one in via Products page).

@@ -25,6 +25,7 @@ from services.message_format_service import get_available_assets
 from services.outreach.company_contact import build_contact_section
 from services.outreach.cross_sell import get_cross_sell_products, build_services_list_section
 from services.outreach.interest_links import build_interest_urls
+from services.outreach.pain_points import confident_pain_points
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
@@ -80,6 +81,7 @@ def handle_outreach_email(db, payload):
         .first()
     )
     pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+    pain_points = confident_pain_points(pain_points)
 
     product_brief = {
         "title": product.title,

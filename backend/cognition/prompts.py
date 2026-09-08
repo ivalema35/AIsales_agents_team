@@ -394,12 +394,13 @@ CHECK (reject if ANY of these fail):
     present, a URL in the draft that exactly matches one of its "value" fields is a real,
     admin-approved link (a demo, video, case study, etc.) -- this is NOT an unauthorized
     or hallucinated link and must NOT be rejected as one; only flag a URL that matches
-    none of the approved values. A pain point reference is NOT a false claim merely for
-    being low-severity or thinly evidenced -- judge it by the SAME hedging rule the drafting
-    agent was given (see the guardrail rules above): a hedged reference to a real (even
-    weak) pain point is correct and must be approved; only reject a pain-point claim that
-    (i) names something absent from VERIFIED_PAIN_POINTS entirely, or (ii) states a
-    low-severity/hedged signal with MORE certainty than its own evidence_quote supports.
+    none of the approved values. VERIFIED_PAIN_POINTS below has already been filtered
+    upstream to this lead's most confidently-evidenced real signals -- treat every entry in
+    it as real and citable, regardless of its `severity_0_1` value. A pain point reference
+    is NOT a false claim merely for reading as low-severity or softly worded; only reject a
+    pain-point claim that names something genuinely absent from VERIFIED_PAIN_POINTS --
+    never reject one that IS in the list for how confidently it's phrased, that is a style
+    choice, not a compliance issue.
 (d) the draft doesn't already contain its own footer/signature/unsubscribe text (the
     system appends the compliant one automatically -- a draft that added its own would
     end up with two, or a wrong one). A plain closing sentence promising the team will
