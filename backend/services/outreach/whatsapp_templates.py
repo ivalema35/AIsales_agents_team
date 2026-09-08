@@ -103,8 +103,16 @@ def _fill_value(var_name: str, lead_profile: dict, pain_points: list) -> str:
     if var_name == "company_name":
         return lead_profile.get("company_name") or "there"
     if var_name == "pain_point_phrase":
-        quote = pain_points[0].get("evidence_quote") if pain_points else ""
-        return quote[:80] if quote else "some recent challenges"
+        # 2026-09-07, real bug found live: `evidence_quote` is an internal citation (the
+        # literal review text proving this pain point is real) -- inserting it verbatim
+        # into a real WhatsApp message sent it back at the business as an awkward, blaming
+        # direct quote ("we noticed Manager's bad response"). `customer_facing_phrase`
+        # (review_analyst_agent.py) is the tactfully-rephrased version meant for exactly
+        # this. Falls back to evidence_quote only for pain points scored before this field
+        # existed -- never the other way around.
+        point = pain_points[0] if pain_points else {}
+        phrase = point.get("customer_facing_phrase") or point.get("evidence_quote") or ""
+        return phrase[:80] if phrase else "some recent challenges"
     return ""
 
 

@@ -53,9 +53,18 @@ SNIPPETS:
         for p in raw_points:
             if not isinstance(p, dict) or not p.get("code"):
                 continue
+            # 2026-09-07, user-caught real bug: a real WhatsApp send used the raw
+            # `evidence_quote` ("Manager's bad response") verbatim as customer-facing copy --
+            # that field is an internal citation, never meant to be read by the business
+            # itself. `customer_facing_phrase` is the short, tactful version anything
+            # customer-facing should use instead; falls back to a generic phrase (never the
+            # raw quote) if the model didn't provide one, so old behavior can't silently
+            # resurface.
+            customer_facing = str(p.get("customer_facing_phrase", "")).strip()[:80]
             cleaned_points.append({
                 "code": str(p["code"])[:64],
                 "evidence_quote": str(p.get("evidence_quote", ""))[:500],
+                "customer_facing_phrase": customer_facing or "a few recent operational challenges",
                 "severity_0_1": _clamp(p.get("severity_0_1"), 0.0, 1.0, 0.5),
             })
 

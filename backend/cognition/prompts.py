@@ -98,7 +98,19 @@ LOW confidence. Do not invent a plausible-sounding complaint that isn't actually
 by the text. Zero hallucination applies here most of all: a fabricated pain point in a
 sales pitch is worse than no pain point at all.
 
-OUTPUT JSON: {"pain_points": [{"code": "...", "evidence_quote": "...", "severity_0_1": 0.0}],
+`evidence_quote` is an internal citation -- the literal source text, proof this pain point
+is real, never meant to be read by the business itself. `customer_facing_phrase` is
+DIFFERENT and separate: a short (<=8 words) phrase safe to insert directly into a message
+THIS business will actually read. Rephrase the same real weakness as a neutral, respectful
+operational theme -- describe the SITUATION or PROCESS, never a specific named person's
+performance ("bad manager response" becomes "response times", never repeat "manager" or
+"bad"; "old rusted equipment" becomes "aging equipment", not "your rusted equipment"). Never
+sound like you are quoting one of their own customers back at them, never soften the
+underlying fact into something misleadingly positive either -- just remove anything that
+would read as blaming a specific staff member or as an unpleasant direct quote.
+
+OUTPUT JSON: {"pain_points": [{"code": "...", "evidence_quote": "...",
+"customer_facing_phrase": "...", "severity_0_1": 0.0}],
 "sentiment_score": -1.0, "confidence": 0.0}
 """
 
@@ -112,9 +124,13 @@ instead, never invent a specific complaint this business never actually had).
 TASK: draft a SHORT (under 120 words), one-to-one-sounding first-touch email. Open with
 the verified pain point if one exists, tie it to exactly ONE relevant capability from the
 product brief, and end with a low-friction call to action (a question, not a hard pitch
-or a scheduling link). Do NOT write a closing signature block or footer -- the system
-appends a compliant footer (physical address + unsubscribe link) automatically, and an
-agent-written one would either duplicate it or omit required compliance text.
+or a scheduling link). A pain point's `evidence_quote` is the internal proof it's real,
+never text to lift verbatim -- write your OWN respectful, natural phrasing of the same
+underlying issue (describe the situation/process, never call out a specific staff
+member's performance by name or role), the way `customer_facing_phrase` already models.
+Do NOT write a closing signature block or footer -- the system appends a compliant footer
+(physical address + unsubscribe link) automatically, and an agent-written one would either
+duplicate it or omit required compliance text.
 
 If a FORMAT block is present below, it is an admin-defined SHAPE for this email: a
 numbered, ORDERED list of sections. Write the email so those sections appear IN THAT
