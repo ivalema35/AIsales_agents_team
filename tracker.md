@@ -6510,3 +6510,9 @@ se 100% fix nahi hoti — humne 3 real, structural improvements kiye (jo asaan c
 karenge), par kuch genuinely mushkil leads ke liye human escalation to-do (real QC reason ke sath, upar
 wale fix se) hi sahi safety net he — feature he, bug nahi. Commit `7a3d7e6`, `a5f1ebf`, sab real dry-run
 se verify (LLM calls, no fake claims), VPS deploy+restart.
+
+### ✅ Lead Detail Conversation — Seen = blue ticks (2026-09-08)
+Step 14.1 ka contract already tha: double gray = Delivered, **blue** double = Seen (`read_at`).
+`DeliveryTick` me Seen galti se `text-ink-700` (dark gray) tha — dark bubble pe gray hi lagta tha.
+Ab WhatsApp-style `#53BDEB`. State backend se aata hai (`derive_delivery_state` + WA `read` /
+email `opened` webhooks) — UI sirf color fix; fake blue nahi jab tak real Seen na ho.

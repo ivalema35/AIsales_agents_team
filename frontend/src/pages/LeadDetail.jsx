@@ -119,7 +119,8 @@ const DOT_COLORS = {
 function DeliveryTick({ state }) {
   if (state === "Failed") return <XCircle size={12} className="text-alert-600" />;
   if (state === "Replied") return <CheckCheck size={12} className="text-good-600" />;
-  if (state === "Seen") return <CheckCheck size={12} className="text-ink-700" />;
+  // WhatsApp-style read receipt blue (#53BDEB) — must read as "opened", not another gray.
+  if (state === "Seen") return <CheckCheck size={12} className="text-[#53BDEB]" />;
   if (state === "Delivered") return <CheckCheck size={12} className="text-ink-500" />;
   if (state === "Sent") return <Check size={12} className="text-ink-500" />;
   return null;
