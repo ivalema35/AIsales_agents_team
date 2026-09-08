@@ -6734,3 +6734,26 @@ hamesha creation-time pe hi atka rehta tha. Isse `get_approved_first_touch_templ
 `onupdate` fix kar diya (sirf isi table ke liye abhi — baaki tables mein bhi yehi pattern he, user ko
 bata diya, sabme ek saath nahi kiya bina pooche). Commit `8d6115d` (picker), `fe7e9d2` (updated_at fix).
 
+### "What the AI learned" khaali kyu he — 3 real reasons mile (2026-09-08)
+
+User ne Dashboard ka "What the AI learned" card dikhaya (khaali, "No validated insights yet") aur
+pucha "AI kuch sikh bhi raha he ya nahi." Real investigation se **3 honest reasons** mile:
+
+1. **`STRATEGY_REFLECTION_ENABLED` switch abhi OFF he** (default, fail-safe posture) — matlab ye
+   feature khud hi disabled he, chalu hi nahi ho raha.
+2. **Data abhi threshold tak nahi pahucha**: is feature ko har (product, vertical) ke liye kam se kam
+   **40 real sends** chahiye is se pehle koi insight likhe. "IV Clasess Push" (coaching centres) ke
+   paas abhi **37 sends hain — bahut kareeb, jald hi cross ho jayega**. "Ai automaion Push" ke paas
+   sirf 3 hain.
+3. **⚠️ Real crash bug mila** (isi investigation se): `group_by_domain()` multi-industry campaign
+   (jaise "Ai automaion Push" ka `['dental clinics', 'gyms', 'salons']`) pe seedha **crash ho jata**
+   — Python list ko dictionary key nahi bana sakte. Ye **meri hi pehle ki multi-industry fix ka
+   side-effect tha** (is session me hi banaya tha). Matlab agar switch ON kiya jata to har din crash
+   hota, kabhi koi insight nahi banta. **Fix kiya**: multi-vertical wale case me pura combined label
+   ek string banake group karta he (per-vertical alag se measure karne ka koi tareeka data model me
+   he hi nahi, isliye fake split nahi kiya, honest combined label rakha). Commit `e7a17ee`.
+
+**User ko decide karna he**: switch ON karna chahte ho? Ye purani autonomous-outreach switch jaisi
+nahi he — koi real business ko kuch nahi jata, sirf internal analysis (LLM call jo ek DB row likhta
+he). Kam risk he, but switch flip karna user ka decision hi rehna chahiye.
+

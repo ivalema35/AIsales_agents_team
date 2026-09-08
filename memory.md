@@ -898,3 +898,11 @@ Approve & Submit kiya tha, **Meta ne 6 min mein approve kar diya** — poora AI-
 Meta-approve pipeline real chal chuka he. **Systemic bug bhi mila**: kisi bhi table ka `updated_at`
 kabhi ORM writes se actually update nahi hota tha (sirf `job_queue.py` ke raw-SQL me). `WhatsappTemplate`
 ke liye fix kiya, baaki tables ke liye user ko bata diya, khud se sabme nahi kiya.
+
+**"What the AI learned" khaali kyu he — 3 reasons, 2026-09-08**: (1) `STRATEGY_REFLECTION_ENABLED`
+switch OFF he (default), (2) data threshold (40 sends/domain) tak nahi pahuncha — coaching centres
+37/40, bahut kareeb, (3) **real crash bug mila** — multi-industry campaign (list-type domain) pe
+`group_by_domain()` crash karta tha (meri hi pehle ki multi-industry fix ka side-effect), matlab switch
+ON karte hi ye feature kabhi kaam hi nahi karta. Fix kiya (combined label se group karta he ab). Switch
+ON karna user ka decision — ye autonomous-outreach jaisa risky nahi he (koi real business ko kuch nahi
+jata), par phir bhi maine khud nahi kiya.
