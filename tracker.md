@@ -6654,3 +6654,12 @@ review na kare — ye "stuck" nahi he, sahi se human ka wait kar raha he. Fix: a
 PENDING to-do ho (matlab uski wajah pata he), use "stuck" nahi maanenge. Commit `4b1f374`, VPS
 deploy+restart, 0 stuck jobs confirm.
 
+### ✅ 12 refreshed drafts approve + send (2026-09-08, user ne explicit maanga)
+
+User ne seedha bola "wo emails bhi send karva do approve karke." 4 leads user ne khud dashboard se
+approve kar diye the (09:47 timestamps). Baaki **8 leads maine `approve_todo_item()` se approve +
+send kiye** (wahi real code path jo "Approve & send" button use karta he — Resend se real email).
+**8/8 successfully sent, 0 fail.** Total 12/12 "IV Clasess Push" ke stuck leads ab real outreach ho
+chuke hain. Ye ek real, irreversible action tha (real businesses ko email) — sirf user ke explicit
+"send karva do" instruction ke baad kiya, autonomous switch ko touch nahi kiya.
+

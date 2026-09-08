@@ -865,3 +865,8 @@ bhi fix kiya: `find_stuck_leads()` "Review & send" wale leads ko galat se "stuck
 wo sahi se human-review ka wait kar rahe the) — ab real pending to-do wale leads exclude karta he.
 **Lesson for future**: baar-baar `bos-worker`/`bos-scraper` restart karne se in-flight jobs mar sakte
 hain — deploy ke baad hamesha `find_stuck_jobs()` check karna chahiye. Commit `4b1f374`, VPS deploy.
+
+**12 refreshed "IV Clasess Push" drafts real send ho chuke hain** (2026-09-08) — user ne explicit
+"send karva do approve karke" bola, 4 user ne khud approve kiye the, 8 maine `approve_todo_item()` se
+(same real "Approve & send" code path) — sab 8 successfully sent, 0 fail. Autonomous switch touch
+nahi kiya, sirf per-item human-approved sends the.
