@@ -608,28 +608,49 @@ async def _run_one(job_type, semaphore):
         return True
 
 
+async def _heartbeat_loop(poll_interval, detail):
+    """Beat on its own clock, independent of job gather.
+
+    2026-09-08 live bug: run_forever only beat AFTER `asyncio.gather` of up to
+    MAX_CONCURRENCY enrich/discover jobs finished. A single ENRICH (website + Hunter +
+    social) often takes >45s; STALE_MULTIPLIER*15s then marked the still-working scraper
+    DOWN on System Monitor ("Last seen: 51s ago") while journalctl showed active ENRICH
+    lines. Heartbeat must not wait on job completion.
+    """
+    while True:
+        await asyncio.to_thread(
+            beat_standalone, HEARTBEAT_NAME, "RUNNING", detail, False, poll_interval,
+        )
+        await asyncio.sleep(poll_interval)
+
+
 async def run_forever(job_types=None, poll_interval=POLL_INTERVAL):
     job_types = job_types or list(HANDLERS.keys())
     semaphore = asyncio.Semaphore(MAX_CONCURRENCY)
     logger.info("scraper runner started (concurrency=%d, types=%s)", MAX_CONCURRENCY, job_types)
 
+    startup_detail = {"job_types": sorted(job_types), "concurrency": MAX_CONCURRENCY}
     # to_thread everywhere below: beat_standalone opens a blocking (sync) SQLAlchemy session,
     # and this loop must never block on I/O -- the same reason provider HTTP calls in this
     # module already run through asyncio.to_thread.
     await asyncio.to_thread(beat_standalone, HEARTBEAT_NAME, "RUNNING",
-                            {"job_types": sorted(job_types), "concurrency": MAX_CONCURRENCY},
-                            False, poll_interval, True)
+                            startup_detail, False, poll_interval, True)
 
-    while True:
-        results = await asyncio.gather(
-            *(_run_one(jt, semaphore) for jt in job_types for _ in range(MAX_CONCURRENCY))
-        )
-        did_work = any(results)
-        # Called every pass; services/heartbeat.py throttles the real DB write.
-        await asyncio.to_thread(beat_standalone, HEARTBEAT_NAME,
-                                "RUNNING" if did_work else "IDLE", None, False, poll_interval)
-        if not did_work:
-            await asyncio.sleep(poll_interval)
+    beat_task = asyncio.create_task(_heartbeat_loop(poll_interval, None))
+    try:
+        while True:
+            results = await asyncio.gather(
+                *(_run_one(jt, semaphore) for jt in job_types for _ in range(MAX_CONCURRENCY))
+            )
+            did_work = any(results)
+            if not did_work:
+                await asyncio.sleep(poll_interval)
+    finally:
+        beat_task.cancel()
+        try:
+            await beat_task
+        except asyncio.CancelledError:
+            pass
 
 
 if __name__ == "__main__":

@@ -6531,3 +6531,8 @@ Root cause: campaign `target_segment.location` as a Python list (e.g. Ahmedabad/
 was bound into `discovery_runs.region` → `sqlite3.InterfaceError`. Same fix pattern as
 multi-industry: expand each city into its own (query, region) DISCOVER job + cooldown.
 `locationLabel()` for UI. Deploy + restart `bos-scheduler`.
+
+### ✅ Lead Scraper false DOWN during long ENRICH (2026-09-08)
+Process was alive and enriching (journalctl), but System Monitor showed Down — heartbeat
+only ran after `asyncio.gather` of concurrent ENRICH jobs finished (>45s → stale).
+Fix: independent `_heartbeat_loop` task so beats continue while work runs.
