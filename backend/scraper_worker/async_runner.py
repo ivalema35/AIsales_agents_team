@@ -11,6 +11,7 @@ in this whole project that make an LLM call.
 import asyncio
 import json
 import logging
+import time
 import uuid
 from urllib.parse import urlparse
 
@@ -84,7 +85,24 @@ def _handle_discover(db, payload):
     query = payload["query"]
     location = payload.get("location")
 
-    results = SerperProvider().discover(query, location=location)
+    # 2026-09-07, user-caught real bug: the exact same (query, location) call was verified
+    # to return 0 results one time and 10 the next, with nothing about the query itself
+    # different -- Places search is genuinely non-deterministic run to run, not a real
+    # "nothing exists" signal. A single 0-result response used to be trusted outright and
+    # this campaign's own 24h-per-query cooldown (DiscoveryRun) meant a real, existing
+    # vertical could sit silently empty for a full day on nothing but bad luck. Retry the
+    # same call a couple of times, a few seconds apart, before accepting empty as real --
+    # runs in a worker thread (asyncio.to_thread), so a short blocking sleep here is safe.
+    provider = SerperProvider()
+    results = provider.discover(query, location=location)
+    attempts = 1
+    while not results and attempts < 3:
+        time.sleep(3)
+        attempts += 1
+        results = provider.discover(query, location=location)
+    if attempts > 1:
+        logger.info("DISCOVER '%s' -> 0 results on first try, %d attempt(s) total, %d results after retry",
+                   query, attempts, len(results))
 
     # Discovery is now campaign-driven (Step 17.7, 2026-09-02, MASTER_DEVELOPMENT_PRD.md
     # §5C.0's revision): the scheduler scopes every real DISCOVER job to one specific
