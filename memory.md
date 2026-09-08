@@ -740,6 +740,17 @@ Management" product, low rating (2.1★)=85/HOT, high rating (4.8★)=72/WARM �
 kaam kiya. Permanent memory me save kiya (`feedback_example_means_generalize.md`) — is session me
 2nd baar yehi pattern, ab ek general lesson he. Commit `c3aca94`, deployed.
 
-**Sab kuch VPS par LIVE he** (commit `c3aca94`, deployed 2026-09-07).** Baaki: Step 16.8 (marketing
-content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified inbox se
-disconnected hain (separate manual page).
+**Cursor se 3 naye commits, khud hi deploy bhi kar diya**, 2026-09-07 — (1) Draft vs Approved clarity
+(Campaign Detail pe "Mark as approved" button, honest copy ki discovery draft pe bhi chal sakta he),
+(2) "AI Manager same-day Approve/Review todos without hardcoding" — naya `CAMPAIGN_STATUS`/
+`TAGGED_LEAD_COUNT` signal, fixed labels "Approve campaign"/"Review messages", signal-tick me urgent
+bypass (cooldown skip jab status/lead-count badle), Approve se seedha campaign APPROVED ho jata he,
+(3) WhatsApp first-touch preview Daily Review me. **Independently verify kiya** (code review, sab 3
+commits ke diffs padhe) — meri architecture (operational_readiness, is_blocker, plain-language rule)
+se koi conflict nahi, sab consistent pattern follow karta he. Local build+import clean. VPS pehle se
+Cursor ne khud deploy kar diya tha (frontend bundle `index-BBFZo2ov.js`, 12:09 build, services active,
+koi error nahi) — sirf ek chhota tracker.md encoding-artifact fix karke push+sync kiya (`b60e54f`).
+
+**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `b60e54f`, 2026-09-07). Baaki: Step 16.8
+(marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
+inbox se disconnected hain (separate manual page).
