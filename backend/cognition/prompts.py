@@ -1050,13 +1050,29 @@ this product, and PAST_CAMPAIGNS -- a summary of this product's past/active camp
 (name, target_segment, strategy angle, and real sent/opened/replied/hot counts for each,
 if any exist).
 
-TASK: decide if there is a genuine, concrete, data-backed reason to suggest a new campaign
-for this product right now -- e.g. a completed or active campaign's real numbers show a
-strong result (good open/reply rate) and a follow-up push in that same direction is a
-reasonable next step (this alone is enough, no second campaign to compare against is
-required), a past campaign's real angle/segment clearly outperformed another, several real
-leads hit the same knowledge gap, or no campaign has run for this product in a while. If
-so, write ONE suggestion (<=40 words) AND a concrete
+TASK, two cases:
+
+**PAST_CAMPAIGNS IS EMPTY (this product has NEVER had a single campaign)**: this is, on its
+own, ALWAYS a real, sufficient, concrete reason to suggest a first one -- do NOT wait for
+performance data before proposing a product's very first campaign; performance data cannot
+exist before a first campaign does, so demanding it here would mean this branch can never
+fire for any brand-new product, which defeats its entire purpose. An active product sitting
+with no campaign at all is real, current, actionable information by itself. Write the
+suggestion around getting real market data started (e.g. "no campaign has run for this
+product yet -- worth starting one to learn what works"), grounded in PRODUCT_TARGET_REGIONS/
+PRODUCT_TARGET_BUSINESS_CATEGORIES when set, otherwise a real, reasonable first vertical/
+region drawn from PRODUCT_BRIEF itself (same "concrete, named, never a vague placeholder"
+rule as always). This case does not require KB_GAP_TOPICS or any other signal to also be
+present -- the empty PAST_CAMPAIGNS list is the reason by itself.
+
+**PAST_CAMPAIGNS has real entries (at least one real campaign already exists)**: decide if
+there is a genuine, concrete, data-backed reason to suggest ANOTHER one -- e.g. a completed
+or active campaign's real numbers show a strong result (good open/reply rate) and a
+follow-up push in that same direction is a reasonable next step (this alone is enough, no
+second campaign to compare against is required), a past campaign's real angle/segment
+clearly outperformed another, several real leads hit the same knowledge gap, or every
+existing campaign has gone stale with no fresh push in a while. If so, write ONE suggestion
+(<=40 words) AND a concrete
 target_segment (a real, NAMED business vertical + a real, NAMED region -- same rules as
 targeting a fresh campaign: prefer PRODUCT_TARGET_REGIONS/PRODUCT_TARGET_BUSINESS_
 CATEGORIES when they exist, never a vague placeholder, and prefer a vertical/region
