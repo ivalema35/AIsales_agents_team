@@ -906,3 +906,18 @@ switch OFF he (default), (2) data threshold (40 sends/domain) tak nahi pahuncha 
 ON karte hi ye feature kabhi kaam hi nahi karta. Fix kiya (combined label se group karta he ab). Switch
 ON karna user ka decision — ye autonomous-outreach jaisa risky nahi he (koi real business ko kuch nahi
 jata), par phir bhi maine khud nahi kiya.
+
+**⭐⭐⭐⭐⭐ "AI Manager bacche jaisa lagta he" — deep investigation + 2 real fix, 2026-09-08**: user ne
+`STRATEGY_REFLECTION_ENABLED` ON karvaya (explicit "obviously" — AI Manager ka pura maqsad he ye) —
+ON kar diya. Fir sharp architectural concern: "naya campaign suggest nahi karta, follow-up nahi sochta,
+verdict nahi deta, adhe-adhure to-dos, khud ka dimag use nahi karta." **Real investigation se pata
+chala**: `generate_campaign_suggestion()` ne poore system history me EK BAAR bhi suggest nahi kiya
+tha — 2 active products (kabhi ek campaign na hone wale) ke liye bhi nahi. Root cause: prompt me
+"empty PAST_CAMPAIGNS" case explicit nahi tha, model apne "ground in real data" rule ko itna literal
+le raha tha ki khud ko chup kara raha tha. Fix kiya, **turant dono products ke liye real suggestion
+aa gaya** (Mobile App Development: healthcare Ahmedabad; AI Automation: Mehsana follow-up). Commit
+`5651fee`. **Baaki complaints ("verdict nahi", "follow-up nahi") largely CORRECT behavior hain abhi**
+(0 replies = genuinely kuch kehne layak nahi) — asli unlock STRATEGY_REFLECTION he jo abhi ON kiya,
+IV Classes 37/40 sends pe he, jald threshold cross karega. **Lesson**: AI Manager ka architecture
+khud sophisticated/well-designed he — "silent" hone ki wajah specific, provable bugs the (feature kabhi
+trigger hi nahi hota tha), architecture rewrite ki zaroorat nahi thi, targeted bug-fix kaafi tha.

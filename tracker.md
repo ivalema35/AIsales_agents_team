@@ -6757,3 +6757,43 @@ pucha "AI kuch sikh bhi raha he ya nahi." Real investigation se **3 honest reaso
 nahi he — koi real business ko kuch nahi jata, sirf internal analysis (LLM call jo ek DB row likhta
 he). Kam risk he, but switch flip karna user ka decision hi rehna chahiye.
 
+### ⭐⭐⭐⭐⭐ "AI Manager 20-year strategist jaisa nahi lagta, bacche jaisa kaam kar raha he" (2026-09-08)
+
+User ne `STRATEGY_REFLECTION_ENABLED` ON karne ko bola ("obviously" — ye AI Manager ka pura maqsad
+he) — **ON kar diya** (`set_bool`, low-risk, koi real business ko kuch nahi jata, sirf internal
+DB row/LLM call). Fir user ne ek deep, sahi architectural concern uthaya: "koi naya campaign
+suggest nahi kar raha, follow-up ke baare me nahi sochta, koi verdict nahi nikalta, adhe-adhure
+to-dos deta he — apna dimag use nahi kar raha."
+
+**Deep investigation kiya, real evidence se**:
+
+1. **`generate_campaign_suggestion()` — poore system ke history me EK BAAR bhi kabhi kuch suggest
+   nahi kiya tha!** (0 agent_events, 0 GLOBAL to-dos, kabhi bhi) — jabki **2 active products
+   (Mobile App Development, aur pehle AI Automation Solutions) ke paas KABHI ek bhi campaign nahi
+   tha.** Real root cause: prompt me "no campaign has run in a while" rule buried tha kai performance-
+   pattern rules ke beech, aur jab `PAST_CAMPAIGNS` khaali ho (naya product), model apne hi "ground
+   every word in real data" instruction ko itna literally le raha tha ki khud ko suggest karne se
+   rok raha tha — "mere paas to koi data hi nahi hai compare karne ko" soch ke chup ho jata tha.
+   **Fix**: prompt ko 2 saaf cases me split kiya — "PAST_CAMPAIGNS khaali he" ab apne aap me ek
+   complete, sufficient reason he (kisi performance data ki zaroorat nahi — pehla campaign kabhi bhi
+   performance data maang nahi sakta, wo to hoga hi tab jab campaign chalega). **Verify — turant
+   dono products ke liye REAL suggestion aa gaya**:
+   - Mobile App Development: "No campaign has run for this product yet... A practical first target
+     is healthcare businesses in Ahmedabad that need a customer or staff app." (goal: 20 leads)
+   - AI Automation Solutions: "A Mehsana follow-up push makes sense: the first local campaign got
+     2 opens from 3 sends, but no replies. Try a tighter offer for one service type." (goal: 10)
+   **Dono ab real, PENDING GLOBAL to-dos hain dashboard pe.** Commit `5651fee`.
+
+2. **"Follow-up ke baare me nahi sochta" / "verdict nahi nikalta"**: real journal (CampaignThesis)
+   check kiya — AI Manager ka current verdict genuinely honest he: "0 replies abhi tak, angle judge
+   karne layak data nahi he abhi" — ye bacche jaisa kaam nahi he, ye SAHI, disciplined restraint he
+   (bina evidence ke verdict na dena). Asli unlock **STRATEGY_REFLECTION** he (jo abhi ON kiya) —
+   ye woh mechanism he jo REAL "winning_angle"/"losing_angle" verdict likhta he. "IV Clasess Push"
+   (coaching centres) abhi **37/40 sends pe he** — bahut jald threshold cross karega, phir agla
+   07:00 IST tick pe pehla real, data-backed verdict aayega.
+
+**Summary — AI Manager "bacche jaisa" isliye lag raha tha kyunki 2 real, proven bugs the (suggestion
+kabhi fire hi nahi hota tha, strategy-reflection switch off + crash bug) — architecture khud
+sophisticated he (maine poora `CAMPAIGN_TODO_SYSTEM_PROMPT` padha, wo genuinely ek experienced
+strategist jaisa design he), bas ye 2 real gaps ise "silent" bana rahe the. Ab dono fix ho chuke.
+
