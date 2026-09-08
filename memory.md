@@ -779,6 +779,17 @@ escalation 2 baar call karne pe sirf 1 to-do banta he. **Real incident wale lead
 Fitness Center") ke liye turant real to-do bana diya — dashboard pe abhi live he. Commit `d353da0`,
 migration + VPS deploy + services restart, sab verify.
 
-**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `d353da0`, 2026-09-08). Baaki: Step 16.8
+**⭐ QC reject ka real reason + per-lead "kisne khola" UI, 2026-09-08**: user ne pucha (1) QC email kyu
+reject kar raha he, (2) "2 sent, 1 opened" me konsa lead khola pata nahi chalta. (1) Real logs se pata
+chala: QC ne kaha 2 pain points "verified list me nahi" jabki actually maujood the (bas low-severity/
+hedged evidence) — QC ka underlying concern legitimate tha (weak evidence overclaim), wording misleading
+thi. Fix: ab QC ka real last rejection reason seedha escalation to-do ke text me aata he (kisi ek lead
+ke liye hardcode nahi, har email-escalation ke liye). (2) `api/leads.py` ab har lead ka real delivery
+status bhejta he (existing `derive_delivery_state()` reuse — Lead Detail se kabhi disagree nahi karega);
+Campaign Detail leads table me naya "Message" column (Sent/Delivered/Opened/Replied badge, channel icon,
+timestamp). Verify: "Unique Health & Fitness Center" -> Opened, "Beauty Bee Salon" -> Delivered, baaki
+28 -> Not sent yet. Commit `37c21b8`, VPS deploy.
+
+**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `37c21b8`, 2026-09-08). Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
 inbox se disconnected hain (separate manual page).

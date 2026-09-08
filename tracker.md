@@ -6438,3 +6438,33 @@ same escalation 2 baar call karne pe sirf 1 hi to-do banta he (dedup sahi). **Re
 ("Unique Health & Fitness Center," jisne ye poora investigation shuru karvaya) ke liye bhi turant real
 to-do bana diya — ab dashboard pe dikhega, "Open this lead's page" link ke saath. Commit `d353da0`,
 migration + VPS deploy + 5 services restart, sab verify.
+
+### ⭐ QC reject ka real reason + per-lead "kisne khola" UI (2026-09-08)
+
+User ne 2 cheezein pucha: **(1)** QC email kyu reject kar raha he, **(2)** campaign me "2 sent, 1
+opened" dikhta he but konsa lead khola pata nahi chalta — "proper UI UX ke saath karo."
+
+**(1) QC investigation** — VPS journalctl se real rejection reasons nikale (koi UI/DB me store nahi
+hota tha, sirf raw server logs me). "Unique Health & Fitness Center" ka email 2 baar reject hua:
+attempt 1 me generic solution claims (verified pain point se tie nahi thi), attempt 2 me QC ne kaha
+"inadequate training"/"high pricing" verified list me nahi he — jabki lead ke real verified pain
+points me ye dono codes (INADEQUATE_TRAINING, HIGH_PRICING) actually maujood the (bas low-severity,
+hedged evidence ke saath: "reports from a few reviewers"). QC ka concern legitimate tha (weak evidence
+ko overclaim kiya draft ne), sirf uska wording thoda misleading tha. WhatsApp fallback sahi kaam kiya
+(delivered+read confirm).
+
+**Fix — is investigation ka gap khud fix kiya**: ab koi bhi email escalation ke waqt, QC ka REAL last
+rejection reason seedha us lead ke "Needs manual outreach" to-do ke text me aa jata he — pehle sirf
+server logs me tha, kisi UI me kabhi nahi dikhta tha. General fix (kisi ek lead ke liye hardcode nahi)
+— `outreach_handler.py` me `qc_result["rejection_reasons"][0]` ko reason string me append kiya.
+
+**(2) Per-lead outreach status UI** — `api/leads.py`'s `list_leads()` ab har lead ka real, batched
+delivery summary bhi bhejta he (existing `derive_delivery_state()` reuse kiya — Lead Detail timeline
+jo pehle se dikhata he, wahi states: Sent/Delivered/Seen/Replied/Failed, kabhi do jagah alag nahi
+disagree karenge). **Campaign Detail ke leads table me naya "Message" column** — channel icon (Mail/
+WhatsApp), badge (gold "Opened" agar dekha gaya, green "Replied", gray "Sent"/"Delivered", red
+"Failed"), relative time, hover pe exact timestamp. Verify (real data): "Unique Health & Fitness
+Center" -> Opened (WhatsApp, read 2026-09-07 12:32), "Beauty Bee Salon" -> Delivered (abhi tak nahi
+khola), baaki 28 leads -> "Not sent yet" — sab sahi. Existing "Unique Health..." wale to-do me real QC
+reason bhi backfill kar diya taaki turant dikhe. Commit `37c21b8`, `npm run build` clean, VPS
+deploy+restart, sab verify.
