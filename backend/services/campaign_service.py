@@ -26,7 +26,7 @@ from cognition.prompts import (
 from config import Config
 from database.models import (
     AgentEvent, Campaign, CampaignThesis, InboundConversation, Lead, LeadReviewInsight, LeadScore, OutreachLog,
-    Product, TodoItem)
+    Product, TodoItem, SUCCESSFULLY_SENT_STATUSES)
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
 from services.reporting_service import IST_OFFSET
@@ -196,7 +196,7 @@ def compute_campaign_metrics(db, campaign_id: str) -> dict:
         return {"sent": 0, "opened": 0, "replied": 0, "hot": 0}
 
     logs = db.query(OutreachLog).filter(
-        OutreachLog.lead_id.in_(lead_ids), OutreachLog.status == "SENT"
+        OutreachLog.lead_id.in_(lead_ids), OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES)
     ).all()
 
     sent = len(logs)

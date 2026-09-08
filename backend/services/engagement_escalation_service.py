@@ -13,7 +13,7 @@ for them in the first place.
 from __future__ import annotations
 
 from cognition.agent_events import log_agent_event
-from database.models import InboundConversation, Lead, OutreachLog
+from database.models import InboundConversation, Lead, OutreachLog, SUCCESSFULLY_SENT_STATUSES
 
 # How many real opens, with zero real replies, counts as "wasted signal" worth a human
 # looking at. Deliberately conservative -- a lead opening 2-3 times isn't unusual
@@ -33,7 +33,7 @@ def find_engagement_escalations(db, open_threshold: int = DEFAULT_OPEN_THRESHOLD
         .join(Lead, OutreachLog.lead_id == Lead.id)
         .filter(
             OutreachLog.channel == "EMAIL",
-            OutreachLog.status == "SENT",
+            OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES),
             OutreachLog.open_count >= open_threshold,
             Lead.status == "OUTREACHED",
         )

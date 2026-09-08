@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import func
 
-from database.models import InboundConversation, Lead, LeadScore, OutreachLog, Product
+from database.models import InboundConversation, Lead, LeadScore, OutreachLog, Product, SUCCESSFULLY_SENT_STATUSES
 from services.reporting_service import IST_OFFSET
 
 # Display order only (not a cumulative/"reached at least" ordering -- a first version of
@@ -38,7 +38,7 @@ def get_channel_performance(db) -> dict:
     result = {}
     for channel in ("EMAIL", "WHATSAPP"):
         sent = db.query(OutreachLog).filter(
-            OutreachLog.channel == channel, OutreachLog.status == "SENT").count()
+            OutreachLog.channel == channel, OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES)).count()
         # Real read-receipt/email-open data only -- WhatsApp via Meta's status webhook,
         # EMAIL via Resend's email.opened/clicked webhook (see api/inbound.py's
         # _handle_one_status, api/webhooks.py). Both set OutreachLog.read_at from an
@@ -46,7 +46,7 @@ def get_channel_performance(db) -> dict:
         # existed (no provider_message_id captured yet) just can't match a read event
         # and correctly stays uncounted, not fabricated as 0 vs unknown.
         seen = db.query(OutreachLog).filter(
-            OutreachLog.channel == channel, OutreachLog.status == "SENT",
+            OutreachLog.channel == channel, OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES),
             OutreachLog.read_at.isnot(None)).count()
         replies = db.query(InboundConversation).filter(
             InboundConversation.channel == channel).count()
@@ -103,7 +103,8 @@ def get_trend(db, granularity: str = "day", periods: int = 30) -> list[dict]:
         return counts
 
     leads_counts = _count_in_buckets(Lead, Lead.created_at)
-    outreach_counts = _count_in_buckets(OutreachLog, OutreachLog.sent_at, OutreachLog.status == "SENT")
+    outreach_counts = _count_in_buckets(
+        OutreachLog, OutreachLog.sent_at, OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES))
     reply_counts = _count_in_buckets(InboundConversation, InboundConversation.created_at)
 
     return [
@@ -149,7 +150,7 @@ def get_outreach_funnel(db, start_date: str | None = None, end_date: str | None 
     channels = {}
     for channel in ("EMAIL", "WHATSAPP"):
         logs = db.query(OutreachLog).filter(
-            OutreachLog.status == "SENT", OutreachLog.channel == channel, *date_filters
+            OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES), OutreachLog.channel == channel, *date_filters
         ).all()
         sent = len(logs)
         seen = 0
@@ -210,7 +211,7 @@ def get_variant_performance(db, start_date: str | None = None, end_date: str | N
         start_utc, end_utc = start_ist - IST_OFFSET, end_ist - IST_OFFSET
         date_filters = [OutreachLog.sent_at >= start_utc, OutreachLog.sent_at < end_utc]
 
-    logs = db.query(OutreachLog).filter(OutreachLog.status == "SENT", *date_filters).all()
+    logs = db.query(OutreachLog).filter(OutreachLog.status.in_(SUCCESSFULLY_SENT_STATUSES), *date_filters).all()
 
     variants = {}
     for log in logs:

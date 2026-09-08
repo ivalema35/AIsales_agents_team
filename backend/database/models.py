@@ -177,6 +177,18 @@ class OutreachLog(Base):
     content_sections = Column(Text)
 
 
+# 2026-09-07, real bug found live: every volume/analytics/escalation query that needs
+# "was this message actually dispatched" was checking `status == "SENT"` literally -- but
+# a webhook (api/webhooks.py's Resend handler, api/inbound.py's WhatsApp status handler)
+# advances a real send's status to DELIVERED (or BOUNCED) as soon as the provider confirms
+# it, often within seconds. A real WhatsApp message that reached DELIVERED before a
+# metrics/to-do check ran was silently invisible everywhere that checked `== "SENT"` --
+# it looked like nothing had been sent at all. SENT/DELIVERED/BOUNCED all mean the send
+# left our system successfully (a bounce is a real delivery attempt that failed
+# downstream, not a send that failed on our end); only FAILED means it never went out.
+SUCCESSFULLY_SENT_STATUSES = ("SENT", "DELIVERED", "BOUNCED")
+
+
 # 8. INBOUND CONVERSATIONS
 class InboundConversation(Base):
     __tablename__ = "inbound_conversations"
