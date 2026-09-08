@@ -213,22 +213,36 @@ def create_template():
 
 @whatsapp_templates_bp.route("/<template_id>", methods=["PATCH"])
 def update_template(template_id):
-    """Enable/disable toggle only -- name/wording/category can't be changed post-submission
-    (Meta's own template is immutable once created; editing those fields here would silently
-    drift from what Meta actually approved). is_active is a manual kill-switch independent of
-    Meta's own status: an admin can pause a template (e.g. underperforming) without deleting
-    its real history, and a disabled template is never selected by get_approved_followup_
-    template() even if Meta still shows it APPROVED."""
+    """is_active toggle and/or product_id reassignment -- name/wording/category can't be
+    changed post-submission (Meta's own template is immutable once created; editing those
+    fields here would silently drift from what Meta actually approved). is_active is a
+    manual kill-switch independent of Meta's own status: an admin can pause a template
+    (e.g. underperforming) without deleting its real history, and a disabled template is
+    never selected by get_approved_followup_template() even if Meta still shows it APPROVED.
+
+    product_id (2026-09-08, real user ask: "agar existing template choose karna ho to kaise
+    karenge") -- unlike name/wording, this is a LOCAL-ONLY scoping field Meta never sees,
+    so reassigning it is safe: pass a real product id to scope an already-approved (or any)
+    template to that product, or null to make it shared/usable by every product again. This
+    is how an admin points an existing, already-Meta-approved template at a product that
+    doesn't have its own yet, instead of drafting/submitting a brand new one.
+    """
     data = request.get_json(silent=True)
-    if not isinstance(data, dict) or "is_active" not in data:
-        return jsonify({"error": "request body must include is_active"}), 422
+    if not isinstance(data, dict) or ("is_active" not in data and "product_id" not in data):
+        return jsonify({"error": "request body must include is_active and/or product_id"}), 422
 
     db = SessionLocal()
     try:
         row = db.get(WhatsappTemplate, template_id)
         if not row:
             return jsonify({"error": "template not found"}), 404
-        row.is_active = bool(data["is_active"])
+        if "is_active" in data:
+            row.is_active = bool(data["is_active"])
+        if "product_id" in data:
+            product_id = data["product_id"]
+            if product_id and not db.get(Product, product_id):
+                return jsonify({"error": [f"product {product_id} not found"]}), 422
+            row.product_id = product_id or None
         db.commit()
         db.refresh(row)
         product_titles = _product_titles_for(db, row)

@@ -299,6 +299,22 @@ export default function WhatsappTemplates() {
     }
   }
 
+  // 2026-09-08, real user ask: "agar existing template choose karna ho to kaise karenge" --
+  // product_id is a local-only scoping field (Meta never sees it), so pointing an already-
+  // approved template at a product that doesn't have its own yet is safe and instant, no
+  // new Meta submission needed.
+  async function reassignProduct(t, productId) {
+    setTogglingId(t.id);
+    try {
+      await api.updateWhatsappTemplate(t.id, { product_id: productId || null });
+      refresh();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setTogglingId(null);
+    }
+  }
+
   async function deleteTemplate(t) {
     const ok = await confirm({
       title: "Delete this rejected template?",
@@ -490,13 +506,29 @@ export default function WhatsappTemplates() {
                         <Sparkles size={10} /> AI-drafted
                       </span>
                     )}
-                    <span className="flex items-center gap-1 font-mono text-[10px] font-medium text-ink-500">
-                      <Boxes size={10} /> {t.product_title || "Shared -- all products"}
-                    </span>
                   </div>
                   <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-700">
                     {t.body_text}
                   </p>
+                  {DEAD_STATUSES.includes(t.status) ? (
+                    <span className="mt-1.5 flex items-center gap-1 font-mono text-[10px] font-medium text-ink-500">
+                      <Boxes size={10} /> {t.product_title || "Shared -- all products"}
+                    </span>
+                  ) : (
+                    <label className="mt-1.5 flex items-center gap-1.5 text-[10px] font-medium text-ink-500">
+                      <Boxes size={10} className="shrink-0" />
+                      Used by:
+                      <select
+                        value={t.product_id || ""}
+                        onChange={(e) => reassignProduct(t, e.target.value)}
+                        disabled={togglingId === t.id}
+                        className="rounded border border-line bg-parchment-raised px-1.5 py-0.5 font-mono text-[10px] font-medium text-ink-700 focus:border-gold-500 focus:outline-none disabled:opacity-50"
+                      >
+                        <option value="">Shared -- all products</option>
+                        {products.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
+                      </select>
+                    </label>
+                  )}
                   {t.variable_labels.length > 0 && (
                     <p className="mt-1 flex items-center gap-1 font-mono text-[10px] text-ink-500">
                       <Tag size={10} /> {t.variable_labels.join(", ")}
