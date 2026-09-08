@@ -116,6 +116,12 @@ def handle_outreach_email(db, payload):
     draft = None
     qc_result = None
     qc_feedback = None
+    # 2026-09-08, real dry-run replay of a live rejection found this: each retry only ever
+    # saw the LATEST correction, with no memory of earlier ones -- a fresh regeneration at
+    # temperature 0.4 could (and did, in testing) silently re-introduce something an
+    # earlier attempt had already been told to remove. Accumulating every correction so far
+    # means attempt 3 still knows what attempt 1 fixed, not just what attempt 2 flagged.
+    qc_corrections: list[str] = []
     for attempt in range(1, MAX_DRAFT_ATTEMPTS + 1):
         if followup_level:
             draft = draft_followup_email(db, lead.id, product_brief, lead_profile, pain_points,
@@ -139,7 +145,11 @@ def handle_outreach_email(db, payload):
             break
         logger.info("OUTREACH_EMAIL %s -> QC rejected draft %d/%d: %s",
                    lead.company_name, attempt, MAX_DRAFT_ATTEMPTS, qc_result["rejection_reasons"])
-        qc_feedback = qc_result["suggested_corrections"] or "; ".join(qc_result["rejection_reasons"])
+        qc_corrections.append(qc_result["suggested_corrections"] or "; ".join(qc_result["rejection_reasons"]))
+        qc_feedback = (
+            qc_corrections[0] if len(qc_corrections) == 1
+            else " ".join(f"({i}) {c}" for i, c in enumerate(qc_corrections, 1))
+        )
         draft = None
 
     if not draft or not qc_result or not qc_result["approved"]:

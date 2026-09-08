@@ -93,7 +93,12 @@ Only omit it if truly no listed asset fits this lead, or the format has no such
 section; never invent a URL not in this list.
 """
     if qc_feedback:
-        prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+        prompt += f"""
+YOUR PREVIOUS DRAFT(S) WERE REJECTED BY QUALITY CONTROL. {qc_feedback}
+If more than one correction is numbered above, apply ALL of them together -- they are
+corrections from separate earlier attempts, and fixing a later one must never silently
+undo an earlier one (e.g. don't re-add something attempt 1 already told you to remove).
+"""
 
     try:
         data = call_json(prompt, temperature=0.4)
@@ -441,7 +446,12 @@ relevant to THIS lead, and you may never name a service outside this list:
 {json.dumps(cross_sell_products, ensure_ascii=False)}
 """
     if qc_feedback:
-        prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+        prompt += f"""
+YOUR PREVIOUS DRAFT(S) WERE REJECTED BY QUALITY CONTROL. {qc_feedback}
+If more than one correction is numbered above, apply ALL of them together -- they are
+corrections from separate earlier attempts, and fixing a later one must never silently
+undo an earlier one (e.g. don't re-add something attempt 1 already told you to remove).
+"""
     if human_revision_instruction:
         if previous_draft_text:
             prompt += f"""
@@ -587,7 +597,12 @@ Write in this style throughout, while keeping every fact grounded exactly as alr
 required -- this changes HOW it's said, never WHAT is claimed.
 """
     if qc_feedback:
-        prompt += f"\nYOUR PREVIOUS DRAFT WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
+        prompt += f"""
+YOUR PREVIOUS DRAFT(S) WERE REJECTED BY QUALITY CONTROL. {qc_feedback}
+If more than one correction is numbered above, apply ALL of them together -- they are
+corrections from separate earlier attempts, and fixing a later one must never silently
+undo an earlier one (e.g. don't re-add something attempt 1 already told you to remove).
+"""
 
     try:
         data = call_json(prompt, temperature=0.4)
