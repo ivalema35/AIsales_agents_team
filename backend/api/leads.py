@@ -85,8 +85,36 @@ def _apply_filters(db, query, args):
     return query, None
 
 
+# 2026-09-08, real gap the user found live: a campaign's top-line "Opened: 1" metric
+# (compute_campaign_metrics) is a real, correct count, but nothing anywhere told a human
+# WHICH of the campaign's leads that one open belonged to -- the only way to find out was
+# to open every lead's own page one at a time and read its full timeline. This reuses the
+# exact same `derive_delivery_state()` states the Lead Detail timeline already shows
+# (Step 14.1) so the two views never disagree, just picks the single most informative
+# state when a lead has more than one send (e.g. a follow-up touch) to summarize in a list row.
+_DELIVERY_STATE_RANK = {"Replied": 4, "Seen": 3, "Delivered": 2, "Sent": 1, "Failed": 0}
+
+
+def _summarize_outreach(logs, latest_reply_at_by_key):
+    best = None
+    best_rank = -1
+    for log in logs:
+        has_reply = str(log.sent_at) < latest_reply_at_by_key.get((log.lead_id, log.channel), "")
+        state = derive_delivery_state(log, has_reply)
+        rank = _DELIVERY_STATE_RANK.get(state, -1)
+        if rank > best_rank:
+            best_rank = rank
+            best = {
+                "channel": log.channel,
+                "state": state,
+                "sent_at": str(log.sent_at),
+                "read_at": str(log.read_at) if log.read_at else None,
+            }
+    return best
+
+
 def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=None, is_suppressed=False,
-               interest_state=None, interest_state_at=None):
+               interest_state=None, interest_state_at=None, outreach=None):
     return {
         "id": lead.id,
         # Phase 12 Step 12.1 -- the short, operator-quotable id shown on the lead page and
@@ -141,6 +169,9 @@ def _serialize(lead, score=None, latest_reply_intent=None, latest_reply_message=
         # a No), so the two must never render as the same "gray, opted-out" signal.
         "interest_state": interest_state,
         "interest_state_at": str(interest_state_at) if interest_state_at else None,
+        # None means no send has gone out to this lead at all yet -- distinct from a
+        # real send that just hasn't been opened (state="Sent"/"Delivered").
+        "outreach": outreach,
     }
 
 
@@ -222,6 +253,35 @@ def list_leads():
                 interest_state_by_lead[r.lead_id] = r.response
                 interest_state_at_by_lead[r.lead_id] = r.created_at
 
+        # Per-lead outreach/read summary -- same batched-over-the-page pattern as the
+        # reply/interest lookups above, not a query per row.
+        outreach_by_lead = {}
+        if lead_ids:
+            outreach_logs = (
+                db.query(OutreachLog)
+                .filter(OutreachLog.lead_id.in_(lead_ids))
+                .order_by(OutreachLog.sent_at)
+                .all()
+            )
+            logs_by_lead: dict[str, list] = {}
+            for lg in outreach_logs:
+                logs_by_lead.setdefault(lg.lead_id, []).append(lg)
+
+            latest_reply_at_by_key = {}
+            if logs_by_lead:
+                convs = (
+                    db.query(InboundConversation)
+                    .filter(InboundConversation.lead_id.in_(logs_by_lead.keys()),
+                           InboundConversation.sender_type == "LEAD")
+                    .order_by(InboundConversation.created_at.asc())
+                    .all()
+                )
+                for c in convs:
+                    latest_reply_at_by_key[(c.lead_id, c.channel)] = str(c.created_at)
+
+            for lid, logs in logs_by_lead.items():
+                outreach_by_lead[lid] = _summarize_outreach(logs, latest_reply_at_by_key)
+
         # Small table in practice (real opt-outs, not bulk data) -- one full read here
         # is cheaper and simpler than an is_suppressed() DB round-trip per lead.
         suppressed_pairs = {(s.channel, s.identifier) for s in db.query(SuppressionEntry).all()}
@@ -243,6 +303,7 @@ def list_leads():
                     latest_intent_by_lead.get(lead.id), latest_message_by_lead.get(lead.id),
                     _lead_is_suppressed(lead),
                     interest_state_by_lead.get(lead.id), interest_state_at_by_lead.get(lead.id),
+                    outreach_by_lead.get(lead.id),
                 )
                 for lead in leads
             ],

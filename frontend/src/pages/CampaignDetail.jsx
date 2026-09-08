@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Target, Users, Check } from "lucide-react";
+import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass, statusLabel } from "../lib/statusColors";
 import { industryLabel } from "../lib/targetSegment";
+import { relativeTime } from "../lib/relativeTime";
 import { useConfirm } from "../lib/ConfirmContext";
 import { useToast } from "../lib/ToastContext";
 
@@ -37,6 +38,47 @@ const TIER_PLAIN = {
   WARM: "Worth a look",
   COLD: "Low priority",
 };
+
+// 2026-09-08, real gap the user found live: the campaign-level "Opened: 1" stat is a
+// real, correct count (compute_campaign_metrics), but told a human nothing about WHICH
+// lead that open belonged to -- the only way to find out was opening every single lead's
+// own page and reading its full timeline. `l.outreach` (backend api/leads.py) carries
+// the exact same `derive_delivery_state()` value the Lead Detail timeline already shows,
+// so this never disagrees with that page -- just summarized into one glance-able cell.
+const CHANNEL_ICON = { EMAIL: Mail, WHATSAPP: MessageCircle };
+
+const OUTREACH_STATE_STYLE = {
+  Replied: { variant: "SUCCESS", label: "Replied", icon: MessageSquareReply },
+  Seen: { variant: "WARM", label: "Opened", icon: Eye },
+  Delivered: { variant: "NEUTRAL", label: "Delivered", icon: null },
+  Sent: { variant: "NEUTRAL", label: "Sent", icon: null },
+  Failed: { variant: "DANGER", label: "Failed to send", icon: XCircle },
+};
+
+function OutreachCell({ outreach }) {
+  if (!outreach) {
+    return <span className="text-ink-500">Not sent yet</span>;
+  }
+  const style = OUTREACH_STATE_STYLE[outreach.state] || OUTREACH_STATE_STYLE.Sent;
+  const ChannelIcon = CHANNEL_ICON[outreach.channel];
+  const StateIcon = style.icon;
+  const timestamp = outreach.state === "Seen" && outreach.read_at ? outreach.read_at : outreach.sent_at;
+  const title = outreach.state === "Seen" && outreach.read_at
+    ? `Opened ${outreach.read_at} (sent ${outreach.sent_at})`
+    : `Sent ${outreach.sent_at}`;
+  return (
+    <div className="flex flex-col gap-0.5" title={title}>
+      <Badge variant={style.variant} className="w-fit gap-1">
+        {StateIcon && <StateIcon size={11} />}
+        {style.label}
+      </Badge>
+      <span className="flex items-center gap-1 text-[10px] text-ink-500">
+        {ChannelIcon && <ChannelIcon size={10} />}
+        {outreach.channel === "WHATSAPP" ? "WhatsApp" : "Email"} · {relativeTime(timestamp)}
+      </span>
+    </div>
+  );
+}
 
 function shortLocation(text) {
   if (!text) return null;
@@ -224,7 +266,7 @@ export default function CampaignDetail() {
               Businesses in this campaign
             </h2>
             <p className="mt-0.5 text-xs text-ink-500">
-              Click a row to open the full lead page. Priority shows how strong the fit looks.
+              Click a row to open the full lead page. Priority shows how strong the fit looks; Message shows whether your outreach was sent, opened, or replied to.
             </p>
           </div>
           {leads && leads.length > 0 && (
@@ -253,6 +295,7 @@ export default function CampaignDetail() {
                   <th className="px-3 py-2.5">Location</th>
                   <th className="px-3 py-2.5">Stage</th>
                   <th className="px-3 py-2.5">Priority</th>
+                  <th className="px-3 py-2.5">Message</th>
                 </tr>
               </thead>
               <tbody>
@@ -291,6 +334,9 @@ export default function CampaignDetail() {
                         ) : (
                           <span className="text-ink-500">Not scored yet</span>
                         )}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <OutreachCell outreach={l.outreach} />
                       </td>
                     </tr>
                   );

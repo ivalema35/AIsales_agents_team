@@ -150,8 +150,16 @@ def handle_outreach_email(db, payload):
                    lead.company_name, MAX_DRAFT_ATTEMPTS)
         log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL", 0.0, "MEDIUM", "HUMAN_ESCALATION")
         from services.campaign_service import create_lead_escalation_todo
-        create_lead_escalation_todo(
-            db, lead, "our AI couldn't write an email that passed quality review after two tries.")
+        # 2026-09-08, user asked directly "QC reject kyu kar raha he" and the only place
+        # that answer existed was raw server logs -- a human reviewing the escalation
+        # to-do had no way to see WHY the AI gave up. QC's own rejection reasons are real,
+        # plain-English sentences (review_draft()'s prompt asks for them in that form
+        # already) -- surfacing the last one here costs nothing new and answers the
+        # question right where a human is already looking, for any lead, not just this one.
+        reason = "our AI couldn't write an email that passed quality review after two tries."
+        if qc_result and not qc_result.get("approved") and qc_result.get("rejection_reasons"):
+            reason += f' Its last concern: "{qc_result["rejection_reasons"][0]}"'
+        create_lead_escalation_todo(db, lead, reason)
         return lead.id
 
     # Re-check suppression immediately before the network call -- the whole point of
