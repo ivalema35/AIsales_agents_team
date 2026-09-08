@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AlertTriangle, CheckCircle2, MessageSquareWarning, Sparkles, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Mail, MessageSquareWarning, Sparkles, X } from "lucide-react";
 import { api } from "../api/client";
 import { industryLabel } from "../lib/targetSegment";
 
@@ -11,6 +11,10 @@ import { industryLabel } from "../lib/targetSegment";
 function isConflictLabel(label) {
   const l = (label || "").toLowerCase();
   return l.includes("conflict") || l.includes("tension");
+}
+
+function isOutreachEmailDraft(proposal) {
+  return proposal && proposal.kind === "outreach_email_draft" && proposal.subject && proposal.body;
 }
 
 // Shared by the Dashboard's AI Manager Inbox (every campaign/product, unfiltered) and a
@@ -35,9 +39,11 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
 
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
+  const emailDraft = isOutreachEmailDraft(proposal);
   // GLOBAL always has a real action (opens the campaign-creation form); a CAMPAIGN item
   // has one when it carries a structural proposal OR is the standing "Approve campaign"
-  // cue (that actually flips campaign status to APPROVED on Approve).
+  // cue (that actually flips campaign status to APPROVED on Approve) OR an email draft
+  // waiting for Approve & send.
   const hasAction =
     item.scope === "GLOBAL" || !!proposal || item.label === "Approve campaign";
 
@@ -103,7 +109,8 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
       <div className="rounded-lg border border-good-600/40 bg-good-100 p-3">
         <div className="flex items-start justify-between gap-2">
           <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-good-700">
-            <CheckCircle2 size={12} /> Applied to this campaign
+            <CheckCircle2 size={12} />
+            {appliedResult.sent_email ? "Email sent" : "Applied to this campaign"}
           </span>
           <button
             onClick={() => onResolved?.(item.id)}
@@ -114,6 +121,19 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           </button>
         </div>
         <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
+          {appliedResult.sent_email && (
+            <>
+              <p>
+                Sent to <b>{appliedResult.company_name || "this lead"}</b>
+                {appliedResult.to ? ` (${appliedResult.to})` : ""}.
+              </p>
+              {appliedResult.subject && (
+                <p className="text-ink-700">
+                  <b>Subject:</b> {appliedResult.subject}
+                </p>
+              )}
+            </>
+          )}
           {appliedResult.status === "APPROVED" && (
             <p><b>Campaign status:</b> Marked approved</p>
           )}
@@ -133,6 +153,12 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
     );
   }
 
+  const approveLabel = emailDraft
+    ? "Approve & send"
+    : item.scope === "GLOBAL"
+    ? "Create campaign…"
+    : "Approve";
+
   return (
     <div
       className={`rounded-lg border p-3 ${
@@ -143,10 +169,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         <div className="flex flex-wrap items-center gap-1.5">
           <span
             className={`flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide ${
-              conflict ? "bg-alert-600 text-white" : "bg-parchment-raised-2 text-ink-700"
+              emailDraft
+                ? "bg-ink-900 text-parchment-raised"
+                : conflict
+                ? "bg-alert-600 text-white"
+                : "bg-parchment-raised-2 text-ink-700"
             }`}
           >
-            {conflict && <AlertTriangle size={9} />}
+            {emailDraft ? <Mail size={9} /> : conflict ? <AlertTriangle size={9} /> : null}
             {item.label || "Note"}
           </span>
           {showSourceChip && (
@@ -154,7 +184,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               {item.scope === "GLOBAL" ? item.product_title || "New campaign idea" : item.campaign_name || "Campaign"}
             </span>
           )}
-          {item.confidence != null && (
+          {item.confidence != null && !emailDraft && (
             <span
               title="How confident the AI is, based on real data volume/clarity"
               className={`rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold ${
@@ -183,14 +213,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
                 disabled={busy}
                 className="rounded-md px-2.5 py-1.5 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:opacity-50"
               >
-                Dismiss
+                {emailDraft ? "Not now" : "Dismiss"}
               </button>
               <button
                 onClick={approve}
                 disabled={busy}
                 className="rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
               >
-                {busy ? "Working…" : item.scope === "GLOBAL" ? "Create campaign…" : "Approve"}
+                {busy ? (emailDraft ? "Sending…" : "Working…") : approveLabel}
               </button>
             </>
           ) : (
@@ -220,7 +250,29 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         </Link>
       )}
 
-      {proposal && (
+      {/* Option B (2026-09-08): QC-rejected email with a real draft -- show it plainly so
+          Approve & send is a real review, not a blind click. */}
+      {emailDraft && (
+        <div className="mt-2.5 rounded-md border border-line bg-parchment p-3">
+          <p className="font-mono text-[9px] font-semibold uppercase tracking-wide text-ink-500">
+            Email to review
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-ink-900">
+            <span className="font-normal text-ink-500">Subject: </span>
+            {proposal.subject}
+          </p>
+          <p className="mt-2 whitespace-pre-wrap text-xs leading-relaxed text-ink-700">
+            {proposal.body}
+          </p>
+          {proposal.qc_note && (
+            <p className="mt-2.5 border-t border-line pt-2 text-[11px] leading-relaxed text-ink-500">
+              Why AI hesitated: {proposal.qc_note}
+            </p>
+          )}
+        </div>
+      )}
+
+      {proposal && !emailDraft && (
         <div className="mt-2 rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
           <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-gold-700">
             <Sparkles size={11} /> Structural change -- applies on Approve
@@ -259,7 +311,11 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             autoFocus
             value={instruction}
             onChange={(e) => setInstruction(e.target.value)}
-            placeholder="e.g. isko formal karo, ek ROI line add karo"
+            placeholder={
+              emailDraft
+                ? "e.g. remove pricing talk, make it shorter"
+                : "e.g. isko formal karo, ek ROI line add karo"
+            }
             className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
           <div className="flex items-center gap-2">
@@ -268,7 +324,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               disabled={revising || !instruction.trim()}
               className="rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50"
             >
-              {revising ? "Revising…" : "Regenerate"}
+              {revising ? "Updating…" : emailDraft ? "Update email" : "Regenerate"}
             </button>
             <button
               type="button"
@@ -284,7 +340,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           onClick={() => setShowFeedback(true)}
           className="mt-2.5 text-[11px] font-medium text-ink-500 hover:text-ink-900"
         >
-          Give feedback
+          {emailDraft ? "Ask for a change" : "Give feedback"}
         </button>
       )}
     </div>

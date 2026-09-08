@@ -114,6 +114,7 @@ def handle_outreach_email(db, payload):
     # handler -- left in place as dead code rather than deleted, a separate cleanup
     # decision, not one this phase makes unilaterally.
     draft = None
+    last_draft = None
     qc_result = None
     qc_feedback = None
     # 2026-09-08, real dry-run replay of a live rejection found this: each retry only ever
@@ -138,6 +139,7 @@ def handle_outreach_email(db, payload):
                                            format_directive=format_directive)
         if not draft:
             break
+        last_draft = draft
         qc_result = review_draft(db, lead.id, draft, pain_points, product_brief=product_brief,
                                  is_followup=bool(followup_level), followup_level=followup_level,
                                  content_assets=content_assets)
@@ -153,54 +155,62 @@ def handle_outreach_email(db, payload):
         draft = None
 
     if not draft or not qc_result or not qc_result["approved"]:
-        # QC's veto is absolute -- no draft means no send, ever. The lead stays exactly
-        # where it was (OUTREACHING) rather than being pushed into an unrelated status.
-        # 2026-09-07, user's real catch: the HUMAN_ESCALATION agent_events row used to be
-        # the ONLY signal here -- a raw audit-log entry nothing in the actual UI ever
-        # surfaced, so "review it yourself" had no real place for a human to do that.
-        # Local import: campaign_service already imports from agents.outreach_agent at
-        # module level, so importing it back here at module load would risk a cycle --
-        # same avoidance pattern used elsewhere in this codebase for the same reason.
+        # Option B (2026-09-08): QC veto still blocks *auto* send, but the last real draft
+        # is kept for human review in the AI Manager Inbox -- Approve & send from there.
+        # Lead stays OUTREACHING. Local import avoids campaign_service import cycle.
         logger.info("OUTREACH_EMAIL %s -> no QC-approved draft after %d attempt(s), escalating",
                    lead.company_name, MAX_DRAFT_ATTEMPTS)
         log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL", 0.0, "MEDIUM", "HUMAN_ESCALATION")
         from services.campaign_service import create_lead_escalation_todo
-        # 2026-09-08, user asked directly "QC reject kyu kar raha he" and the only place
-        # that answer existed was raw server logs -- a human reviewing the escalation
-        # to-do had no way to see WHY the AI gave up. QC's own rejection reasons are real,
-        # plain-English sentences (review_draft()'s prompt asks for them in that form
-        # already) -- surfacing the last one here costs nothing new and answers the
-        # question right where a human is already looking, for any lead, not just this one.
-        reason = "our AI couldn't write an email that passed quality review after two tries."
+        reason = "our AI wasn't sure this email was good enough after a few tries."
         if qc_result and not qc_result.get("approved") and qc_result.get("rejection_reasons"):
             reason += f' Its last concern: "{qc_result["rejection_reasons"][0]}"'
-        create_lead_escalation_todo(db, lead, reason)
+        create_lead_escalation_todo(
+            db, lead, reason, draft=last_draft, followup_level=followup_level,
+        )
         return lead.id
 
-    # Re-check suppression immediately before the network call -- the whole point of
-    # the 100% rule is that it applies right up to the send, not just once earlier.
+    dispatch_structured_email(
+        db, lead, draft,
+        followup_level=followup_level,
+        render_mode=render_mode,
+        content_assets=content_assets,
+        qc_confidence=qc_result["confidence_score"],
+    )
+    return lead.id
+
+
+def dispatch_structured_email(
+    db, lead, draft, *, followup_level=None, render_mode=None, content_assets=None,
+    qc_confidence=1.0,
+):
+    """Send one structured email draft for a lead (QC-approved path OR human Inbox approve).
+
+    Shared so the human "Approve & send" path uses the exact same Resend + OutreachLog +
+    sequence wiring as the autonomous QC-pass path -- never a second, drifting send path.
+    """
+    if not lead.primary_email:
+        raise ValueError(f"lead {lead.id} has no email on file")
     if is_suppressed(db, "EMAIL", lead.primary_email):
-        logger.info("OUTREACH_EMAIL %s -> suppressed between draft and send, aborting", lead.company_name)
+        logger.info("OUTREACH_EMAIL %s -> suppressed at send, aborting", lead.company_name)
         lead.status = "REJECTED"
         db.commit()
-        return lead.id
+        raise ValueError(f'"{lead.company_name}" is on the do-not-email list -- not sent')
 
-    # Pre-generated (not left to OutreachLog's own column default) so Phase 12 Step 12.2's
-    # signed Yes/No links -- which need this exact id -- can be built and embedded in the
-    # email BEFORE the row exists, rather than sending first and patching the row after.
+    product = db.get(Product, lead.product_id)
+    campaign = db.get(Campaign, lead.campaign_id) if lead.campaign_id else None
+    if render_mode is None:
+        render_mode = resolve_email_render_mode(campaign) if campaign else "HTML"
+    if content_assets is None:
+        content_assets = get_available_assets(db, lead.product_id) or None
+
     outreach_log_id = str(uuid.uuid4())
 
-    # Phase 11 Step 11.4 / Phase 12 Step 12.2 / Phase 13 Step 13.1 -- interest, contact,
-    # and (level 3 only) the real services list are all system-supplied, appended AFTER QC
-    # review: none of them carry agent-authored content, so there is nothing in any of
-    # them for QC to judge, and handing QC more surface it was never told about is exactly
-    # what produced the Step 11.6 bug (it once misread the CTA section as an unreviewed
-    # extra). Every EMAIL draft now carries `sections` (touch-1 and every follow-up level
-    # alike), so this always runs -- EXCEPT campaign email_render_mode=TEXT, which sends
-    # body text only (email_service simple HTML fallback, not the designed Phase 11 template).
+    # Phase 11 / 12 / 13 -- INTEREST + CONTACT (+ SERVICES on level 3) appended after the
+    # agent-authored draft, same as the QC-pass path.
     sections = draft.get("sections") if render_mode == "HTML" else None
     if sections is not None:
-        sections = sections + [{"type": "INTEREST", **build_interest_urls(lead.id, outreach_log_id)}]
+        sections = list(sections) + [{"type": "INTEREST", **build_interest_urls(lead.id, outreach_log_id)}]
         if followup_level == 3:
             services_section = build_services_list_section(db)
             if services_section:
@@ -210,8 +220,10 @@ def handle_outreach_email(db, payload):
             sections = sections + [contact_section]
 
     unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
-    send_response = send_email(lead.primary_email, draft["subject"], draft["body"], unsubscribe_url,
-                               content_assets=content_assets, sections=sections)
+    send_response = send_email(
+        lead.primary_email, draft["subject"], draft["body"], unsubscribe_url,
+        content_assets=content_assets, sections=sections,
+    )
 
     db.add(OutreachLog(
         id=outreach_log_id,
@@ -221,29 +233,22 @@ def handle_outreach_email(db, payload):
         message_body=draft["body"],
         status="SENT",
         provider_message_id=extract_resend_id(send_response),
-        # Phase 8 Step 8.4 -- every subject candidate generated, not just the one sent,
-        # so Phase 9 can measure them retrospectively once real reply/open data exists.
         subject_candidates=json.dumps(draft.get("subject_candidates", [draft["subject"]])),
-        # Phase 9 Step 9.1 (tracker.md A.8) -- a distinct, queryable value per real variant,
-        # so Step 9.2's rollup can compare them from real SQL, no new counter needed
-        # (Step 13.3). "STRUCTURED_EMAIL" = fresh touch-1; "FOLLOWUP_LEVEL_1/2/3" = which
-        # of Phase 13's three follow-up conversations this was.
         variant_id=f"FOLLOWUP_LEVEL_{followup_level}" if followup_level else "STRUCTURED_EMAIL",
-        # Phase 14 Step 14.4 -- the exact same section list this send was rendered from,
-        # sections+INTEREST+SERVICES_LIST+CONTACT already merged above -- the one
-        # canonical content object every later cross-channel copy reads from.
         content_sections=json.dumps(sections) if sections is not None else None,
     ))
     lead.status = "OUTREACHED"
     db.commit()
 
-    # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch itself,
-    # which would otherwise create a second, competing sequence for the same lead).
-    # A no-op if the product has no cadence configured (today's behavior, unchanged).
     if not followup_level:
         create_sequence_for_send(db, lead, "EMAIL", datetime.utcnow())
 
     log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL",
-                    qc_result["confidence_score"], "MEDIUM", "EXECUTE")
+                    qc_confidence, "MEDIUM", "EXECUTE")
     logger.info("OUTREACH_EMAIL %s -> sent to %s", lead.company_name, lead.primary_email)
-    return lead.id
+    return {
+        "outreach_log_id": outreach_log_id,
+        "to": lead.primary_email,
+        "subject": draft["subject"],
+        "company_name": lead.company_name,
+    }

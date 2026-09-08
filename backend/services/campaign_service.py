@@ -136,6 +136,9 @@ _FIXED_BLOCKER_LABELS = {"Discovery off", "Ready to send"}
 # never invents these to-do rows.
 _APPROVE_CAMPAIGN_LABEL = "Approve campaign"
 _REVIEW_MESSAGES_LABEL = "Review messages"
+# Option B (2026-09-08): QC-rejected email drafts land here for human Approve & send.
+_REVIEW_SEND_EMAIL_LABEL = "Review & send email"
+_OUTREACH_EMAIL_DRAFT_KIND = "outreach_email_draft"
 
 
 def resolve_auto_campaign_id(db, product_id: str) -> str | None:
@@ -632,7 +635,10 @@ def serialize_todo_item(item: TodoItem) -> dict:
     }
 
 
-def create_lead_escalation_todo(db, lead: Lead, reason: str, label: str = "Needs manual outreach") -> None:
+def create_lead_escalation_todo(
+    db, lead: Lead, reason: str, label: str | None = None, draft: dict | None = None,
+    followup_level=None,
+) -> None:
     """2026-09-07, user's real catch: a dispatch handler that couldn't produce an
     acceptable draft after every real retry (QC rejected an email twice, WhatsApp
     variables failed validation) only ever wrote a HUMAN_ESCALATION `agent_events` row --
@@ -641,26 +647,81 @@ def create_lead_escalation_todo(db, lead: Lead, reason: str, label: str = "Needs
     kuch aya hi nahi todo me, kaise review karu?" It didn't, because nothing was ever
     created for a human to see. This is that missing real, visible to-do.
 
+    Option B (2026-09-08): when a real email `draft` exists, label is "Review & send email"
+    and `proposal` stores subject/body so the Inbox can Approve & send (or ask for a
+    change). No draft (e.g. WhatsApp var failure) keeps the older "Needs manual outreach"
+    hand-write path.
+
     Keyed on (campaign_id, lead_id, label) for dedup -- unlike the campaign-level
     fixed-label to-dos (Discovery off, Ready to send), MANY different leads in the same
     campaign can each independently need this, so dedup must be per-lead, not per-campaign
     -- a single shared label would silently swallow every lead after the first one.
-    Always `is_blocker=True`: a lead a human must manually write for is exactly the kind
+    Always `is_blocker=True`: a lead waiting on a human send decision is exactly the kind
     of real, standing "must act" state the Calendar's red alert exists for."""
     if not lead.campaign_id:
         return
+
+    has_draft = bool(draft and draft.get("subject") and draft.get("body"))
+    if label is None:
+        label = _REVIEW_SEND_EMAIL_LABEL if has_draft else "Needs manual outreach"
+
+    # Dedup against both the new label and the legacy hand-write label for the same lead.
     existing = db.query(TodoItem).filter(
         TodoItem.campaign_id == lead.campaign_id, TodoItem.lead_id == lead.id,
-        TodoItem.status == "PENDING", TodoItem.label == label,
+        TodoItem.status == "PENDING",
+        TodoItem.label.in_([label, _REVIEW_SEND_EMAIL_LABEL, "Needs manual outreach"]),
     ).first()
     if existing:
+        # Upgrade a legacy "hand-write" card if we now have a real draft to review.
+        if has_draft and (
+            not existing.proposal
+            or (json.loads(existing.proposal) or {}).get("kind") != _OUTREACH_EMAIL_DRAFT_KIND
+        ):
+            existing.label = _REVIEW_SEND_EMAIL_LABEL
+            existing.text = (
+                f'AI wrote an email for "{lead.company_name}" but wasn\'t sure it was '
+                "good enough. Read it below — Approve & send if it looks right, or ask "
+                f"for a change. ({reason})"
+            )
+            existing.proposal = json.dumps({
+                "kind": _OUTREACH_EMAIL_DRAFT_KIND,
+                "subject": draft["subject"],
+                "body": draft["body"],
+                "sections": draft.get("sections"),
+                "subject_candidates": draft.get("subject_candidates"),
+                "followup_level": followup_level,
+                "qc_note": reason,
+            })
+            db.commit()
         return
-    item = TodoItem(
-        scope="CAMPAIGN", campaign_id=lead.campaign_id, lead_id=lead.id, label=label,
-        text=f'"{lead.company_name}" needs a message written by hand -- {reason} '
-             "Open this lead's page to write and send one yourself.",
-        is_blocker=True,
-    )
+
+    if has_draft:
+        item = TodoItem(
+            scope="CAMPAIGN", campaign_id=lead.campaign_id, lead_id=lead.id,
+            label=_REVIEW_SEND_EMAIL_LABEL,
+            text=(
+                f'AI wrote an email for "{lead.company_name}" but wasn\'t sure it was '
+                "good enough. Read it below — Approve & send if it looks right, or ask "
+                f"for a change. ({reason})"
+            ),
+            proposal=json.dumps({
+                "kind": _OUTREACH_EMAIL_DRAFT_KIND,
+                "subject": draft["subject"],
+                "body": draft["body"],
+                "sections": draft.get("sections"),
+                "subject_candidates": draft.get("subject_candidates"),
+                "followup_level": followup_level,
+                "qc_note": reason,
+            }),
+            is_blocker=True,
+        )
+    else:
+        item = TodoItem(
+            scope="CAMPAIGN", campaign_id=lead.campaign_id, lead_id=lead.id, label=label,
+            text=f'"{lead.company_name}" needs a message written by hand -- {reason} '
+                 "Open this lead's page to write and send one yourself.",
+            is_blocker=True,
+        )
     db.add(item)
     db.commit()
 
@@ -1283,12 +1344,25 @@ def revise_todo_item(db, todo_id: str, instruction: str) -> dict:
     was originally generated from (a campaign's metrics/insights for CAMPAIGN scope, sibling
     campaigns for GLOBAL) so the model can't drift from what's actually true. Runs
     check_instruction_pushback for CAMPAIGN-scope items only (it needs a real campaign_id to
-    check against) -- a GLOBAL item has no existing campaign yet to compare data against."""
+    check against) -- a GLOBAL item has no existing campaign yet to compare data against.
+
+    Option B (2026-09-08): items with proposal.kind=outreach_email_draft revise the stored
+    email (subject/body/sections) via the same draft_structured_email path Daily Review
+    uses -- not the campaign-proposal revision prompt."""
     item = db.get(TodoItem, todo_id)
     if not item:
         raise ValueError(f"todo item {todo_id} not found")
     if item.status != "PENDING":
         raise ValueError(f"todo item {todo_id} is already {item.status}, no longer editable")
+
+    proposal = json.loads(item.proposal) if item.proposal else None
+    if (
+        item.scope == "CAMPAIGN"
+        and isinstance(proposal, dict)
+        and proposal.get("kind") == _OUTREACH_EMAIL_DRAFT_KIND
+        and item.lead_id
+    ):
+        return _revise_outreach_email_todo(db, item, proposal, instruction)
 
     if item.scope == "CAMPAIGN":
         campaign = db.get(Campaign, item.campaign_id)
@@ -1327,13 +1401,83 @@ HUMAN_INSTRUCTION: {json.dumps(instruction, ensure_ascii=False)}
     return {"item": serialize_todo_item(item), "pushback": pushback}
 
 
+def _revise_outreach_email_todo(db, item: TodoItem, proposal: dict, instruction: str) -> dict:
+    """Rewrite the stored QC-escalation email draft from human feedback; keep Inbox card PENDING."""
+    from services.outreach.pain_points import confident_pain_points
+
+    lead = db.get(Lead, item.lead_id)
+    if not lead:
+        raise ValueError(f"lead {item.lead_id} not found for todo {item.id}")
+    product = db.get(Product, lead.product_id)
+    if not product:
+        raise ValueError(f"product {lead.product_id} not found")
+
+    campaign = db.get(Campaign, lead.campaign_id) if lead.campaign_id else None
+    tone_directive = (campaign.strategy_angle if campaign and campaign.strategy_angle else None) \
+        or product.default_tone
+    render_mode = resolve_email_render_mode(campaign) if campaign else "HTML"
+    format_directive = format_directive_for_mode(render_mode, product.default_format)
+
+    insight = (
+        db.query(LeadReviewInsight)
+        .filter(LeadReviewInsight.lead_id == lead.id)
+        .order_by(LeadReviewInsight.analyzed_at.desc())
+        .first()
+    )
+    pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+    pain_points = confident_pain_points(pain_points)
+    product_brief = {
+        "title": product.title,
+        "description": product.description,
+        "value_proposition": product.value_proposition,
+    }
+    lead_profile = {
+        "company_name": lead.company_name,
+        "contact_person_name": lead.contact_person_name,
+        "contact_person_role": lead.contact_person_role,
+    }
+    previous_draft_text = f"Subject: {proposal.get('subject', '')}\n\n{proposal.get('body', '')}"
+
+    revised = draft_structured_email(
+        db, lead.id, product_brief, lead_profile, pain_points,
+        content_assets=get_available_assets(db, lead.product_id) or None,
+        cross_sell_products=get_cross_sell_products(db, lead.product_id),
+        tone_directive=tone_directive,
+        format_directive=format_directive,
+        human_revision_instruction=instruction,
+        previous_draft_text=previous_draft_text,
+    )
+    if not revised:
+        raise RuntimeError("email rewrite failed -- try again or rephrase the instruction")
+
+    proposal = {
+        **proposal,
+        "kind": _OUTREACH_EMAIL_DRAFT_KIND,
+        "subject": revised["subject"],
+        "body": revised["body"],
+        "sections": revised.get("sections"),
+        "subject_candidates": revised.get("subject_candidates", proposal.get("subject_candidates")),
+    }
+    item.proposal = json.dumps(proposal)
+    item.text = (
+        f'Updated email for "{lead.company_name}" from your note. '
+        "Read it below — Approve & send if it looks right, or ask for another change."
+    )
+    db.commit()
+    pushback = check_instruction_pushback(db, item.campaign_id, instruction) if item.campaign_id else None
+    return {"item": serialize_todo_item(item), "pushback": pushback}
+
+
 def approve_todo_item(db, todo_id: str) -> dict:
     """Phase 21 -- the ONLY way a to-do's `proposal` ever reaches a real Campaign row
     (CAMPAIGN scope) -- a per-item decision, never a whole-day bulk action. GLOBAL scope
     never touches a campaign row at all: a campaign is always human-created (Phase 17's own
     invariant), so approving a "new campaign idea" only hands the frontend a pre-fill
     payload for the existing CampaignFormModal -- the exact same shape/flow
-    CampaignCalendar's own "Create this campaign" button already used."""
+    CampaignCalendar's own "Create this campaign" button already used.
+
+    Option B (2026-09-08): proposal.kind=outreach_email_draft sends that email via the
+    shared dispatch path, then resolves the to-do -- never applies campaign structural fields."""
     item = db.get(TodoItem, todo_id)
     if not item:
         raise ValueError(f"todo item {todo_id} not found")
@@ -1343,7 +1487,41 @@ def approve_todo_item(db, todo_id: str) -> dict:
     proposal = json.loads(item.proposal) if item.proposal else None
     applied = None
     campaign_prefill = None
-    if item.scope == "CAMPAIGN" and item.label == _APPROVE_CAMPAIGN_LABEL:
+
+    if (
+        item.scope == "CAMPAIGN"
+        and isinstance(proposal, dict)
+        and proposal.get("kind") == _OUTREACH_EMAIL_DRAFT_KIND
+    ):
+        lead = db.get(Lead, item.lead_id) if item.lead_id else None
+        if not lead:
+            raise ValueError(f"todo {todo_id} has no lead to send to")
+        if not proposal.get("subject") or not proposal.get("body"):
+            raise ValueError("this review card has no email to send")
+        # Local import: jobs.outreach_handler imports create_lead_escalation_todo from here.
+        from jobs.outreach_handler import dispatch_structured_email
+        try:
+            sent = dispatch_structured_email(
+                db, lead,
+                {
+                    "subject": proposal["subject"],
+                    "body": proposal["body"],
+                    "sections": proposal.get("sections"),
+                    "subject_candidates": proposal.get("subject_candidates")
+                        or [proposal["subject"]],
+                },
+                followup_level=proposal.get("followup_level"),
+                qc_confidence=1.0,
+            )
+        except Exception as exc:
+            raise RuntimeError(f"send failed: {exc}") from exc
+        applied = {
+            "sent_email": True,
+            "to": sent["to"],
+            "subject": sent["subject"],
+            "company_name": sent["company_name"],
+        }
+    elif item.scope == "CAMPAIGN" and item.label == _APPROVE_CAMPAIGN_LABEL:
         # Dashboard Inbox Approve on this standing cue IS the formal campaign OK -- same
         # outcome as Campaign Detail's "Mark as approved" button.
         campaign = db.get(Campaign, item.campaign_id)

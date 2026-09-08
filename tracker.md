@@ -6516,3 +6516,12 @@ Step 14.1 ka contract already tha: double gray = Delivered, **blue** double = Se
 `DeliveryTick` me Seen galti se `text-ink-700` (dark gray) tha — dark bubble pe gray hi lagta tha.
 Ab WhatsApp-style `#53BDEB`. State backend se aata hai (`derive_delivery_state` + WA `read` /
 email `opened` webhooks) — UI sirf color fix; fake blue nahi jab tak real Seen na ho.
+
+### ✅ Option B — QC-fail email → Inbox Review & send (2026-09-08)
+User chose **B**: QC-pass emails still auto-send; only QC-rejected drafts need human review.
+- Escalate pe last draft ab discard nahi hota (`last_draft`); todo label **"Review & send email"**
+  + `proposal.kind=outreach_email_draft` (subject/body/sections).
+- Inbox card: plain email preview, **Approve & send** / **Ask for a change** / **Not now**.
+- Approve → shared `dispatch_structured_email` (same Resend/OutreachLog/sequence as QC-pass).
+- Feedback → rewrite draft on the todo (same revise path as Daily Review), stay PENDING.
+- No draft (e.g. WA var fail) → purana "Needs manual outreach" path.

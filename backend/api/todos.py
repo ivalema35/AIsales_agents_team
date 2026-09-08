@@ -77,6 +77,8 @@ def approve(todo_id):
             return jsonify(approve_todo_item(db, todo_id))
         except ValueError as exc:
             return jsonify({"error": [str(exc)]}), 404
+        except RuntimeError as exc:
+            return jsonify({"error": [str(exc)]}), 503
     finally:
         db.close()
 
