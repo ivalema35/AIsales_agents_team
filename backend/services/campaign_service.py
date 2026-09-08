@@ -30,7 +30,7 @@ from database.models import (
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
 from services.reporting_service import IST_OFFSET
-from services.system_settings import get_bool, AUTONOMOUS_OUTREACH_ENABLED, DISCOVERY_ENABLED
+from services.system_settings import get_bool, set_bool, AUTONOMOUS_OUTREACH_ENABLED, DISCOVERY_ENABLED
 
 _KB_GAP_LOOKBACK_DAYS = 14
 _WATCHDOG_CONSECUTIVE_THRESHOLD = 3
@@ -872,6 +872,64 @@ def dismiss_pending_todos_by_label(db, campaign_id: str, label: str) -> int:
     return len(rows)
 
 
+def _deterministic_campaign_cues(target_segment: dict, tagged_lead_count: int, metrics: dict,
+                                 target_has_industry: bool, target_has_location: bool,
+                                 discovery_enabled: bool, ready_to_dispatch_count: int,
+                                 outreach_enabled: bool) -> list[dict]:
+    """2026-09-08, real live bug: the LLM was handed METRICS.sent=37 in its own prompt and
+    still wrote a to-do claiming "nothing has been sent yet" -- a plain number/boolean
+    comparison has no business being left to an LLM's discretion when Python can get it
+    right every single time. These 3 fixed-label cues are now computed here, not by the
+    model -- same reasoning _campaign_operational_readiness() already established for
+    other structural blockers (never a one-off hardcoded prompt paragraph OR, this time,
+    a hardcoded LLM judgment call for something with an exact right answer). Real numbers
+    are written directly into the text, so they can never drift from METRICS/counts the
+    rest of this function computed from the same real query a moment earlier.
+
+    This became even more important 2026-09-08 when Approve on "Discovery off"/"Ready to
+    send" started genuinely flipping the real, system-wide DISCOVERY_ENABLED/AUTONOMOUS_
+    OUTREACH_ENABLED switches (see approve_todo_item()) -- a human approving a WRONG "ready"
+    claim could turn on real outreach based on a false premise. Deterministic beats
+    LLM-worded here specifically because the cost of being wrong just went up.
+    """
+    cues = []
+    if tagged_lead_count > 0 and metrics["sent"] == 0:
+        cues.append({
+            "label": _REVIEW_MESSAGES_LABEL,
+            "text": (
+                f"{tagged_lead_count} real lead{'s' if tagged_lead_count != 1 else ''} "
+                f"{'are' if tagged_lead_count != 1 else 'is'} tagged to this campaign, but "
+                "nothing has been sent yet. Preview the sample email on the Campaign page "
+                "and check the WhatsApp template before this goes live."
+            ),
+        })
+    if target_has_industry and target_has_location and not discovery_enabled:
+        industry = target_segment.get("industry")
+        industry_label = ", ".join(industry) if isinstance(industry, list) else (industry or "")
+        location = target_segment.get("location")
+        location_label = ", ".join(location) if isinstance(location, list) else (location or "")
+        cues.append({
+            "label": "Discovery off",
+            "text": (
+                f"This campaign is targeted at {industry_label} in {location_label} and ready, "
+                "but discovery is switched off for the whole system right now, so no new leads "
+                "will be found for ANY campaign. Approving this turns discovery on for every "
+                "campaign, not just this one."
+            ),
+        })
+    if ready_to_dispatch_count > 0 and not outreach_enabled:
+        cues.append({
+            "label": "Ready to send",
+            "text": (
+                f"{ready_to_dispatch_count} lead{'s are' if ready_to_dispatch_count != 1 else ' is'} "
+                "ready to go for this campaign, but sending is switched off for the whole system "
+                "right now. Approving this turns sending ON for every campaign, not just this "
+                "one -- real messages will start going to real businesses."
+            ),
+        })
+    return cues
+
+
 def generate_campaign_todo(db, campaign_id: str) -> dict:
     """AI Sales Manager's strategy review for one EXISTING (human-made) campaign -- called
     both by the daily floor tick (once per IST day, unconditionally) and the signal-driven
@@ -987,6 +1045,26 @@ OPERATIONAL_READINESS: {json.dumps(operational_readiness, ensure_ascii=False)}
     raw_todo = data.get("todo")
     proposal = _clean_proposal(data.get("proposal"))
     created_items = []
+
+    # Deterministic first (see _deterministic_campaign_cues' own docstring for why) --
+    # inserted before the LLM's own `todo` list so an attempted duplicate from the model
+    # (harmless, just redundant attention) is naturally skipped by the existing
+    # `label in pending_labels` check below, never double-raised.
+    for cue in _deterministic_campaign_cues(
+        target_segment, db.query(Lead).filter(Lead.campaign_id == campaign_id).count(), metrics,
+        target_has_industry, target_has_location, discovery_enabled,
+        ready_to_dispatch_count, outreach_enabled,
+    ):
+        if cue["label"] in pending_labels:
+            continue
+        item = TodoItem(
+            scope="CAMPAIGN", campaign_id=campaign_id, label=cue["label"], text=cue["text"],
+            is_blocker=cue["label"] in blocker_labels,
+        )
+        db.add(item)
+        created_items.append(item)
+        pending_labels.add(cue["label"])
+
     if isinstance(raw_todo, list):
         for raw_item in raw_todo:
             if not isinstance(raw_item, dict):
@@ -1595,6 +1673,25 @@ def approve_todo_item(db, todo_id: str) -> dict:
         if campaign and campaign.status == "PROPOSED":
             campaign.status = "APPROVED"
             applied = {"status": "APPROVED"}
+    elif item.scope == "CAMPAIGN" and item.label == "Discovery off":
+        # 2026-09-08, real explicit user instruction (asked directly, twice, unambiguous
+        # both times): "sare kaam AI karega, human sirf review aur approve karega" --
+        # extended to these two standing system-wide switches too, which until now were
+        # deliberately human-only ("you can never claim to have changed it"). This turns
+        # DISCOVERY_ENABLED on for the WHOLE SYSTEM, not just this one campaign -- the
+        # to-do text below is written to say so plainly before a human ever clicks Approve.
+        set_bool(db, DISCOVERY_ENABLED, True)
+        applied = {"discovery_enabled": True}
+    elif item.scope == "CAMPAIGN" and item.label == "Ready to send":
+        # Same real instruction, applied to the other standing switch. This is the one
+        # action in the whole system that can result in a REAL message reaching a real
+        # business -- AUTONOMOUS_OUTREACH_ENABLED still gates every individual send
+        # (claim_lead_for_outreach, the outreach tick) exactly as before; this only ever
+        # flips it via an explicit, individual, human Approve click on a to-do that
+        # names the real count and says plainly what approving it does -- never silently,
+        # never as a side effect of anything else.
+        set_bool(db, AUTONOMOUS_OUTREACH_ENABLED, True)
+        applied = {"autonomous_outreach_enabled": True}
     elif item.scope == "CAMPAIGN" and proposal:
         campaign = db.get(Campaign, item.campaign_id)
         if campaign:

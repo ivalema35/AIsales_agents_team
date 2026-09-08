@@ -40,12 +40,15 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
   const emailDraft = isOutreachEmailDraft(proposal);
-  // GLOBAL always has a real action (opens the campaign-creation form); a CAMPAIGN item
-  // has one when it carries a structural proposal OR is the standing "Approve campaign"
-  // cue (that actually flips campaign status to APPROVED on Approve) OR an email draft
-  // waiting for Approve & send.
+  // GLOBAL always has a real action (creates the real campaign directly); a CAMPAIGN item
+  // has one when it carries a structural proposal, OR is one of the standing fixed-label
+  // cues that Approve now genuinely acts on: "Approve campaign" (flips status to APPROVED),
+  // "Discovery off"/"Ready to send" (2026-09-08, explicit user instruction -- Approve here
+  // now really turns DISCOVERY_ENABLED/AUTONOMOUS_OUTREACH_ENABLED on, system-wide), or an
+  // email draft waiting for Approve & send.
+  const FIXED_ACTION_LABELS = ["Approve campaign", "Discovery off", "Ready to send"];
   const hasAction =
-    item.scope === "GLOBAL" || !!proposal || item.label === "Approve campaign";
+    item.scope === "GLOBAL" || !!proposal || FIXED_ACTION_LABELS.includes(item.label);
 
   async function submitFeedback(e) {
     e.preventDefault();
@@ -154,6 +157,12 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
                 open it
               </Link>
             </p>
+          )}
+          {appliedResult.discovery_enabled && (
+            <p><b>Discovery is now ON</b> for every campaign in the system, not just this one.</p>
+          )}
+          {appliedResult.autonomous_outreach_enabled && (
+            <p><b>Sending is now ON</b> for every campaign in the system — real messages can go to real businesses starting now.</p>
           )}
           {appliedResult.target_segment && (
             <p>
