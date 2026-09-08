@@ -32,10 +32,54 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   // product-specific one right here, instead of only a passive link to a different page.
   const [askingWaTemplate, setAskingWaTemplate] = useState(false);
   const [waAskResult, setWaAskResult] = useState(null);
+  // 2026-09-08, real user ask: "campaign ke liye template yahin select karna he, preview
+  // dekh ke -- dusre page kyu jaun?" -- every currently-APPROVED template (shared library +
+  // any real, already-Meta-approved DB one) picked right here; picking one just reassigns
+  // its (Meta-invisible) product_id -- no new Meta call, and the real preview below updates
+  // immediately so a human can see it before committing to keeping it.
+  const [waCandidates, setWaCandidates] = useState(null);
+  const [selectingTemplate, setSelectingTemplate] = useState(false);
 
   useEffect(() => {
     api.getCampaignDailyReview(campaign.id).then(setReview).catch((err) => setError(err.message));
   }, [campaign.id]);
+
+  function loadWaCandidates() {
+    if (!campaign.product_id) return;
+    api.listWhatsappTemplates({ status: "APPROVED", purpose: "FIRST_TOUCH" })
+      .then(setWaCandidates)
+      .catch(() => {});
+  }
+
+  useEffect(() => {
+    if (previewChannel === "whatsapp") loadWaCandidates();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewChannel, campaign.product_id]);
+
+  async function selectWaTemplate(templateId) {
+    setSelectingTemplate(true);
+    setError(null);
+    try {
+      const currentlyAssigned = (waCandidates || []).find((t) => t.product_id === campaign.product_id);
+      if (!templateId) {
+        // "Shared library (default)" -- release this product's own template, if any,
+        // back to shared so select_template()'s own default fallback applies again.
+        if (currentlyAssigned) await api.updateWhatsappTemplate(currentlyAssigned.id, { product_id: null });
+      } else {
+        if (currentlyAssigned && currentlyAssigned.id !== templateId) {
+          await api.updateWhatsappTemplate(currentlyAssigned.id, { product_id: null });
+        }
+        await api.updateWhatsappTemplate(templateId, { product_id: campaign.product_id });
+      }
+      const fresh = await api.getCampaignDailyReview(campaign.id);
+      setReview(fresh);
+      loadWaCandidates();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSelectingTemplate(false);
+    }
+  }
 
   async function askAiForWaTemplate() {
     setAskingWaTemplate(true);
@@ -402,6 +446,30 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                       {review.sample_whatsapp.body}
                     </p>
                   </div>
+                  {waCandidates && waCandidates.length > 0 && (
+                    <label className="flex flex-col gap-1">
+                      <span className="text-[11px] font-medium text-ink-700">
+                        Choose a template for this product
+                      </span>
+                      <select
+                        value={(waCandidates.find((t) => t.product_id === campaign.product_id) || {}).id || ""}
+                        onChange={(e) => selectWaTemplate(e.target.value)}
+                        disabled={selectingTemplate}
+                        className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs text-ink-900 focus:border-gold-500 focus:outline-none disabled:opacity-50"
+                      >
+                        <option value="">Shared library (default)</option>
+                        {waCandidates.map((t) => (
+                          <option key={t.id} value={t.id}>
+                            {t.name}{t.product_title ? ` — currently used by ${t.product_title}` : " — shared"}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="font-mono text-[10px] text-ink-500">
+                        Picking one just points this product at it (no new Meta submission) —
+                        the preview above updates right away so you can see it before keeping it.
+                      </span>
+                    </label>
+                  )}
                   <p className="text-[11px] text-ink-600">{review.sample_whatsapp.manage_hint}</p>
                   {review.sample_whatsapp.source !== "product" && (
                     <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-gold-600 bg-gold-100/40 p-2.5">
