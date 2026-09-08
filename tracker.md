@@ -6827,3 +6827,36 @@ ENABLED`/`DISCOVERY_ENABLED` bilkul touch nahi hue — dono abhi bhi separate, h
 hain, koi real business ko nayi campaign se kuch nahi jayega jab tak wo switches explicitly on na ho.
 Commit `5008afd`.
 
+### ⭐⭐⭐⭐⭐⭐ "Sirf campaign nahi, SAARE to-dos pe approve = AI khud kaam kare" + real bug pakड़ी (2026-09-08)
+
+User ne ask ko generalize kiya: "sirf campaign banane ki baat nahi, saare to-dos jab human approve
+kare to AI upar khud kaam kare." Maine saare to-do types audit kiye — zyada tar me AI pehle se hi
+real kaam karta tha Approve pe, sirf 2 exception the: (1) "Needs manual outreach" (AI khud fail ho
+chuka hota he, koi draft hi nahi hota bhejne layak), (2) **"Discovery off"/"Ready to send" — safety
+switches, jo deliberately human-only the**. Maine seedha pucha (AskUserQuestion) ki kya in switches
+ko bhi AI khud on kare Approve pe — **user ne explicit, direct confirm kiya: "sare kaam AI karega,
+human sirf review karega, approve karega."**
+
+**Fix**: `approve_todo_item()` me ab "Discovery off" approve karne se `DISCOVERY_ENABLED` **turant
+real True** ho jata he (poore system ke liye), "Ready to send" approve karne se `AUTONOMOUS_
+OUTREACH_ENABLED` True ho jata he. To-do ka text ab explicitly bolta he "ye WHOLE SYSTEM ke liye
+hoga, sirf isi campaign ke liye nahi" — koi chhupi hui cheez nahi. UI me "Applied" confirmation card
+bhi saaf bolta he "Sending is now ON for every campaign."
+
+**Isi kaam ke beech user ne ek confusing screenshot dikhaya**: "IV Clasess Push" ka "Review messages"
+to-do keh raha tha "41 leads hain, kuch bheja nahi gaya" — **jabki real data me 37 real sends already
+ho chuke the!** Investigate kiya — **ye ek genuine, real LLM mistake thi**: daily strategist ko apne
+hi prompt me `METRICS.sent=37` diya gaya tha, phir bhi usne "nothing sent yet" likh diya — ek simple
+number-comparison jo LLM se galat ho gaya. Ye exactly wahi "bacche jaisa" behavior tha jiski user ne
+pehle bhi shikayat ki thi.
+
+**Root fix (bada, structural)**: "Review messages", "Discovery off", "Ready to send" — teeno ab
+**100% Python me deterministically compute hote hain**, LLM ko bilkul nahi diya jaata decide karne
+ke liye. `_deterministic_campaign_cues()` naya function — real numbers seedha Python se text me
+daalta he, kabhi galat nahi ho sakta. LLM ka prompt bhi simplify kiya — ab in 3 cheezon ko check
+karne ki zimmedari LLM ki nahi he, uska attention judgment-wale kaamon (performance patterns,
+conflicts, real proposals) pe focus rahega. **Verify kiya**: purani galat to-do dismiss ki, dobara
+generate kiya — ab sahi (0 galat cues), aur journal entry genuinely sophisticated: "keep watching for
+response quality rather than changing direction too early" — ye asli senior-strategist jaisi soch he.
+Commit `75827fa`, VPS deploy+restart, real data se verify.
+

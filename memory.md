@@ -930,3 +930,21 @@ hamesha human-created" invariant relax ki, **sirf CREATION step pe** — safety 
 GLOBAL branch ab seedha real Campaign row create karta he + turant pehli daily review chalata he.
 **Real verify kiya**: ek real to-do approve kiya, real campaign ban gaya DB me, sab fields sahi.
 Commit `5008afd`.
+
+**⭐⭐⭐⭐⭐⭐ SAARE to-dos approve = AI khud kaam kare, safety switches bhi, 2026-09-08**: user ne
+generalize kiya — "sirf campaign nahi, koi bhi to-do approve karu to AI khud kaam kare." Maine
+explicit pucha AskUserQuestion se: kya "Discovery off"/"Ready to send" (safety switches) bhi isme
+include hain? **User ne clearly confirm kiya: "sare kaam AI karega, human sirf review approve karega."**
+Fix: in dono ko approve karne se ab REAL `DISCOVERY_ENABLED`/`AUTONOMOUS_OUTREACH_ENABLED` True ho
+jate hain (poore system ke liye) — to-do text explicitly bolta he "WHOLE SYSTEM ke liye," chhupaya
+nahi jaata. **Isi kaam ke beech ek real bug bhi mila**: "Review messages" to-do ne "kuch nahi bheja"
+bola jabki 37 real sends already ho chuke the — LLM ko sahi data diya gaya tha, phir bhi galat likha.
+**Fix (structural)**: ye 3 fixed cues (Review messages, Discovery off, Ready to send) ab 100% Python
+me deterministically compute hote hain, LLM ko decide karne ko diya hi nahi jaata — kabhi galat nahi
+ho sakta ab. Commit `75827fa`.
+
+**⚠️ IMPORTANT — persistent memory update zaroori**: is decision se `project_autonomous_outreach_
+kill_switch.md` (cross-session memory) update karni padegi — purana rule tha "never flip without
+explicit 'send to real businesses now'" — ab user ne ek NAYI STANDING POLICY di he: AI khud in
+switches ko flip kar sakta he JAB koi specific to-do (jo clearly bolta he "ye system-wide switch on
+karega") explicitly approve ho. Ye ek real, deliberate policy change he, purana absolute rule nahi.
