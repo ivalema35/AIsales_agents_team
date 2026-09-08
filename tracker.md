@@ -6557,3 +6557,61 @@ Fix: independent `_heartbeat_loop` task so beats continue while work runs. Commi
 **Lead-count goal reminder:** goal = stop ceiling, not same-day “find N now”; Serper batch +
 24h discovery cooldown per (query, region).
 
+### ⭐⭐⭐ "IV Clasess Push" campaign — email rejection root cause + WA template + Meta workflow (2026-09-08)
+
+User ne naya campaign chalaya (coaching institutes, "IV Clasess Push"), kaafi email reject hue aur
+"marketing_gen" wala WA template use hua jo bekar tha. Real investigation + fix, sab real data se
+verify kiya:
+
+**1. Email rejection — asli, dominant reason mila**: is campaign ke coaching-institute leads ke paas
+zyada tar **koi verified pain point hi nahi tha** (VERIFIED_PAIN_POINTS empty — kam Google reviews).
+40 recent QC events check kiye — 20+ leads baar-baar reject ho rahe the kyunki drafting agent empty
+pain-point case me bhi **specific-sounding claims** likh raha tha ("your attendance/fees scattered
+across registers, WhatsApp, Excel" — jaise ye is business ke baare me real fact ho), aur ek lead
+("Vedant Academy") me to seedha **meta-commentary leak** hua: "No verified pain points were provided
+for Vedant Academy" khud draft ke andar likha gaya! QC sahi se in sabko reject kar raha tha.
+
+**Fix**: naya "subject-of-the-sentence" test — jab pain points empty hon, sentence ka subject
+"coaching centres often..." hona chahiye, kabhi "your X is Y" nahi. Concrete good/bad examples diye
+prompt me. Naya GUARDRAIL rule (sabhi prompts me): "kabhi apne inputs/data ke baare me mat likho"
+(fourth-wall break ban). **QC ko bhi fix kiya** — pehle QC khud empty-pain-point wale sahi drafts ko
+"specific claim nahi hai" bol ke reject kar raha tha (apne hi rule se contradiction). Ab explicit:
+empty list = category-general opener CORRECT he, reject sirf tab jab phir bhi specific business-claim
+kare bina evidence ke.
+
+**Verify (real, 4 alag leads jo pehle fail ho rahe the)**: Kota Coaching Classes, Vedant Academy, Cube
+Tutorials, T.I.M.E. Surat — **sab 4 ab attempt 1 pe hi QC-approved** (pehle 2-3 baar reject ho rahe
+the). Ye is poore campaign ka SABSE BADA real fix hai.
+
+**2. WhatsApp "marketing_gen" (typo wala template — "make your buisness simpale") — 18 real
+businesses ko ja chuka tha!** Root cause: `select_template()` sirf tab decent template
+(`ivinfotech_pain_point_outreach`) use karta tha jab pain_points non-empty ho — empty case me
+seedha bekar GENERIC pe gir jata tha. **Fix**: ab decent template hamesha default (empty ho ya na
+ho, uska apna fallback phrase "some recent challenges" hai) — GENERIC ab sirf last-resort. Verify:
+`select_template([])` aur `select_template([real_point])` dono ab `PAIN_POINT_HOOK` return karte hain.
+
+**3. Campaign Template Review — AI suggestion + preview (naya feature)**: Daily Review ke WhatsApp
+tab me pehle se preview tha (Cursor ne banaya), ab **actionable button add kiya** — "Ask AI for a
+template for this product" — jab product ka apna WA template na ho. Naya backend signal
+(`find_template_improvement_reason` me product-scoped FIRST_TOUCH gap check) — pehle sirf reply-rate
+ya follow-up-coverage signal check hota tha, product-specific "koi template hi nahi hai" gap kabhi
+detect nahi hota tha (assume tha ki shared library hamesha "enough" hai). Verify: IV Classes product
+ke liye real signal fire hua, real product brief ke sath.
+
+**4. Meta approval workflow — already tha, 2 real gaps fix kiye**: propose→QC→admin approve→Meta
+submit→poll status pehle se pura mechanism tha (WhatsApp Templates page). Do naye gaps:
+(a) **Meta reject kare to naya try kare** — `poll_template_status()` ab automatically ek naya DRAFT
+candidate banata he jab Meta REJECTED bolta he (rejection reason context ke sath), admin ko phir bhi
+naya approve karna padega Meta bhejne se pehle — koi auto-resubmit nahi.
+(b) **QC khud reject kare to bhi retry** — pehle propose_new_template() ek hi try karta tha, QC reject
+kare to bas None. Ab email jaisa hi retry-with-feedback (2 attempts).
+
+**Honest real finding**: IV Classes product ke liye real template banane ki 3 koshish ki (6 candidate/
+QC cycles) — QC har baar reject karta raha (structure existing se milta-julta, ya capability claim
+"bundle" jaisa). Root cause samjha: is product ke koi real lead ka pain point data hi nahi he abhi
+(discovery abhi start hua he) — AI ke pass anchor karne ke liye kuch concrete nahi he, isiliye
+generic/bundled likh raha he. Ye actually sahi/honest behavior he (fabricate nahi kar raha) — jaise
+jaise real IV Classes leads ka review data aayega, "Ask AI" button dobara try karne pe better result
+milega. Commits `5f32a8e`, `0831f1a`, `bc74c2b`, `5209bfd` — sab real dry-run/live-data se verify,
+VPS deploy+restart, safety switches untouched.
+

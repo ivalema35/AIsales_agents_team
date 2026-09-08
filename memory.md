@@ -832,3 +832,19 @@ campaign-page button = user ne socha, **abhi pending** (docs only, build nahi).
 
 **Standing safety:** discovery/outreach switches user ke ilawa test ke liye mat flip karo. VPS deploy
 = push → pull → frontend build+`public_html` → affected `bos-*` restart. Secrets sirf `.env`.
+
+**⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
+user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
+(40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified
+pain point nahi** tha, aur empty-pain-point case me drafting agent **specific-sounding false claims**
+likh raha tha (ek lead me to literal "No verified pain points were provided" hi draft ke andar leak ho
+gaya). Fix: naya "subject-of-the-sentence" test prompt me (empty = "coaching centres often...", kabhi
+"your X" nahi), naya GUARDRAIL rule (apne data/inputs ke baare me kabhi mat likho), aur QC ko explicit
+bataya ki empty-list case me category-general opener CORRECT he. **Verify: 4 pehle-fail-ho-rahe leads
+ab attempt 1 pe hi approve ho rahe hain.** WhatsApp "marketing_gen" (typo wala, "buisness simpale") 18
+real businesses ko ja chuka tha — `select_template()` fix kiya taaki decent template (`PAIN_POINT_HOOK`)
+hamesha default rahe. Bonus: Daily Review me "Ask AI for a template" button add kiya (product-scoped
+gap check naya), aur Meta-reject-hone-pe-naya-try-kare + QC-reject-hone-pe-retry dono add kiye existing
+template-approval pipeline me. **Honest finding**: IV Classes ka apna template abhi bhi converge nahi
+hua (AI ke pass real lead data nahi he anchor karne ko) — jaise real leads ka data aayega, better
+hoga. Commits `5f32a8e`→`5209bfd`, sab real data se verify, VPS deploy.
