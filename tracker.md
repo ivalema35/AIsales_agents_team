@@ -6710,3 +6710,27 @@ karta). Ab `vps_deploy.py`'s restart action khud-ba-khud har restart ke baad stu
 karta he — future me ye manual dhoondhne ki zaroorat nahi. (Ye scratchpad tool hai, repo me commit nahi
 hota.)
 
+### ✅ Template picker seedha Daily Review mein (2026-09-08) + real Meta approval confirm
+
+User ka sahi UX point: "campaign ke liye template yahin select karna he, preview dekh ke — dusre page
+kyu jaun?" — WA Templates page pe "Used by" dropdown pichhle commit mein alag page pe tha. Ab **Daily
+Review ke WhatsApp preview ke andar hi** "Choose a template for this product" dropdown hai — koi bhi
+already-APPROVED template (shared library + kisi bhi product ka real Meta-approved) turant assign kar
+sakte ho, **koi naya Meta call nahi**, upar ka real preview turant update ho jata he. Pasand na aaye to
+neeche wahi "Ask AI for a template" button already he.
+
+**Real, end-to-end verify kiya** (Flask test client se assign→preview-check→restore): sab kaam kar
+raha he. Isi verify ke dauraan **ek achhi khabar mili** — user ne khud pehle wala AI-drafted
+"iv_classes_first_touch" template WhatsApp Templates page se **"Approve & Submit to Meta" dabakar
+real bhej diya tha** (10:23:46), aur **Meta ne 6 minute mein hi approve kar diya** (10:29:55, scheduler
+ke periodic poll se pakड़ा) — poora pipeline (AI draft → QC → human approve → Meta submit → Meta
+approve) end-to-end real chal chuka he!
+
+**Bonus real bug mila isi verify ke dauraan**: `WhatsappTemplate.updated_at` (aur poore codebase ke
+KISI BHI table ka `updated_at`) kabhi actually update nahi hota tha ek baar insert hone ke baad —
+sirf `job_queue.py` ke raw-SQL writes explicitly set karte the, baaki sab ORM writes se ye column
+hamesha creation-time pe hi atka rehta tha. Isse `get_approved_first_touch_template()` jaisi
+"sabse recent wala pick karo" logic galat order de sakti thi. `WhatsappTemplate.updated_at` pe
+`onupdate` fix kar diya (sirf isi table ke liye abhi — baaki tables mein bhi yehi pattern he, user ko
+bata diya, sabme ek saath nahi kiya bina pooche). Commit `8d6115d` (picker), `fe7e9d2` (updated_at fix).
+

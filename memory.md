@@ -890,3 +890,11 @@ sakte hain ab, "Used by" dropdown se, koi naya Meta submission nahi chahiye. Com
 **`vps_deploy.py` (scratchpad tool) ab self-healing he** — har `restart` action ke baad khud stuck
 CLAIMED jobs check + recover karta he (is session me baar-baar restart karne se bar-bar jobs atak
 rahe the, "system needs attention" email trigger karta tha).
+
+**Template picker Daily Review mein aa gaya + real Meta approval ho chuka** (2026-09-08) — "Choose a
+template" dropdown ab WhatsApp preview ke andar hi he (user ka sahi UX point tha, alag page nahi
+chahiye). Isi verify ke dauraan pata chala: user ne khud AI-drafted "iv_classes_first_touch" ko
+Approve & Submit kiya tha, **Meta ne 6 min mein approve kar diya** — poora AI-draft→QC→human-approve→
+Meta-approve pipeline real chal chuka he. **Systemic bug bhi mila**: kisi bhi table ka `updated_at`
+kabhi ORM writes se actually update nahi hota tha (sirf `job_queue.py` ke raw-SQL me). `WhatsappTemplate`
+ke liye fix kiya, baaki tables ke liye user ko bata diya, khud se sabme nahi kiya.
