@@ -5,7 +5,7 @@ import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass, statusLabel } from "../lib/statusColors";
-import { industryLabel } from "../lib/targetSegment";
+import { industryLabel, locationLabel } from "../lib/targetSegment";
 import { relativeTime } from "../lib/relativeTime";
 import { useConfirm } from "../lib/ConfirmContext";
 import { useToast } from "../lib/ToastContext";
@@ -196,7 +196,7 @@ export default function CampaignDetail() {
               <Target size={14} className="mt-0.5 shrink-0 text-ink-500" />
               <span>
                 {industryLabel(target) || "Businesses"}
-                {target.location ? ` in ${target.location}` : ""}
+                {locationLabel(target) ? ` in ${locationLabel(target)}` : ""}
               </span>
             </p>
           </div>

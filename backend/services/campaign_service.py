@@ -525,6 +525,17 @@ def _clean_proposal(raw) -> dict | None:
                 target_segment = {k: v for k, v in target_segment.items() if k != "industry"}
         elif isinstance(industry, str) and not industry.strip():
             target_segment = {k: v for k, v in target_segment.items() if k != "industry"}
+        # 2026-09-08: location may be one city (str) or several (list) -- same validation
+        # posture as industry. Empty / non-string entries dropped; empty list removes the key.
+        location = target_segment.get("location")
+        if isinstance(location, list):
+            places = [v.strip() for v in location if isinstance(v, str) and v.strip()]
+            if places:
+                target_segment = {**target_segment, "location": places}
+            else:
+                target_segment = {k: v for k, v in target_segment.items() if k != "location"}
+        elif isinstance(location, str) and not location.strip():
+            target_segment = {k: v for k, v in target_segment.items() if k != "location"}
         if target_segment:
             cleaned["target_segment"] = target_segment
     lead_count_goal = raw.get("lead_count_goal")

@@ -7,3 +7,11 @@ export function industryLabel(target) {
   if (Array.isArray(industry)) return industry.filter(Boolean).join(", ");
   return industry || "";
 }
+
+// 2026-09-08 -- same dual shape for location (one city string, or several cities).
+export function locationLabel(target) {
+  const location = target?.location ?? target;
+  if (Array.isArray(location)) return location.filter(Boolean).join(", ");
+  if (typeof location === "string") return location;
+  return "";
+}

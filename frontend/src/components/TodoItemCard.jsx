@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AlertTriangle, CheckCircle2, Mail, MessageSquareWarning, Sparkles, X } from "lucide-react";
 import { api } from "../api/client";
-import { industryLabel } from "../lib/targetSegment";
+import { industryLabel, locationLabel } from "../lib/targetSegment";
 
 // Phase 21 -- a todo item whose label is genuinely about a real signal conflict (Step
 // 20.2) gets distinct, more urgent styling than an ordinary note, so a human's eye lands
@@ -140,7 +140,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           {appliedResult.target_segment && (
             <p>
               <b>Target set:</b> {industryLabel(appliedResult.target_segment) || "—"}
-              {appliedResult.target_segment.location && ` in ${appliedResult.target_segment.location}`}
+              {appliedResult.target_segment.location && ` in ${locationLabel(appliedResult.target_segment)}`}
             </p>
           )}
           {appliedResult.lead_count_goal != null && <p><b>Lead count goal set:</b> {appliedResult.lead_count_goal}</p>}
@@ -282,7 +282,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               <p>
                 <b>Target:</b>{" "}
                 {industryLabel(proposal.target_segment) || "—"}
-                {proposal.target_segment.location && ` in ${proposal.target_segment.location}`}
+                {proposal.target_segment.location && ` in ${locationLabel(proposal.target_segment)}`}
               </p>
             )}
             {proposal.lead_count_goal != null && <p><b>Lead count goal:</b> {proposal.lead_count_goal}</p>}

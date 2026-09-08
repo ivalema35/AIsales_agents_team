@@ -5,7 +5,7 @@ import { api } from "../api/client";
 import CampaignFormModal from "./CampaignFormModal";
 import TodoItemCard from "./TodoItemCard";
 import Modal from "./ui/Modal";
-import { industryLabel } from "../lib/targetSegment";
+import { industryLabel, locationLabel } from "../lib/targetSegment";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -308,7 +308,7 @@ export default function CampaignCalendar() {
                             <p className="flex items-center gap-1 truncate text-[9px] text-gold-700">
                               <Target size={9} className="shrink-0" />
                               {industryLabel(c.target_segment) || "—"}
-                              {c.target_segment.location && ` · ${c.target_segment.location}`}
+                              {locationLabel(c.target_segment) && ` · ${locationLabel(c.target_segment)}`}
                             </p>
                           )}
                           <div className="mt-0.5 flex flex-wrap gap-1 font-mono text-[9px] text-gold-700">

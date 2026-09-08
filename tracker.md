@@ -6525,3 +6525,9 @@ User chose **B**: QC-pass emails still auto-send; only QC-rejected drafts need h
 - Approve → shared `dispatch_structured_email` (same Resend/OutreachLog/sequence as QC-pass).
 - Feedback → rewrite draft on the todo (same revise path as Daily Review), stay PENDING.
 - No draft (e.g. WA var fail) → purana "Needs manual outreach" path.
+
+### ✅ Discovery Scheduler Erroring — multi-city location list (2026-09-08)
+Root cause: campaign `target_segment.location` as a Python list (e.g. Ahmedabad/Surat/…)
+was bound into `discovery_runs.region` → `sqlite3.InterfaceError`. Same fix pattern as
+multi-industry: expand each city into its own (query, region) DISCOVER job + cooldown.
+`locationLabel()` for UI. Deploy + restart `bos-scheduler`.

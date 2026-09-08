@@ -185,43 +185,64 @@ def _run_discovery_tick(db):
                 break
 
             target = json.loads(campaign.target_segment or "{}")
-            region = target["location"]
             # 2026-09-07, user-caught real bug: a campaign targeting MULTIPLE business types
             # (industry as a list, see _clean_proposal) needs each one run as its OWN real
             # search -- a single vague summary string ("multiple local business types") used
             # to be the only option and produced a search term nothing could be found for.
             # DiscoveryRun is already keyed by (campaign_id, query, region), so each list
             # entry gets its own independent cooldown for free, no schema change needed.
-            industries = target["industry"]
+            industries = target.get("industry")
             queries = industries if isinstance(industries, list) else [industries]
+            queries = [q for q in queries if isinstance(q, str) and q.strip()]
+
+            # 2026-09-08, same class of bug for location: a campaign with location as a
+            # list of cities (AI proposal / multi-city IC campaign) was passed straight
+            # into DiscoveryRun.region and SQLite -- sqlite3.InterfaceError (list is not
+            # a bindable scalar). Expand to one region per city, same as industry queries.
+            raw_location = target.get("location")
+            if isinstance(raw_location, list):
+                regions = [r.strip() for r in raw_location if isinstance(r, str) and r.strip()]
+            elif isinstance(raw_location, str) and raw_location.strip():
+                regions = [raw_location.strip()]
+            else:
+                regions = []
+            if not queries or not regions:
+                continue
 
             for query in queries:
+                for region in regions:
+                    if fired >= Config.MAX_DISCOVER_PER_TICK:
+                        break
+
+                    # Cooldown tracked per campaign now (Step 17.7) -- two campaigns for the same
+                    # product never share one clock, and a campaign whose target changes later
+                    # (a strategy-refinement to-do) starts a fresh, unblocked cooldown for its new
+                    # (query, region) pair rather than inheriting the old one's timer.
+                    run = db.query(DiscoveryRun).filter(
+                        DiscoveryRun.campaign_id == campaign.id,
+                        DiscoveryRun.query == query,
+                        DiscoveryRun.region == region,
+                    ).first()
+                    if run and datetime.utcnow() - run.last_run_at < timedelta(hours=cooldown_hours):
+                        continue
+
+                    enqueue(db, "DISCOVER", {
+                        "product_id": product.id, "campaign_id": campaign.id,
+                        "query": query, "location": region,
+                    })
+                    if run:
+                        run.last_run_at = datetime.utcnow()
+                    else:
+                        db.add(DiscoveryRun(
+                            product_id=product.id, campaign_id=campaign.id,
+                            query=query, region=region,
+                        ))
+                    db.commit()
+                    fired += 1
+                    logger.info("DISCOVER queued: product=%s campaign=%s query=%r region=%s",
+                               product.title, campaign.name, query, region)
                 if fired >= Config.MAX_DISCOVER_PER_TICK:
                     break
-
-                # Cooldown tracked per campaign now (Step 17.7) -- two campaigns for the same
-                # product never share one clock, and a campaign whose target changes later
-                # (a strategy-refinement to-do) starts a fresh, unblocked cooldown for its new
-                # (query, region) pair rather than inheriting the old one's timer.
-                run = db.query(DiscoveryRun).filter(
-                    DiscoveryRun.campaign_id == campaign.id,
-                    DiscoveryRun.query == query,
-                    DiscoveryRun.region == region,
-                ).first()
-                if run and datetime.utcnow() - run.last_run_at < timedelta(hours=cooldown_hours):
-                    continue
-
-                enqueue(db, "DISCOVER", {
-                    "product_id": product.id, "campaign_id": campaign.id, "query": query, "location": region,
-                })
-                if run:
-                    run.last_run_at = datetime.utcnow()
-                else:
-                    db.add(DiscoveryRun(product_id=product.id, campaign_id=campaign.id, query=query, region=region))
-                db.commit()
-                fired += 1
-                logger.info("DISCOVER queued: product=%s campaign=%s query=%r region=%s",
-                           product.title, campaign.name, query, region)
 
     return fired
 

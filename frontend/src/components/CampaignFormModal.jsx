@@ -62,8 +62,16 @@ export default function CampaignFormModal({ products, defaultDate, prefill, onCr
   const [productId, setProductId] = useState(prefill?.product_id || products[0]?.id || "");
   const [name, setName] = useState("");
   const [date, setDate] = useState(defaultDate || "");
-  const [industry, setIndustry] = useState(prefill?.target_segment?.industry || "");
-  const [location, setLocation] = useState(prefill?.target_segment?.location || "");
+  const [industry, setIndustry] = useState(
+    Array.isArray(prefill?.target_segment?.industry)
+      ? prefill.target_segment.industry.filter(Boolean).join(", ")
+      : (prefill?.target_segment?.industry || "")
+  );
+  const [location, setLocation] = useState(
+    Array.isArray(prefill?.target_segment?.location)
+      ? prefill.target_segment.location.filter(Boolean).join(", ")
+      : (prefill?.target_segment?.location || "")
+  );
   const [leadCountGoal, setLeadCountGoal] = useState(
     prefill?.lead_count_goal != null ? String(prefill.lead_count_goal) : ""
   );
