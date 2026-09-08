@@ -6370,3 +6370,47 @@ User correction: todos must come from AI Manager only (no Python-invented rows),
 User catch: Daily Review only showed Email (Formatted/Simple) � no way to review the WhatsApp first-touch template that real sends use.
 
 **Fix:** `build_sample_whatsapp_preview` in `campaign_service.py` (same selection as `outreach_wa_handler` first touch). `get_daily_review` returns `sample_whatsapp`. `DailyReviewPanel`: Email | WhatsApp tabs; WA shows filled body + link to WhatsApp Templates.
+
+### 🐛🐛🐛 User ne live test kiya, 3 real bug mile aur fix hue (2026-09-07/08)
+
+User ne khud `AUTONOMOUS_OUTREACH_ENABLED` on karke ek **real live test** kiya. Isse turant ek real
+safety-critical event hua (1 real WhatsApp message ek real business ko gaya) — turant switch off kiya,
+scope confirm ki (koi aur pending send nahi tha), user ne confirm kiya khud unhone hi on kiya tha
+testing ke liye. Is real test se 3 genuine, alag-alag bug mile:
+
+**1. "Sirf 10 leads aaye, sirf gyms" — Serper API non-deterministic nikla**
+`discovery_runs` check kiya — dental clinics/gyms/salons **teeno** queries chali thi (10:51:34), sab
+DONE, koi error nahi — par "dental clinics"/"salons" ne **0 results** diye, sirf "gyms" ne 10 diye. Maine
+DIRECTLY wahi exact query dobara chalayi — is baar **ulta** result aaya: dental clinics=10, salons=10,
+**gyms=0**! Matlab Serper Places API genuinely non-deterministic he, same query kabhi 0 deta he kabhi
+10 — real "kuch nahi he" signal nahi. **Fix**: `_handle_discover()` ab 0-result response ko turant final
+nahi manta — 2 baar tak retry karta he (3 sec gap se) pehle accept karne se. Real campaign ke liye
+missing 2 verticals turant re-trigger kiye — ab **30 total leads** (10+10+10). Commit `1cb1d00`.
+
+**2. "Email kyu nahi gaya" — ye bug nahi tha, QC sahi kaam kar raha tha**
+Worker logs check kiye — Email draft **2 baar QC se reject hua** (generic hook, unverified pain points
+jaise inject kiye the), phir sahi se HUMAN_ESCALATION pe chala gaya, kabhi bheja hi nahi gaya. Ye system
+**bilkul design ke mutabik** kaam kar raha tha — bad-quality email ko rokna hi QC ka kaam he.
+
+**3. "WhatsApp message ka wording chaotic he" — real bug, raw review-quote seedha customer ko chala gaya**
+WhatsApp template path email ki tarah QC se guzarta hi nahi (Meta-approved fixed template, deterministic
+filling — MASTER ka apna rule "no LLM at send time"). Par is wajah se pain-point ka **raw `evidence_quote`**
+("Manager's bad response") seedha customer-facing variable me chala gaya — awkward, specific staff-member
+ko blame karta hua. **Fix**: `REVIEW_ANALYST_SYSTEM_PROMPT` me naya `customer_facing_phrase` field add
+kiya (isi existing REVIEW LLM call me, koi naya call nahi) — short, tactful, process/situation-focused
+rephrasing ("response times to complaints" na ki "Manager's bad response"). WhatsApp filler ab isse use
+karta he, purane records ke liye `evidence_quote` fallback rehta he. Email prompt me bhi same warning add
+ki (usme bhi same raw-quote risk tha QC-rejected draft me). **Existing 7 leads (jinke real pain points
+the) ko re-analyze kiya same stored snippets se (koi naya Serper call nahi)** — sab ki phrasing ab tactful
+he. Commit `623525f`.
+
+**Bonus 4th bug, isi investigation se mila**: "Review messages" to-do galat bol raha tha "nothing sent
+yet" jabki real WhatsApp message already DELIVERED ho chuka tha. Root cause: `compute_campaign_metrics()`
+aur 6 aur jagah (`analytics_service.py` × 5, `engagement_escalation_service.py`) sab literal
+`status == "SENT"` check kar rahe the — jabki real send jaldi hi `DELIVERED`/`BOUNCED` status me badal
+jaata he (webhook se). Matlab **"sent" count poore system me undercounted tha** jaise hi koi message
+deliver ho jaata — engagement-escalation feature (3+ opens, no reply → HOT) ye poori tarah miss kar raha
+tha kisi bhi email ke liye jo deliver ho chuki thi. **Fix**: naya shared `SUCCESSFULLY_SENT_STATUSES =
+(SENT, DELIVERED, BOUNCED)` (`models.py`), saari 7 jagah `.in_()` se update kiya. Verify kiya — DELIVERED
+status wala lead ab sahi se `sent=1` count hota he. Commit `6204d34`. Sab 4 fix VPS deploy + verify ho
+chuke hain, safety switches confirm `False` hain abhi.

@@ -751,6 +751,21 @@ se koi conflict nahi, sab consistent pattern follow karta he. Local build+import
 Cursor ne khud deploy kar diya tha (frontend bundle `index-BBFZo2ov.js`, 12:09 build, services active,
 koi error nahi) — sirf ek chhota tracker.md encoding-artifact fix karke push+sync kiya (`b60e54f`).
 
-**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `b60e54f`, 2026-09-07). Baaki: Step 16.8
+**⚠️🐛🐛🐛 User ka real live test — 1 real send + 3 real bug mile, 2026-09-07/08**: user ne khud
+`AUTONOMOUS_OUTREACH_ENABLED` on kiya testing ke liye — 1 real WhatsApp message real business ko gaya
+(turant switch off kiya, contained confirm kiya, user ne khud on kiya tha ye confirm kiya). Isi test se
+3 genuine bug mile aur fix hue: (1) **Serper API non-deterministic** — same query kabhi 0 result deta
+he kabhi 10 (directly proven, dobara chalake ulta result mila) — `_handle_discover()` ab retry karta he
+0-result pe accept karne se pehle, commit `1cb1d00`; (2) email na jaana **bug nahi tha** — QC sahi se 2
+baar reject kiya low-quality draft; (3) WhatsApp message ka wording "chaotic" — **real bug**: raw review
+`evidence_quote` ("Manager's bad response") seedha customer ko chala gaya, kyunki WhatsApp template
+filling QC se guzarta hi nahi (deterministic-by-design). Fix: naya `customer_facing_phrase` field
+(existing REVIEW LLM call me hi), tactful rephrasing. Existing leads bhi re-analyze kiye (koi naya
+Serper call nahi). Commit `623525f`. **Bonus 4th bug**: poore system me "sent" status undercounted tha
+(sirf literal "SENT" check karta tha, "DELIVERED"/"BOUNCED" miss ho jaata) — 7 jagah, 3 files me fix
+kiya naya shared `SUCCESSFULLY_SENT_STATUSES` se. Commit `6204d34`. Sab deploy+verify ho chuke, safety
+switches abhi `False` hain.
+
+**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `6204d34`, 2026-09-08). Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
 inbox se disconnected hain (separate manual page).
