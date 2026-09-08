@@ -370,7 +370,8 @@ def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict,
                            format_directive: str | None = None,
                            human_revision_instruction: str | None = None,
                            previous_draft_text: str | None = None,
-                           kickoff_template_preview: bool = False):
+                           kickoff_template_preview: bool = False,
+                           recent_rejection_patterns: list | None = None):
     """Phase 11 Step 11.1. Returns {subject, subject_candidates, body, sections, hook_type,
     confidence}, or None if drafting failed or produced nothing usable.
 
@@ -411,12 +412,28 @@ def draft_structured_email(db, lead_id, product_brief: dict, lead_profile: dict,
     carry literal [Business Name]/[Pain Point] tokens for a campaign with no real leads
     yet -- the model must keep those tokens, never invent a fictional business or pain.
     lead_id may be None in that path (events log without a lead).
+
+    `recent_rejection_patterns` (2026-09-08, real user pushback: "AI Manager ko adaptive
+    banna hoga" -- an AI with the whole DB in front of it shouldn't need a human to
+    notice a recurring QC rejection pattern across a campaign's OTHER leads and hand-patch
+    a prompt): real, current rejection reasons QC gave for OTHER leads in this SAME
+    campaign recently (services/campaign_service.py's recent_qc_rejection_reasons()) --
+    this lead's own draft learns from what's been tripping up its neighbors, not just its
+    own retry attempts.
     """
     prompt = OUTREACH_SECTIONS_SYSTEM_PROMPT + f"""
 PRODUCT: {json.dumps(product_brief, ensure_ascii=False)}
 LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
+"""
+    if recent_rejection_patterns:
+        prompt += f"""
+RECENT_REJECTION_PATTERNS_IN_THIS_CAMPAIGN -- QC's real rejection reasons for OTHER
+leads in this same campaign, most recent first. This is a DIFFERENT lead, but avoid
+repeating the same mistake if one of these applies here too (e.g. if these say drafts
+kept overstating an empty/weak PAIN_POINTS list, make sure yours doesn't do that either):
+{json.dumps(recent_rejection_patterns, ensure_ascii=False)}
 """
     if kickoff_template_preview:
         prompt += """
@@ -566,7 +583,8 @@ CURRENT_DRAFT_SECTIONS: {json.dumps(sections, ensure_ascii=False)}
 def draft_followup_email(db, lead_id, product_brief: dict, lead_profile: dict, pain_points: list,
                          followup_level: int, qc_feedback: str | None = None,
                          content_assets: list | None = None, tone_directive: str | None = None,
-                         format_directive: str | None = None):
+                         format_directive: str | None = None,
+                         recent_rejection_patterns: list | None = None):
     """followup_level: 1 (re-present the asset), 2 (ask an open question), or 3 (standing
     offer -- the products list itself is appended by the caller, not drafted here).
     Returns {subject, subject_candidates, body, sections, hook_type, confidence}, or None.
@@ -588,6 +606,13 @@ LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
 PAIN_POINTS: {json.dumps(pain_points, ensure_ascii=False)}
 CHANNEL: EMAIL
 """ + level_instruction
+    if recent_rejection_patterns:
+        prompt += f"""
+RECENT_REJECTION_PATTERNS_IN_THIS_CAMPAIGN -- QC's real rejection reasons for OTHER
+leads in this same campaign, most recent first. Avoid repeating the same mistake if one
+of these applies here too:
+{json.dumps(recent_rejection_patterns, ensure_ascii=False)}
+"""
     if tone_directive or format_directive:
         prompt += f"""
 TONE_AND_FORMAT: the admin has set a preferred style for this product's outreach.

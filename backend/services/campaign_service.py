@@ -229,6 +229,51 @@ def compute_campaign_metrics(db, campaign_id: str) -> dict:
     return {"sent": sent, "opened": opened, "replied": replied, "hot": hot}
 
 
+def recent_qc_rejection_reasons(db, campaign_id: str, exclude_lead_id: str | None = None,
+                                limit: int = 5) -> list[str]:
+    """2026-09-08, real user pushback: an AI Manager with the whole DB in front of it
+    should not need a human to notice "this campaign keeps getting rejected for the same
+    reason" and hand-patch a prompt -- it should already be feeding that pattern forward
+    into the NEXT draft for a DIFFERENT lead in the same campaign, not just within one
+    lead's own 2-3 retry attempts. Deliberately lightweight: reuses agent_events (already
+    written by every QC call, see quality_controller_agent.py's review_draft()), no new
+    table, no separate reflection job -- the moment a prompt fix stops a rejection pattern,
+    this naturally stops surfacing it too, since there's nothing recent left to find.
+
+    Scoped to this ONE campaign (not product-wide) because the pattern that matters here is
+    "this campaign's leads keep tripping the same wire" -- e.g. a campaign whose leads
+    mostly have no verified pain points, which is a fact about THIS campaign's lead pool,
+    not the product in general. `exclude_lead_id` leaves out the CURRENT lead's own
+    attempts, which the caller's own retry loop already sees directly.
+    """
+    lead_ids = [row[0] for row in db.query(Lead.id).filter(Lead.campaign_id == campaign_id).all()]
+    if exclude_lead_id and exclude_lead_id in lead_ids:
+        lead_ids.remove(exclude_lead_id)
+    if not lead_ids:
+        return []
+
+    events = (
+        db.query(AgentEvent)
+        .filter(AgentEvent.lead_id.in_(lead_ids), AgentEvent.agent == "QC",
+               AgentEvent.action_type == "REVIEW_DRAFT", AgentEvent.routed_to == "REJECTED")
+        .order_by(AgentEvent.created_at.desc())
+        .limit(limit * 3)  # a few extra since some payloads may be malformed or duplicate
+        .all()
+    )
+    reasons: list[str] = []
+    for e in events:
+        try:
+            payload = json.loads(e.payload or "{}")
+        except (TypeError, ValueError):
+            continue
+        for r in payload.get("reasons") or []:
+            if r and r not in reasons:
+                reasons.append(r)
+        if len(reasons) >= limit:
+            break
+    return reasons[:limit]
+
+
 def compute_campaign_lead_summary(db, campaign_id: str) -> dict:
     """Campaign Detail page (UI Phase 16 revision, 2026-09-02) -- "aaj X leads mile, Y kaam
     ke the" in the operator's own words. `found_today`/`qualified_today` are scoped to the

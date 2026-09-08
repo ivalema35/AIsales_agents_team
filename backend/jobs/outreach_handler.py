@@ -29,7 +29,8 @@ from services.outreach.pain_points import confident_pain_points
 from services.outreach.email_service import send_email, extract_resend_id
 from services.outreach.suppression import is_suppressed
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
-from services.campaign_service import resolve_email_render_mode, format_directive_for_mode
+from services.campaign_service import (
+    resolve_email_render_mode, format_directive_for_mode, recent_qc_rejection_reasons)
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +84,15 @@ def handle_outreach_email(db, payload):
     pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
     pain_points = confident_pain_points(pain_points)
 
+    # 2026-09-08, real user pushback: the AI shouldn't need a human to notice "this
+    # campaign keeps getting the same QC rejection" and hand-patch a prompt -- a fresh
+    # draft for THIS lead should already know what's been tripping up OTHER leads in the
+    # same campaign recently, not just learn within its own 2-3 retry attempts.
+    recent_rejection_patterns = (
+        recent_qc_rejection_reasons(db, lead.campaign_id, exclude_lead_id=lead.id)
+        if lead.campaign_id else []
+    )
+
     product_brief = {
         "title": product.title,
         "description": product.description,
@@ -129,12 +139,14 @@ def handle_outreach_email(db, payload):
                                          followup_level, qc_feedback=qc_feedback,
                                          content_assets=content_assets,
                                          tone_directive=tone_directive,
-                                         format_directive=format_directive)
+                                         format_directive=format_directive,
+                                         recent_rejection_patterns=recent_rejection_patterns)
         else:
             cross_sell_products = get_cross_sell_products(db, lead.product_id)
             draft = draft_structured_email(db, lead.id, product_brief, lead_profile, pain_points,
                                            qc_feedback=qc_feedback, content_assets=content_assets,
                                            cross_sell_products=cross_sell_products,
+                                           recent_rejection_patterns=recent_rejection_patterns,
                                            tone_directive=tone_directive,
                                            format_directive=format_directive)
         if not draft:
