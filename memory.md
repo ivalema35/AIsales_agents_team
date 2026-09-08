@@ -921,3 +921,12 @@ aa gaya** (Mobile App Development: healthcare Ahmedabad; AI Automation: Mehsana 
 IV Classes 37/40 sends pe he, jald threshold cross karega. **Lesson**: AI Manager ka architecture
 khud sophisticated/well-designed he — "silent" hone ki wajah specific, provable bugs the (feature kabhi
 trigger hi nahi hota tha), architecture rewrite ki zaroorat nahi thi, targeted bug-fix kaafi tha.
+
+**⭐⭐⭐⭐⭐ Todo approve = AI khud campaign banaye, 2026-09-08**: user ne explicit maanga — "New campaign
+idea" to-do approve karne par AI khud real campaign bana de, alag form na khule. Purani "campaign
+hamesha human-created" invariant relax ki, **sirf CREATION step pe** — safety switches
+(`AUTONOMOUS_OUTREACH_ENABLED`/`DISCOVERY_ENABLED`) bilkul touch nahi kiye, wo separate hi rahenge.
+`generate_campaign_suggestion()` ab `campaign_name`/`strategy_angle` bhi banata he, `approve_todo_item()`
+GLOBAL branch ab seedha real Campaign row create karta he + turant pehli daily review chalata he.
+**Real verify kiya**: ek real to-do approve kiya, real campaign ban gaya DB me, sab fields sahi.
+Commit `5008afd`.

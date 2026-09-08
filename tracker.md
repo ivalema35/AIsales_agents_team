@@ -6797,3 +6797,33 @@ kabhi fire hi nahi hota tha, strategy-reflection switch off + crash bug) — arc
 sophisticated he (maine poora `CAMPAIGN_TODO_SYSTEM_PROMPT` padha, wo genuinely ek experienced
 strategist jaisa design he), bas ye 2 real gaps ise "silent" bana rahe the. Ab dono fix ho chuke.
 
+### ⭐⭐⭐⭐⭐ "Todo approve karu to AI khud campaign banaye, manually nahi karunga" (2026-09-08)
+
+User ne explicit maanga: "New campaign idea" wale to-do ko Approve karne par AI khud real campaign
+bana de — alag form khol ke dubara sab kuch manually type na karana pade. Ye ek deliberate purani
+invariant tha ("a campaign is always human-created") jo ab relax kiya gaya he — but sirf CREATION
+step pe, koi safety switch touch nahi hua.
+
+**Fix**:
+1. `CAMPAIGN_SUGGESTION_SYSTEM_PROMPT` ab `campaign_name` aur `strategy_angle` bhi generate karta he
+   (pehle sirf target_segment/lead_count_goal) — kyunki ab koi form nahi hoga inhe fill karne ke liye.
+2. `approve_todo_item()` ka GLOBAL branch — pehle sirf `campaign_prefill` return karta tha (form
+   khulta tha) — ab **seedha real `Campaign` row create karta he** (status="APPROVED", kyunki
+   Approve click hi human review action he), turant `generate_campaign_todo()` bhi chalata he (pehli
+   daily review turant milti he, jaise manual creation me hota he).
+3. Frontend (`TodoItemCard.jsx`) — "Applied"-style confirmation card dikhata he naye campaign ka
+   naam + seedha uske page pe jaane ka link.
+
+**Real end-to-end verify kiya** (VPS pe, real DB pe): "AI Automation Solutions" ka "New campaign
+idea" to-do approve kiya — **real Campaign row ban gaya** (id `39ac3684...`, status=APPROVED,
+target_segment/lead_count_goal sahi transfer hue), pehli daily review bhi chali. **Ek confusion clear
+ki**: pehli baar review me 0 to-dos aaye lage isliye tha kyunki us exact second DISCOVERY_ENABLED
+switch True tha (user khud Settings pe test kar rahe the shayad) — jab wo False hota he, sab sahi
+kaam karta he ("Discovery off" cue). **Ye bug nahi tha** — AI Manager live, real system state se hi
+kaam kar raha he, jo hona bhi chahiye.
+
+**Safety boundary clear**: ye sirf campaign CREATION ko friction-free banata he. `AUTONOMOUS_OUTREACH_
+ENABLED`/`DISCOVERY_ENABLED` bilkul touch nahi hue — dono abhi bhi separate, human-controlled switches
+hain, koi real business ko nayi campaign se kuch nahi jayega jab tak wo switches explicitly on na ho.
+Commit `5008afd`.
+
