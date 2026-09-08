@@ -6535,4 +6535,25 @@ multi-industry: expand each city into its own (query, region) DISCOVER job + coo
 ### ✅ Lead Scraper false DOWN during long ENRICH (2026-09-08)
 Process was alive and enriching (journalctl), but System Monitor showed Down — heartbeat
 only ran after `asyncio.gather` of concurrent ENRICH jobs finished (>45s → stale).
-Fix: independent `_heartbeat_loop` task so beats continue while work runs.
+Fix: independent `_heartbeat_loop` task so beats continue while work runs. Commit `3f2ce21`.
+
+### ✅ Operator notes — outreach + WhatsApp templates (2026-09-08, live IV Classes)
+**Why outreach “nahi start” laga (IV Clasess Push):**
+- `autonomous_outreach_enabled` live pe **True** tha; discovery bhi True.
+- ~32 HOT/WARM SCORED; ~21 confidence ≥0.70 (autonomous-eligible); ~11 confidence <0.70 →
+  `HUMAN_ESCALATION` gate se claim skip (by design, `claim_lead_for_outreach`).
+- Outreach tick **hourly** (`OUTREACH_TICK_INTERVAL_SECONDS=3600`). Scheduler restart pe pehli
+  tick tab chali jab bahut leads abhi score ho rahe the → claim 0; agla batch ~1h baad.
+- Turant send: Lead Detail **Send Outreach Now** (manual, switch bypass intentionally).
+
+**WhatsApp ≠ email edit:**
+- Email free-draft + campaign `strategy_angle`. WA = Meta-approved templates only.
+- Templates **product-scoped** (nav **WA Templates**), campaign pe free-edit nahi.
+- IV Classes product pe apna first-touch APPROVED template nahi tha → shared library /
+  dusre product ke templates fallback. Daily Review → WhatsApp tab → “Open WhatsApp Templates”.
+- User ne abhi campaign-page pe bada “Change WA template” button maanga — **pending confirm**,
+  abhi build nahi (filhaal docs only).
+
+**Lead-count goal reminder:** goal = stop ceiling, not same-day “find N now”; Serper batch +
+24h discovery cooldown per (query, region).
+

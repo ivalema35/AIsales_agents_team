@@ -805,3 +805,30 @@ ke liye sahi safety net he. Commit `7a3d7e6`/`a5f1ebf`, VPS deploy.
 **Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `a5f1ebf`, 2026-09-08). Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
 inbox se disconnected hain (separate manual page).
+
+---
+
+## Latest session snapshot (2026-09-08 afternoon) — pehle ye padho
+
+**Live campaigns:** `Ai automaion Push` (dental/gyms/salons · Mehsana) + **`IV Clasess Push`**
+(coaching centres · multi-city Ahmedabad/Surat/Vadodara/Mehsana/Chansma/Radhanpur, goal 100).
+
+**Shipped + deployed is session:**
+1. **Seen = blue ticks** on Lead Conversation (`#53BDEB`) — commit `275faaa`.
+2. **Option B — QC-fail → Inbox “Review & send email”** (draft preview, Approve & send, Ask for a
+   change). QC-pass ab bhi auto-send. Commit `c811b49` + Unique Health backfill.
+3. **Discovery Scheduler Erroring fix** — `location` as city **list** crashed SQLite; ab har city
+   alag DISCOVER run. Commit `a2ccd61`.
+4. **Lead Scraper false Down** — heartbeat gather ke baad hi likhta tha; ab background beat loop.
+   Commit `3f2ce21`.
+
+**Outreach “kyun nahi chal raha” (explained, no code flip):** switch ON ho sakta hai; IV Classes pe
+~21 auto-eligible leads; tick **hourly**; restart pe scoring mid-flight tha. Manual Send abhi bhi
+Lead page se. Confidence <0.70 WARM leads autonomous claim nahi hote.
+
+**WhatsApp templates:** email jaisa campaign pe edit **nahi** — Meta-approved, **WA Templates** page,
+product filter = IV Classes. Campaign Daily Review → WhatsApp tab pe chhota link hai. Bada
+campaign-page button = user ne socha, **abhi pending** (docs only, build nahi).
+
+**Standing safety:** discovery/outreach switches user ke ilawa test ke liye mat flip karo. VPS deploy
+= push → pull → frontend build+`public_html` → affected `bos-*` restart. Secrets sirf `.env`.
