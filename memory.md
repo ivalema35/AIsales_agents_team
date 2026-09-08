@@ -848,3 +848,12 @@ gap check naya), aur Meta-reject-hone-pe-naya-try-kare + QC-reject-hone-pe-retry
 template-approval pipeline me. **Honest finding**: IV Classes ka apna template abhi bhi converge nahi
 hua (AI ke pass real lead data nahi he anchor karne ko) — jaise real leads ka data aayega, better
 hoga. Commits `5f32a8e`→`5209bfd`, sab real data se verify, VPS deploy.
+
+**⭐⭐⭐ "AI Manager adaptive kyun nahi tha" — sahi correction, 2026-09-08**: user ne sharp point uthaya
+— QC apna reason de raha he, poora DB available he, to campaign baar-baar wahi galti kyu repeat kare?
+Real gap tha: ek lead ka retry loop sirf **usi lead ke andar** seekhta tha, doosre lead ka draft fresh/
+blind start hota tha. Fix: naya `recent_qc_rejection_reasons()` (existing agent_events reuse, koi naya
+table nahi) — har naya draft attempt ab isi campaign ke doosre leads ke recent QC-rejections dekh ke
+unhe repeat nahi karta. **Real proof**: 12 stuck leads (jo "Needs review" me atke the) fresh draft ke
+saath refresh kiye — **sab 12 pehli hi koshish me QC-approved**, zero reject. To-dos update ho gaye,
+koi email bheja nahi gaya (user khud approve karega). Commit `fd75fb7`, VPS deploy.

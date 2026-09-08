@@ -6615,3 +6615,25 @@ jaise real IV Classes leads ka review data aayega, "Ask AI" button dobara try ka
 milega. Commits `5f32a8e`, `0831f1a`, `bc74c2b`, `5209bfd` — sab real dry-run/live-data se verify,
 VPS deploy+restart, safety switches untouched.
 
+### ⭐⭐⭐ "AI Manager adaptive kyun nahi tha" — real, sharp aur sahi correction (2026-09-08)
+
+User ka bilkul sahi sawaal: "QC reason bhi de raha he, poora DB he samajhne ko, to baar baar email/WA
+template reject kyu ho rahe hain — AI Manager adaptive kyu nahi hai?" Real gap tha: har lead ka apna
+2-3 attempt ka retry loop (`qc_corrections`) sirf **usi lead ke andar** seekhta tha — ek DIFFERENT lead
+ka draft bilkul fresh/blind start hota tha, chahe usi campaign me abhi-abhi 5 doosre leads wahi galti
+kar chuke hon.
+
+**Fix**: naya `recent_qc_rejection_reasons()` (`campaign_service.py`) — existing `agent_events` hi
+reuse karta he (koi naya table/job nahi) — is SAME campaign ke DOOSRE leads ke recent real QC-rejection
+reasons nikalta he. `outreach_handler.py` ab har naye draft attempt se pehle ye fetch karta he, aur
+drafting prompt me daal deta he: "RECENT_REJECTION_PATTERNS_IN_THIS_CAMPAIGN — ye galti doosre leads
+me ho chuki he, dobara mat karo." Isse jaise-jaise ek campaign chalta he, system khud-ba-khud apni
+galtiyan repeat karna band kar deta he — bina kisi insaan ke prompt patch kiye.
+
+**Real proof — 12 stuck leads refresh kiye** (jo pehle "Needs review" me atke the): sabke liye fresh
+draft banaya (naya fix + naya adaptive-learning dono ke saath) — **12/12 pehli hi koshish me QC-approved
+ho gaye**, kisi ek ko bhi reject nahi hua. To-do queue me "Review & send email" wale card update ho
+gaye naye, achhe drafts ke saath — **koi email actually bheja nahi gaya**, user ko khud Approve & send
+dabana hoga har lead ke liye (safety rule — autonomous send switch off hi he). Commit `fd75fb7`, VPS
+deploy+restart, sab 12 leads real data se verify.
+
