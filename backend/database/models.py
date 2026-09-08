@@ -704,6 +704,11 @@ class TodoItem(Base):
     scope = Column(String, nullable=False)  # CAMPAIGN | GLOBAL
     campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="CASCADE"))  # CAMPAIGN only
     product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"))    # GLOBAL only
+    # 2026-09-07: set when this to-do is about ONE specific lead (e.g. no dispatch draft
+    # ever cleared QC, a human must write this one by hand) -- lets dedup key on
+    # (campaign_id, lead_id, label) instead of one shared label colliding across every
+    # other lead in the same campaign.
+    lead_id = Column(String, ForeignKey("leads.id", ondelete="CASCADE"))
     label = Column(String)         # free-text, e.g. "Follow-up", "Conflict", "New campaign idea"
     text = Column(Text, nullable=False)  # current state -- what per-item feedback revises
     # Optional JSON structural change: target_segment/lead_count_goal/strategy_angle/

@@ -642,6 +642,11 @@ CREATE TABLE IF NOT EXISTS todo_items (
     scope           TEXT NOT NULL,          -- CAMPAIGN | GLOBAL
     campaign_id     TEXT,                   -- CAMPAIGN only
     product_id      TEXT,                   -- GLOBAL only
+    -- 2026-09-07: set when this to-do is about ONE specific lead (e.g. "no dispatch draft
+    -- ever cleared QC, a human must write this one by hand") rather than the campaign as a
+    -- whole -- lets dedup key on (campaign_id, lead_id, label) instead of colliding every
+    -- other lead in the same campaign into one shared label.
+    lead_id         TEXT,
     label           TEXT,
     text            TEXT NOT NULL,
     proposal        TEXT,                   -- optional JSON structural change
@@ -656,7 +661,8 @@ CREATE TABLE IF NOT EXISTS todo_items (
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     resolved_at     TIMESTAMP,
     FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
 );
 
 -- INDEXES

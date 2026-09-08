@@ -118,8 +118,14 @@ def handle_outreach_wa(db, payload):
             values = fill_variables(template_key, lead_profile, pain_points)
 
     if not validate_variables(values):
+        # 2026-09-07, same real gap as the email path: this used to only log an
+        # agent_events row nothing in the UI ever surfaced. Local import to avoid a
+        # module-load cycle (campaign_service imports from agents.outreach_agent).
         logger.info("OUTREACH_WA %s -> filled variables failed validation, escalating", lead.company_name)
         log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_WHATSAPP", 0.0, "MEDIUM", "HUMAN_ESCALATION")
+        from services.campaign_service import create_lead_escalation_todo
+        create_lead_escalation_todo(
+            db, lead, "we couldn't fill a WhatsApp message with real, usable information for them.")
         return lead.id
 
     # Re-check suppression immediately before the network call -- the 100% rule applies

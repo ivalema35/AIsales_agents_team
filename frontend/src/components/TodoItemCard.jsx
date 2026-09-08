@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AlertTriangle, CheckCircle2, MessageSquareWarning, Sparkles, X } from "lucide-react";
 import { api } from "../api/client";
 import { industryLabel } from "../lib/targetSegment";
@@ -206,6 +207,18 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
       </div>
 
       <p className="mt-2 text-xs text-ink-700">{item.text}</p>
+
+      {/* 2026-09-07, user's real catch: "system ne bola review ke liye bheja, kuch aya
+          hi nahi todo me, kaise review karu?" -- a lead-scoped to-do now links straight to
+          that lead's own page instead of leaving a human to hunt for it manually. */}
+      {item.lead_id && (
+        <Link
+          to={`/leads/${item.lead_id}`}
+          className="mt-2 inline-block text-[11px] font-medium text-gold-700 hover:text-gold-600 hover:underline"
+        >
+          Open {item.lead_company_name || "this lead"}'s page →
+        </Link>
+      )}
 
       {proposal && (
         <div className="mt-2 rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">

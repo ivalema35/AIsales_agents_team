@@ -139,11 +139,19 @@ def handle_outreach_email(db, payload):
 
     if not draft or not qc_result or not qc_result["approved"]:
         # QC's veto is absolute -- no draft means no send, ever. The lead stays exactly
-        # where it was (OUTREACHING) rather than being pushed into an unrelated status;
-        # the HUMAN_ESCALATION agent_events row is the actual signal for a human to act on.
+        # where it was (OUTREACHING) rather than being pushed into an unrelated status.
+        # 2026-09-07, user's real catch: the HUMAN_ESCALATION agent_events row used to be
+        # the ONLY signal here -- a raw audit-log entry nothing in the actual UI ever
+        # surfaced, so "review it yourself" had no real place for a human to do that.
+        # Local import: campaign_service already imports from agents.outreach_agent at
+        # module level, so importing it back here at module load would risk a cycle --
+        # same avoidance pattern used elsewhere in this codebase for the same reason.
         logger.info("OUTREACH_EMAIL %s -> no QC-approved draft after %d attempt(s), escalating",
                    lead.company_name, MAX_DRAFT_ATTEMPTS)
         log_agent_event(db, "OUTREACH", lead.id, "DISPATCH_EMAIL", 0.0, "MEDIUM", "HUMAN_ESCALATION")
+        from services.campaign_service import create_lead_escalation_todo
+        create_lead_escalation_todo(
+            db, lead, "our AI couldn't write an email that passed quality review after two tries.")
         return lead.id
 
     # Re-check suppression immediately before the network call -- the whole point of

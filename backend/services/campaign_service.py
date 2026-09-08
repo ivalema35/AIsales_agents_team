@@ -619,6 +619,7 @@ def serialize_todo_item(item: TodoItem) -> dict:
         "scope": item.scope,
         "campaign_id": item.campaign_id,
         "product_id": item.product_id,
+        "lead_id": item.lead_id,
         "label": item.label,
         "text": item.text,
         "proposal": json.loads(item.proposal) if item.proposal else None,
@@ -629,6 +630,39 @@ def serialize_todo_item(item: TodoItem) -> dict:
         "created_at": str(item.created_at),
         "resolved_at": str(item.resolved_at) if item.resolved_at else None,
     }
+
+
+def create_lead_escalation_todo(db, lead: Lead, reason: str, label: str = "Needs manual outreach") -> None:
+    """2026-09-07, user's real catch: a dispatch handler that couldn't produce an
+    acceptable draft after every real retry (QC rejected an email twice, WhatsApp
+    variables failed validation) only ever wrote a HUMAN_ESCALATION `agent_events` row --
+    a raw audit-log entry, invisible anywhere in the actual UI, with the lead's own status
+    left completely unchanged. Their own words: "system ne bola review ke liye bheja, but
+    kuch aya hi nahi todo me, kaise review karu?" It didn't, because nothing was ever
+    created for a human to see. This is that missing real, visible to-do.
+
+    Keyed on (campaign_id, lead_id, label) for dedup -- unlike the campaign-level
+    fixed-label to-dos (Discovery off, Ready to send), MANY different leads in the same
+    campaign can each independently need this, so dedup must be per-lead, not per-campaign
+    -- a single shared label would silently swallow every lead after the first one.
+    Always `is_blocker=True`: a lead a human must manually write for is exactly the kind
+    of real, standing "must act" state the Calendar's red alert exists for."""
+    if not lead.campaign_id:
+        return
+    existing = db.query(TodoItem).filter(
+        TodoItem.campaign_id == lead.campaign_id, TodoItem.lead_id == lead.id,
+        TodoItem.status == "PENDING", TodoItem.label == label,
+    ).first()
+    if existing:
+        return
+    item = TodoItem(
+        scope="CAMPAIGN", campaign_id=lead.campaign_id, lead_id=lead.id, label=label,
+        text=f'"{lead.company_name}" needs a message written by hand -- {reason} '
+             "Open this lead's page to write and send one yourself.",
+        is_blocker=True,
+    )
+    db.add(item)
+    db.commit()
 
 
 def _apply_proposal_to_campaign(campaign: Campaign, proposal: dict) -> None:

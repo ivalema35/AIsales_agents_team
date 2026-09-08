@@ -42,6 +42,7 @@ COLUMN_MIGRATIONS = [
     ("campaigns", "email_render_mode", "TEXT"),
     ("campaigns", "last_todo_signal", "TEXT"),
     ("todo_items", "is_blocker", "INTEGER DEFAULT 0"),
+    ("todo_items", "lead_id", "TEXT"),
 ]
 
 
