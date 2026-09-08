@@ -870,3 +870,15 @@ hain — deploy ke baad hamesha `find_stuck_jobs()` check karna chahiye. Commit 
 "send karva do approve karke" bola, 4 user ne khud approve kiye the, 8 maine `approve_todo_item()` se
 (same real "Approve & send" code path) — sab 8 successfully sent, 0 fail. Autonomous switch touch
 nahi kiya, sirf per-item human-approved sends the.
+
+**⭐⭐⭐ "AI Manager WA template QC ko convince kyu nahi kar pa raha" — real root cause mila, 2026-09-08**:
+user ke sharp pushback pe deep investigate kiya. Asli bug: WA template QC (`review_template_draft()`)
+ko kabhi PRODUCT_BRIEF diya hi nahi jaata tha — bilkul wahi gap jo email QC me 2026-08-13 ko fix ho
+chuka tha, template pipeline alag bani thi to wo fix miss ho gaya. Isiliye QC real product features
+("attendance, homework, fees") ko bhi "invented bundle" bol ke reject kar raha tha, aur proven
+structure reuse karne ko "too similar" bol raha tha jab actually wahi sahi approach thi (product-scoped
+coverage-gap case me). Fix kiya, product_brief thread kiya QC tak. **Verify: IV Classes ke liye ab
+pehle hi attempt me QC-approved real draft ban gaya** — WhatsApp Templates "AI Proposed" tab me ready.
+Meta submit karna user ka decision (maine khud nahi kiya). Commit `7c3715b`, VPS deploy.
+**Lesson**: jab do QC pipelines (email vs template) similar checks karte hain, ek me fix ho to doosre
+me bhi check karna chahiye — copy-paste architecture me fixes drift ho sakte hain.

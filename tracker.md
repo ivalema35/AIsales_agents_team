@@ -6663,3 +6663,32 @@ send kiye** (wahi real code path jo "Approve & send" button use karta he — Res
 chuke hain. Ye ek real, irreversible action tha (real businesses ko email) — sirf user ke explicit
 "send karva do" instruction ke baad kiya, autonomous switch ko touch nahi kiya.
 
+### ⭐⭐⭐ "AI Manager WA template QC se convince kyu nahi karva pa raha" — asli root cause mila (2026-09-08)
+
+User ne screenshot dikhaya (IV Classes preview me abhi bhi shared/generic template) aur sharp sawaal
+kiya — "AI Manager pichhle rejection dekh kar proper template kyu nahi bana raha jo QC ko convince
+kare?" Deep investigation kiya (pehle ke 6 candidate/QC cycles ke real logs dobara padhe) — **asli root
+cause mila**: `review_template_draft()` (WA template QC) ko **kabhi PRODUCT_BRIEF diya hi nahi jaata
+tha** — bilkul wahi bug jo email QC me 2026-08-13 ko already fix ho chuka tha (`review_draft()` ko
+product brief milta he), but template QC pipeline alag se bani thi aur wo fix kabhi copy nahi hui.
+
+Iska matlab QC ke paas koi ground truth hi nahi tha "attendance, homework, fees" jaisi real product
+features ko verify karne ke liye — isiliye har baar "invented capability bundle" bol ke reject kar
+raha tha, jabki IV Classes ka real product brief inhi features ko explicitly list karta he! Aur
+"too similar structure" wala rejection bhi galat tha — jab reason "is product ko apna template do"
+ho (underperformance replace nahi), to pehle se proven/approved structure reuse karna hi sahi he,
+naya structure zabardasti dhoondna nahi.
+
+**Fix**: `review_template_draft()` ab `product_brief` leta he (email QC jaisa hi), `TEMPLATE_QC_
+SYSTEM_PROMPT` ko bataya "coverage-gap reason" aur "underperformance-replace reason" alag hain —
+sirf dusre wale me structural novelty chahiye. `propose_new_template()` ab product_id se real brief
+fetch karke thread karta he.
+
+**Real verify**: IV Classes ke liye phir se try kiya — **is baar seedha PEHLE hi attempt me
+QC-APPROVED real DRAFT ban gaya**: "Hi {{1}}, if {{2}} is still being handled with paper,
+spreadsheets, or separate tools, IV Classes can help bring attendance, homework, exams, fees, and
+branch management into one system. Open to a quick chat?" — ye ab **WhatsApp Templates page ke "AI
+Proposed" tab me** review ke liye ready he. Meta ko submit karna user ka decision he (higher-stakes
+action, template edit nahi ho sakta submit ke baad) — maine khud submit nahi kiya. Commit `7c3715b`,
+VPS deploy+restart, real dry-run se verify.
+
