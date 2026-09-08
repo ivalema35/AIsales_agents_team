@@ -472,7 +472,15 @@ class WhatsappTemplate(Base):
     origin = Column(String, default="ADMIN")  # ADMIN (dashboard form) or AI (Step 9.6 draft)
     reasoning = Column(Text)  # only for origin=AI -- the drafting agent's own explanation
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
+    # 2026-09-08, real finding: no model anywhere in this file has `onupdate` on its own
+    # updated_at, so it silently never changes past insert time on a plain ORM write
+    # (only a few job_queue.py raw-SQL statements explicitly set it themselves). Added
+    # here specifically because get_approved_first_touch_template()/get_approved_followup_
+    # template() order candidates by THIS column to break ties when more than one template
+    # is scoped to the same product -- without onupdate, reassigning product_id (the new
+    # Daily Review picker) wouldn't actually move a template to the front of that order.
+    updated_at = Column(TIMESTAMP, server_default=func.current_timestamp(),
+                        onupdate=func.current_timestamp())
 
 
 class ChannelPolicy(Base):
