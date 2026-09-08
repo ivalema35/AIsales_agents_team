@@ -32,7 +32,10 @@ from services.campaign_service import resolve_email_render_mode, format_directiv
 
 logger = logging.getLogger(__name__)
 
-MAX_DRAFT_ATTEMPTS = 2  # one retry with QC's feedback if rejected, then escalate -- never loop forever
+MAX_DRAFT_ATTEMPTS = 3  # 2026-09-08, real live case: attempt 2 fixed attempt 1's issue but
+# introduced a NEW one (overstated a low-severity pain point) -- 1 retry left no room to
+# converge after a course-correction itself needed fixing. One more attempt before
+# escalating to a human, never unbounded.
 
 
 @register_handler("OUTREACH_EMAIL")

@@ -11,7 +11,14 @@ NON-NEGOTIABLE RULES (apply to every output):
    finds you well", "delve", "game-changer", "unlock", "in today's fast-paced world",
    "revolutionary", "seamless", "leverage" (as a verb), "cutting-edge".
 3. ZERO HALLUCINATION: never invent capabilities, testimonials, discounts, pricing, or
-   delivery timelines. If a fact is not in the provided context, do not state it.
+   delivery timelines. If a fact is not in the provided context, do not state it. When a
+   pain point carries a `severity_0_1` and/or `evidence_quote`, match your certainty of
+   language to how strongly that evidence actually supports it -- a high-severity, clearly
+   stated pain point can be named directly; a low-severity or hedged one (its own quote
+   says "a few", "occasional", "some", "suggest") must be phrased with the same hedge
+   ("we noticed a few mentions of...", "some reviews touched on..."), never stated as a
+   universally confirmed fact. This cuts both ways: under-hedging a weak signal is a false
+   claim; over-hedging (or ignoring) a well-evidenced one is needlessly vague.
 4. RESPECT BOUNDARIES: any opt-out signal ends outreach permanently.
 5. Output VALID JSON ONLY. No markdown, no prose outside the JSON object.
 """
@@ -387,14 +394,26 @@ CHECK (reject if ANY of these fail):
     present, a URL in the draft that exactly matches one of its "value" fields is a real,
     admin-approved link (a demo, video, case study, etc.) -- this is NOT an unauthorized
     or hallucinated link and must NOT be rejected as one; only flag a URL that matches
-    none of the approved values.
+    none of the approved values. A pain point reference is NOT a false claim merely for
+    being low-severity or thinly evidenced -- judge it by the SAME hedging rule the drafting
+    agent was given (see the guardrail rules above): a hedged reference to a real (even
+    weak) pain point is correct and must be approved; only reject a pain-point claim that
+    (i) names something absent from VERIFIED_PAIN_POINTS entirely, or (ii) states a
+    low-severity/hedged signal with MORE certainty than its own evidence_quote supports.
 (d) the draft doesn't already contain its own footer/signature/unsubscribe text (the
     system appends the compliant one automatically -- a draft that added its own would
     end up with two, or a wrong one). A plain closing sentence promising the team will
     follow up shortly is NOT a footer/signature and must not be rejected under this check.
 
+If rejecting, "suggested_corrections" is fed BACK to the same drafting agent as its one
+instruction for a retry -- it must be a concrete, directly actionable EDIT (what to add,
+remove, soften, or reword, and where), not a restatement of the rejection reason in
+different words. E.g. write "Soften the training/pricing bullet to 'a few reviews
+mentioned...' instead of stating it as a confirmed fact" rather than "the claim was too
+certain."
+
 OUTPUT JSON: {"approved": true or false, "confidence_score": 0.0,
-"rejection_reasons": ["..."], "suggested_corrections": "<=60 words"}
+"rejection_reasons": ["..."], "suggested_corrections": "<=60 words, one concrete edit"}
 """
 
 SOCIAL_DRAFT_AGENT_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + """
