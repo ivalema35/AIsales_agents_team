@@ -585,28 +585,38 @@ def _existing_templates_summary(db):
     return summary
 
 
+MAX_TEMPLATE_DRAFT_ATTEMPTS = 2  # one retry with QC's feedback, same pattern as email
+# drafting's MAX_DRAFT_ATTEMPTS -- 2026-09-08, real live case: the first candidate for a
+# genuinely real product coverage gap (IV Classes) was QC-rejected for being too close to
+# an existing template's structure -- a one-shot draft-then-give-up wasted that real signal
+# instead of trying again with the exact reason it failed.
+
+
 def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=None, followup_level=None):
     """Step 9.6 sub-step 4 -- the full safe pipeline: gather the real existing-template
     inventory, ask the drafting agent (sub-step 2), QC-gate the result (sub-step 3), and
     only then persist it as a DRAFT (sub-step 1) -- never a real Meta call anywhere in
     this function. Returns the created DRAFT row, or None if the agent declined or QC
-    rejected (both already logged via their own AgentEvent calls, nothing silent).
+    rejected on every attempt (both already logged via their own AgentEvent calls,
+    nothing silent).
     """
     from agents.template_agent import draft_template
     from agents.quality_controller_agent import review_template_draft
 
     existing_templates = _existing_templates_summary(db)
 
-    candidate = draft_template(db, reason, context, existing_templates)
-    if not candidate:
-        return None
+    qc_feedback = None
+    for _attempt in range(1, MAX_TEMPLATE_DRAFT_ATTEMPTS + 1):
+        candidate = draft_template(db, reason, context, existing_templates, qc_feedback=qc_feedback)
+        if not candidate:
+            return None
 
-    qc_result = review_template_draft(db, candidate, reason, existing_templates)
-    if not qc_result["approved"]:
-        return None
-
-    return create_draft_template(
-        db, candidate["name"], "en", candidate["category"], candidate["purpose"] or purpose,
-        candidate["body_text"], candidate["variable_labels"], product_id=product_id,
-        reasoning=candidate.get("reasoning"), followup_level=followup_level,
-    )
+        qc_result = review_template_draft(db, candidate, reason, existing_templates)
+        if qc_result["approved"]:
+            return create_draft_template(
+                db, candidate["name"], "en", candidate["category"], candidate["purpose"] or purpose,
+                candidate["body_text"], candidate["variable_labels"], product_id=product_id,
+                reasoning=candidate.get("reasoning"), followup_level=followup_level,
+            )
+        qc_feedback = "; ".join(qc_result["rejection_reasons"])
+    return None

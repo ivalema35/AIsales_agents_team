@@ -41,19 +41,26 @@ def _is_valid_candidate(data: dict, existing_names: set) -> bool:
     return True
 
 
-def draft_template(db, reason: str, context: dict, existing_templates: list[dict]):
+def draft_template(db, reason: str, context: dict, existing_templates: list[dict],
+                   qc_feedback: str | None = None):
     """Returns a validated candidate dict {name, category, purpose, body_text,
     variable_labels, reasoning}, or None if the model declined or produced something
     that doesn't satisfy Meta's real constraints -- every outcome is logged via
     log_agent_event so a silent decline is still visible, same as draft_email()'s
     LLM_FAILED/EMPTY_DRAFT events. Never raises on a bad/declined draft; only an LLM
     transport failure is caught internally (also logged, also returns None).
+
+    `qc_feedback` (2026-09-08, same "regenerate with feedback" pattern email drafting
+    already used): a prior candidate's real QC rejection reasons, fed back so a retry
+    isn't a blind re-roll -- see propose_new_template()'s own retry loop.
     """
     prompt = TEMPLATE_AGENT_SYSTEM_PROMPT + f"""
 REASON: {reason}
 CONTEXT: {json.dumps(context, ensure_ascii=False)}
 EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
 """
+    if qc_feedback:
+        prompt += f"\nYOUR PREVIOUS CANDIDATE WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
     try:
         data = call_json(prompt, temperature=0.5)
     except LLMError as exc:
