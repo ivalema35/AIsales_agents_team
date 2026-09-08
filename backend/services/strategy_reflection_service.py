@@ -36,6 +36,16 @@ def aggregate_campaign_telemetry(db) -> list[dict]:
             continue
         target = json.loads(c.target_segment or "{}")
         domain = target.get("industry")
+        # 2026-09-08, real crash found live: target_segment.industry can be a JSON array
+        # since multi-vertical targeting shipped (a campaign targeting several business
+        # types at once) -- group_by_domain() uses this as a dict key, and a list isn't
+        # hashable. No per-vertical send/open/reply attribution exists in this data model
+        # (a lead/send isn't tagged with which target vertical it came from), so a
+        # multi-vertical campaign's telemetry is honestly pooled under its full combined
+        # label, not fabricated-split across verticals it wasn't actually measured per.
+        # Same ", "-joined convention as frontend/src/lib/targetSegment.js's industryLabel().
+        if isinstance(domain, list):
+            domain = ", ".join(str(d) for d in domain if d)
         if not domain:
             continue  # no real vertical to group by -- nothing to pool this campaign into
         rows.append({
