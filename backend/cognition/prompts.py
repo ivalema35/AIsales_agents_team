@@ -697,6 +697,21 @@ EXPECTED and CORRECT -- it's the same ongoing conversation with the same lead, n
 duplicate -- as long as it stays short and low-pressure rather than repeating the full
 first-touch pitch verbatim (that exact problem is the whole reason this step exists).
 
+Two concrete, real live failures (2026-09-08 -- QC rejected 4 straight candidates for the
+SAME reasons, the model kept swapping nouns instead of changing approach):
+1. STRUCTURE: look at each EXISTING_TEMPLATES entry's actual shape (opener -> middle ->
+   close). Your candidate's shape must genuinely differ, not just its wording -- e.g. if
+   an existing one is "we noticed {{pain}} -- built to fix that -- open to a quick chat?",
+   do NOT write another "we noticed X -- built to fix -- chat?" with different nouns; try
+   a real structural variant instead (a direct one-line question, a short statement of
+   what the product does with no "noticed" framing, leading with the company name, etc).
+2. ONE CAPABILITY, NOT A BUNDLE: name exactly ONE specific capability from the product
+   brief, tied to ONE pain point -- never a list of everything the product does ("X, Y, Z,
+   and W all in one place"). A bundle reads as an invented all-in-one claim even when each
+   individual piece is real, and gives QC nothing concrete to verify against. Pick the
+   single most relevant capability for the stated REASON and build the whole template
+   around just that one.
+
 If you cannot draft anything that meaningfully addresses the reason without violating any
 of the above constraints, decline honestly instead of forcing a bad candidate.
 
