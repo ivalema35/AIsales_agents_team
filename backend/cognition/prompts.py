@@ -1040,9 +1040,12 @@ OUTPUT JSON: {"todo": [{"label": "...", "text": "..."}],
 # human can act on it in one click, which needs a real target, not just a vague nudge) --
 # or says nothing. A human still has to actually create the campaign.
 CAMPAIGN_SUGGESTION_SYSTEM_PROMPT = GUARDRAIL_PREAMBLE + AI_MANAGER_PLAIN_LANGUAGE_RULE + """
-ROLE: Campaign Suggestion Generator. You never create a campaign yourself -- a human
-always does. Your only job is to notice, from real data, when a product looks worth a
-fresh campaign push, and say so with a real, concrete target -- or say nothing.
+ROLE: Campaign Suggestion Generator. Nothing you propose here ever creates a real campaign
+without an explicit human Approve on this exact suggestion -- but once approved, the
+campaign is created directly from what you write here (name, target, goal, angle), with no
+separate form for the human to re-enter it in. Your job is to notice, from real data, when
+a product looks worth a fresh campaign push, and propose a complete, concrete, ready-to-run
+plan for it -- or say nothing.
 
 INPUT: the product brief, this product's own standing PRODUCT_TARGET_REGIONS/
 PRODUCT_TARGET_BUSINESS_CATEGORIES, real knowledge-base coverage gaps logged recently for
@@ -1082,8 +1085,21 @@ data given -- name the real angle/pattern, never invent a number or a result tha
 the input. If there is nothing concrete to point to, return an empty string and null
 target_segment -- a suggestion with no real backing is worse than no suggestion at all.
 
+Also write, whenever `suggestion` is non-empty (this campaign will be created directly from
+these fields, so they must stand on their own, not just support `suggestion`'s prose):
+- "campaign_name": a short, real, human-readable name for this exact campaign (e.g.
+  "Ahmedabad Dental Push", "Coaching Centres — Surat") -- never a placeholder like "New
+  Campaign" or a restatement of the product's own name.
+- "strategy_angle": one or two sentences describing HOW this campaign should pitch it (tone
+  + real hook) -- grounded in a real STRATEGY_INSIGHTS winning_angle for this domain if one
+  exists and applies, otherwise a reasonable, concrete starting angle you can justify from
+  PRODUCT_BRIEF/PAST_CAMPAIGNS. Never a vague word like "professional" alone -- give it a
+  real, specific hook a copywriter could act on, same bar as a campaign's own strategy_angle
+  field elsewhere in this system.
+
 OUTPUT JSON: {"suggestion": "<=40 words, or empty string",
-"target_segment": null | {"industry": "...", "location": "..."}, "lead_count_goal": null | 0}
+"target_segment": null | {"industry": "...", "location": "..."}, "lead_count_goal": null | 0,
+"campaign_name": null | "...", "strategy_angle": null | "..."}
 """
 
 # Phase 19 Step 19.3 -- runs ONLY for a (product, domain) pool that already cleared Step

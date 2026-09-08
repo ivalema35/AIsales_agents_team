@@ -70,9 +70,15 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
     setError(null);
     try {
       const result = await api.approveTodoItem(item.id);
-      if (item.scope === "GLOBAL") {
-        // Opening the pre-filled campaign form IS the confirmation here -- nothing was
-        // applied server-side for a GLOBAL item, so there's nothing else to show inline.
+      if (item.scope === "GLOBAL" && result.applied?.campaign_created) {
+        // 2026-09-08, real user ask: Approve on a "New campaign idea" now creates the
+        // real campaign directly (services/campaign_service.py) -- no more form to fill
+        // out separately. Show exactly what got created, same as a CAMPAIGN-scope apply.
+        setAppliedResult(result.applied);
+        setBusy(false);
+      } else if (item.scope === "GLOBAL") {
+        // Legacy fallback (shouldn't happen for a real proposal after the above fix, but
+        // a GLOBAL item with no usable proposal still resolves cleanly either way).
         if (result.campaign_prefill) {
           onApproveGlobal?.({ ...result.campaign_prefill, suggestion: item.text }, item);
         }
@@ -110,7 +116,11 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         <div className="flex items-start justify-between gap-2">
           <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-good-700">
             <CheckCircle2 size={12} />
-            {appliedResult.sent_email ? "Email sent" : "Applied to this campaign"}
+            {appliedResult.sent_email
+              ? "Email sent"
+              : appliedResult.campaign_created
+                ? "Campaign created"
+                : "Applied to this campaign"}
           </span>
           <button
             onClick={() => onResolved?.(item.id)}
@@ -136,6 +146,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           )}
           {appliedResult.status === "APPROVED" && (
             <p><b>Campaign status:</b> Marked approved</p>
+          )}
+          {appliedResult.campaign_created && (
+            <p>
+              <b>{appliedResult.name}</b> is live —{" "}
+              <Link to={`/campaigns/${appliedResult.campaign_id}`} className="underline decoration-line underline-offset-2 hover:text-ink-900">
+                open it
+              </Link>
+            </p>
           )}
           {appliedResult.target_segment && (
             <p>

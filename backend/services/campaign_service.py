@@ -1094,12 +1094,20 @@ PAST_CAMPAIGNS: {json.dumps(campaign_summaries, ensure_ascii=False)}
     cleaned = _clean_proposal({
         "target_segment": data.get("target_segment"),
         "lead_count_goal": data.get("lead_count_goal"),
+        "strategy_angle": data.get("strategy_angle"),
         "rationale": suggestion,
     }) or {}
+    # 2026-09-08, real user ask: approving this to-do now creates the real campaign
+    # directly (see approve_todo_item's GLOBAL branch) -- a real name is required for
+    # that, so it's captured here alongside the rest of the proposal rather than left for
+    # a human to type into a separate form.
+    campaign_name = str(data.get("campaign_name") or "").strip()[:120] or None
     result = {
         "suggestion": suggestion,
         "target_segment": cleaned.get("target_segment"),
         "lead_count_goal": cleaned.get("lead_count_goal"),
+        "strategy_angle": cleaned.get("strategy_angle"),
+        "campaign_name": campaign_name,
     }
 
     log_agent_event(db, "CAMPAIGN", None, "CAMPAIGN_SUGGESTED", 1.0, "LOW", "EXECUTE",
@@ -1109,9 +1117,12 @@ PAST_CAMPAIGNS: {json.dumps(campaign_summaries, ensure_ascii=False)}
         TodoItem.product_id == product_id, TodoItem.scope == "GLOBAL", TodoItem.status == "PENDING",
     ).first()
     if not already_pending:
+        proposal_payload = {k: v for k, v in cleaned.items() if k != "rationale"}
+        if campaign_name:
+            proposal_payload["campaign_name"] = campaign_name
         db.add(TodoItem(
             scope="GLOBAL", product_id=product_id, label="New campaign idea", text=suggestion,
-            proposal=json.dumps({k: v for k, v in cleaned.items() if k != "rationale"}) if cleaned else None,
+            proposal=json.dumps(proposal_payload) if proposal_payload else None,
             rationale=suggestion,
         ))
         db.commit()
@@ -1590,7 +1601,39 @@ def approve_todo_item(db, todo_id: str) -> dict:
             _apply_proposal_to_campaign(campaign, proposal)
             applied = proposal
     elif item.scope == "GLOBAL" and proposal:
-        campaign_prefill = {**proposal, "product_id": item.product_id}
+        # 2026-09-08, real user ask: "AI ke todo ko approve karu to AI khud wo kaam kare,
+        # me manually campaign nahi banaunga" -- approving a real "New campaign idea"
+        # to-do now creates the actual Campaign row directly from the AI's own proposal
+        # (name/target/goal/angle), the same one real human action (this Approve click)
+        # the old prefill-a-form flow also required, just without a second manual step
+        # re-entering what the human already just reviewed and approved on the card.
+        target_segment = proposal.get("target_segment") or {}
+        industry = target_segment.get("industry")
+        industry_label = ", ".join(industry) if isinstance(industry, list) else (industry or "")
+        campaign_name = proposal.get("campaign_name") or f"{industry_label or 'New'} campaign".strip()
+        new_campaign = Campaign(
+            product_id=item.product_id,
+            name=campaign_name[:120],
+            target_segment=json.dumps(target_segment),
+            strategy_angle=proposal.get("strategy_angle"),
+            lead_count_goal=proposal.get("lead_count_goal"),
+            status="APPROVED",
+        )
+        db.add(new_campaign)
+        db.commit()
+        db.refresh(new_campaign)
+        try:
+            generate_campaign_todo(db, new_campaign.id)
+        except Exception:
+            pass
+        applied = {
+            "campaign_created": True,
+            "campaign_id": new_campaign.id,
+            "name": new_campaign.name,
+            "target_segment": target_segment,
+            "lead_count_goal": new_campaign.lead_count_goal,
+            "strategy_angle": new_campaign.strategy_angle,
+        }
 
     item.status = "APPROVED"
     item.resolved_at = datetime.utcnow()
