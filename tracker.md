@@ -6414,3 +6414,27 @@ tha kisi bhi email ke liye jo deliver ho chuki thi. **Fix**: naya shared `SUCCES
 (SENT, DELIVERED, BOUNCED)` (`models.py`), saari 7 jagah `.in_()` se update kiya. Verify kiya — DELIVERED
 status wala lead ab sahi se `sent=1` count hota he. Commit `6204d34`. Sab 4 fix VPS deploy + verify ho
 chuke hain, safety switches confirm `False` hain abhi.
+
+### ⭐⭐⭐ 5th bug isi investigation se: HUMAN_ESCALATION kabhi kisi ko dikhta hi nahi tha (2026-09-07)
+
+User ne seedha, sahi sawaal poocha: **"email nahi gaya, tumne kaha review ke liye bheja, but kuch aya hi
+nahi todo me, kaise review karu??"** Code check kiya to confirm hua — jab email QC 2 baar reject kar
+deta he ya WhatsApp variables validate nahi hote, `outreach_handler.py`/`outreach_wa_handler.py` sirf
+ek `agent_events` row likhte the aur khud apna comment ye maan leta tha ki **"ye row hi human ke liye
+signal he"** — jabki ye row sirf database me chhupa raw log tha, UI me kahin nahi dikhta tha, lead ka
+status bhi badalta nahi tha. Matlab "review ke liye bheja" sach me kahi bheja hi nahi tha — sirf ek
+invisible log likha tha.
+
+**Fix**: naya `todo_items.lead_id` column (nullable) — is se ek to-do **ek specific lead ke baare me**
+ho sakta he, poore campaign ke baare me nahi. Zaroori tha kyunki campaign-level fixed-label (jaise
+"Discovery off") ka dedup (campaign_id, label) pe he — agar "Needs manual outreach" bhi wahi pattern
+follow karta to sirf PEHLA escalated lead hi dikhta, baaki sab silently drop ho jaate! Ab dedup
+(campaign_id, **lead_id**, label) pe he — har lead ka apna alag to-do.
+
+Naya `create_lead_escalation_todo()` — real, visible, `is_blocker=True` to-do banata he, business ka
+naam le kar, "Open this lead's page" link ke saath. Dono dispatch handlers (email QC-exhausted,
+WhatsApp variable-fail) me wire kiya. `GET /todos` me lead ka company name bhi join kiya. Verify kiya —
+same escalation 2 baar call karne pe sirf 1 hi to-do banta he (dedup sahi). **Real incident wale lead**
+("Unique Health & Fitness Center," jisne ye poora investigation shuru karvaya) ke liye bhi turant real
+to-do bana diya — ab dashboard pe dikhega, "Open this lead's page" link ke saath. Commit `d353da0`,
+migration + VPS deploy + 5 services restart, sab verify.

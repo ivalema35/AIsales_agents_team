@@ -766,6 +766,19 @@ Serper call nahi). Commit `623525f`. **Bonus 4th bug**: poore system me "sent" s
 kiya naya shared `SUCCESSFULLY_SENT_STATUSES` se. Commit `6204d34`. Sab deploy+verify ho chuke, safety
 switches abhi `False` hain.
 
-**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `6204d34`, 2026-09-08). Baaki: Step 16.8
+**⭐⭐⭐ 5th bug isi investigation se — HUMAN_ESCALATION kabhi kisi ko dikhta hi nahi tha, 2026-09-08**:
+user ka seedha real sawaal — "email nahi gaya, tumne kaha review ke liye bheja, kuch aya hi nahi todo
+me, kaise review karu??" Root cause: jab email QC 2 baar reject karta ya WhatsApp variables invalid
+hote, dispatch handlers sirf ek `agent_events` row likhte the (khud code ka comment maanta tha "ye row
+hi human ke liye signal he") — jo UI me kahin dikhta hi nahi tha, lead status bhi nahi badalta tha.
+"Review ke liye bheja" sach me kahin bheja hi nahi gaya tha. **Fix**: naya `todo_items.lead_id` column
+(per-lead dedup ke liye zaroori — campaign-level dedup se sirf pehla escalated lead dikhta, baaki
+silently drop hote), naya `create_lead_escalation_todo()` (real, visible, is_blocker=True to-do, "Open
+this lead's page" link ke saath), dono dispatch handlers (email + WhatsApp) me wire kiya. Verify: same
+escalation 2 baar call karne pe sirf 1 to-do banta he. **Real incident wale lead** ("Unique Health &
+Fitness Center") ke liye turant real to-do bana diya — dashboard pe abhi live he. Commit `d353da0`,
+migration + VPS deploy + services restart, sab verify.
+
+**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `d353da0`, 2026-09-08). Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
 inbox se disconnected hain (separate manual page).
