@@ -6637,3 +6637,20 @@ gaye naye, achhe drafts ke saath — **koi email actually bheja nahi gaya**, use
 dabana hoga har lead ke liye (safety rule — autonomous send switch off hi he). Commit `fd75fb7`, VPS
 deploy+restart, sab 12 leads real data se verify.
 
+### "AI system needs attention" wala baar-baar email — real cause mila (2026-09-08)
+
+User ne bola repeated email aa raha he "system needs attention", 3 leads stuck. Check kiya —
+**asli cause 8 jobs the jo CLAIMED state me hamesha ke liye atak gaye the** — kyunki is poore session
+me maine `bos-worker`/`bos-scraper` ko baar-baar restart kiya (har deploy ke baad) — agar restart ke
+waqt koi job process ho raha tha, wo beech me hi mar jata he aur CLAIMED status me hamesha ke liye reh
+jata he (koi automatic retry nahi hota). **Ye mera hi side-effect tha** itni baar deploy karne ka.
+Fix: 8 jobs ko `mark_failed()` se requeue kiya (safe — REVIEW/SCORE/ENRICH type, koi duplicate send ka
+risk nahi), sab wapas PENDING ho ke turant complete ho gaye.
+
+**Bonus real bug bhi mila** (abhi trigger nahi hua tha, but jaldi hota): `find_stuck_leads()` kisi
+bhi lead ko "stuck" maanta tha agar 15 min se zyada OUTREACHING status me ho — but naye "Review & send"
+feature me ek escalated lead **jaan-boojh kar** ghanto/din tak OUTREACHING me rehta he jab tak human
+review na kare — ye "stuck" nahi he, sahi se human ka wait kar raha he. Fix: ab jis lead ka koi real
+PENDING to-do ho (matlab uski wajah pata he), use "stuck" nahi maanenge. Commit `4b1f374`, VPS
+deploy+restart, 0 stuck jobs confirm.
+

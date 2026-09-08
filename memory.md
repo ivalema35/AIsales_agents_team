@@ -857,3 +857,11 @@ table nahi) — har naya draft attempt ab isi campaign ke doosre leads ke recent
 unhe repeat nahi karta. **Real proof**: 12 stuck leads (jo "Needs review" me atke the) fresh draft ke
 saath refresh kiye — **sab 12 pehli hi koshish me QC-approved**, zero reject. To-dos update ho gaye,
 koi email bheja nahi gaya (user khud approve karega). Commit `fd75fb7`, VPS deploy.
+
+**"System needs attention" repeated email — mera hi side-effect nikla, 2026-09-08**: real cause 8
+jobs the jo `bos-worker`/`bos-scraper` ke baar-baar restart (is poore session ke deploys) se CLAIMED
+state me hamesha ke liye atak gaye the — recover kiya (`mark_failed()` se requeue). Bonus latent bug
+bhi fix kiya: `find_stuck_leads()` "Review & send" wale leads ko galat se "stuck" maan raha tha (jabki
+wo sahi se human-review ka wait kar rahe the) — ab real pending to-do wale leads exclude karta he.
+**Lesson for future**: baar-baar `bos-worker`/`bos-scraper` restart karne se in-flight jobs mar sakte
+hain — deploy ke baad hamesha `find_stuck_jobs()` check karna chahiye. Commit `4b1f374`, VPS deploy.
