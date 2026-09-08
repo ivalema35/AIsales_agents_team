@@ -948,3 +948,14 @@ kill_switch.md` (cross-session memory) update karni padegi — purana rule tha "
 explicit 'send to real businesses now'" — ab user ne ek NAYI STANDING POLICY di he: AI khud in
 switches ko flip kar sakta he JAB koi specific to-do (jo clearly bolta he "ye system-wide switch on
 karega") explicitly approve ho. Ye ek real, deliberate policy change he, purana absolute rule nahi.
+
+**⭐ Sharp pushback: "deterministic fix = automation ki taraf jaana," 2026-09-08 (koi code change
+nahi, sirf test/discuss)**: user ne bola upar wale Python-based fix se system "LLM jaisa" nahi "real
+AI system" jaisa banna chahiye — har baar AI ki galti ko hardcode se "fix" karne se system automation
+ki taraf drift karta he. **3 real test kiye, koi permanent change nahi**: (1) asli production model
+`gpt-5.4-mini` nikla (chhota/sasta tier — `.env` me `LLM_MODEL`/`LLM_PROVIDER` mismatch bhi mila),
+(2) `gpt-6-astra` real, callable model confirm kiya (131 models available is key pe), (3) real
+side-by-side test — `gpt-6-astra` ne zyada sophisticated business insight di, but 4x slow/2-3x zyada
+tokens (cost). **Persistent memory me save kiya standing principle ke roop me**: future me AI Manager
+ki galti mile to pehle "behtar model/prompt se fix ho sakta he kya" sochna he, hardcoded Python sirf
+tab jab wo GENUINELY judgment-call na ho.
