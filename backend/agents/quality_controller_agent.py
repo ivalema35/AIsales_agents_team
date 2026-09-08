@@ -276,7 +276,8 @@ language) -- the correct tone is a plain, warm "here if you ever need this."
     return result
 
 
-def review_template_draft(db, candidate: dict, reason: str, existing_templates: list[dict]) -> dict:
+def review_template_draft(db, candidate: dict, reason: str, existing_templates: list[dict],
+                          product_brief: dict | None = None) -> dict:
     """QC gate for an AI-drafted WhatsApp template candidate (Phase 9 Step 9.6 sub-step 3)
     -- runs BEFORE an admin ever sees the draft, so a bad candidate never even reaches
     the review queue. Same fails-CLOSED contract as review_draft(): a QC that can't run
@@ -287,11 +288,24 @@ def review_template_draft(db, candidate: dict, reason: str, existing_templates: 
     leads via {{n}} variables, unlike a one-off email draft) and no footer/signature
     concept; instead it's judged against Meta's real constraints, the stated drafting
     REASON, and distinctness from EXISTING_TEMPLATES.
+
+    `product_brief` (2026-09-08, real live bug -- the SAME class of gap review_draft()
+    already had fixed for email on 2026-08-13): without this, QC has no ground truth to
+    tell a real, brief-supported capability from an invented one, and flags genuine
+    product-description-backed claims as an "unsupported capability bundle" simply
+    because it was never shown the product at all. Only meaningful when `reason` concerns
+    one specific product (a shared/non-product-specific candidate has none).
     """
     prompt = TEMPLATE_QC_SYSTEM_PROMPT + f"""
 CANDIDATE: {json.dumps(candidate, ensure_ascii=False)}
 REASON: {reason}
 EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
+"""
+    if product_brief:
+        prompt += f"""
+PRODUCT_BRIEF (ground truth for judging capability claims -- a claim consistent with this,
+even if worded differently, is NOT invented):
+{json.dumps(product_brief, ensure_ascii=False)}
 """
     try:
         data = call_json(prompt, temperature=0.1)

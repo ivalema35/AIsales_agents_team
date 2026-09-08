@@ -605,13 +605,27 @@ def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=No
 
     existing_templates = _existing_templates_summary(db)
 
+    # 2026-09-08, real live bug: QC was never shown the product's own brief, so it had no
+    # ground truth to tell a real, brief-supported capability from an invented one -- the
+    # same class of gap already fixed for email QC on 2026-08-13. Fetched fresh here
+    # (rather than trusting `context` to already carry it) so this holds for every reason
+    # type that names a real product_id, not just the coverage-gap signal.
+    product_brief = None
+    if product_id:
+        from database.models import Product
+        product = db.get(Product, product_id)
+        if product:
+            product_brief = {"title": product.title, "description": product.description,
+                             "value_proposition": product.value_proposition}
+
     qc_feedback = None
     for _attempt in range(1, MAX_TEMPLATE_DRAFT_ATTEMPTS + 1):
         candidate = draft_template(db, reason, context, existing_templates, qc_feedback=qc_feedback)
         if not candidate:
             return None
 
-        qc_result = review_template_draft(db, candidate, reason, existing_templates)
+        qc_result = review_template_draft(db, candidate, reason, existing_templates,
+                                          product_brief=product_brief)
         if qc_result["approved"]:
             return create_draft_template(
                 db, candidate["name"], "en", candidate["category"], candidate["purpose"] or purpose,

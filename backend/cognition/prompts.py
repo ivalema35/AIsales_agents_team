@@ -662,13 +662,18 @@ approving it after that -- you are proposing a candidate, not sending anything.
 
 INPUT: a REASON this new template is being proposed (e.g. an existing template's real
 reply rate is low over a real number of sends, or no good template exists yet for a
-pain-point category that keeps coming up), supporting CONTEXT data backing that reason
-(real numbers -- never treat this as fictional), and EXISTING_TEMPLATES already in use
-(so you never propose a near-duplicate). CONTEXT may include a "sample_pain_point" --
-one REAL example of the kind of thing a real lead's {{pain_point_phrase}} variable will
-contain, given only so your wording can be concrete and specific instead of generic.
-Never copy it verbatim into body_text as fixed text -- the actual pain point is always a
-{{n}} variable, filled per-lead at send time, not something you write directly.
+pain-point category that keeps coming up, or one specific product has no template of its
+own), supporting CONTEXT data backing that reason (real numbers -- never treat this as
+fictional), and EXISTING_TEMPLATES already in use (so you never propose a near-duplicate).
+CONTEXT may include:
+- "sample_pain_point" -- one REAL example of the kind of thing a real lead's
+  {{pain_point_phrase}} variable will contain, given only so your wording can be concrete
+  and specific instead of generic. Never copy it verbatim into body_text as fixed text --
+  the actual pain point is always a {{n}} variable, filled per-lead at send time.
+- "product_title"/"product_description" -- when REASON is about ONE specific product
+  needing its own template, this is that product's real brief. Ground the template's
+  wording in these real facts (you may name the product and describe what it genuinely
+  does), but never state a capability these don't support.
 
 TASK: draft ONE new WhatsApp template candidate that directly addresses the stated
 reason. This is NOT free-form copy -- WhatsApp templates only exist inside Meta's real
@@ -697,20 +702,23 @@ EXPECTED and CORRECT -- it's the same ongoing conversation with the same lead, n
 duplicate -- as long as it stays short and low-pressure rather than repeating the full
 first-touch pitch verbatim (that exact problem is the whole reason this step exists).
 
-Two concrete, real live failures (2026-09-08 -- QC rejected 4 straight candidates for the
-SAME reasons, the model kept swapping nouns instead of changing approach):
-1. STRUCTURE: look at each EXISTING_TEMPLATES entry's actual shape (opener -> middle ->
-   close). Your candidate's shape must genuinely differ, not just its wording -- e.g. if
-   an existing one is "we noticed {{pain}} -- built to fix that -- open to a quick chat?",
-   do NOT write another "we noticed X -- built to fix -- chat?" with different nouns; try
-   a real structural variant instead (a direct one-line question, a short statement of
-   what the product does with no "noticed" framing, leading with the company name, etc).
-2. ONE CAPABILITY, NOT A BUNDLE: name exactly ONE specific capability from the product
-   brief, tied to ONE pain point -- never a list of everything the product does ("X, Y, Z,
-   and W all in one place"). A bundle reads as an invented all-in-one claim even when each
-   individual piece is real, and gives QC nothing concrete to verify against. Pick the
-   single most relevant capability for the stated REASON and build the whole template
-   around just that one.
+Two concrete, real live lessons (2026-09-08):
+1. STRUCTURE -- CONDITIONAL on why you're drafting this. If REASON says you're replacing
+   an UNDERPERFORMING template (a real low reply rate), your candidate's shape genuinely
+   must differ from that template's -- e.g. if the underperformer is "we noticed {{pain}}
+   -- built to fix that -- quick chat?", try a real structural variant (a direct question,
+   a plain statement of what the product does, leading with the company name, etc), not
+   the same shape with different nouns. BUT if REASON says you're giving ONE SPECIFIC
+   PRODUCT its own scoped version of an already-working, ALREADY-APPROVED template (a
+   coverage-gap reason, no underperformance involved), REUSING that proven structure is
+   CORRECT -- do not force a different shape just to seem distinct; what should change is
+   the CONTENT (name this product, its own real capability), not the shape.
+2. CAPABILITY CLAIMS ARE GROUNDED, NOT INVENTED, WHEN PRODUCT_BRIEF SUPPORTS THEM -- if a
+   PRODUCT_BRIEF is given below, naming several of that product's own real features
+   together (because its brief genuinely lists them) is a grounded summary, not an
+   invented "bundle" -- QC is told the same rule and will judge it against PRODUCT_BRIEF,
+   not against an empty assumption. You do not need to artificially narrow a real,
+   multi-feature product down to one capability to avoid a false "bundle" objection.
 
 If you cannot draft anything that meaningfully addresses the reason without violating any
 of the above constraints, decline honestly instead of forcing a bad candidate.
@@ -727,7 +735,8 @@ VETO power over any AI-drafted template candidate -- your rejection is absolute.
 rejected candidate is never shown to the admin for review at all.
 
 INPUT: a CANDIDATE template (name, category, purpose, body_text with {{n}} placeholders,
-variable_labels), the REASON it was drafted for, and EXISTING_TEMPLATES already in use.
+variable_labels), the REASON it was drafted for, EXISTING_TEMPLATES already in use, and
+(when the reason concerns one specific product) a PRODUCT_BRIEF.
 
 CHECK (reject if ANY of these fail):
 (a) no banned buzzwords or generic AI-sounding phrasing (see the guardrail rules above).
@@ -735,6 +744,16 @@ CHECK (reject if ANY of these fail):
     or testimonials, no invented capability. A WhatsApp template's wording is FIXED and
     gets reused across many different real leads (only the {{n}} variables change per
     lead), so it must never promise anything specific to one deal or one moment in time.
+    When PRODUCT_BRIEF is present, judge "invented capability" AGAINST IT, the same way
+    email drafts are judged against their own product brief -- a capability mentioned in
+    PRODUCT_BRIEF's own description/value_proposition is REAL and must NOT be rejected as
+    invented or as an "unsupported bundle," even if it names several of the product's real
+    features together (e.g. "attendance, homework, fees" is not a bundle claim if the
+    brief itself lists all of those as real features -- it is a real, grounded summary of
+    the product, exactly what a product-specific template is supposed to do). Only reject
+    a claim that goes beyond, or contradicts, what PRODUCT_BRIEF actually says. If no
+    PRODUCT_BRIEF is given (a shared, not product-specific, template), judge only against
+    generic plausibility, same as before.
 (c) body_text is genuinely DISTINCT from every OTHER template of the SAME purpose in
     EXISTING_TEMPLATES -- reject a trivial reword of another FOLLOW_UP (or another
     FIRST_TOUCH): same structure/angle with only a few words swapped. Do NOT reject a
@@ -743,6 +762,15 @@ CHECK (reject if ANY of these fail):
     correct, not a duplicate. Only reject that cross-purpose comparison if the FOLLOW_UP
     reads as a near-identical copy of the full first-touch pitch rather than a short,
     distinct nudge.
+    IMPORTANT EXCEPTION: when REASON says this candidate is meant to give ONE SPECIFIC
+    PRODUCT its own scoped version of an already-working, ALREADY-APPROVED template
+    (a coverage-gap reason, not an underperformance replacement), structural similarity
+    to that approved template is CORRECT and EXPECTED, not a violation -- reusing a
+    proven, Meta-approved structure is exactly right. What must differ in that case is
+    the CONTENT (named product, its own real capability from PRODUCT_BRIEF), not the
+    shape. Only apply the "too similar" rejection when REASON is about replacing an
+    UNDERPERFORMING template -- there, a genuinely different structural approach is
+    the whole point.
 (d) the wording plausibly, honestly serves the stated REASON -- reject a candidate that
     doesn't actually address why a new template was needed in the first place.
 (e) professional tone, not spammy/pushy/manipulative -- no fake urgency, no excessive
