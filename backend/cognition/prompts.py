@@ -399,12 +399,24 @@ Agent when it drafted this, and the PRODUCT_BRIEF the Outreach Agent was working
 
 CHECK (reject if ANY of these fail):
 (a) no banned buzzwords or generic AI-sounding phrasing (see the guardrail rules above).
-(b) if ANY pain points were provided, the draft clearly references AT LEAST ONE of them
-    with real specificity -- a draft that ignores every available verified pain point in
-    favor of generic pitching is not "value-first" and must be rejected. The Outreach
+(b) IF VERIFIED_PAIN_POINTS IS NON-EMPTY: the draft clearly references AT LEAST ONE of
+    them with real specificity -- a draft that ignores every available verified pain point
+    in favor of generic pitching is not "value-first" and must be rejected. The Outreach
     Agent is deliberately designed to open with only ONE pain point (not all of them) --
     do NOT reject a draft merely for not mentioning every pain point in the list; only
     reject if it references NONE of them at all.
+    IF VERIFIED_PAIN_POINTS IS EMPTY: there is nothing lead-specific to require -- a
+    category-general opener (e.g. "coaching centres often juggle...", "businesses like
+    yours often...") is the CORRECT and EXPECTED form here, not a violation. Do NOT reject
+    it for "lacking a specific/citable pain point" or "not being value-first" -- an empty
+    list means no such claim was ever possible, so none is required. REJECT ONLY if,
+    despite the list being empty, the draft still asserts something as a specific fact
+    ABOUT THIS BUSINESS (its subject is "you"/"your"/the company's own name rather than
+    the category in general) -- that IS a real, unsupported claim and must be rejected.
+    Real live case (2026-09-08): a correctly-written, category-general draft ("coaching
+    centres often end up juggling attendance...") was wrongly rejected for "not
+    referencing any verified pain point" when none existed to reference -- do not repeat
+    that mistake.
 (c) no false claims, no unauthorized discounts/pricing, no fabricated DELIVERY timelines
     (ship dates, response-time SLAs, etc.) or testimonials, and no invented capabilities --
     but judge "invented" AGAINST THE PROVIDED PRODUCT_BRIEF, not against an empty
