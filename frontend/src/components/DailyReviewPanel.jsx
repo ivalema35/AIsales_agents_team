@@ -428,7 +428,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                     </div>
                   )}
                   <Link
-                    to="/whatsapp-templates"
+                    to={campaign.product_id ? `/whatsapp-templates?product_id=${campaign.product_id}` : "/whatsapp-templates"}
                     className="w-fit text-[11px] font-medium text-ink-700 underline decoration-line underline-offset-2 hover:text-ink-900"
                   >
                     Open WhatsApp Templates
