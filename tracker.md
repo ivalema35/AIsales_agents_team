@@ -6692,3 +6692,21 @@ Proposed" tab me** review ke liye ready he. Meta ko submit karna user ka decisio
 action, template edit nahi ho sakta submit ke baad) — maine khud submit nahi kiya. Commit `7c3715b`,
 VPS deploy+restart, real dry-run se verify.
 
+### ✅ Existing WA template ko product se assign karne ka option (2026-09-08)
+
+User ne pucha "agar existing template choose karna ho to kaise karenge" — asli gap tha: koi UI/API
+option nahi tha ek already-approved template ko kisi product se link karne ka (sirf creation ke waqt
+set hota tha, kabhi badal nahi sakte the). Note: naam/wording/category Meta ke pass immutable hain
+(sahi hai), but `product_id` sirf hamara local field hai (Meta ko pata hi nahi) — isliye badalna
+bilkul safe hai.
+
+**Fix**: `PATCH /whatsapp-templates/<id>` ab `product_id` bhi accept karta he. WhatsApp Templates page
+ke har template card pe naya "Used by: [dropdown]" — turant kisi bhi product ko assign kar sakte ho,
+koi naya Meta submission nahi chahiye. Commit `91c283b`.
+
+**Bonus**: is session me maine `bos-worker`/`bos-scraper` bahut baar restart kiya, har baar koi na
+koi job CLAIMED state me atak jata tha (recurring issue jo "system needs attention" email trigger
+karta). Ab `vps_deploy.py`'s restart action khud-ba-khud har restart ke baad stuck jobs check + recover
+karta he — future me ye manual dhoondhne ki zaroorat nahi. (Ye scratchpad tool hai, repo me commit nahi
+hota.)
+

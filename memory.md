@@ -882,3 +882,11 @@ pehle hi attempt me QC-approved real draft ban gaya** — WhatsApp Templates "AI
 Meta submit karna user ka decision (maine khud nahi kiya). Commit `7c3715b`, VPS deploy.
 **Lesson**: jab do QC pipelines (email vs template) similar checks karte hain, ek me fix ho to doosre
 me bhi check karna chahiye — copy-paste architecture me fixes drift ho sakte hain.
+
+**Existing WA template product-assign feature add kiya** (2026-09-08) — `product_id` sirf local field
+he (Meta ko pata nahi), isliye kisi bhi already-approved template ko turant kisi product se link kar
+sakte hain ab, "Used by" dropdown se, koi naya Meta submission nahi chahiye. Commit `91c283b`.
+
+**`vps_deploy.py` (scratchpad tool) ab self-healing he** — har `restart` action ke baad khud stuck
+CLAIMED jobs check + recover karta he (is session me baar-baar restart karne se bar-bar jobs atak
+rahe the, "system needs attention" email trigger karta tha).
