@@ -254,7 +254,44 @@ def poll_template_status(db, template):
         template.rejection_reason = match.get("rejected_reason") or match.get("reason")
     db.commit()
     logger.info("whatsapp template '%s' status updated: %s", template.name, real_status)
+
+    if real_status == "REJECTED":
+        _propose_replacement_after_meta_rejection(db, template)
     return True
+
+
+def _propose_replacement_after_meta_rejection(db, rejected_template):
+    """2026-09-08, real user ask: "reject ho to naya try kare" (if Meta rejects, try a new
+    one) -- so a rejection doesn't just dead-end waiting for an admin to notice and click
+    Ask AI again. Drafts ONE fresh candidate for the SAME purpose/product/level, informed
+    by exactly why Meta said no, and stores it as a DRAFT -- same as every AI-authored
+    candidate, it still needs an explicit admin approve before it ever reaches Meta again.
+    Never raises: a failed auto-retry must not break the poll loop that called this.
+    """
+    try:
+        reason = (
+            f'A previously-submitted template ("{rejected_template.name}", purpose='
+            f'{rejected_template.purpose}) was REJECTED by Meta'
+            + (f' with reason: "{rejected_template.rejection_reason}"' if rejected_template.rejection_reason else " (no reason given)")
+            + ". Propose a genuinely different candidate for the SAME purpose that avoids "
+              "whatever caused that rejection -- different wording, not just a minor tweak."
+        )
+        context = {
+            "rejected_body_text": rejected_template.body_text,
+            "rejected_reason": rejected_template.rejection_reason,
+        }
+        result = propose_new_template(
+            db, reason, context, purpose=rejected_template.purpose,
+            product_id=rejected_template.product_id, followup_level=rejected_template.followup_level,
+        )
+        if result:
+            logger.info("auto-drafted replacement '%s' after Meta rejected '%s'",
+                       result.name, rejected_template.name)
+        else:
+            logger.info("auto-retry after Meta rejection of '%s' declined (agent or QC said no)",
+                       rejected_template.name)
+    except Exception:  # noqa: BLE001 - a failed auto-retry must never break the poll loop
+        logger.exception("auto-retry template proposal failed after rejection of '%s'", rejected_template.name)
 
 
 def fetch_template_wording(name):
@@ -385,7 +422,7 @@ FOLLOWUP_LEVEL_JOB = {
 }
 
 
-def find_template_improvement_reason(db, purpose=None, followup_level=None):
+def find_template_improvement_reason(db, purpose=None, followup_level=None, product_id=None):
     """Step 9.6 sub-step 4 -- real signal detection for the manual "ask AI to draft a
     template" trigger. Never fabricates a need: returns (reason, context, purpose,
     product_id, followup_level) only when a real, data-backed gap exists, or None
@@ -404,15 +441,28 @@ def find_template_improvement_reason(db, purpose=None, followup_level=None):
     matching -- a healthy Level 1 says nothing about whether Level 2 has ever been
     covered.
 
-    Checks two real gaps, in order:
+    `product_id` (2026-09-08, real live gap): a product with no product-specific
+    FIRST_TOUCH template falls back to the shared library, which is real and functional
+    but generic (mentions "IVinfotech's software and IT solutions", never this product's
+    own name/pitch) -- a genuine coverage gap for THAT product, even though the shared
+    library means a "no FIRST_TOUCH template at all" gap can never exist system-wide.
+    Only checked when the caller explicitly names a product (Campaign Detail's own
+    Daily Review, which knows which product it's reviewing) -- omitted, this behaves
+    exactly as before.
+
+    Checks three real gaps, in order:
     1. An existing WhatsApp template (of the requested purpose+level, if given) with a
        real, statistically meaningful reply rate below LOW_REPLY_RATE_THRESHOLD (Step
        9.2's own performance rollup -- the exact real data this step was built to use).
-    2. If nothing is underperforming AND purpose isn't "FIRST_TOUCH" (TEMPLATE_LIBRARY's
-       GENERIC entry is always a real, available FIRST_TOUCH fallback, so that gap can
-       never genuinely exist), whether NO approved template exists yet for THIS SPECIFIC
-       level -- the real gap Step 9.3 found live (GameZone Visnagar's follow-up being
-       byte-identical to its first touch), now scoped per level rather than per purpose.
+    2. If `product_id` is given and purpose is "FIRST_TOUCH" (or unset), whether this
+       PRODUCT has its own approved FIRST_TOUCH template -- the shared library always
+       covers the system-wide case, but a specific product genuinely may not have one.
+    3. If nothing is underperforming AND purpose isn't "FIRST_TOUCH" (TEMPLATE_LIBRARY's
+       GENERIC/PAIN_POINT_HOOK entries are always a real, available system-wide FIRST_TOUCH
+       fallback, so THAT gap can never genuinely exist), whether NO approved template
+       exists yet for THIS SPECIFIC follow-up level -- the real gap Step 9.3 found live
+       (GameZone Visnagar's follow-up being byte-identical to its first touch), now scoped
+       per level rather than per purpose.
     """
     from services.analytics_service import get_variant_performance
 
@@ -457,10 +507,28 @@ def find_template_improvement_reason(db, purpose=None, followup_level=None):
                 reason += f" This must be written for {FOLLOWUP_LEVEL_JOB[followup_level]}"
             context = {"variant_id": worst["variant_id"], "sent": worst["sent"],
                        "replied": worst["replied"], "reply_rate": worst["reply_rate"]}
-            product_id = existing_row.product_id if existing_row else None
-            return reason, context, real_purpose, product_id, followup_level
+            variant_product_id = existing_row.product_id if existing_row else None
+            return reason, context, real_purpose, variant_product_id, followup_level
 
-    # TEMPLATE_LIBRARY's GENERIC entry is always a real, available FIRST_TOUCH fallback
+    if product_id and purpose in (None, "FIRST_TOUCH") and get_approved_first_touch_template(db, product_id=product_id) is None:
+        from database.models import Product
+        product = db.get(Product, product_id)
+        reason = (
+            f'No approved WhatsApp FIRST_TOUCH template exists yet for the product '
+            f'"{product.title if product else product_id}" specifically -- its real WhatsApp '
+            f'sends currently use the shared, product-agnostic fallback template instead of a '
+            f'pitch written for this product. Propose one written specifically for this product, '
+            f'using its own real title/description/value proposition below, tied to a real pain '
+            f'point when one is available.'
+        )
+        context = {
+            "product_title": product.title if product else None,
+            "product_description": product.description if product else None,
+            "sample_pain_point": _sample_real_pain_point(db),
+        }
+        return reason, context, "FIRST_TOUCH", product_id, None
+
+    # TEMPLATE_LIBRARY's GENERIC/PAIN_POINT_HOOK entries are always a real, available FIRST_TOUCH fallback
     # (select_template() falls back to it unconditionally) -- a "no FIRST_TOUCH template"
     # gap can never genuinely exist, so this check only ever applies to FOLLOW_UP.
     if purpose == "FOLLOW_UP" and followup_level and get_approved_followup_template(db, followup_level) is None:

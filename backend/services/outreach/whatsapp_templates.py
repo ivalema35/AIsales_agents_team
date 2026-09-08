@@ -14,8 +14,9 @@ per-template performance tracking exists (campaign_variants table), not built ye
 """
 from __future__ import annotations
 
-# key -> a lead-facing template. "GENERIC" is the always-available fallback used when no
-# pain point is known, or no category-specific template exists (yet) for the one found.
+# key -> a lead-facing template. "GENERIC" is a last-resort fallback, kept only for the
+# case where PAIN_POINT_HOOK somehow isn't APPROVED -- select_template() below no longer
+# reaches for it just because a lead has no pain point (2026-09-08, real typo-ridden sends).
 TEMPLATE_LIBRARY = {
     "GENERIC": {
         "name": "marketing_gen",
@@ -66,10 +67,18 @@ PAIN_POINT_CATEGORY_MAP: dict = {}
 
 def select_template(pain_points: list) -> str:
     """Returns a TEMPLATE_LIBRARY key. Prefers a category-specific, APPROVED template
-    matched via PAIN_POINT_CATEGORY_MAP; then the category-agnostic PAIN_POINT_HOOK if
-    any pain point is known and it's APPROVED; falls back to GENERIC otherwise. Never
-    blocks outreach just because no perfect template exists yet -- a generic touch beats
-    no touch.
+    matched via PAIN_POINT_CATEGORY_MAP; then the category-agnostic PAIN_POINT_HOOK
+    whenever it's APPROVED (its own `_fill_value("pain_point_phrase", ...)` already
+    degrades gracefully to "some recent challenges" with no pain points at all, so it
+    doesn't need a real pain point to be usable); GENERIC is the last-resort fallback,
+    used only if PAIN_POINT_HOOK itself somehow isn't APPROVED.
+
+    2026-09-08, real live case: GENERIC's own wording ("hello {{1}}, we hear about you.
+    make your buisness simpale.") has real typos and went out to 18 real businesses on
+    a campaign whose leads mostly had no pain points at all, because the old logic only
+    reached for PAIN_POINT_HOOK when `pain_points` was non-empty. PAIN_POINT_HOOK reads
+    fine either way, so it's now the default whenever it's approved -- GENERIC should
+    almost never fire in practice.
     """
     for point in pain_points or []:
         code = point.get("code") if isinstance(point, dict) else None
@@ -77,7 +86,7 @@ def select_template(pain_points: list) -> str:
         if key and TEMPLATE_LIBRARY.get(key, {}).get("status") == "APPROVED":
             return key
 
-    if pain_points and TEMPLATE_LIBRARY.get("PAIN_POINT_HOOK", {}).get("status") == "APPROVED":
+    if TEMPLATE_LIBRARY.get("PAIN_POINT_HOOK", {}).get("status") == "APPROVED":
         return "PAIN_POINT_HOOK"
 
     return "GENERIC"

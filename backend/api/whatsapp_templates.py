@@ -328,9 +328,15 @@ def propose_template():
     else:
         requested_level = None
 
+    # 2026-09-08 -- a campaign's own Daily Review knows which product it's reviewing, and
+    # can ask specifically "does THIS product have its own FIRST_TOUCH template" rather
+    # than only the system-wide reply-rate/coverage checks below.
+    requested_product_id = data.get("product_id")
+
     db = SessionLocal()
     try:
-        signal = find_template_improvement_reason(db, purpose=requested_purpose, followup_level=requested_level)
+        signal = find_template_improvement_reason(db, purpose=requested_purpose, followup_level=requested_level,
+                                                   product_id=requested_product_id)
         if not signal:
             return jsonify({
                 "proposed": False,

@@ -137,9 +137,13 @@ export const api = {
   createWhatsappTemplate: (data) => request("/whatsapp-templates", { method: "POST", body: JSON.stringify(data) }),
   updateWhatsappTemplate: (id, data) => request(`/whatsapp-templates/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   refreshWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/refresh`, { method: "POST" }),
-  proposeWhatsappTemplate: (purpose, followupLevel) => request("/whatsapp-templates/propose", {
+  proposeWhatsappTemplate: (purpose, followupLevel, productId) => request("/whatsapp-templates/propose", {
     method: "POST",
-    body: JSON.stringify(purpose ? { purpose, ...(followupLevel ? { followup_level: followupLevel } : {}) } : {}),
+    body: JSON.stringify(purpose ? {
+      purpose,
+      ...(followupLevel ? { followup_level: followupLevel } : {}),
+      ...(productId ? { product_id: productId } : {}),
+    } : {}),
   }),
   approveWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/approve`, { method: "POST" }),
   rejectWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/reject`, { method: "POST" }),

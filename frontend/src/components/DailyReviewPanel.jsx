@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, MessageSquareWarning } from "lucide-react";
+import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, MessageSquareWarning, Sparkles } from "lucide-react";
 import { api } from "../api/client";
 import TodoItemCard from "./TodoItemCard";
 
@@ -27,10 +27,28 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   const [settingMode, setSettingMode] = useState(false);
   // Email vs WhatsApp preview — Formatted/Simple chips only apply to email.
   const [previewChannel, setPreviewChannel] = useState("email");
+  // 2026-09-08, real user ask: when WhatsApp falls back to the shared library template
+  // instead of a real pitch written for this product, let a human ask the AI for a
+  // product-specific one right here, instead of only a passive link to a different page.
+  const [askingWaTemplate, setAskingWaTemplate] = useState(false);
+  const [waAskResult, setWaAskResult] = useState(null);
 
   useEffect(() => {
     api.getCampaignDailyReview(campaign.id).then(setReview).catch((err) => setError(err.message));
   }, [campaign.id]);
+
+  async function askAiForWaTemplate() {
+    setAskingWaTemplate(true);
+    setWaAskResult(null);
+    try {
+      const res = await api.proposeWhatsappTemplate("FIRST_TOUCH", null, campaign.product_id);
+      setWaAskResult(res);
+    } catch (err) {
+      setWaAskResult({ proposed: false, message: err.message });
+    } finally {
+      setAskingWaTemplate(false);
+    }
+  }
 
   // A to-do's proposal (target_segment/lead_count_goal/strategy_angle/email_render_mode)
   // applies to the real campaign row the moment ITS OWN card is approved (TodoItemCard's
@@ -385,6 +403,30 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                     </p>
                   </div>
                   <p className="text-[11px] text-ink-600">{review.sample_whatsapp.manage_hint}</p>
+                  {review.sample_whatsapp.source !== "product" && (
+                    <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-gold-600 bg-gold-100/40 p-2.5">
+                      <p className="text-[11px] leading-relaxed text-ink-700">
+                        This product doesn't have its own approved WhatsApp template yet, so real
+                        sends use the shared, generic one above instead of a pitch written for it.
+                      </p>
+                      <button
+                        onClick={askAiForWaTemplate}
+                        disabled={askingWaTemplate}
+                        className="flex w-fit items-center gap-1.5 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
+                      >
+                        <Sparkles size={11} /> {askingWaTemplate ? "Thinking…" : "Ask AI for a template for this product"}
+                      </button>
+                      {waAskResult && (
+                        <p className={`text-[11px] ${waAskResult.proposed ? "text-good-700" : "text-ink-500"}`}>
+                          {waAskResult.proposed ? (
+                            <>A draft was created — <Link to="/whatsapp-templates" className="underline decoration-line underline-offset-2">review and approve it here</Link> before it goes to Meta.</>
+                          ) : (
+                            waAskResult.message
+                          )}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <Link
                     to="/whatsapp-templates"
                     className="w-fit text-[11px] font-medium text-ink-700 underline decoration-line underline-offset-2 hover:text-ink-900"
