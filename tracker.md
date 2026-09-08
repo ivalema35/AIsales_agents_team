@@ -6468,3 +6468,45 @@ Center" -> Opened (WhatsApp, read 2026-09-07 12:32), "Beauty Bee Salon" -> Deliv
 khola), baaki 28 leads -> "Not sent yet" — sab sahi. Existing "Unique Health..." wale to-do me real QC
 reason bhi backfill kar diya taaki turant dikhe. Commit `37c21b8`, `npm run build` clean, VPS
 deploy+restart, sab verify.
+
+### QC-reject se pehle hi email sudharne ki koshish -- real testing se 3 layers of fix (2026-09-08)
+
+User ne ek clear cheez maangi: "jab QC reject kare to AI Manager us LLM ko bole ki email me ye
+change karo jisse reject hone ke chances kam ho aur email send ho." **Pehla discovery**: ye mechanism
+ALREADY exist karta tha — `outreach_handler.py` me QC reject hone par uska `suggested_corrections`
+seedha next attempt ke draft-prompt me jata tha ("YOUR PREVIOUS DRAFT WAS REJECTED... Fix this: ...").
+User ko clearly bataya ye pehle se hai, phir iska REAL weak point real testing se dhoonda.
+
+**Real dry-run testing** (koi send nahi, koi OutreachLog write nahi — sirf real lead ka real data
+use karke draft+QC loop replay kiya, 3 rounds) se 3 genuine gaps mile:
+
+1. **Weak-evidence pain points bhi drafting/QC ko dikhte the** — is lead ke 6 pain points me se 2
+   bahut kamzor evidence ke the ("a few reviewers", severity 0.55-0.57). Pehla attempt QC ne generic
+   bola, dusra attempt model ne weak pain point ko overclaim kar diya, QC ne fir reject kiya —
+   ek infinite oscillation trap. **Fix**: naya `services/outreach/pain_points.py`'s
+   `confident_pain_points()` — severity >= 0.65 wale hi pain points ab drafting/QC dono ko milte hain
+   (agar sab weak hon to sabse strong wala akela rakha jata he, kabhi khaali list nahi). QC ko bataya
+   "jo bhi list me hai wo pehle se confident hai, uski confidence mat judge karo."
+
+2. **Har retry sirf LAST correction dekhta tha, pehle wale bhool jata tha** — real testing me dikha:
+   attempt 1 ne "equipment mat likho" bola, model ne hataya; attempt 2 ka feedback kuch aur tha
+   (unrelated), to attempt 3 me model ne equipment WAPAS add kar diya kyunki usse sirf latest
+   feedback pata tha, purana nahi. **Fix**: `outreach_handler.py` ab HAR attempt ka correction ek
+   list me accumulate karta he, sabko numbered feedback ke sath agle attempt ko deta he ("(1) ... (2)
+   ..."), explicit instruction ke saath "ek baad wala fix pehle wale ko undo na kare."
+
+3. **`suggested_corrections` vague hota tha** — QC prompt ko bola ab ye field ek concrete,
+   directly-actionable EDIT ho ("training bullet hatao, ya isse soften karo"), sirf rejection reason
+   repeat na kare.
+
+**MAX_DRAFT_ATTEMPTS 2 → 3** bhi kiya — ek hi retry me course-correction converge na ho to ek aur
+mauka.
+
+**Honest real finding**: in sab fixes ke baad bhi, ISI particular lead ka case (jiska evidence_quote
+"failure to pay salary" he but customer_facing_phrase "payroll handling" — dono thoda mismatch)
+3 attempts ke baad bhi kabhi-kabhi QC se reject hota raha — QC kabhi-kabhi bahut literal/pedantic ho
+jata he (exact wording match maangta he). Ye ek known LLM-reliability limitation he jo sirf prompting
+se 100% fix nahi hoti — humne 3 real, structural improvements kiye (jo asaan cases me zaroor kaam
+karenge), par kuch genuinely mushkil leads ke liye human escalation to-do (real QC reason ke sath, upar
+wale fix se) hi sahi safety net he — feature he, bug nahi. Commit `7a3d7e6`, `a5f1ebf`, sab real dry-run
+se verify (LLM calls, no fake claims), VPS deploy+restart.

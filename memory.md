@@ -790,6 +790,18 @@ Campaign Detail leads table me naya "Message" column (Sent/Delivered/Opened/Repl
 timestamp). Verify: "Unique Health & Fitness Center" -> Opened, "Beauty Bee Salon" -> Delivered, baaki
 28 -> Not sent yet. Commit `37c21b8`, VPS deploy.
 
-**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `37c21b8`, 2026-09-08). Baaki: Step 16.8
+**QC-reject se pehle email sudharne ki koshish, 2026-09-08**: user ne bola "QC reject kare to LLM ko
+bolo sudhaaro, chances kam karo reject hone ke." Ye retry-with-feedback mechanism pehle se tha,
+real dry-run testing (real lead data, koi send nahi) se 2 genuine gaps mile aur fix kiye: (1) weak-
+evidence pain points (severity <0.65) drafting/QC dono ko dikhte the, oscillation trap banata tha —
+naya `confident_pain_points()` filter se ab sirf confident pain points jaate hain; (2) retry loop sirf
+LAST correction yaad rakhta tha, pehle wala fix bhool ke wapas regress ho jata tha — ab sab corrections
+accumulate hote hain. MAX_DRAFT_ATTEMPTS 2→3. **Honest finding**: in fixes ke baad bhi kuch genuinely
+hard leads (jaha evidence_quote aur customer_facing_phrase ka wording mismatch ho) QC se kabhi-kabhi
+reject hote rehte hain — QC ka literal/pedantic wording-matching ek known LLM limitation he, 100% fix
+nahi ho sakti sirf prompting se. Human escalation to-do (real QC reason ke sath) hi is residual class
+ke liye sahi safety net he. Commit `7a3d7e6`/`a5f1ebf`, VPS deploy.
+
+**Sab kuch VPS par LIVE he aur healthy confirm kiya** (commit `a5f1ebf`, 2026-09-08). Baaki: Step 16.8
 (marketing content), email-vs-WhatsApp channel-preference lever, WhatsApp template to-dos abhi unified
 inbox se disconnected hain (separate manual page).
