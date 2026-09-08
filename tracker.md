@@ -5921,7 +5921,7 @@ Isi beech ye bhi confirm kiya ki Cursor ke calendar-highlight commits (`3b66997`
 already clean git state me the (`git status` khali, `HEAD` origin se match) â€” koi SFTP-drift bacha nahi
 tha, safe.
 
-### ? Campaign calendar: Today highlight + UX polish ï¿½ 2026-09-07
+### Campaign calendar: Today highlight + UX polish â€” 2026-09-07
 
 `CampaignCalendar.jsx`: aaj ka din gold pill + Today label + stronger cell border/bg;
 header me Today jump button; framed grid; past days muted; empty today pe `+ Add` always
@@ -6333,15 +6333,15 @@ services restart.
 
 ### Campaign approval UX gap (2026-09-07)
 
-User asked where approval is — badge said `Waiting for your OK` but AI Sales Manager said nothing to decide (no todo cards).
+User asked where approval is ï¿½ badge said `Waiting for your OK` but AI Sales Manager said nothing to decide (no todo cards).
 
 **Truth:** two different approvals existed in product language but only one had UI:
-1. **Campaign status** `PROPOSED` ? `APPROVED` — backend `PUT /campaigns/<id>` supported it; **no frontend button** (Phase 18 comment never wired).
-2. **AI Manager todo Approve** — only when PENDING `TodoItem`s exist (targeting/goal proposals).
+1. **Campaign status** `PROPOSED` ? `APPROVED` ï¿½ backend `PUT /campaigns/<id>` supported it; **no frontend button** (Phase 18 comment never wired).
+2. **AI Manager todo Approve** ï¿½ only when PENDING `TodoItem`s exist (targeting/goal proposals).
 
 **Fix:** `Approve campaign` action box on Campaign Detail when status is PROPOSED; clarify empty AI Manager copy so it doesn't look like campaign approval lives there.
 
-### VPS deploy — campaign Draft/Approve UX (2026-09-07)
+### VPS deploy ï¿½ campaign Draft/Approve UX (2026-09-07)
 
 User: deploy. Commit `4a48577` pushed. VPS `git pull --ff-only` `0cab2d7..4a48577` (frontend-only), DB mtime unchanged, `npm run build` ? live JS `index-CRVtVovP.js`. `AUTONOMOUS_OUTREACH_ENABLED=false` untouched. No service restart (no backend change in this pull).
 
@@ -6353,9 +6353,9 @@ User catch: Dashboard Inbox / Calendar never asked to approve a Draft campaign o
 
 **Fix:** `_ensure_standing_review_todos` always creates fixed-label non-blocker todos `Approve campaign` (status PROPOSED) and `Review messages` (leads>0 and sent==0). Inbox Approve on `Approve campaign` flips status to APPROVED; Campaign page Mark as approved dismisses the matching todo. Calendar chip label Draft. Prompt note so LLM does not duplicate.
 
-### AI Manager todos — no hardcode, same-day when needed (2026-09-07)
+### AI Manager todos ï¿½ no hardcode, same-day when needed (2026-09-07)
 
-User correction: todos must come from AI Manager only (no Python-invented rows), but when needed (Approve campaign / Review messages) they must appear same day — not wait for tomorrow.
+User correction: todos must come from AI Manager only (no Python-invented rows), but when needed (Approve campaign / Review messages) they must appear same day ï¿½ not wait for tomorrow.
 
 **Reverted** `_ensure_standing_review_todos` hardcode.
 
@@ -6367,6 +6367,6 @@ User correction: todos must come from AI Manager only (no Python-invented rows),
 
 ### Campaign preview: WhatsApp template review (2026-09-07)
 
-User catch: Daily Review only showed Email (Formatted/Simple) — no way to review the WhatsApp first-touch template that real sends use.
+User catch: Daily Review only showed Email (Formatted/Simple) ï¿½ no way to review the WhatsApp first-touch template that real sends use.
 
 **Fix:** `build_sample_whatsapp_preview` in `campaign_service.py` (same selection as `outreach_wa_handler` first touch). `get_daily_review` returns `sample_whatsapp`. `DailyReviewPanel`: Email | WhatsApp tabs; WA shows filled body + link to WhatsApp Templates.
