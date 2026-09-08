@@ -108,7 +108,17 @@ def get_process_states(db):
 
 def find_stuck_leads(db, minutes=STUCK_OUTREACH_MINUTES):
     """Leads parked in OUTREACHING longer than a real send could ever legitimately take --
-    the 2026-08-19 incident class (a send interrupted mid-flight, status never advanced)."""
+    the 2026-08-19 incident class (a send interrupted mid-flight, status never advanced).
+
+    2026-09-08, real user-reported false alarm: since the "Review & send" Inbox feature
+    (a QC-escalated email's lead deliberately STAYS OUTREACHING, sometimes for hours or
+    days, until a human reviews the draft), this query started firing this alert hourly
+    for leads that were never stuck at all -- just correctly waiting on a human, exactly
+    as designed. Excludes any lead with a real, currently-PENDING lead-scoped to-do
+    (create_lead_escalation_todo's own row) -- a lead with one of those has an honest,
+    visible reason it hasn't sent yet; only a lead with NEITHER a real send NOR a to-do
+    explaining why is the genuine 2026-08-19 incident class this check exists to catch.
+    """
     rows = db.execute(text("""
         SELECT id, company_name,
                CAST((julianday('now') - julianday(updated_at)) * 1440.0 AS INTEGER)
@@ -116,6 +126,11 @@ def find_stuck_leads(db, minutes=STUCK_OUTREACH_MINUTES):
           FROM leads
          WHERE status = 'OUTREACHING'
            AND julianday('now') - julianday(updated_at) > :m / 1440.0
+           AND NOT EXISTS (
+               SELECT 1 FROM todo_items
+                WHERE todo_items.lead_id = leads.id
+                  AND todo_items.status = 'PENDING'
+           )
          ORDER BY updated_at
     """), {"m": minutes}).fetchall()
     return [{"id": r.id, "company_name": r.company_name, "minutes_stuck": r.minutes_stuck}
