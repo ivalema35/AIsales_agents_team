@@ -7180,5 +7180,11 @@ User soch raha he — **abhi kuch develop mat karo**, sirf plan save karna he:
 
 **Abhi kuch nahi karna** — sirf yaad rakhna he taaki agli baar jab user ye kahe "wo IVinfotech
 general services wala plan shuru karo," turant context mile bina dobara samjhana pade.
-Kal ka warning text isi wajah se add kiya gaya tha.
+
+**Follow-up (same din)**: user ne email side bhi clarify kiya — **email me bhi proper image,
+video, demo URL** honge (sirf WhatsApp nahi). Email drafting me already ek real
+AVAILABLE_CONTENT_ASSETS mechanism he (DEMO_URL/VIDEO_URL/CASE_STUDY/TESTIMONIAL links/CTA
+ke roop me copy me weave hote hain) — par asli `<img>` banner HTML email me already render
+hota he ya naya kaam lagega, ye abhi check nahi kiya — jab build shuru ho tab sabse pehle
+ye dekhna. **Abhi bhi kuch develop nahi karna** — same instruction.
 

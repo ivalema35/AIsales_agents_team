@@ -1061,7 +1061,8 @@ jaisa hi, powerful features ko clear warning ke saath dena zaroori he.
 
 **💡 IDEA (abhi develop nahi karna) — IVinfotech general IT services product (2026-09-09)**:
 user soch raha he — ek naya "general IT services" product banega (AI Automation + Web Dev +
-CRM-ERP + Mobile Dev sab combine, umbrella pitch), uske liye proper email template + WhatsApp
-template (image, video URL, demo ke saath) banayenge, phir naya campaign run karenge. **Abhi
-kuch develop nahi karna** — explicit instruction. Agli baar user isse revisit kare to yahi se
-shuru karna, dobara poori baat samjhani nahi padegi.
+CRM-ERP + Mobile Dev sab combine, umbrella pitch), uske liye proper **email template AUR
+WhatsApp template dono me** image, video URL, demo ke saath banayenge, phir naya campaign
+run karenge. **Abhi kuch develop nahi karna** — explicit instruction (2 baar bola). Agli
+baar user isse revisit kare to yahi se shuru karna, dobara poori baat samjhani nahi padegi —
+full detail persistent memory me hai (`project_ivinfotech_general_it_services_bundle_plan`).
