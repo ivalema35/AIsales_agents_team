@@ -7245,3 +7245,20 @@ yahan human (user) ne khud pehle content dekha, review kiya, phir explicitly "ad
 Ab is product ke real drafting/QC agents in facts ko use kar sakte hain — koi invented claim
 nahi, sab kuch ivinfotech.com se verified.
 
+### ✅ AI Automation pe focus karke 2 aur KB items add kiye (2026-09-09)
+
+User ne bola "aur add karo, AI automation pe focus karke." Pehle wala "Core Services" FACT
+to saari 4 services ka sirf summary tha — ab AI Automation ka apna DEDICATED, deep detail
+add kiya (already ivinfotech.com/ai-automation se fetch kiya hua real data, koi naya fetch
+nahi kiya):
+
+6. **FACT — AI Automation: Capabilities** — chatbots (WhatsApp+website, multilingual, CRM
+   sync), workflow automation (auto-invoicing, email sequences, social auto-posting), custom
+   AI agents/LLM (LangChain, RAG, on-premise deployment option), tech stack (Python, n8n,
+   OpenAI/GPT-4, LangChain, TensorFlow, Zapier).
+7. **FACT — AI Automation: Stated Business Impact** — "70% cost reduction," "10x faster
+   processing" — explicitly labeled as **IVinfotech ka apna marketing claim, guaranteed
+   outcome nahi** (taaki AI drafting isse sahi context me use kare, promise ki tarah nahi).
+
+Total ab **7 KB items** is product ke liye. Commit karke VPS pe sync kiya.
+

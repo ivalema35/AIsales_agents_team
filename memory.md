@@ -1086,3 +1086,9 @@ add kiya — 2 FACT + 3 PROOF, "General IT Services" product me. **Clarification
 ye zero-fabrication rule ka bypass nahi tha — wo rule autonomous AI agents ko roke bina-human-
 review facts inject karne se; yahan human ne pehle content review karke explicitly "add karo"
 kaha, to ye ek human-approved action tha, sirf mechanics mere the.
+
+**✅ AI Automation pe deep-dive KB items add kiye (2026-09-09)**: 2 aur FACT items — "AI
+Automation: Capabilities" aur "AI Automation: Stated Business Impact" (70% cost reduction/10x
+speed ko explicitly "IVinfotech ka apna claim" bola, guaranteed outcome nahi). Total 7 KB
+items ab is product ke liye. Koi naya website fetch nahi kiya — already fetched real data
+use kiya.
