@@ -2,12 +2,31 @@ from __future__ import annotations
 import json
 import os
 import uuid
+from pathlib import Path
 
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, jsonify, request
 
 from config import Config
 from database.db_config import SessionLocal
 from database.models import ContentAsset, Product
+
+# 2026-09-09, real production finding: this app's live webserver (OpenLiteSpeed, shared
+# across several unrelated domains on the same VPS) only proxies /api/ to the Flask
+# backend -- Flask's own static folder (where an earlier version of this fix saved
+# uploads) is NEVER reached by any real request, regardless of app.py's own public-prefix
+# list. Confirmed the SAME real bug already existed for the brand logo
+# (/static/brand/ivinfotech-logo.png has silently 404'd-to-index.html in every real
+# outbound email this whole time -- a separate, pre-existing issue, not fixed here).
+# Attempting a webserver-config fix (a matching /static/ proxy context, mirroring the
+# working /api/ one) was tried and reverted -- this vhost has two conflicting `rewrite`
+# blocks with unclear precedence, and this is a MULTI-TENANT server hosting other
+# unrelated sites, too risky to keep experimenting with for one feature.
+# Real fix: write directly into the frontend's own build output (frontend/dist), the one
+# path this webserver DOES serve correctly today (same as logo.png, favicon.svg, the JS
+# bundles). This directory is wiped by every `npm run build`, so the deploy process
+# (scratchpad vps_deploy.py, this session's own VPS deploy tool) must copy this folder
+# out before rebuilding and back in after -- see that script's `build` action.
+_UPLOAD_DIR = Path(__file__).resolve().parents[2] / "frontend" / "dist" / "uploads"
 
 content_assets_bp = Blueprint("content_assets", __name__, url_prefix="/api/v1/content-assets")
 
@@ -93,14 +112,15 @@ def get_asset(asset_id):
 def upload_asset_file():
     """2026-09-09, real user ask: a real image file (for a WhatsApp template header or an
     email banner) needs to end up at a real, publicly-fetchable URL -- Meta and every real
-    recipient's mail client must be able to load it without a login session, the same
-    reason the brand logo is served from /static/brand/ (see app.py's _PUBLIC_PREFIXES).
+    recipient's mail client must be able to load it without a login session.
 
-    Saves into Flask's own default static folder (backend/static/uploads/, auto-served at
-    /static/uploads/<file> -- no new route needed) under a random filename (never the
-    original, to avoid path traversal / collisions) and returns the real public URL. Does
-    NOT create a ContentAsset row itself -- the frontend calls the existing POST /content-
-    assets with asset_type=IMAGE_URL and this URL as `value`, same as any other asset type.
+    Saves into the frontend's build output (see _UPLOAD_DIR's own comment for why -- the
+    real webserver only serves files that physically exist there, Flask's own static
+    folder is never actually reached by a real request in this production setup) under a
+    random filename (never the original, to avoid path traversal / collisions) and returns
+    the real public URL. Does NOT create a ContentAsset row itself -- the frontend calls
+    the existing POST /content-assets with asset_type=IMAGE_URL and this URL as `value`,
+    same as any other asset type.
     """
     file = request.files.get("file")
     if not file or not file.filename:
@@ -116,12 +136,20 @@ def upload_asset_file():
     if size > MAX_UPLOAD_SIZE_BYTES:
         return jsonify({"error": ["file must be 5MB or smaller"]}), 422
 
-    upload_dir = os.path.join(current_app.static_folder, "uploads")
-    os.makedirs(upload_dir, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}.{ext}"
-    file.save(os.path.join(upload_dir, filename))
+    if not _UPLOAD_DIR.parent.exists():
+        # frontend/dist doesn't exist at all -- this is a fresh checkout that's never had
+        # `npm run build` run (real prod always has, this only bites a fresh local dev
+        # setup). An honest error beats silently writing into a folder no server serves.
+        return jsonify({"error": [
+            "frontend/dist doesn't exist yet -- run `npm run build` in frontend/ at least "
+            "once (this endpoint saves into the real served build output, not a dev server)."
+        ]}), 500
 
-    url = f"{Config.PUBLIC_BASE_URL.rstrip('/')}/static/uploads/{filename}"
+    _UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    file.save(str(_UPLOAD_DIR / filename))
+
+    url = f"{Config.PUBLIC_BASE_URL.rstrip('/')}/uploads/{filename}"
     return jsonify({"url": url}), 201
 
 
