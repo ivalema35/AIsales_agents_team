@@ -1011,3 +1011,10 @@ content asset se, kabhi invent nahi), aur campaign ka strategy_angle ab draft me
 Commit `8c2ee96`. Bonus: isi deploy me `discovery_runs` migration ka idempotency bug bhi mila
 aur fix kiya (`36445f5`) — galat constraint-name check ki wajah se har migrate.py run pe wo
 table needlessly rebuild ho raha tha.
+
+**🔧 "Give feedback" missing dikh raha tha + review campaign page pe hi laao (2026-09-09)**:
+verify kiya to pata chala ye sirf browser cache tha, server pe sab sahi deployed tha. Real ask
+tha: WhatsApp draft review campaign ke Daily Review page pe hi ho jaye, separate page pe na
+jaana pade. Fix: `ProposedCard` ko shared `WhatsappDraftCard.jsx` me nikala (TodoItemCard jaisa
+hi "ek design, do jagah" pattern), ab Campaign Detail ke Daily Review me hi draft dikhta he
+Approve/Reject/Give-feedback ke saath. Commit `5803172`.

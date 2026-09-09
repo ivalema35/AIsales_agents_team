@@ -7018,3 +7018,24 @@ fix kiya — sirf ek baar chalega.
 Commits `8c2ee96` (feature), `36445f5` (migration idempotency fix). VPS pe pull+migrate+build+
 sync+restart, sab 5 services active, koi stuck job nahi.
 
+### 🔧 Follow-up: "Give feedback" nahi dikh raha tha + review campaign page pe hi laao (2026-09-09)
+
+User ne screenshot bheja jisme sirf "Approve" aur "Reject" buttons the, "Give feedback" nahi tha.
+**Verify kiya server pe** — code sahi tha, deployed bundle me "Give feedback" text maujood tha,
+`index.html` bhi sahi latest JS file (`index-CvrtuJPz.js`) ko point kar raha tha. Ye ek **browser
+cache** issue tha — user ka purana tab/cached page dikh raha tha, server pe sab sahi tha.
+
+**Doosra, real ask**: "ye campign page me whatsapp template review me hi bhi handle ho jaye,
+yaha ana na pade" — WhatsApp Templates ke separate page pe jaane ki zarurat na pade, campaign ke
+apne Daily Review me hi review/feedback/approve ho jaye.
+
+**Fix**: `ProposedCard` (jo pehle sirf WhatsappTemplates.jsx ke andar local tha) ko ek shared
+component `WhatsappDraftCard.jsx` me nikala — bilkul TodoItemCard jaisa hi pattern (Dashboard
+inbox aur Campaign Detail dono ek hi card use karte hain, kabhi do alag design nahi banenge).
+Ab Campaign Detail ke Daily Review me "Ask AI for a template" button ke bilkul niche hi wo draft
+dikhta he — Approve/Reject/Give feedback sab wahi se, koi dusra page kholne ki zarurat nahi.
+Approve hone pe candidates dropdown aur preview bhi turant refresh ho jaate hain.
+
+Commit `5803172`. VPS pe pull+build+sync kiya (backend code nahi badla is baar, sirf frontend,
+to restart ki zarurat nahi thi).
+
