@@ -6557,6 +6557,12 @@ Fix: independent `_heartbeat_loop` task so beats continue while work runs. Commi
 **Lead-count goal reminder:** goal = stop ceiling, not same-day “find N now”; Serper batch +
 24h discovery cooldown per (query, region).
 
+### ✅ Daily Review message preview — non-tech UX (2026-09-09)
+Campaign Detail sample messages: title **How your messages look**; big Email/WhatsApp
+buttons; Formatted/Simple → **Designed email / Plain text**; chat-style WA bubble;
+clear “WhatsApp needs a fixed template” note; friendlier template picker + Ask AI CTA.
+Logic unchanged (revise draft, selectWaTemplate, propose).
+
 ### ⭐⭐⭐ "IV Clasess Push" campaign — email rejection root cause + WA template + Meta workflow (2026-09-08)
 
 User ne naya campaign chalaya (coaching institutes, "IV Clasess Push"), kaafi email reject hue aur

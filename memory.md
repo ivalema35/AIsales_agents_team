@@ -833,6 +833,10 @@ campaign-page button = user ne socha, **abhi pending** (docs only, build nahi).
 **Standing safety:** discovery/outreach switches user ke ilawa test ke liye mat flip karo. VPS deploy
 = push → pull → frontend build+`public_html` → affected `bos-*` restart. Secrets sirf `.env`.
 
+**2026-09-09 — Daily Review message preview non-tech UX:** section title “How your messages look”;
+bade Email/WhatsApp buttons; Designed email / Plain text; WhatsApp chat bubble + clear template
+rule + picker + Ask AI. Deploy pending user confirm.
+
 **⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
 user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
 (40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified
