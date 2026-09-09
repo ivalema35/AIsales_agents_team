@@ -93,14 +93,23 @@ def _fix_discovery_run_constraint(raw_conn):
     incident). SQLite can't ALTER a constraint in place, so this rebuilds the table --
     safe here because this table is pure cooldown bookkeeping: losing a row just means
     one campaign's next discovery tick isn't rate-limited by an old timestamp, never a
-    real data loss. Idempotent: only runs while the OLD constraint name is still present.
+    real data loss. Idempotent: only runs while the OLD constraint is still present.
+
+    2026-09-09 follow-up, real bug found live: the original idempotency check looked for
+    a constraint NAME ("uq_discovery_run_v2") that this rebuild's own `UNIQUE (...)` clause
+    never actually assigns (SQLite constraints declared this way are unnamed) -- so that
+    check could never match, and this rebuilt the entire table on EVERY migrate.py run
+    (harmless here since it's pure cooldown data safely copied each time, but wasteful, and
+    a needless risk while the discovery scheduler could be mid-tick against this same
+    table). Fixed to check for the OLD constraint's real shape instead of a name that was
+    never actually written anywhere.
     """
     if not _table_exists(raw_conn, "discovery_runs"):
         return  # brand-new DB -- schema.sql's own CREATE already has the correct constraint
     existing_sql = raw_conn.execute(
         "SELECT sql FROM sqlite_master WHERE type='table' AND name='discovery_runs'"
     ).fetchone()
-    if not existing_sql or "uq_discovery_run_v2" in (existing_sql[0] or ""):
+    if not existing_sql or "UNIQUE (product_id, query, region)" not in (existing_sql[0] or ""):
         return  # already migrated (or somehow already correct)
 
     raw_conn.execute("ALTER TABLE discovery_runs RENAME TO discovery_runs_old_uq")
