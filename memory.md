@@ -843,6 +843,9 @@ strip ke baad banner dikhta hai — real send (`send_email`) + Daily Review / ki
 Preview iframe local file ko data-URI embed kar sakta hai. Daily Review: inbox chrome
 (From/Subject), taller iframe, clearer channel toggles. Deploy pending unless user asks.
 
+**2026-09-09 — Video card polish:** Shorts blur thumb → landscape `hqdefault`; caption
+`video_url` → “Watch the video”; navy/gold CTA bar. Deploy pending.
+
 **⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
 user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
 (40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified

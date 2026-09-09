@@ -7366,6 +7366,19 @@ zyada attractive/convincing.
 **Note:** IMAGE_URL mid-body `ASSET_SECTIONS` me nahi — sirf header banner. Content Library
 me product pe “Email Header” IMAGE_URL set hona chahiye (already live pe General IT ke liye).
 
+### ✅ Video thumbnail UI polish (2026-09-09)
+
+User: email preview me video card bekar dikh rahi thi — blur/pillarbox Shorts thumb + caption
+literally `video_url`.
+
+**Fixes (`email_renderer.py`)**
+- `_label_or_fallback`: underscore field names (`video_url`) ab space wale jaisi treat —
+  customer-facing “Watch the video”.
+- YouTube thumbs: oEmbed ki jagah landscape `i.ytimg.com/.../hqdefault.jpg` (Shorts blur
+  frame avoid).
+- Video card: wider 16:9 frame, rounded card + shadow, navy CTA bar with gold play chip.
+
+
 **✅ Claude ka independent verify + real test + deploy (2026-09-09)**: user ne bola "check kar
 aur deploy kar." Poora diff review kiya (real SEND function `email_service.py` touch hui thi,
 isliye extra dhyan se) — koi safety/gating logic touch nahi hui, sirf visual banner add hua,

@@ -24,6 +24,7 @@ from __future__ import annotations
 import base64
 import html
 import logging
+import re
 from pathlib import Path
 
 import requests
@@ -82,10 +83,11 @@ BODY_SIZE = 15
 LINE_HEIGHT = "1.62"
 
 # An asset's title is written by the operator for their own reference in the dashboard
-# ("demo url", "video url") and then appears on a customer-facing button. Caught on the
-# first real send: the button genuinely read "demo url". A title that is really a field
-# name rather than a label is replaced with the section's proper fallback -- narrow on
-# purpose, so a real label like "See our 2-minute walkthrough" is never overridden.
+# ("demo url", "video url", "video_url") and then appears on a customer-facing button.
+# Caught on the first real send: the button genuinely read "demo url". A title that is
+# really a field name rather than a label is replaced with the section's proper fallback
+# -- narrow on purpose, so a real label like "See our 2-minute walkthrough" is never
+# overridden.
 _FIELD_NAME_WORDS = ("url", "link", "asset")
 
 
@@ -93,19 +95,41 @@ def _label_or_fallback(title: str, fallback: str) -> str:
     t = (title or "").strip()
     if not t:
         return fallback
-    words = t.lower().split()
+    # Underscored field names ("video_url") must split the same as spaced ones ("video url").
+    words = t.lower().replace("_", " ").replace("-", " ").split()
     if len(words) <= 3 and any(w.strip(":-") in _FIELD_NAME_WORDS for w in words):
         return fallback
     return t
 
 
+def _youtube_video_id(video_url: str) -> str | None:
+    """Extract a YouTube / Shorts / youtu.be id from a real URL. None if not YouTube."""
+    u = video_url or ""
+    patterns = (
+        r"(?:youtube\.com/watch\?(?:[^#]*&)?v=)([A-Za-z0-9_-]{6,})",
+        r"(?:youtu\.be/)([A-Za-z0-9_-]{6,})",
+        r"(?:youtube\.com/shorts/)([A-Za-z0-9_-]{6,})",
+        r"(?:youtube\.com/embed/)([A-Za-z0-9_-]{6,})",
+    )
+    for pat in patterns:
+        m = re.search(pat, u)
+        if m:
+            return m.group(1)
+    return None
+
+
 def fetch_video_thumbnail(video_url: str) -> str | None:
-    """Real oEmbed lookup (YouTube/Vimeo's own public, no-auth endpoints) for a real
-    thumbnail of a real video -- never fabricated, never a generic placeholder. Returns
-    None for an unsupported provider or a failed lookup; a missing thumbnail must never
-    block a real send, it just means the video renders as a link instead of an image."""
+    """Real thumbnail for a real video URL -- never fabricated, never a generic placeholder.
+
+    YouTube: prefer the landscape `hqdefault` frame (16:9). oEmbed for Shorts often returns
+    a tall / blur-pillarboxed still that looks broken inside a wide email card (caught
+    live 2026-09-09). Vimeo still uses oEmbed. Missing thumbnail must never block a send.
+    """
     try:
         if "youtube.com" in video_url or "youtu.be" in video_url:
+            vid = _youtube_video_id(video_url)
+            if vid:
+                return f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
             resp = requests.get("https://www.youtube.com/oembed",
                                 params={"url": video_url, "format": "json"}, timeout=5)
             resp.raise_for_status()
@@ -223,33 +247,49 @@ def _prose_block(items, heading: str = "", edge: str | None = None,
 
 
 def _render_video(section: dict) -> str:
+    """Clickable video card: landscape thumb + clear CTA (never a raw field name).
+
+    2026-09-09 polish: Shorts oEmbed thumbs were tall/blur-pillarboxed and the caption
+    literally said `video_url`. Landscape hqdefault + human label + navy CTA bar.
+    Images-off still leaves the CTA row as the surviving click target.
+    """
     url = section.get("url", "")
-    title = _label_or_fallback(section.get("title"), "Watch the walkthrough")
+    title = _label_or_fallback(section.get("title"), "Watch the video")
     thumbnail = fetch_video_thumbnail(url)
-    # Deliberately NOT full width. A hero-sized image is the single loudest campaign
-    # signal in an email; at ~380px it reads as something a person attached, which is
-    # what it actually is.
-    thumb_width = 400
+    # Near content width so the 16:9 frame reads as a real video preview, not a stamp.
+    thumb_width = 520
     image_html = ""
     if thumbnail:
         image_html = f"""
-      <a href="{_e(url)}" style="text-decoration: none; display: block;">
+      <a href="{_e(url)}" style="text-decoration: none; display: block; line-height: 0;">
         <img src="{_e(thumbnail)}" alt="{_e(title)}" width="{thumb_width}"
              style="display: block; width: 100%; max-width: {thumb_width}px; height: auto;
-                    border-radius: 8px 8px 0 0;">
+                    border: 0; outline: none; text-decoration: none;">
       </a>"""
-    # With images disabled the thumbnail is invisible, so the caption row below it is not
-    # a nicety -- it is the only thing that survives. Always present, never conditional on
-    # the image being missing, and it carries the play glyph so the row still reads as a
-    # video rather than a stray link.
+    # CTA bar — navy, white type, gold accent edge. Reads as "tap to watch" even when
+    # the thumbnail is blocked. Never conditional on the image.
     return f"""
-<table role="presentation" cellpadding="0" cellspacing="0" border="0"
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
        style="margin: 0 0 24px 0; max-width: {thumb_width}px;">
   <tr>
-    <td style="border: 1px solid {RULE}; border-radius: 8px;">{image_html}
-      <a href="{_e(url)}" style="display: block; padding: 11px 14px; font-family: {FONT};
-         font-size: 14px; font-weight: 600; color: {LINK}; text-decoration: none;
-         border-top: 1px solid {RULE};">&#9658;&nbsp;&nbsp;{_e(title)}</a>
+    <td style="border: 1px solid {RULE}; border-radius: 12px; overflow: hidden;
+               box-shadow: 0 4px 14px rgba(11,28,60,0.08); background: {CARD};">
+      {image_html}
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td width="4" bgcolor="{GOLD}" style="width: 4px; background: {GOLD};
+              font-size: 0; line-height: 0;">&nbsp;</td>
+          <td bgcolor="{BRAND}" style="background: {BRAND}; padding: 14px 16px;">
+            <a href="{_e(url)}" style="display: block; font-family: {FONT}; font-size: 15px;
+               font-weight: 700; color: {ACCENT_TEXT}; text-decoration: none; letter-spacing: 0.2px;">
+              <span style="display: inline-block; width: 22px; height: 22px; line-height: 22px;
+                    text-align: center; border-radius: 11px; background: {GOLD}; color: {BRAND};
+                    font-size: 11px; margin-right: 10px; vertical-align: middle;">&#9658;</span>
+              <span style="vertical-align: middle;">{_e(title)}</span>
+            </a>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>"""
