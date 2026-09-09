@@ -7366,5 +7366,16 @@ zyada attractive/convincing.
 **Note:** IMAGE_URL mid-body `ASSET_SECTIONS` me nahi — sirf header banner. Content Library
 me product pe “Email Header” IMAGE_URL set hona chahiye (already live pe General IT ke liye).
 
+**✅ Claude ka independent verify + real test + deploy (2026-09-09)**: user ne bola "check kar
+aur deploy kar." Poora diff review kiya (real SEND function `email_service.py` touch hui thi,
+isliye extra dhyan se) — koi safety/gating logic touch nahi hui, sirf visual banner add hua,
+gracefully skip hota he agar image na ho. **Real test kiya**: `pick_header_image_url()` ko
+real "WA Header" + "Email Header" dono diye — sahi se "Email Header" hi choose kiya (jab dono
+maujood hon). Phir asli live campaign ("General IT Services Push") ka daily-review preview
+generate kiya, HTML download karke Playwright se screenshot liya — **banner sahi jagah, sahi
+size, poora email layout clean dikha**, koi breakage nahi. Sab kuch verify hone ke baad hi
+deploy kiya: backend restart + frontend build/sync. Ek chhota unused file mila
+(`frontend/public/wa-header-ivinfotech-general-it.png`, kahi reference nahi tha) — chhod diya
+untracked, kuch nuksan nahi karta.
 
 
