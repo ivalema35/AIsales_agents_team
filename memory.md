@@ -1018,3 +1018,11 @@ tha: WhatsApp draft review campaign ke Daily Review page pe hi ho jaye, separate
 jaana pade. Fix: `ProposedCard` ko shared `WhatsappDraftCard.jsx` me nikala (TodoItemCard jaisa
 hi "ek design, do jagah" pattern), ab Campaign Detail ke Daily Review me hi draft dikhta he
 Approve/Reject/Give-feedback ke saath. Commit `5803172`.
+
+**🔧 "Ask AI" gayab + button-wala template me button nahi tha (2026-09-09)**: (1) "Ask AI" box
+sirf tab dikhta tha jab product ke paas KOI template na ho — fix: hamesha dikhta he ab, wording
+context ke hisaab se. (2) "button ke bina aaya" — ye bug nahi tha, us product ke paas koi real
+demo/video asset hi nahi tha, AI ne sahi se invent nahi kiya (reasoning me likha tha, par UI pe
+prominently nahi dikha). Fix: naya gap check jab template already he par button nahi aur ab
+asset available he; asset na ho to system seedha clear message deta he, AI ko call hi nahi karta.
+Commit `1d7990e`.

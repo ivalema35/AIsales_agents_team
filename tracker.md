@@ -7039,3 +7039,30 @@ Approve hone pe candidates dropdown aur preview bhi turant refresh ho jaate hain
 Commit `5803172`. VPS pe pull+build+sync kiya (backend code nahi badla is baar, sirf frontend,
 to restart ki zarurat nahi thi).
 
+### 🔧 "Ask AI" gayab ho gaya + button wale template me button hi nahi aaya (2026-09-09)
+
+User ne 2 real issues bataye ek screenshot ke sath:
+
+**1) "ask for ai bhi nahi dikh rha he"** — Root cause: "Ask AI for a template" box sirf tab
+dikhta tha jab product ke paas KOI template hi na ho (`source !== "product"` condition). Is
+campaign ke product ("AI Automation Solutions") ke paas ab ek approved template ban chuka tha
+(pehle wale fix se), to poora "Ask AI" box hi gayab ho gaya — jabki user ek NAYA (button-wala)
+version maangna chahta tha. **Fix**: ab "Ask AI" hamesha dikhta he, wording sirf context ke
+hisaab se badalti he ("koi template nahi he" vs "already he, aur maang sakte hain").
+
+**2) "template banaya tha with button but button ke sath nahi aaya"** — Verify kiya: ye asal
+me sahi/honest behavior tha, bug nahi — us product ("AI Automation Solutions") ke paas koi real
+demo/video link (Content Asset) hi nahi he system me, to AI ne sahi se koi button invent nahi
+kiya (apni reasoning me likha bhi tha "no real asset to attach", par wo chhota text user ko
+dikha hi nahi). **Fix (2 parts)**:
+- `find_template_improvement_reason()` me naya check: agar product ke paas pehle se template
+  he par button nahi he, AUR ab koi real content asset available he, to ye khud ek genuine gap
+  ban jaata he — AI ko phir se button-wala version banane ka mauka milta he.
+- Agar koi real asset abhi bhi nahi he, to system AI ko call hi nahi karta — seedha clear
+  message deta he: "Add one under Products → Content Library first, then ask again." — aur
+  agar draft ban bhi jaye button ke bina, to ab ek saaf warning bhi dikhti he UI pe.
+
+Commit `1d7990e`. VPS pe pull+migrate-check+build+sync+restart, sab verify kiya real product
+data se (AI Automation Solutions → no asset → correctly declined; Mobile App Development →
+already has a button → correctly no gap).
+
