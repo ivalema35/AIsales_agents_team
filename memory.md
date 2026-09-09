@@ -999,3 +999,15 @@ kar abhi nahi kiya** — leads table bohot central he (6+ dependent tables), aur
 dusri tables ke FK references bhi automatically rewrite kar deta he — bina safeguard PRAGMA ke
 production integrity break ho sakti he. Agli baar jab koi bhi campaign delete ho, yahi orphan
 symptom dobara check karna — asli fix abhi pending he, alag se dhyan se karna hoga.
+
+**🚨 AI se WhatsApp template maanga to bhi nahi mila (2026-09-09)**: "Ai automaion Push" campaign
+ke liye AI ne 4 baar (2 clicks me) genuinely alag product-specific template draft kiye, QC har
+baar "too similar to shared template" bolke reject kar deta tha — human ko kabhi dikha hi nahi.
+Root issue: QC ek OPINION tha, use FINAL veto bana diya gaya tha, jabki human approve ke bina
+kuch bhi Meta tak jaata hi nahi. Fix: campaign-scoped "Ask AI" ab guarantee mode me chalta he —
+QC ka reject ab silently discard nahi karta, DRAFT ban jaata he with QC's concern as a visible
+caution. Plus: feedback dekar draft revise karne ka naya loop, button-wala-template option (real
+content asset se, kabhi invent nahi), aur campaign ka strategy_angle ab draft me follow hota he.
+Commit `8c2ee96`. Bonus: isi deploy me `discovery_runs` migration ka idempotency bug bhi mila
+aur fix kiya (`36445f5`) — galat constraint-name check ki wajah se har migrate.py run pe wo
+table needlessly rebuild ho raha tha.

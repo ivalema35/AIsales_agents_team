@@ -6975,3 +6975,46 @@ jaise safeguard ke ye poori production DB ke referential integrity ko break kar 
 ek alag, dhyan se plan kiya hua fix ke roop me karna chahiye, is turant request ke sath bundle
 nahi karna chahiye tha.
 
+### 🚨 "Ai automaion Push" campaign ke liye WhatsApp template maanga, AI ne diya hi nahi (2026-09-09)
+
+User ne bola: campaign me koi WhatsApp template tha hi nahi, AI se manga to bhi usne nahi diya.
+Investigation se real root cause mila — AgentEvent logs check kiye to pata chala AI ne **4 baar**
+try kiya (2 alag "Ask AI" clicks me) genuinely alag-alag product-specific template banane ka,
+aur QC (Quality Control agent) har baar reject kar diya "too similar to shared template" bolke —
+jabki har draft me product ka apna real angle tha. Human ko wo drafts kabhi dikhe hi nahi.
+
+**Asli masla**: QC ek OPINION/judgment call de raha tha, aur us judgment ko FINAL maan liya ja
+raha tha — jabki koi bhi AI-drafted template Meta tak kabhi nahi jaata jab tak human khud
+"Approve" na kare. To QC ka "too similar" opinion human ko dikhne se pehle hi draft ko poori
+tarah discard kar raha tha — [[feedback_upgrade_model_not_hardcode_around_mistakes]] wali baat
+yahan bhi apply hoti he: process ka design galat tha, model ki quality ka masla nahi.
+
+**Fix (4 real changes, user ke exact 4 asks ke hisaab se)**:
+1. **Mandatory delivery**: jab koi SPECIFIC campaign se "Ask AI for a template" click hota he
+   (aur real gap confirm ho chuka he — jaise isme tha), ab QC ka reject silently draft discard
+   nahi karta — last attempt ka candidate DRAFT ban jaata he, QC ka concern ek alag
+   "⚠️ QC flagged a concern" caution ke roop me dikhta he. Human PURA information dekh ke khud
+   decide karta he — koi cheez chupti nahi.
+2. **Review + feedback loop**: WhatsApp Templates page pe har AI draft ke niche ab "Give
+   feedback" box he — jaise TodoItem/outreach drafts me pehle se he, wesi hi feedback dekar
+   AI dubara likh sakta he (naya endpoint: `POST /whatsapp-templates/<id>/revise`).
+3. **Button wala template**: "Include a button" checkbox — dono jagah (pehli baar maangte
+   waqt, aur feedback dete waqt). Real product content asset (DEMO_URL/VIDEO_URL) se URL
+   resolve hota he — AI kabhi khud URL nahi banata, agar asset nahi he to honestly bina button
+   ke deta he.
+4. **Campaign ka story angle follow**: campaign ka `strategy_angle` (jaise "friendly, focus on
+   local trust with fomo urgent") ab draft ki prompt me diya jaata he — email/outreach jaisa hi.
+
+**Real verify kiya**: isi "Ai automaion Push" campaign pe seedha real test chalaya — real DRAFT
+bana (`ivinfotech_automation_first_touch`), campaign ke strategy_angle ke sath grounded, koi
+button nahi (kyunki product ka koi real demo asset nahi he — honest behavior). Ye asli, kaam ka
+draft he — WhatsApp Templates page pe jaake review/approve kar sakte hain.
+
+**Bonus fix**: isi migration run karte waqt ek aur purana bug mila — `discovery_runs` table ka
+migration check kabhi "already done" detect nahi kar pa raha tha (galat constraint-name check),
+isliye har `migrate.py` run pe wo poora table needlessly rebuild ho raha tha. Ab sahi check se
+fix kiya — sirf ek baar chalega.
+
+Commits `8c2ee96` (feature), `36445f5` (migration idempotency fix). VPS pe pull+migrate+build+
+sync+restart, sab 5 services active, koi stuck job nahi.
+
