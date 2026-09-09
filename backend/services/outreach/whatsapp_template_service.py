@@ -154,7 +154,8 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
 
 
 def create_draft_template(db, name, language, category, purpose, body_text, variable_labels,
-                          product_id=None, reasoning=None, followup_level=None):
+                          product_id=None, reasoning=None, followup_level=None,
+                          button_url=None, button_label=None, qc_caution=None, draft_context=None):
     """Step 9.6 -- an AI-authored candidate template, stored as DRAFT. Deliberately makes
     NO real Meta call: nothing an AI writes reaches Meta (or a real business) without an
     explicit admin approve action first (approve_draft_and_submit below). `reasoning` is
@@ -164,6 +165,14 @@ def create_draft_template(db, name, language, category, purpose, body_text, vari
     followup_level (Phase 13 Step 13.2) -- the level this draft was requested for, only
     meaningful when purpose="FOLLOW_UP" (propose_new_template's own caller already knows
     which level triggered the real signal this was drafted from).
+
+    button_url/button_label (2026-09-09) -- a real, static call-to-action button resolved
+    from this product's own content assets (never invented by the drafting agent itself).
+    qc_caution (2026-09-09) -- set only when this draft is being saved despite QC raising a
+    concern (see propose_new_template's `guarantee` mode) -- kept separate from `reasoning`
+    so the admin sees "what the AI believes" and "what QC flagged" as two distinct things.
+    draft_context (2026-09-09) -- JSON {"reason","campaign_strategy_angle"}, kept so a later
+    human feedback revision (revise_draft_template) stays grounded in the same real signal.
     """
     row = WhatsappTemplate(
         name=name,
@@ -171,12 +180,16 @@ def create_draft_template(db, name, language, category, purpose, body_text, vari
         category=category,
         purpose=purpose,
         followup_level=followup_level if purpose == "FOLLOW_UP" else None,
+        button_url=button_url,
+        button_label=button_label,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="DRAFT",
         product_id=product_id,
         origin="AI",
         reasoning=reasoning,
+        qc_caution=qc_caution,
+        draft_context=json.dumps(draft_context) if draft_context else None,
     )
     db.add(row)
     db.commit()
@@ -591,14 +604,52 @@ MAX_TEMPLATE_DRAFT_ATTEMPTS = 2  # one retry with QC's feedback, same pattern as
 # an existing template's structure -- a one-shot draft-then-give-up wasted that real signal
 # instead of trying again with the exact reason it failed.
 
+BUTTON_ASSET_TYPES = ("DEMO_URL", "VIDEO_URL")  # preferred order -- a live demo beats a video
 
-def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=None, followup_level=None):
+
+def _resolve_button_asset(db, product_id):
+    """A REAL, admin-managed content asset to use as a template's button link -- never
+    invented by the drafting agent (see template_agent.draft_template's own docstring).
+    Returns {"title","value"} for the first matching asset (product-scoped preferred over
+    shared, DEMO_URL preferred over VIDEO_URL), or None if this product has no such asset
+    yet -- a legitimate "can't add a button" outcome, not an error."""
+    from services.message_format_service import get_available_assets
+    assets = get_available_assets(db, product_id)
+    for asset_type in BUTTON_ASSET_TYPES:
+        for asset in assets:
+            if asset["asset_type"] == asset_type:
+                return {"title": asset["title"], "value": asset["value"]}
+    return None
+
+
+def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=None, followup_level=None,
+                         campaign_strategy_angle=None, want_button=False, guarantee=False):
     """Step 9.6 sub-step 4 -- the full safe pipeline: gather the real existing-template
     inventory, ask the drafting agent (sub-step 2), QC-gate the result (sub-step 3), and
     only then persist it as a DRAFT (sub-step 1) -- never a real Meta call anywhere in
-    this function. Returns the created DRAFT row, or None if the agent declined or QC
-    rejected on every attempt (both already logged via their own AgentEvent calls,
-    nothing silent).
+    this function. Returns the created DRAFT row, or None if the agent declined on every
+    attempt (already logged via its own AgentEvent calls, nothing silent).
+
+    `campaign_strategy_angle` (2026-09-09) -- when this proposal is for one specific
+    campaign's own explicit "Ask AI for a template" click, ground the draft in that real
+    campaign's strategy, same as email/outreach copy already does.
+
+    `want_button` (2026-09-09) -- the human asked for a call-to-action button. Resolves a
+    REAL content asset for this product (never invented) and passes it through; if no such
+    asset exists yet, the draft still proceeds text-only (a legitimate outcome, logged in
+    the draft's own reasoning, not a failure).
+
+    `guarantee` (2026-09-09, real user ask: "user mange to AI ko template dena hi hoga" --
+    when a human explicitly asks for a template for a real, confirmed gap, they must get a
+    real candidate to review). REAL LIVE BUG this fixes: QC vetoed 4/4 genuinely distinct
+    candidates for a real coverage gap (2026-09-09, "Ai automaion Push" campaign) purely on
+    a "too similar to the shared template" judgment call -- the human never even saw them,
+    even though nothing reaches Meta without their own explicit approve regardless. With
+    guarantee=True, QC's rejection reasons on the LAST attempt no longer discard the
+    candidate -- they're stored as a visible `qc_caution` on the DRAFT instead, so the human
+    decides with full information rather than the AI silently deciding on their behalf.
+    Only used for a human-initiated, campaign-scoped ask; the system-wide background
+    signal-scan (no campaign_id) keeps the original honest "declined" behavior.
     """
     from agents.template_agent import draft_template
     from agents.quality_controller_agent import review_template_draft
@@ -618,19 +669,120 @@ def propose_new_template(db, reason, context, purpose="FOLLOW_UP", product_id=No
             product_brief = {"title": product.title, "description": product.description,
                              "value_proposition": product.value_proposition}
 
+    button_asset = _resolve_button_asset(db, product_id) if (want_button and product_id) else None
+
     qc_feedback = None
+    last_candidate = None
+    last_qc_result = None
     for _attempt in range(1, MAX_TEMPLATE_DRAFT_ATTEMPTS + 1):
-        candidate = draft_template(db, reason, context, existing_templates, qc_feedback=qc_feedback)
+        candidate = draft_template(
+            db, reason, context, existing_templates, qc_feedback=qc_feedback,
+            campaign_strategy_angle=campaign_strategy_angle, want_button=want_button,
+            button_asset=button_asset,
+        )
         if not candidate:
+            if guarantee and _attempt < MAX_TEMPLATE_DRAFT_ATTEMPTS:
+                qc_feedback = ("You declined last time, but a human has explicitly requested a "
+                              "template for this real, confirmed gap -- produce your best "
+                              "reasonable candidate from the given CONTEXT instead of declining.")
+                continue
             return None
 
         qc_result = review_template_draft(db, candidate, reason, existing_templates,
                                           product_brief=product_brief)
+        last_candidate, last_qc_result = candidate, qc_result
         if qc_result["approved"]:
+            button_url = button_asset["value"] if (button_asset and candidate.get("button_label")) else None
             return create_draft_template(
                 db, candidate["name"], "en", candidate["category"], candidate["purpose"] or purpose,
                 candidate["body_text"], candidate["variable_labels"], product_id=product_id,
                 reasoning=candidate.get("reasoning"), followup_level=followup_level,
+                button_url=button_url, button_label=candidate.get("button_label"),
+                draft_context={"reason": reason, "campaign_strategy_angle": campaign_strategy_angle},
             )
         qc_feedback = "; ".join(qc_result["rejection_reasons"])
+
+    if guarantee and last_candidate:
+        button_url = button_asset["value"] if (button_asset and last_candidate.get("button_label")) else None
+        caution = "; ".join((last_qc_result or {}).get("rejection_reasons") or [])
+        return create_draft_template(
+            db, last_candidate["name"], "en", last_candidate["category"], last_candidate["purpose"] or purpose,
+            last_candidate["body_text"], last_candidate["variable_labels"], product_id=product_id,
+            reasoning=last_candidate.get("reasoning"), followup_level=followup_level,
+            button_url=button_url, button_label=last_candidate.get("button_label"),
+            qc_caution=caution or None,
+            draft_context={"reason": reason, "campaign_strategy_angle": campaign_strategy_angle},
+        )
     return None
+
+
+def revise_draft_template(db, template, instruction, want_button=None):
+    """2026-09-09, real user ask: "user review kar sake feedback dekar sudhar sake usme" --
+    a human reviewing an AI-drafted (still DRAFT, never yet sent to Meta) template can give
+    a free-text instruction and get a revised candidate, same "current state + one
+    instruction" conversational pattern already proven for outreach/kickoff draft
+    revisions elsewhere in this codebase. Never QC-gated into silence for the same reason
+    `guarantee=True` isn't in propose_new_template: the human is looking at this right now
+    and will decide whether to approve it -- QC's concerns become a visible `qc_caution`,
+    never a reason to withhold the revision they explicitly asked for.
+
+    `want_button` -- tri-state: None keeps the template's current button as-is, True/False
+    explicitly adds/removes one (resolving a real content asset the same way a fresh
+    proposal does; explicitly requesting a button with no real asset available is a no-op,
+    same honest "can't invent a link" rule as propose_new_template).
+    """
+    from agents.template_agent import draft_template
+    from agents.quality_controller_agent import review_template_draft
+    from database.models import Product
+
+    if template.status != "DRAFT":
+        raise ValueError(f"template {template.name!r} is not a DRAFT (status={template.status!r})")
+
+    try:
+        stored_context = json.loads(template.draft_context) if template.draft_context else {}
+    except (TypeError, ValueError):
+        stored_context = {}
+    reason = stored_context.get("reason") or f"Revising the existing draft '{template.name}' per human feedback."
+    campaign_strategy_angle = stored_context.get("campaign_strategy_angle")
+
+    resolved_want_button = template.button_url is not None if want_button is None else bool(want_button)
+    button_asset = _resolve_button_asset(db, template.product_id) if (resolved_want_button and template.product_id) else None
+
+    product_brief = None
+    if template.product_id:
+        product = db.get(Product, template.product_id)
+        if product:
+            product_brief = {"title": product.title, "description": product.description,
+                             "value_proposition": product.value_proposition}
+
+    existing_templates = [t for t in _existing_templates_summary(db) if t.get("name") != template.name]
+    previous_candidate = {
+        "name": template.name,
+        "body_text": template.body_text,
+        "variable_labels": json.loads(template.variable_labels or "[]"),
+        "button_label": template.button_label,
+    }
+
+    candidate = draft_template(
+        db, reason, {}, existing_templates, campaign_strategy_angle=campaign_strategy_angle,
+        want_button=resolved_want_button, button_asset=button_asset,
+        human_instruction=instruction, previous_candidate=previous_candidate,
+    )
+    if not candidate:
+        raise RuntimeError("template revision failed -- the AI could not produce a revised candidate")
+
+    qc_result = review_template_draft(db, candidate, reason, existing_templates, product_brief=product_brief)
+
+    template.name = candidate["name"]
+    template.category = candidate["category"]
+    template.body_text = candidate["body_text"]
+    template.variable_labels = json.dumps(candidate["variable_labels"])
+    template.reasoning = candidate.get("reasoning")
+    template.button_url = button_asset["value"] if (button_asset and candidate.get("button_label")) else None
+    template.button_label = candidate.get("button_label")
+    template.qc_caution = None if qc_result["approved"] else "; ".join(qc_result["rejection_reasons"]) or None
+    template.draft_context = json.dumps({"reason": reason, "campaign_strategy_angle": campaign_strategy_angle})
+    db.commit()
+    db.refresh(template)
+    logger.info("whatsapp template draft '%s' revised by human feedback", template.name)
+    return template

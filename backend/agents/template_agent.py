@@ -38,14 +38,19 @@ def _is_valid_candidate(data: dict, existing_names: set) -> bool:
     placeholder_count = len(re.findall(r"\{\{\d+\}\}", body_text))
     if placeholder_count != len(variable_labels):
         return False
+    button_label = data.get("button_label")
+    if button_label is not None and (not isinstance(button_label, str) or not button_label.strip() or len(button_label) > 25):
+        return False
     return True
 
 
 def draft_template(db, reason: str, context: dict, existing_templates: list[dict],
-                   qc_feedback: str | None = None):
+                   qc_feedback: str | None = None, campaign_strategy_angle: str | None = None,
+                   want_button: bool = False, button_asset: dict | None = None,
+                   human_instruction: str | None = None, previous_candidate: dict | None = None):
     """Returns a validated candidate dict {name, category, purpose, body_text,
-    variable_labels, reasoning}, or None if the model declined or produced something
-    that doesn't satisfy Meta's real constraints -- every outcome is logged via
+    variable_labels, button_label, reasoning}, or None if the model declined or produced
+    something that doesn't satisfy Meta's real constraints -- every outcome is logged via
     log_agent_event so a silent decline is still visible, same as draft_email()'s
     LLM_FAILED/EMPTY_DRAFT events. Never raises on a bad/declined draft; only an LLM
     transport failure is caught internally (also logged, also returns None).
@@ -53,11 +58,50 @@ def draft_template(db, reason: str, context: dict, existing_templates: list[dict
     `qc_feedback` (2026-09-08, same "regenerate with feedback" pattern email drafting
     already used): a prior candidate's real QC rejection reasons, fed back so a retry
     isn't a blind re-roll -- see propose_new_template()'s own retry loop.
+
+    `campaign_strategy_angle` (2026-09-09, real user ask): when this draft is for one
+    specific campaign's own "Ask AI for a template" click, ground the tone/angle in that
+    campaign's real, human-set strategy -- the same way email/outreach copy already does.
+
+    `want_button`/`button_asset` (2026-09-09, real user ask: "button wala template bhi
+    de sake"): `button_asset` is a REAL content asset {"title","value"(url)} for this
+    product, resolved by the caller -- never invented here. The model may only propose a
+    `button_label`; the real URL is attached by the caller from `button_asset`, never
+    written by the model itself.
+
+    `human_instruction`/`previous_candidate` (2026-09-09, real user ask: "user review kar
+    sake feedback dekar sudhar sake") -- a human reviewing an existing DRAFT gave a
+    revision instruction; the model edits FROM `previous_candidate` rather than starting
+    fresh, same "current state + one instruction" pattern already used for outreach/
+    kickoff draft revisions elsewhere in this codebase.
     """
     prompt = TEMPLATE_AGENT_SYSTEM_PROMPT + f"""
 REASON: {reason}
 CONTEXT: {json.dumps(context, ensure_ascii=False)}
 EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
+"""
+    if campaign_strategy_angle:
+        prompt += f"\nCAMPAIGN_STRATEGY_ANGLE: {campaign_strategy_angle}\n"
+    if want_button:
+        if button_asset:
+            prompt += f"""
+BUTTON: a human asked for a call-to-action button on this template. A real asset is
+available: {json.dumps(button_asset, ensure_ascii=False)}. Include "button_label" (<=25
+characters, based on this real asset's title) in your output JSON. The actual URL is
+attached by the system, not by you -- never write a URL into body_text.
+"""
+        else:
+            prompt += (
+                "\nBUTTON: a human asked for a call-to-action button, but no real demo/video "
+                "asset exists yet for this product -- do NOT invent a URL or a button_label; "
+                "draft the message text only and say so briefly in your reasoning.\n"
+            )
+    if previous_candidate and human_instruction:
+        prompt += f"""
+PREVIOUS_CANDIDATE (what a human already reviewed): {json.dumps(previous_candidate, ensure_ascii=False)}
+HUMAN'S FEEDBACK ON THAT CANDIDATE: {human_instruction}
+Revise the previous candidate to genuinely address this feedback. Keep the same "name"
+unless the feedback clearly asks for a different approach that warrants a new one.
 """
     if qc_feedback:
         prompt += f"\nYOUR PREVIOUS CANDIDATE WAS REJECTED BY QUALITY CONTROL. Fix this: {qc_feedback}\n"
@@ -85,6 +129,7 @@ EXISTING_TEMPLATES: {json.dumps(existing_templates, ensure_ascii=False)}
         "purpose": data["purpose"],
         "body_text": str(data["body_text"]).strip(),
         "variable_labels": data["variable_labels"],
+        "button_label": (str(data["button_label"]).strip() if want_button and button_asset and data.get("button_label") else None),
         "reasoning": str(data.get("reasoning", ""))[:200],
     }
     log_agent_event(db, "TEMPLATE_AGENT", None, "DRAFT_TEMPLATE", 0.8, "MEDIUM", "DRAFTED",

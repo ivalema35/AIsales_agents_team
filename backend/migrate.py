@@ -43,6 +43,8 @@ COLUMN_MIGRATIONS = [
     ("campaigns", "last_todo_signal", "TEXT"),
     ("todo_items", "is_blocker", "INTEGER DEFAULT 0"),
     ("todo_items", "lead_id", "TEXT"),
+    ("whatsapp_templates", "qc_caution", "TEXT"),
+    ("whatsapp_templates", "draft_context", "TEXT"),
 ]
 
 

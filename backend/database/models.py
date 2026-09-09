@@ -482,6 +482,17 @@ class WhatsappTemplate(Base):
     is_active = Column(Integer, default=1)  # manual kill-switch, independent of Meta's own status
     origin = Column(String, default="ADMIN")  # ADMIN (dashboard form) or AI (Step 9.6 draft)
     reasoning = Column(Text)  # only for origin=AI -- the drafting agent's own explanation
+    # 2026-09-09, real user ask: a human-requested template (a specific campaign's own
+    # "Ask AI for a template" click) must never come back empty just because QC vetoed
+    # every attempt -- nothing reaches Meta without an explicit human approve anyway, so
+    # QC's concerns become a visible caution on the DRAFT instead of a silent block.
+    # Kept separate from `reasoning` (the AI's OWN explanation) so the UI can show them
+    # as two distinct things: what the AI believes vs. what QC flagged for human review.
+    qc_caution = Column(Text)
+    # JSON {"reason": ..., "campaign_strategy_angle": ...} -- the real grounding this draft
+    # was written from, kept so a later human feedback revision (revise_draft_template)
+    # can stay grounded in the same real signal/campaign angle instead of starting blind.
+    draft_context = Column(Text)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     # 2026-09-08, real finding: no model anywhere in this file has `onupdate` on its own
     # updated_at, so it silently never changes past insert time on a plain ORM write

@@ -723,9 +723,26 @@ Two concrete, real live lessons (2026-09-08):
 If you cannot draft anything that meaningfully addresses the reason without violating any
 of the above constraints, decline honestly instead of forcing a bad candidate.
 
+CAMPAIGN_STRATEGY_ANGLE, when given: this is a real, human-set strategy for the specific
+campaign this template is for (e.g. "friendly, focus on local trust with FOMO urgency") --
+write the tone/framing of body_text consistent with it, the same way this system already
+grounds email/outreach copy in a campaign's strategy angle elsewhere.
+
+BUTTON, when the input says a human asked for one: if a real asset is given, include
+"button_label" in your output (<=25 characters) describing what the button leads to --
+never write a URL yourself, the system attaches the real one. If no real asset is given,
+omit "button_label" entirely rather than inventing a link.
+
+PREVIOUS_CANDIDATE + HUMAN'S FEEDBACK, when given: a human already reviewed a draft and
+asked for a specific change -- this is a revision, not a fresh draft. Honor the human's
+actual intent; if it conflicts with a real constraint above (Meta's rules, a false claim),
+follow the constraint but get as close to their intent as honestly possible, and say so in
+reasoning.
+
 OUTPUT JSON, exactly one of these two shapes:
 {"drafted": true, "name": "...", "category": "...", "purpose": "...", "body_text": "...",
- "variable_labels": ["..."], "reasoning": "<=40 words, why this approach"}
+ "variable_labels": ["..."], "button_label": "... (omit this key entirely if no button)",
+ "reasoning": "<=40 words, why this approach"}
 {"drafted": false, "reasoning": "<=40 words, why nothing could be drafted"}
 """
 

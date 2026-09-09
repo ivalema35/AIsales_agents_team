@@ -137,16 +137,24 @@ export const api = {
   createWhatsappTemplate: (data) => request("/whatsapp-templates", { method: "POST", body: JSON.stringify(data) }),
   updateWhatsappTemplate: (id, data) => request(`/whatsapp-templates/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   refreshWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/refresh`, { method: "POST" }),
-  proposeWhatsappTemplate: (purpose, followupLevel, productId) => request("/whatsapp-templates/propose", {
-    method: "POST",
-    body: JSON.stringify(purpose ? {
-      purpose,
-      ...(followupLevel ? { followup_level: followupLevel } : {}),
-      ...(productId ? { product_id: productId } : {}),
-    } : {}),
-  }),
+  proposeWhatsappTemplate: (purpose, followupLevel, productId, { campaignId, withButton } = {}) =>
+    request("/whatsapp-templates/propose", {
+      method: "POST",
+      body: JSON.stringify(purpose ? {
+        purpose,
+        ...(followupLevel ? { followup_level: followupLevel } : {}),
+        ...(productId ? { product_id: productId } : {}),
+        ...(campaignId ? { campaign_id: campaignId } : {}),
+        ...(withButton ? { with_button: true } : {}),
+      } : {}),
+    }),
   approveWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/approve`, { method: "POST" }),
   rejectWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}/reject`, { method: "POST" }),
+  reviseWhatsappTemplate: (id, instruction, withButton) =>
+    request(`/whatsapp-templates/${id}/revise`, {
+      method: "POST",
+      body: JSON.stringify({ instruction, ...(withButton !== undefined ? { with_button: withButton } : {}) }),
+    }),
   deleteWhatsappTemplate: (id) => request(`/whatsapp-templates/${id}`, { method: "DELETE" }),
 
   listSocialQueue: (params = {}) => {

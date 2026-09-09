@@ -452,6 +452,14 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     -- why this candidate addresses the real signal it was given, so an admin reviewing a
     -- DRAFT can judge it informed, not blind.
     reasoning         TEXT,
+    -- 2026-09-09: QC's own concerns about an origin='AI' draft, kept separate from
+    -- `reasoning` (the AI's OWN explanation) -- a human-requested draft is never silently
+    -- withheld just because QC vetoed it (nothing reaches Meta without an explicit human
+    -- approve regardless), so QC's objections become a visible caution here instead.
+    qc_caution        TEXT,
+    -- JSON {"reason":..., "campaign_strategy_angle":...} -- the real signal/campaign angle
+    -- this draft was grounded in, so a later human feedback revision stays grounded too.
+    draft_context     TEXT,
     meta_template_id  TEXT,                  -- Meta's own returned id for this template
     -- NULL = shared/global (usable by every product); set = only this product may use it.
     -- Optional, not mandatory, deliberately (tracker.md Step 9.5 follow-up): each new

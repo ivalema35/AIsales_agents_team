@@ -32,6 +32,10 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   // product-specific one right here, instead of only a passive link to a different page.
   const [askingWaTemplate, setAskingWaTemplate] = useState(false);
   const [waAskResult, setWaAskResult] = useState(null);
+  // 2026-09-09, real user ask: "button add karo bhi bol sakta he to button wala template" --
+  // a human may want a call-to-action button on the very first ask, not only via feedback
+  // later. Resolved from this product's own real content assets, never invented.
+  const [waAskWithButton, setWaAskWithButton] = useState(false);
   // 2026-09-08, real user ask: "campaign ke liye template yahin select karna he, preview
   // dekh ke -- dusre page kyu jaun?" -- every currently-APPROVED template (shared library +
   // any real, already-Meta-approved DB one) picked right here; picking one just reassigns
@@ -85,7 +89,13 @@ export function CampaignReviewCard({ campaign, onApproved }) {
     setAskingWaTemplate(true);
     setWaAskResult(null);
     try {
-      const res = await api.proposeWhatsappTemplate("FIRST_TOUCH", null, campaign.product_id);
+      // Passing campaignId makes this a mandatory, human-requested ask (see propose_new_
+      // template's `guarantee` mode, backend/services/outreach/whatsapp_template_service.py)
+      // -- a real, confirmed gap always comes back with a draft to review now, instead of
+      // an AI quality-check silently deciding the human never gets to see one.
+      const res = await api.proposeWhatsappTemplate("FIRST_TOUCH", null, campaign.product_id, {
+        campaignId: campaign.id, withButton: waAskWithButton,
+      });
       setWaAskResult(res);
     } catch (err) {
       setWaAskResult({ proposed: false, message: err.message });
@@ -477,13 +487,24 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                         This product doesn't have its own approved WhatsApp template yet, so real
                         sends use the shared, generic one above instead of a pitch written for it.
                       </p>
-                      <button
-                        onClick={askAiForWaTemplate}
-                        disabled={askingWaTemplate}
-                        className="flex w-fit items-center gap-1.5 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
-                      >
-                        <Sparkles size={11} /> {askingWaTemplate ? "Thinking…" : "Ask AI for a template for this product"}
-                      </button>
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <button
+                          onClick={askAiForWaTemplate}
+                          disabled={askingWaTemplate}
+                          className="flex w-fit items-center gap-1.5 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
+                        >
+                          <Sparkles size={11} /> {askingWaTemplate ? "Thinking…" : "Ask AI for a template for this product"}
+                        </button>
+                        <label className="flex items-center gap-1.5 text-[11px] text-ink-600">
+                          <input
+                            type="checkbox"
+                            checked={waAskWithButton}
+                            onChange={(e) => setWaAskWithButton(e.target.checked)}
+                            disabled={askingWaTemplate}
+                          />
+                          Include a button
+                        </label>
+                      </div>
                       {waAskResult && (
                         <p className={`text-[11px] ${waAskResult.proposed ? "text-good-700" : "text-ink-500"}`}>
                           {waAskResult.proposed ? (

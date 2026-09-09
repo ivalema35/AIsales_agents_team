@@ -5,7 +5,7 @@ import re
 from flask import Blueprint, jsonify, request
 
 from database.db_config import SessionLocal
-from database.models import WhatsappTemplate, Product
+from database.models import WhatsappTemplate, Product, Campaign
 from services.outreach.whatsapp_template_service import (
     submit_template,
     poll_template_status,
@@ -14,6 +14,7 @@ from services.outreach.whatsapp_template_service import (
     reject_draft,
     find_template_improvement_reason,
     propose_new_template,
+    revise_draft_template,
 )
 from services.outreach.whatsapp_templates import TEMPLATE_LIBRARY
 
@@ -53,6 +54,11 @@ def _serialize(row, product_titles=None):
         # starts as DRAFT, never reaches Meta without an explicit admin approve).
         "origin": row.origin,
         "reasoning": row.reasoning,
+        # 2026-09-09 -- set only when a human-requested draft was saved despite QC raising
+        # a concern (see propose_new_template's `guarantee` mode) -- shown separately from
+        # the AI's own `reasoning` so an admin sees both what the AI believes and what QC
+        # flagged, instead of the draft being silently withheld over a judgment call.
+        "qc_caution": row.qc_caution,
         "created_at": str(row.created_at),
         "updated_at": str(row.updated_at),
     }
@@ -323,12 +329,22 @@ def propose_template():
     happens here at all -- this endpoint can never mutate anything about the real WABA,
     so unlike create_template()/approve_template() it needs no extra confirmation.
 
-    Optional body {"purpose": "FIRST_TOUCH"|"FOLLOW_UP", "followup_level": 1|2|3}
+    Optional body {"purpose": "FIRST_TOUCH"|"FOLLOW_UP", "followup_level": 1|2|3,
+    "campaign_id": "...", "with_button": true|false}
     (Step 9.6 follow-up; level added Phase 13 Step 13.2) -- the admin picks which one
     they want, scoping the SEARCH for a real signal to that purpose (and, for FOLLOW_UP,
     that exact level -- required, since each level is its own independent coverage gap
     now). This never forces a fabricated need: if nothing real qualifies, the honest
     "nothing to propose" response is expected and valid.
+
+    `campaign_id` (2026-09-09, real user ask): when a specific campaign's own Daily Review
+    is the one asking (DailyReviewPanel's "Ask AI for a template for this product"), this
+    becomes a MANDATORY, human-requested ask -- once a real signal/gap is confirmed (the
+    check above is unchanged and can still honestly say "nothing to propose" when no real
+    gap exists), the resulting draft is never silently withheld over QC's own judgment call
+    (see propose_new_template's `guarantee` mode) and is grounded in this campaign's own
+    real strategy_angle. `with_button` asks for a real call-to-action button, resolved from
+    this product's own content assets, never invented.
     """
     data = request.get_json(silent=True) or {}
     requested_purpose = data.get("purpose")
@@ -346,9 +362,21 @@ def propose_template():
     # can ask specifically "does THIS product have its own FIRST_TOUCH template" rather
     # than only the system-wide reply-rate/coverage checks below.
     requested_product_id = data.get("product_id")
+    campaign_id = data.get("campaign_id")
+    with_button = bool(data.get("with_button"))
 
     db = SessionLocal()
     try:
+        campaign_strategy_angle = None
+        guarantee = False
+        if campaign_id:
+            campaign = db.get(Campaign, campaign_id)
+            if not campaign:
+                return jsonify({"error": ["campaign not found"]}), 404
+            guarantee = True
+            campaign_strategy_angle = campaign.strategy_angle
+            requested_product_id = requested_product_id or campaign.product_id
+
         signal = find_template_improvement_reason(db, purpose=requested_purpose, followup_level=requested_level,
                                                    product_id=requested_product_id)
         if not signal:
@@ -363,16 +391,51 @@ def propose_template():
                 ),
             })
         reason, context, purpose, product_id, followup_level = signal
-        row = propose_new_template(db, reason, context, purpose, product_id, followup_level=followup_level)
+        row = propose_new_template(db, reason, context, purpose, product_id, followup_level=followup_level,
+                                   campaign_strategy_angle=campaign_strategy_angle, want_button=with_button,
+                                   guarantee=guarantee)
         if not row:
             return jsonify({
                 "proposed": False,
-                "message": "The AI declined to draft, or QC rejected the candidate -- see the "
-                           "audit trail (agent_events) for details.",
+                "message": "The AI declined to draft anything for this -- see the audit trail "
+                           "(agent_events) for details.",
                 "reason": reason,
             })
         product_titles = _product_titles_for(db, row)
         return jsonify({"proposed": True, "template": _serialize(row, product_titles)}), 201
+    finally:
+        db.close()
+
+
+@whatsapp_templates_bp.route("/<template_id>/revise", methods=["POST"])
+def revise_template(template_id):
+    """2026-09-09, real user ask: a human reviewing an AI-drafted template can give
+    feedback and get a revised candidate, same conversational pattern already used for
+    outreach/kickoff draft revisions. No real Meta call here -- still just a DRAFT.
+
+    Body {"instruction": "...", "with_button": true|false} -- `with_button` is optional
+    and tri-state: omitted keeps the template's current button as-is, true/false explicitly
+    adds/removes one.
+    """
+    data = request.get_json(silent=True) or {}
+    instruction = (data.get("instruction") or "").strip()
+    if not instruction:
+        return jsonify({"error": ["instruction is required"]}), 422
+    want_button = data.get("with_button") if "with_button" in data else None
+
+    db = SessionLocal()
+    try:
+        row = db.get(WhatsappTemplate, template_id)
+        if not row:
+            return jsonify({"error": "template not found"}), 404
+        if row.status != "DRAFT":
+            return jsonify({"error": [f"template is {row.status}, not DRAFT -- nothing to revise"]}), 409
+        try:
+            row = revise_draft_template(db, row, instruction, want_button=want_button)
+        except RuntimeError as exc:
+            return jsonify({"error": [str(exc)]}), 502
+        product_titles = _product_titles_for(db, row)
+        return jsonify(_serialize(row, product_titles))
     finally:
         db.close()
 
