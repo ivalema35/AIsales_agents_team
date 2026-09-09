@@ -7419,4 +7419,24 @@ literal caption, aur blurry/pillarboxed video thumbnail. **Real test kiya**:
   landscape video use kiya jaye to). Sab verify karne ke baad deploy kiya, sab 5 services
   active.
 
+### ✅ True 9:16 portrait video card — pichhle finding ka real fix (2026-09-09)
+
+User ne Cursor ko bola "video 9:16 he to thumbnail bhi 9:16 dikhna chahiye, blur side-wings
+mat dikhao" — bilkul wahi cheez jo maine pichhle deploy me flag ki thi. Cursor ne genuine,
+smart solution nikala: `hqdefault.jpg` hamesha 480×360 fixed landscape canvas he (isliye
+vertical video pillarboxed dikhta), par YouTube ka apna **`oar2.jpg`** endpoint REAL aspect
+ratio deta he.
+
+**Real test kiya deploy se pehle**:
+- `_jpeg_dimensions()` (naya, PIL ke bina — JPEG ke raw SOF marker se width/height nikalta
+  he) ko real URLs pe test kiya: vertical video ka `oar2.jpg` = **720×1280** (asli portrait!),
+  landscape video ka `oar2.jpg` = **1920×1080**. Dono sahi.
+- `resolve_video_thumb()` ko 3 real scenarios pe test kiya (Shorts URL, non-Shorts-tagged
+  vertical video, regular landscape video) — sab sahi layout detect kiya.
+- Real live campaign ka preview dobara generate kiya, screenshot liya — **ab genuine clean
+  9:16 phone-card dikhta he, koi blur side-wings nahi, "SHORT VIDEO" label saaf dikhta he**.
+
+Sab verify hone ke baad hi deploy kiya. Sab 5 services active. Ye pichhle deploy ke apne
+hi honest finding ka real, correct follow-up fix he.
+
 
