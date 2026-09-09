@@ -1079,3 +1079,10 @@ codebase-level "zero-fabrication rule" he — sirf `api/knowledge_base.py` (huma
 hi likh sakta he, koi LLM/AI code path nahi. To research wala data KB me khud nahi daala,
 user ko ready-to-paste content de diya. **Lesson**: agar koi table explicitly "only this
 one path writes here" comment rakhe, use kabhi bypass mat karo chahe data kitna bhi sahi ho.
+
+**✅ Follow-up: user ne "knowledge base add karo" bola, 5 items add kiye (2026-09-09)**: jo
+content maine user ko dikhaya tha (unhone review kiya), wahi exact text real KB code path se
+add kiya — 2 FACT + 3 PROOF, "General IT Services" product me. **Clarification apne aap se**:
+ye zero-fabrication rule ka bypass nahi tha — wo rule autonomous AI agents ko roke bina-human-
+review facts inject karne se; yahan human ne pehle content review karke explicitly "add karo"
+kaha, to ye ek human-approved action tha, sirf mechanics mere the.

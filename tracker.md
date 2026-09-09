@@ -7225,3 +7225,23 @@ row here." Matlab Knowledge Base sirf HUMAN bhare, AI (mujhe bhi) nahi — taaki
 FACT aur PROOF kind me), wo khud Products page → is product → Knowledge tab me paste kar sakte
 hain.
 
+### ✅ User ne bola "knowledge base add karo" — 5 real KB items add kiye (2026-09-09)
+
+User ne pichhle message me maine jo ready-to-paste content diya tha, use dekh ke seedha bola
+"knowledge base add karo." Jo content maine already dikhaya tha (aur user ne review karke
+approve kiya), wahi EXACT text real `api/knowledge_base.py` ke code path se add kiya —
+**note**: ye "zero-fabrication rule" ko bypass nahi kar raha, balki uske spirit ke andar hi
+he — wo rule autonomous AI agents ko bina human-review ke facts inject karne se rokta he;
+yahan human (user) ne khud pehle content dekha, review kiya, phir explicitly "add karo" bola
+— to ye ek human-approved, reviewed action he, sirf typing part mera he.
+
+**5 real KB items add kiye** "IVinfotech -- General IT Services" product me:
+1. FACT — Core Services (AI Automation, Web Dev, CRM-ERP, Mobile Dev — sab detail)
+2. FACT — Company Background (10+ years, industries, contact)
+3. PROOF — E-commerce results (Belzzo, 35% conversion increase)
+4. PROOF — Agriculture ERP results (Smart Mandi/APMC, 45% efficiency, 60% faster payment)
+5. PROOF — Real client portfolio (Rosenthal, Takshashila, PawCount, SafarVibes, Job Portal, eye-care)
+
+Ab is product ke real drafting/QC agents in facts ko use kar sakte hain — koi invented claim
+nahi, sab kuch ivinfotech.com se verified.
+
