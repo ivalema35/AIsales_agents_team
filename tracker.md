@@ -7305,3 +7305,28 @@ kiya ki upload survive kar gaya. Commit `f5514d9`.
 root cause he, alag jagah (email_renderer.py) fix karni hogi, is turant task ke sath bundle
 nahi kiya kyunki scope alag he.
 
+### ✅ Real WhatsApp header graphic khud bana ke upload kiya (2026-09-09)
+
+User ne Cursor se banwaya hua image try kiya, par "maja nahi aaya" — accha graphic quality
+nahi tha, convincing nahi laga.
+
+**Khud bana diya** — koi image-generation tool ki zarurat nahi padi: real HTML/CSS design
+banaya (asli IVinfotech brand colors — navy `#0b1c3c` + gold `#b8892c`, aur dashboard ka apna
+real font system — Fraunces serif + Work Sans + IBM Plex Mono, jo already is app me use ho
+raha he), phir Playwright (headless Chrome, `npx playwright install`) se real 1200×628 PNG
+me render kiya.
+
+**Design me kya he** (sab real facts, koi invented claim nahi):
+- Headline: "One partner for every core tech need."
+- 4 real services chips (AI Automation, Web Development, CRM & ERP, Mobile Apps) — clean
+  line-icons ke saath
+- Real proof points: "10+ Years Delivering", "4 Services, One Team"
+- Location: "Mehsana & Gujarat" badge
+- "Architecting the Digital Future" tagline ka subtle blueprint-grid visual motif
+
+Real product ("IVinfotech -- General IT Services") ke Content Library me upload kiya (real
+`/content-assets/upload` + `/content-assets` API se, koi shortcut nahi) — fetch karke verify
+kiya `image/png`, 1.16MB, sahi se live. Ab AI isse WhatsApp template banate waqt use kar
+sakta he.
+
+

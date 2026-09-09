@@ -1107,3 +1107,12 @@ he build ke around. Real end-to-end verify kiya (upload → fetch → bytes matc
 survive). Commit `f5514d9`. **Brand logo bug abhi fix nahi kiya** (alag scope, baad me).
 **Lesson**: "static file serving already kaam kar raha he" jaisi assumption ko bhi real
 curl test se verify karo, sirf code padh ke mat maano.
+
+**✅ Real WhatsApp header graphic khud bana ke upload kiya (2026-09-09)**: Cursor ka banaya
+image "maja nahi aaya" — khud bana diya, image-gen tool ke bina: real HTML/CSS design (asli
+brand colors + dashboard ka apna real font system Fraunces/Work Sans/IBM Plex Mono),
+Playwright se 1200×628 real PNG render kiya. Content: 4 real services, "10+ years",
+"Mehsana & Gujarat" — koi invented claim nahi. Real Content Library API se upload kiya,
+verify kiya live he. **Lesson**: is environment me Playwright (`npx playwright install
+chromium`) available he — future me bhi kisi real graphic/image ki zarurat ho to khud bana
+sakte hain, Cursor ya bahar ke tool ka wait nahi karna padega.
