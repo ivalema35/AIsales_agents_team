@@ -7066,3 +7066,23 @@ Commit `1d7990e`. VPS pe pull+migrate-check+build+sync+restart, sab verify kiya 
 data se (AI Automation Solutions → no asset → correctly declined; Mobile App Development →
 already has a button → correctly no gap).
 
+### 🔧 "Template badle to preview change nahi ho raha" — asal me stale nahi tha (2026-09-09)
+
+User ne "Shared library (default)" select kiya, par preview me wahi purana template dikhta raha.
+**Verify kiya — ye caching/stale bug NAHI tha.** DB check kiya to pata chala: `ivinfotech_
+specific_process_help` hi is poore system ka EKMATRA (only) shared (product-specific nahi)
+approved template hai. Jab user ne "Shared library (default)" choose kiya, wo template is
+product se unassign hua — par kyunki koi AUR shared template exist hi nahi karta, real
+fallback logic (`get_approved_first_touch_template()`) wapas usi template pe aa gaya! Preview
+sahi tha, bas label ("Shared library (default)") galat impression de raha tha — jaise wo built-in
+generic template pe revert karega, jabki asal me "jo bhi abhi shared marked hai" pe jaata hai.
+
+**Fix**: dropdown ka default option ab dynamically bataata he ki wo asal me kis template pe
+fallback karega — naam ke saath ("No override — falls back to 'X' (shared)"). Shared template
+ko list me alag se dobara bhi nahi dikhaya (pehle confusing tarah do jagah dikh raha tha).
+Ek naya hint bhi add kiya: "No override" choose karna is EK product ke liye nahi, poore system
+me har us product ke liye default banta he jiska apna template nahi he — ye important side-effect
+pehle chhupa hua tha.
+
+Commit `47a38e5`. Frontend-only change, pull+build+sync kiya, backend restart ki zarurat nahi thi.
+

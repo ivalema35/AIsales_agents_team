@@ -1026,3 +1026,10 @@ demo/video asset hi nahi tha, AI ne sahi se invent nahi kiya (reasoning me likha
 prominently nahi dikha). Fix: naya gap check jab template already he par button nahi aur ab
 asset available he; asset na ho to system seedha clear message deta he, AI ko call hi nahi karta.
 Commit `1d7990e`.
+
+**🔧 "Template badle to preview change nahi hota" — stale nahi tha (2026-09-09)**: "Shared
+library (default)" select karne pe preview same reh gaya — verify kiya to pata chala
+`ivinfotech_specific_process_help` hi poore system ka EKMATRA shared template hai, to unassign
+karne ke baad real fallback wapas usi pe aa gaya — preview sahi tha, bas label misleading tha
+(implied built-in generic, asal me "jo bhi abhi shared marked he" deta he). Fix: dropdown ka
+default option ab real fallback ka naam dikhata he. Commit `47a38e5`.
