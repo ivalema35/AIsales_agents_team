@@ -7092,3 +7092,48 @@ pehle chhupa hua tha.
 
 Commit `47a38e5`. Frontend-only change, pull+build+sync kiya, backend restart ki zarurat nahi thi.
 
+### ✅ Cursor ke UI/UX changes verify kiye (2026-09-09)
+
+User ne bola "cursor se kuch UI/UX changes karvaye he, check kar." Poora diff line-by-line
+independently review kiya (tracker.md ki narrative pe blindly trust nahi kiya):
+
+- **Sab kuch safe tha**: koi bhi function/API call (`askAiForWaTemplate`, `selectWaTemplate`,
+  `submitFeedback`, etc.) bilkul touch nahi hua — sirf visual/copy polish: bade icon-wale
+  Email/WhatsApp buttons, WhatsApp preview ab real chat-bubble jaisa, simple labels
+  ("Designed email"/"Plain text"), dropdown me "(current for this product)" tag.
+- **1 real cheez mili jo chhut gayi thi**: kal ka warning ("Shared default choose karna poore
+  system ke har product ko affect karta he") naye design me accidentally hat gaya tha — wapas
+  add kiya, naye friendly wording ke saath.
+
+Commit `df7324f`. Verify kiya build clean he, VPS pe deploy kiya (frontend-only).
+
+### 🚨 Dropdown me alag template dikha raha tha, preview me alag — real bug mila (2026-09-09)
+
+User ne screenshot bheja: dropdown "Shared default — ivinfotech_specific_process_help" bol raha
+tha, par preview upar `ivinfotech_pain_point_outreach_btn` dikha raha tha — 2 alag templates!
+Plus "dropdown me kabhi 2 kabhi 3 dikhta he" aur "IV Classes ka template kyu dikha raha he."
+
+**Root cause (real, confirmed via live DB query)**: 2 alag jagah, "kaun sa shared template
+abhi active he" decide karne ke 2 ALAG rules the:
+- Backend ka REAL selection (`get_approved_first_touch_template()`, jo asli preview/send
+  decide karta he) → `updated_at` (last-touched) se sort karta he.
+- Dropdown ka label (`list_templates()` API se aayi list pe) → `created_at` (kab bana) se
+  sort hota tha.
+
+`ivinfotech_pain_point_outreach_btn` PURANA bana tha (Aug 25) par RECENTLY touch hua tha
+(Sep 9), jabki `ivinfotech_specific_process_help` NAYA bana tha par usse baad me touch nahi
+kiya gaya — 2 alag rules ne 2 alag "winner" nikala, isliye dropdown aur preview disagree
+karte the.
+
+**Fix**: dono jagah ab EK hi rule use hoti he (`updated_at`) — API ka default order fix kiya,
+aur frontend me bhi explicitly wahi column se sort kiya (double-safety, kabhi bhi drift na ho).
+Cross-product template options ki wording bhi clear ki: ab "borrow from X (moves it away from
+them)" likha he, taaki samajh aaye ki dusre product ka template use karne ka matlab kya he.
+
+**"Kabhi 2 kabhi 3" wala mudda**: ye bug nahi tha — is poore session me maine khud kai templates
+draft/approve kiye testing ke dauran, to real count genuinely badalta raha. Ab jo bhi count
+dikhega, wo real, live, sahi data hoga.
+
+Commit `b990cc9`. VPS pe pull+importcheck+build+sync+restart, real data se verify kiya
+(`ivinfotech_pain_point_outreach_btn` ab sahi se dono jagah #1 pe aata he).
+

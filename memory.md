@@ -1037,3 +1037,15 @@ library (default)" select karne pe preview same reh gaya — verify kiya to pata
 karne ke baad real fallback wapas usi pe aa gaya — preview sahi tha, bas label misleading tha
 (implied built-in generic, asal me "jo bhi abhi shared marked he" deta he). Fix: dropdown ka
 default option ab real fallback ka naam dikhata he. Commit `47a38e5`.
+
+**✅ Cursor ka UI/UX kaam verify kiya (2026-09-09)**: [[feedback_verify_other_tool_work_independently]]
+wala principle apply kiya — poora diff khud padha, tracker.md pe trust nahi kiya. Sab safe tha
+(pure copy/style polish, koi function/API touch nahi hua), sirf 1 warning text (shared default
+poore system ko affect karta he) accidentally hat gaya tha naye design me — wapas add kiya.
+
+**🚨 Dropdown vs preview me alag template — real bug (2026-09-09)**: 2 alag jagah "kaun sa
+shared template active he" ke liye 2 ALAG sort rules the (`updated_at` backend me,
+`created_at` dropdown me) — jab koi purana-bana-par-abhi-touched template hota he, dono jagah
+alag "winner" nikalta tha. Fix: dono jagah `updated_at` use karo. Commit `b990cc9`. **Lesson**:
+"kaun sa record abhi active/current he" — ye fact JAHA BHI compute ho, sirf EK jagah/EK rule
+se hona chahiye, kabhi 2 alag jagah independently reimplement mat karo.
