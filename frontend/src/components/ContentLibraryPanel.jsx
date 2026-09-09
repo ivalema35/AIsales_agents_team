@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Link2 } from "lucide-react";
+import { Plus, Trash2, Link2, ImageUp } from "lucide-react";
 import { api } from "../api/client";
 import ChipInput from "./ui/ChipInput";
 import Badge from "./ui/Badge";
 
-const ASSET_TYPES = ["DEMO_URL", "VIDEO_URL", "CASE_STUDY", "TESTIMONIAL", "TEXT_BLOCK"];
+// IMAGE_URL added 2026-09-09, real user ask: a real uploaded image (for a WhatsApp
+// template header or an email banner), not just a pasted demo/video link.
+const ASSET_TYPES = ["DEMO_URL", "VIDEO_URL", "IMAGE_URL", "CASE_STUDY", "TESTIMONIAL", "TEXT_BLOCK"];
 
 const EMPTY_DRAFT = { asset_type: "DEMO_URL", title: "", value: "", tags: [] };
 
@@ -16,6 +18,22 @@ export default function ContentLibraryPanel({ productId }) {
   const [draft, setDraft] = useState(EMPTY_DRAFT);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  async function handleImageFile(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    setError(null);
+    try {
+      const { url } = await api.uploadContentAssetImage(file);
+      setDraft((d) => ({ ...d, value: url }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   function refresh() {
     api.listContentAssets({ product_id: productId }).then(setAssets).catch((err) => setError(err.message));
@@ -58,6 +76,9 @@ export default function ContentLibraryPanel({ productId }) {
         <div className="flex flex-col gap-2">
           {assets.map((a) => (
             <div key={a.id} className="flex items-center justify-between gap-2 rounded-md bg-parchment p-2.5">
+              {a.asset_type === "IMAGE_URL" && (
+                <img src={a.value} alt={a.title} className="h-10 w-10 shrink-0 rounded-md border border-line object-cover" />
+              )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <Badge variant={a.is_active ? "SUCCESS" : "NEUTRAL"}>{a.asset_type}</Badge>
@@ -116,13 +137,35 @@ export default function ContentLibraryPanel({ productId }) {
             placeholder="Title (e.g. Live product demo)"
             className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
-          <input
-            required
-            value={draft.value}
-            onChange={(e) => setDraft((d) => ({ ...d, value: e.target.value }))}
-            placeholder={draft.asset_type === "TEXT_BLOCK" ? "The text itself" : "https://…"}
-            className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
-          />
+          {draft.asset_type === "IMAGE_URL" ? (
+            <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-line p-2.5">
+              <label className="flex w-fit cursor-pointer items-center gap-1.5 rounded-md bg-parchment-raised-2 px-2.5 py-1.5 text-[11px] font-medium text-ink-700 hover:bg-parchment">
+                <ImageUp size={12} />
+                {uploadingImage ? "Uploading…" : draft.value ? "Replace image" : "Choose image"}
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  onChange={handleImageFile}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+              {draft.value && !uploadingImage && (
+                <div className="flex items-center gap-2">
+                  <img src={draft.value} alt="Uploaded preview" className="h-14 w-14 rounded-md border border-line object-cover" />
+                  <p className="truncate text-[11px] text-ink-500">{draft.value}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <input
+              required
+              value={draft.value}
+              onChange={(e) => setDraft((d) => ({ ...d, value: e.target.value }))}
+              placeholder={draft.asset_type === "TEXT_BLOCK" ? "The text itself" : "https://…"}
+              className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+            />
+          )}
           <ChipInput
             icon={Link2}
             label="Tags"

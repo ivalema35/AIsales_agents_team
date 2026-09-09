@@ -46,6 +46,11 @@ _PUBLIC_PREFIXES = (
     # Brand logo used in outbound email HTML -- recipients' mail clients must fetch this
     # without a CRM session cookie (2026-09-05).
     "/static/brand/",
+    # User-uploaded content asset images (2026-09-09) -- a WhatsApp template header image
+    # or email banner must be fetchable by Meta/a real recipient's mail client, same
+    # reasoning as the brand logo above. The upload endpoint itself (POST .../upload)
+    # stays behind the login gate; only the resulting served file is public.
+    "/static/uploads/",
 )
 
 

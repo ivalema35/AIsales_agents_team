@@ -1,14 +1,22 @@
 from __future__ import annotations
 import json
+import os
+import uuid
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 
+from config import Config
 from database.db_config import SessionLocal
 from database.models import ContentAsset, Product
 
 content_assets_bp = Blueprint("content_assets", __name__, url_prefix="/api/v1/content-assets")
 
-VALID_ASSET_TYPES = {"DEMO_URL", "VIDEO_URL", "CASE_STUDY", "TESTIMONIAL", "TEXT_BLOCK"}
+# IMAGE_URL added 2026-09-09, real user ask: a WhatsApp template header image (and email
+# banner images) need a real, uploaded image asset, not just a pasted demo/video link.
+VALID_ASSET_TYPES = {"DEMO_URL", "VIDEO_URL", "IMAGE_URL", "CASE_STUDY", "TESTIMONIAL", "TEXT_BLOCK"}
+
+ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
+MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024  # 5MB -- generous for a template header/banner image
 
 
 def _serialize(row):
@@ -79,6 +87,42 @@ def get_asset(asset_id):
         return jsonify(_serialize(row))
     finally:
         db.close()
+
+
+@content_assets_bp.route("/upload", methods=["POST"])
+def upload_asset_file():
+    """2026-09-09, real user ask: a real image file (for a WhatsApp template header or an
+    email banner) needs to end up at a real, publicly-fetchable URL -- Meta and every real
+    recipient's mail client must be able to load it without a login session, the same
+    reason the brand logo is served from /static/brand/ (see app.py's _PUBLIC_PREFIXES).
+
+    Saves into Flask's own default static folder (backend/static/uploads/, auto-served at
+    /static/uploads/<file> -- no new route needed) under a random filename (never the
+    original, to avoid path traversal / collisions) and returns the real public URL. Does
+    NOT create a ContentAsset row itself -- the frontend calls the existing POST /content-
+    assets with asset_type=IMAGE_URL and this URL as `value`, same as any other asset type.
+    """
+    file = request.files.get("file")
+    if not file or not file.filename:
+        return jsonify({"error": ["file is required"]}), 422
+
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        return jsonify({"error": [f"file type must be one of {sorted(ALLOWED_IMAGE_EXTENSIONS)}"]}), 422
+
+    file.seek(0, os.SEEK_END)
+    size = file.tell()
+    file.seek(0)
+    if size > MAX_UPLOAD_SIZE_BYTES:
+        return jsonify({"error": ["file must be 5MB or smaller"]}), 422
+
+    upload_dir = os.path.join(current_app.static_folder, "uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    file.save(os.path.join(upload_dir, filename))
+
+    url = f"{Config.PUBLIC_BASE_URL.rstrip('/')}/static/uploads/{filename}"
+    return jsonify({"url": url}), 201
 
 
 @content_assets_bp.route("", methods=["POST"])

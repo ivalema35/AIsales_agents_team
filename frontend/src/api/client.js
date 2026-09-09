@@ -80,6 +80,13 @@ export const api = {
   createContentAsset: (data) => request("/content-assets", { method: "POST", body: JSON.stringify(data) }),
   updateContentAsset: (id, data) => request(`/content-assets/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteContentAsset: (id) => request(`/content-assets/${id}`, { method: "DELETE" }),
+  // 2026-09-09 -- real file upload (image), not a pasted URL. `headers: {}` overrides the
+  // default JSON content-type so the browser sets the correct multipart boundary itself.
+  uploadContentAssetImage: (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return request("/content-assets/upload", { method: "POST", headers: {}, body: formData });
+  },
 
   listKnowledgeBaseItems: (params = {}) => {
     const qs = new URLSearchParams(params).toString();
