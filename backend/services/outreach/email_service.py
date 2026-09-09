@@ -14,7 +14,7 @@ import re
 import requests
 
 from config import Config
-from services.outreach.email_renderer import render_email_html, fetch_video_thumbnail
+from services.outreach.email_renderer import render_email_html, fetch_video_thumbnail, pick_header_image_url
 
 logger = logging.getLogger(__name__)
 
@@ -129,8 +129,13 @@ def send_email(to_email: str, subject: str, body_text: str, unsubscribe_url: str
         raise RuntimeError("RESEND_API_KEY not configured")
 
     full_body = body_text.rstrip() + _build_footer(unsubscribe_url)
-    html_body = (render_email_html(sections, unsubscribe_url, headline=subject) if sections
-                 else _build_html(body_text, unsubscribe_url, content_assets))
+    html_body = (
+        render_email_html(
+            sections, unsubscribe_url, headline=subject,
+            header_image_url=pick_header_image_url(content_assets),
+        ) if sections
+        else _build_html(body_text, unsubscribe_url, content_assets)
+    )
 
     resp = requests.post(
         RESEND_API_URL,

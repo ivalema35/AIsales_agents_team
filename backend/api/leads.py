@@ -15,7 +15,7 @@ from services.lead_service import claim_lead_for_outreach
 from services.outreach.suppression import normalize_identifier, is_suppressed as channel_is_suppressed
 from services.outreach.delivery_status import derive_delivery_state, resolve_whatsapp_display_text
 from services.sequence_service import describe_sequence_stage
-from services.outreach.email_renderer import render_email_html
+from services.outreach.email_renderer import render_email_html, pick_header_image_url
 from services.outreach.text_renderer import render_plain_text
 from services.message_format_service import get_available_assets
 from services.outreach.cross_sell import get_cross_sell_products
@@ -687,7 +687,10 @@ def get_cross_channel_copy(lead_id):
         sections = json.loads(log.content_sections)
         if platform == "EMAIL":
             unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
-            content = render_email_html(sections, unsubscribe_url, headline=log.message_subject)
+            header_url = pick_header_image_url(get_available_assets(db, lead.product_id) or None)
+            content = render_email_html(
+                sections, unsubscribe_url, headline=log.message_subject,
+                header_image_url=header_url)
             fmt = "html"
         else:
             content = render_plain_text(sections)
@@ -970,7 +973,7 @@ def revise_outreach_draft(lead_id):
             "ai_suggestion": suggestion or None,
             "pushback": pushback,
             "email_render_mode": render_mode,
-            "sample_draft_html": build_sample_draft_html(render_mode, revised),
+            "sample_draft_html": build_sample_draft_html(render_mode, revised, content_assets=content_assets),
         })
     finally:
         db.close()

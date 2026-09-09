@@ -837,6 +837,12 @@ campaign-page button = user ne socha, **abhi pending** (docs only, build nahi).
 bade Email/WhatsApp buttons; Designed email / Plain text; WhatsApp chat bubble + clear template
 rule + picker + Ask AI. Deploy pending user confirm.
 
+**2026-09-09 — Email header image + Daily Review preview polish:** product Content Library
+`IMAGE_URL` (title me “email”/“banner” prefer; WA header skip) ab designed email me logo/gold
+strip ke baad banner dikhta hai — real send (`send_email`) + Daily Review / kickoff preview.
+Preview iframe local file ko data-URI embed kar sakta hai. Daily Review: inbox chrome
+(From/Subject), taller iframe, clearer channel toggles. Deploy pending unless user asks.
+
 **⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
 user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
 (40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified

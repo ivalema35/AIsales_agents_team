@@ -134,11 +134,19 @@ export default function ContentLibraryPanel({ productId }) {
             required
             value={draft.title}
             onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
-            placeholder="Title (e.g. Live product demo)"
+            placeholder={
+              draft.asset_type === "IMAGE_URL"
+                ? "Title (e.g. Email Header or WA Header)"
+                : "Title (e.g. Live product demo)"
+            }
             className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
           />
           {draft.asset_type === "IMAGE_URL" ? (
             <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-line p-2.5">
+              <p className="text-[11px] leading-relaxed text-ink-500">
+                Name it <span className="font-medium text-ink-700">Email Header</span> for designed emails,
+                or <span className="font-medium text-ink-700">WA Header</span> for WhatsApp.
+              </p>
               <label className="flex w-fit cursor-pointer items-center gap-1.5 rounded-md bg-parchment-raised-2 px-2.5 py-1.5 text-[11px] font-medium text-ink-700 hover:bg-parchment">
                 <ImageUp size={12} />
                 {uploadingImage ? "Uploading…" : draft.value ? "Replace image" : "Choose image"}

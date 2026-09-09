@@ -462,6 +462,121 @@ def _header(logo_src: str | None) -> str:
 </table>"""
 
 
+def pick_header_image_url(content_assets) -> str | None:
+    """Best IMAGE_URL for the email header banner (product or global).
+
+    2026-09-09: IMAGE_URL is a banner under the logo strip — not an ASSET_SECTIONS mid-body
+    block. A product may have both a WhatsApp header and an Email Header; we prefer titles
+    that look like email banners, then any non-WhatsApp title, then the first IMAGE_URL.
+    Missing asset = no banner (graceful omission), never a fabricated image.
+    """
+    images = []
+    for asset in content_assets or []:
+        if not isinstance(asset, dict):
+            continue
+        if asset.get("asset_type") != "IMAGE_URL":
+            continue
+        value = (asset.get("value") or "").strip()
+        if value:
+            images.append(asset)
+    if not images:
+        return None
+
+    def _title(a: dict) -> str:
+        return (a.get("title") or "").strip().lower()
+
+    for asset in images:
+        t = _title(asset)
+        if "email" in t or "banner" in t:
+            return (asset.get("value") or "").strip()
+    for asset in images:
+        t = _title(asset)
+        if "whatsapp" not in t and not t.startswith("wa ") and "wa header" not in t:
+            return (asset.get("value") or "").strip()
+    return (images[0].get("value") or "").strip() or None
+
+
+def _header_image_data_uri(url: str) -> str | None:
+    """Embed a local public/upload image for Daily Review iframe (same idea as logo).
+
+    Real sends keep an absolute http(s) URL so mail clients can fetch it. Preview iframes
+    often cannot load relative paths from srcDoc, so we prefer a data URI when the file
+    exists under frontend/public, frontend/dist, or backend/static.
+    """
+    from urllib.parse import urlparse
+
+    raw = (url or "").strip()
+    if not raw or raw.startswith("data:"):
+        return None
+    path_part = urlparse(raw).path if raw.startswith("http") else raw
+    if not path_part.startswith("/"):
+        return None
+    rel = path_part.lstrip("/")
+    repo_root = Path(__file__).resolve().parents[3]
+    candidates = (
+        repo_root / "frontend" / "public" / rel,
+        repo_root / "frontend" / "dist" / rel,
+        Path(__file__).resolve().parents[2] / "static" / rel,
+    )
+    for candidate in candidates:
+        try:
+            if not candidate.is_file():
+                continue
+            if candidate.stat().st_size > 2_000_000:
+                continue
+            data = candidate.read_bytes()
+            suffix = candidate.suffix.lower().lstrip(".")
+            mime = {
+                "png": "image/png",
+                "jpg": "image/jpeg",
+                "jpeg": "image/jpeg",
+                "gif": "image/gif",
+                "webp": "image/webp",
+            }.get(suffix, "image/png")
+            return f"data:{mime};base64,{base64.b64encode(data).decode('ascii')}"
+        except OSError:
+            continue
+    return None
+
+
+def resolve_image_src_for_email(url: str, *, for_preview: bool = False) -> str:
+    """Absolute URL for real sends; preview may embed a local file as data URI.
+
+    Relative paths like `/uploads/...` or `/wa-header-....png` are joined to PUBLIC_BASE_URL
+    so outbound mail clients can fetch them.
+    """
+    u = (url or "").strip()
+    if not u:
+        return ""
+    if u.startswith("data:"):
+        return u
+    if for_preview:
+        embedded = _header_image_data_uri(u)
+        if embedded:
+            return embedded
+    if u.startswith("http://") or u.startswith("https://"):
+        return u
+    base = (Config.PUBLIC_BASE_URL or "").rstrip("/")
+    if u.startswith("/"):
+        return f"{base}{u}" if base else u
+    return f"{base}/{u}" if base else u
+
+
+def _hero_banner(image_src: str) -> str:
+    """Full-bleed product header image under the logo/gold strip. Table-based, images-off
+    safe (alt text); never required for the email to render."""
+    return f"""
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+    <td style="padding: 0; line-height: 0; font-size: 0;">
+      <img src="{_e(image_src)}" alt="" width="{CARD_WIDTH}"
+           style="display: block; width: 100%; max-width: {CARD_WIDTH}px; height: auto;
+                  border: 0; outline: none; text-decoration: none;">
+    </td>
+  </tr>
+</table>"""
+
+
 def _headline(text: str) -> str:
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
@@ -481,7 +596,7 @@ def _headline(text: str) -> str:
 
 def render_email_html(sections: list[dict], unsubscribe_url: str,
                       company_address: str | None = None, headline: str | None = None,
-                      for_preview: bool = False) -> str:
+                      for_preview: bool = False, header_image_url: str | None = None) -> str:
     """The full email document. `sections` is Step 11.1's ordered list; the compliance
     footer is appended here and is never the agent's responsibility -- the same rule
     email_service._build_footer() already enforces for the plain-text part.
@@ -493,8 +608,16 @@ def render_email_html(sections: list[dict], unsubscribe_url: str,
 
     `for_preview=True` embeds the logo as a data URI (Daily Review iframe). Real sends
     leave it False so the public `/static/brand/` URL is used -- deliverable inboxes.
+
+    `header_image_url` (2026-09-09): optional product IMAGE_URL banner under the logo strip.
+    Omitted when the product has no active IMAGE_URL asset.
     """
     logo_src = _logo_data_uri() if for_preview else _logo_public_url()
+    banner_html = ""
+    if header_image_url:
+        src = resolve_image_src_for_email(header_image_url, for_preview=for_preview)
+        if src:
+            banner_html = _hero_banner(src)
     inner = ""
     if headline:
         inner += _headline(headline)
@@ -514,6 +637,7 @@ def render_email_html(sections: list[dict], unsubscribe_url: str,
           <td style="background: {CARD}; border: 1px solid {RULE}; border-radius: 12px;
                      overflow: hidden; box-shadow: 0 4px 14px rgba(11,28,60,0.08);">
             {_header(logo_src)}
+            {banner_html}
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td style="padding: 28px 30px 30px 30px;">{inner}</td>

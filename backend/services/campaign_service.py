@@ -75,13 +75,17 @@ def detect_render_mode_request(instruction: str) -> str | None:
     return None
 
 
-def build_sample_draft_html(mode: str, draft: dict | None) -> str | None:
+def build_sample_draft_html(mode: str, draft: dict | None,
+                            content_assets=None) -> str | None:
     """Preview-only HTML via Phase 11 renderer; unsubscribe is a inert # link.
 
     Real sends append INTEREST (Yes/No) in outreach_handler after QC, using signed URLs.
     Daily Review / kickoff preview has no outreach_log yet, so we append the same strip
     here with inert `#` links -- display-only, so the human sees what the real HTML send
     will include.
+
+    `content_assets` (2026-09-09): when the product has an active IMAGE_URL, the same
+    header banner as a real send appears in this preview.
     """
     if mode != "HTML" or not isinstance(draft, dict):
         return None
@@ -98,10 +102,10 @@ def build_sample_draft_html(mode: str, draft: dict | None) -> str | None:
             "yes_label": "Yes, tell me more",
             "no_label": "Not right now",
         })
-    from services.outreach.email_renderer import render_email_html
+    from services.outreach.email_renderer import pick_header_image_url, render_email_html
     return render_email_html(
         preview_sections, unsubscribe_url="#", headline=draft.get("subject") or "",
-        for_preview=True)
+        for_preview=True, header_image_url=pick_header_image_url(content_assets))
 
 
 
@@ -1281,6 +1285,7 @@ def get_daily_review(db, campaign_id: str) -> dict:
 
     render_mode = resolve_email_render_mode(campaign)
     format_directive = format_directive_for_mode(render_mode, product.default_format)
+    content_assets = get_available_assets(db, product.id) or None
 
     sample_lead = db.query(Lead).filter(Lead.campaign_id == campaign_id).first()
     sample_draft = None
@@ -1300,7 +1305,6 @@ def get_daily_review(db, campaign_id: str) -> dict:
         lead_profile = {"company_name": sample_lead.company_name,
                         "contact_person_name": sample_lead.contact_person_name,
                         "contact_person_role": sample_lead.contact_person_role}
-        content_assets = get_available_assets(db, product.id) or None
         sample_draft = draft_structured_email(
             db, sample_lead.id, product_brief, lead_profile, raw_pain_points,
             content_assets=content_assets,
@@ -1335,7 +1339,8 @@ def get_daily_review(db, campaign_id: str) -> dict:
         "email_render_mode": render_mode,
         "sample_draft": sample_draft,
         # HTML mode only: real Phase 11 designed preview (preview-only unsubscribe #).
-        "sample_draft_html": build_sample_draft_html(render_mode, sample_draft),
+        "sample_draft_html": build_sample_draft_html(
+            render_mode, sample_draft, content_assets=content_assets),
         # First-touch WhatsApp preview (same template selection as a real WA send).
         "sample_whatsapp": sample_whatsapp,
         "sample_lead_id": sample_lead.id if sample_lead else None,
@@ -1461,7 +1466,7 @@ def revise_kickoff_draft(db, campaign_id: str, instruction: str, current_draft: 
         "ai_suggestion": suggestion or None,
         "pushback": pushback,
         "email_render_mode": render_mode,
-        "sample_draft_html": build_sample_draft_html(render_mode, revised),
+        "sample_draft_html": build_sample_draft_html(render_mode, revised, content_assets=content_assets),
     }
 
 

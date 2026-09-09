@@ -7343,4 +7343,28 @@ Ek technical baat flag ki (WA header square he, WhatsApp ki chat bubble me usual
 image better dikhti he) — user ne bola **"jaisa he waisa rehne do"** — koi change nahi
 karna, as-is rakhna he. Koi code/DB change nahi kiya, sirf verify + report.
 
+### ✅ Email template me product IMAGE_URL header banner + Daily Review UX polish (2026-09-09)
+
+User ask: designed email preview me header image dikhe jab product pe IMAGE_URL ho; UI/UX
+zyada attractive/convincing.
+
+**Backend**
+- `email_renderer.render_email_html(..., header_image_url=)` — logo + gold strip ke baad
+  full-bleed banner; nahi hota to graceful omit.
+- `pick_header_image_url()` — active `IMAGE_URL` assets se choose: title me `email`/`banner`
+  pehle, phir non-WhatsApp title, warna pehla. (WA Header + Email Header dono ho to Email
+  Header hi.)
+- Preview: local `frontend/public|dist` file mile to data-URI embed (srcDoc iframe ke liye);
+  real send: absolute `PUBLIC_BASE_URL` / https URL.
+- Wired: `send_email`, `build_sample_draft_html` (Daily Review + kickoff revise), lead
+  revise HTML + synced content re-render.
+
+**Frontend**
+- `DailyReviewPanel`: message-preview panel framing, segmented Designed/Plain, inbox chrome
+  (From · Subject) around HTML iframe, taller preview, stronger primary CTA.
+
+**Note:** IMAGE_URL mid-body `ASSET_SECTIONS` me nahi — sirf header banner. Content Library
+me product pe “Email Header” IMAGE_URL set hona chahiye (already live pe General IT ke liye).
+
+
 

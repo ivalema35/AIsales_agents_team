@@ -296,6 +296,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
 
       {(review.sample_draft || review.sample_whatsapp) ? (
         <div className="mt-4 border-t border-line pt-4">
+          <div className="overflow-hidden rounded-xl border border-line bg-gradient-to-br from-parchment-raised via-parchment to-[#e8ecf2] p-4 shadow-sm sm:p-5">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <button
@@ -303,11 +304,11 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                 className="flex items-center gap-1.5 text-left"
               >
                 {expanded ? <ChevronUp size={14} className="shrink-0 text-ink-500" /> : <ChevronDown size={14} className="shrink-0 text-ink-500" />}
-                <span className="font-display text-base font-semibold text-ink-900">
+                <span className="font-display text-lg font-semibold text-ink-900">
                   How your messages look
                 </span>
               </button>
-              <p className="mt-0.5 pl-5 text-xs text-ink-500">
+              <p className="mt-0.5 pl-5 text-xs leading-relaxed text-ink-500">
                 {review.sample_is_kickoff_template
                   ? "Starter examples — real names fill in once leads are tagged."
                   : review.sample_lead_company
@@ -318,16 +319,16 @@ export function CampaignReviewCard({ campaign, onApproved }) {
           </div>
 
           {expanded && (
-            <div className="mt-3 flex flex-col gap-3">
+            <div className="mt-4 flex flex-col gap-3.5">
               {/* Channel picker — two clear choices, not tiny chips */}
               <div className="grid grid-cols-2 gap-2 sm:max-w-md">
                 <button
                   type="button"
                   onClick={() => setPreviewChannel("email")}
-                  className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors ${
+                  className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-3 text-sm font-semibold transition-all ${
                     previewChannel === "email"
-                      ? "border-ink-900 bg-ink-900 text-parchment-raised"
-                      : "border-line bg-parchment text-ink-700 hover:border-ink-500"
+                      ? "border-ink-900 bg-ink-900 text-parchment-raised shadow-md shadow-ink-900/20"
+                      : "border-line/80 bg-parchment-raised/80 text-ink-700 hover:border-ink-500 hover:bg-parchment-raised"
                   }`}
                 >
                   <Mail size={15} /> Email
@@ -336,10 +337,10 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                   type="button"
                   onClick={() => setPreviewChannel("whatsapp")}
                   disabled={!review.sample_whatsapp}
-                  className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                  className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-3 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
                     previewChannel === "whatsapp"
-                      ? "border-ink-900 bg-ink-900 text-parchment-raised"
-                      : "border-line bg-parchment text-ink-700 hover:border-ink-500"
+                      ? "border-ink-900 bg-ink-900 text-parchment-raised shadow-md shadow-ink-900/20"
+                      : "border-line/80 bg-parchment-raised/80 text-ink-700 hover:border-ink-500 hover:bg-parchment-raised"
                   }`}
                 >
                   <MessageCircle size={15} /> WhatsApp
@@ -350,15 +351,15 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                 <>
                   <div className="flex flex-col gap-1.5">
                     <p className="text-[11px] font-medium text-ink-600">Email look</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="inline-flex w-fit overflow-hidden rounded-xl border border-line bg-parchment-raised p-0.5 shadow-sm">
                       <button
                         type="button"
                         disabled={settingMode || review.email_render_mode === "HTML"}
                         onClick={() => setEmailRenderMode("HTML")}
-                        className={`rounded-lg border px-3 py-1.5 text-xs font-semibold disabled:opacity-60 ${
+                        className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors disabled:opacity-100 ${
                           review.email_render_mode === "HTML"
-                            ? "border-ink-900 bg-ink-900 text-parchment-raised"
-                            : "border-line bg-parchment text-ink-600 hover:border-ink-500"
+                            ? "bg-ink-900 text-parchment-raised"
+                            : "text-ink-600 hover:text-ink-900 disabled:opacity-60"
                         }`}
                       >
                         Designed email
@@ -367,10 +368,10 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                         type="button"
                         disabled={settingMode || review.email_render_mode === "TEXT"}
                         onClick={() => setEmailRenderMode("TEXT")}
-                        className={`rounded-lg border px-3 py-1.5 text-xs font-semibold disabled:opacity-60 ${
+                        className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors disabled:opacity-100 ${
                           review.email_render_mode === "TEXT"
-                            ? "border-ink-900 bg-ink-900 text-parchment-raised"
-                            : "border-line bg-parchment text-ink-600 hover:border-ink-500"
+                            ? "bg-ink-900 text-parchment-raised"
+                            : "text-ink-600 hover:text-ink-900 disabled:opacity-60"
                         }`}
                       >
                         Plain text
@@ -378,39 +379,63 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                     </div>
                     <p className="text-[11px] leading-relaxed text-ink-500">
                       {review.email_render_mode === "HTML"
-                        ? "Designed = sections and layout, like a branded email."
+                        ? "Designed = logo, optional header image, sections — like a branded email."
                         : "Plain text = short note, like someone typed it in Gmail."}
                     </p>
                   </div>
 
                   {review.sample_is_kickoff_template && (
-                    <p className="rounded-lg border border-line bg-parchment px-3 py-2 text-xs leading-relaxed text-ink-600">
-                      Placeholders like <span className="font-medium text-ink-800">[Business Name]</span> and{" "}
-                      <span className="font-medium text-ink-800">[Pain Point]</span> will be replaced with each
+                    <p className="rounded-xl border border-gold-600/30 bg-gold-100/60 px-3.5 py-2.5 text-xs leading-relaxed text-ink-700">
+                      Placeholders like <span className="font-medium text-ink-900">[Business Name]</span> and{" "}
+                      <span className="font-medium text-ink-900">[Pain Point]</span> will be replaced with each
                       real lead’s details when you send.
                     </p>
                   )}
 
                   {review.email_render_mode === "HTML" && review.sample_draft_html ? (
-                    <div className="overflow-hidden rounded-lg border border-line bg-white shadow-sm">
+                    <div className="overflow-hidden rounded-xl border border-line bg-white shadow-[0_8px_28px_rgba(11,28,60,0.10)]">
+                      <div className="border-b border-line bg-[#f7f5f0] px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <span className="flex gap-1">
+                            <span className="h-2 w-2 rounded-full bg-[#e5c9a8]" />
+                            <span className="h-2 w-2 rounded-full bg-[#d4c4a8]" />
+                            <span className="h-2 w-2 rounded-full bg-[#c8b89a]" />
+                          </span>
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">
+                            Inbox preview
+                          </span>
+                        </div>
+                        <div className="mt-2.5 space-y-1">
+                          <p className="truncate text-[11px] text-ink-500">
+                            <span className="font-medium text-ink-600">From</span>
+                            {" · IVinfotech"}
+                          </p>
+                          <p className="truncate text-sm font-semibold text-ink-900">
+                            {review.sample_draft.subject || "Your email subject"}
+                          </p>
+                        </div>
+                      </div>
                       <iframe
                         title="Email preview"
                         srcDoc={review.sample_draft_html}
                         sandbox=""
-                        className="h-[420px] w-full border-0 bg-white"
+                        className="h-[520px] w-full border-0 bg-[#e8ecf2]"
                       />
                     </div>
                   ) : (
-                    <div className="rounded-lg border border-line bg-parchment p-4 shadow-sm">
-                      <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-500">Subject</p>
-                      <p className="mt-1 text-sm font-semibold text-ink-900">{review.sample_draft.subject}</p>
-                      <div className="my-3 border-t border-line" />
-                      <p className="whitespace-pre-line text-sm leading-relaxed text-ink-700">{review.sample_draft.body}</p>
+                    <div className="overflow-hidden rounded-xl border border-line bg-white shadow-[0_8px_28px_rgba(11,28,60,0.08)]">
+                      <div className="border-b border-line bg-[#f7f5f0] px-4 py-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">Subject</p>
+                        <p className="mt-1 text-sm font-semibold text-ink-900">{review.sample_draft.subject}</p>
+                      </div>
+                      <div className="px-4 py-4">
+                        <p className="whitespace-pre-line text-sm leading-relaxed text-ink-700">{review.sample_draft.body}</p>
+                      </div>
                     </div>
                   )}
 
                   {pushback && (
-                    <div className="rounded-lg border border-dashed border-alert-600 bg-alert-100 p-3">
+                    <div className="rounded-xl border border-dashed border-alert-600 bg-alert-100 p-3">
                       <span className="flex items-center gap-1.5 text-[11px] font-semibold text-alert-700">
                         <MessageSquareWarning size={12} /> Honest note from AI
                       </span>
@@ -419,27 +444,27 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                   )}
 
                   {aiSuggestion && (
-                    <div className="rounded-lg border border-dashed border-gold-600 bg-gold-100 p-3">
+                    <div className="rounded-xl border border-dashed border-gold-600 bg-gold-100 p-3">
                       <span className="text-[11px] font-semibold text-gold-700">AI also suggests</span>
                       <p className="mt-1 text-xs leading-relaxed text-ink-900">{aiSuggestion}</p>
                     </div>
                   )}
 
                   {showFeedback ? (
-                    <form onSubmit={submitFeedback} className="flex flex-col gap-2 rounded-lg border border-line bg-parchment p-3">
+                    <form onSubmit={submitFeedback} className="flex flex-col gap-2 rounded-xl border border-line bg-parchment-raised/90 p-3.5 shadow-sm">
                       <label className="text-[11px] font-medium text-ink-700">Change this email</label>
                       <input
                         autoFocus
                         value={instruction}
                         onChange={(e) => setInstruction(e.target.value)}
                         placeholder="e.g. make it shorter, warmer, less salesy"
-                        className="rounded-md border border-line bg-parchment-raised px-3 py-2 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+                        className="rounded-lg border border-line bg-parchment-raised px-3 py-2.5 text-sm text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           type="submit"
                           disabled={revising || !instruction.trim()}
-                          className="rounded-lg bg-gold-600 px-3.5 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                          className="rounded-lg bg-gold-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50"
                         >
                           {revising ? "Updating…" : "Update email"}
                         </button>
@@ -455,7 +480,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                   ) : (
                     <button
                       onClick={() => setShowFeedback(true)}
-                      className="w-fit rounded-lg border border-line bg-parchment px-3.5 py-2 text-xs font-semibold text-ink-800 hover:border-ink-500"
+                      className="w-fit rounded-lg border border-ink-900/15 bg-ink-900 px-3.5 py-2 text-xs font-semibold text-parchment-raised shadow-sm hover:opacity-90"
                     >
                       Ask for a change
                     </button>
@@ -589,6 +614,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
               )}
             </div>
           )}
+          </div>
         </div>
       ) : (
         <p className="mt-4 border-t border-line pt-4 text-xs text-ink-500">
