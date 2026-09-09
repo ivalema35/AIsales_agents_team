@@ -959,3 +959,25 @@ side-by-side test — `gpt-6-astra` ne zyada sophisticated business insight di, 
 tokens (cost). **Persistent memory me save kiya standing principle ke roop me**: future me AI Manager
 ki galti mile to pehle "behtar model/prompt se fix ho sakta he kya" sochna he, hardcoded Python sirf
 tab jab wo GENUINELY judgment-call na ho.
+
+**🚨🚨🚨 Discovery scheduler 16 ghante DOWN — 2 real problems, 2026-09-09**: (1) **Serper API
+credits khatam** (`"Not enough credits"`) — code bug nahi, user ko serper.dev pe top-up karna
+hoga, tab tak koi naya lead discover nahi hoga. (2) `discovery_runs` UNIQUE constraint bug — kal
+ka "AI khud campaign banaye" feature ne ek naya campaign banaya jiska target (salons/Mehsana)
+EXISTING sibling campaign se collide ho gaya, IntegrityError ne poora scheduler session
+"poison" kar diya, heartbeat likhna band ho gaya, 16 ghante silently down raha. Fix: real
+migration se constraint `(campaign_id, query, region)` kiya (data safe, 9 rows verify), +
+try/except+rollback add kiya per-row aur main loop dono jagah (future-proof). Commit `3f8899c`.
+**Lesson**: naya feature (auto-create campaign) purane "low-probability risk" comments ko real
+bana sakta he — jab bhi koi "future me shayad" wala comment dikhe, naye feature banate waqt use
+dobara check karna chahiye.
+
+**⭐ "AI Manager ko real tool-calling agent banao" — discussion save kiya, koi code nahi**
+(2026-09-08/09): user ne poocha agar AI Manager ko live web search, DB query, worker check karne
+jaisa tool access diya jaye (mere jaisa agent), to leads-won pe kitna farak padega. Mera honest
+jawaab: architecture ka observation sahi he (abhi one-shot LLM call he, real agent loop nahi),
+read-only tools (web search, DB query) se message quality genuinely behtar ho sakti he, but
+"leads won ~ zero" ka asli reason abhi **volume/time** he (poore system me sirf ~80 sends, 0
+replies) — agent banane se ye turant fix nahi hoga. Worker-self-modification jaisa tool dena
+alag, zyada risky discussion he, read-only tools se mix nahi karna. Persistent memory me save
+kiya, koi code develop nahi kiya (explicit instruction thi).

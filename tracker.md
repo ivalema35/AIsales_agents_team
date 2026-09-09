@@ -6894,3 +6894,40 @@ principle he ab: future me jab bhi AI Manager galti kare, pehle sochna he "kya b
 se fix ho sakta he" phir hi hardcoded Python approach lena he, sirf tab jab wo GENUINELY koi
 judgment-call na ho (jaise Meta ki hard API limits, ya database ka real count).
 
+### 🚨🚨🚨 Discovery scheduler 16 ghante se DOWN tha — 2 real, separate root cause mile (2026-09-09)
+
+User ne bola "ek worker down he discovery ka, check karo." Investigation se **2 alag-alag real
+problems** mile — dono fix/report kiye:
+
+**1) 🚨 URGENT, user action chahiye: Serper API ke credits khatam ho gaye hain.** Real error:
+`{"message":"Not enough credits","statusCode":400}` — direct Serper se confirm kiya. **Ye code ka
+bug nahi hai** — jab tak user **serper.dev** pe jaake credits/plan top-up nahi karte, koi bhi
+naya lead discover nahi hoga, chahe scheduler kitna bhi healthy ho. 57+ real DISCOVER jobs isi
+wajah se DEAD ho chuke the raat bhar mein.
+
+**2) Scheduler process khud 16 ghante se crash+silent tha.** Root cause: mera hi kal wala
+"AI khud campaign banaye" feature — AI ne "salons in Mehsana" suggest kiya "AI Automation
+Solutions" product ke liye, jo **ALREADY** existing "Ai automaion Push" campaign ka hi target
+tha (same product, same query, same region)! `discovery_runs` table ka UNIQUE constraint
+`(product_id, query, region)` pe tha (purana), jabki code khud `(campaign_id, query, region)`
+assume karta tha — ye mismatch 2026-09-02 se hi ek "low-probability risk" ke roop me documented
+tha, aur mere naye auto-create feature ne isse asaan bana diya trigger hona.
+
+**Cascade effect**: is IntegrityError ke baad koi `db.rollback()` nahi hota tha — poora session
+"poison" ho jata tha, jisse **scheduler ka apna heartbeat bhi likhna band ho gaya** — process
+technically zinda tha (har 5 min try kar raha tha), but bahar se "DOWN" dikh raha tha, kyunki
+heartbeat kabhi update hi nahi ho pa raha tha.
+
+**Fix (3 parts)**:
+1. `discovery_runs` table ko real migration se rebuild kiya — ab constraint sahi
+   `(campaign_id, query, region)` pe hai (SQLite me constraint directly ALTER nahi ho sakta,
+   table rebuild kiya, **sara real data safe raha** — verify kiya, 9 rows intact).
+2. `_run_discovery_tick()` me ab har ek DiscoveryRun insert apne try/except+rollback ke saath
+   hai — ek row fail ho to sirf wahi skip hogi, poora tick nahi girega.
+3. Main loop ke error-handler me bhi ek extra `db.rollback()` add kiya (defense-in-depth) —
+   future me KOI BHI alag reason se aisi hi crash ho, heartbeat phir bhi likh payega.
+
+**Verify kiya**: migration ke baad scheduler restart kiya, turant UP dikha, heartbeat chal raha
+he. Commit `3f8899c`. Serper credits ka issue abhi bhi pending hai — user ko khud top-up karna
+hoga.
+
