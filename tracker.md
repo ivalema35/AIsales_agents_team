@@ -6951,3 +6951,27 @@ already NULL scheduled_date ke saath ban chuki thi, unhe ek backfill script se u
 
 Commit `1ae5dc8`. VPS pe pull + backfill + restart, sab 5 services active, koi stuck job nahi.
 
+### 🐛 Campaign delete karne pe lead ka campaign_id orphan reh jaata he (2026-09-09)
+
+User ne "salons campaign" (1 hi lead tha, kal ka) delete karne ko bola kyunki usme leads nahi
+the. Delete kiya (`DELETE /campaigns/<id>` wala hi real path use kiya), par verify karne pe
+mila: jo 1 lead uss campaign se juda tha, uska `campaign_id` delete ke baad bhi wahi purani
+(ab-nonexistent) campaign id pe atka reh gaya — code/model me comment likha he
+"ON DELETE SET NULL", par **live DB me ye FK constraint kabhi bana hi nahi tha**.
+
+**Root cause**: bilkul discovery_runs wala hi pattern (upar wala bug dekho) — `leads.campaign_id`
+column Phase 17 me `ALTER TABLE ADD COLUMN` se add hua tha (`migrate.py`'s COLUMN_MIGRATIONS),
+aur SQLite `ALTER TABLE ADD COLUMN` se FOREIGN KEY constraint kabhi attach nahi hoti — sirf
+naye fresh installs (`schema.sql` ka `CREATE TABLE IF NOT EXISTS`) pe hi ye FK sahi banta.
+Production DB purana tha, to FK kabhi bana hi nahi — jab bhi koi campaign delete hoga, uske
+leads ka campaign_id "dangling" (orphan) reh jayega.
+
+**Turant fix**: us 1 orphan lead ka campaign_id manually NULL kiya (poore system me check kiya,
+sirf yahi 1 tha, ab 0). **Deeper schema fix abhi nahi kiya** — leads table sabse central table
+he, 6+ dusri tables (`lead_scores`, `lead_firmographics`, etc.) isse FK se judi hain, aur SQLite
+me is table ko rebuild karna (discovery_runs jaisa) risky he kyunki table rename automatically
+dusri tables ke FK references ko bhi rewrite kar deta he — bina `PRAGMA legacy_alter_table`
+jaise safeguard ke ye poori production DB ke referential integrity ko break kar sakta he. Isse
+ek alag, dhyan se plan kiya hua fix ke roop me karna chahiye, is turant request ke sath bundle
+nahi karna chahiye tha.
+

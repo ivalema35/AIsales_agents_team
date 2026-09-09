@@ -988,3 +988,14 @@ approve-flow me ye field kabhi set hi nahi hota tha (sirf human ke CampaignFormM
 hota tha). Fix: approve pe `scheduled_date=aaj` set kiya + already-banayi 2 campaigns
 ("salons campaign", "Healthcare campaign") ko backfill kiya unki real created_at date pe.
 Commit `1ae5dc8`, VPS pe live verify kiya.
+
+**🐛 Campaign delete pe lead ka campaign_id orphan reh jaata he (2026-09-09)**: "salons campaign"
+delete kiya (user ka ask, no leads worth keeping), turant baad verify kiya to uska 1 lead ka
+`campaign_id` deleted campaign ki hi id pe atka reh gaya — model me "ON DELETE SET NULL" likha
+he par live DB me ye FK kabhi bana hi nahi (leads.campaign_id `ALTER TABLE ADD COLUMN` se aaya
+tha, SQLite usse FK attach nahi karta) — bilkul discovery_runs wala hi bug pattern. Turant us 1
+orphan ko NULL kiya (poore system me sirf yahi tha). **Deeper fix (leads table rebuild) jaanbujh
+kar abhi nahi kiya** — leads table bohot central he (6+ dependent tables), aur SQLite rename
+dusri tables ke FK references bhi automatically rewrite kar deta he — bina safeguard PRAGMA ke
+production integrity break ho sakti he. Agli baar jab koi bhi campaign delete ho, yahi orphan
+symptom dobara check karna — asli fix abhi pending he, alag se dhyan se karna hoga.
