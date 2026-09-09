@@ -981,3 +981,10 @@ read-only tools (web search, DB query) se message quality genuinely behtar ho sa
 replies) — agent banane se ye turant fix nahi hoga. Worker-self-modification jaisa tool dena
 alag, zyada risky discussion he, read-only tools se mix nahi karna. Persistent memory me save
 kiya, koi code develop nahi kiya (explicit instruction thi).
+
+**🐛 AI-created campaigns calendar pe missing the (2026-09-09)**: root cause — calendar
+`scheduled_date` NULL wali campaign ko poori tarah skip karta he, aur AI ke "New campaign idea"
+approve-flow me ye field kabhi set hi nahi hota tha (sirf human ke CampaignFormModal path me
+hota tha). Fix: approve pe `scheduled_date=aaj` set kiya + already-banayi 2 campaigns
+("salons campaign", "Healthcare campaign") ko backfill kiya unki real created_at date pe.
+Commit `1ae5dc8`, VPS pe live verify kiya.

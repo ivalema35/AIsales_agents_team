@@ -6931,3 +6931,23 @@ heartbeat kabhi update hi nahi ho pa raha tha.
 he. Commit `3f8899c`. Serper credits ka issue abhi bhi pending hai — user ko khud top-up karna
 hoga.
 
+### 🐛 AI-created campaigns calendar pe dikh nahi rahe the (2026-09-09)
+
+User ne screenshot bheja — "Healthcare campaign" ka to-do "campaign created, live" bol raha tha,
+par calendar (Dashboard) pe wo dikh hi nahi raha tha. "salons campaign" bhi same tarah missing thi.
+
+**Root cause**: `CampaignCalendar.jsx` campaigns ko `scheduled_date` field se date-wise group
+karta he — jis campaign ka `scheduled_date` NULL ho, use **poori tarah skip** kar deta he (kabhi
+render hi nahi hota, na kisi din pe na "no campaigns" list me). Jab AI khud "New campaign idea"
+to-do approve hone pe seedha `Campaign` row banata he (`approve_todo_item()`, GLOBAL branch),
+tab `scheduled_date` set hi nahi ho raha tha — sirf purane "human CampaignFormModal se banao"
+path me hi ye field bharta tha (jis din pe click karke form khola, wahi date).
+
+**Fix**: `approve_todo_item()` me naya campaign banate waqt `scheduled_date=aaj ki date` set
+kar diya — AI ka Approve click hi is campaign ke "launch" hone ka real moment he, to aaj ki
+date sabse sahi hai. Live DB me jo 2 campaigns (`salons campaign`, `Healthcare campaign`)
+already NULL scheduled_date ke saath ban chuki thi, unhe ek backfill script se unki asli
+`created_at` date pe set kar diya (dono 0 → fixed, verify kiya).
+
+Commit `1ae5dc8`. VPS pe pull + backfill + restart, sab 5 services active, koi stuck job nahi.
+
