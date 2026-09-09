@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, MessageSquareWarning, Sparkles } from "lucide-react";
 import { api } from "../api/client";
 import TodoItemCard from "./TodoItemCard";
+import WhatsappDraftCard from "./WhatsappDraftCard";
 
 // UI Phase 16 revision (2026-09-02): no longer rendered as a flat, cross-campaign list on
 // the Dashboard -- it moved onto each campaign's own Detail page (CampaignDetail.jsx),
@@ -43,6 +44,12 @@ export function CampaignReviewCard({ campaign, onApproved }) {
   // immediately so a human can see it before committing to keeping it.
   const [waCandidates, setWaCandidates] = useState(null);
   const [selectingTemplate, setSelectingTemplate] = useState(false);
+  // 2026-09-09, real user ask: "ye campign page me whatsapp template review me hi bhi
+  // handle ho jaye, yaha ana na pade" -- an AI-drafted template for this product's own
+  // FIRST_TOUCH gap is reviewed/feedback-given/approved right here, using the SAME shared
+  // WhatsappDraftCard the standalone WhatsApp Templates page uses (never two independently-
+  // drifting designs, same reasoning as TodoItemCard being shared with the Dashboard inbox).
+  const [waDrafts, setWaDrafts] = useState(null);
 
   useEffect(() => {
     api.getCampaignDailyReview(campaign.id).then(setReview).catch((err) => setError(err.message));
@@ -55,10 +62,26 @@ export function CampaignReviewCard({ campaign, onApproved }) {
       .catch(() => {});
   }
 
+  function loadWaDrafts() {
+    if (!campaign.product_id) return;
+    api.listWhatsappTemplates({ status: "DRAFT", product_id: campaign.product_id, purpose: "FIRST_TOUCH" })
+      .then(setWaDrafts)
+      .catch(() => {});
+  }
+
   useEffect(() => {
-    if (previewChannel === "whatsapp") loadWaCandidates();
+    if (previewChannel === "whatsapp") { loadWaCandidates(); loadWaDrafts(); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewChannel, campaign.product_id]);
+
+  // A draft got Approved or Rejected -- drop it from the inline list and refresh the
+  // candidate/preview state, since an approve may now supply a real product-specific
+  // template where only the shared fallback existed before.
+  function onWaDraftResolved(id) {
+    setWaDrafts((prev) => (prev || []).filter((t) => t.id !== id));
+    loadWaCandidates();
+    api.getCampaignDailyReview(campaign.id).then(setReview).catch(() => {});
+  }
 
   async function selectWaTemplate(templateId) {
     setSelectingTemplate(true);
@@ -97,6 +120,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
         campaignId: campaign.id, withButton: waAskWithButton,
       });
       setWaAskResult(res);
+      if (res.proposed) loadWaDrafts();
     } catch (err) {
       setWaAskResult({ proposed: false, message: err.message });
     } finally {
@@ -505,14 +529,15 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                           Include a button
                         </label>
                       </div>
-                      {waAskResult && (
-                        <p className={`text-[11px] ${waAskResult.proposed ? "text-good-700" : "text-ink-500"}`}>
-                          {waAskResult.proposed ? (
-                            <>A draft was created — <Link to="/whatsapp-templates" className="underline decoration-line underline-offset-2">review and approve it here</Link> before it goes to Meta.</>
-                          ) : (
-                            waAskResult.message
-                          )}
-                        </p>
+                      {waAskResult && !waAskResult.proposed && (
+                        <p className="text-[11px] text-ink-500">{waAskResult.message}</p>
+                      )}
+                      {waDrafts && waDrafts.length > 0 && (
+                        <div className="flex flex-col gap-2 pt-1">
+                          {waDrafts.map((t) => (
+                            <WhatsappDraftCard key={t.id} item={t} onResolved={onWaDraftResolved} />
+                          ))}
+                        </div>
                       )}
                     </div>
                   )}
