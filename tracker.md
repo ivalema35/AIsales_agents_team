@@ -7198,3 +7198,30 @@ existing product ke KB me daalu — jawaab: **"bas kahi save karlo, aage zarurat
 to koi DB change nahi kiya, saari extracted info persistent memory me safe rakh di he,
 taaki jab product banega tab seedha real KnowledgeBaseItem rows me convert ho jaye.
 
+### ✅ "IVinfotech -- General IT Services" product bana diya (2026-09-09)
+
+User ne explicit bola: general product he, multiple business target ho sakte hain (AI Manager
+khud decide karega), location local rahegi (Mehsana, Ahmedabad, etc.), angle bhi soch ke
+product add karo. Real product bana diya:
+
+- **Id**: `7c02903e-b33b-4e2a-b13f-fe4e3f5a4229`
+- **target_business_categories: khali chhoda** — ye jaanbujh kar he. Codebase ke apne
+  ICP_STRATEGY_PROMPT me likha he: "If target_business_categories is empty or absent, decide
+  verticals freely from the product brief" — matlab khali rakhne se AI Manager khud decide
+  karega kis type ke business target karne hain, exactly jaisa user ne bola.
+- **target_regions**: `["Mehsana", "Ahmedabad", "Gandhinagar", "Surat", "Vadodara", "Rajkot"]`
+  — bilkul wahi list jo IVinfotech ke baaki saare products already use kar rahe hain (consistent).
+- **default_tone (angle)**: "confident, locally-trusted, ONE reliable partner for everything
+  digital instead of a big anonymous agency" — real 10+ years experience aur real delivered
+  work pe based, koi invented number/claim nahi.
+- **description/value_proposition**: real ivinfotech.com data se grounded (AI Automation +
+  Web + CRM-ERP + Mobile, ek hi team se, alag-alag vendors manage karne ki zarurat nahi).
+
+**Knowledge Base me abhi kuch nahi daala** — codebase ka apna, explicit "zero-fabrication
+rule" he: `knowledge_base_items` table ka SIRF EK write path he (`api/knowledge_base.py` ka
+admin CRUD) — code ka comment khud kehta he "no LLM call anywhere in this codebase inserts a
+row here." Matlab Knowledge Base sirf HUMAN bhare, AI (mujhe bhi) nahi — taaki wo hamesha
+100% verified rahe. Ready-to-paste content user ko de diya (real facts + real case studies,
+FACT aur PROOF kind me), wo khud Products page → is product → Knowledge tab me paste kar sakte
+hain.
+

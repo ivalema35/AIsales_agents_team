@@ -1069,3 +1069,13 @@ full detail persistent memory me hai (`project_ivinfotech_general_it_services_bu
 ivinfotech.com se real info bhi nikal li (services, tech, real case studies) — user ke ilawa
 Knowledge Base me jaani he, par product na hone se abhi KB row ban nahi sakti; saari extracted
 info persistent memory me hi safe rakhi he jab tak product na bane.
+
+**✅ Product ban gaya (2026-09-09)**: "IVinfotech -- General IT Services" (id
+`7c02903e-b33b-4e2a-b13f-fe4e3f5a4229`) — user ke explicit instruction pe (multi-business,
+AI decide kare; location Mehsana/Ahmedabad/etc; angle soch ke banao). `target_business_
+categories` jaanbujh kar khali rakha — codebase ka apna ICP prompt hi kehta he khali =
+AI freely decide karega. **Real, important discovery**: `knowledge_base_items` table ka
+codebase-level "zero-fabrication rule" he — sirf `api/knowledge_base.py` (human admin CRUD)
+hi likh sakta he, koi LLM/AI code path nahi. To research wala data KB me khud nahi daala,
+user ko ready-to-paste content de diya. **Lesson**: agar koi table explicitly "only this
+one path writes here" comment rakhe, use kabhi bypass mat karo chahe data kitna bhi sahi ho.
