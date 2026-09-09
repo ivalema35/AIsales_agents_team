@@ -491,16 +491,31 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                         disabled={selectingTemplate}
                         className="rounded-md border border-line bg-parchment-raised px-2.5 py-1.5 text-xs text-ink-900 focus:border-gold-500 focus:outline-none disabled:opacity-50"
                       >
-                        <option value="">Shared library (default)</option>
-                        {waCandidates.map((t) => (
+                        {/* 2026-09-09, real user ask: "template badle to preview bhi badalna
+                           chahiye" -- this WASN'T stale, "Shared library (default)" was just a
+                           misleading fixed label: the real fallback is whichever DB template is
+                           currently marked shared (product_id NULL), which can easily be this
+                           SAME template -- so the preview correctly stayed identical. Naming it
+                           explicitly here removes the confusion instead of hiding it. */}
+                        <option value="">
+                          {(() => {
+                            const sharedFallback = waCandidates.find((t) => !t.product_id);
+                            return sharedFallback
+                              ? `No override — falls back to "${sharedFallback.name}" (shared)`
+                              : "No override — falls back to the built-in shared library";
+                          })()}
+                        </option>
+                        {waCandidates.filter((t) => t.product_id).map((t) => (
                           <option key={t.id} value={t.id}>
-                            {t.name}{t.product_title ? ` — currently used by ${t.product_title}` : " — shared"}
+                            {t.name} — currently used by {t.product_title}
                           </option>
                         ))}
                       </select>
                       <span className="font-mono text-[10px] text-ink-500">
-                        Picking one just points this product at it (no new Meta submission) —
-                        the preview above updates right away so you can see it before keeping it.
+                        Picking one just points this product at it (no new Meta submission) — the
+                        preview above updates right away so you can see it before keeping it.
+                        Choosing "No override" makes this product use whatever the current shared
+                        default is -- which affects every OTHER product with no override too.
                       </span>
                     </label>
                   )}
