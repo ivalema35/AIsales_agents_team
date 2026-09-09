@@ -118,30 +118,73 @@ def _youtube_video_id(video_url: str) -> str | None:
     return None
 
 
-def fetch_video_thumbnail(video_url: str) -> str | None:
-    """Real thumbnail for a real video URL -- never fabricated, never a generic placeholder.
+def _youtube_is_shorts(video_url: str) -> bool:
+    return "/shorts/" in (video_url or "").lower()
 
-    YouTube: prefer the landscape `hqdefault` frame (16:9). oEmbed for Shorts often returns
-    a tall / blur-pillarboxed still that looks broken inside a wide email card (caught
-    live 2026-09-09). Vimeo still uses oEmbed. Missing thumbnail must never block a send.
+
+def _jpeg_dimensions(url: str) -> tuple[int, int] | None:
+    """Width, height from a remote JPEG's SOF marker (first ~64KB). None on failure."""
+    try:
+        resp = requests.get(url, timeout=5, stream=True)
+        resp.raise_for_status()
+        buf = b""
+        for chunk in resp.iter_content(65536):
+            buf += chunk
+            if len(buf) >= 65536:
+                break
+        i = 0
+        while i < len(buf) - 8:
+            if buf[i] == 0xFF and buf[i + 1] in (0xC0, 0xC1, 0xC2):
+                h = int.from_bytes(buf[i + 5:i + 7], "big")
+                w = int.from_bytes(buf[i + 7:i + 9], "big")
+                return w, h
+            i += 1
+    except Exception:  # noqa: BLE001 - display-only probe
+        return None
+    return None
+
+
+def resolve_video_thumb(video_url: str) -> tuple[str | None, str]:
+    """Return (thumbnail_url, layout) where layout is 'portrait' (9:16) or 'landscape'.
+
+    YouTube Shorts (and any vertical oar2 still) get the real 9:16 `oar2.jpg` — NOT
+    `hqdefault`, which YouTube paints with blur pillarboxes inside a 16:9 frame (caught
+    live 2026-09-09). Landscape watch URLs keep `hqdefault`.
     """
     try:
         if "youtube.com" in video_url or "youtu.be" in video_url:
             vid = _youtube_video_id(video_url)
-            if vid:
-                return f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
-            resp = requests.get("https://www.youtube.com/oembed",
-                                params={"url": video_url, "format": "json"}, timeout=5)
-            resp.raise_for_status()
-            return resp.json().get("thumbnail_url")
+            if not vid:
+                resp = requests.get("https://www.youtube.com/oembed",
+                                    params={"url": video_url, "format": "json"}, timeout=5)
+                resp.raise_for_status()
+                thumb = resp.json().get("thumbnail_url")
+                return (thumb, "landscape") if thumb else (None, "landscape")
+            oar = f"https://i.ytimg.com/vi/{vid}/oar2.jpg"
+            if _youtube_is_shorts(video_url):
+                return oar, "portrait"
+            dims = _jpeg_dimensions(oar)
+            if dims and dims[1] > dims[0]:
+                return oar, "portrait"
+            return f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg", "landscape"
         if "vimeo.com" in video_url:
             resp = requests.get("https://vimeo.com/api/oembed.json",
                                 params={"url": video_url}, timeout=5)
             resp.raise_for_status()
-            return resp.json().get("thumbnail_url")
+            data = resp.json()
+            thumb = data.get("thumbnail_url")
+            w, h = data.get("thumbnail_width") or 0, data.get("thumbnail_height") or 0
+            layout = "portrait" if h > w else "landscape"
+            return (thumb, layout) if thumb else (None, "landscape")
     except Exception as exc:  # noqa: BLE001 - display-only, must never break a real send
         logger.warning("video thumbnail lookup failed for %s: %s", video_url, exc)
-    return None
+    return None, "landscape"
+
+
+def fetch_video_thumbnail(video_url: str) -> str | None:
+    """Backward-compatible helper — URL only. Prefer `resolve_video_thumb` for layout."""
+    thumb, _layout = resolve_video_thumb(video_url)
+    return thumb
 
 
 def _e(value) -> str:
@@ -247,17 +290,18 @@ def _prose_block(items, heading: str = "", edge: str | None = None,
 
 
 def _render_video(section: dict) -> str:
-    """Clickable video card: landscape thumb + clear CTA (never a raw field name).
+    """Clickable video card — portrait (9:16) or landscape, matching the real video.
 
-    2026-09-09 polish: Shorts oEmbed thumbs were tall/blur-pillarboxed and the caption
-    literally said `video_url`. Landscape hqdefault + human label + navy CTA bar.
-    Images-off still leaves the CTA row as the surviving click target.
+    2026-09-09: Shorts must use `oar2.jpg` (true 9:16) inside a phone-width card. Using
+    `hqdefault` stretches a blur-pillarboxed 16:9 still across the email and looks broken.
+    Caption never shows raw field names (`video_url`). Images-off still leaves the CTA.
     """
     url = section.get("url", "")
     title = _label_or_fallback(section.get("title"), "Watch the video")
-    thumbnail = fetch_video_thumbnail(url)
-    # Near content width so the 16:9 frame reads as a real video preview, not a stamp.
-    thumb_width = 520
+    thumbnail, layout = resolve_video_thumb(url)
+    portrait = layout == "portrait"
+    # Portrait ≈ phone preview; landscape ≈ near content width.
+    thumb_width = 280 if portrait else 520
     image_html = ""
     if thumbnail:
         image_html = f"""
@@ -266,27 +310,48 @@ def _render_video(section: dict) -> str:
              style="display: block; width: 100%; max-width: {thumb_width}px; height: auto;
                     border: 0; outline: none; text-decoration: none;">
       </a>"""
-    # CTA bar — navy, white type, gold accent edge. Reads as "tap to watch" even when
-    # the thumbnail is blocked. Never conditional on the image.
+    eyebrow = "Short video" if portrait else "Video"
+    # Outer table centers a portrait phone-card; landscape stays full content width.
     return f"""
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-       style="margin: 0 0 24px 0; max-width: {thumb_width}px;">
+       style="margin: 0 0 26px 0;">
   <tr>
-    <td style="border: 1px solid {RULE}; border-radius: 12px; overflow: hidden;
-               box-shadow: 0 4px 14px rgba(11,28,60,0.08); background: {CARD};">
-      {image_html}
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+    <td align="center">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"
+             width="{thumb_width}" style="width: 100%; max-width: {thumb_width}px;">
         <tr>
-          <td width="4" bgcolor="{GOLD}" style="width: 4px; background: {GOLD};
-              font-size: 0; line-height: 0;">&nbsp;</td>
-          <td bgcolor="{BRAND}" style="background: {BRAND}; padding: 14px 16px;">
-            <a href="{_e(url)}" style="display: block; font-family: {FONT}; font-size: 15px;
-               font-weight: 700; color: {ACCENT_TEXT}; text-decoration: none; letter-spacing: 0.2px;">
-              <span style="display: inline-block; width: 22px; height: 22px; line-height: 22px;
-                    text-align: center; border-radius: 11px; background: {GOLD}; color: {BRAND};
-                    font-size: 11px; margin-right: 10px; vertical-align: middle;">&#9658;</span>
-              <span style="vertical-align: middle;">{_e(title)}</span>
-            </a>
+          <td style="border: 1px solid {RULE}; border-radius: 14px; overflow: hidden;
+                     box-shadow: 0 8px 24px rgba(11,28,60,0.12); background: {CARD};">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td bgcolor="{BRAND}" style="background: {BRAND}; padding: 10px 14px 8px 14px;">
+                  <div style="font-family: {FONT}; font-size: 10px; font-weight: 700;
+                       letter-spacing: 1.2px; text-transform: uppercase; color: {GOLD};">
+                    {eyebrow}
+                  </div>
+                </td>
+              </tr>
+            </table>
+            {image_html}
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td bgcolor="{GOLD}" style="background: {GOLD}; height: 3px; font-size: 0;
+                    line-height: 0;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td bgcolor="{BRAND}" style="background: {BRAND}; padding: 16px 14px;">
+                  <a href="{_e(url)}" style="display: block; text-align: center;
+                     font-family: {FONT}; font-size: 15px; font-weight: 700;
+                     color: {ACCENT_TEXT}; text-decoration: none; letter-spacing: 0.2px;">
+                    <span style="display: inline-block; width: 28px; height: 28px;
+                          line-height: 28px; text-align: center; border-radius: 14px;
+                          background: {GOLD}; color: {BRAND}; font-size: 12px;
+                          margin-right: 10px; vertical-align: middle;">&#9658;</span>
+                    <span style="vertical-align: middle;">{_e(title)}</span>
+                  </a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>

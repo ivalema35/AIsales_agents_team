@@ -846,6 +846,9 @@ Preview iframe local file ko data-URI embed kar sakta hai. Daily Review: inbox c
 **2026-09-09 — Video card polish:** Shorts blur thumb → landscape `hqdefault`; caption
 `video_url` → “Watch the video”; navy/gold CTA bar. Deploy pending.
 
+**2026-09-09 — Video 9:16:** Shorts ab `oar2.jpg` (true portrait) + 280px phone card;
+landscape videos `hqdefault` + 520px. Deploy pending.
+
 **⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
 user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
 (40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified

@@ -7378,6 +7378,18 @@ literally `video_url`.
   frame avoid).
 - Video card: wider 16:9 frame, rounded card + shadow, navy CTA bar with gold play chip.
 
+### ✅ Video 9:16 portrait card (2026-09-09 follow-up)
+
+User: video 9:16 he to thumbnail bhi 9:16 dikhe (blur side-wings mat dikhao).
+
+**Root cause:** `hqdefault.jpg` Shorts ke liye bhi 16:9 frame me blur pillarbox bake karta he.
+Asli 9:16 source = `oar2.jpg` (1080×1920).
+
+**Fix:** `resolve_video_thumb()` — Shorts (ya vertical oar2) → `oar2.jpg` + centered phone-width
+(280px) card, “Short video” eyebrow, gold rule, stronger CTA. Landscape watch URLs →
+`hqdefault` + 520px card.
+
+
 
 **✅ Claude ka independent verify + real test + deploy (2026-09-09)**: user ne bola "check kar
 aur deploy kar." Poora diff review kiya (real SEND function `email_service.py` touch hui thi,
