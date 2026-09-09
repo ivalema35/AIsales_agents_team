@@ -7391,4 +7391,20 @@ deploy kiya: backend restart + frontend build/sync. Ek chhota unused file mila
 (`frontend/public/wa-header-ivinfotech-general-it.png`, kahi reference nahi tha) — chhod diya
 untracked, kuch nuksan nahi karta.
 
+### ✅ Video card fix bhi verify + deploy kiya (2026-09-09)
+
+Cursor ne bilkul wahi mudda fix kiya jo pichhle screenshot me dikha tha — "video_url" wala
+literal caption, aur blurry/pillarboxed video thumbnail. **Real test kiya**:
+- `_youtube_video_id()` ko 4 real URL formats diye (watch/shorts/youtu.be/embed) — sab sahi
+  se ID nikal rahe the.
+- `_label_or_fallback("video_url", ...)` ab sahi se "Watch the video" deta he.
+- Real live campaign ka preview dobara generate kiya — screenshot liya, caption fix confirm
+  hua. **Ek cheez mili**: thumbnail abhi bhi thoda blurred/pillarboxed dikh raha tha — investigate
+  kiya to pata chala **ye code ka bug nahi tha** — is product ka real video hi VERTICALLY
+  (Shorts style) shoot hua he, to YouTube ka apna real, official "hqdefault" thumbnail bhi
+  waisa hi dikhega. Fix sahi kaam kar raha he (real, stable YouTube URL fetch kar raha he) —
+  bas underlying video hi vertical he, iska koi code-level solution nahi he (sirf agar
+  landscape video use kiya jaye to). Sab verify karne ke baad deploy kiya, sab 5 services
+  active.
+
 
