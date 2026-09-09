@@ -1711,6 +1711,7 @@ def approve_todo_item(db, todo_id: str) -> dict:
         new_campaign = Campaign(
             product_id=item.product_id,
             name=campaign_name[:120],
+            scheduled_date=datetime.utcnow().date(),
             target_segment=json.dumps(target_segment),
             strategy_angle=proposal.get("strategy_angle"),
             lead_count_goal=proposal.get("lead_count_goal"),
