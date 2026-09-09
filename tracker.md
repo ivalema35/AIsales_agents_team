@@ -7329,4 +7329,18 @@ Real product ("IVinfotech -- General IT Services") ke Content Library me upload 
 kiya `image/png`, 1.16MB, sahi se live. Ab AI isse WhatsApp template banate waqt use kar
 sakta he.
 
+### 🖼️ User ne khud 2 real images bana ke upload ki, verify kiya (2026-09-09)
+
+User ne khud "maja nahi aaya" wale image ki jagah 2 apni images bana ke UI se upload kiya:
+**"WA Header"** aur **"Email Header"**. Maine mera pehle wala test graphic hata diya
+(user ne khud delete kiya). Real check kiya (download karke, actual bytes/dimensions):
+- WA Header: 1254×1254px (square), 1.85MB, PNG — publicly live
+- Email Header: 1962×801px (wide banner), 1.69MB, PNG — publicly live
+- Dono ka content check kiya: koi fake number/claim/client nahi, sab generic positioning
+  (professional, glossy 3D-illustration style) — safe.
+
+Ek technical baat flag ki (WA header square he, WhatsApp ki chat bubble me usually wide
+image better dikhti he) — user ne bola **"jaisa he waisa rehne do"** — koi change nahi
+karna, as-is rakhna he. Koi code/DB change nahi kiya, sirf verify + report.
+
 

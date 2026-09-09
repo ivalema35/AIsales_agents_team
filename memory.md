@@ -1116,3 +1116,9 @@ Playwright se 1200×628 real PNG render kiya. Content: 4 real services, "10+ yea
 verify kiya live he. **Lesson**: is environment me Playwright (`npx playwright install
 chromium`) available he — future me bhi kisi real graphic/image ki zarurat ho to khud bana
 sakte hain, Cursor ya bahar ke tool ka wait nahi karna padega.
+
+**🖼️ User ne khud 2 real images upload ki, verify kiya (2026-09-09)**: "WA Header"
+(1254×1254 square) aur "Email Header" (1962×801 wide) — dono real, live, koi fake claim
+nahi, achi glossy graphic quality. WA header square shape ke baare me flag kiya (WhatsApp
+chat me wide usually better dikhta he) par **user ne "jaisa he waisa rehne do" bola** —
+as-is rakha, koi change nahi kiya.
