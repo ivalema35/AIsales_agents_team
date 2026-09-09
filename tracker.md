@@ -7262,3 +7262,46 @@ nahi kiya):
 
 Total ab **7 KB items** is product ke liye. Commit karke VPS pe sync kiya.
 
+### 🚨🚨🚨 Image upload banaya — process me ek bada PRE-EXISTING production bug mila (2026-09-09)
+
+User ne bola "pehle tum image upload ka option add kardo" (WhatsApp/email image ke liye).
+Content Library me pehle sirf URL paste hota tha, koi real file upload nahi tha.
+
+**Pehla attempt (safe tareeka, matched existing pattern)**: `IMAGE_URL` asset type add kiya,
+naya `POST /content-assets/upload` endpoint banaya jo Flask ke apne `static/uploads/` folder
+me file save karta — bilkul jaise brand logo (`/static/brand/...`) already kaam kar raha tha
+(ya karta hua LAGTA tha).
+
+**Real test kiya (hamesha ki tarah) — aur ek bada, PURANA bug mil gaya**: upload ka public URL
+fetch kiya to real image nahi, poori WEBSITE ka `index.html` wapas aaya! Investigate kiya to
+pata chala: **is website ka real webserver (OpenLiteSpeed) sirf `/api/` ko Flask tak bhejta
+hai — `/static/` kabhi Flask tak pahunchta hi nahi, chahe app.py me kuch bhi likha ho.**
+
+**Sabse bada finding**: same test brand logo pe bhi kiya — **`/static/brand/ivinfotech-
+logo.png` bhi ISI tarah broken nikla — matlab har real bheja gaya email me logo kabhi sahi se
+load hi nahi hua, ab tak!** Ye ek pehle se maujood, kabhi kisi ne notice nahi kiya bug he
+(email me shayad koi text-fallback dikhta hoga, ya bas logo missing dikhta hoga — koi crash
+nahi hota isliye pakda nahi gaya).
+
+**Webserver config fix try kiya, phir revert kiya**: `/api/` jaisa hi ek `/static/` proxy
+rule add kiya real vhost.conf me, OpenLiteSpeed reload kiya — **kaam nahi kiya** (is config
+file me 2 alag `rewrite` blocks hain jinki priority clear nahi he). Ye server **shared/multi-
+tenant** he (isi VPS pe eye.ivinfotech.com, ai.ivinfotech.com, barbershop.ivinfotech.ca, aur
+ek NGO ki site bhi hai) — isliye is uljhe hue config ke saath aur experiment karna risky tha.
+**Turant backup se revert kiya**, verify kiya sab kuch (apna site + doosri sites) wapas sahi
+kaam kar raha he.
+
+**Real, safe fix**: upload ab `frontend/dist/` (jahan real website serve hoti he — logo.png,
+JS files, sab wahi se) me seedha save hota he — koi webserver config change nahi chahiye.
+Masla: `npm run build` har baar `dist/` khali kar deta he — to `vps_deploy.py`'s `build`
+action ab uploads ko build se PEHLE bahar nikaal ke, build ke BAAD wapas andar daal deta he
+(taaki koi bhi future deploy real uploaded images ko delete na kare).
+
+**Real end-to-end verify kiya**: real image upload → real public URL → fetch karke check
+kiya `image/png`, exact bytes match. Phir jaanbujh kar `npm run build` chalaya to confirm
+kiya ki upload survive kar gaya. Commit `f5514d9`.
+
+**Pending, alag se karna hoga (abhi scope se bahar)**: brand logo wala bug (email me) — same
+root cause he, alag jagah (email_renderer.py) fix karni hogi, is turant task ke sath bundle
+nahi kiya kyunki scope alag he.
+

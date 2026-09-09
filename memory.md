@@ -1092,3 +1092,18 @@ Automation: Capabilities" aur "AI Automation: Stated Business Impact" (70% cost 
 speed ko explicitly "IVinfotech ka apna claim" bola, guaranteed outcome nahi). Total 7 KB
 items ab is product ke liye. Koi naya website fetch nahi kiya — already fetched real data
 use kiya.
+
+**🚨🚨🚨 Image upload banaya, PURANA production bug mila (2026-09-09)**: Content Library me
+real image upload banaya. Real test kiya to pata chala — is website ka webserver
+(OpenLiteSpeed) SIRF `/api/` ko Flask tak bhejta he, `/static/` kabhi Flask tak pahunchta
+hi nahi (app.py me kuch bhi likho, farak nahi padta). **Isi wajah se brand logo bhi (har
+real bheja email me) kabhi sahi load hi nahi hua ab tak** — ek purana, kabhi na pakda gaya
+bug. Webserver config fix try kiya (naya `/static/` proxy rule, `/api/` jaisa hi) — kaam
+nahi kiya (2 conflicting rewrite blocks), aur ye server **shared/multi-tenant** he (aur
+sites bhi isi pe hain) — turant revert kiya, risk lena sahi nahi tha. **Real fix**: upload
+`frontend/dist/` me seedha save hota he (jahan real site serve hoti he) — `npm run build`
+folder khali karta he, to deploy script (`vps_deploy.py`) ab uploads preserve+restore karta
+he build ke around. Real end-to-end verify kiya (upload → fetch → bytes match → rebuild
+survive). Commit `f5514d9`. **Brand logo bug abhi fix nahi kiya** (alag scope, baad me).
+**Lesson**: "static file serving already kaam kar raha he" jaisi assumption ko bhi real
+curl test se verify karo, sirf code padh ke mat maano.
