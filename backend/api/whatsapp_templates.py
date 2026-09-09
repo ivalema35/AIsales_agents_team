@@ -15,6 +15,8 @@ from services.outreach.whatsapp_template_service import (
     find_template_improvement_reason,
     propose_new_template,
     revise_draft_template,
+    get_approved_first_touch_template,
+    _resolve_button_asset,
 )
 from services.outreach.whatsapp_templates import TEMPLATE_LIBRARY
 
@@ -378,8 +380,21 @@ def propose_template():
             requested_product_id = requested_product_id or campaign.product_id
 
         signal = find_template_improvement_reason(db, purpose=requested_purpose, followup_level=requested_level,
-                                                   product_id=requested_product_id)
+                                                   product_id=requested_product_id, want_button=with_button)
         if not signal:
+            # 2026-09-09, real user ask: a human checked "Include a button" for a product
+            # that already has its own approved template, but no real demo/video asset
+            # exists yet for it -- asking the AI again would just repeat the same honest
+            # "no button" outcome, so say exactly why instead of the generic decline.
+            if with_button and requested_product_id:
+                existing = get_approved_first_touch_template(db, product_id=requested_product_id)
+                if existing is not None and not existing.button_url and not _resolve_button_asset(db, requested_product_id):
+                    return jsonify({
+                        "proposed": False,
+                        "message": "This product has no real demo/video link set up yet, so a button "
+                                   "can't be added -- add one under Products -> Content Library first, "
+                                   "then ask again.",
+                    })
             return jsonify({
                 "proposed": False,
                 "message": (

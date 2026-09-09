@@ -505,42 +505,51 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                     </label>
                   )}
                   <p className="text-[11px] text-ink-600">{review.sample_whatsapp.manage_hint}</p>
-                  {review.sample_whatsapp.source !== "product" && (
-                    <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-gold-600 bg-gold-100/40 p-2.5">
-                      <p className="text-[11px] leading-relaxed text-ink-700">
-                        This product doesn't have its own approved WhatsApp template yet, so real
-                        sends use the shared, generic one above instead of a pitch written for it.
-                      </p>
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <button
-                          onClick={askAiForWaTemplate}
+                  {/* 2026-09-09, real user ask: this box used to hide entirely once the product
+                     had its own approved template -- but a human may still want to ask again
+                     (e.g. a button-enabled version once a real demo/video link exists), so it
+                     always shows now, with wording that matches whichever case is real. */}
+                  <div className="flex flex-col gap-1.5 rounded-md border border-dashed border-gold-600 bg-gold-100/40 p-2.5">
+                    <p className="text-[11px] leading-relaxed text-ink-700">
+                      {review.sample_whatsapp.source !== "product"
+                        ? "This product doesn't have its own approved WhatsApp template yet, so real sends use the shared, generic one above instead of a pitch written for it."
+                        : "This product already has its own approved template above. You can ask again for another version -- e.g. with a call-to-action button."}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <button
+                        onClick={askAiForWaTemplate}
+                        disabled={askingWaTemplate}
+                        className="flex w-fit items-center gap-1.5 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
+                      >
+                        <Sparkles size={11} /> {askingWaTemplate ? "Thinking…" : "Ask AI for a template for this product"}
+                      </button>
+                      <label className="flex items-center gap-1.5 text-[11px] text-ink-600">
+                        <input
+                          type="checkbox"
+                          checked={waAskWithButton}
+                          onChange={(e) => setWaAskWithButton(e.target.checked)}
                           disabled={askingWaTemplate}
-                          className="flex w-fit items-center gap-1.5 rounded-md bg-gold-600 px-2.5 py-1.5 text-[11px] font-medium text-parchment-raised hover:opacity-90 disabled:opacity-50"
-                        >
-                          <Sparkles size={11} /> {askingWaTemplate ? "Thinking…" : "Ask AI for a template for this product"}
-                        </button>
-                        <label className="flex items-center gap-1.5 text-[11px] text-ink-600">
-                          <input
-                            type="checkbox"
-                            checked={waAskWithButton}
-                            onChange={(e) => setWaAskWithButton(e.target.checked)}
-                            disabled={askingWaTemplate}
-                          />
-                          Include a button
-                        </label>
-                      </div>
-                      {waAskResult && !waAskResult.proposed && (
-                        <p className="text-[11px] text-ink-500">{waAskResult.message}</p>
-                      )}
-                      {waDrafts && waDrafts.length > 0 && (
-                        <div className="flex flex-col gap-2 pt-1">
-                          {waDrafts.map((t) => (
-                            <WhatsappDraftCard key={t.id} item={t} onResolved={onWaDraftResolved} />
-                          ))}
-                        </div>
-                      )}
+                        />
+                        Include a button
+                      </label>
                     </div>
-                  )}
+                    {waAskResult && !waAskResult.proposed && (
+                      <p className="text-[11px] text-ink-500">{waAskResult.message}</p>
+                    )}
+                    {waAskResult?.proposed && waAskWithButton && !waAskResult.template?.button_url && (
+                      <p className="text-[11px] leading-relaxed text-warm-700">
+                        The draft was created, but no button was added -- this product has no real
+                        demo/video link set up yet. Add one under Products → Content Library, then ask again.
+                      </p>
+                    )}
+                    {waDrafts && waDrafts.length > 0 && (
+                      <div className="flex flex-col gap-2 pt-1">
+                        {waDrafts.map((t) => (
+                          <WhatsappDraftCard key={t.id} item={t} onResolved={onWaDraftResolved} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <Link
                     to={campaign.product_id ? `/whatsapp-templates?product_id=${campaign.product_id}` : "/whatsapp-templates"}
                     className="w-fit text-[11px] font-medium text-ink-700 underline decoration-line underline-offset-2 hover:text-ink-900"

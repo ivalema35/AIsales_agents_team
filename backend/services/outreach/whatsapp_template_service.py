@@ -435,7 +435,7 @@ FOLLOWUP_LEVEL_JOB = {
 }
 
 
-def find_template_improvement_reason(db, purpose=None, followup_level=None, product_id=None):
+def find_template_improvement_reason(db, purpose=None, followup_level=None, product_id=None, want_button=False):
     """Step 9.6 sub-step 4 -- real signal detection for the manual "ask AI to draft a
     template" trigger. Never fabricates a need: returns (reason, context, purpose,
     product_id, followup_level) only when a real, data-backed gap exists, or None
@@ -463,13 +463,23 @@ def find_template_improvement_reason(db, purpose=None, followup_level=None, prod
     Daily Review, which knows which product it's reviewing) -- omitted, this behaves
     exactly as before.
 
-    Checks three real gaps, in order:
+    `want_button` (2026-09-09, real user ask): a human already has an approved
+    product-specific FIRST_TOUCH template but explicitly wants a button-enabled version.
+    Only counted as a real gap if a real content asset now exists for this product AND
+    the existing template has no button yet -- asking again with no real asset available
+    would just repeat the same honest "no button" outcome, so that's deliberately NOT
+    treated as a signal here (the caller shows a direct, specific message instead of
+    running the drafting pipeline for nothing).
+
+    Checks four real gaps, in order:
     1. An existing WhatsApp template (of the requested purpose+level, if given) with a
        real, statistically meaningful reply rate below LOW_REPLY_RATE_THRESHOLD (Step
        9.2's own performance rollup -- the exact real data this step was built to use).
     2. If `product_id` is given and purpose is "FIRST_TOUCH" (or unset), whether this
        PRODUCT has its own approved FIRST_TOUCH template -- the shared library always
        covers the system-wide case, but a specific product genuinely may not have one.
+    2b. If this product DOES have its own approved FIRST_TOUCH template but it has no
+        button, `want_button` is set, and a real content asset exists for this product now.
     3. If nothing is underperforming AND purpose isn't "FIRST_TOUCH" (TEMPLATE_LIBRARY's
        GENERIC/PAIN_POINT_HOOK entries are always a real, available system-wide FIRST_TOUCH
        fallback, so THAT gap can never genuinely exist), whether NO approved template
@@ -523,23 +533,44 @@ def find_template_improvement_reason(db, purpose=None, followup_level=None, prod
             variant_product_id = existing_row.product_id if existing_row else None
             return reason, context, real_purpose, variant_product_id, followup_level
 
-    if product_id and purpose in (None, "FIRST_TOUCH") and get_approved_first_touch_template(db, product_id=product_id) is None:
-        from database.models import Product
-        product = db.get(Product, product_id)
-        reason = (
-            f'No approved WhatsApp FIRST_TOUCH template exists yet for the product '
-            f'"{product.title if product else product_id}" specifically -- its real WhatsApp '
-            f'sends currently use the shared, product-agnostic fallback template instead of a '
-            f'pitch written for this product. Propose one written specifically for this product, '
-            f'using its own real title/description/value proposition below, tied to a real pain '
-            f'point when one is available.'
-        )
-        context = {
-            "product_title": product.title if product else None,
-            "product_description": product.description if product else None,
-            "sample_pain_point": _sample_real_pain_point(db),
-        }
-        return reason, context, "FIRST_TOUCH", product_id, None
+    if product_id and purpose in (None, "FIRST_TOUCH"):
+        existing_first_touch = get_approved_first_touch_template(db, product_id=product_id)
+        if existing_first_touch is None:
+            from database.models import Product
+            product = db.get(Product, product_id)
+            reason = (
+                f'No approved WhatsApp FIRST_TOUCH template exists yet for the product '
+                f'"{product.title if product else product_id}" specifically -- its real WhatsApp '
+                f'sends currently use the shared, product-agnostic fallback template instead of a '
+                f'pitch written for this product. Propose one written specifically for this product, '
+                f'using its own real title/description/value proposition below, tied to a real pain '
+                f'point when one is available.'
+            )
+            context = {
+                "product_title": product.title if product else None,
+                "product_description": product.description if product else None,
+                "sample_pain_point": _sample_real_pain_point(db),
+            }
+            return reason, context, "FIRST_TOUCH", product_id, None
+        if want_button and not existing_first_touch.button_url:
+            button_asset = _resolve_button_asset(db, product_id)
+            if button_asset:
+                from database.models import Product
+                product = db.get(Product, product_id)
+                reason = (
+                    f'This product already has its own approved FIRST_TOUCH template '
+                    f'("{existing_first_touch.name}"), but it has no call-to-action button, and a '
+                    f'human explicitly wants a button-enabled version now that a real demo/video '
+                    f'asset exists for this product. Propose a button-enabled version of the SAME '
+                    f'core pitch (same message, add the button) -- not a different angle.'
+                )
+                context = {
+                    "product_title": product.title if product else None,
+                    "product_description": product.description if product else None,
+                    "existing_template_name": existing_first_touch.name,
+                    "existing_body_text": existing_first_touch.body_text,
+                }
+                return reason, context, "FIRST_TOUCH", product_id, None
 
     # TEMPLATE_LIBRARY's GENERIC/PAIN_POINT_HOOK entries are always a real, available FIRST_TOUCH fallback
     # (select_template() falls back to it unconditionally) -- a "no FIRST_TOUCH template"
