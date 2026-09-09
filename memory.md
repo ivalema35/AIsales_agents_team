@@ -1049,3 +1049,12 @@ shared template active he" ke liye 2 ALAG sort rules the (`updated_at` backend m
 alag "winner" nikalta tha. Fix: dono jagah `updated_at` use karo. Commit `b990cc9`. **Lesson**:
 "kaun sa record abhi active/current he" — ye fact JAHA BHI compute ho, sirf EK jagah/EK rule
 se hona chahiye, kabhi 2 alag jagah independently reimplement mat karo.
+
+**🔍 "Product ka template dikh nahi raha" — data drift tha, bug nahi (2026-09-09)**: live DB
+check kiya to poore system me EK bhi FIRST_TOUCH template kisi product se assigned nahi tha —
+sab shared (product_id NULL) ban chuke the, testing ke dauran dropdown se select/unselect
+karte-karte. Dropdown-reassign feature apna design ke hisaab se sahi kaam kar raha tha, bas
+end state confusing tha. Fix: real product-specific template ko wapas uske asli product pe
+manually reassign kiya. **Lesson**: is dropdown feature me ek galat click poore system ka
+default ya kisi product ka apna template badal sakta he — [[project_ai_sales_manager_persona_vision]]
+jaisa hi, powerful features ko clear warning ke saath dena zaroori he.

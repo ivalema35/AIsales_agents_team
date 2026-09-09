@@ -7137,3 +7137,31 @@ dikhega, wo real, live, sahi data hoga.
 Commit `b990cc9`. VPS pe pull+importcheck+build+sync+restart, real data se verify kiya
 (`ivinfotech_pain_point_outreach_btn` ab sahi se dono jagah #1 pe aata he).
 
+### 🔍 "Product ka apna template dikh nahi raha" — data drift mila, code bug nahi (2026-09-09)
+
+User ne bola: "isme sirf ek hi option dikh raha he, jabki iske product ke liye alag se
+template banaya tha, wo nahi dikh raha, preview bhi nahi badla."
+
+**Live DB check kiya** — poore system me is waqt **teeno FIRST_TOUCH templates
+(`iv_classes_first_touch`, `ivinfotech_pain_point_outreach_btn`, `ivinfotech_specific_
+process_help`) shared (product_id = NULL) the** — koi bhi kisi product se assigned nahi
+tha! Isliye dropdown me sirf "Shared default" hi option tha (product-specific option
+list khali thi), aur dropdown+preview dono sahi se "sabse recently touch hua" wala
+dikha rahe the (`iv_classes_first_touch`) — kal ka ordering-fix sahi kaam kar raha tha.
+
+**Root cause**: `ivinfotech_specific_process_help` asal me isi product ke liye banaya
+gaya tha (AI ke coverage-gap logic se, `draft_context` me saaf likha tha), par dropdown
+se test karte waqt (pehle "iv_classes_first_touch" select kiya gaya, phir shayad "Shared
+default" wapas select kiya gaya) — is process me dono templates ka product_id NULL ho
+gaya. **Ye code ka bug nahi tha** — dropdown apni assignment feature waisa hi kaam kar
+raha tha jaisa design kiya gaya tha (select karna = purana template unassign, naya
+assign) — bas testing ke dauran end state confusing ban gaya.
+
+**Fix**: `ivinfotech_specific_process_help` ko wapas seedha uske asli product (AI
+Automation Solutions) pe reassign kar diya — ab dropdown me "this product" ke roop me
+dikhega, aur preview bhi usi ki wording dikhayega.
+
+**Lesson**: ye dropdown-based reassign feature powerful he par risky bhi — ek galat click
+poore system ka default badal sakta he ya kisi product ka apna template chheen sakta he.
+Kal ka warning text isi wajah se add kiya gaya tha.
+
