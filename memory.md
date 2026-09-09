@@ -1066,3 +1066,6 @@ WhatsApp template dono me** image, video URL, demo ke saath banayenge, phir naya
 run karenge. **Abhi kuch develop nahi karna** — explicit instruction (2 baar bola). Agli
 baar user isse revisit kare to yahi se shuru karna, dobara poori baat samjhani nahi padegi —
 full detail persistent memory me hai (`project_ivinfotech_general_it_services_bundle_plan`).
+ivinfotech.com se real info bhi nikal li (services, tech, real case studies) — user ke ilawa
+Knowledge Base me jaani he, par product na hone se abhi KB row ban nahi sakti; saari extracted
+info persistent memory me hi safe rakhi he jab tak product na bane.

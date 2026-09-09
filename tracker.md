@@ -7188,3 +7188,13 @@ ke roop me copy me weave hote hain) — par asli `<img>` banner HTML email me al
 hota he ya naya kaam lagega, ye abhi check nahi kiya — jab build shuru ho tab sabse pehle
 ye dekhna. **Abhi bhi kuch develop nahi karna** — same instruction.
 
+**Follow-up 2**: user ne ivinfotech.com se real jaankari nikalne ko bola. Poora site check
+kiya (homepage + services + portfolio + AI automation page) — real taglines, saari services,
+tech stack, real case studies (Belzzo 35% conversion increase, Smart Mandi 45% efficiency,
+etc.), contact info sab nikal liya. **Ye Knowledge Base ke liye he** (user ne clarify kiya) —
+par `KnowledgeBaseItem` table ka `product_id` required he, aur general product abhi bana hi
+nahi he, to real KB entries abhi ban nahi sakti. Poocha user se: naya product bana du ya
+existing product ke KB me daalu — jawaab: **"bas kahi save karlo, aage zarurat padegi"** —
+to koi DB change nahi kiya, saari extracted info persistent memory me safe rakh di he,
+taaki jab product banega tab seedha real KnowledgeBaseItem rows me convert ho jaye.
+
