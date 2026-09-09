@@ -237,7 +237,24 @@ def _run_discovery_tick(db):
                             product_id=product.id, campaign_id=campaign.id,
                             query=query, region=region,
                         ))
-                    db.commit()
+                    # 2026-09-08/09, real live incident: an uncaught IntegrityError here
+                    # (two campaigns proposing the identical query+region -- see
+                    # DiscoveryRun's own docstring) poisoned this WHOLE tick's DB session,
+                    # which then made the scheduler's own heartbeat write fail too --
+                    # 16 hours silently DOWN before a human noticed and restarted it. One
+                    # bad cooldown row must never take down anything beyond itself: the
+                    # DISCOVER job above is already committed by enqueue() regardless, so
+                    # rolling back just this row and moving on costs nothing but a repeat
+                    # attempt next tick.
+                    try:
+                        db.commit()
+                    except Exception:
+                        db.rollback()
+                        logger.exception(
+                            "DiscoveryRun commit failed (product=%s campaign=%s query=%r "
+                            "region=%s) -- rolled back, continuing with the next one",
+                            product.title, campaign.name, query, region)
+                        continue
                     fired += 1
                     logger.info("DISCOVER queued: product=%s campaign=%s query=%r region=%s",
                                product.title, campaign.name, query, region)
@@ -607,6 +624,17 @@ def run_forever(poll_interval=None):
             # that is alive but erroring every tick looks identical to a healthy one if the
             # heartbeat only ever reports RUNNING.
             tick_status = "ERROR"
+            # 2026-09-08/09, real live incident: an uncaught DB error here left this
+            # SAME session in SQLAlchemy's PendingRollbackError state, and the `finally`
+            # block's own heartbeat write below then failed too (using the same poisoned
+            # session) -- a scheduler that was still alive and looping every 5 minutes
+            # looked completely DOWN externally for 16 hours because its heartbeat never
+            # got a chance to write. Whatever caused the tick to fail, this session must
+            # never be handed to the heartbeat write in a broken state.
+            try:
+                db.rollback()
+            except Exception:  # noqa: BLE001 - the heartbeat write below must still be attempted
+                logger.exception("rollback after failed tick also failed")
         finally:
             # Inside the try/finally so a failed tick still beats -- the process IS alive, and
             # reporting it as stale would be wrong (and would mask the real ERROR status).

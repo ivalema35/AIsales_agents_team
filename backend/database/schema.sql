@@ -288,9 +288,16 @@ CREATE TABLE IF NOT EXISTS discovery_runs (
     region        TEXT NOT NULL,
     -- Step 17.7 (2026-09-02): discovery is campaign-driven -- cooldown is tracked per
     -- campaign, not per product, so two campaigns never share one clock.
+    -- 2026-09-08/09, real live crash: the UNIQUE constraint was left on
+    -- (product_id, query, region) when this comment was written -- two campaigns for the
+    -- SAME product proposing the identical query+region (the auto-create-campaign-on-
+    -- approve flow made this easy to reach for real) hit a real IntegrityError, which then
+    -- poisoned the whole scheduler's DB session and silently killed its own heartbeat for
+    -- 16 hours until a human noticed and it was manually restarted. Constraint now matches
+    -- what the code (and this comment) already assumed: campaign_id, not product_id.
     campaign_id   TEXT,
     last_run_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (product_id, query, region),
+    UNIQUE (campaign_id, query, region),
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
 );

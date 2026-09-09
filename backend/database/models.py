@@ -333,7 +333,7 @@ class ProductStrategy(Base):
 class DiscoveryRun(Base):
     __tablename__ = "discovery_runs"
     __table_args__ = (
-        UniqueConstraint("product_id", "query", "region", name="uq_discovery_run"),
+        UniqueConstraint("campaign_id", "query", "region", name="uq_discovery_run_v2"),
     )
     id = Column(String, primary_key=True, default=_uuid)
     product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
@@ -344,11 +344,22 @@ class DiscoveryRun(Base):
     # per-campaign, not per-product -- two campaigns for the same product that happen to
     # share a query/region must NOT share one cooldown clock. Nullable: a legacy row (from
     # before this column existed) or a manually-enqueued job with no campaign context still
-    # has somewhere to live. The old (product_id, query, region) UNIQUE constraint above is
-    # left in place rather than migrated (SQLite can't ALTER a constraint without a full
-    # table rebuild) -- a real but low-probability collision risk on an existing DB if two
-    # campaigns for the same product ever propose the identical query+region (the Step 18.1
-    # diversity rule already steers away from this).
+    # has somewhere to live.
+    #
+    # 2026-09-08/09, real live incident: the constraint above was left on
+    # (product_id, query, region) for a week after this comment first called that a "low-
+    # probability" risk -- it materialized for real once the auto-create-campaign-on-approve
+    # flow made it easy for the AI to suggest a second campaign for the same product with an
+    # overlapping (query, region). The resulting IntegrityError wasn't caught anywhere in
+    # discovery_scheduler.py's tick loop, so it poisoned that loop's whole DB session --
+    # every later statement on it (including the process's own heartbeat write) then failed
+    # too, and the scheduler sat silently DOWN for 16 hours until a human noticed and
+    # restarted it. `migrate.py`'s `_fix_discovery_run_constraint()` rebuilds this table on
+    # any DB still carrying the old constraint name; a fresh install picks up
+    # `uq_discovery_run_v2` directly from `schema.sql`. See also
+    # jobs/discovery_scheduler.py's own `_run_discovery_tick()` for the added
+    # try/except+rollback that now stops any future per-row failure from cascading the
+    # same way, regardless of its cause.
     campaign_id = Column(String, ForeignKey("campaigns.id", ondelete="CASCADE"))
     last_run_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 

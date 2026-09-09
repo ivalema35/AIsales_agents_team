@@ -82,6 +82,47 @@ def _seed_default_channel_policy(raw_conn):
         )
 
 
+def _fix_discovery_run_constraint(raw_conn):
+    """2026-09-08/09, real live incident: `discovery_runs` kept its original
+    UNIQUE(product_id, query, region) constraint even after cooldown tracking became
+    per-campaign (Step 17.7) -- two campaigns for the same product proposing the
+    identical query+region hit a real IntegrityError that cascaded into a 16-hour
+    scheduler outage (see database/models.py's DiscoveryRun docstring for the full
+    incident). SQLite can't ALTER a constraint in place, so this rebuilds the table --
+    safe here because this table is pure cooldown bookkeeping: losing a row just means
+    one campaign's next discovery tick isn't rate-limited by an old timestamp, never a
+    real data loss. Idempotent: only runs while the OLD constraint name is still present.
+    """
+    if not _table_exists(raw_conn, "discovery_runs"):
+        return  # brand-new DB -- schema.sql's own CREATE already has the correct constraint
+    existing_sql = raw_conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='discovery_runs'"
+    ).fetchone()
+    if not existing_sql or "uq_discovery_run_v2" in (existing_sql[0] or ""):
+        return  # already migrated (or somehow already correct)
+
+    raw_conn.execute("ALTER TABLE discovery_runs RENAME TO discovery_runs_old_uq")
+    raw_conn.execute("""
+        CREATE TABLE discovery_runs (
+            id            TEXT PRIMARY KEY,
+            product_id    TEXT NOT NULL,
+            query         TEXT NOT NULL,
+            region        TEXT NOT NULL,
+            campaign_id   TEXT,
+            last_run_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (campaign_id, query, region),
+            FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+            FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
+        )
+    """)
+    raw_conn.execute("""
+        INSERT INTO discovery_runs (id, product_id, query, region, campaign_id, last_run_at)
+        SELECT id, product_id, query, region, campaign_id, last_run_at FROM discovery_runs_old_uq
+    """)
+    raw_conn.execute("DROP TABLE discovery_runs_old_uq")
+    print("discovery_runs: rebuilt with UNIQUE(campaign_id, query, region).")
+
+
 def _backfill_lead_reference_codes(raw_conn):
     """Phase 12 Step 12.1 -- every lead that existed before this column shipped needs a
     real code too (the alert/UI feature has no "N/A" fallback in its own design; a lead
@@ -110,6 +151,7 @@ def run():
         # ran first (real ordering bug hit adding whatsapp_templates.product_id + its index
         # in the same change).
         _add_missing_columns(raw)
+        _fix_discovery_run_constraint(raw)
         with open("database/schema.sql", "r", encoding="utf-8") as f:
             raw.executescript(f.read())
         _seed_default_channel_policy(raw)
