@@ -113,7 +113,14 @@ def list_templates():
         product_id = request.args.get("product_id")
         if product_id:
             query = query.filter(WhatsappTemplate.product_id == product_id)
-        rows = query.order_by(WhatsappTemplate.created_at.desc()).all()
+        # 2026-09-09, real bug found live: this ordered by created_at, while
+        # get_approved_first_touch_template() (the REAL selection logic behind every real
+        # preview/send) tie-breaks by updated_at -- two different rules for "which one is
+        # current" meant a Daily Review dropdown built from this list could genuinely name
+        # a different template than the actual preview above it. Matching the same column
+        # here means any future consumer of this list agrees with the real selection logic
+        # by construction, not by coincidence.
+        rows = query.order_by(WhatsappTemplate.updated_at.desc()).all()
         product_titles = {p.id: p.title for p in db.query(Product).all()}
         return jsonify([_serialize(r, product_titles) for r in rows])
     finally:

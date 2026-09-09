@@ -500,7 +500,17 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                       >
                         <option value="">
                           {(() => {
-                            const sharedFallback = waCandidates.find((t) => !t.product_id);
+                            // 2026-09-09, real bug found live: this used to pick the shared
+                            // candidate via array order from list_templates() (created_at DESC),
+                            // while the REAL backend selection (get_approved_first_touch_
+                            // template, used for the actual preview/send) tie-breaks on
+                            // updated_at DESC instead -- two different rules for "the same"
+                            // answer meant the dropdown's label and the preview above it could
+                            // genuinely name two different templates. Sorting by the exact same
+                            // column here removes the disagreement at the root.
+                            const sharedFallback = waCandidates
+                              .filter((t) => !t.product_id)
+                              .sort((a, b) => (b.updated_at > a.updated_at ? 1 : -1))[0];
                             return sharedFallback
                               ? `Shared default — “${sharedFallback.name}”`
                               : "Shared default (built-in)";
@@ -512,7 +522,7 @@ export function CampaignReviewCard({ campaign, onApproved }) {
                             {t.product_id === campaign.product_id
                               ? " (current for this product)"
                               : t.product_title
-                                ? ` — used by ${t.product_title}`
+                                ? ` — borrow from ${t.product_title} (moves it away from them)`
                                 : ""}
                           </option>
                         ))}
