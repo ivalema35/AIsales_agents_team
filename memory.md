@@ -1058,3 +1058,10 @@ end state confusing tha. Fix: real product-specific template ko wapas uske asli 
 manually reassign kiya. **Lesson**: is dropdown feature me ek galat click poore system ka
 default ya kisi product ka apna template badal sakta he — [[project_ai_sales_manager_persona_vision]]
 jaisa hi, powerful features ko clear warning ke saath dena zaroori he.
+
+**💡 IDEA (abhi develop nahi karna) — IVinfotech general IT services product (2026-09-09)**:
+user soch raha he — ek naya "general IT services" product banega (AI Automation + Web Dev +
+CRM-ERP + Mobile Dev sab combine, umbrella pitch), uske liye proper email template + WhatsApp
+template (image, video URL, demo ke saath) banayenge, phir naya campaign run karenge. **Abhi
+kuch develop nahi karna** — explicit instruction. Agli baar user isse revisit kare to yahi se
+shuru karna, dobara poori baat samjhani nahi padegi.

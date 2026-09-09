@@ -7163,5 +7163,22 @@ dikhega, aur preview bhi usi ki wording dikhayega.
 
 **Lesson**: ye dropdown-based reassign feature powerful he par risky bhi — ek galat click
 poore system ka default badal sakta he ya kisi product ka apna template chheen sakta he.
+
+### 💡 IDEA (abhi develop nahi karna): IVinfotech general IT services product + proper campaign (2026-09-09)
+
+User soch raha he — **abhi kuch develop mat karo**, sirf plan save karna he:
+
+- **Naya product**: ek "general IT services" product banega jo IVinfotech ke saare services
+  ko cover kare — AI Automation, Web Development, CRM-ERP Development, Mobile Development
+  (ye sab abhi ALAG-ALAG products already exist system me — ye ek NAYA umbrella/general
+  pitch hoga, in sabko combine karke).
+- **Proper email template** is naye product ke liye banana he.
+- **Proper WhatsApp template** — image, video URL, aur demo ke saath (isi discussion se aaya
+  jab maine bataya ki WhatsApp template me image header bhi ban sakta he, par abhi system me
+  wo capability nahi he — image header support banana padega, jisse ye pura connect ho raha he).
+- Sab kuch proper banane ke baad hi **naya campaign run karenge** is product ke liye.
+
+**Abhi kuch nahi karna** — sirf yaad rakhna he taaki agli baar jab user ye kahe "wo IVinfotech
+general services wala plan shuru karo," turant context mile bina dobara samjhana pade.
 Kal ka warning text isi wajah se add kiya gaya tha.
 
