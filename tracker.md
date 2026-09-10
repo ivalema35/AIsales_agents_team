@@ -7619,3 +7619,19 @@ ke paas real phone number hai).
   target_segment query) — background worker khud process karega ab, Maps fallback
   se automatically.
 
+**User ne naya (temporary) Serper account banaya**: real key `.env` mein swap kiya
+(local + production dono), **purana key delete nahi kiya** — comment karke safe rakha
+he, jab purana account recharge ho jaye tab wapas switch kar sakte he. Real test se
+naya key confirm kiya working (status 200).
+
+**Saare GOOGLE_MAPS_MANUAL leads delete kiye** (97 total — jitne bhi is session mein
+Maps se manually + automatic-fallback se aaye the), FK cascade se sab dependent rows
+(contacts/scores/insights) bhi clean delete hue, koi orphan nahi bacha (verify kiya).
+
+**Naye working Serper key se real discovery dobara chalayi** un hi 4 campaigns ke liye
+— **19 genuinely naye real leads** mile (baaki results already-known businesses nikle,
+dedup ne sahi se skip kiya — matlab system pehle se hi in businesses ko jaanta tha,
+achha sign he). Final real counts: AI Automation 30/50, IV Classes 47/100, Healthcare
+10/20, General IT 3/20 — sab clean, proper Serper data se, Maps wala workaround ab
+kahi use nahi ho raha (naya key kaam kar raha he jab tak yeh bhi khatam na ho jaye).
+
