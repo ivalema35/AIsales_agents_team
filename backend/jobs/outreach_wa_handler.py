@@ -108,7 +108,7 @@ def handle_outreach_wa(db, payload):
                             payload={"followup_level": followup_level})
             return lead.id
         spec = {"name": followup_template.name, "language": followup_template.language,
-               "body_text": followup_template.body_text}
+               "body_text": followup_template.body_text, "header_image_url": followup_template.header_image_url}
         variable_labels = json.loads(followup_template.variable_labels or "[]")
         values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
     else:
@@ -120,7 +120,8 @@ def handle_outreach_wa(db, payload):
         first_touch_template = get_approved_first_touch_template(db, product_id=lead.product_id)
         if first_touch_template:
             spec = {"name": first_touch_template.name, "language": first_touch_template.language,
-                   "body_text": first_touch_template.body_text}
+                   "body_text": first_touch_template.body_text,
+                   "header_image_url": first_touch_template.header_image_url}
             variable_labels = json.loads(first_touch_template.variable_labels or "[]")
             values = fill_variables_for_labels(variable_labels, lead_profile, pain_points)
         else:
@@ -156,7 +157,8 @@ def handle_outreach_wa(db, payload):
 
     # to_phone is already Meta's international-format convention (country code + number,
     # no leading '+') via normalize_phone() -- no manual prefixing needed.
-    send_response = send_template_message(to_phone, spec["name"], spec["language"], values)
+    send_response = send_template_message(to_phone, spec["name"], spec["language"], values,
+                                          header_image_url=spec.get("header_image_url"))
 
     # Phase 14 Step 14.2 -- store the REAL filled-in text a lead actually received (same
     # convention EMAIL already uses), not a {template, variables} blob a reader would

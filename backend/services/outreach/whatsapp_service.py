@@ -31,10 +31,19 @@ def extract_wamid(send_response: dict) -> str | None:
     return messages[0].get("id") if messages else None
 
 
-def send_template_message(to_phone: str, template_name: str, language_code: str, variables: list) -> dict:
+def send_template_message(to_phone: str, template_name: str, language_code: str, variables: list,
+                          header_image_url: str | None = None) -> dict:
     """`to_phone` must be full international format with country code, no leading '+'
     (Meta's convention, e.g. '919876543210'). Raises on failure -- same contract as
     email_service.send_email, the caller's job-queue retry/DEAD handling takes over.
+
+    `header_image_url` (2026-09-10, real live gap): a template with a real Meta-approved
+    IMAGE header still needs that image's real public URL supplied as its own "header"
+    component on EVERY real send -- omitting it does not fall back to no header, it
+    fails the whole send outright (confirmed live: "(#132012) Parameter format does not
+    match format in the created template" / "header: Format mismatch, expected IMAGE,
+    received UNKNOWN"). Must be the SAME image the template was actually approved with;
+    None for every template that has no image header (unchanged behavior).
     """
     if not Config.WHATSAPP_TOKEN:
         raise RuntimeError("WHATSAPP_TOKEN not configured")
@@ -42,6 +51,11 @@ def send_template_message(to_phone: str, template_name: str, language_code: str,
         raise RuntimeError("WHATSAPP_PHONE_ID not configured")
 
     components = []
+    if header_image_url:
+        components.append({
+            "type": "header",
+            "parameters": [{"type": "image", "image": {"link": header_image_url}}],
+        })
     if variables:
         components.append({
             "type": "body",

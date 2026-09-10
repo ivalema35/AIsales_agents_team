@@ -440,6 +440,10 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     -- own live docs) -- a second, independent static URL button, same rules as the first.
     button_2_url      TEXT,
     button_2_label    TEXT,
+    -- 2026-09-10: the real public URL of this template's Meta-approved IMAGE header, if
+    -- it has one -- required on every real send (Meta rejects the send otherwise), see
+    -- database/models.py's own comment for the real error this fixes.
+    header_image_url  TEXT,
     body_text         TEXT NOT NULL,         -- with {{1}}, {{2}} placeholders, Meta's own syntax
     variable_labels   TEXT DEFAULT '[]',     -- JSON array, what each {{n}} means, e.g. ["company_name"]
     -- DRAFT: AI-authored, awaiting admin review, never yet sent to Meta (Step 9.6).

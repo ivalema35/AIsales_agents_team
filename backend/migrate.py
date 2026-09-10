@@ -50,6 +50,7 @@ COLUMN_MIGRATIONS = [
     ("campaigns", "email_outreach_approved_at", "TIMESTAMP"),
     ("campaigns", "whatsapp_outreach_approved_at", "TIMESTAMP"),
     ("campaigns", "test_outreach_sent_at", "TIMESTAMP"),
+    ("whatsapp_templates", "header_image_url", "TEXT"),
 ]
 
 

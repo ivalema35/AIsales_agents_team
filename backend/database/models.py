@@ -475,6 +475,15 @@ class WhatsappTemplate(Base):
     # static URL button, same shape/rules as the first. Null = only one button (or none).
     button_2_url = Column(String)
     button_2_label = Column(String)
+    # 2026-09-10, real live gap found sending a test message for this exact template:
+    # a template with a real Meta-approved IMAGE header still needs that image's real
+    # public URL supplied as a "header" component on EVERY real send (Meta rejects the
+    # send outright otherwise -- "Format mismatch, expected IMAGE, received UNKNOWN",
+    # confirmed live). NULL = no image header (unchanged behavior for every other
+    # template); set = the real content-asset URL used at both template-creation time
+    # (Fortius dashboard) and every real send (services/outreach/whatsapp_service.
+    # send_template_message).
+    header_image_url = Column(String)
     body_text = Column(Text, nullable=False)
     variable_labels = Column(Text, default="[]")  # JSON array
     # DRAFT, PENDING, APPROVED, REJECTED, ADMIN_REJECTED -- see schema.sql for the full

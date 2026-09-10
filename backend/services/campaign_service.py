@@ -1371,7 +1371,7 @@ def send_test_outreach_preview(db, campaign) -> dict:
         )
         send_email(
             get_str(db, TEST_OUTREACH_EMAIL),
-            f"[TEST — Campaign Preview] {draft['selected_subject']}",
+            f"[TEST — Campaign Preview] {draft['subject']}",
             intro + draft["body"],
             unsubscribe_url="#",  # never the real lead's -- this is not a real send to them
             content_assets=content_assets,
@@ -1388,12 +1388,15 @@ def send_test_outreach_preview(db, campaign) -> dict:
             labels = json.loads(first_touch.variable_labels or "[]")
             values = fill_variables_for_labels(labels, lead_profile, pain_points)
             template_name, language = first_touch.name, first_touch.language
+            header_image_url = first_touch.header_image_url
         else:
             key = select_template(pain_points)
             spec = TEMPLATE_LIBRARY[key]
             values = fill_variables(key, lead_profile, pain_points)
             template_name, language = spec["name"], spec.get("language", "en")
-        send_template_message(get_str(db, TEST_OUTREACH_PHONE), template_name, language, values)
+            header_image_url = None
+        send_template_message(get_str(db, TEST_OUTREACH_PHONE), template_name, language, values,
+                              header_image_url=header_image_url)
         result["whatsapp"]["sent"] = True
     except Exception as exc:  # noqa: BLE001 - a failed test-send must not fail the approval
         result["whatsapp"]["error"] = str(exc)
