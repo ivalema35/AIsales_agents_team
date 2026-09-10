@@ -7477,3 +7477,118 @@ angle hatana, "jo bhi problem ho wahi solve karenge" pe focus), aur end me 2 but
 Dashboard ke "WhatsApp Templates → AI Proposed" tab me dikhega, review/approve wahi se ho
 sakta he — ya user "Meta bhej do" bole to us waqt approve karenge.
 
+---
+
+## 2026-09-10 — Fortius (real BSP) investigation + header image ka real answer + CRITICAL production bug fix
+
+**User ne sahi challenge kiya**: "hum Meta developer account use nahi kar rahe, 3rd party
+API use kar rahe he check kar" — maine pehle Meta ki raw Resumable Upload API (App ID
+wali) ko assume kar liya tha, jo galat tha. `.env`/`config.py` check kiya — hum **Fortius**
+(`waba.fortius.in.net`) BSP use karte he, Meta ko direct nahi.
+
+**Real tests kiye (guess nahi)**:
+1. Fortius ke `/media` upload endpoint pe real image upload kiya → real `media_id` mila.
+2. Us `media_id` ko template ke HEADER me daal ke ek **throwaway test template** banaya
+   (turant delete bhi kiya) → Meta ne real error diya: **"Uploaded media handle is
+   invalid" (code 131009)** — matlab simple `/media` id header ke liye kaam nahi karta,
+   Fortius ki API se yeh possible nahi.
+3. User ne Fortius ka **apna login dashboard** dikhaya — usme "Add Template" wizard hai
+   jisme Header image seedha upload ho sakta he (Fortius apne backend me Meta App-ID
+   complexity khud handle karta he). **Yehi asli tarika he image header ke liye** — code
+   se nahi, is dashboard se manually banana hoga is ek template ke liye.
+4. Doosre button (Quick Chat → apna alag WhatsApp number) ke liye `wa.me` link try kiya
+   → Fortius/Meta ne block kar diya: **"Direct links to WhatsApp aren't allowed for
+   buttons."** — yeh ek blanket Meta policy he (kisi bhi number ke liye). Real workaround:
+   apni domain se ek redirect endpoint banao (`sales.ivinfotech.com` → `wa.me/...`), lekin
+   isme real policy-risk hai (Meta agar asli destination dekh le to template reject ho
+   sakta he) — **user ko yeh risk clearly bata diya, unka final call abhi pending he.**
+
+**🚨 CRITICAL real bug mila is investigation ke dauran (aur turant fix kiya)**:
+- `/interest/...` (Yes/No email links) aur `/unsubscribe/...` — dono bare prefixes
+  (`/interest`, `/unsubscribe`, `/api/` ke bahar) the.
+- Production ka OpenLiteSpeed sirf `/api/` ko Flask tak bhejta he (yehi bug jo brand-logo
+  ko already tod chuka tha) — matlab **har real lead ka "Yes I'm interested"/"No" click
+  aur har "Unsubscribe" click silently fail ho raha tha**, SPA ka index.html dikh raha
+  tha, real code tak pahunch hi nahi raha tha.
+- **Impact**: HOT_LEAD escalation kabhi trigger nahi hua real clicks se, admin alerts kabhi
+  nahi gaye, aur — sabse serious — **jo bhi unsubscribe click karta tha wo actually
+  suppress nahi ho raha tha** (legal/compliance risk).
+- **Fix**: `interest_bp`/`unsubscribe_bp` dono ko `/api/v1/interest`, `/api/v1/unsubscribe`
+  ke neeche move kiya (`api/interest.py`, `api/unsubscribe.py`, `app.py`'s
+  `_PUBLIC_PREFIXES`), aur har jagah jaha yeh links banti hain update kiya
+  (`interest_links.py`, `jobs/outreach_handler.py`, `jobs/inbound_classify_handler.py`,
+  `api/leads.py`).
+- Local test client se verify kiya (naya path real app code tak pahunchta he, purana
+  path ab public nahi he), phir commit+push+VPS pull+importcheck+restart kiya, phir
+  **real production URLs curl se verify kiye** — naya `/api/v1/...` link ab sahi se real
+  "Invalid or expired..." response deta he (matlab Flask tak pahunch raha he).
+- **Purane bhej chuke emails ke links fix nahi ho sakte** (already sent) — lekin aage se
+  har naya send sahi link use karega.
+
+**Pending**: header image ko Fortius dashboard se manually banane ka final go — user ka
+pending hai.
+
+**Button-2 redirect real bana diya** (policy-risk accept karke, user ne option 1 chuna):
+- Naya generic endpoint: `api/redirects.py` → `GET /api/v1/go/whatsapp?to=<number>` → real
+  302 redirect `https://wa.me/<number>` pe. Digits-only validation (open-redirect abuse
+  se bachne ke liye) — koi bhi future template isi endpoint ko reuse kar sakta he (hardcode
+  nahi kiya ek number ke liye).
+- `/api/v1/go/` ko public prefix me add kiya (login ki zarurat nahi, real lead seedha hit
+  karega).
+- Local test kiya (valid/invalid input, no-login check), phir commit+push+VPS pull+
+  importcheck+restart, phir **real production URL se verify kiya** — sahi 302 aur Location
+  header mila.
+- DRAFT template ka `button_2_url` bhi update kiya production DB me:
+  `https://sales.ivinfotech.com/api/v1/go/whatsapp?to=919924426361`
+
+**🔍 Ek aur important cheez pakड़ी is dauran**: local Windows machine ka
+`backend/sales_system.db` ek **stale, alag copy** he — real production system se connected
+nahi. Verify kiya: local DB me na product, na campaign, na WA template kuch nahi mila
+(aur migration bhi purani thi). Production VPS ke DB me sab sahi se maujood he (verify
+kiya SSH se). **Ab se koi bhi real data padhne/likhne wala script hamesha
+`vps_deploy.py runscript` (SSH) se hi chalega, local venv se nahi** — warna silently
+galat (ya khali) database pe kaam ho jayega.
+
+**✅ Template real Fortius/Meta pe submit ho gaya (user ne dashboard se banaya)**:
+- Status: **PENDING** (Meta review mein), real `meta_template_id`: `1259418452956182`
+- Real header image successfully attach hui (Meta ka apna scontent.whatsapp.net URL mila)
+- Fetch karke apne local record ko sync kiya (DRAFT → PENDING) — ab hamara existing
+  polling mechanism khud approval/rejection track karega, koi manual step nahi chahiye
+- User ne khud 2 chhote changes kiye Fortius ke form mein: "Hello" add kiya {{1}} se pehle
+  (kyuki **Meta variable se body shuru karne nahi deta** — real submission fail ho raha
+  tha isi wajah se), aur 3 emojis hata diye (submission issue ki wajah se)
+
+**🎯 Real learning ko permanently fix kiya**: AI Template Drafting Agent (`agents/
+template_agent.py` + `cognition/prompts.py`) ab kabhi bhi body `{{1}}` se shuru nahi
+karega — Meta ka yeh rule prompt aur hard-validation dono mein add kiya, taaki future
+mein koi bhi AI-drafted template yeh galti na dohraye. Deploy ho gaya.
+
+---
+
+## 2026-09-10 — Serper credits khatam, FREE Google Maps discovery fallback banaya
+
+**Problem**: "leads nahi arahe he" — real check kiya, Serper ka poora credit pool
+(Places AUR Search dono) khatam ho chuka hai (`"Not enough credits"`, HTTP 400, dono
+endpoints pe confirmed). Sirf naye leads hi nahi rukey — email/phone/website/social
+dhoondhne wale saare 7 functions bhi Serper pe hi depend karte the.
+
+**Real fix bana diya** (paisa kharch kiye bina):
+- Naya `services/data_acquisition/maps_discovery.py` — Playwright se seedha Google Maps
+  ki search-results feed padhta he (koi API key nahi chahiye, bilkul free). Existing
+  `maps_scraper.py` ka wahi safe pattern reuse kiya (read-only, no login/proxy/CAPTCHA
+  tricks, block-signal detection). Feed scroll karke listings nikalta he, har ek ka
+  naam+phone+website+address+category real detail-panel se seedha padhta he.
+- `scraper_worker/async_runner.py`'s `_handle_discover()` mein wire kiya — jab Serper
+  fail ho (real HTTP error), automatically Maps wale free fallback pe switch ho jata he.
+  Koi manual step nahi chahiye ab se, jab bhi Serper wapas down ho.
+- **Real testing**: local pe aur VPS dono pe real query chalake verify kiya ("gaming
+  zone in Ahmedabad", "dental clinics in Mehsana") — genuine naam, phone, website,
+  address, category sahi se mile.
+- **Bonus real bug fix**: `_handle_enrich()`'s `find_website()` call try/except mein
+  wrapped nahi tha (baaki sab Serper calls the) — Serper down hone par yeh poore ENRICH
+  job ko crash kar deta. Ab consistent tarike se graceful degrade karta he.
+
+**Manually real leads bhi laaye** 3 live APPROVED campaigns ke liye (AI Automation
+Mehsana, IV Classes Ahmedabad, Healthcare Ahmedabad) — same dedup+pipeline logic use
+karke jo automatic system use karta he (DISCOVERED status, ENRICH job auto-queue).
+
