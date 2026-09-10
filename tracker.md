@@ -7591,4 +7591,31 @@ dhoondhne wale saare 7 functions bhi Serper pe hi depend karte the.
 **Manually real leads bhi laaye** 3 live APPROVED campaigns ke liye (AI Automation
 Mehsana, IV Classes Ahmedabad, Healthcare Ahmedabad) — same dedup+pipeline logic use
 karke jo automatic system use karta he (DISCOVERED status, ENRICH job auto-queue).
+Baad mein naye "General IT Services Push" campaign ke liye bhi **27 real leads** (11
+restaurants + 7 retail shops + 9 boutiques, Ahmedabad) laaye — total **52 real leads**
+is session mein, sab genuinely ENRICHED (25/25 pehle batch ke, verify kiya real job
+queue status se).
+
+**Real email coverage check** — 25 mein se sirf 7 ko email mila. Reason dhoondha: **Hunter.io
+bhi khatam nikla** (`429 Too Many Requests`, real test se confirm) — matlab abhi email
+ke liye sirf FREE website-scraping bacha hai, Serper aur Hunter dono dead hain. Bug nahi
+hai, genuine coverage limitation hai. WhatsApp-first outreach suggest kiya (20/25 leads
+ke paas real phone number hai).
+
+**"Stuck" jobs ka real investigation** (user ne dashboard screenshot bheja — 97 stuck):
+- "Stuck" = **DEAD** jobs (max retry ke baad permanent fail) — dashboard ka plain-language
+  label he, koi alag cheez nahi.
+- **72 DISCOVER stuck** nikle: 60 ek **purane deleted "salons campaign"** ke the (orphaned
+  campaign_id, ab exist hi nahi karta — pura waste, delete kar diya). Baaki 12 unique
+  combos live campaigns ke real gaps the (kuch already manually cover ho chuke the).
+- **🐛 Real bug mila REVIEW jobs mein**: `_handle_review()` ka apna docstring kehta tha
+  "graceful degradation hi design he", lekin code mein Serper call try/except mein
+  wrapped hi nahi tha — 37 real REVIEW jobs isi wajah se permanently DEAD ho gaye the.
+  Fix kiya (`find_review_signals()` ab gracefully empty list pe fall back karta he,
+  jaisa function ka apna docstring pehle se promise karta tha), deploy kiya, saare 37
+  revive karke wapas PENDING kiya.
+- Cleanup: 72 purane dead DISCOVER jobs delete kiye, 7 fresh useful queries enqueue
+  kiye (Healthcare Ahmedabad, IV Classes ke 5 baki cities, General IT ka apna real
+  target_segment query) — background worker khud process karega ab, Maps fallback
+  se automatically.
 
