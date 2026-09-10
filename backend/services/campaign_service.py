@@ -1370,7 +1370,7 @@ def send_test_outreach_preview(db, campaign) -> dict:
             f"---\n\n"
         )
         send_email(
-            get_str(db, TEST_OUTREACH_EMAIL),
+            get_str(db, TEST_OUTREACH_EMAIL, default="hardikv682@gmail.com"),
             f"[TEST — Campaign Preview] {draft['subject']}",
             intro + draft["body"],
             unsubscribe_url="#",  # never the real lead's -- this is not a real send to them
@@ -1395,7 +1395,7 @@ def send_test_outreach_preview(db, campaign) -> dict:
             values = fill_variables(key, lead_profile, pain_points)
             template_name, language = spec["name"], spec.get("language", "en")
             header_image_url = None
-        send_template_message(get_str(db, TEST_OUTREACH_PHONE), template_name, language, values,
+        send_template_message(get_str(db, TEST_OUTREACH_PHONE, default="9510254405"), template_name, language, values,
                               header_image_url=header_image_url)
         result["whatsapp"]["sent"] = True
     except Exception as exc:  # noqa: BLE001 - a failed test-send must not fail the approval
