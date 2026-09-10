@@ -684,7 +684,10 @@ constraints, which you MUST follow exactly:
 - "purpose": exactly one of FIRST_TOUCH, FOLLOW_UP -- pick whichever the REASON actually
   calls for.
 - "body_text": the exact template wording, with {{1}}, {{2}}, ... placeholders for each
-  dynamic value, numbered sequentially starting at 1, no gaps or repeats.
+  dynamic value, numbered sequentially starting at 1, no gaps or repeats. Meta rejects a
+  body_text that starts directly with a variable (e.g. beginning with "{{1}}, ...") --
+  confirmed by a real rejected submission (2026-09-10) -- always open with at least one
+  literal word before the first placeholder (e.g. "Hi {{1}}," not "{{1}},").
 - "variable_labels": one entry per {{n}} placeholder IN ORDER, and each entry MUST be one
   of exactly these three values -- nothing else is fillable by this system:
     "contact_name"     -- the lead's contact person's name

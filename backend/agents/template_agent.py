@@ -38,6 +38,10 @@ def _is_valid_candidate(data: dict, existing_names: set) -> bool:
     placeholder_count = len(re.findall(r"\{\{\d+\}\}", body_text))
     if placeholder_count != len(variable_labels):
         return False
+    # 2026-09-10, real rejected submission: Meta refuses a body_text that opens directly
+    # with a variable (e.g. "{{1}}, ...") -- must have at least one literal word first.
+    if re.match(r"^\s*\{\{\d+\}\}", body_text):
+        return False
     button_label = data.get("button_label")
     if button_label is not None and (not isinstance(button_label, str) or not button_label.strip() or len(button_label) > 25):
         return False
