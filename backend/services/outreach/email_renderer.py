@@ -520,7 +520,14 @@ def _brand_wordmark(size: int = 17, color: str = BRAND) -> str:
 
 
 def _logo_public_url() -> str:
-    return f"{Config.PUBLIC_BASE_URL.rstrip('/')}/static/brand/ivinfotech-logo.png"
+    # 2026-09-10, real live bug fixed: production's webserver only proxies "/api/" to
+    # Flask (see reference_production_static_file_serving finding) -- "/static/..." was
+    # never actually reachable, so this logo has been a broken image in every real
+    # outbound email since it was added, confirmed live by a user-shared screenshot.
+    # Moved the file to frontend/public/brand/ so Vite copies it into every build's
+    # frontend/dist/brand/ automatically -- the one path this webserver demonstrably
+    # does serve (same pattern already proven for the uploads/ folder).
+    return f"{Config.PUBLIC_BASE_URL.rstrip('/')}/brand/ivinfotech-logo.png"
 
 
 def _logo_data_uri() -> str | None:

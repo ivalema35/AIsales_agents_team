@@ -53,9 +53,6 @@ _PUBLIC_PREFIXES = (
     "/api/v1/go/",
     # The admin clicks this straight from the test-outreach email, no session (2026-09-10).
     "/api/v1/outreach-approval/",
-    # Brand logo used in outbound email HTML -- recipients' mail clients must fetch this
-    # without a CRM session cookie (2026-09-05).
-    "/static/brand/",
 )
 
 

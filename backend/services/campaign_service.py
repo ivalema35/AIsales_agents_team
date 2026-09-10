@@ -1369,13 +1369,34 @@ def send_test_outreach_preview(db, campaign) -> dict:
             f"Approve real WhatsApp outreach for this campaign: {approval_urls['whatsapp_approve_url']}\n\n"
             f"---\n\n"
         )
+        # 2026-09-10, real live bug found by the user (screenshot showed no approve
+        # buttons at all): send_email's HTML part is built ENTIRELY from `sections` when
+        # present -- `body_text` (the `intro` text above) only ever reaches the PLAIN-TEXT
+        # part, which Gmail (and most real clients) never display when an HTML part also
+        # exists. The two approve links were silently invisible. Fix: add them as real
+        # sections instead, using email_renderer._render_section's own existing generic
+        # fallback (any section with a "url" key renders as a real clickable button) --
+        # the same mechanism every other asset-backed section already uses, not a new one.
+        test_sections = [
+            {"text": (
+                f"TEST PREVIEW -- this is exactly what a real lead in \"{campaign.name}\" "
+                f"would receive (modeled on the real lead \"{lead.company_name}\"). "
+                f"No real lead has received this."
+            )},
+            {"url": approval_urls["email_approve_url"], "title": "Approve real EMAIL outreach for this campaign"},
+            {"url": approval_urls["whatsapp_approve_url"], "title": "Approve real WhatsApp outreach for this campaign"},
+        ]
+        # Always rendered via the sections path (even for a TEXT-mode campaign, whose
+        # real sends skip sections entirely) -- guaranteeing the two approve links are
+        # always real, visible, clickable buttons matters more here than mirroring the
+        # exact render mode a real lead would see.
         send_email(
             get_str(db, TEST_OUTREACH_EMAIL, default="hardikv682@gmail.com"),
             f"[TEST — Campaign Preview] {draft['subject']}",
-            intro + draft["body"],
+            intro + draft["body"],  # plain-text fallback for clients with no HTML part
             unsubscribe_url="#",  # never the real lead's -- this is not a real send to them
             content_assets=content_assets,
-            sections=draft.get("sections"),
+            sections=test_sections + list(draft.get("sections") or []),
         )
         result["email"]["sent"] = True
     except Exception as exc:  # noqa: BLE001 - a failed test-send must not fail the approval
