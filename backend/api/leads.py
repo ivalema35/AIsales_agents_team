@@ -686,7 +686,7 @@ def get_cross_channel_copy(lead_id):
 
         sections = json.loads(log.content_sections)
         if platform == "EMAIL":
-            unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
+            unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/api/v1/unsubscribe/{lead.id}"
             header_url = pick_header_image_url(get_available_assets(db, lead.product_id) or None)
             content = render_email_html(
                 sections, unsubscribe_url, headline=log.message_subject,

@@ -35,7 +35,7 @@ def build_interest_urls(lead_id: str, outreach_log_id: str) -> dict:
     """Called at send time, once the sending OutreachLog's id is already known (it's
     pre-generated in jobs/outreach_handler.py specifically so these links can be built
     and embedded BEFORE the row itself is inserted)."""
-    base = f"{Config.PUBLIC_BASE_URL}/interest/{lead_id}/{outreach_log_id}"
+    base = f"{Config.PUBLIC_BASE_URL}/api/v1/interest/{lead_id}/{outreach_log_id}"
     return {
         "yes_url": f"{base}/YES/{_sign(lead_id, outreach_log_id, 'YES')}",
         "no_url": f"{base}/NO/{_sign(lead_id, outreach_log_id, 'NO')}",

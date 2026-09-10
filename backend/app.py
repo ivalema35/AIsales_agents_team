@@ -36,13 +36,17 @@ from api.todos import todos_bp
 # the HMAC-verified Yes/No interest link -- all clicked by a real lead from their own
 # inbox. Everything else in the app is real business data (leads, products, outreach)
 # and stays behind the gate.
+# 2026-09-10: unsubscribe/interest moved from bare "/unsubscribe"/"/interest" to under
+# "/api/v1/" -- production's real webserver only proxies "/api/" to Flask, so the old
+# bare prefixes were NEVER actually reachable in production (silently served the SPA
+# shell instead -- a real, live bug, see api/interest.py's own docstring for the fix).
 _PUBLIC_PREFIXES = (
     "/health",
     "/api/v1/auth/",
     "/api/v1/inbound/",
     "/api/v1/webhooks/",
-    "/unsubscribe/",
-    "/interest/",
+    "/api/v1/unsubscribe/",
+    "/api/v1/interest/",
     # Brand logo used in outbound email HTML -- recipients' mail clients must fetch this
     # without a CRM session cookie (2026-09-05).
     "/static/brand/",

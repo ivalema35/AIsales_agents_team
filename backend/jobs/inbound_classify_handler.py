@@ -42,7 +42,7 @@ def _send_reply_message(db, conv, lead, subject, body, event_type):
     if conv.channel == "EMAIL":
         if not lead.primary_email or is_suppressed(db, "EMAIL", lead.primary_email):
             return False
-        unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
+        unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/api/v1/unsubscribe/{lead.id}"
         send_response = send_email(lead.primary_email, subject, body, unsubscribe_url)
         db.add(OutreachLog(
             id=str(uuid.uuid4()), lead_id=lead.id, channel="EMAIL",

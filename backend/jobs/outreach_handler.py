@@ -231,7 +231,7 @@ def dispatch_structured_email(
         if contact_section:
             sections = sections + [contact_section]
 
-    unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/unsubscribe/{lead.id}"
+    unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/api/v1/unsubscribe/{lead.id}"
     send_response = send_email(
         lead.primary_email, draft["subject"], draft["body"], unsubscribe_url,
         content_assets=content_assets, sections=sections,

@@ -2,6 +2,14 @@
 
 Deliberately a plain GET link, not a form/POST -- the whole point of "one-click" is that
 clicking the link in an email client is enough, no page/JS/confirmation step required.
+
+2026-09-10 real live bug fix: this used to be mounted at a bare "/unsubscribe" prefix.
+Production's real webserver (OpenLiteSpeed) only proxies "/api/" to Flask -- everything
+else falls through to the SPA's index.html unless a real file exists at that exact path
+(same root cause as the email header banner's logo bug). Confirmed live: fetching the
+real production unsubscribe URL returned the SPA shell, not this code -- meaning every
+real recipient's unsubscribe click has been silently doing nothing. Moved under
+"/api/v1/" so it's actually reachable.
 """
 from __future__ import annotations
 from flask import Blueprint
@@ -10,7 +18,7 @@ from database.db_config import SessionLocal
 from database.models import Lead
 from services.outreach.suppression import add_suppression
 
-unsubscribe_bp = Blueprint("unsubscribe", __name__, url_prefix="/unsubscribe")
+unsubscribe_bp = Blueprint("unsubscribe", __name__, url_prefix="/api/v1/unsubscribe")
 
 
 @unsubscribe_bp.route("/<lead_id>", methods=["GET"])
