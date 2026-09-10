@@ -7631,9 +7631,36 @@ Maps se manually + automatic-fallback se aaye the), FK cascade se sab dependent 
 **Naye working Serper key se real discovery dobara chalayi** un hi 4 campaigns ke liye
 — **19 genuinely naye real leads** mile (baaki results already-known businesses nikle,
 dedup ne sahi se skip kiya — matlab system pehle se hi in businesses ko jaanta tha,
-achha sign he). Final real counts: AI Automation 30/50, IV Classes 47/100, Healthcare
-10/20, General IT 3/20 — sab clean, proper Serper data se, Maps wala workaround ab
-kahi use nahi ho raha (naya key kaam kar raha he jab tak yeh bhi khatam na ho jaye).
+achha sign he). Final real counts (is point pe): AI Automation 30/50, IV Classes
+47/100, Healthcare 10/20, General IT 3/20 — sab clean, proper Serper data se, Maps wala
+workaround ab kahi use nahi ho raha (naya key kaam kar raha he jab tak yeh bhi khatam
+na ho jaye).
+
+**WhatsApp template ka real product_id issue mila aur fix kiya**: dropdown ka
+"single-owner" mechanic (ek template sirf ek product ka ho sakta he — doosra select
+karne se pehla wala release ho jata he, UI mein "moves it away from them" warning bhi
+he) ki wajah se humara `ivinfotech_general_it_first_touch` template General IT Services
+se hat gaya tha (`product_id` NULL ho gaya tha). Real check kiya, wapas assign kiya.
+Template khud **Meta se APPROVED** ho chuka he (exact approval timestamp track nahi
+hota system me, sirf latest update time).
+
+**🔍 Dobara "stuck" jobs (34) — is baar asli reason 100% clear tha**: sab exact same
+error — **"lead X not found"** — meri hi pichli 97-leads-delete action ka direct
+side-effect (jo jobs un leads ke liye pehle se PENDING the, wo ab fail ho rahe the).
+Permanently unrecoverable the (lead wapas nahi aayega) — sabko clean delete kar diya.
+
+**🚨 Real correction, apni hi galti pakड़ी**: pehle maine galat (uppercase) settings-key
+se check kiya tha aur bola tha autonomous switches OFF hain — **yeh galat tha, meri
+apni script ki galti thi** (sahi key lowercase he: `autonomous_outreach_enabled`).
+Sahi tarike se check kiya to confirm hua: **Discovery, Autonomous outreach, Auto-reply,
+Acknowledgment reply — CHARO genuinely ON hain** (dashboard sahi tha shuru se). User ko
+turant correct kiya, galti chhupayi nahi.
+
+**General IT Services ke liye behtar/naye queries se aur leads laaye** (clinics
+Mehsana, gyms Gandhinagar, salons Surat, real estate Ahmedabad) — **39 aur naye real
+leads**, campaign ab **42/20** (goal se zyada) — clinics/cafes ke kuch "wrong city"
+skip hue (Serper ka location-bias imperfect he chhote towns ke liye, already-known
+behavior).
 
 ### ✅ Prospect Finder — search groups + non-tech UX (2026-09-10)
 
@@ -7647,5 +7674,9 @@ par usi search ke results dikhein.
 - Friendlier form labels (“Name this search”, “Job titles”, “Where”), header stats
   (searches / people / spent), clearer empty states.
 - Backend unchanged (`search_id` pehle se tha).
+
+**Deployed 2026-09-10:** commit `e3e4373` → push → VPS `git pull` → frontend build →
+`public_html` sync (uploads preserved). Live string check: “Your searches” in served JS.
+
 
 
