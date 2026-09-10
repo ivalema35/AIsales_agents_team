@@ -10,7 +10,7 @@ from services.campaign_service import (
     compute_campaign_metrics, compute_campaign_lead_summary, get_daily_review,
     clear_campaign_watchdog_alert, revise_kickoff_draft, set_campaign_email_render_mode,
     campaign_blocking_status, dismiss_pending_todos_by_label, _APPROVE_CAMPAIGN_LABEL,
-    generate_campaign_todo)
+    generate_campaign_todo, send_test_outreach_preview)
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/api/v1/campaigns")
 
@@ -49,6 +49,9 @@ def _serialize(db, campaign, with_metrics=True):
         "status": campaign.status,
         "lead_count_goal": campaign.lead_count_goal,
         "metrics_summary_cache": json.loads(campaign.metrics_summary or "{}"),
+        "test_outreach_sent_at": str(campaign.test_outreach_sent_at) if campaign.test_outreach_sent_at else None,
+        "email_outreach_approved_at": str(campaign.email_outreach_approved_at) if campaign.email_outreach_approved_at else None,
+        "whatsapp_outreach_approved_at": str(campaign.whatsapp_outreach_approved_at) if campaign.whatsapp_outreach_approved_at else None,
         "created_at": str(campaign.created_at),
         "updated_at": str(campaign.updated_at),
     }
@@ -191,6 +194,7 @@ def update_campaign(campaign_id):
             campaign.target_segment = json.dumps(target_segment)
         if "strategy_angle" in data:
             campaign.strategy_angle = data["strategy_angle"]
+        test_outreach_result = None
         if "status" in data:
             prev_status = campaign.status
             campaign.status = data["status"]
@@ -198,10 +202,53 @@ def update_campaign(campaign_id):
             # does not keep asking after the human already OK'd the plan on the page.
             if prev_status == "PROPOSED" and data["status"] == "APPROVED":
                 dismiss_pending_todos_by_label(db, campaign.id, _APPROVE_CAMPAIGN_LABEL)
+                # 2026-09-10, real user ask: approving a campaign no longer lets real
+                # outreach start immediately -- it sends the real first-touch EMAIL/
+                # WhatsApp this campaign would send to a real lead to the admin's own
+                # test contact instead. Real leads only get real sends once the admin
+                # approves each channel (services/lead_service.claim_lead_for_outreach
+                # enforces this). Only ever sent once per campaign.
+                if not campaign.test_outreach_sent_at:
+                    test_outreach_result = send_test_outreach_preview(db, campaign)
 
         db.commit()
         db.refresh(campaign)
-        return jsonify(_serialize(db, campaign))
+        response = _serialize(db, campaign)
+        if test_outreach_result is not None:
+            response["test_outreach_result"] = test_outreach_result
+        return jsonify(response)
+    finally:
+        db.close()
+
+
+_APPROVAL_FIELD = {"EMAIL": "email_outreach_approved_at", "WHATSAPP": "whatsapp_outreach_approved_at"}
+
+
+@campaigns_bp.route("/<campaign_id>/outreach-approval/<channel>", methods=["POST"])
+def set_outreach_approval(campaign_id, channel):
+    """2026-09-10, real user ask: the CRM-side equivalent of clicking the approve link
+    in the test-outreach email (services/campaign_service.send_test_outreach_preview) --
+    same effect, either path works. `{"approved": true}` (default) approves the channel;
+    `{"approved": false}` resets it back to blocked, e.g. after fixing something and
+    wanting to pause real sends again."""
+    channel = (channel or "").upper()
+    if channel not in _APPROVAL_FIELD:
+        return jsonify({"error": [f"channel must be one of {sorted(_APPROVAL_FIELD)}"]}), 422
+
+    data = request.get_json(silent=True) or {}
+    approved = data.get("approved", True)
+    if not isinstance(approved, bool):
+        return jsonify({"error": ["approved must be a boolean"]}), 422
+
+    db = SessionLocal()
+    try:
+        campaign = db.get(Campaign, campaign_id)
+        if not campaign:
+            return jsonify({"error": "campaign not found"}), 404
+        setattr(campaign, _APPROVAL_FIELD[channel], datetime.utcnow() if approved else None)
+        db.commit()
+        db.refresh(campaign)
+        return jsonify(_serialize(db, campaign, with_metrics=False))
     finally:
         db.close()
 

@@ -289,6 +289,37 @@ export default function SystemToggles() {
         />
       </div>
     </div>
+
+    {/* 2026-09-10, real user ask: when a campaign is approved, its real first-touch
+        email/WhatsApp goes to THIS contact first, not a real lead -- approving each
+        channel from that test message (or from the campaign page) is what lets real
+        sends start for that campaign's actual leads. */}
+    <div id="test-outreach-contact" className="mt-5 scroll-mt-20 rounded-xl border border-line bg-parchment-raised p-4 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-ink-900">Test outreach contact</h2>
+      <p className="mb-1 text-xs text-ink-500">
+        When a campaign is approved, its real first-touch email and WhatsApp message are sent
+        here first &mdash; approve each channel from that message (or from the campaign page) to
+        let real sends start for that campaign&rsquo;s actual leads.
+      </p>
+      <div className="divide-y divide-line">
+        <EditableField
+          label="Test outreach email"
+          description="Receives a real preview of each newly-approved campaign's first-touch email."
+          type="text"
+          value={settings.test_outreach_email}
+          disabled={busy}
+          onSave={(v) => update("test_outreach_email", v)}
+        />
+        <EditableField
+          label="Test outreach WhatsApp number"
+          description="Receives a real preview of each newly-approved campaign's first-touch WhatsApp message."
+          type="text"
+          value={settings.test_outreach_phone}
+          disabled={busy}
+          onSave={(v) => update("test_outreach_phone", v)}
+        />
+      </div>
+    </div>
     </>
   );
 }

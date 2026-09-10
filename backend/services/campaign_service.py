@@ -1269,6 +1269,140 @@ def build_sample_whatsapp_preview(db, product, sample_lead, pain_points: list) -
     }
 
 
+def _pick_test_preview_lead(db, campaign_id: str):
+    """A real, representative lead to model the test preview on -- prefers a SCORED
+    HOT/WARM lead (the same tier _run_outreach_tick would actually claim for a real
+    send), falls back to any SCORED lead, then any lead at all with SOME contact info,
+    so a campaign approved before scoring has finished still gets a real preview rather
+    than none. Returns None only if the campaign genuinely has zero leads yet."""
+    scored_hot_warm = (
+        db.query(Lead)
+        .join(LeadScore, LeadScore.lead_id == Lead.id)
+        .filter(Lead.campaign_id == campaign_id, Lead.status == "SCORED",
+                LeadScore.tier.in_(("HOT", "WARM")))
+        .order_by(Lead.created_at.asc())
+        .first()
+    )
+    if scored_hot_warm:
+        return scored_hot_warm
+    scored_any = (
+        db.query(Lead)
+        .filter(Lead.campaign_id == campaign_id, Lead.status == "SCORED")
+        .order_by(Lead.created_at.asc())
+        .first()
+    )
+    if scored_any:
+        return scored_any
+    return (
+        db.query(Lead)
+        .filter(Lead.campaign_id == campaign_id)
+        .filter((Lead.primary_email.isnot(None)) | (Lead.primary_phone.isnot(None)) | (Lead.whatsapp_number.isnot(None)))
+        .order_by(Lead.created_at.asc())
+        .first()
+    )
+
+
+def send_test_outreach_preview(db, campaign) -> dict:
+    """2026-09-10, real user ask: the moment a campaign is approved, send the REAL
+    first-touch email and REAL first-touch WhatsApp message it would send to an actual
+    lead in this campaign -- but to the admin's own test contact instead. Real outreach
+    to this campaign's actual leads stays blocked (services/lead_service.
+    claim_lead_for_outreach) until the admin approves each channel independently, either
+    via the links in this test email or the campaign page's own approve buttons.
+
+    Never raises -- a failed test-send must not block the campaign approval itself that
+    triggered this; each channel's failure is caught and reported back separately so the
+    admin sees exactly what happened rather than a silent gap.
+    """
+    from services.outreach.email_service import send_email
+    from services.outreach.whatsapp_service import send_template_message
+    from services.outreach.whatsapp_template_service import get_approved_first_touch_template
+    from services.outreach.whatsapp_templates import (
+        TEMPLATE_LIBRARY, select_template, fill_variables, fill_variables_for_labels)
+    from services.outreach.outreach_approval_links import build_outreach_approval_urls
+    from services.system_settings import get_str, TEST_OUTREACH_EMAIL, TEST_OUTREACH_PHONE
+
+    result = {"lead_used": None, "email": {"sent": False, "error": None},
+              "whatsapp": {"sent": False, "error": None}}
+
+    product = db.get(Product, campaign.product_id)
+    lead = _pick_test_preview_lead(db, campaign.id)
+    if not lead:
+        result["email"]["error"] = "no lead in this campaign yet -- nothing to preview"
+        result["whatsapp"]["error"] = result["email"]["error"]
+        return result
+
+    result["lead_used"] = lead.company_name
+    insight = (
+        db.query(LeadReviewInsight)
+        .filter(LeadReviewInsight.lead_id == lead.id)
+        .order_by(LeadReviewInsight.analyzed_at.desc())
+        .first()
+    )
+    pain_points = json.loads(insight.pain_points_extracted) if insight and insight.pain_points_extracted else []
+    product_brief = {"title": product.title, "description": product.description,
+                     "value_proposition": product.value_proposition}
+    lead_profile = {"company_name": lead.company_name,
+                    "contact_person_name": lead.contact_person_name,
+                    "contact_person_role": lead.contact_person_role}
+
+    approval_urls = build_outreach_approval_urls(campaign.id)
+
+    # -- EMAIL --
+    try:
+        render_mode = resolve_email_render_mode(campaign)
+        format_directive = format_directive_for_mode(render_mode, product.default_format)
+        content_assets = get_available_assets(db, product.id) or None
+        draft = draft_structured_email(
+            db, lead.id, product_brief, lead_profile, pain_points,
+            content_assets=content_assets,
+            tone_directive=campaign.strategy_angle or product.default_tone,
+            format_directive=format_directive,
+        )
+        if not draft:
+            raise RuntimeError("email drafting produced nothing usable")
+        intro = (
+            f"This is a real preview of the first-touch EMAIL campaign \"{campaign.name}\" "
+            f"will send to real leads (modeled on \"{lead.company_name}\", a real lead in "
+            f"this campaign). No real lead has received this.\n\n"
+            f"Approve real EMAIL outreach for this campaign: {approval_urls['email_approve_url']}\n"
+            f"Approve real WhatsApp outreach for this campaign: {approval_urls['whatsapp_approve_url']}\n\n"
+            f"---\n\n"
+        )
+        send_email(
+            get_str(db, TEST_OUTREACH_EMAIL),
+            f"[TEST — Campaign Preview] {draft['selected_subject']}",
+            intro + draft["body"],
+            unsubscribe_url="#",  # never the real lead's -- this is not a real send to them
+            content_assets=content_assets,
+            sections=draft.get("sections"),
+        )
+        result["email"]["sent"] = True
+    except Exception as exc:  # noqa: BLE001 - a failed test-send must not fail the approval
+        result["email"]["error"] = str(exc)
+
+    # -- WHATSAPP --
+    try:
+        first_touch = get_approved_first_touch_template(db, product_id=product.id)
+        if first_touch:
+            labels = json.loads(first_touch.variable_labels or "[]")
+            values = fill_variables_for_labels(labels, lead_profile, pain_points)
+            template_name, language = first_touch.name, first_touch.language
+        else:
+            key = select_template(pain_points)
+            spec = TEMPLATE_LIBRARY[key]
+            values = fill_variables(key, lead_profile, pain_points)
+            template_name, language = spec["name"], spec.get("language", "en")
+        send_template_message(get_str(db, TEST_OUTREACH_PHONE), template_name, language, values)
+        result["whatsapp"]["sent"] = True
+    except Exception as exc:  # noqa: BLE001 - a failed test-send must not fail the approval
+        result["whatsapp"]["error"] = str(exc)
+
+    campaign.test_outreach_sent_at = datetime.utcnow()
+    db.commit()
+    return result
+
+
 def get_daily_review(db, campaign_id: str) -> dict:
     """Phase 18 Step 18.2 -- the 2-minute morning review: today's real to-do (Step 18.1)
     plus ONE real sample draft for this campaign, so the human sees actual content, not

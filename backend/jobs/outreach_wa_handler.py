@@ -17,7 +17,7 @@ import uuid
 from datetime import datetime
 
 from cognition.agent_events import log_agent_event
-from database.models import Lead, LeadReviewInsight, OutreachLog, Product
+from database.models import Campaign, Lead, LeadReviewInsight, OutreachLog, Product
 from jobs.registry import register_handler
 from services.outreach.suppression import is_suppressed
 from services.phone_utils import normalize_phone
@@ -62,6 +62,17 @@ def handle_outreach_wa(db, payload):
         lead.status = "REJECTED"
         db.commit()
         return lead.id
+
+    # 2026-09-10, real user ask: no point resolving a template/filling variables for a
+    # send the campaign's own outreach-approval gate is going to block anyway -- checked
+    # again immediately before the real send below too (same "100% rule" re-check
+    # discipline the suppression checks in this function already use).
+    if lead.campaign_id:
+        campaign = db.get(Campaign, lead.campaign_id)
+        if campaign and not campaign.whatsapp_outreach_approved_at:
+            logger.info("OUTREACH_WA %s -> campaign '%s' WhatsApp outreach not yet approved, skipping",
+                       lead.company_name, campaign.name)
+            return lead.id
 
     insight = (
         db.query(LeadReviewInsight)
@@ -135,6 +146,13 @@ def handle_outreach_wa(db, payload):
         lead.status = "REJECTED"
         db.commit()
         return lead.id
+
+    if lead.campaign_id:
+        campaign = db.get(Campaign, lead.campaign_id)
+        if campaign and not campaign.whatsapp_outreach_approved_at:
+            logger.info("OUTREACH_WA %s -> campaign '%s' WhatsApp outreach not approved (checked again "
+                       "at send), aborting", lead.company_name, campaign.name)
+            return lead.id
 
     # to_phone is already Meta's international-format convention (country code + number,
     # no leading '+') via normalize_phone() -- no manual prefixing needed.

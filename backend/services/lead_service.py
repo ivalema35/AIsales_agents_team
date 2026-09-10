@@ -13,7 +13,7 @@ from __future__ import annotations
 from sqlalchemy import text
 
 from cognition.decision_engine import route_action
-from database.models import Lead, LeadScore, Product
+from database.models import Campaign, Lead, LeadScore, Product
 from jobs.job_queue import enqueue
 from services.channel_policy_service import get_allowed_channels
 
@@ -74,6 +74,10 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
     suppression -- those still run, unconditionally, exactly as for any other send. Forcing
     past a low-confidence/COLD judgment call is a business decision; forcing past QC's veto
     or a suppression entry would be a compliance one, and this flag has no reach into either.
+    Same reasoning extends to the per-campaign outreach-approval gate just below: `force`
+    never bypasses it either -- an accidentally-forced real send to a real business while
+    a campaign is still deliberately paused for review is exactly what that gate exists
+    to prevent (2026-09-10, real user ask).
     """
     lead = db.get(Lead, lead_id)
     if not lead:
@@ -82,6 +86,21 @@ def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, 
     product = db.get(Product, lead.product_id)
     region_allowed = get_allowed_channels(db, product.target_country if product else None)
     effective_allowed = region_allowed if allowed_channels is None else (allowed_channels & region_allowed)
+
+    # 2026-09-10, real user ask: a campaign-scoped lead's real send is additionally
+    # gated per-channel by that campaign's own outreach-approval state (see
+    # services/campaign_service.send_test_outreach_preview) -- the admin must have
+    # explicitly approved EMAIL and/or WHATSAPP for THIS campaign before any of its
+    # leads' real sends on that channel proceed. A lead with no campaign_id (the
+    # pre-campaign, non-scoped case) is completely unaffected by this check.
+    if lead.campaign_id:
+        campaign = db.get(Campaign, lead.campaign_id)
+        campaign_approved = set()
+        if campaign and campaign.email_outreach_approved_at:
+            campaign_approved.add("EMAIL")
+        if campaign and campaign.whatsapp_outreach_approved_at:
+            campaign_approved.add("WHATSAPP")
+        effective_allowed = effective_allowed & campaign_approved
 
     has_email = bool(lead.primary_email) and "EMAIL" in effective_allowed
     has_phone = bool(lead.primary_phone or lead.whatsapp_number) and "WHATSAPP" in effective_allowed

@@ -615,6 +615,13 @@ CREATE TABLE IF NOT EXISTS campaigns (
     -- Phase 21: lightweight JSON fingerprint {"sent","opened","replied","hot","has_target"}
     -- the signal-driven todo tick diffs against to decide whether anything real changed.
     last_todo_signal  TEXT,
+    -- 2026-09-10: per-channel real-outreach approval gate. NULL blocks real sends for
+    -- this campaign's leads on that channel; set (a timestamp) unlocks them. See
+    -- services/campaign_service.send_test_outreach_preview / services/lead_service.
+    -- claim_lead_for_outreach.
+    email_outreach_approved_at    TIMESTAMP,
+    whatsapp_outreach_approved_at TIMESTAMP,
+    test_outreach_sent_at         TIMESTAMP,
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE

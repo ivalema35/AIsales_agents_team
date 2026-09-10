@@ -106,6 +106,10 @@ export const api = {
   deleteCampaign: (id) => request(`/campaigns/${id}`, { method: "DELETE" }),
   getCampaignDailyReview: (id) => request(`/campaigns/${id}/daily-review`),
   clearCampaignWatchdogAlert: (id) => request(`/campaigns/${id}/watchdog/clear`, { method: "POST" }),
+  setCampaignOutreachApproval: (id, channel, approved) =>
+    request(`/campaigns/${id}/outreach-approval/${channel}`, {
+      method: "POST", body: JSON.stringify({ approved }),
+    }),
 
   // Phase 21 -- the unified AI to-do inbox. listTodos() returns every PENDING item across
   // every campaign/product; submitTodoFeedback/approveTodoItem/dismissTodoItem act on ONE

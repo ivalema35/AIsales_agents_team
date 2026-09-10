@@ -34,6 +34,13 @@ from services.campaign_service import (
 
 logger = logging.getLogger(__name__)
 
+class OutreachNotApprovedError(RuntimeError):
+    """Raised by dispatch_structured_email when the lead's campaign hasn't approved real
+    EMAIL outreach yet (2026-09-10). Its own type so callers can tell "blocked by the
+    approval gate" apart from a genuine send failure -- the former is an expected,
+    non-retryable no-op, not something the job queue should treat as FAILED/DEAD."""
+
+
 MAX_DRAFT_ATTEMPTS = 3  # 2026-09-08, real live case: attempt 2 fixed attempt 1's issue but
 # introduced a NEW one (overstated a low-severity pain point) -- 1 retry left no room to
 # converge after a course-correction itself needed fixing. One more attempt before
@@ -58,6 +65,17 @@ def handle_outreach_email(db, payload):
         lead.status = "REJECTED"
         db.commit()
         return lead.id
+
+    # 2026-09-10, real user ask: same early check as suppression above -- no point
+    # drafting (a real LLM call) and QC-reviewing a send that's going to be blocked
+    # anyway by the campaign's own outreach-approval gate. dispatch_structured_email
+    # re-checks this again right before the real network call regardless.
+    if lead.campaign_id:
+        campaign = db.get(Campaign, lead.campaign_id)
+        if campaign and not campaign.email_outreach_approved_at:
+            logger.info("OUTREACH_EMAIL %s -> campaign '%s' EMAIL outreach not yet approved, skipping",
+                       lead.company_name, campaign.name)
+            return lead.id
 
     product = db.get(Product, lead.product_id)
     if not product:
@@ -182,13 +200,18 @@ def handle_outreach_email(db, payload):
         )
         return lead.id
 
-    dispatch_structured_email(
-        db, lead, draft,
-        followup_level=followup_level,
-        render_mode=render_mode,
-        content_assets=content_assets,
-        qc_confidence=qc_result["confidence_score"],
-    )
+    try:
+        dispatch_structured_email(
+            db, lead, draft,
+            followup_level=followup_level,
+            render_mode=render_mode,
+            content_assets=content_assets,
+            qc_confidence=qc_result["confidence_score"],
+        )
+    except OutreachNotApprovedError as exc:
+        # Expected, non-retryable: the campaign's approval was revoked (or never given)
+        # between this job being queued and now. Not a failure -- just skip it.
+        logger.info("OUTREACH_EMAIL %s -> %s", lead.company_name, exc)
     return lead.id
 
 
@@ -211,6 +234,19 @@ def dispatch_structured_email(
 
     product = db.get(Product, lead.product_id)
     campaign = db.get(Campaign, lead.campaign_id) if lead.campaign_id else None
+    # 2026-09-10, real user ask: defense-in-depth for the per-campaign outreach-approval
+    # gate (services/lead_service.claim_lead_for_outreach already checks this before
+    # queueing, but this final check right before the real send closes the gap for a
+    # follow-up sequence's own direct enqueue, or a channel approval revoked after the
+    # job was already queued) -- same "check it again right before the real call"
+    # discipline as the suppression check just above. Raises (not a silent skip) so the
+    # human "Approve & send" path (services/campaign_service.py's TodoItem approval,
+    # which already wraps this call in try/except and surfaces the message) gets a clear
+    # error instead of a confusing crash; the automated job-handler caller below catches
+    # this specific exception and treats it as a graceful no-op, not a retryable failure.
+    if campaign and not campaign.email_outreach_approved_at:
+        raise OutreachNotApprovedError(
+            f"campaign \"{campaign.name}\" has not approved real EMAIL outreach yet")
     if render_mode is None:
         render_mode = resolve_email_render_mode(campaign) if campaign else "HTML"
     if content_assets is None:

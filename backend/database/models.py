@@ -665,6 +665,18 @@ class Campaign(Base):
     # JSON: {"sent","opened","replied","hot","has_target"}. Updated every time
     # generate_campaign_todo() actually runs (daily floor OR signal-driven), never otherwise.
     last_todo_signal = Column(Text)
+    # 2026-09-10, real user ask: approving a campaign must not immediately let real
+    # autonomous outreach start hitting real leads -- the admin wants to SEE the real
+    # first-touch email/WhatsApp message first (sent to their own test contact,
+    # services/campaign_service.send_test_outreach_preview) and explicitly approve each
+    # channel independently before real sends to this campaign's actual leads begin.
+    # NULL = that channel is blocked for this campaign's leads (services/lead_service.
+    # claim_lead_for_outreach enforces this); set = approved, real sends may proceed.
+    email_outreach_approved_at = Column(TIMESTAMP)
+    whatsapp_outreach_approved_at = Column(TIMESTAMP)
+    # Bookkeeping only -- the test preview is sent once, the moment the campaign is first
+    # approved; this stops it from being silently re-sent on every later edit/save.
+    test_outreach_sent_at = Column(TIMESTAMP)
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 

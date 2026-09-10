@@ -29,6 +29,7 @@ from api.campaigns import campaigns_bp
 from api.strategy_insights import strategy_insights_bp
 from api.todos import todos_bp
 from api.redirects import redirects_bp
+from api.outreach_approval import outreach_approval_bp
 
 # Paths that must stay reachable WITHOUT a login (2026-08-19 auth gate, see api/auth.py):
 # the login endpoints themselves, health checks, and the handful of routes real external
@@ -50,6 +51,8 @@ _PUBLIC_PREFIXES = (
     "/api/v1/interest/",
     # A real lead's WhatsApp client hits this straight from a template button (2026-09-10).
     "/api/v1/go/",
+    # The admin clicks this straight from the test-outreach email, no session (2026-09-10).
+    "/api/v1/outreach-approval/",
     # Brand logo used in outbound email HTML -- recipients' mail clients must fetch this
     # without a CRM session cookie (2026-09-05).
     "/static/brand/",
@@ -100,6 +103,7 @@ def create_app():
     app.register_blueprint(strategy_insights_bp)
     app.register_blueprint(todos_bp)
     app.register_blueprint(redirects_bp)
+    app.register_blueprint(outreach_approval_bp)
 
     @app.route("/health")
     def health():

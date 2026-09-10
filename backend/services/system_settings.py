@@ -63,6 +63,15 @@ COMPANY_PROFILE_URL = "company_profile_url"
 COMPANY_CONTACT_KEYS = (COMPANY_CONTACT_EMAIL, COMPANY_CONTACT_PHONE,
                         COMPANY_WEBSITE_URL, COMPANY_PROFILE_URL)
 
+# 2026-09-10, real user ask: when a campaign is approved, its real first-touch EMAIL and
+# WHATSAPP message go to THIS contact first (services/campaign_service.
+# send_test_outreach_preview) instead of a real lead -- the admin reviews both and
+# approves each channel independently before real leads in that campaign get outreach.
+# Defaults are the real values the user gave when asking for this feature.
+TEST_OUTREACH_EMAIL = "test_outreach_email"
+TEST_OUTREACH_PHONE = "test_outreach_phone"
+TEST_OUTREACH_KEYS = (TEST_OUTREACH_EMAIL, TEST_OUTREACH_PHONE)
+
 # Phase 15 Step 15(B).2 -- the real per-search cost is admin-configurable rather than
 # hardcoded, since this project cannot independently verify Serper's own current billed
 # rate; the admin sets the real number once they know it. Monthly budget resets are
@@ -88,7 +97,8 @@ STRATEGY_REFLECTION_MIN_SAMPLE_FLOOR = "strategy_reflection_min_sample_floor"
 STRATEGY_REFLECTION_LAST_RUN_DATE = "strategy_reflection_last_run_date"
 
 STR_KEYS = {EOD_REPORT_RECIPIENTS, EOD_REPORT_WHATSAPP_RECIPIENTS, STUCK_ALERT_LAST_SENT_AT,
-            DAILY_PLAN_LAST_RUN_DATE, STRATEGY_REFLECTION_LAST_RUN_DATE, *COMPANY_CONTACT_KEYS}
+            DAILY_PLAN_LAST_RUN_DATE, STRATEGY_REFLECTION_LAST_RUN_DATE, *COMPANY_CONTACT_KEYS,
+            *TEST_OUTREACH_KEYS}
 INT_KEYS = {OUTREACH_DAILY_CAP_EMAIL, OUTREACH_DAILY_CAP_WHATSAPP, DISCOVERY_COOLDOWN_HOURS,
             STUCK_ALERT_COOLDOWN_MINUTES, STRATEGY_REFLECTION_MIN_SAMPLE_FLOOR}
 FLOAT_KEYS = {PROSPECT_SEARCH_MONTHLY_BUDGET, PROSPECT_SEARCH_COST_PER_SEARCH}
@@ -171,6 +181,8 @@ def get_all(db) -> dict:
         # Default to empty, not to a plausible-looking placeholder: an unset contact
         # detail must render as absent, never as a wrong address a real lead might use.
         **{key: get_str(db, key, default="") for key in COMPANY_CONTACT_KEYS},
+        TEST_OUTREACH_EMAIL: get_str(db, TEST_OUTREACH_EMAIL, default="hardikv682@gmail.com"),
+        TEST_OUTREACH_PHONE: get_str(db, TEST_OUTREACH_PHONE, default="9510254405"),
         # Phase 15 Step 15(B).2 -- budget defaults to 0.0 (blocked), the same fail-safe
         # posture as AUTONOMOUS_OUTREACH_ENABLED: a feature that spends real money never
         # silently runs until a human explicitly sets a real, non-zero budget.

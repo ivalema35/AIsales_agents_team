@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
+import OutreachApprovalCard from "../components/OutreachApprovalCard";
 import Badge from "../components/ui/Badge";
 import { statusBadgeClass, statusLabel } from "../lib/statusColors";
 import { industryLabel, locationLabel } from "../lib/targetSegment";
@@ -122,8 +123,11 @@ export default function CampaignDetail() {
     const ok = await confirm({
       title: "Approve this campaign?",
       message:
-        `Mark "${campaign.name}" as approved? This only updates the campaign status label. ` +
-        `Leads can already be found while status is still Draft — approving does not start discovery by itself.`,
+        `Mark "${campaign.name}" as approved? This also sends this campaign's real ` +
+        `first-touch EMAIL and WhatsApp message to your own test contact (Settings → Test ` +
+        `outreach contact) so you can review them for real before any actual lead does. ` +
+        `Real leads get nothing until you approve each channel from that test message or ` +
+        `from this page.`,
       confirmLabel: "Mark as approved",
     });
     if (!ok) return;
@@ -131,7 +135,19 @@ export default function CampaignDetail() {
     try {
       const updated = await api.updateCampaign(id, { status: "APPROVED" });
       setCampaign(updated);
-      toast.success("Campaign approved");
+      const test = updated.test_outreach_result;
+      if (test) {
+        const problems = [test.email?.error, test.whatsapp?.error].filter(Boolean);
+        if (!test.lead_used) {
+          toast.error("Campaign approved, but no lead exists yet to build a real test preview from.");
+        } else if (problems.length) {
+          toast.error(`Campaign approved, but the test send had a problem: ${problems.join("; ")}`);
+        } else {
+          toast.success("Campaign approved — real test email and WhatsApp message sent to your test contact.");
+        }
+      } else {
+        toast.success("Campaign approved");
+      }
     } catch (err) {
       toast.error(err.message.replace(/^\d+\s*/, ""));
     } finally {
@@ -230,6 +246,12 @@ export default function CampaignDetail() {
           <StatChip label="Replied" value={replied} />
           {hot > 0 && <StatChip label="Hot interest" value={hot} emphasize />}
         </div>
+
+        {campaign.status === "APPROVED" && (
+          <div className="mt-4">
+            <OutreachApprovalCard campaign={campaign} onUpdated={setCampaign} />
+          </div>
+        )}
 
         {campaign.status === "PROPOSED" && (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-parchment px-4 py-3">
