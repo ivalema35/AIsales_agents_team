@@ -15,6 +15,7 @@ import time
 import uuid
 from urllib.parse import urlparse
 
+import requests
 from sqlalchemy import func
 
 from database.db_config import SessionLocal
@@ -32,6 +33,7 @@ from services.data_acquisition.website_scraper import (
     is_role_account,
 )
 from services.data_acquisition.maps_scraper import MapsPhoneCircuitBreaker
+from services.data_acquisition.maps_discovery import discover_via_maps
 from agents.review_analyst_agent import analyze_reviews
 from agents.scoring_agent import score_lead
 from services.heartbeat import beat_standalone
@@ -94,15 +96,26 @@ def _handle_discover(db, payload):
     # same call a couple of times, a few seconds apart, before accepting empty as real --
     # runs in a worker thread (asyncio.to_thread), so a short blocking sleep here is safe.
     provider = SerperProvider()
-    results = provider.discover(query, location=location)
-    attempts = 1
-    while not results and attempts < 3:
-        time.sleep(3)
-        attempts += 1
+    try:
         results = provider.discover(query, location=location)
-    if attempts > 1:
-        logger.info("DISCOVER '%s' -> 0 results on first try, %d attempt(s) total, %d results after retry",
-                   query, attempts, len(results))
+        attempts = 1
+        while not results and attempts < 3:
+            time.sleep(3)
+            attempts += 1
+            results = provider.discover(query, location=location)
+        if attempts > 1:
+            logger.info("DISCOVER '%s' -> 0 results on first try, %d attempt(s) total, %d results after retry",
+                       query, attempts, len(results))
+    except requests.exceptions.HTTPError as exc:
+        # 2026-09-10, real live gap: Serper's credit pool ran out entirely ("Not enough
+        # credits", HTTP 400 on both /places and /search) -- confirmed live, not assumed.
+        # Rather than silently producing zero new leads until someone notices and tops
+        # up credits, fall back to the free (no API key) Google Maps listing scraper.
+        # Deliberately only on a real HTTP error from Serper itself (quota/auth/service
+        # issues), never on a legitimate empty result -- an honest "nothing found" must
+        # not trigger a slower, higher-footprint scrape for no reason.
+        logger.warning("DISCOVER '%s': Serper failed (%s) -- falling back to Google Maps scrape", query, exc)
+        results = discover_via_maps(query, location=location, max_results=15)
 
     # Discovery is now campaign-driven (Step 17.7, 2026-09-02, MASTER_DEVELOPMENT_PRD.md
     # §5C.0's revision): the scheduler scopes every real DISCOVER job to one specific
@@ -388,7 +401,16 @@ def _handle_enrich(db, payload):
     # Google's local pack frequently carries no website at all (verified stable, not
     # flaky: an Ahmedabad gaming-zone search returned 0/10 websites three runs running).
     if not domain:
-        recovered = SerperProvider().find_website(lead.company_name, lead.region_location)
+        # 2026-09-10: wasn't wrapped -- a real Serper outage (credits exhausted, confirmed
+        # live) raised straight out of here and crashed the whole ENRICH job, unlike every
+        # other Serper call in this waterfall (find_email/find_phone/find_social_profiles
+        # below all already tolerate this). Same graceful-degrade posture: no recovered
+        # website is a legitimate outcome, not a reason to fail the job.
+        try:
+            recovered = SerperProvider().find_website(lead.company_name, lead.region_location)
+        except Exception as exc:  # noqa: BLE001 - a failed recovery must not fail the job
+            logger.warning("find_website failed for %s: %s", lead.company_name, exc)
+            recovered = None
         if recovered:
             lead.website_url = recovered
             db.commit()
