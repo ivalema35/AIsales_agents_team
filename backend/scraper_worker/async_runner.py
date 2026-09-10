@@ -476,7 +476,17 @@ def _handle_review(db, payload):
     if not lead:
         raise ValueError(f"lead {payload['lead_id']} not found")
 
-    snippets = SerperProvider().find_review_signals(lead.company_name, lead.region_location)
+    # 2026-09-10, real live bug: this function's own docstring says "graceful
+    # degradation was the explicit design decision", but the code didn't actually
+    # tolerate a Serper failure -- a real outage (credits exhausted, confirmed live)
+    # raised straight out of here, and 25 real REVIEW jobs ended up permanently DEAD
+    # (visible on the dashboard's Job Queue as "Stuck") instead of just proceeding with
+    # zero snippets like an honest "no review data available" already does.
+    try:
+        snippets = SerperProvider().find_review_signals(lead.company_name, lead.region_location)
+    except Exception as exc:  # noqa: BLE001 - a failed recovery must not fail the job
+        logger.warning("find_review_signals failed for %s: %s", lead.company_name, exc)
+        snippets = []
     result, outcome = analyze_reviews(db, lead.id, lead.company_name, snippets)
 
     db.add(LeadReviewInsight(
