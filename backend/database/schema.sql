@@ -436,6 +436,10 @@ CREATE TABLE IF NOT EXISTS whatsapp_templates (
     -- button, today's behavior unchanged.
     button_url        TEXT,
     button_label      TEXT,
+    -- 2026-09-10: Meta allows up to 2 URL buttons per template (verified against Meta's
+    -- own live docs) -- a second, independent static URL button, same rules as the first.
+    button_2_url      TEXT,
+    button_2_label    TEXT,
     body_text         TEXT NOT NULL,         -- with {{1}}, {{2}} placeholders, Meta's own syntax
     variable_labels   TEXT DEFAULT '[]',     -- JSON array, what each {{n}} means, e.g. ["company_name"]
     -- DRAFT: AI-authored, awaiting admin review, never yet sent to Meta (Step 9.6).

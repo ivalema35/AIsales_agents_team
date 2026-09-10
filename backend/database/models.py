@@ -470,6 +470,11 @@ class WhatsappTemplate(Base):
     # per-send parameter needed) -- null = no button, unchanged behavior.
     button_url = Column(String)
     button_label = Column(String)
+    # 2026-09-10, real user ask: Meta's own real limit is up to 2 URL buttons per
+    # template (verified against Meta's live docs, not assumed) -- a second, independent
+    # static URL button, same shape/rules as the first. Null = only one button (or none).
+    button_2_url = Column(String)
+    button_2_label = Column(String)
     body_text = Column(Text, nullable=False)
     variable_labels = Column(Text, default="[]")  # JSON array
     # DRAFT, PENDING, APPROVED, REJECTED, ADMIN_REJECTED -- see schema.sql for the full

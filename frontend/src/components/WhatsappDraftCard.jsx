@@ -97,6 +97,11 @@ export default function WhatsappDraftCard({ item: initialItem, onResolved }) {
             Button: {t.button_label || "View"}
           </span>
         )}
+        {t.button_2_url && (
+          <span title={t.button_2_url} className="rounded bg-gold-100 px-1.5 py-0.5 text-[10px] font-medium text-gold-700">
+            Button 2: {t.button_2_label || "View"}
+          </span>
+        )}
         <Badge variant="NEUTRAL">{t.category}</Badge>
         <span className="flex items-center gap-1 font-mono text-[10px] font-medium text-ink-500">
           <Boxes size={10} /> {t.product_title || "Shared -- all products"}

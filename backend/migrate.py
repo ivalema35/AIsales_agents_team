@@ -45,6 +45,8 @@ COLUMN_MIGRATIONS = [
     ("todo_items", "lead_id", "TEXT"),
     ("whatsapp_templates", "qc_caution", "TEXT"),
     ("whatsapp_templates", "draft_context", "TEXT"),
+    ("whatsapp_templates", "button_2_url", "TEXT"),
+    ("whatsapp_templates", "button_2_label", "TEXT"),
 ]
 
 

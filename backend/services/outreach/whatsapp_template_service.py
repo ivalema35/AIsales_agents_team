@@ -63,7 +63,8 @@ _EXAMPLE_VALUES = {
 
 
 def _create_on_meta(name, language, category, body_text, variable_labels=None,
-                    button_url=None, button_label=None):
+                    button_url=None, button_label=None,
+                    button_2_url=None, button_2_label=None):
     """The actual real Meta Create Template API call, shared by every path that ends in
     a real submission (a direct admin submit, or an admin approving an AI draft --
     Step 9.6). Raises on failure -- same contract as every other real send in this
@@ -76,6 +77,12 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None,
     URL: this system's content assets are scoped per PRODUCT, not per lead, so every real
     send of a given template already points at the same real, admin-approved link -- no
     per-send parameter is needed, and Meta requires none for a button with no variable.
+
+    `button_2_url`/`button_2_label` (2026-09-10, real user ask): a second, independent
+    static URL button -- Meta's own real limit is up to 2 URL buttons per template
+    (verified against Meta's live documentation before building this, not assumed). Both
+    buttons live in the SAME single BUTTONS component's `buttons` array -- Meta rejects
+    two separate BUTTONS components in one template.
     """
     if not Config.WHATSAPP_TOKEN:
         raise RuntimeError("WHATSAPP_TOKEN not configured")
@@ -88,11 +95,13 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None,
             "body_text": [[_EXAMPLE_VALUES.get(v, "example") for v in variable_labels]]
         }
     components = [body_component]
+    buttons = []
     if button_url:
-        components.append({
-            "type": "BUTTONS",
-            "buttons": [{"type": "URL", "text": (button_label or "View")[:25], "url": button_url}],
-        })
+        buttons.append({"type": "URL", "text": (button_label or "View")[:25], "url": button_url})
+    if button_2_url:
+        buttons.append({"type": "URL", "text": (button_2_label or "View")[:25], "url": button_2_url})
+    if buttons:
+        components.append({"type": "BUTTONS", "buttons": buttons})
     payload = {
         "name": name,
         "language": language,
@@ -110,7 +119,8 @@ def _create_on_meta(name, language, category, body_text, variable_labels=None,
 
 
 def submit_template(db, name, language, category, purpose, body_text, variable_labels,
-                    product_id=None, followup_level=None, button_url=None, button_label=None):
+                    product_id=None, followup_level=None, button_url=None, button_label=None,
+                    button_2_url=None, button_2_label=None):
     """Real Meta Create Template API call, for a template an admin is submitting
     directly from the dashboard form -- creates the row AND submits it to Meta in one
     step, exactly like before Step 9.6. Stores the new row as PENDING with Meta's own
@@ -129,7 +139,8 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
     template (see _create_on_meta's own docstring for why static, not per-lead dynamic).
     """
     data = _create_on_meta(name, language, category, body_text, variable_labels,
-                           button_url=button_url, button_label=button_label)
+                           button_url=button_url, button_label=button_label,
+                           button_2_url=button_2_url, button_2_label=button_2_label)
 
     row = WhatsappTemplate(
         name=name,
@@ -139,6 +150,8 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
         followup_level=followup_level if purpose == "FOLLOW_UP" else None,
         button_url=button_url,
         button_label=button_label,
+        button_2_url=button_2_url,
+        button_2_label=button_2_label,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="PENDING",
@@ -155,7 +168,8 @@ def submit_template(db, name, language, category, purpose, body_text, variable_l
 
 def create_draft_template(db, name, language, category, purpose, body_text, variable_labels,
                           product_id=None, reasoning=None, followup_level=None,
-                          button_url=None, button_label=None, qc_caution=None, draft_context=None):
+                          button_url=None, button_label=None, button_2_url=None, button_2_label=None,
+                          qc_caution=None, draft_context=None):
     """Step 9.6 -- an AI-authored candidate template, stored as DRAFT. Deliberately makes
     NO real Meta call: nothing an AI writes reaches Meta (or a real business) without an
     explicit admin approve action first (approve_draft_and_submit below). `reasoning` is
@@ -182,6 +196,8 @@ def create_draft_template(db, name, language, category, purpose, body_text, vari
         followup_level=followup_level if purpose == "FOLLOW_UP" else None,
         button_url=button_url,
         button_label=button_label,
+        button_2_url=button_2_url,
+        button_2_label=button_2_label,
         body_text=body_text,
         variable_labels=json.dumps(variable_labels),
         status="DRAFT",
@@ -210,7 +226,8 @@ def approve_draft_and_submit(db, template):
     variable_labels = json.loads(template.variable_labels or "[]")
     data = _create_on_meta(template.name, template.language, template.category,
                            template.body_text, variable_labels,
-                           button_url=template.button_url, button_label=template.button_label)
+                           button_url=template.button_url, button_label=template.button_label,
+                           button_2_url=template.button_2_url, button_2_label=template.button_2_label)
     template.status = "PENDING"
     template.meta_template_id = data.get("id")
     db.commit()

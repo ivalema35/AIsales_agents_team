@@ -25,6 +25,7 @@ const FOLLOWUP_LEVEL_HINT = {
 const EMPTY_DRAFT = {
   name: "", language: "en", category: "MARKETING", purpose: "FOLLOW_UP", followup_level: 1,
   body_text: "", variable_labels: [], product_id: "", button_url: "", button_label: "",
+  button_2_url: "", button_2_label: "",
 };
 
 function StatTile({ icon: Icon, label, value, tone = "slate" }) {
@@ -411,6 +412,11 @@ export default function WhatsappTemplates() {
             Button: {t.button_label || "View"}
           </span>
         )}
+        {t.button_2_url && (
+          <span title={t.button_2_url} className="rounded bg-gold-100 px-1.5 py-0.5 text-[10px] font-medium text-gold-700">
+            Button 2: {t.button_2_label || "View"}
+          </span>
+        )}
                     <Badge variant="NEUTRAL">{t.category}</Badge>
                     {t.origin === "AI" && (
                       <span className="flex items-center gap-0.5 text-[10px] font-medium text-gold-500">
@@ -672,6 +678,39 @@ export default function WhatsappTemplates() {
                 value={draft.button_label}
                 onChange={(e) => setDraft((d) => ({ ...d, button_label: e.target.value }))}
                 placeholder="View Demo"
+                className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+              />
+            </label>
+          )}
+
+          {/* 2026-09-10, real user ask: Meta allows up to 2 URL buttons per template
+             (verified against Meta's own live docs before building this) -- a second,
+             independent static button, only offered once the first one is set. */}
+          {draft.button_url && (
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-medium text-ink-700">Second button URL (optional)</span>
+              <input
+                type="url"
+                value={draft.button_2_url}
+                onChange={(e) => setDraft((d) => ({ ...d, button_2_url: e.target.value }))}
+                placeholder="https://wa.me/919924426361"
+                className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
+              />
+              <span className="font-mono text-[10px] text-ink-500">
+                Meta allows up to 2 URL buttons per template -- e.g. a "Visit website" plus a
+                "wa.me/..." link that opens a direct WhatsApp chat.
+              </span>
+            </label>
+          )}
+          {draft.button_2_url && (
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-medium text-ink-700">Second button label (max 25 chars)</span>
+              <input
+                type="text"
+                maxLength={25}
+                value={draft.button_2_label}
+                onChange={(e) => setDraft((d) => ({ ...d, button_2_label: e.target.value }))}
+                placeholder="Chat with us"
                 className="rounded-md border border-line px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-500 focus:border-gold-500 focus:outline-none"
               />
             </label>

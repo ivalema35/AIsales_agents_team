@@ -43,6 +43,9 @@ def _serialize(row, product_titles=None):
         # no button (today's default, unchanged).
         "button_url": row.button_url,
         "button_label": row.button_label,
+        # 2026-09-10 -- a second, independent static URL button (Meta allows up to 2).
+        "button_2_url": row.button_2_url,
+        "button_2_label": row.button_2_label,
         "body_text": row.body_text,
         "variable_labels": json.loads(row.variable_labels or "[]"),
         "status": row.status,
@@ -205,6 +208,17 @@ def create_template():
     if button_label and not button_url:
         errors.append("button_label requires button_url")
 
+    # 2026-09-10, real user ask: Meta allows up to 2 URL buttons per template (verified
+    # against Meta's live docs). Same validation as the first, independent of it.
+    button_2_url = str(data.get("button_2_url") or "").strip() or None
+    button_2_label = str(data.get("button_2_label") or "").strip()[:25] or None
+    if button_2_url and not re.match(r"^https?://", button_2_url):
+        errors.append("button_2_url must be a real http(s) URL")
+    if button_2_label and not button_2_url:
+        errors.append("button_2_label requires button_2_url")
+    if button_2_url and not button_url:
+        errors.append("button_2_url requires button_url to be set first")
+
     if errors:
         return jsonify({"error": errors}), 422
 
@@ -217,7 +231,8 @@ def create_template():
         try:
             row = submit_template(db, name, language, category, purpose, body_text, variable_labels,
                                   product_id, followup_level=followup_level,
-                                  button_url=button_url, button_label=button_label)
+                                  button_url=button_url, button_label=button_label,
+                                  button_2_url=button_2_url, button_2_label=button_2_label)
         except Exception as exc:  # noqa: BLE001 - a real API failure must surface, not 500 silently
             return jsonify({"error": [f"Meta submission failed: {exc}"]}), 502
         product_titles = _product_titles_for(db, row)
