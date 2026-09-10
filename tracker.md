@@ -7678,5 +7678,68 @@ par usi search ke results dikhein.
 **Deployed 2026-09-10:** commit `e3e4373` → push → VPS `git pull` → frontend build →
 `public_html` sync (uploads preserved). Live string check: “Your searches” in served JS.
 
+---
 
+## 2026-09-10 — Real Outreach Safety Gate: campaign approve → test message → per-channel unlock
+
+**User ki real request**: campaign approve karte hi turant real leads ko outreach nahi
+jaana chahiye — pehle campaign ka real first-touch EMAIL aur WhatsApp message **humare
+apne test contact** (email + WhatsApp number, configurable) par jana chahiye. Wahan se
+(ya CRM se) EMAIL aur WHATSAPP ko **alag-alag** approve karna hoga — jab tak approve na
+karein, us campaign ke real leads ko us channel pe kuch nahi jayega.
+
+**Plan mode use kiya** (bada, cross-cutting feature — DB schema, job queue, naye links,
+naya UI) — 2 background research agents se real send-mechanics aur UI patterns pehle
+samjhe, phir user se ek zaroori clarification liya: WhatsApp ke approved template me
+koi link nahi daal sakte (Meta ka fixed-wording rule) — isliye **dono approve links
+(Email + WhatsApp) sirf test EMAIL me hi jayenge**, jaisa user ne confirm kiya.
+
+**Real build**:
+- `Campaign` me 3 naye columns: `email_outreach_approved_at`, `whatsapp_outreach_approved_at`
+  (NULL = us channel pe real send blocked), `test_outreach_sent_at` (ek hi baar bhejne
+  ke liye bookkeeping).
+- Naya setting: **Test outreach contact** (email + WhatsApp number, Settings page me
+  editable, default `hardikv682@gmail.com` / `9510254405`).
+- `services/campaign_service.send_test_outreach_preview()` — campaign PROPOSED→APPROVED
+  hote hi (existing "Mark as approved" button se) real lead ka real email+WhatsApp
+  content banake test contact par bhejta he, saath me 2 real one-click approve links.
+- `services/outreach/outreach_approval_links.py` + naya `/api/v1/outreach-approval/...`
+  endpoint — interest-links jaisa hi HMAC-signed, one-click, `/api/v1/` ke neeche (aaj ki
+  hi seekh — bare prefix production me kabhi nahi pahunchta).
+- **Real gate** `services/lead_service.claim_lead_for_outreach()` me lagaya — campaign
+  ka channel approved na ho to real send kabhi queue nahi hota. `force=True` bhi isse
+  bypass nahi karta (jaan-boojh kar). Defense-in-depth: `outreach_handler.py` aur
+  `outreach_wa_handler.py` me bhi real send se theek pehle wahi check dobara.
+- CRM UI: naya `OutreachApprovalCard.jsx` — Campaign page pe (jab status=APPROVED)
+  Email/WhatsApp dono ke liye alag Approve/Pause button + status badge.
+
+**Real testing mein 3 real bugs mile aur turant fix kiye** (yeh discipline hi is
+project ki jaan he — sirf "code likh diya" pe trust nahi kiya):
+1. `draft['selected_subject']` — galat key name, real key `'subject'` hai (KeyError).
+2. **Bada production bug mila**: `ivinfotech_general_it_first_touch` template ka real
+   Meta-approved IMAGE header hai, lekin real send function (`send_template_message`)
+   header image kabhi bhejta hi nahi tha — Meta real error deta he: *"Format mismatch,
+   expected IMAGE, received UNKNOWN"*. Matlab **yeh already-approved template kabhi bhi
+   real send me kaam nahi karta** chahe outreach approve ho bhi jaye. Fix: naya
+   `WhatsappTemplate.header_image_url` column, `send_template_message()` ab header
+   component bhejta he jab set ho.
+3. `get_str(db, KEY)` bina `default=` diye call kiya — jab tak koi setting save na kare,
+   khali string jaata tha real contact ki jagah. Fix: dono jagah real default explicit
+   diya.
+
+**Real end-to-end verify kiya** (General IT Services Push campaign se): real email +
+real WhatsApp (header image ke saath) test contact par safalta se pahunche, dono
+approve-links real curl se click karke test kiye — dono "now live" confirm hue.
+
+**🔍 Real, important discovery isi verification ke dauran**: usi campaign ke 3 real
+leads (Gym Lounge Gandhinagar, Disha Estate Management, Sukhdham Real Estate) ko **already
+09:18-09:21 baje real email ja chuke the** — yeh naye gate se PEHLE hua tha (feature abhi
+bana hi raha tha) — matlab yehi asli gap tha jo user fix karwana chahte the, ab live hai.
+Verify kiya ki mere apne testing window (baad me, jab maine yeh campaign khud approve
+karke turant reset kiya) me koi naya real send nahi hua — turant reset kar diya taaki
+koi confusion na ho.
+
+**Final state**: General IT Services Push campaign abhi **dono channel pe unapproved**
+(safe/default state) — asli approval user khud karega jab woh apna real test message
+dekh le.
 
