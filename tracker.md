@@ -7635,3 +7635,17 @@ achha sign he). Final real counts: AI Automation 30/50, IV Classes 47/100, Healt
 10/20, General IT 3/20 — sab clean, proper Serper data se, Maps wala workaround ab
 kahi use nahi ho raha (naya key kaam kar raha he jab tak yeh bhi khatam na ho jaye).
 
+### ✅ Prospect Finder — search groups + non-tech UX (2026-09-10)
+
+User: Prospect Finder non-tech friendly banao; har search query ka card/group ho, kholne
+par usi search ke results dikhein.
+
+**Change (`frontend/src/pages/ProspectFinder.jsx` only):**
+- Flat “Search history” + flat “Prospects found” hata ke **Your searches** — har
+  `ProspectSearch` ek expandable group card.
+- Open → us `search_id` ke prospects (already on prospect rows); new search auto-opens.
+- Friendlier form labels (“Name this search”, “Job titles”, “Where”), header stats
+  (searches / people / spent), clearer empty states.
+- Backend unchanged (`search_id` pehle se tha).
+
+
