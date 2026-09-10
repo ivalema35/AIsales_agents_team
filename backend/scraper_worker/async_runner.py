@@ -597,6 +597,16 @@ def _handle_score(db, payload):
 
     logger.info("SCORE %s -> %d (%s), confidence=%.2f, route=%s",
                lead.company_name, result["score"], result["tier"], result["confidence"], route)
+
+    # 2026-09-10: if this lead is HOT/WARM but below the autonomous confidence floor,
+    # refresh the campaign's Inbox "Needs your OK to send" batch card.
+    if lead.campaign_id and result.get("tier") in ("HOT", "WARM"):
+        try:
+            from services.campaign_service import sync_low_confidence_outreach_todo
+            sync_low_confidence_outreach_todo(db, lead.campaign_id)
+        except Exception:
+            logger.exception("low-confidence outreach todo sync failed for campaign %s", lead.campaign_id)
+
     return lead.id
 
 

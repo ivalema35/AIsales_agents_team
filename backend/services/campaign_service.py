@@ -133,7 +133,7 @@ ACTIVE_CAMPAIGN_STATUSES = ("PROPOSED", "APPROVED", "RUNNING")
 # 2026-09-07 -- the two hand-written to-do labels (outside OPERATIONAL_READINESS) that
 # represent a real, structural "must act" blocker rather than an ordinary strategic note --
 # see generate_campaign_todo()'s use of this alongside operational_readiness's own labels.
-_FIXED_BLOCKER_LABELS = {"Discovery off", "Ready to send"}
+_FIXED_BLOCKER_LABELS = {"Discovery off", "Ready to send", "Needs your OK to send"}
 
 # Exact labels the AI Manager must use when it raises these cues (so Approve / Campaign-page
 # Mark as approved can resolve the matching Inbox card). The AI writes the text; Python
@@ -143,6 +143,10 @@ _REVIEW_MESSAGES_LABEL = "Review messages"
 # Option B (2026-09-08): QC-rejected email drafts land here for human Approve & send.
 _REVIEW_SEND_EMAIL_LABEL = "Review & send email"
 _OUTREACH_EMAIL_DRAFT_KIND = "outreach_email_draft"
+# 2026-09-10: HOT/WARM but scoring confidence < 0.70 — autonomous tick will not claim;
+# one campaign-scoped Inbox card lists them all; Approve force-claims every one.
+_NEEDS_OK_OUTREACH_LABEL = "Needs your OK to send"
+_LOW_CONF_OUTREACH_KIND = "low_confidence_outreach_batch"
 
 
 def resolve_auto_campaign_id(db, product_id: str) -> str | None:
@@ -784,6 +788,206 @@ def create_lead_escalation_todo(
         )
     db.add(item)
     db.commit()
+
+
+def list_needs_ok_outreach_leads(db, campaign_id: str) -> list[dict]:
+    """SCORED HOT/WARM leads this campaign's autonomous tick will NOT claim because scoring
+    confidence is below the HUMAN_ESCALATION floor (<0.70), but a human OK (force claim)
+    would. Only includes leads that have a usable contact on a channel the campaign has
+    already approved (and the product's region allows)."""
+    from cognition.decision_engine import route_action
+    from services.channel_policy_service import get_allowed_channels
+    from services.lead_service import ELIGIBLE_TIERS
+
+    campaign = db.get(Campaign, campaign_id)
+    if not campaign:
+        return []
+    campaign_approved = set()
+    if campaign.email_outreach_approved_at:
+        campaign_approved.add("EMAIL")
+    if campaign.whatsapp_outreach_approved_at:
+        campaign_approved.add("WHATSAPP")
+    if not campaign_approved:
+        return []
+
+    rows = (
+        db.query(Lead, LeadScore)
+        .join(LeadScore, LeadScore.lead_id == Lead.id)
+        .filter(
+            Lead.campaign_id == campaign_id,
+            Lead.status == "SCORED",
+            LeadScore.tier.in_(tuple(ELIGIBLE_TIERS)),
+        )
+        .order_by(LeadScore.confidence.desc(), Lead.created_at.asc())
+        .all()
+    )
+    out = []
+    for lead, score in rows:
+        if route_action("SCORING", float(score.confidence or 0)) != "HUMAN_ESCALATION":
+            continue
+        product = db.get(Product, lead.product_id)
+        region_allowed = get_allowed_channels(db, product.target_country if product else None)
+        effective = region_allowed & campaign_approved
+        has_email = bool(lead.primary_email) and "EMAIL" in effective
+        has_phone = bool(lead.primary_phone or lead.whatsapp_number) and "WHATSAPP" in effective
+        if not has_email and not has_phone:
+            continue
+        channels = []
+        if has_email:
+            channels.append("EMAIL")
+        if has_phone:
+            channels.append("WHATSAPP")
+        out.append({
+            "lead_id": lead.id,
+            "company_name": lead.company_name,
+            "tier": score.tier,
+            "confidence": float(score.confidence or 0),
+            "channels": channels,
+        })
+    return out
+
+
+def sync_low_confidence_outreach_todo(db, campaign_id: str) -> TodoItem | None:
+    """Keep one PENDING Inbox card per campaign for low-confidence HOT/WARM that need a
+    human OK before outreach. Updates the lead list in place; dismisses the card when the
+    list is empty (leads claimed, dismissed, or confidence no longer blocking)."""
+    leads = list_needs_ok_outreach_leads(db, campaign_id)
+    existing = (
+        db.query(TodoItem)
+        .filter(
+            TodoItem.campaign_id == campaign_id,
+            TodoItem.status == "PENDING",
+            TodoItem.label == _NEEDS_OK_OUTREACH_LABEL,
+        )
+        .first()
+    )
+    if not leads:
+        if existing:
+            existing.status = "DISMISSED"
+            existing.resolved_at = datetime.utcnow()
+            db.commit()
+        return None
+
+    n = len(leads)
+    names_preview = ", ".join(l["company_name"] for l in leads[:4])
+    if n > 4:
+        names_preview += f", +{n - 4} more"
+    text = (
+        f"{n} lead{'s look' if n != 1 else ' looks'} good enough to contact (HOT/WARM), but "
+        f"the AI's confidence is under 70% so it will not message them on its own. "
+        f"Approve to start real outreach for all of them together. "
+        f"({names_preview})"
+    )
+    proposal = {
+        "kind": _LOW_CONF_OUTREACH_KIND,
+        "lead_ids": [l["lead_id"] for l in leads],
+        "leads": leads,
+        "count": n,
+    }
+    avg_conf = sum(l["confidence"] for l in leads) / n
+
+    if existing:
+        existing.text = text
+        existing.proposal = json.dumps(proposal)
+        existing.confidence = avg_conf
+        existing.is_blocker = 1
+        db.commit()
+        return existing
+
+    item = TodoItem(
+        scope="CAMPAIGN",
+        campaign_id=campaign_id,
+        label=_NEEDS_OK_OUTREACH_LABEL,
+        text=text,
+        proposal=json.dumps(proposal),
+        confidence=avg_conf,
+        is_blocker=1,
+    )
+    db.add(item)
+    db.commit()
+    return item
+
+
+def sync_all_low_confidence_outreach_todos(db) -> int:
+    """Outreach-tick / daily housekeeping: refresh the Inbox card for every campaign that
+    still has SCORED HOT/WARM leads (cheap join, then per-campaign sync)."""
+    campaign_ids = [
+        row[0] for row in
+        db.query(Lead.campaign_id)
+        .join(LeadScore, LeadScore.lead_id == Lead.id)
+        .filter(
+            Lead.campaign_id.isnot(None),
+            Lead.status == "SCORED",
+            LeadScore.tier.in_(("HOT", "WARM")),
+        )
+        .distinct()
+        .all()
+    ]
+    # Also refresh campaigns that may only have an empty leftover card.
+    pending_ids = [
+        row[0] for row in
+        db.query(TodoItem.campaign_id)
+        .filter(
+            TodoItem.status == "PENDING",
+            TodoItem.label == _NEEDS_OK_OUTREACH_LABEL,
+            TodoItem.campaign_id.isnot(None),
+        )
+        .distinct()
+        .all()
+    ]
+    touched = 0
+    for cid in set(campaign_ids) | set(pending_ids):
+        if sync_low_confidence_outreach_todo(db, cid):
+            touched += 1
+        else:
+            # sync may have dismissed; still counts as maintenance
+            pass
+    return touched
+
+
+def _apply_low_confidence_outreach_batch(db, item: TodoItem, proposal: dict) -> dict:
+    """Human OK on the Inbox card: force-claim every listed lead and enqueue real sends."""
+    from services.lead_service import claim_lead_for_outreach
+
+    lead_ids = proposal.get("lead_ids") or []
+    if not lead_ids:
+        # Re-resolve from live DB in case proposal is stale
+        lead_ids = [l["lead_id"] for l in list_needs_ok_outreach_leads(db, item.campaign_id)]
+
+    claimed = []
+    skipped = []
+    stagger = Config.OUTREACH_STAGGER_SECONDS
+    for i, lead_id in enumerate(lead_ids):
+        lead = db.get(Lead, lead_id)
+        if not lead or lead.status != "SCORED":
+            skipped.append({"lead_id": lead_id, "reason": "already moved on"})
+            continue
+        run_after = datetime.utcnow() + timedelta(seconds=i * stagger)
+        channels = claim_lead_for_outreach(
+            db, lead_id, run_after=run_after, force=True, enqueue_jobs=True,
+        )
+        if channels:
+            claimed.append({
+                "lead_id": lead_id,
+                "company_name": lead.company_name,
+                "channels": channels,
+            })
+        else:
+            skipped.append({
+                "lead_id": lead_id,
+                "company_name": lead.company_name,
+                "reason": "no usable channel right now",
+            })
+
+    # Do NOT sync the Inbox card here — approve_todo_item is about to resolve THIS card.
+    # A post-approve sync recreates a fresh card if any low-conf leads remain.
+    return {
+        "outreach_batch_started": True,
+        "claimed_count": len(claimed),
+        "skipped_count": len(skipped),
+        "claimed": claimed,
+        "skipped": skipped,
+    }
 
 
 def _apply_proposal_to_campaign(campaign: Campaign, proposal: dict) -> None:
@@ -1829,6 +2033,15 @@ def approve_todo_item(db, todo_id: str) -> dict:
             "subject": sent["subject"],
             "company_name": sent["company_name"],
         }
+    elif (
+        item.scope == "CAMPAIGN"
+        and isinstance(proposal, dict)
+        and proposal.get("kind") == _LOW_CONF_OUTREACH_KIND
+    ):
+        # 2026-09-10: human OK for the whole low-confidence HOT/WARM batch — force-claim
+        # every listed lead so real OUTREACH_* jobs enqueue (staggered), same as approving
+        # "Send Outreach Now" on each lead, but one click for the group.
+        applied = _apply_low_confidence_outreach_batch(db, item, proposal)
     elif item.scope == "CAMPAIGN" and item.label == _APPROVE_CAMPAIGN_LABEL:
         # Dashboard Inbox Approve on this standing cue IS the formal campaign OK -- same
         # outcome as Campaign Detail's "Mark as approved" button.
@@ -1899,6 +2112,15 @@ def approve_todo_item(db, todo_id: str) -> dict:
     item.status = "APPROVED"
     item.resolved_at = datetime.utcnow()
     db.commit()
+
+    # After resolving a low-confidence batch, refresh so any leftover SCORED leads get a
+    # new Inbox card (never mutate the card we just approved).
+    if isinstance(applied, dict) and applied.get("outreach_batch_started") and item.campaign_id:
+        try:
+            sync_low_confidence_outreach_todo(db, item.campaign_id)
+        except Exception:
+            pass
+
     log_agent_event(db, "CAMPAIGN", None, "TODO_ITEM_APPROVED", 1.0, "LOW", "EXECUTE",
                     payload={"todo_id": todo_id, "scope": item.scope, "applied_proposal": applied})
     return {"item": serialize_todo_item(item), "applied": applied, "campaign_prefill": campaign_prefill}

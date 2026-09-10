@@ -248,6 +248,12 @@ def set_outreach_approval(campaign_id, channel):
         setattr(campaign, _APPROVAL_FIELD[channel], datetime.utcnow() if approved else None)
         db.commit()
         db.refresh(campaign)
+        # Channel approval may unlock (or empty) the low-confidence batch Inbox card.
+        try:
+            from services.campaign_service import sync_low_confidence_outreach_todo
+            sync_low_confidence_outreach_todo(db, campaign.id)
+        except Exception:
+            pass
         return jsonify(_serialize(db, campaign, with_metrics=False))
     finally:
         db.close()

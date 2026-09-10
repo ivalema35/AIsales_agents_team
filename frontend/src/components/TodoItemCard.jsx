@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AlertTriangle, CheckCircle2, Mail, MessageSquareWarning, Sparkles, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Mail, MessageSquareWarning, Sparkles, Users, X } from "lucide-react";
 import { api } from "../api/client";
 import { industryLabel, locationLabel } from "../lib/targetSegment";
 
@@ -15,6 +15,10 @@ function isConflictLabel(label) {
 
 function isOutreachEmailDraft(proposal) {
   return proposal && proposal.kind === "outreach_email_draft" && proposal.subject && proposal.body;
+}
+
+function isLowConfOutreachBatch(proposal) {
+  return proposal && proposal.kind === "low_confidence_outreach_batch" && Array.isArray(proposal.leads);
 }
 
 // Shared by the Dashboard's AI Manager Inbox (every campaign/product, unfiltered) and a
@@ -40,13 +44,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
   const emailDraft = isOutreachEmailDraft(proposal);
+  const lowConfBatch = isLowConfOutreachBatch(proposal);
   // GLOBAL always has a real action (creates the real campaign directly); a CAMPAIGN item
   // has one when it carries a structural proposal, OR is one of the standing fixed-label
   // cues that Approve now genuinely acts on: "Approve campaign" (flips status to APPROVED),
   // "Discovery off"/"Ready to send" (2026-09-08, explicit user instruction -- Approve here
   // now really turns DISCOVERY_ENABLED/AUTONOMOUS_OUTREACH_ENABLED on, system-wide), or an
   // email draft waiting for Approve & send.
-  const FIXED_ACTION_LABELS = ["Approve campaign", "Discovery off", "Ready to send"];
+  const FIXED_ACTION_LABELS = ["Approve campaign", "Discovery off", "Ready to send", "Needs your OK to send"];
   const hasAction =
     item.scope === "GLOBAL" || !!proposal || FIXED_ACTION_LABELS.includes(item.label);
 
@@ -121,6 +126,8 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             <CheckCircle2 size={12} />
             {appliedResult.sent_email
               ? "Email sent"
+              : appliedResult.outreach_batch_started
+                ? "Outreach started"
               : appliedResult.campaign_created
                 ? "Campaign created"
                 : "Applied to this campaign"}
@@ -134,6 +141,27 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           </button>
         </div>
         <div className="mt-1.5 flex flex-col gap-1 text-xs text-ink-900">
+          {appliedResult.outreach_batch_started && (
+            <>
+              <p>
+                Started outreach for <b>{appliedResult.claimed_count || 0}</b> lead
+                {(appliedResult.claimed_count || 0) === 1 ? "" : "s"}
+                {appliedResult.skipped_count
+                  ? ` (${appliedResult.skipped_count} skipped — already moved on or no contact)`
+                  : ""}.
+              </p>
+              {(appliedResult.claimed || []).slice(0, 6).map((c) => (
+                <p key={c.lead_id} className="text-ink-700">
+                  · {c.company_name}{" "}
+                  <span className="text-ink-500">({(c.channels || []).join(" + ")})</span>
+                </p>
+              ))}
+              {(appliedResult.claimed || []).length > 6 && (
+                <p className="text-ink-500">+{appliedResult.claimed.length - 6} more</p>
+              )}
+              <p className="text-ink-500">Messages go out staggered — check System Monitor if you want to watch the queue.</p>
+            </>
+          )}
           {appliedResult.sent_email && (
             <>
               <p>
@@ -182,6 +210,8 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
 
   const approveLabel = emailDraft
     ? "Approve & send"
+    : lowConfBatch
+    ? "OK — start outreach for all"
     : item.scope === "GLOBAL"
     ? "Create campaign…"
     : "Approve";
@@ -189,21 +219,25 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   return (
     <div
       className={`rounded-lg border p-3 ${
-        conflict ? "border-dashed border-alert-600 bg-alert-100" : "border-line bg-parchment-raised"
+        lowConfBatch
+          ? "border-gold-600/50 bg-gold-100/40"
+          : conflict
+          ? "border-dashed border-alert-600 bg-alert-100"
+          : "border-line bg-parchment-raised"
       }`}
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
           <span
             className={`flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide ${
-              emailDraft
+              emailDraft || lowConfBatch
                 ? "bg-ink-900 text-parchment-raised"
                 : conflict
                 ? "bg-alert-600 text-white"
                 : "bg-parchment-raised-2 text-ink-700"
             }`}
           >
-            {emailDraft ? <Mail size={9} /> : conflict ? <AlertTriangle size={9} /> : null}
+            {lowConfBatch ? <Users size={9} /> : emailDraft ? <Mail size={9} /> : conflict ? <AlertTriangle size={9} /> : null}
             {item.label || "Note"}
           </span>
           {showSourceChip && (
@@ -240,14 +274,20 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
                 disabled={busy}
                 className="rounded-md px-2.5 py-1.5 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:opacity-50"
               >
-                {emailDraft ? "Not now" : "Dismiss"}
+                {emailDraft || lowConfBatch ? "Not now" : "Dismiss"}
               </button>
               <button
                 onClick={approve}
                 disabled={busy}
                 className="rounded-md bg-ink-900 px-3 py-1.5 text-[11px] font-semibold text-parchment-raised hover:opacity-90 disabled:opacity-50"
               >
-                {busy ? (emailDraft ? "Sending…" : "Working…") : approveLabel}
+                {busy
+                  ? lowConfBatch
+                    ? "Starting…"
+                    : emailDraft
+                      ? "Sending…"
+                      : "Working…"
+                  : approveLabel}
               </button>
             </>
           ) : (
@@ -299,7 +339,33 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         </div>
       )}
 
-      {proposal && !emailDraft && (
+      {lowConfBatch && (
+        <div className="mt-2.5 rounded-md border border-line bg-parchment p-3">
+          <p className="font-mono text-[9px] font-semibold uppercase tracking-wide text-ink-500">
+            People waiting for your OK ({proposal.count || proposal.leads.length})
+          </p>
+          <ul className="mt-2 flex flex-col gap-1.5">
+            {proposal.leads.map((l) => (
+              <li key={l.lead_id} className="flex flex-wrap items-baseline justify-between gap-2 text-xs">
+                <Link
+                  to={`/leads/${l.lead_id}`}
+                  className="font-medium text-ink-900 hover:underline"
+                >
+                  {l.company_name}
+                </Link>
+                <span className="shrink-0 text-ink-500">
+                  {l.tier} · {Math.round((l.confidence || 0) * 100)}% · {(l.channels || []).join(" + ")}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2.5 border-t border-line pt-2 text-[11px] leading-relaxed text-ink-500">
+            One Approve starts outreach for everyone in this list (email and/or WhatsApp they have on file).
+          </p>
+        </div>
+      )}
+
+      {proposal && !emailDraft && !lowConfBatch && (
         <div className="mt-2 rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
           <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-gold-700">
             <Sparkles size={11} /> Structural change -- applies on Approve
@@ -362,14 +428,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             </button>
           </div>
         </form>
-      ) : (
+      ) : !lowConfBatch ? (
         <button
           onClick={() => setShowFeedback(true)}
           className="mt-2.5 text-[11px] font-medium text-ink-500 hover:text-ink-900"
         >
           {emailDraft ? "Ask for a change" : "Give feedback"}
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

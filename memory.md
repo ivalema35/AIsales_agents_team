@@ -852,6 +852,9 @@ landscape videos `hqdefault` + 520px. Deploy pending.
 **2026-09-10 — Prospect Finder UX:** har search expandable group card; open → us search
 ke people; non-tech form/copy. Deploy pending unless user asks.
 
+**2026-09-10 — Needs your OK to send:** low-conf HOT/WARM (&lt;70%) Inbox batch card;
+Approve = force-claim all + staggered outreach.
+
 **⭐⭐⭐ "IV Clasess Push" campaign — real email-reject root cause fix + WA template cleanup, 2026-09-08**:
 user ne bola "kafi email reject hue, marketing_gen wala WA template bekar he, hatao." Real investigation
 (40 QC events) se pata chala asli reason: coaching-institute leads ke paas zyada tar **koi verified

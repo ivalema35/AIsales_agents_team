@@ -7678,6 +7678,42 @@ par usi search ke results dikhein.
 **Deployed 2026-09-10:** commit `e3e4373` → push → VPS `git pull` → frontend build →
 `public_html` sync (uploads preserved). Live string check: “Your searches” in served JS.
 
+### 🔍 Stuck jobs + “approve diya par sent nahi” (2026-09-10 afternoon)
+
+Dashboard “Stuck” = jobs `DEAD` (max retries). Real breakdown pehle:
+- 8× `lead … not found` (purane delete leads ke orphan jobs)
+- 1× deploy mid-job recover artifact
+- 4× `OUTREACH_WA` DEAD: Meta 400 / timeout — **header-image fix se pehle** (09:16–09:23)
+
+**Cleanup kiya (VPS):** orphans + artifact delete; 4 WA revive → PENDING. Worker ne process
+kiye: Gym Lounge **DELIVERED**; Kruti/Disha/Sukhdham Meta ne accept kiya (wamid) phir
+webhook **FAILED** (number/delivery side, humara 400 nahi).
+
+**Email already gaya tha:** Gym Lounge, Disha, Sukhdham — `EMAIL|SENT` ~09:18–09:21 UTC.
+Approval kaam kar raha hai.
+
+**Baaki 9 SCORED HOT/WARM abhi auto-send nahi:** sab ki scoring confidence **< 0.70** →
+`route_action(SCORING)=HUMAN_ESCALATION` → `claim_lead_for_outreach` skip. Tier WARM hone
+se kaafi nahi; autonomous tick inhe nahi claim karta. Manual “Send Outreach Now” (`force`)
+se human override possible.
+
+### ✅ Inbox “Needs your OK to send” batch (2026-09-10)
+
+User: low-confidence WARMs Inbox me clearly dikhao, ek Approve se sab pe outreach chale.
+
+**Backend**
+- `list_needs_ok_outreach_leads` / `sync_low_confidence_outreach_todo` — campaign pe SCORED
+  HOT/WARM + conf&lt;0.70 + usable approved channel → ek PENDING TodoItem
+  (`Needs your OK to send`, kind `low_confidence_outreach_batch`).
+- Approve → `claim_lead_for_outreach(..., force=True)` har lead pe, staggered enqueue.
+- Sync: outreach tick, SCORE handler, channel-approval API.
+
+**Frontend**
+- `TodoItemCard`: gold batch card, lead list + confidence, button
+  “OK — start outreach for all”.
+
+
+
 ---
 
 ## 2026-09-10 — Real Outreach Safety Gate: campaign approve → test message → per-channel unlock

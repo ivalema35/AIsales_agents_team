@@ -284,6 +284,14 @@ def _run_outreach_tick(db):
     if not get_bool(db, AUTONOMOUS_OUTREACH_ENABLED, default=Config.AUTONOMOUS_OUTREACH_ENABLED):
         return 0
 
+    # 2026-09-10: keep Inbox "Needs your OK to send" cards in sync (low-confidence HOT/WARM
+    # the tick below will deliberately skip). Cheap; runs every outreach poll.
+    try:
+        from services.campaign_service import sync_all_low_confidence_outreach_todos
+        sync_all_low_confidence_outreach_todos(db)
+    except Exception:
+        logger.exception("low-confidence outreach Inbox sync failed")
+
     cap_email = get_int(db, OUTREACH_DAILY_CAP_EMAIL, default=Config.OUTREACH_DAILY_CAP_EMAIL)
     cap_whatsapp = get_int(db, OUTREACH_DAILY_CAP_WHATSAPP, default=Config.OUTREACH_DAILY_CAP_WHATSAPP)
     remaining = {
