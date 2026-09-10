@@ -7743,3 +7743,21 @@ koi confusion na ho.
 (safe/default state) — asli approval user khud karega jab woh apna real test message
 dekh le.
 
+**User ne real test email ka screenshot bheja — 2 aur real bugs mile, turant fix kiye**:
+1. **Logo nahi dikh raha tha** — wahi purana, pehle se documented (par abhi tak fix
+   nahi kiya gaya) production static-serving bug (`/static/...` production me kabhi
+   Flask tak pahunchta hi nahi) — is baar directly dikh gaya real screenshot me. **Ab
+   fix kiya**: logo file `frontend/public/brand/` me daali (Vite har build me apne aap
+   `dist/brand/` me copy kar deta he — wahi ek jagah jo real webserver serve karta he),
+   `email_renderer.py`'s `_logo_public_url()` update kiya. Real curl se verify kiya —
+   ab real image (200 OK, image/png) aata he.
+2. **Approve buttons dikh hi nahi rahe the** — asli reason: `send_email()` jab bhi
+   `sections` diya jata he, poora HTML usi se banta he — jo plain-text `body_text` me
+   maine links daale the, wo sirf plain-text part me gaye, jise Gmail (aur zyada tar
+   clients) dikhate hi nahi jab HTML part maujood ho. Fix: dono approve links ko real
+   **sections** ke roop me add kiya (`email_renderer.py`'s already-maujood generic
+   "url wala section button ban jata he" mechanism reuse kiya) — ab guaranteed real
+   button dikhega, chahe campaign HTML mode me ho ya TEXT mode me.
+
+Dono fix deploy + real dobara test-send kiya (safalta se, koi naya error nahi).
+
