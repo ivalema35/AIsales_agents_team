@@ -7439,4 +7439,41 @@ ratio deta he.
 Sab verify hone ke baad hi deploy kiya. Sab 5 services active. Ye pichhle deploy ke apne
 hi honest finding ka real, correct follow-up fix he.
 
+### ⭐⭐⭐ Pehla real WhatsApp template "IVinfotech General IT Services" ke liye — collaborative design + 2-button support + DRAFT save (2026-09-10)
+
+User ne poora ek WhatsApp template chat me hi collaboratively design karwaya — kai rounds
+me iterate hua: attention-hook, realistic scenario (local business ke paas "AI guy" nahi
+hota), emojis (face emojis sample), services checklist wapas laana ("jyada services" ka
+angle hatana, "jo bhi problem ho wahi solve karenge" pe focus), aur end me 2 buttons
+(Website + WhatsApp Quick Chat).
+
+**Real Meta research kiya (guess nahi kiya)**:
+1. Meta ki live docs check ki — confirm hua **max 2 URL buttons per template** allowed
+   hain (copy-code/phone alag se 1-1). User ne khud poocha "kya Meta 3 support nahi karta"
+   — maine apni pehli baat (sirf codebase ki limitation) aur Meta ki real limit ko clear
+   kiya, WebFetch se verify karke.
+2. **Header IMAGE ke liye bhi Meta docs check ki** — pata chala ek plain URL kaam nahi
+   karta, Meta ko real **Resumable Upload API** (2-step: upload session banao → file bytes
+   bhejo → "handle" milta hai → wahi template me use hota hai) chahiye, jiske liye ek
+   **Meta App ID** chahiye (WABA ID se alag) — jo abhi `.env` me nahi hai. **User se maanga
+   hai, abhi pending he.**
+
+**2-button support real bana diya**:
+- `WhatsappTemplate` model me `button_2_url`/`button_2_label` add kiya
+- `_create_on_meta()` — dono buttons EK hi BUTTONS component ke array me (Meta 2 alag
+  BUTTONS components reject karta he)
+- Real dry-run test kiya (mocked HTTP call se) — real Meta payload shape confirm kiya
+  deploy se pehle
+- Frontend form (manual submit) aur shared draft card dono me button 2 display/input add
+  kiya
+
+**Real DRAFT save kiya** (Meta ko kuch nahi bheja abhi, sirf DRAFT status):
+- Template: `ivinfotech_general_it_first_touch`
+- Body: poora collaborative-designed text (face emojis, ✅ checklist, realistic vendor-
+  juggling hook)
+- Buttons: Website (ivinfotech.com) + WhatsApp Quick Chat (wa.me/919924426361)
+- Header image: **abhi nahi laga** — Meta App ID ka wait he
+
+Dashboard ke "WhatsApp Templates → AI Proposed" tab me dikhega, review/approve wahi se ho
+sakta he — ya user "Meta bhej do" bole to us waqt approve karenge.
 

@@ -1134,3 +1134,12 @@ sakte hain, Cursor ya bahar ke tool ka wait nahi karna padega.
 nahi, achi glossy graphic quality. WA header square shape ke baare me flag kiya (WhatsApp
 chat me wide usually better dikhta he) par **user ne "jaisa he waisa rehne do" bola** —
 as-is rakha, koi change nahi kiya.
+
+**⭐⭐⭐ Pehla WhatsApp template collaboratively design + 2-button + DRAFT save (2026-09-10)**:
+kai rounds me chat me hi template likha (hook, realistic scenario, emojis, checklist,
+positioning). Meta ki real docs verify ki (guess nahi kiya): **max 2 URL buttons** allowed
+(user ke sawaal ka jawaab), **header image ke liye Resumable Upload API + naya Meta App ID
+chahiye** (abhi `.env` me nahi he, user se maanga). 2-button support real bana ke deploy kiya
+(dry-run se Meta payload verify kiya). Real DRAFT save kiya `ivinfotech_general_it_first_
+touch` naam se — Website + WhatsApp Quick Chat buttons, header image PENDING. Koi Meta call
+nahi hua, user ke "bhej do" ka wait he.
