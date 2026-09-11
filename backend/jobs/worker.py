@@ -36,7 +36,21 @@ def run_once(job_type):
             mark_done(db, job_id)
         except Exception as exc:  # noqa: BLE001 - a handler's failure must never crash the worker loop
             logger.exception("job %s (%s) failed", job_id, job_type)
-            mark_failed(db, job_id, str(exc))
+            # 2026-09-11, real live bug found (the same crash confirmed in
+            # scraper_worker/async_runner.py's own _process_claimed_job): a handler that
+            # fails mid-flush (e.g. a real SQLite "database is locked" contention) leaves
+            # THIS session's transaction rolled back -- calling mark_failed()'s own
+            # db.execute() without rolling back first raises a SECOND, uncaught
+            # exception (PendingRollbackError) that crashes this whole worker process,
+            # exactly contradicting this except block's own comment. Roll back first,
+            # and never let mark_failed's own failure escape either -- worst case this
+            # one job is left CLAIMED for the existing stuck-job recovery to find later,
+            # instead of taking the whole process down.
+            try:
+                db.rollback()
+                mark_failed(db, job_id, str(exc))
+            except Exception:  # noqa: BLE001 - see comment above
+                logger.exception("job %s (%s): mark_failed itself failed", job_id, job_type)
         return True
     finally:
         db.close()

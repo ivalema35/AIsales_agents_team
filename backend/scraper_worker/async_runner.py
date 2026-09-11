@@ -628,7 +628,25 @@ def _process_claimed_job(job_type, job_id, payload):
             mark_done(db, job_id)
         except Exception as exc:  # noqa: BLE001 - one bad lead must not kill the runner
             logger.exception("job %s (%s) failed", job_id, job_type)
-            mark_failed(db, job_id, str(exc))
+            # 2026-09-11, real live crash found (bos-scraper's own restart counter had
+            # climbed to 3): a failed handler often fails mid-flush (e.g. a real
+            # "database is locked" contention under concurrency=5) -- that leaves this
+            # SAME session's transaction in a rolled-back state, and calling
+            # mark_failed()'s own db.execute() on it without first rolling back raises a
+            # SECOND exception (PendingRollbackError), uncaught, which crashed the
+            # entire runner process (exactly contradicting this function's own "one bad
+            # lead must not kill the runner" comment). Every job this process was
+            # concurrently handling was also lost, and every job already CLAIMED before
+            # the crash was stranded there forever (claim_next() only looks at PENDING;
+            # nothing but a deliberate deploy restart's own recovery step ever un-sticks
+            # them). Roll back first, and never let mark_failed's own failure escape
+            # either -- worst case a job is left CLAIMED for the existing stuck-job
+            # recovery to pick up later, instead of taking the whole process down.
+            try:
+                db.rollback()
+                mark_failed(db, job_id, str(exc))
+            except Exception:  # noqa: BLE001 - see comment above
+                logger.exception("job %s (%s): mark_failed itself failed", job_id, job_type)
     finally:
         db.close()
 
