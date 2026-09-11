@@ -31,6 +31,7 @@ from services.outreach.suppression import is_suppressed
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
 from services.campaign_service import (
     resolve_email_render_mode, format_directive_for_mode, recent_qc_rejection_reasons)
+from services.lead_service import LEAD_STATUSES_PAST_OUTREACHED
 
 logger = logging.getLogger(__name__)
 
@@ -285,7 +286,11 @@ def dispatch_structured_email(
         variant_id=f"FOLLOWUP_LEVEL_{followup_level}" if followup_level else "STRUCTURED_EMAIL",
         content_sections=json.dumps(sections) if sections is not None else None,
     ))
-    lead.status = "OUTREACHED"
+    # Don't downgrade a lead a real signal already moved further along (e.g. a real
+    # interest click escalated it to HOT_LEAD while this send was sitting queued) --
+    # see LEAD_STATUSES_PAST_OUTREACHED's own docstring for the real incident this fixes.
+    if lead.status not in LEAD_STATUSES_PAST_OUTREACHED:
+        lead.status = "OUTREACHED"
     db.commit()
 
     if not followup_level:

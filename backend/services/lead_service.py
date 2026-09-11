@@ -19,6 +19,17 @@ from services.channel_policy_service import get_allowed_channels
 
 ELIGIBLE_TIERS = {"HOT", "WARM"}
 
+# 2026-09-11, real bug found via user report: a routine outreach send (first-touch or a
+# scheduled follow-up) unconditionally set lead.status = "OUTREACHED" on success -- if
+# that job was claimed/staggered BEFORE a real interest click already escalated the lead
+# to HOT_LEAD, the send landing seconds or minutes LATER silently downgraded it straight
+# back to OUTREACHED (confirmed on a real lead: HOT_LEAD from a real "Yes" click at
+# 06:28:02, clobbered back to OUTREACHED by an already-queued WhatsApp send completing at
+# 06:28:31). Same three statuses api/alerts.py's own _EXCLUDED_FROM_CLAIM already treats
+# as "further along than a plain outreach status" -- jobs/outreach_handler.py and
+# jobs/outreach_wa_handler.py both check this before writing "OUTREACHED".
+LEAD_STATUSES_PAST_OUTREACHED = {"HOT_LEAD", "CONVERTED", "REJECTED"}
+
 
 def claim_lead_for_outreach(db, lead_id, run_after=None, allowed_channels=None, enqueue_jobs=True,
                             force=False):

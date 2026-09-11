@@ -38,6 +38,30 @@ VALID_STATUSES = {
 VALID_TIERS = {"HOT", "WARM", "COLD"}
 
 
+def _resolve_interest_state(responses):
+    """2026-09-11, real bug found via user report: a lead's InterestResponse rows are
+    timestamped via SQLite's server-side CURRENT_TIMESTAMP, which only has 1-SECOND
+    granularity -- two real clicks landing in the same wall-clock second (e.g. an email
+    client's safe-link prescanner visiting both the Yes and No links back-to-back, the
+    same pattern already flagged in tracker.md) get IDENTICAL created_at values, so
+    "most recent by created_at" becomes an arbitrary tie-break that can show "Said No"
+    even though the backend already processed the Yes for real (HOT_LEAD escalation,
+    admin alert, AI reply draft -- see services/outreach/interest_service.py).
+
+    A real Yes is sticky by design elsewhere in this codebase (_escalate_to_hot_lead
+    never reverses HOT_LEAD, and services/lead_service.LEAD_STATUSES_PAST_OUTREACHED
+    protects it from being downgraded by a routine send) -- this mirrors that: once a
+    lead has ever said Yes, a later (or tied) No must never displace it in the display
+    badge either. `responses` must be ordered ascending by created_at.
+    """
+    state, state_at = None, None
+    for r in responses:
+        if r.response == "NO" and state == "YES":
+            continue
+        state, state_at = r.response, r.created_at
+    return state, state_at
+
+
 def _apply_filters(db, query, args):
     """Shared by list_leads and get_adjacent_lead so "adjacent" always walks through
     the EXACT same filtered set the list shows -- duplicating this logic in two places
@@ -247,11 +271,14 @@ def list_leads():
                 .order_by(InterestResponse.created_at.asc())
                 .all()
             )
+            responses_by_lead = {}
             for r in responses:
-                # last write wins (ascending order) -- a lead's badge always reflects its
-                # MOST RECENT real click, e.g. a No on touch 1 followed by a Yes on touch 3.
-                interest_state_by_lead[r.lead_id] = r.response
-                interest_state_at_by_lead[r.lead_id] = r.created_at
+                responses_by_lead.setdefault(r.lead_id, []).append(r)
+            for lid, rows in responses_by_lead.items():
+                # A lead's badge reflects its most recent real click (e.g. a No on touch
+                # 1 followed by a Yes on touch 3) -- EXCEPT a real Yes is sticky, see
+                # _resolve_interest_state's own docstring for the real incident this fixes.
+                interest_state_by_lead[lid], interest_state_at_by_lead[lid] = _resolve_interest_state(rows)
 
         # Per-lead outreach/read summary -- same batched-over-the-page pattern as the
         # reply/interest lookups above, not a query per row.
@@ -477,17 +504,18 @@ def get_lead(lead_id):
             .first()
         )
         firmographics = db.query(LeadFirmographics).filter(LeadFirmographics.lead_id == lead_id).first()
-        latest_interest = (
+        interest_responses = (
             db.query(InterestResponse)
             .filter(InterestResponse.lead_id == lead_id)
-            .order_by(InterestResponse.created_at.desc())
-            .first()
+            .order_by(InterestResponse.created_at.asc())
+            .all()
         )
+        interest_state, interest_state_at = _resolve_interest_state(interest_responses)
 
         body = _serialize(
             lead, score, is_suppressed=_lead_is_suppressed(db, lead),
-            interest_state=latest_interest.response if latest_interest else None,
-            interest_state_at=latest_interest.created_at if latest_interest else None,
+            interest_state=interest_state,
+            interest_state_at=interest_state_at,
         )
         if score and body["score"] is not None:
             body["score"]["scoring_breakdown"] = json.loads(score.scoring_breakdown) if score.scoring_breakdown else {}

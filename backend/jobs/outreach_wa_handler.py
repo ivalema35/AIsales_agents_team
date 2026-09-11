@@ -34,6 +34,7 @@ from services.outreach.whatsapp_template_service import (
     get_approved_followup_template, get_approved_first_touch_template,
 )
 from services.sequence_service import create_sequence_for_send, touch_number_to_followup_level
+from services.lead_service import LEAD_STATUSES_PAST_OUTREACHED
 
 logger = logging.getLogger(__name__)
 
@@ -180,7 +181,11 @@ def handle_outreach_wa(db, payload):
         # 9.2 can roll up real reply rates per template without parsing JSON per row.
         variant_id=spec["name"],
     ))
-    lead.status = "OUTREACHED"
+    # Don't downgrade a lead a real signal already moved further along (e.g. a real
+    # interest click escalated it to HOT_LEAD while this send was sitting queued) --
+    # see LEAD_STATUSES_PAST_OUTREACHED's own docstring for the real incident this fixes.
+    if lead.status not in LEAD_STATUSES_PAST_OUTREACHED:
+        lead.status = "OUTREACHED"
     db.commit()
 
     # Phase 9 Step 9.3 -- only on a fresh touch 1 (never on a follow-up touch, which

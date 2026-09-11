@@ -555,7 +555,6 @@ class InterestResponse(Base):
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
     __table_args__ = (UniqueConstraint("outreach_log_id", "response"),)
-    created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
 
 # 30. PROSPECTS (Phase 15 Step 15(B).1) -- person-level, no parent lead. Deliberately NOT
