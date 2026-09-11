@@ -7797,3 +7797,29 @@ dekh le.
 
 Dono fix deploy + real dobara test-send kiya (safalta se, koi naya error nahi).
 
+---
+
+## 2026-09-11 — Real IST timing display bug fix + outreach approval feature ki real progress
+
+**User ne "Live activity" screenshot bheja**: "09:18:24 AM OUTREACH" wagera dikh raha
+tha, jabki asli UTC time tha. **Real root cause**: `toLocaleTimeString()`/
+`toLocaleDateString()`/`toLocaleString()` bina explicit `timeZone` ke, **viewing
+device ke apne OS/browser timezone** pe depend karta he — agar wo IST pe set nahi he
+to raw UTC hi dikhta he. Fix: har jagah `timeZone: "Asia/Kolkata"` explicitly pin kiya
+(`SystemMonitor.jsx`, `LeadDetail.jsx`, `ProspectFinder.jsx`, `SocialQueue.jsx`) —
+**sirf display-layer fix**, backend scheduling/cooldown logic (jo already real
+UTC+IST_OFFSET math karta he) ko bilkul touch nahi kiya, jaisa user ne kaha tha "system
+break na ho."
+
+**Isi check ke dauran outreach approval feature ki real progress bhi mili** (raat
+bhar mein automatically chala, koi manual intervention nahi tha):
+- General IT Services campaign: **12 real leads ko outreach mila** (approval ke baad)
+- **EMAIL: sab 8 real sends safal** (SENT)
+- **WHATSAPP: 3 real DELIVERED, 8 FAILED** (delivery stage pe — send khud successful
+  tha, header-image fix kaam kar raha he, lekin Meta/recipient side pe delivery fail
+  hui). Real reason abhi tak capture nahi hota — `api/inbound.py` ka status-webhook
+  handler sirf "failed" likhta he, Meta ka asli error-detail (reason/code) kahi store
+  nahi hota. Yeh alag, real gap he — user se pooch ke aage dekhenge.
+- Job queue ab bilkul clean he (0 stuck) — pehle wale saare stuck jobs khud hi (retry
+  cycle se) resolve ho gaye raat bhar mein.
+
