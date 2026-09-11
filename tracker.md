@@ -7908,3 +7908,39 @@ Deploy kiya (`pull` → `importcheck` → `build` → `sync-frontend` → `resta
 services `active` verify hui, `curl` se production API up confirm kiya, koi job stuck
 nahi mila deploy ke dauran.
 
+---
+
+## 2026-09-11 (later still) — Real bug mila: "New campaign idea" se bana campaign ko test-outreach preview kabhi nahi milti thi
+
+**User ne "dental clinics campaign" ka screenshot bheja**: campaign "Approved" dikh
+raha tha, 10 real SCORED leads bhi the, lekin dono EMAIL aur WHATSAPP badge "Not tested
+yet" par atke the — matlab jo test-preview email/WhatsApp admin contact par jaana
+chahiye tha (outreach approval gate feature), wo kabhi gaya hi nahi.
+
+**Real root cause** (VPS DB pe real query se confirm kiya): `campaign.status =
+"APPROVED"` tha lekin `test_outreach_sent_at = None` tha. `send_test_outreach_preview()`
+sirf ek hi jagah se trigger hoti he — `api/campaigns.py`'s `update_campaign()` ke
+`PROPOSED -> APPROVED` status-transition ke andar. Lekin AI Manager Inbox ke "New
+campaign idea" (GLOBAL) to-do ko Approve karne se jo campaign banta he, wo **seedha
+`status="APPROVED"` ke saath create hota he** (jaan-boojhkar, taaki admin ko dobara
+manually approve na karna pade) — matlab yeh campaign kabhi bhi us
+PROPOSED→APPROVED transition se guzarta hi nahi, isliye test-send trigger kabhi chala
+hi nahi. **Yeh 100% guaranteed gap tha is creation-path ke liye** — kyunki naya campaign
+hamesha zero-lead state mein banta he, isliye normal manual-approve flow mein bhi yeh
+theoretically ho sakta he (agar koi campaign zero-lead state mein hi turant approve kar
+de), lekin GLOBAL-approve path mein yeh HAMESHA hota he.
+
+**Real fix**: `jobs/discovery_scheduler.py` mein ek naya recurring scheduler tick
+(`_run_test_outreach_preview_tick`) add kiya jo har poll cycle (5 minute) mein har us
+`APPROVED` campaign ko dhundta he jiska `test_outreach_sent_at` abhi bhi `NULL` he —
+jab tak campaign mein koi usable lead nahi he, yeh sasta no-op he (bas 2-3 halke
+queries); jaise hi ek real lead (contact info ke saath) mil jaata he, real test-send
+exactly ek baar chalta he (function khud `test_outreach_sent_at` set karta he, isliye
+naturally idempotent he, dobara nahi chalega).
+
+**Real verification kiya**: fix deploy karne ke baad "dental clinics campaign" par
+manually tick trigger kiya — dono EMAIL aur WhatsApp real successfully send hue
+(`{"email": {"sent": true}, "whatsapp": {"sent": true}}`), lead "HAPPY DENTAL CLINIC"
+ko model banakar, `test_outreach_sent_at` set ho gaya. Ab admin apne test contact par
+dono messages dekh sakte he aur per-channel approve kar sakte he.
+
