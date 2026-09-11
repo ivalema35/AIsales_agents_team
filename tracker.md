@@ -7831,3 +7831,35 @@ bhar mein automatically chala, koi manual intervention nahi tha):
 - Job queue ab bilkul clean he (0 stuck) — pehle wale saare stuck jobs khud hi (retry
   cycle se) resolve ho gaye raat bhar mein.
 
+---
+
+## 2026-09-11 (later) — Real crash bug mila: "Claimed" jobs kabhi khatam nahi hote the
+
+**User ne dobara screenshot bheja**: "12 Claimed, kuch ho nahi raha he." Real check kiya
+— 12 jobs genuinely 23-29 minute se CLAIMED state mein stuck the (koi progress nahi).
+
+**Asli root cause** (`journalctl` se real crash trace mila): `bos-scraper` service
+**crash ho chuki thi** (restart counter 3 tak pahunch gaya tha) —
+1. Ek real SQLite `"database is locked"` error aaya (concurrency=5 ke sath normal
+   contention) ek lead update karte waqt.
+2. Uske apne khud ke error-handler (`mark_failed`) ne SAME (ab broken) DB session pe
+   dobara likhne ki koshish ki — **bina rollback kiye** — jisse ek DOOSRA, uncaught
+   error (`PendingRollbackError`) aaya jisne **poori worker process ko hi crash kar
+   diya** — bilkul us code ke apne comment ke against ("one bad job must not kill the
+   runner")!
+3. Crash hone se jo bhi jobs us waqt CLAIMED the, wo hamesha ke liye atke reh gaye
+   (`claim_next()` sirf PENDING dekhta he, crash hone par koi cleanup nahi hota) —
+   systemd ne process restart kar diya, lekin purane atke jobs release nahi hue kyunki
+   yeh cleanup sirf mere manual deploy-restart ke "recovery" step mein hota he.
+
+**Real fix**: dono jagah (`scraper_worker/async_runner.py` AND `jobs/worker.py` — same
+exact bug dono mein tha) `db.rollback()` add kiya `mark_failed()` call se pehle, aur
+`mark_failed()` ko khud bhi try/except mein wrap kiya taaki uska apna fail bhi kabhi
+poori process crash na kare — worst case ek job CLAIMED reh jayega (jo existing recovery
+pakad legi), poora system nahi girega.
+
+Deploy + restart kiya — saare 12 stuck jobs recover ho gaye (PENDING), aur kuch hi second
+mein sahi se process ho gaye (935 Done, dobara koi crash nahi). Yeh ek genuinely important,
+system-wide reliability fix he — ab koi bhi single job fail hone se poori scraper/worker
+process crash nahi hogi.
+
