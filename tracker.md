@@ -7944,3 +7944,45 @@ manually tick trigger kiya — dono EMAIL aur WhatsApp real successfully send hu
 ko model banakar, `test_outreach_sent_at` set ho gaya. Ab admin apne test contact par
 dono messages dekh sakte he aur per-channel approve kar sakte he.
 
+---
+
+## 2026-09-11 (later still) — Real bug: Yes-click lead ka badge "Said No" dikha raha tha
+
+**User ne "Techcronus Business Solutions Pvt. Ltd." lead ka real screenshot bheja**: lead
+badge "Said No" dikha raha tha, jabki lead ne actually Yes click kiya tha — user ne AI
+ka draft reply bhi already approve karke bhej diya tha (matlab backend ne YES sahi se
+process kiya tha), lekin CRM display "No" bata raha tha.
+
+**Real root cause 2 alag bugs** (dono ek hi underlying wajah se — SQLite ka
+`InterestResponse.created_at` sirf 1-SECOND granularity rakhta he):
+1. Is lead ne **dono NO aur YES ek hi second (06:28:02) mein click kiye** — bilkul wahi
+   pattern jo pehle "Enrich Salon" lead mein dekha tha (email client ka safe-link
+   prescanner dono links visit karta he). Backend correctly YES ko process kar chuka
+   tha (HOT_LEAD escalation, admin alert, AI reply draft — sab fire hua), lekin **display
+   badge** "most recent by created_at" pe based tha — jab dono rows ka timestamp EXACT
+   same ho to yeh tie arbitrary resolve hoti he, aur is baar galat (NO) wala dikh gaya.
+2. Isse bhi bada real bug: **ek pehle-se-queued WhatsApp job jo interest-click se PEHLE
+   claim hua tha, uska actual execution click ke 29 second BAAD hua** — aur
+   `jobs/outreach_wa_handler.py`/`outreach_handler.py` dono mein `lead.status =
+   "OUTREACHED"` **unconditionally** likha jaata tha har successful send ke baad,
+   bina yeh check kiye ki lead already `HOT_LEAD` ban chuka he ya nahi. Isliye asli
+   `lead.status` (jo YES click ne HOT_LEAD kar diya tha) is queued job ne wapas
+   "OUTREACHED" pe clobber kar diya — sirf display hi nahi, real underlying data bhi
+   corrupt ho gaya tha.
+
+**Real fix**:
+- `services/lead_service.py` mein naya `LEAD_STATUSES_PAST_OUTREACHED = {"HOT_LEAD",
+  "CONVERTED", "REJECTED"}` guard — dono job handlers ab isse check karte he pehle
+  `lead.status = "OUTREACHED"` likhne se, taaki ek routine send kabhi bhi ek stronger
+  real signal (jaise HOT_LEAD escalation) ko downgrade na kare.
+- `api/leads.py` mein naya `_resolve_interest_state()` — ab "ek baar Yes bola to
+  hamesha Yes hi dikhega" (sticky), bilkul wahi jaisa `_escalate_to_hot_lead` khud
+  kabhi HOT_LEAD status wapas nahi leta — ek baad wala ya tied No kabhi is badge ko
+  displace nahi karega.
+- Is real lead ka data bhi manually correct kiya (`status` wapas `HOT_LEAD`).
+
+**Verify kiya**: naya `_resolve_interest_state()` function ko unit-test kiya (YES-pehle,
+NO-pehle, dono order mein tie ho to hamesha "YES" return hota he; genuine progression —
+No phir baad mein real Yes — bhi sahi se latest Yes dikhata he). Sab files syntax-clean,
+real Flask import safal, deploy kiya, saari services active.
+
