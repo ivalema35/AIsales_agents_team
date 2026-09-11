@@ -7712,6 +7712,14 @@ User: low-confidence WARMs Inbox me clearly dikhao, ek Approve se sab pe outreac
 - `TodoItemCard`: gold batch card, lead list + confidence, button
   “OK — start outreach for all”.
 
+### ✅ Campaign businesses table — Stage + Priority filters (2026-09-11)
+
+User: “Businesses in this campaign” pe status aur priority filters, UI polish.
+
+`CampaignDetail.jsx`: chip filters (Stage = plain-language status, Priority = HOT/WARM/COLD
++ unscored), counts, Clear, “Showing X of Y”, empty-filter state; section header chrome.
+
+
 
 
 ---

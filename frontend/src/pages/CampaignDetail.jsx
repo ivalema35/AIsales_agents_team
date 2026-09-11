@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle } from "lucide-react";
+import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle, Filter, X } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import OutreachApprovalCard from "../components/OutreachApprovalCard";
 import Badge from "../components/ui/Badge";
-import { statusBadgeClass, statusLabel } from "../lib/statusColors";
+import { statusBadgeClass, statusLabel, STATUS_LABELS } from "../lib/statusColors";
 import { industryLabel, locationLabel } from "../lib/targetSegment";
 import { relativeTime } from "../lib/relativeTime";
 import { useConfirm } from "../lib/ConfirmContext";
@@ -39,6 +39,46 @@ const TIER_PLAIN = {
   WARM: "Worth a look",
   COLD: "Low priority",
 };
+
+// Preferred order for filter chips (only statuses present in this campaign's list render).
+const STAGE_FILTER_ORDER = [
+  "SCORED", "OUTREACHING", "OUTREACHED", "ENGAGED", "HOT_LEAD",
+  "DISCOVERED", "ENRICHED", "REVIEWED", "CONVERTED", "REJECTED",
+];
+const TIER_FILTER_ORDER = ["HOT", "WARM", "COLD"];
+
+function FilterChip({ active, onClick, children, count, tone = "default" }) {
+  const activeTone =
+    tone === "hot"
+      ? "border-alert-600 bg-alert-100 text-alert-700"
+      : tone === "warm"
+        ? "border-gold-600 bg-gold-100 text-gold-700"
+        : tone === "cold"
+          ? "border-line bg-parchment-raised-2 text-ink-600"
+          : "border-ink-900 bg-ink-900 text-parchment-raised";
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+        active
+          ? activeTone
+          : "border-line bg-parchment-raised text-ink-600 hover:border-ink-500 hover:text-ink-900"
+      }`}
+    >
+      {children}
+      {count != null && (
+        <span
+          className={`tabular-nums ${
+            active && tone === "default" ? "text-parchment-raised/80" : "text-ink-500"
+          }`}
+        >
+          {count}
+        </span>
+      )}
+    </button>
+  );
+}
 
 // 2026-09-08, real gap the user found live: the campaign-level "Opened: 1" stat is a
 // real, correct count (compute_campaign_metrics), but told a human nothing about WHICH
@@ -105,6 +145,9 @@ export default function CampaignDetail() {
   const [leads, setLeads] = useState(null);
   const [error, setError] = useState(null);
   const [approving, setApproving] = useState(false);
+  // 2026-09-11: Stage + Priority filters on the businesses table (non-tech chip UI).
+  const [stageFilter, setStageFilter] = useState("ALL");
+  const [tierFilter, setTierFilter] = useState("ALL");
 
   function refresh() {
     api.getCampaign(id).then(setCampaign).catch((err) => setError(err.message));
@@ -113,11 +156,53 @@ export default function CampaignDetail() {
 
   useEffect(refresh, [id]);
 
+  // Reset filters when switching campaigns.
+  useEffect(() => {
+    setStageFilter("ALL");
+    setTierFilter("ALL");
+  }, [id]);
+
   useEffect(() => {
     if (campaign?.product_id) {
       api.getProduct(campaign.product_id).then(setProduct).catch(() => {});
     }
   }, [campaign?.product_id]);
+
+  const stageCounts = useMemo(() => {
+    const counts = {};
+    for (const l of leads || []) {
+      const s = l.status || "UNKNOWN";
+      counts[s] = (counts[s] || 0) + 1;
+    }
+    return counts;
+  }, [leads]);
+
+  const tierCounts = useMemo(() => {
+    const counts = { HOT: 0, WARM: 0, COLD: 0, UNSCORED: 0 };
+    for (const l of leads || []) {
+      const t = l.score?.tier;
+      if (t === "HOT" || t === "WARM" || t === "COLD") counts[t] += 1;
+      else counts.UNSCORED += 1;
+    }
+    return counts;
+  }, [leads]);
+
+  const stageOptions = useMemo(
+    () => STAGE_FILTER_ORDER.filter((s) => stageCounts[s] > 0),
+    [stageCounts],
+  );
+
+  const filteredLeads = useMemo(() => {
+    if (!leads) return null;
+    return leads.filter((l) => {
+      if (stageFilter !== "ALL" && l.status !== stageFilter) return false;
+      if (tierFilter === "ALL") return true;
+      if (tierFilter === "UNSCORED") return !l.score?.tier;
+      return l.score?.tier === tierFilter;
+    });
+  }, [leads, stageFilter, tierFilter]);
+
+  const filtersActive = stageFilter !== "ALL" || tierFilter !== "ALL";
 
   async function approveCampaign() {
     const ok = await confirm({
@@ -280,38 +365,116 @@ export default function CampaignDetail() {
 
       <CampaignReviewCard campaign={campaign} onApproved={refresh} />
 
-      <div className="rounded-xl border border-line bg-parchment-raised p-5 shadow-sm">
-        <div className="mb-1 flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
-              <Users size={18} className="text-ink-500" />
-              Businesses in this campaign
-            </h2>
-            <p className="mt-0.5 text-xs text-ink-500">
-              Click a row to open the full lead page. Priority shows how strong the fit looks; Message shows whether your outreach was sent, opened, or replied to.
-            </p>
+      <div className="overflow-hidden rounded-2xl border border-line bg-parchment-raised shadow-sm">
+        <div className="border-b border-line bg-gradient-to-br from-parchment-raised via-parchment to-[#e8ecf2] px-5 py-4">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
+                <Users size={18} className="text-ink-500" />
+                Businesses in this campaign
+              </h2>
+              <p className="mt-0.5 text-xs text-ink-500">
+                Click a row to open the full lead page. Use Stage and Priority to narrow the list.
+              </p>
+            </div>
+            {leads && leads.length > 0 && (
+              <span className="rounded-full bg-parchment-raised px-2.5 py-1 text-xs tabular-nums text-ink-600 ring-1 ring-inset ring-line">
+                {filtersActive
+                  ? `Showing ${filteredLeads?.length || 0} of ${leads.length}`
+                  : `${leads.length} business${leads.length === 1 ? "" : "es"}`}
+              </span>
+            )}
           </div>
+
           {leads && leads.length > 0 && (
-            <span className="text-xs tabular-nums text-ink-500">
-              {leads.length} business{leads.length === 1 ? "" : "es"}
-            </span>
+            <div className="mt-3.5 flex flex-col gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+                  <Filter size={11} /> Stage
+                </span>
+                <FilterChip active={stageFilter === "ALL"} onClick={() => setStageFilter("ALL")} count={leads.length}>
+                  All
+                </FilterChip>
+                {stageOptions.map((s) => (
+                  <FilterChip
+                    key={s}
+                    active={stageFilter === s}
+                    onClick={() => setStageFilter(stageFilter === s ? "ALL" : s)}
+                    count={stageCounts[s]}
+                  >
+                    {STATUS_LABELS[s] || statusLabel(s)}
+                  </FilterChip>
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="w-[3.25rem] text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+                  Priority
+                </span>
+                <FilterChip active={tierFilter === "ALL"} onClick={() => setTierFilter("ALL")} count={leads.length}>
+                  All
+                </FilterChip>
+                {TIER_FILTER_ORDER.filter((t) => tierCounts[t] > 0).map((t) => (
+                  <FilterChip
+                    key={t}
+                    active={tierFilter === t}
+                    onClick={() => setTierFilter(tierFilter === t ? "ALL" : t)}
+                    count={tierCounts[t]}
+                    tone={t === "HOT" ? "hot" : t === "WARM" ? "warm" : "cold"}
+                  >
+                    {t} · {TIER_PLAIN[t]}
+                  </FilterChip>
+                ))}
+                {tierCounts.UNSCORED > 0 && (
+                  <FilterChip
+                    active={tierFilter === "UNSCORED"}
+                    onClick={() => setTierFilter(tierFilter === "UNSCORED" ? "ALL" : "UNSCORED")}
+                    count={tierCounts.UNSCORED}
+                    tone="cold"
+                  >
+                    Not scored yet
+                  </FilterChip>
+                )}
+                {filtersActive && (
+                  <button
+                    type="button"
+                    onClick={() => { setStageFilter("ALL"); setTierFilter("ALL"); }}
+                    className="ml-1 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised hover:text-ink-900"
+                  >
+                    <X size={12} /> Clear filters
+                  </button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
+        <div className="p-5 pt-4">
         {leads === null ? (
-          <div className="mt-3 h-16 animate-pulse rounded-lg bg-parchment-raised-2" />
+          <div className="h-16 animate-pulse rounded-lg bg-parchment-raised-2" />
         ) : leads.length === 0 ? (
-          <div className="mt-4 flex flex-col items-center gap-2 py-8 text-center">
+          <div className="flex flex-col items-center gap-2 py-8 text-center">
             <Users className="text-ink-500" size={28} />
             <p className="text-sm font-medium text-ink-700">No businesses found yet</p>
             <p className="max-w-sm text-xs leading-relaxed text-ink-500">
               Discovery will list companies here once it finds matches for this campaign&apos;s target.
             </p>
           </div>
+        ) : filteredLeads.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-line bg-parchment py-10 text-center">
+            <Filter className="text-ink-400" size={22} />
+            <p className="text-sm font-medium text-ink-700">No businesses match these filters</p>
+            <button
+              type="button"
+              onClick={() => { setStageFilter("ALL"); setTierFilter("ALL"); }}
+              className="mt-1 text-xs font-semibold text-gold-700 hover:underline"
+            >
+              Clear filters
+            </button>
+          </div>
         ) : (
-          <div className="mt-3 overflow-x-auto rounded-lg border border-line">
+          <div className="overflow-x-auto rounded-xl border border-line shadow-sm">
             <table className="w-full text-left text-xs">
-              <thead className="bg-parchment-raised-2 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+              <thead className="bg-[#f7f5f0] text-[10px] font-semibold uppercase tracking-wide text-ink-500">
                 <tr>
                   <th className="px-3 py-2.5">Business</th>
                   <th className="px-3 py-2.5">Location</th>
@@ -321,7 +484,7 @@ export default function CampaignDetail() {
                 </tr>
               </thead>
               <tbody>
-                {leads.map((l) => {
+                {filteredLeads.map((l) => {
                   const tier = l.score?.tier;
                   const points = l.score?.score;
                   return (
@@ -367,6 +530,7 @@ export default function CampaignDetail() {
             </table>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
