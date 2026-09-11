@@ -42,7 +42,7 @@ from services.engagement_escalation_service import find_engagement_escalations
 from services.reporting_service import generate as generate_eod_report, IST_OFFSET
 from services.campaign_service import (
     generate_campaign_todo, generate_campaign_suggestion, eligible_campaigns_for_discovery,
-    todo_signal_fingerprint)
+    todo_signal_fingerprint, send_test_outreach_preview)
 from services.strategy_reflection_service import run_reflection_cycle
 from services.system_settings import (
     get_bool, get_int, get_str, set_str, DISCOVERY_ENABLED, AUTONOMOUS_OUTREACH_ENABLED,
@@ -598,6 +598,38 @@ def _run_strategy_reflection_tick(db):
     set_str(db, STRATEGY_REFLECTION_LAST_RUN_DATE, today_str)
 
 
+def _run_test_outreach_preview_tick(db):
+    """2026-09-11, real user-reported gap: a campaign approved via the Campaign Detail
+    page's own PROPOSED->APPROVED transition already gets its one real test-outreach
+    preview send inline (api/campaigns.py, right there in the same request) -- but a
+    campaign created directly in APPROVED status (e.g. approving a GLOBAL "New campaign
+    idea" Inbox card, services/campaign_service.approve_todo_item) never passes through
+    that transition, so it never got a test send at all -- confirmed on a real campaign
+    ("dental clinics campaign") that sat APPROVED with 10 real SCORED leads and
+    test_outreach_sent_at still NULL, silently skipping the whole outreach-approval-gate
+    review step ([[project-outreach-approval-gate]]).
+
+    Retries every tick for any APPROVED campaign not yet test-sent -- cheap (a couple of
+    lightweight queries) while the campaign still has zero usable leads (a brand-new
+    campaign always starts this way), then sends for real exactly once as soon as a real
+    lead with contact info exists. send_test_outreach_preview() sets
+    campaign.test_outreach_sent_at itself and never raises, so this naturally stops
+    firing for that campaign the moment it succeeds."""
+    pending = (
+        db.query(Campaign)
+        .filter(Campaign.status == "APPROVED", Campaign.test_outreach_sent_at.is_(None))
+        .all()
+    )
+    for campaign in pending:
+        try:
+            result = send_test_outreach_preview(db, campaign)
+            if result.get("lead_used"):
+                logger.info("test-outreach preview sent for campaign %s (modeled on %s)",
+                           campaign.id, result["lead_used"])
+        except Exception:  # noqa: BLE001 - one bad campaign must not block the others
+            logger.exception("test-outreach preview tick failed for campaign %s", campaign.id)
+
+
 def run_forever(poll_interval=None):
     poll_interval = poll_interval or Config.SCHEDULER_POLL_INTERVAL_SECONDS
     last_outreach_tick = 0.0
@@ -626,6 +658,7 @@ def run_forever(poll_interval=None):
             _run_daily_plan_tick(db)
             _run_signal_driven_todo_tick(db)
             _run_strategy_reflection_tick(db)
+            _run_test_outreach_preview_tick(db)
         except Exception:  # noqa: BLE001 - one bad tick must not kill the scheduler
             logger.exception("scheduler tick failed")
             # Surface a failing tick to the monitor instead of only to the log -- a scheduler
