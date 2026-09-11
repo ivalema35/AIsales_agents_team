@@ -87,16 +87,22 @@ function barColor(value) {
   return "bg-line-strong";
 }
 
+// 2026-09-11, real user-caught bug: these rendered in whatever timezone the viewing
+// device's own OS/browser happens to be set to, not necessarily real IST -- pinning
+// timeZone explicitly makes the displayed clock time/date correct regardless (display
+// only, doesn't touch the Today/Yesterday day-grouping boundary itself).
+const IST_TZ = "Asia/Kolkata";
+
 function dayLabel(dateStr) {
   const today = new Date().toISOString().slice(0, 10);
   const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
   if (dateStr === today) return "Today";
   if (dateStr === yesterday) return "Yesterday";
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: IST_TZ });
 }
 
 function timeLabel(ts) {
-  return new Date(ts.replace(" ", "T") + "Z").toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return new Date(ts.replace(" ", "T") + "Z").toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: IST_TZ });
 }
 
 // Fixed, literal Tailwind classes per color key -- NEVER derive a class name at runtime

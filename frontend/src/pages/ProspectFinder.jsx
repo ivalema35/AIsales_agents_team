@@ -31,9 +31,12 @@ function formatWhen(raw) {
   if (!raw) return "";
   const d = new Date(String(raw).replace(" ", "T") + (String(raw).includes("Z") ? "" : "Z"));
   if (Number.isNaN(d.getTime())) return String(raw);
+  // 2026-09-11, real user-caught bug: pinned to IST so this shows correctly regardless
+  // of the viewing device's own OS/browser timezone setting -- display only.
   return d.toLocaleString(undefined, {
     month: "short", day: "numeric", year: "numeric",
     hour: "numeric", minute: "2-digit",
+    timeZone: "Asia/Kolkata",
   });
 }
 

@@ -77,9 +77,20 @@ function humanUptime(startedAt) {
   return `${Math.floor(secs / 86400)}d ${Math.floor((secs % 86400) / 3600)}h`;
 }
 
+// 2026-09-11, real user-caught bug: `toLocaleTimeString()` with no explicit timeZone
+// renders in whatever timezone the VIEWING device's own OS/browser is set to -- if
+// that machine isn't actually set to IST, every timestamp here silently shows raw
+// UTC-ish wall-clock instead of the real IST time the user expects (confirmed live:
+// a real 09:18:23 UTC send displayed as "09:18:24 AM" instead of the real "02:48 PM
+// IST"). Pinning `timeZone: "Asia/Kolkata"` makes this correct regardless of the
+// viewing device's own clock/timezone setting -- display-only, touches no backend
+// scheduling/comparison logic (those already do their own real UTC+IST_OFFSET math
+// server-side and are unaffected by this).
+const IST_TZ = "Asia/Kolkata";
+
 function clockTime(s) {
   const d = parseUtc(s);
-  return d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—";
+  return d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: IST_TZ }) : "—";
 }
 
 function ProcessCard({ proc }) {
@@ -323,7 +334,7 @@ export default function SystemMonitor() {
           </p>
         </div>
         <div className="text-right font-mono text-[11px] text-ink-500">
-          {lastOk ? `Updated ${lastOk.toLocaleTimeString()}` : "Not yet updated"}
+          {lastOk ? `Updated ${lastOk.toLocaleTimeString([], { timeZone: IST_TZ })}` : "Not yet updated"}
         </div>
       </header>
 

@@ -50,7 +50,8 @@ function QueueCard({ item, onRefresh }) {
             {item.lead_company_name || item.lead_id}
           </Link>
         </div>
-        <span className="font-mono text-[11px] text-ink-500">{new Date(item.created_at.replace(" ", "T") + "Z").toLocaleString()}</span>
+        {/* 2026-09-11, real user-caught bug: pinned to IST, display only -- see SystemMonitor.jsx's own note on this same fix. */}
+        <span className="font-mono text-[11px] text-ink-500">{new Date(item.created_at.replace(" ", "T") + "Z").toLocaleString([], { timeZone: "Asia/Kolkata" })}</span>
       </div>
       <p className="mt-2.5 whitespace-pre-wrap rounded-md bg-parchment-raised-2 p-3 text-xs leading-relaxed text-ink-700">
         {item.message_text}
