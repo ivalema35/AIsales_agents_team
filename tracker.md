@@ -7863,3 +7863,48 @@ mein sahi se process ho gaye (935 Done, dobara koi crash nahi). Yeh ek genuinely
 system-wide reliability fix he — ab koi bhi single job fail hone se poori scraper/worker
 process crash nahi hogi.
 
+---
+
+## 2026-09-11 (later still) — Yes click par AI ab real reply bhi draft karta he (Approve & send)
+
+**User ki real request**: "agar yes click ho to AI ek response reply draft kare uske
+personal ke liye with hamare company contact details ke sath with open question ke sath,
+use OK kare to send ho jaye" — matlab abhi tak Yes click sirf lead ko HOT_LEAD banata
+tha + admin ko email/WhatsApp alert bhejta tha, lekin lead ko khud koi reply nahi jata
+tha jab tak admin manually na likhe.
+
+**Kya banaya**:
+- **Naya prompt** (`cognition/prompts.py` — `INTEREST_REPLY_SYSTEM_PROMPT`): AI ek
+  SHORT (90 words se kam) reply likhta he jo (1) lead ko naam se thank karta he, (2)
+  bilkul EK open-ended question puchta he (kabhi yes/no nahi), (3) hamare REAL
+  configured contact details include karta he (kabhi invent nahi karta), (4) dobara
+  poora product pitch repeat nahi karta.
+- **Naya function** (`agents/inbound_agent.py` — `draft_interest_reply()`): isi prompt
+  ko call karta he, LLM fail hone par `None` return karta he (kabhi fake reply nahi
+  banata).
+- **Naya to-do kind** (`services/campaign_service.py`): `create_interest_reply_todo()`
+  AI Manager Inbox mein ek naya review-card daalta he (`interest_reply_draft` kind) —
+  EXACT same UI jo outreach-email-draft review ke liye already thi (`TodoItemCard.jsx`)
+  reuse ki, taaki naya UI banane ki zarurat na pade. Approve karne par
+  `send_interest_reply()` chalta he — yeh cold-outreach wale dispatch path se ALAG,
+  chhota, dedicated path he (na suppression-by-lead-identity check dobara, na
+  unsubscribe-URL resend logic — kyunki yeh ek aisi lead ko reply he jo already Yes bol
+  chuki he).
+- **Hook**: `services/outreach/interest_service.py` ke YES branch mein
+  `_draft_reply_for_review()` add kiya — admin alert ke turant baad chalta he, apne
+  khud ke try/except mein wrapped he taaki **draft fail hone se admin alert kabhi na
+  ruke** (alert already fire ho chuka hota he).
+- **Frontend**: `TodoItemCard.jsx` ka `isOutreachEmailDraft()` check broaden kiya taaki
+  naya `interest_reply_draft` kind bhi wahi "Approve & send" / "Ask for a change" UI
+  use kare — sirf heading channel-aware kar diya ("Reply to review (Email)" ya
+  "(WhatsApp)"), aur applied-confirmation card mein `sent_reply` ka naya case add kiya
+  (pehle sirf `sent_email` handle hota tha).
+
+**Verify kiya real evidence se**: sab naye Python files `ast.parse` se syntax-clean,
+real Flask app import (`create_app()`) safal, sab naye functions/imports real load
+hue, frontend `npm run build` clean. Koi naya DB column nahi chahiye tha (`TodoItem.
+proposal` already generic Text/JSON field he) isliye migration ki zarurat nahi thi.
+Deploy kiya (`pull` → `importcheck` → `build` → `sync-frontend` → `restart`), saari 5
+services `active` verify hui, `curl` se production API up confirm kiya, koi job stuck
+nahi mila deploy ke dauran.
+
