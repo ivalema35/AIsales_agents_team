@@ -17,6 +17,13 @@ function isOutreachEmailDraft(proposal) {
   return proposal && proposal.kind === "outreach_email_draft" && proposal.subject && proposal.body;
 }
 
+// 2026-09-11, real user ask: a "Yes, interested" click now also drafts a reply for
+// review -- same subject+body shape as an outreach_email_draft, just a different kind
+// tag and (per proposal.channel) may end up sent via WhatsApp instead of email.
+function isInterestReplyDraft(proposal) {
+  return proposal && proposal.kind === "interest_reply_draft" && proposal.subject && proposal.body;
+}
+
 function isLowConfOutreachBatch(proposal) {
   return proposal && proposal.kind === "low_confidence_outreach_batch" && Array.isArray(proposal.leads);
 }
@@ -44,6 +51,8 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
   const conflict = isConflictLabel(item.label);
   const proposal = item.proposal;
   const emailDraft = isOutreachEmailDraft(proposal);
+  const interestReply = isInterestReplyDraft(proposal);
+  const draftLike = emailDraft || interestReply;
   const lowConfBatch = isLowConfOutreachBatch(proposal);
   // GLOBAL always has a real action (creates the real campaign directly); a CAMPAIGN item
   // has one when it carries a structural proposal, OR is one of the standing fixed-label
@@ -126,6 +135,8 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             <CheckCircle2 size={12} />
             {appliedResult.sent_email
               ? "Email sent"
+              : appliedResult.sent_reply
+                ? "Reply sent"
               : appliedResult.outreach_batch_started
                 ? "Outreach started"
               : appliedResult.campaign_created
@@ -162,7 +173,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               <p className="text-ink-500">Messages go out staggered — check System Monitor if you want to watch the queue.</p>
             </>
           )}
-          {appliedResult.sent_email && (
+          {(appliedResult.sent_email || appliedResult.sent_reply) && (
             <>
               <p>
                 Sent to <b>{appliedResult.company_name || "this lead"}</b>
@@ -208,7 +219,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
     );
   }
 
-  const approveLabel = emailDraft
+  const approveLabel = draftLike
     ? "Approve & send"
     : lowConfBatch
     ? "OK — start outreach for all"
@@ -230,14 +241,14 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         <div className="flex flex-wrap items-center gap-1.5">
           <span
             className={`flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide ${
-              emailDraft || lowConfBatch
+              draftLike || lowConfBatch
                 ? "bg-ink-900 text-parchment-raised"
                 : conflict
                 ? "bg-alert-600 text-white"
                 : "bg-parchment-raised-2 text-ink-700"
             }`}
           >
-            {lowConfBatch ? <Users size={9} /> : emailDraft ? <Mail size={9} /> : conflict ? <AlertTriangle size={9} /> : null}
+            {lowConfBatch ? <Users size={9} /> : draftLike ? <Mail size={9} /> : conflict ? <AlertTriangle size={9} /> : null}
             {item.label || "Note"}
           </span>
           {showSourceChip && (
@@ -245,7 +256,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               {item.scope === "GLOBAL" ? item.product_title || "New campaign idea" : item.campaign_name || "Campaign"}
             </span>
           )}
-          {item.confidence != null && !emailDraft && (
+          {item.confidence != null && !draftLike && (
             <span
               title="How confident the AI is, based on real data volume/clarity"
               className={`rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold ${
@@ -274,7 +285,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
                 disabled={busy}
                 className="rounded-md px-2.5 py-1.5 text-[11px] font-medium text-ink-500 hover:bg-parchment-raised-2 hover:text-ink-900 disabled:opacity-50"
               >
-                {emailDraft || lowConfBatch ? "Not now" : "Dismiss"}
+                {draftLike || lowConfBatch ? "Not now" : "Dismiss"}
               </button>
               <button
                 onClick={approve}
@@ -284,7 +295,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
                 {busy
                   ? lowConfBatch
                     ? "Starting…"
-                    : emailDraft
+                    : draftLike
                       ? "Sending…"
                       : "Working…"
                   : approveLabel}
@@ -319,10 +330,12 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
 
       {/* Option B (2026-09-08): QC-rejected email with a real draft -- show it plainly so
           Approve & send is a real review, not a blind click. */}
-      {emailDraft && (
+      {draftLike && (
         <div className="mt-2.5 rounded-md border border-line bg-parchment p-3">
           <p className="font-mono text-[9px] font-semibold uppercase tracking-wide text-ink-500">
-            Email to review
+            {interestReply
+              ? `Reply to review (${proposal.channel === "WHATSAPP" ? "WhatsApp" : "Email"})`
+              : "Email to review"}
           </p>
           <p className="mt-1.5 text-sm font-semibold text-ink-900">
             <span className="font-normal text-ink-500">Subject: </span>
@@ -365,7 +378,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
         </div>
       )}
 
-      {proposal && !emailDraft && !lowConfBatch && (
+      {proposal && !draftLike && !lowConfBatch && (
         <div className="mt-2 rounded-md border border-dashed border-gold-600 bg-gold-100 p-2.5">
           <span className="flex items-center gap-1.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-gold-700">
             <Sparkles size={11} /> Structural change -- applies on Approve
@@ -405,7 +418,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
             value={instruction}
             onChange={(e) => setInstruction(e.target.value)}
             placeholder={
-              emailDraft
+              draftLike
                 ? "e.g. remove pricing talk, make it shorter"
                 : "e.g. isko formal karo, ek ROI line add karo"
             }
@@ -417,7 +430,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
               disabled={revising || !instruction.trim()}
               className="rounded-md bg-gold-600 px-3 py-1.5 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50"
             >
-              {revising ? "Updating…" : emailDraft ? "Update email" : "Regenerate"}
+              {revising ? "Updating…" : draftLike ? (interestReply ? "Update reply" : "Update email") : "Regenerate"}
             </button>
             <button
               type="button"
@@ -433,7 +446,7 @@ export default function TodoItemCard({ item: initialItem, showSourceChip = false
           onClick={() => setShowFeedback(true)}
           className="mt-2.5 text-[11px] font-medium text-ink-500 hover:text-ink-900"
         >
-          {emailDraft ? "Ask for a change" : "Give feedback"}
+          {draftLike ? "Ask for a change" : "Give feedback"}
         </button>
       ) : null}
     </div>

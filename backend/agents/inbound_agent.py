@@ -7,7 +7,8 @@ import json
 
 from cognition.agent_events import log_agent_event
 from cognition.llm_client import call_json, LLMError
-from cognition.prompts import INBOUND_CLASSIFIER_SYSTEM_PROMPT, REPLY_REDRAFT_SYSTEM_PROMPT
+from cognition.prompts import (
+    INBOUND_CLASSIFIER_SYSTEM_PROMPT, REPLY_REDRAFT_SYSTEM_PROMPT, INTEREST_REPLY_SYSTEM_PROMPT)
 
 VALID_INTENTS = {"INTERESTED", "DEMO_REQUESTED", "OBJECTION", "STOP", "AUTO_REPLY"}
 
@@ -105,3 +106,42 @@ KNOWLEDGE_BASE: {json.dumps(knowledge_base_items or [], ensure_ascii=False)}
                         payload={"error": str(exc)})
         return ""
     return str(data.get("reply", ""))[:600]
+
+
+def draft_interest_reply(db, lead_id, lead_profile: dict, product_brief: dict, contact_lines: list,
+                         human_instruction: str | None = None, previous_draft: dict | None = None):
+    """2026-09-11, real user ask: a real "Yes, I'm interested" click should get a real,
+    personal reply drafted for a human to review and approve -- not just an internal
+    admin alert. Returns {"subject", "body"} or None on any LLM error (caller must never
+    fabricate a reply itself; a failed draft here just means no to-do gets created,
+    which is a safe, honest outcome -- the admin alert from interest_service.py still
+    fired regardless, so the real signal isn't lost, only this optional reply draft is).
+
+    `contact_lines` -- real "Label: value" strings built from services/outreach/
+    company_contact.py's build_contact_section(), never invented here.
+
+    `human_instruction`/`previous_draft` -- same "current state + one instruction"
+    revision pattern used elsewhere in this codebase (e.g. draft_structured_email).
+    """
+    prompt = INTEREST_REPLY_SYSTEM_PROMPT + f"""
+LEAD: {json.dumps(lead_profile, ensure_ascii=False)}
+PRODUCT_BRIEF: {json.dumps(product_brief or {}, ensure_ascii=False)}
+COMPANY_CONTACT: {json.dumps(contact_lines, ensure_ascii=False)}
+"""
+    if human_instruction:
+        prompt += f"""
+PREVIOUS_DRAFT: {json.dumps(previous_draft or {}, ensure_ascii=False)}
+HUMAN_INSTRUCTION: {json.dumps(human_instruction, ensure_ascii=False)}
+"""
+    try:
+        data = call_json(prompt, temperature=0.4)
+    except LLMError as exc:
+        log_agent_event(db, "INTEREST", lead_id, "DRAFT_INTEREST_REPLY", 0.0, "LOW", "LLM_FAILED",
+                        payload={"error": str(exc)})
+        return None
+
+    subject = str(data.get("subject", "")).strip()[:150]
+    body = str(data.get("body", "")).strip()[:600]
+    if not subject or not body:
+        return None
+    return {"subject": subject, "body": body}

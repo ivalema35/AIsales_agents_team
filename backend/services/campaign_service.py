@@ -14,6 +14,7 @@ a human to act on, never creates anything itself.
 """
 from __future__ import annotations
 import json
+import uuid
 from collections import Counter
 from datetime import datetime, timedelta
 
@@ -147,6 +148,13 @@ _OUTREACH_EMAIL_DRAFT_KIND = "outreach_email_draft"
 # one campaign-scoped Inbox card lists them all; Approve force-claims every one.
 _NEEDS_OK_OUTREACH_LABEL = "Needs your OK to send"
 _LOW_CONF_OUTREACH_KIND = "low_confidence_outreach_batch"
+# 2026-09-11, real user ask: a real "Yes, I'm interested" click gets a real, personal
+# reply drafted for human review -- same Approve & send review-card mechanism as the
+# QC-escalation email draft above, distinct kind because the actual send path and the
+# revision prompt are both different (a warm reply to someone who already said yes,
+# never the cold-outreach drafting/sequence machinery).
+_REVIEW_INTEREST_REPLY_LABEL = "Reply to interested lead"
+_INTEREST_REPLY_DRAFT_KIND = "interest_reply_draft"
 
 
 def resolve_auto_campaign_id(db, product_id: str) -> str | None:
@@ -786,6 +794,97 @@ def create_lead_escalation_todo(
                  "Open this lead's page to write and send one yourself.",
             is_blocker=True,
         )
+    db.add(item)
+    db.commit()
+
+
+def send_interest_reply(db, lead: Lead, channel: str, subject: str, body: str) -> dict:
+    """2026-09-11 -- the actual send once a human approves an interest-reply draft.
+    Deliberately its own small send path, NOT dispatch_structured_email (that function
+    is built for cold first-touch/sequence email: it re-appends a Yes/No INTEREST
+    section -- nonsensical here, they already said yes -- gates on the campaign's
+    outreach-approval flags meant for autonomous cold sends, and stamps sequence
+    bookkeeping this reply has no business touching). Modeled on jobs/
+    inbound_classify_handler.py's own _send_reply_message instead -- same real
+    suppression-check + OutreachLog pattern, just channel-parametrized since this has no
+    InboundConversation row to read the channel from (a Yes click is a link click, not
+    an inbound message). Raises on failure -- same contract as every other real send in
+    this codebase.
+    """
+    from services.outreach.suppression import is_suppressed
+    from services.outreach.email_service import send_email, extract_resend_id
+    from services.outreach.whatsapp_service import send_free_form_message, extract_wamid
+    from services.phone_utils import normalize_phone
+
+    if channel == "EMAIL":
+        if not lead.primary_email:
+            raise ValueError(f"lead {lead.id} has no email on file")
+        if is_suppressed(db, "EMAIL", lead.primary_email):
+            raise ValueError(f'"{lead.company_name}" is on the do-not-email list -- not sent')
+        unsubscribe_url = f"{Config.PUBLIC_BASE_URL}/api/v1/unsubscribe/{lead.id}"
+        send_response = send_email(lead.primary_email, subject, body, unsubscribe_url)
+        db.add(OutreachLog(
+            id=str(uuid.uuid4()), lead_id=lead.id, channel="EMAIL",
+            message_subject=subject, message_body=body, status="SENT",
+            provider_message_id=extract_resend_id(send_response),
+        ))
+        to = lead.primary_email
+    else:
+        product = db.get(Product, lead.product_id)
+        raw_phone = lead.whatsapp_number or lead.primary_phone
+        to_phone = normalize_phone(raw_phone, country_hint=product.target_country) if raw_phone else None
+        if not to_phone:
+            raise ValueError(f"lead {lead.id} has no usable phone on file")
+        if is_suppressed(db, "WHATSAPP", to_phone):
+            raise ValueError(f'"{lead.company_name}" is on the do-not-message list -- not sent')
+        send_response = send_free_form_message(to_phone, body)
+        db.add(OutreachLog(
+            id=str(uuid.uuid4()), lead_id=lead.id, channel="WHATSAPP",
+            message_subject=subject, message_body=body, status="SENT",
+            provider_message_id=extract_wamid(send_response),
+        ))
+        to = to_phone
+
+    db.commit()
+    log_agent_event(db, "INTEREST", lead.id, "SEND_INTEREST_REPLY", 1.0, "LOW", "EXECUTE",
+                    payload={"channel": channel})
+    return {"to": to, "subject": subject, "company_name": lead.company_name}
+
+
+def create_interest_reply_todo(db, lead: Lead, draft: dict, channel: str) -> None:
+    """2026-09-11, real user ask: right after a real "Yes, I'm interested" click, get a
+    real reply drafted for that specific lead and put it in front of a human to review --
+    Approve & send if it looks right, same review-card mechanism as the QC-escalation
+    email draft, distinct kind (`_INTEREST_REPLY_DRAFT_KIND`) so approve/revise route to
+    the right send path and prompt (never the cold-outreach machinery). Silently does
+    nothing for a lead with no campaign_id -- same real limitation
+    create_lead_escalation_todo already has; a to-do needs a campaign to scope it to."""
+    if not lead.campaign_id or not draft:
+        return
+
+    existing = db.query(TodoItem).filter(
+        TodoItem.campaign_id == lead.campaign_id, TodoItem.lead_id == lead.id,
+        TodoItem.status == "PENDING", TodoItem.label == _REVIEW_INTEREST_REPLY_LABEL,
+    ).first()
+    if existing:
+        return  # already has one pending -- a second Yes click on a different send
+                # shouldn't pile up a second draft on top of an unresolved one
+
+    item = TodoItem(
+        scope="CAMPAIGN", campaign_id=lead.campaign_id, lead_id=lead.id,
+        label=_REVIEW_INTEREST_REPLY_LABEL,
+        text=(
+            f'"{lead.company_name}" just said they\'re interested. Here\'s a real reply '
+            "AI drafted for them — Approve & send if it looks right, or ask for a change."
+        ),
+        proposal=json.dumps({
+            "kind": _INTEREST_REPLY_DRAFT_KIND,
+            "subject": draft["subject"],
+            "body": draft["body"],
+            "channel": channel,
+        }),
+        is_blocker=True,
+    )
     db.add(item)
     db.commit()
 
@@ -1876,6 +1975,14 @@ def revise_todo_item(db, todo_id: str, instruction: str) -> dict:
     ):
         return _revise_outreach_email_todo(db, item, proposal, instruction)
 
+    if (
+        item.scope == "CAMPAIGN"
+        and isinstance(proposal, dict)
+        and proposal.get("kind") == _INTEREST_REPLY_DRAFT_KIND
+        and item.lead_id
+    ):
+        return _revise_interest_reply_todo(db, item, proposal, instruction)
+
     if item.scope == "CAMPAIGN":
         campaign = db.get(Campaign, item.campaign_id)
         real_data = {
@@ -1980,6 +2087,46 @@ def _revise_outreach_email_todo(db, item: TodoItem, proposal: dict, instruction:
     return {"item": serialize_todo_item(item), "pushback": pushback}
 
 
+def _revise_interest_reply_todo(db, item: TodoItem, proposal: dict, instruction: str) -> dict:
+    """2026-09-11 -- rewrite the stored interest-reply draft from human feedback, via the
+    same draft_interest_reply() prompt the original draft used (never the cold-outreach
+    draft_structured_email path -- see create_interest_reply_todo's own docstring)."""
+    from agents.inbound_agent import draft_interest_reply
+    from services.outreach.company_contact import build_contact_section
+
+    lead = db.get(Lead, item.lead_id)
+    if not lead:
+        raise ValueError(f"lead {item.lead_id} not found for todo {item.id}")
+    product = db.get(Product, lead.product_id)
+    if not product:
+        raise ValueError(f"product {lead.product_id} not found")
+
+    product_brief = {"title": product.title, "description": product.description,
+                     "value_proposition": product.value_proposition}
+    lead_profile = {"company_name": lead.company_name, "contact_person_name": lead.contact_person_name}
+    contact_section = build_contact_section(db)
+    contact_lines = [f"{label}: {value}" for label, value, _ in contact_section["items"]] if contact_section else []
+    previous_draft = {"subject": proposal.get("subject", ""), "body": proposal.get("body", "")}
+
+    revised = draft_interest_reply(
+        db, lead.id, lead_profile, product_brief, contact_lines,
+        human_instruction=instruction, previous_draft=previous_draft,
+    )
+    if not revised:
+        raise RuntimeError("reply rewrite failed -- try again or rephrase the instruction")
+
+    proposal = {**proposal, "kind": _INTEREST_REPLY_DRAFT_KIND,
+               "subject": revised["subject"], "body": revised["body"]}
+    item.proposal = json.dumps(proposal)
+    item.text = (
+        f'Updated reply for "{lead.company_name}" from your note. '
+        "Read it below — Approve & send if it looks right, or ask for another change."
+    )
+    db.commit()
+    pushback = check_instruction_pushback(db, item.campaign_id, instruction) if item.campaign_id else None
+    return {"item": serialize_todo_item(item), "pushback": pushback}
+
+
 def approve_todo_item(db, todo_id: str) -> dict:
     """Phase 21 -- the ONLY way a to-do's `proposal` ever reaches a real Campaign row
     (CAMPAIGN scope) -- a per-item decision, never a whole-day bulk action. GLOBAL scope
@@ -2042,6 +2189,25 @@ def approve_todo_item(db, todo_id: str) -> dict:
         # every listed lead so real OUTREACH_* jobs enqueue (staggered), same as approving
         # "Send Outreach Now" on each lead, but one click for the group.
         applied = _apply_low_confidence_outreach_batch(db, item, proposal)
+    elif (
+        item.scope == "CAMPAIGN"
+        and isinstance(proposal, dict)
+        and proposal.get("kind") == _INTEREST_REPLY_DRAFT_KIND
+    ):
+        # 2026-09-11: a real reply to a lead who already clicked "Yes" -- send_interest_reply
+        # (not dispatch_structured_email, see its own docstring for why).
+        lead = db.get(Lead, item.lead_id) if item.lead_id else None
+        if not lead:
+            raise ValueError(f"todo {todo_id} has no lead to send to")
+        if not proposal.get("subject") or not proposal.get("body"):
+            raise ValueError("this review card has no reply to send")
+        try:
+            sent = send_interest_reply(
+                db, lead, proposal.get("channel") or "EMAIL", proposal["subject"], proposal["body"])
+        except Exception as exc:
+            raise RuntimeError(f"send failed: {exc}") from exc
+        applied = {"sent_reply": True, "to": sent["to"], "subject": sent["subject"],
+                  "company_name": sent["company_name"]}
     elif item.scope == "CAMPAIGN" and item.label == _APPROVE_CAMPAIGN_LABEL:
         # Dashboard Inbox Approve on this standing cue IS the formal campaign OK -- same
         # outcome as Campaign Detail's "Mark as approved" button.

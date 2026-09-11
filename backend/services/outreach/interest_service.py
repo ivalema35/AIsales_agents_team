@@ -43,6 +43,7 @@ def record_interest_response(db, lead, log, response: str) -> bool:
     if response == "YES":
         _escalate_to_hot_lead(db, lead, log)
         _send_admin_alert(db, lead, log)
+        _draft_reply_for_review(db, lead, log)
     else:
         _stop_sequence(db, lead, log)
     return True
@@ -117,6 +118,36 @@ def _send_admin_alert(db, lead, log):
             send_free_form_message(to_phone, body)
         except Exception:  # noqa: BLE001
             logger.exception("interest-click admin alert WhatsApp to %s failed", to_phone)
+
+
+def _draft_reply_for_review(db, lead, log):
+    """2026-09-11, real user ask: on top of the admin alert above, get a real, personal
+    reply drafted for this specific lead and put it in the AI Manager Inbox for Approve &
+    send -- so a human doesn't have to write one by hand every time someone says yes.
+    Never raises: a failed draft must not break the real escalation/alert that already
+    happened above -- worst case, no to-do gets created and the admin still got alerted
+    by email/WhatsApp regardless, so the real signal is never lost.
+    """
+    from agents.inbound_agent import draft_interest_reply
+    from database.models import Product
+    from services.campaign_service import create_interest_reply_todo
+    from services.outreach.company_contact import build_contact_section
+
+    try:
+        product = db.get(Product, lead.product_id)
+        if not product:
+            return
+        product_brief = {"title": product.title, "description": product.description,
+                         "value_proposition": product.value_proposition}
+        lead_profile = {"company_name": lead.company_name, "contact_person_name": lead.contact_person_name}
+        contact_section = build_contact_section(db)
+        contact_lines = [f"{label}: {value}" for label, value, _ in contact_section["items"]] if contact_section else []
+
+        draft = draft_interest_reply(db, lead.id, lead_profile, product_brief, contact_lines)
+        if draft:
+            create_interest_reply_todo(db, lead, draft, log.channel)
+    except Exception:  # noqa: BLE001 - a failed draft must not break the real escalation above
+        logger.exception("interest-reply draft failed for lead %s", lead.id)
 
 
 def _stop_active_sequence(db, lead, log, terminal_reason: str):
