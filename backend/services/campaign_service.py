@@ -301,7 +301,15 @@ def compute_campaign_lead_summary(db, campaign_id: str) -> dict:
     leads = db.query(Lead).filter(Lead.campaign_id == campaign_id).all()
     total = len(leads)
     lead_ids = [l.id for l in leads]
-    found_today_ids = [l.id for l in leads if str(l.created_at)[:10] == today]
+    # 2026-09-11, real bug found while reviewing a related frontend change: created_at is
+    # stored in UTC (SQLite's own CURRENT_TIMESTAMP), so comparing its raw date string
+    # against the IST "today" string mis-buckets any lead created 00:00-05:29 IST (still
+    # "yesterday" in UTC) -- silently missing it from "found today" for up to 5.5 hours
+    # after it was actually found. Convert to IST first, exactly like _today_ist() itself.
+    found_today_ids = [
+        l.id for l in leads
+        if l.created_at and (l.created_at + IST_OFFSET).strftime("%Y-%m-%d") == today
+    ]
 
     qualified_tiers = {"HOT", "WARM"}
     scores = {

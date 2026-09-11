@@ -7986,3 +7986,28 @@ NO-pehle, dono order mein tie ho to hamesha "YES" return hota he; genuine progre
 No phir baad mein real Yes — bhi sahi se latest Yes dikhata he). Sab files syntax-clean,
 real Flask import safal, deploy kiya, saari services active.
 
+
+### Campaign Detail — KPI chips open lead modal (2026-09-11, via Cursor)
+
+KPI boxes (Found today / Worth pursuing / Messages sent / Opened / Replied / Hot interest)
+ab clickable hain: modal me matching businesses list + Message cell; row click -> Lead Detail.
+Unique lead list existing `listLeads` payload se (same outreach summary as table). Chip totals
+sent/opened/replied message-level reh sakte hain; modal unique businesses dikhata he.
+
+**Review karte waqt 2 real IST-boundary bugs mile aur fix kiye** (khud is naye code mein nahi,
+balki isi tarah ke ek PRE-EXISTING backend bug ke saath):
+1. **Naya frontend bug** (Cursor ke code mein): "Found today"/"Worth pursuing today" modal
+   `l.created_at` (UTC string) ka pehla 10 characters seedha IST "today" date se compare kar
+   raha tha — bina UTC->IST convert kiye. Isse 00:00-05:29 IST ke beech create hui leads
+   galat tarike se "aaj" se exclude ho jaati (jab tak UTC calendar date bhi flip na ho jaye).
+   Fix: naya `toISTDateString()` helper (`lib/istDate.js`), jo `LeadDetail.jsx` ke already-fixed
+   `timeLabel()`/`dayLabel()` wale exact pattern (`.replace(" ", "T") + "Z"`) follow karta he.
+2. **Bada real bug, PRE-EXISTING backend mein** (yeh session se pehle ka, Cursor ne introduce
+   nahi kiya): `services/campaign_service.py`'s `compute_campaign_lead_summary()` khud bhi
+   `str(l.created_at)[:10] == today` (same UTC-vs-IST mismatch) use kar raha tha — matlab
+   **HAR campaign ka "Found today"/"Worth pursuing today" number** hamesha se galat tha kisi
+   bhi lead ke liye jo IST raat 12 baje se subah 5:30 ke beech discover hui ho. Fix: ab
+   `(l.created_at + IST_OFFSET).strftime("%Y-%m-%d") == today` — bilkul `_today_ist()` jaisa hi
+   formula.
+
+Dono fix verify kiye (syntax-check, real Flask import, `npm run build` clean), deploy kiya.

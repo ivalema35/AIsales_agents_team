@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle, Filter, X } from "lucide-react";
+import { ArrowLeft, Target, Users, Check, Mail, MessageCircle, Eye, MessageSquareReply, XCircle, Filter, X, ChevronRight } from "lucide-react";
 import { api } from "../api/client";
 import { CampaignReviewCard } from "../components/DailyReviewPanel";
 import OutreachApprovalCard from "../components/OutreachApprovalCard";
 import Badge from "../components/ui/Badge";
+import Modal from "../components/ui/Modal";
 import { statusBadgeClass, statusLabel, STATUS_LABELS } from "../lib/statusColors";
 import { industryLabel, locationLabel } from "../lib/targetSegment";
 import { relativeTime } from "../lib/relativeTime";
+import { todayIST, toISTDateString } from "../lib/istDate";
 import { useConfirm } from "../lib/ConfirmContext";
 import { useToast } from "../lib/ToastContext";
 
@@ -80,6 +82,71 @@ function FilterChip({ active, onClick, children, count, tone = "default" }) {
   );
 }
 
+// KPI chip → modal drill-down (2026-09-11). Numbers on the chips still come from
+// campaign.metrics / lead_summary (message-level for sent/opened/replied). The modal
+// lists UNIQUE businesses from the same lead payload the table already uses, so Message
+// cell and Lead Detail never disagree. sent/opened/replied chip totals can be higher
+// than the unique-business count when one lead got more than one successful send.
+const KPI_META = {
+  found_today: {
+    title: "Found today",
+    blurb: "Businesses discovered for this campaign today (IST calendar day).",
+  },
+  qualified_today: {
+    title: "Worth pursuing today",
+    blurb: "Found today and scored Warm or Hot — worth a real outreach look.",
+  },
+  sent: {
+    title: "Messages sent",
+    blurb: "Businesses that already got at least one successful email or WhatsApp.",
+  },
+  opened: {
+    title: "Opened",
+    blurb: "Businesses that opened or read at least one of your messages.",
+  },
+  replied: {
+    title: "Replied",
+    blurb: "Businesses that wrote back after you messaged them.",
+  },
+  hot: {
+    title: "Hot interest",
+    blurb: "Marked Hot Lead — real interest signal, not just a high score.",
+  },
+};
+
+function leadsForKpi(leads, key) {
+  if (!leads?.length) return [];
+  const today = todayIST();
+  switch (key) {
+    case "found_today":
+      return leads.filter((l) => toISTDateString(l.created_at) === today);
+    case "qualified_today":
+      return leads.filter(
+        (l) =>
+          toISTDateString(l.created_at) === today &&
+          (l.score?.tier === "HOT" || l.score?.tier === "WARM"),
+      );
+    case "sent":
+      return leads.filter((l) => l.outreach && l.outreach.state !== "Failed");
+    case "opened":
+      // Summarize picks the highest delivery state, so a Replied lead can hide an
+      // earlier Seen/read_at from another channel -- treat Replied as opened too.
+      return leads.filter(
+        (l) =>
+          l.outreach &&
+          (l.outreach.read_at ||
+            l.outreach.state === "Seen" ||
+            l.outreach.state === "Replied"),
+      );
+    case "replied":
+      return leads.filter((l) => l.outreach?.state === "Replied");
+    case "hot":
+      return leads.filter((l) => l.status === "HOT_LEAD");
+    default:
+      return [];
+  }
+}
+
 // 2026-09-08, real gap the user found live: the campaign-level "Opened: 1" stat is a
 // real, correct count (compute_campaign_metrics), but told a human nothing about WHICH
 // lead that open belonged to -- the only way to find out was opening every single lead's
@@ -148,6 +215,8 @@ export default function CampaignDetail() {
   // 2026-09-11: Stage + Priority filters on the businesses table (non-tech chip UI).
   const [stageFilter, setStageFilter] = useState("ALL");
   const [tierFilter, setTierFilter] = useState("ALL");
+  // Which KPI chip modal is open (found_today | qualified_today | sent | opened | replied | hot).
+  const [kpiKey, setKpiKey] = useState(null);
 
   function refresh() {
     api.getCampaign(id).then(setCampaign).catch((err) => setError(err.message));
@@ -160,6 +229,7 @@ export default function CampaignDetail() {
   useEffect(() => {
     setStageFilter("ALL");
     setTierFilter("ALL");
+    setKpiKey(null);
   }, [id]);
 
   useEffect(() => {
@@ -203,6 +273,12 @@ export default function CampaignDetail() {
   }, [leads, stageFilter, tierFilter]);
 
   const filtersActive = stageFilter !== "ALL" || tierFilter !== "ALL";
+
+  const kpiLeads = useMemo(
+    () => (kpiKey ? leadsForKpi(leads, kpiKey) : []),
+    [leads, kpiKey],
+  );
+  const kpiMeta = kpiKey ? KPI_META[kpiKey] : null;
 
   async function approveCampaign() {
     const ok = await confirm({
@@ -324,13 +400,30 @@ export default function CampaignDetail() {
         )}
 
         <div className="mt-4 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-3 lg:grid-cols-6">
-          <StatChip label="Found today" value={foundToday} />
-          <StatChip label="Worth pursuing today" value={qualifiedToday} hint="Warm or hot after scoring" />
-          <StatChip label="Messages sent" value={sent} />
-          <StatChip label="Opened" value={opened} />
-          <StatChip label="Replied" value={replied} />
-          {hot > 0 && <StatChip label="Hot interest" value={hot} emphasize />}
+          <StatChip
+            label="Found today"
+            value={foundToday}
+            onClick={() => setKpiKey("found_today")}
+          />
+          <StatChip
+            label="Worth pursuing today"
+            value={qualifiedToday}
+            hint="Warm or hot after scoring"
+            onClick={() => setKpiKey("qualified_today")}
+          />
+          <StatChip label="Messages sent" value={sent} onClick={() => setKpiKey("sent")} />
+          <StatChip label="Opened" value={opened} onClick={() => setKpiKey("opened")} />
+          <StatChip label="Replied" value={replied} onClick={() => setKpiKey("replied")} />
+          {hot > 0 && (
+            <StatChip
+              label="Hot interest"
+              value={hot}
+              emphasize
+              onClick={() => setKpiKey("hot")}
+            />
+          )}
         </div>
+        <p className="mt-2 text-[11px] text-ink-500">Tap a number to see which businesses it counts.</p>
 
         {campaign.status === "APPROVED" && (
           <div className="mt-4">
@@ -532,24 +625,105 @@ export default function CampaignDetail() {
         )}
         </div>
       </div>
+
+      {kpiMeta && (
+        <Modal
+          title={kpiMeta.title}
+          onClose={() => setKpiKey(null)}
+          maxWidth="max-w-2xl"
+        >
+          <p className="mb-3 -mt-1 text-xs leading-relaxed text-ink-500">{kpiMeta.blurb}</p>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <span className="rounded-full bg-parchment px-2.5 py-1 text-xs tabular-nums text-ink-600 ring-1 ring-inset ring-line">
+              {kpiLeads.length} business{kpiLeads.length === 1 ? "" : "es"}
+            </span>
+            {leads === null && (
+              <span className="text-xs text-ink-500">Loading list…</span>
+            )}
+          </div>
+          {leads === null ? (
+            <div className="h-24 animate-pulse rounded-lg bg-parchment-raised-2" />
+          ) : kpiLeads.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-line bg-parchment px-4 py-10 text-center">
+              <Users className="mx-auto text-ink-400" size={22} />
+              <p className="mt-2 text-sm font-medium text-ink-700">No businesses in this bucket yet</p>
+              <p className="mt-1 text-xs text-ink-500">When this number grows, they will show up here.</p>
+            </div>
+          ) : (
+            <ul className="max-h-[min(60vh,28rem)] divide-y divide-line overflow-y-auto rounded-xl border border-line">
+              {kpiLeads.map((l) => {
+                const tier = l.score?.tier;
+                return (
+                  <li key={l.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setKpiKey(null);
+                        navigate(`/leads/${l.id}`);
+                      }}
+                      className="flex w-full items-center gap-3 px-3.5 py-3 text-left transition-colors hover:bg-parchment focus-visible:bg-parchment focus-visible:outline-none"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-ink-900">{l.company_name}</p>
+                        <p className="mt-0.5 truncate text-[11px] text-ink-500">
+                          {shortLocation(l.region_location) || "No location"}
+                          <span className="text-ink-400"> · </span>
+                          {statusLabel(l.status)}
+                          {tier ? ` · ${tier}` : ""}
+                        </p>
+                      </div>
+                      <div className="shrink-0">
+                        <OutreachCell outreach={l.outreach} />
+                      </div>
+                      <ChevronRight size={16} className="shrink-0 text-ink-400" aria-hidden />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </Modal>
+      )}
     </div>
   );
 }
 
-function StatChip({ label, value, hint, emphasize }) {
+function StatChip({ label, value, hint, emphasize, onClick }) {
+  const base = emphasize
+    ? "border-alert-600/30 bg-alert-100/50 text-alert-700"
+    : "border-line bg-parchment text-ink-900";
+  const hover = emphasize
+    ? "hover:border-alert-600 hover:bg-alert-100 hover:shadow-sm"
+    : "hover:border-ink-500 hover:bg-parchment-raised hover:shadow-sm";
   return (
-    <div
-      className={`rounded-md border px-2.5 py-2 ${
-        emphasize ? "border-alert-600/30 bg-alert-100/50" : "border-line bg-parchment"
-      }`}
-      title={hint}
+    <button
+      type="button"
+      onClick={onClick}
+      title={hint || `View businesses for ${label}`}
+      aria-label={`View ${label}: ${value}`}
+      className={`group rounded-md border px-2.5 py-2 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-900/20 ${base} ${hover} cursor-pointer`}
     >
-      <p className={`text-[10px] font-medium uppercase tracking-wide ${emphasize ? "text-alert-700" : "text-ink-500"}`}>
-        {label}
+      <p
+        className={`flex items-center justify-between gap-1 text-[10px] font-medium uppercase tracking-wide ${
+          emphasize ? "text-alert-700" : "text-ink-500"
+        }`}
+      >
+        <span>{label}</span>
+        <ChevronRight
+          size={12}
+          className={`shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 ${
+            emphasize ? "text-alert-700" : "text-ink-500"
+          }`}
+          aria-hidden
+        />
       </p>
-      <p className={`mt-0.5 font-display text-lg font-semibold tabular-nums ${emphasize ? "text-alert-700" : "text-ink-900"}`}>
+      <p
+        className={`mt-0.5 font-display text-lg font-semibold tabular-nums ${
+          emphasize ? "text-alert-700" : "text-ink-900"
+        }`}
+      >
         {value}
       </p>
-    </div>
+    </button>
   );
 }
