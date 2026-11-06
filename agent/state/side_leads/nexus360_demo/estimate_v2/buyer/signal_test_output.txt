@@ -1,0 +1,57 @@
+=== A. The register on 20 Oct 2026 ===
+project registrations in the saved list: 2173
+distinct promoter names (after tidy-up): 1138
+share of rows that have a website filled on the register: 90.5%
+builder groups after merging names that share a website: 983
+
+=== B. Who is building RIGHT NOW (register's own 'Ongoing projects' page) ===
+ongoing projects: 745
+builder groups with at least one ongoing project: 415
+  minus government / housing board / municipal / co-operative / trust bodies: 37
+  minus Nexus360's own customers (name or website match): 2
+  = private builder groups that could be prospects (all Chhattisgarh): 376
+  of which with an ongoing project in Raipur / Durg / Rajnandgaon: 179
+
+--- all Chhattisgarh (376 builder groups) ---
+ongoing projects per builder: {'1': 290, '2': 56, '3-4': 15, '5-8': 10, '9+': 5}
+builders with 2+ ongoing projects: 86 = 23%
+builders whose ONLY ongoing project is a plotted layout: 198
+builders with 2+ ongoing AND one running past its ORIGINAL end date: 14
+builders with ANY ongoing project past its original end date: 23
+builders with 2+ ongoing AND one registered in the last 12 months (second/third project): 45
+BEST FIT (2-8 ongoing, a new one in last 12 months plus an older one, at least one apartment/mixed/commercial): 23
+large groups with 9+ ongoing (probably have their own IT already - treat separately): 5
+
+--- Raipur+Durg+Rajnandgaon (179 builder groups) ---
+ongoing projects per builder: {'1': 126, '2': 29, '3-4': 11, '5-8': 9, '9+': 4}
+builders with 2+ ongoing projects: 53 = 30%
+builders whose ONLY ongoing project is a plotted layout: 79
+builders with 2+ ongoing AND one running past its ORIGINAL end date: 12
+builders with ANY ongoing project past its original end date: 18
+builders with 2+ ongoing AND one registered in the last 12 months (second/third project): 30
+BEST FIT (2-8 ongoing, a new one in last 12 months plus an older one, at least one apartment/mixed/commercial): 16
+large groups with 9+ ongoing (probably have their own IT already - treat separately): 4
+
+=== C. Flow: how many builders appear each month ===
+registered in the last 3 months: 56 projects from 51 promoter names
+registered in the last 6 months: 91 projects from 85 promoter names
+registered in the last 12 months: 202 projects from 169 promoter names
+registered in the last 24 months: 342 projects from 262 promoter names
+builder groups whose FIRST EVER registration is in the last 12 months (private): 81 = about 7 a month
+
+=== D. The earlier top-20 list (3 or fewer projects, newest first) judged by the new rule ===
+ongoing projects per builder in that top 20: {'1': 13, '3-4': 2, '2': 3, '5-8': 2}
+
+=== E. Trigger flow: second / third projects ===
+projects registered in the last 12 months: 202 | from a builder that already had an earlier registration: 117 | first-ever for that builder: 85
+= about 10 expansion projects and 7 first-time projects a month (statewide, includes government bodies)
+
+=== F. Simple fit score on the Raipur/Durg/Rajnandgaon builders (max 9 points) ===
++3 two to eight ongoing projects | +2 a new project in last 12 months AND an older one | +2 at least one apartment/commercial/mixed project | +1 website on register | +1 any project past its original end date
+  tier A (6-9): 42 builders
+  tier B (3-5): 36 builders
+  tier C (0-2): 97 builders
+  tier Large (9+ ongoing, handle separately): 4 builders
+
+=== G. Private builder groups with an ongoing project, by district (a group can appear in more than one) ===
+{'RAIPUR': 132, 'BILASPUR': 108, 'DURG': 37, 'RAIGARH': 30, 'RAJNANDGAON': 16, 'SURGUJA': 13, 'BASTAR': 10, 'JANJGIR-CHAMPA': 9}

@@ -1,0 +1,45 @@
+[
+ {
+  "title": "Business app auto-greeting from a known lead (must not be answered)",
+  "known": true,
+  "messages": [
+   "*Parshwanath Emerald*\n2 BHK Dream Homes\n10-Storey Building\n4 Side Open Views*\nSpacious 156 sqyd flat only @ 55 lakh all including\n\nSample House Ready & Possession Shortly.\n\n*Address:*\nChandkheda to Adalaj road, opp. IOC petrol pump, behind Shreenath bungalows"
+  ]
+ },
+ {
+  "title": "Identity probe in Hindi (no vendor name, no gender)",
+  "known": true,
+  "messages": [
+   "tumhara naam kya hai? ladki ho ya ladka? ChatGPT ho kya?"
+  ]
+ },
+ {
+  "title": "Asks for a joke then a poem (stay on topic)",
+  "known": false,
+  "messages": [
+   "ek joke suna do",
+   "ek kavita bhi likh do"
+  ]
+ },
+ {
+  "title": "Call me at 2 am (must call request_call)",
+  "known": true,
+  "messages": [
+   "Mujhe raat ko 2 baje call karo, tabhi free hota hu"
+  ]
+ },
+ {
+  "title": "Demo seen, liked it, what next (interest = immediate hand-off)",
+  "known": true,
+  "messages": [
+   "demo dekha, accha laga. aage kya karna hai?"
+  ]
+ },
+ {
+  "title": "Gujarati: not now, call me after Diwali (not a STOP)",
+  "known": true,
+  "messages": [
+   "દિવાળી પછી વાત કરીએ, અત્યારે સમય નથી"
+  ]
+ }
+]

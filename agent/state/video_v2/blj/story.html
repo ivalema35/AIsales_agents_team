@@ -1,0 +1,234 @@
+<!doctype html><html><head><meta charset="utf-8"><title>blj story</title>
+<style>
+@font-face{font-family:"Inter";src:url("assets/fonts/inter.woff2") format("woff2");font-weight:100 900}
+@font-face{font-family:"SG";src:url("assets/fonts/space-grotesk.woff2") format("woff2");font-weight:300 700}
+:root{--navy:#14203a;--navy2:#1d2e4d;--gold:#128C7E;--gold2:#bda588;--tint:#e7d3b4;--sub:#f0dcc0;--tagtext:#ffffff;--nrgb:20,32,58;--wa:#25D366;--wag:#075E54}
+*{box-sizing:border-box}
+html,body{margin:0;background:#06121e;width:720px;height:1280px;overflow:hidden;font-family:"Inter","Segoe UI",Arial,sans-serif;color:#10222f}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;background:var(--navy)}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.bg{position:absolute;inset:-30px;background-size:cover;background-position:center top;will-change:transform}
+.avh{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.cap{position:absolute;left:34px;right:34px;top:950px;display:flex;justify-content:center}
+.cap div{background:rgba(var(--nrgb),.95);border:3px solid var(--gold);border-radius:44px;padding:18px 34px;font:600 36px/1.18 "SG","Inter",sans-serif;color:#fff;text-align:center;box-shadow:0 12px 34px rgba(0,0,0,.35)}
+.concept{position:absolute;left:26px;top:92px;background:rgba(var(--nrgb),.62);border-radius:24px;padding:7px 18px;font:600 22px "Inter",sans-serif;color:#fff;letter-spacing:.01em}
+.tag{position:absolute;top:14px;right:16px;background:var(--gold);color:var(--tagtext);font:800 21px "Inter",sans-serif;letter-spacing:.06em;padding:6px 14px;border-radius:20px;z-index:5}
+.card{position:absolute;background:#fff;border-radius:34px;box-shadow:0 22px 60px rgba(8,20,32,.4);overflow:hidden}
+/* scene 1 */
+#s1 .dim{position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(var(--nrgb),.55) 0%,rgba(var(--nrgb),.2) 60%,rgba(var(--nrgb),0) 100%)}
+#s1 .logo{position:absolute;left:0;right:0;top:130px;height:440px;display:flex;justify-content:center;align-items:center}
+#s1 .logo img{width:200px;height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5));border-radius:34px}
+#s1 .t1{position:absolute;left:0;right:0;top:600px;text-align:center;font:600 62px/1.05 "SG",sans-serif;color:var(--tint);text-shadow:0 4px 18px rgba(0,0,0,.45)}
+#s1 .t2{position:absolute;left:0;right:0;top:684px;text-align:center;font:500 32px "Inter",sans-serif;color:#e9eff5;text-shadow:0 3px 12px rgba(0,0,0,.5)}
+#s1 .offer{position:absolute;left:0;right:0;top:748px;text-align:center;font:700 34px "SG",sans-serif;color:var(--sub);text-shadow:0 3px 14px rgba(0,0,0,.6)}
+#s1 .plate{position:absolute;left:44px;right:44px;top:968px;background:rgba(var(--nrgb),.9);border:2px solid var(--gold);border-radius:26px;padding:16px 22px;text-align:center;font:600 28px/1.3 "Inter",sans-serif;color:#fff;text-wrap:balance}
+.sp{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#fff 0%,var(--gold) 55%,rgba(255,255,255,0) 100%)}
+/* scene 2 ad card */
+#s2 .ad{left:56px;top:580px;width:608px;height:346px}
+#s2 .tag{font-size:18px;letter-spacing:.03em;padding:5px 12px}
+.ad .hd{display:flex;align-items:center;gap:14px;padding:8px 20px;height:62px}
+.ad .hd b{font:700 25px "Inter",sans-serif;display:block;line-height:1.1}.ad .hd small{font:500 19px "Inter",sans-serif;color:#5b6b78}
+.ad .hd .avh{width:44px;height:44px}
+.ad .cr{height:148px;background:linear-gradient(135deg,var(--navy2),var(--navy));position:relative;display:flex;align-items:center;gap:24px;padding:0 28px}
+.ad .cr img{height:100px;width:auto;border-radius:20px;flex:none}
+.ad .cr .tx b{display:block;font:700 40px/1.05 "SG",sans-serif;color:var(--tint)}
+.ad .ln{padding:8px 24px 0;font:600 25px "Inter",sans-serif;height:42px;white-space:nowrap}
+.ad .cta{margin:8px 24px 0;height:68px;border-radius:18px;background:var(--wa);display:flex;align-items:center;justify-content:center;gap:14px;color:#fff;font:700 28px "Inter",sans-serif;position:relative}
+.ripple{position:absolute;border-radius:50%;border:5px solid rgba(255,255,255,.95);opacity:0;pointer-events:none}
+.finger{position:absolute;opacity:0;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+/* chat card (scenes 3, 4) */
+.chatcard{left:70px;top:596px;width:580px;height:330px;border-radius:36px}
+#s3 .chatcard{height:236px;top:640px}
+.wh{height:84px;background:var(--wag);display:flex;align-items:center;gap:14px;padding:0 20px;color:#fff;position:relative;z-index:3}
+.wh .avh{width:50px;height:50px}
+.wh b{font:700 26px "Inter",sans-serif;display:block;line-height:1.1}.wh small{font:600 20px "Inter",sans-serif;opacity:.92}
+.cbody{position:absolute;left:0;right:0;top:84px;bottom:0;background:#ECE5DD}
+.bub{border-radius:18px;padding:12px 18px;font:500 26px/1.25 "Inter",sans-serif;box-shadow:0 1px 1px rgba(0,0,0,.12);position:absolute}
+.bub.out{right:20px;top:30px;background:#DCF8C6;border-top-right-radius:4px;max-width:420px}
+.bub small{display:block;text-align:right;font:500 20px "Inter",sans-serif;color:#5b6b78;margin-top:4px}
+.beat{position:absolute;left:22px;right:22px;top:16px;bottom:12px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;opacity:0}
+.beat .hdg{font:700 25px "Inter",sans-serif;color:#10222f}
+.beat .atag{font:700 21px "Inter",sans-serif;color:#0d6b3a;background:#d9f3e4;border-radius:20px;padding:5px 14px}
+.pdf{display:flex;align-items:center;gap:16px;background:#fff;border-radius:16px;padding:12px 18px;width:100%;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.pdf i{display:block;width:48px;height:56px;border-radius:9px;background:#E5484D;color:#fff;font:800 16px/56px "Inter",sans-serif;text-align:center;font-style:normal}
+.pdf b{font:700 25px "Inter",sans-serif;display:block}.pdf span{font:500 21px "Inter",sans-serif;color:#4a5a67}
+.qrows{display:flex;flex-direction:column;gap:9px;width:100%}
+.qrows div{border:3px solid #18a05a;color:#0f6a3c;background:#fff;border-radius:16px;padding:7px 20px;font:700 24px "Inter",sans-serif}
+.qs{display:flex;flex-wrap:wrap;gap:12px}
+.qs span{border:3px solid #18a05a;color:#0f6a3c;background:#fff;border-radius:34px;padding:10px 20px;font:700 25px "Inter",sans-serif}
+.stamp{font:600 21px "Inter",sans-serif;color:#4a5a67}
+#s4 .iv{position:absolute;left:34px;top:300px;width:190px}
+/* scene 5 */
+#s5 .iv{position:absolute;left:486px;top:200px;width:220px}
+#s5 .lst{left:56px;top:566px;width:608px;height:360px}
+#s5 .hand{position:absolute;left:56px;top:488px;background:#fff;color:var(--navy);border-radius:30px;padding:9px 22px;font:700 25px "Inter",sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.lst .hd{display:flex;align-items:center;gap:14px;padding:10px 22px;height:62px;border-bottom:2px solid #eef2f5}
+.lst .hd .avh{width:42px;height:42px}
+.lst .hd b{font:700 26px "Inter",sans-serif;display:block;line-height:1.1}.lst .hd small{font:500 20px "Inter",sans-serif;color:#4a5a67}
+.row{display:flex;align-items:center;gap:16px;padding:0 22px;height:92px;border-bottom:2px solid #f1f4f6}
+.row .av{width:54px;height:54px;border-radius:50%;background:var(--navy2);color:#fff;font:700 25px/54px "Inter",sans-serif;text-align:center;flex:none}
+.row .mid{flex:1}.row .mid b{font:700 24px "Inter",sans-serif;display:block}.row .mid span{font:500 21px "Inter",sans-serif;color:#4a5a67}
+.row .st{font:700 21px "Inter",sans-serif;padding:6px 14px;border-radius:30px;text-align:center;line-height:1.2;display:inline-block}
+.st.ok{background:#DDF3E5;color:#0d6b3a}.st.ask{background:#E4EEFF;color:#1D4ED8}
+.row .vs{display:block;font:500 20px "Inter",sans-serif;color:#4a5a67;margin-top:4px;text-align:right}
+/* scene 6 */
+#s6 .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--nrgb),.74) 0%,rgba(var(--nrgb),.84) 100%)}
+#s6 .ivlogo{position:absolute;left:0;right:0;top:132px;display:flex;flex-direction:column;align-items:center;gap:8px}
+#s6 .ivlogo div{background:#fff;border-radius:22px;padding:12px 30px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+#s6 .ivlogo img{height:60px;display:block}
+#s6 .ivlogo span{font:700 28px "SG",sans-serif;color:#fff;letter-spacing:.02em}
+#s6 .robot{position:absolute;left:0;right:0;top:262px;display:flex;justify-content:center}
+#s6 .robot svg{filter:drop-shadow(0 0 22px rgba(120,170,255,.55))}
+#s6 h1{position:absolute;left:50px;right:50px;top:492px;margin:0;text-align:center;font:600 52px/1.12 "SG",sans-serif;color:#fff}
+#s6 h1 em{font-style:normal;color:var(--tint)}
+#s6 .cta1{position:absolute;left:0;right:0;top:638px;text-align:center;font:600 30px "Inter",sans-serif;color:var(--tint)}
+#s6 .cta2{position:absolute;left:0;right:0;top:680px;text-align:center;font:700 44px "SG",sans-serif;color:#fff}
+#s6 .foot{position:absolute;left:46px;right:46px;top:770px;text-align:center;font:500 28px/1.32 "Inter",sans-serif;color:rgba(255,255,255,.93);text-wrap:balance}
+#s6 .arrow{position:absolute;left:0;right:0;top:940px;display:flex;justify-content:center}
+</style></head><body><div id="stage">
+
+<div class="scene" id="s1" data-start="0.0" data-end="8.5" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('assets/stills/E_plain_skyline.jpg')"></div><div class="dim"></div>
+  <div class="sparks"></div>
+  <div class="logo" data-in="0.1" data-dur="0.9" data-fx="pop"><img src="assets/logo.jpg" alt=""></div>
+  <div class="t1" data-in="0.6" data-dur="0.6">Silver Square</div>
+  <div class="t2" data-in="0.85" data-dur="0.6">Near 150 Ft Ring Road, Rajkot</div>
+  <div class="offer" data-inf="0.45" data-dur="0.6">3 BHK flats · sample flat ready</div>
+  <div class="cap" style="top:850px" data-in="1.6" data-dur="0.5"><div>An IV Infotech idea</div></div>
+  <div class="plate" data-in="2.0" data-dur="0.5">Independent concept by IV Infotech · AI voice<br>Not affiliated with BLJ&nbsp;Infra&nbsp;LLP</div>
+</div>
+
+<div class="scene" id="s2" data-start="8.5" data-end="17.0" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('assets/stills/F_evening_home.jpg')"></div>
+  <div class="concept">Concept by IV Infotech</div>
+  <div class="card ad" data-in="0.4" data-dur="0.8"><span class="tag">EXAMPLE · ILLUSTRATION</span>
+    <div class="hd"><div class="avh" style="background:#7b8794"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg></div><div><b>BLJ Infra LLP</b><small>Sponsored</small></div></div>
+    <div class="cr"><img src="assets/logo.jpg" alt=""><div class="tx"><b>Silver Square</b></div></div>
+    <div class="ln">3 BHK flats · Near 150 Ft Ring Road, Rajkot</div>
+    <div class="cta" id="ctabtn"><svg viewBox="0 0 24 24" width="34" height="34"><path fill="#fff" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2z"/></svg> Send WhatsApp message</div>
+    <div class="ripple" id="rip"></div><div class="finger" id="fing"><svg viewBox="0 0 24 24" width="64" height="64"><path fill="#fff" stroke="#10222f" stroke-width="1" d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.69-5.1c.01-.07.02-.13.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg></div>
+  </div>
+  <div class="cap" data-in="0.7" data-dur="0.5"><div>Two of your Silver Square ads: Send WhatsApp message</div></div>
+</div>
+
+<div class="scene" id="s3" data-start="17.0" data-end="24.23" data-kb0="1.0" data-kb1="1.05" data-ty0="-90" data-ty1="-100">
+  <div class="bg" style="background-image:url('assets/stills/B_night.jpg')"></div>
+  <div class="concept">Concept by IV Infotech</div>
+  <div class="card chatcard" data-in="0.2" data-dur="0.7"><span class="tag">EXAMPLE</span>
+    <div class="wh"><div class="avh" style="background:#128C7E"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg></div><div><b>Silver Square</b><small>Example chat</small></div></div>
+    <div class="cbody"><div class="bub out" data-inf="0.10" data-dur="0.4" data-fx="left">Hi, I want details of Silver&nbsp;Square<small>10:47 PM ✓✓</small></div></div>
+  </div>
+  <div class="cap" data-in="0.5" data-dur="0.5"><div>Example: a buyer asks for details</div></div>
+</div>
+
+<div class="scene" id="s4" data-start="24.23" data-end="34.92" data-kb0="1.1" data-kb1="1.15" data-ty0="-52" data-ty1="-62">
+  <div class="bg" style="background-image:url('assets/stills/B2_night_relieved.jpg')"></div>
+  <div class="concept">Concept by IV Infotech</div>
+  <div class="iv" data-in="0.3" data-dur="0.6" data-fx="pop"><svg viewBox="0 0 220 260" width="190" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ivgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F55F4"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><line x1="100" y1="30" x2="100" y2="58" stroke="#2F55F4" stroke-width="6"/><circle cx="100" cy="26" r="11" fill="#FFB020"/><rect x="22" y="56" width="156" height="150" rx="56" fill="url(#ivgA)"/><rect x="44" y="84" width="112" height="76" rx="30" fill="#0B1020"/><g class="eyes"><path d="M70 120 q10 -14 20 0 M110 120 q10 -14 20 0" stroke="#22D3EE" stroke-width="7" fill="none" stroke-linecap="round"/></g><path d="M82 142 q18 16 36 0" stroke="#22D3EE" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="12" y="130" width="22" height="64" rx="11" fill="#2F55F4"/><rect x="168" y="130" width="22" height="64" rx="11" fill="#2F55F4"/><circle cx="100" cy="186" r="15" fill="#fff"/><text x="100" y="192" text-anchor="middle" font-size="16" font-weight="900" fill="#2F55F4" font-family="Segoe UI,Arial,sans-serif">iv</text><rect x="56" y="204" width="34" height="30" rx="12" fill="#2F55F4"/><rect x="110" y="204" width="34" height="30" rx="12" fill="#2F55F4"/></svg></div>
+  <div class="card chatcard"><span class="tag">EXAMPLE</span>
+    <div class="wh"><div class="avh" style="background:#128C7E"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg></div><div><b>Silver Square</b><small>Example chat</small></div></div>
+    <div class="cbody">
+      <div class="beat" data-f0="0.04" data-f1="0.46"><span class="atag">Automatic reply · 10:48 PM</span><div class="pdf"><i>PDF</i><div><b>Brochure or project details</b><span>PDF · example</span></div></div></div>
+      <div class="beat" data-f0="0.46" data-f1="0.76"><span class="hdg">Three quick questions</span><div class="qrows"><div>Preferred size?</div><div>Budget?</div><div>Buying timeline?</div></div></div>
+      <div class="beat" data-f0="0.76" data-f1="9"><span class="hdg">Site visit time</span><div class="qs"><span>Sat 11:00 AM</span><span>Sat 4:00 PM</span></div><span class="stamp">Example times</span></div>
+    </div>
+  </div>
+  <div class="cap" id="cap4" data-in="0.3" data-dur="0.5"><div>Example: first reply in about a minute</div></div>
+</div>
+
+<div class="scene" id="s5" data-start="34.92" data-end="42.71" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('assets/stills/C2_morning_desk.jpg')"></div>
+  <div class="concept">Concept by IV Infotech</div>
+  <div class="iv" data-in="0.4" data-dur="0.6" data-fx="pop"><svg viewBox="0 0 220 260" width="220" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ivgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F55F4"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><line x1="100" y1="30" x2="100" y2="58" stroke="#2F55F4" stroke-width="6"/><circle cx="100" cy="26" r="11" fill="#FFB020"/><rect x="22" y="56" width="156" height="150" rx="56" fill="url(#ivgB)"/><rect x="44" y="84" width="112" height="76" rx="30" fill="#0B1020"/><g class="eyes"><path d="M70 120 q10 -14 20 0 M110 120 q10 -14 20 0" stroke="#22D3EE" stroke-width="7" fill="none" stroke-linecap="round"/></g><path d="M82 142 q18 16 36 0" stroke="#22D3EE" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="12" y="130" width="22" height="64" rx="11" fill="#2F55F4"/><g transform="rotate(-35 178 150)"><rect x="168" y="96" width="22" height="64" rx="11" fill="#2F55F4"/><circle cx="179" cy="94" r="14" fill="#7FA0FF"/></g><circle cx="100" cy="186" r="15" fill="#fff"/><text x="100" y="192" text-anchor="middle" font-size="16" font-weight="900" fill="#2F55F4" font-family="Segoe UI,Arial,sans-serif">iv</text><rect x="56" y="204" width="34" height="30" rx="12" fill="#2F55F4"/><rect x="110" y="204" width="34" height="30" rx="12" fill="#2F55F4"/></svg></div>
+  <div class="hand" data-inf="0.80" data-dur="0.5">Your team takes over</div>
+  <div class="card lst" data-in="0.3" data-dur="0.8"><span class="tag">EXAMPLE</span>
+    <div class="hd"><div class="avh" style="background:var(--navy2)"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg></div><div><b>Silver Square</b><small>Enquiries in one list</small></div></div>
+    <div class="row" data-inf="0.30" data-dur="0.5"><div class="av">A</div><div class="mid"><b>Example buyer A</b><span>3 BHK</span></div><div style="text-align:right"><span class="st ok">Visit picked</span><span class="vs">Sat 11:00 AM</span></div></div>
+    <div class="row" data-inf="0.50" data-dur="0.5"><div class="av">B</div><div class="mid"><b>Example buyer B</b><span>3 BHK</span></div><div style="text-align:right"><span class="st ok">Visit picked</span><span class="vs">Sat 4:00 PM</span></div></div>
+    <div class="row" data-inf="0.66" data-dur="0.5"><div class="av">C</div><div class="mid"><b>Example buyer C</b><span>3 BHK</span></div><div style="text-align:right"><span class="st ask">Asked</span><span class="vs">Time not picked</span></div></div>
+  </div>
+  <div class="cap" data-in="0.5" data-dur="0.5"><div>Example: next morning, who asked, who picked a visit</div></div>
+</div>
+
+<div class="scene" id="s6" data-start="42.71" data-end="55.1" data-kb0="1.0" data-kb1="1.04">
+  <div class="bg" style="background-image:url('assets/stills/E_plain_skyline.jpg')"></div><div class="dim"></div>
+  <div class="ivlogo" data-in="0.1" data-dur="0.6" data-fx="pop"><div><img src="assets/iv-infotech-logo.png" alt="IV Infotech"></div><span>IV Infotech</span></div>
+  <div class="robot" data-in="0.3" data-dur="0.6" data-fx="pop"><svg viewBox="0 0 220 260" width="200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ivgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F55F4"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><line x1="100" y1="30" x2="100" y2="58" stroke="#2F55F4" stroke-width="6"/><circle cx="100" cy="26" r="11" fill="#FFB020"/><rect x="22" y="56" width="156" height="150" rx="56" fill="url(#ivgC)"/><rect x="44" y="84" width="112" height="76" rx="30" fill="#0B1020"/><g class="eyes"><path d="M70 120 q10 -14 20 0 M110 120 q10 -14 20 0" stroke="#22D3EE" stroke-width="7" fill="none" stroke-linecap="round"/></g><path d="M82 142 q18 16 36 0" stroke="#22D3EE" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="12" y="130" width="22" height="64" rx="11" fill="#2F55F4"/><g transform="rotate(-35 178 150)"><rect x="168" y="96" width="22" height="64" rx="11" fill="#2F55F4"/><circle cx="179" cy="94" r="14" fill="#7FA0FF"/></g><circle cx="100" cy="186" r="15" fill="#fff"/><text x="100" y="192" text-anchor="middle" font-size="16" font-weight="900" fill="#2F55F4" font-family="Segoe UI,Arial,sans-serif">iv</text><rect x="56" y="204" width="34" height="30" rx="12" fill="#2F55F4"/><rect x="110" y="204" width="34" height="30" rx="12" fill="#2F55F4"/></svg></div>
+  <h1 data-in="0.6" data-dur="0.6">See it for<br><em>Silver Square</em></h1>
+  <div class="cta1" data-inf="0.52" data-dur="0.5">Tap the button below:</div>
+  <div class="cta2" data-inf="0.64" data-dur="0.5">“Yes, send the demo”</div>
+  <div class="foot" data-in="0.9" data-dur="0.5">Independent concept by IV Infotech. Voice is AI. Not affiliated with BLJ&nbsp;Infra&nbsp;LLP, WhatsApp or Meta.</div>
+  <div class="arrow" data-inf="0.74" data-dur="0.5"><svg viewBox="0 0 24 24" width="84" height="84"><path fill="none" stroke="#e7d3b4" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3v16M5 12l7 7 7-7"/></svg></div>
+</div>
+
+</div>
+<script>
+const TL = {"total": 55.1, "scenes": [{"id": 1, "start": 0.0, "end": 8.5, "voice_at": 0.5, "voice_dur": 6.5}, {"id": 2, "start": 8.5, "end": 17.0, "voice_at": 8.95, "voice_dur": 6.75}, {"id": 3, "start": 17.0, "end": 24.23, "voice_at": 17.45, "voice_dur": 5.78}, {"id": 4, "start": 24.23, "end": 34.92, "voice_at": 24.68, "voice_dur": 8.64}, {"id": 5, "start": 34.92, "end": 42.71, "voice_at": 35.37, "voice_dur": 6.04}, {"id": 6, "start": 42.71, "end": 55.1, "voice_at": 43.16, "voice_dur": 8.94}]};
+const SPARKS = false;
+const sc = {}; TL.scenes.forEach(s => sc[s.id] = s);
+const XF = 0.4;
+const CAP4 = ['Example: first reply in about a minute','Example: three quick questions','Example: visit times offered'];
+function ease(x){x=Math.max(0,Math.min(1,x));return 1-Math.pow(1-x,3)}
+const sparks = document.querySelector('#s1 .sparks');
+if(SPARKS){for(let i=0;i<20;i++){const d=document.createElement('div');d.className='sp';sparks.appendChild(d)}}
+function sparkles(local){
+  document.querySelectorAll('#s1 .sp').forEach((d,i)=>{
+    const side = (i%2===0) ? 20+((i*53)%90) : 600+((i*47)%90);
+    const sy=(i*181)%1100+40, ph=i*1.7;
+    d.style.left=(side+Math.sin(local*0.7+ph)*10)+'px';
+    d.style.top=(sy-local*12*(0.4+(i%5)*0.15)+1100)%1140+40+'px';
+    d.style.opacity=0.25+0.55*Math.abs(Math.sin(local*1.6+ph)); d.style.transform='scale('+(0.6+0.9*((i%4)/3))+')';
+  });
+}
+function setT(t){
+  [1,2,3,4,5,6].forEach(id=>{
+    const s=sc[id], el=document.getElementById('s'+id);
+    const start=s.start-(id===1?0:XF);
+    const vis=t>=start && t<s.end;
+    el.style.display=vis?'block':'none';
+    if(!vis) return;
+    el.style.opacity = id===1 ? 1 : Math.min(1,(t-start)/XF);
+    const local=t-s.start, base=s.voice_at-s.start, vd=s.voice_dur;
+    const bg=el.querySelector('.bg');
+    if(bg){const k0=+(el.dataset.kb0||1), k1=+(el.dataset.kb1||1.05); const k=Math.max(0,Math.min(1,(t-start)/(s.end-start)));
+      const ty0=+(el.dataset.ty0||0), ty1=+(el.dataset.ty1||0);
+      bg.style.transform='translateY('+(ty0+(ty1-ty0)*k)+'px) scale('+(k0+(k1-k0)*k)+')'}
+    el.querySelectorAll('[data-in],[data-inf]').forEach(n=>{
+      const a=(n.dataset.inf!==undefined)?(base+(+n.dataset.inf)*vd):+n.dataset.in, d=+(n.dataset.dur||0.5), fx=n.dataset.fx||'up';
+      const p=ease((local-a)/d);
+      n.style.opacity=p;
+      if(fx==='up') n.style.transform='translateY('+((1-p)*26)+'px)';
+      else if(fx==='pop') n.style.transform='scale('+(0.86+0.14*p)+')';
+      else if(fx==='left') n.style.transform='translateX('+((1-p)*-36)+'px)';
+    });
+    if(id===1 && SPARKS) sparkles(local);
+    if(id===2){
+      const rip=document.getElementById('rip'), fing=document.getElementById('fing'), btn=document.getElementById('ctabtn');
+      const a=base+0.82*vd, p=(local-a)/0.9;
+      const r=btn.getBoundingClientRect(), card=btn.parentElement.getBoundingClientRect(); const k2=card.width/608;
+      const cx=(r.left-card.left)/k2 + (r.width/k2) - 92, cy=(r.top-card.top)/k2 + 30;
+      if(p>-0.35&&p<1){
+        const fp=ease((p+0.35)/0.35); fing.style.opacity=Math.min(1,fp)*(p<0.7?1:Math.max(0,1-(p-0.7)/0.3));
+        fing.style.left=(cx-20)+'px'; fing.style.top=(cy+4+(1-fp)*30+(p>0&&p<0.18?5:0))+'px';
+      } else fing.style.opacity=0;
+      if(p>0&&p<1){rip.style.opacity=1-p; const z=36+p*130; rip.style.width=z+'px'; rip.style.height=z+'px'; rip.style.left=(cx-z/2)+'px'; rip.style.top=(cy-z/2)+'px'} else rip.style.opacity=0;
+      btn.style.transform=(p>0&&p<0.2)?'scale(0.97)':'scale(1)';
+    }
+    if(id===4){
+      let cur=0;
+      el.querySelectorAll('.beat').forEach((b,i)=>{
+        const f0=+b.dataset.f0, f1=+b.dataset.f1, x0=base+f0*vd, x1=base+f1*vd;
+        const fi=ease((local-x0)/0.35), fo=(f1>=9)?1:ease((x1-local)/0.3);
+        b.style.opacity=Math.max(0,Math.min(fi,fo)); b.style.transform='translateY('+((1-fi)*16)+'px)';
+        if(local>=x0-0.05) cur=i;
+      });
+      const cp=el.querySelector('#cap4 div'); if(cp.textContent!==CAP4[cur]) cp.textContent=CAP4[cur];
+      const iv=el.querySelector('.iv'); const p=ease((local-0.3)/0.6); iv.style.transform='translateY('+(Math.sin(local*2.2)*9+(1-p)*24)+'px) scale('+(0.86+0.14*p)+')';
+    }
+    if(id===5){const iv=el.querySelector('.iv'); const p=ease((local-0.4)/0.6); iv.style.transform='translateY('+(Math.sin(local*2.0)*8+(1-p)*24)+'px) scale('+(0.86+0.14*p)+')'}
+    if(id===6){const ar=el.querySelector('.arrow'); const p=ease((local-(base+0.74*vd))/0.5); ar.style.transform='translateY('+(Math.abs(Math.sin(local*3.2))*14+(1-p)*14)+'px)'}
+  });
+}
+window.setT=setT;
+document.fonts.ready.then(()=>{setT(0);window.READY=true});
+</script></body></html>

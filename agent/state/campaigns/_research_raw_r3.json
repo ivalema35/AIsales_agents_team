@@ -1,0 +1,443 @@
+{
+ "leads": [
+  {
+   "business": "Shyamal Group / Shree Ganesh Infra Homes (Shyamal Park), Vadodara",
+   "city": "Vadodara",
+   "project": "Shyamal Park Lane (Bhayli); the Park Lane page on their own site shows the same RERA number as the wider Shyamal Park project, PR/GJ/VADODARA/VADODARA/Others/MAA03409/140918",
+   "website": "https://www.shyamalgroup.co.in/",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "duplicate_of_known": "none",
+   "decision_maker": "Chirag Ramniklal Tilva and Amitkumar Ramniklal Tilva, both shown as Founder & Director on the About page of shyamalgroup.co.in and both listed among the partners of the promoter firm Shree Ganesh Infra Homes on a third-party GujRERA mirror (aurumproptech.in). Which of them decides on sales tools is not published.",
+   "decision_maker_confidence": "LIKELY",
+   "size_cues": "The aurumproptech RERA mirror lists 990 units (619 flats, 371 shops/offices) in 24 buildings. Houssed lists 619 units in 23 towers, and their own Park Lane page says 20 towers, so the unit count is not settled. The website menu names 13 projects (Park Lane, Park View, County, Arcade, Avenue, Harmony, Heights, Lake View, Orchid, Park Avenue, Sapphire, Enclave, Greens). The site claims 25+ years, though parts of that copy are template leftovers. The promoter is a family partnership. The Facebook page has 2,228 followers and 7 reviews (given, not re-checked). Entry price in the ad is Rs 51 lakh.",
+   "observed_facts": [
+    "21 Oct 2026, Meta Ad Library (own browser tab): 3 active versions of one Diwali creative for Shyamal Park Lane, all started 16 Oct 2026; one version has a Send WhatsApp message button, two use a Get quote form; the copy lists three call numbers.",
+    "21 Oct 2026, Meta Ad Library (India, keyword 'Shyamal Park'): advertiser 'Shyamal Park' has 3 active ad versions of one Diwali creative, all 'started running on 16 Oct 2026', so 5 days old. Source: https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&q=Shyamal%20Park&search_type=keyword_unordered&media_type=all",
+    "21 Oct 2026, Ad Library: the copy is in English. It offers Shyamal Park Lane, Bhayli, 3 and 4 BHK, fully furnished at basic price, from Rs 51 lakh*, ready possession, 100% SBI loan*, first 5 bookings only. It ends 'Call now to know more: 75750 02421 / 22 | 99099 06574'.",
+    "21 Oct 2026, Ad Library, same keyword search: a separate active ad from 'Shyamal Group' for Shyamal Zion, Rajkot (phone 7447444242, started 14 Oct 2026) also appears. It carries a different number and city, and I did not attribute it to this builder.",
+    "21 Oct 2026, own site (raw HTML via curl) https://www.shyamalgroup.co.in/: WordPress 6.2.14 on PHP 8.3, Contact Form 7 5.7.4 with reCAPTCHA v3, and a Google Ads gtag (AW-452511263) with a conversion-event snippet. There is no Meta pixel (fbq), no GTM, no utm hidden fields, no wa.me or WhatsApp link, no chat widget and no CRM/lead-tool signature on the home, About, Contact and Park Lane pages.",
+    "21 Oct 2026, own site contact and About pages: phone '+91-75750-02421 / 22' and email shyamalpark501@gmail.com. Address is Opp. Shreem Shrushti, Nr. Shyamal Enclave, Next to Nilamber Oriens, 30 Mtrs Sunpharma-Bhayli Road, Vadodara.",
+    "21 Oct 2026, own Park Lane page https://www.shyamalgroup.co.in/portfolio/shyamal-park-lane/: promoter Shree Ganesh Infra Homes, 3 and 4 BHK, 20 towers, status 'Ongoing'. RERA No. PR/GJ/VADODARA/VADODARA/Others/MAA03409/140918. tel: links for 75750 02421, 75750 02422 and 9909906574.",
+    "21 Oct 2026, own About page: Chirag Ramniklal Tilva and Amitkumar Ramniklal Tilva shown as Founder & Director. The page also carries template leftovers ('Century', 'Bengaluru', 'Bhandary Builders') and inconsistent experience claims (20 years, 25+ years, three decades), so the site text is not a reliable size source.",
+    "21 Oct 2026, third-party GujRERA mirror https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/shyamal-park/6801 (not the official portal): Shyamal Park, promoter Shree Ganesh Infra Homes (partnership firm), approved 14 Sep 2018, end date 30 Sep 2026, 990 units in 24 buildings. It shows progress 99.64% as of April 2026 and status 'Completed', which sits oddly with an end date of 30 Sep 2026. It lists no complaints or litigation. It lists the Tilva family, including the two principals above, as partners.",
+    "21 Oct 2026, nslookup: gmail.com has Google MX records (e.g. alt3.gmail-smtp-in.l.google.com), and shyamalgroup.co.in has MX mail.shyamalgroup.co.in. The site publishes no domain email address.",
+    "Given by the owner and not re-checked by me: Facebook page 'Shyamal Park | Vadodara', created 8 Sep 2018, 2,228 followers, 92% recommend from 7 reviews. Its page phone and email match the website."
+   ],
+   "hypotheses": [
+    "Enquiries from the three ads (including a Meta 'Get quote' form) and from three phone lines may sit unanswered after hours or on Diwali days. This is inference only. I saw no evidence of slow or missed replies.",
+    "The ad copy is call-led and the site has no WhatsApp number, but a Meta lead form and a site form exist. So leads probably land in Meta leads or email and are called back by hand, and a WhatsApp first reply would sit beside that rather than fill an empty funnel.",
+    "99099 06574 may be a salesperson's or owner's own mobile. The 75750 numbers look like a shared sales line. All three are Indian mobile-format, so likely WhatsApp-capable, but none is labelled WhatsApp.",
+    "The Google Ads tag suggests search ads have run or run now. I could not verify that, and I do not know whether an agency or the in-house team runs the ads.",
+    "The project is at or near its RERA end date, so the ads probably push the last unsold 3 and 4 BHK units. That means urgency now, but also a small remaining pool of enquiries to handle.",
+    "The templated site with copy-paste errors suggests low digital maturity. That could mean a real need or low appetite for new tools."
+   ],
+   "case_for": "Established family developer with a large RERA-registered scheme and a dozen named projects. It has a fresh Diwali push running (3 ad versions since 16 Oct 2026, first 5 bookings only). Enquiries go to phone lines, and the site has no WhatsApp number, chat widget or Meta pixel. A brochure, three qualifying questions and a site-visit slot suit a ready-possession 3 and 4 BHK offer from Rs 51 lakh. The decision-making principals are named and a business contact is published.",
+   "case_against": "The need is inferred only, and I found no pain evidence. The ad version I could inspect uses a Meta 'Get quote' form, not a visible WhatsApp button. The ads are only 5 days old with a single creative. The project is at or past its RERA end date, so little stock may remain. No named sales or marketing head is published, and the only email is Gmail. This is the same signal family that got 0 replies from 22 leads in campaign 1.",
+   "ability_to_pay": "Good on size and price: RERA mirror shows 990 units in 24 buildings, 13 named projects, 25+ years claimed, entry price Rs 51 lakh, and 3 paid ad versions plus a Google Ads tag. Actual ad spend is unknown, and no price is set for our service.",
+   "resistance": "No CRM, chatbot or agency was observed. Enquiries already have a Meta lead form, a site form and three call lines, so the funnel is not empty. No sales or marketing head is named, and the firm is family-run with a Gmail address as its business email. The project is near sell-out. Whether an auto-reply or CRM sits behind the lead form is untested.",
+   "best_angle": "Your Diwali ad for Shyamal Park Lane in Bhayli has a Send WhatsApp message button on one of its three versions. We would like to show you what an automatic WhatsApp first reply (brochure, three quick questions, a site-visit slot, hand-over to your team) could look like for that ad.",
+   "best_channel": "Email first to the business-published address shyamalpark501@gmail.com, sent by a named person at IV Infotech after the owner's OK. No cold WhatsApp template, no website form.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 75750 02421",
+     "source_url": "https://www.shyamalgroup.co.in/contact-us/",
+     "note": "Sales/office line. Published on the contact page, the Park Lane page and in the ad ('Call now'). The Facebook page phone is the same, per the owner's data. Not labelled WhatsApp. Indian mobile-format, so likely WhatsApp-capable, unconfirmed."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75750 02422",
+     "source_url": "https://www.shyamalgroup.co.in/contact-us/",
+     "note": "Second sales line, shown as '02421 / 22' on the site. Also a tel: link on the Park Lane page and in the ad. Not labelled WhatsApp."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99099 06574",
+     "source_url": "https://www.shyamalgroup.co.in/portfolio/shyamal-park-lane/",
+     "note": "Personal-looking mobile. Published as a tel: link on the Park Lane page and in the ad copy. It may belong to a salesperson or owner. Not labelled WhatsApp."
+    },
+    {
+     "kind": "email",
+     "value": "shyamalpark501@gmail.com",
+     "source_url": "https://www.shyamalgroup.co.in/contact-us/",
+     "note": "Free-mail business address published on the contact and About pages. The Facebook page lists the same address, per the owner's data. No domain email is published."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.shyamalgroup.co.in/",
+     "source_url": "https://www.shyamalgroup.co.in/",
+     "note": "Official site. It has a Contact Form 7 form with reCAPTCHA v3, which I did not use."
+    }
+   ],
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+2 spend now: 3 active Meta ad versions of one Diwali creative, all started 16 Oct 2026 (5 days old, past the 3-day unproven window, but one creative and earlier history not checked). A Google Ads tag is on the site but not proven active.",
+    "+2 urgency: Diwali special offer, first 5 bookings only, ready-possession stock.",
+    "+1 funnel gap: the site has no WhatsApp link, chat widget, Meta pixel or CRM trace; the ads feed three routes (a WhatsApp button on one version, a Get quote form on two, and calls); whether any auto-reply exists behind them is untested.",
+    "+2 can pay: RERA mirror lists 990 units in 24 buildings, 13 named projects, 25+ years claimed, entry price Rs 51 lakh.",
+    "+1 reachable: three business-published phone numbers and a published email, each with a source URL.",
+    "-1 resistance: enquiries already have a Meta form, a site form and call lines, so there is no obvious empty funnel. No named sales or marketing head, and the project is at or near its RERA end date (30 Sep 2026), so remaining stock may be small."
+   ],
+   "gaps": [
+    "Only 1 of the 3 Diwali ad versions has a Send WhatsApp message button (Ad Library, 21 Oct 2026); the other two use a Get quote form.",
+    "Ad history before 16 Oct 2026 was not checked (active filter only), so a one-off burst versus sustained spend is unknown. Google Ads activity is unverified (tag only).",
+    "I did not read the 7 Facebook reviews, so the pain-evidence check is incomplete. The Facebook page URL, Instagram, LinkedIn and any sales-hiring signal were not captured within the call budget.",
+    "The official GujRERA portal was not reached. The data is from the aurumproptech mirror, which disagrees with Houssed on units and towers. The mirror's status 'Completed' conflicts with its 30 Sep 2026 end date, and their own page says 'Ongoing'.",
+    "Who runs sales or marketing, and who would buy, is not published. No domain email is published, although the domain has MX records.",
+    "Unsold inventory at Park Lane is unknown. Whether the 99099 06574 number is personal is unknown.",
+    "Hunger 7 is right at the hungry threshold, and dropping either the funnel gap or urgency point would make it warm."
+   ],
+   "whatsapp_path": "possible",
+   "will_buy_view": "Possible but unproven. A family-run Vadodara developer with a Diwali push, three call lines and no WhatsApp number or chat on its site could use a WhatsApp first reply with a site-visit slot, but it already captures leads through a Meta form and phone, so I would expect a low reply rate, in line with campaign 1's 0 of 22. The pain is only a hypothesis, and I found no reviews or other evidence of unanswered enquiries.",
+   "must_not_claim": "Do not say we saw slow or missed replies. Do not call the Diwali ad a WhatsApp ad or mention a WhatsApp button: the version I could see says 'Get quote' via fb.me and the copy says call. Do not say they lack a CRM or an auto-reply, since that is untested. Do not state 990 units, 24 buildings or 99.64% as verified, because they come from a third-party mirror that conflicts with other sources. Do not attribute the Shyamal Zion (Rajkot) ad to them. Do not name partners other than the two principals. Do not quote a price for our service.",
+   "evidence_urls": [
+    "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&q=Shyamal%20Park&search_type=keyword_unordered&media_type=all",
+    "https://www.shyamalgroup.co.in/",
+    "https://www.shyamalgroup.co.in/about-us/",
+    "https://www.shyamalgroup.co.in/contact-us/",
+    "https://www.shyamalgroup.co.in/portfolio/shyamal-park-lane/",
+    "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/shyamal-park/6801",
+    "https://houssed.com/vadodara/shyamal-group/shyamal-park-9211"
+   ],
+   "email_mx": "shyamalpark501@gmail.com: gmail.com has Google MX records (e.g. alt3.gmail-smtp-in.l.google.com), so the address is deliverable in principle. shyamalgroup.co.in has MX mail.shyamalgroup.co.in, but no domain email is published, so I did not use or guess one.",
+   "website_fingerprint": "The site is WordPress 6.2.14 on PHP 8.3.33 and Apache. The only lead capture is Contact Form 7 5.7.4 with reCAPTCHA v3, and the only tracking is a Google Ads gtag (AW-452511263) with a conversion-event snippet. I found no fbq/Meta pixel, no GTM, no utm hidden fields, no wa.me or WhatsApp link, no chat widget (the 'crisp' match was a CSS preset) and no CRM or lead-tool signature on the home, About, Contact and Park Lane pages. The copy has template leftovers ('Century', 'Bengaluru', 'Bhandary Builders'), so the site is not carefully maintained.",
+   "language": "en",
+   "language_note": "The Diwali ad copy on Meta (Ad Library, 21 Oct 2026) is English with no Gujarati or Hindi script. The website is English.",
+   "ad_age_note": "3 ad versions, all started 16 Oct 2026 and 5 days old on 21 Oct 2026, one creative. That is past the 3-day unproven window, but whether it is a burst or sustained spend is unknown, because earlier ads were not checked."
+  },
+  {
+   "business": "Vistara Group / Vistara Realty LLP (website brand: Vistara Realty)",
+   "city": "Vadodara (hiring + Anahata Florenza villas); website lists HQ as Gandhinagar, LinkedIn says Ahmedabad",
+   "project": "Anahata Florenza (36 five-BHK villas, Ankhol, Vadodara, RERA no. listed on Square Yards); Kalrav Farms 1 and 2 (farmhouse plots, Chikoowadi, Gandhinagar district); VIP industrial parks (Savli, Waghodiya, Oran, Majusar); Sculpture AI (launching)",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "duplicate_of_known": "none - not on the already-known list",
+   "decision_maker": "No verified owner. The name Viral Soni appears in the employee preview of the LinkedIn company page (no title seen) and a similarly named designated partner exists in aggregator listings for a related LLP; the job poster (an HR manager) is not the decision-maker. Address the Vistara team, name nobody.",
+   "decision_maker_confidence": "UNKNOWN",
+   "size_cues": "LinkedIn page (Vistara Group, linked both ways with vistararealty.com): 51-200 employee band, 60 profiles listed, about 6,000 followers, type Partnership, founded 2019 per LinkedIn (a Kalrav Farms listing says Vistara Realty LLP was incorporated 9 Apr 2025, so the history is unclear). Website shows 6 portfolio items across industrial parks, farmhouses and villas, plus a Sculpture AI project listed as launching. Anahata Florenza: 36 villas from Rs 2.50 Cr (about Rs 90 Cr of inventory, Square Yards listing). The website's own numbers contradict each other (13.5M sq ft delivered vs a 10,000 sq ft counter; presence list of Delhi/Mumbai/Bengaluru looks like template text), so do not rely on its size claims.",
+   "observed_facts": [
+    "21 Oct 2026, Meta Ad Library (own browser tab): 9 active ads on the Kalrav Farms page (7 started 10 to 16 Oct) and 8 active ads on the Anahata Florenza page (17 in total); two Anahata Florenza ads running since 18 Jun 2026 have a Send WhatsApp message button.",
+    "Website https://vistararealty.com is live and its footer links to LinkedIn company page vistara-realty-llp; the LinkedIn page lists vistararealty.com as its website (fetched 21 Oct 2026). Identity of the brand is therefore linked both ways.",
+    "Website describes Vistara Realty as developer of industrial parks, farmhouses and villas; footer office is 3rd floor, Shop-373, The CBD, Zundal, Gandhinagar (vistararealty.com/contact-us, 21 Oct 2026). LinkedIn page says HQ Ahmedabad (21 Oct 2026). Neither says Vadodara; Vadodara comes from the job post and the Anahata Florenza project in Ankhol.",
+    "LinkedIn job 'Real Estate Sales Executive', Vistara Group, location Vadodara, shown as posted '4 days ago' when fetched 21 Oct 2026 (so about 17 Oct 2026); poster is Divya Lalwani, HR Manager; duties include lead generation, site visits, closing; no email or phone in the posting (in.linkedin.com job 4477394043).",
+    "Meta Ad Library, page ID 61585624752987 (the 'Vistara Realty' Facebook page linked from the website): no ads in any status in India (21 Oct 2026).",
+    "Website HTML (curl, 21 Oct 2026): publishes +91 93270 86424 as tel: link and as a wa.me link (not opened), plus info@vistararealty.com in the footer; contact page also lists marketing@vistararealty.com under 'Partnerships & Collaborations' and site offices at Kalrav Farm, Kalrav Farm 2, Anahata Florenza and Sculpture AI.",
+    "Website HTML: floating buttons Call, WhatsApp, Enquiry and 'Vistara Chat Bot'. The bot is a menu widget driven by chatbot-questions.json: choose Industrial or Residential, pick a project, then it asks name, phone, optional email, POSTs to /save-lead and answers that the team will contact the visitor shortly. It does not ask budget, flat type or visit time and is not on WhatsApp. Contact form posts to contact-submit with reCAPTCHA; the Anahata Florenza page has a brochure-download form (download-brochure) and a careers form exists. Page also shows a popup 'Limited inventory available' and '12+ investors viewed this in the last hour' (21 Oct 2026).",
+    "Square Yards listing for Vistara Anahata Florenza (fetched 21 Oct 2026): Ankhol, Vadodara 390019; 5 BHK villa 3,100 sq ft from Rs 2.50 Cr (about Rs 8,065 per sq ft); launch Jan 2026; possession Dec 2029; 36 homes on 1.68 acres; RERA number PR/GJ/VADODARA/VADODARA/Vadodara Urban Development Authority/RAA16887/250526/311229 as printed on the listing (third-party aggregator, not checked on GujRERA). The phone and email on that listing belong to Square Yards, not Vistara. The listing shows Vistara Group with only this one project.",
+    "MX for vistararealty.com (nslookup, 21 Oct 2026) points to Google mail servers, so the domain mailboxes can receive mail.",
+    "Website developer credit in footer: 'Designed & Developed by Anonymous Devs' (anonymousdevs.com), so the site and chatbot appear to be built by an outside web developer."
+   ],
+   "hypotheses": [
+    "The Kalrav Farms ad ends with 'Reply VISIT', which may mean people are asked to start a message conversation (Messenger or WhatsApp), but the CTA is 'Get Quote' and I did not open the fb.me link, so this is a guess.",
+    "The sales hire in Vadodara probably relates to Anahata Florenza and the Vadodara industrial parks, meaning lead volume is growing faster than the team; this is an inference, not stated.",
+    "Enquiries that arrive outside office hours may wait for a human callback because the chatbot only captures details and promises a call; no evidence of actual reply times was found.",
+    "The project name 'Anahata Florenza' may mean a tie-up with a developer called Florenza (a separate Vadodara developer, Florenza Infratech, exists); if so a partner may control the sales process. Unverified.",
+    "The 'Vistaram Realty LLP', 'Vistara Infra & Growth LLP' and 'Vistaram Developers Savli LLP' entities seen on aggregators are probably the legal entities behind the brand, but the match was not confirmed."
+   ],
+   "case_for": "A real, active developer with a live website, a published WhatsApp number and mailboxes on its own mail-capable domain. It has a fresh paid ad (11 days), a sales hire posted around 17 Oct, new launches, villas priced from Rs 2.5 Cr, and an ad that already asks people to 'Reply VISIT', so a WhatsApp first reply with brochure, three questions and a visit slot is a natural next step for them. Their own chatbot asks for none of budget, type or visit time.",
+   "case_against": "The need is inferred only; I found no complaint or sign of slow replies. They already run their own chatbot that saves leads to their own system and have a web developer who could add WhatsApp themselves. The ad is a single campaign for a Gandhinagar-district farmhouse project, not the Vadodara project the hire is for. The owner is not verified, the only contacts are a generic enquiry number and info/marketing mailboxes, LinkedIn was blocked so people could not be checked, and the website's own size claims contradict each other. Campaign 1 used similar signals and got 0 replies from 22 leads.",
+   "ability_to_pay": "Moderate to good: Anahata Florenza is 36 villas from Rs 2.5 Cr (about Rs 90 Cr inventory per a listing site), six portfolio items across industrial and residential, a LinkedIn size band of 51-200, a live paid ad and a sales hire. No funding or revenue data found, and the history (2019 vs 2025 LLP) is unclear.",
+   "resistance": "Medium: they already have a self-built menu chatbot that stores leads and promises a callback, plus an outside web developer who could extend it. They also list on Square Yards (portal leads may come by phone). No sign they position against bots or AI. The owner is not confirmed and no direct owner contact is published.",
+   "best_angle": "Your Anahata Florenza ads have a Send WhatsApp message button and have been running since June. An automatic first reply could send the brochure, ask villa budget and visit time, offer a site-visit slot and hand the chat to your team.",
+   "best_channel": "Email first to a business-published domain address (marketing@ or info@vistararealty.com), team-addressed, sent after the owner's OK. No ad number, no enquiry form.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 93270 86424",
+     "source_url": "https://vistararealty.com/contact-us",
+     "note": "Published 'Call Us' number on the company's own site (tel: link on every page). Looks like the main sales or enquiry line, not an owner's personal mobile; staffing hours unknown."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 93270 86424",
+     "source_url": "https://vistararealty.com/",
+     "note": "Same number is published as a wa.me link under the site's WhatsApp button. Published by the business, so WhatsApp is observed as a route; link not opened, active status not tested."
+    },
+    {
+     "kind": "email",
+     "value": "marketing@vistararealty.com",
+     "source_url": "https://vistararealty.com/contact-us",
+     "note": "Domain email, labelled 'Partnerships & Collaborations' on the contact page; best fit for a vendor note."
+    },
+    {
+     "kind": "email",
+     "value": "info@vistararealty.com",
+     "source_url": "https://vistararealty.com/",
+     "note": "Domain email in the footer and contact page, general enquiries inbox."
+    },
+    {
+     "kind": "website",
+     "value": "https://vistararealty.com",
+     "source_url": "https://www.linkedin.com/company/vistara-realty-llp/",
+     "note": "Company website, linked from the LinkedIn page and linking back to it."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/kalrav.farms.2025",
+     "source_url": "https://vistararealty.com/",
+     "note": "Kalrav Farms project Facebook page published on the company site (the page name shown on the active ad)."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/people/Vistara-Realty/61585624752987/",
+     "source_url": "https://vistararealty.com/",
+     "note": "Vistara Realty Facebook page published on the site; Ad Library shows no ads from it."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/vistararealtygroup",
+     "source_url": "https://vistararealty.com/",
+     "note": "Instagram profile published on the company site."
+    }
+   ],
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+2 spend now: 17 active ads on 21 Oct 2026 (8 for Anahata Florenza, oldest from 18 Jun; 9 for Kalrav Farms, 7 started 10 to 16 Oct).",
+    "+2 urgency: a Real Estate Sales Executive job posted about 17 Oct 2026 (LinkedIn) and new launches (Anahata Florenza, Kalrav Farms 2).",
+    "+1 funnel gap: the site has a call/WhatsApp number, forms and a chatbot that only takes name and phone and promises a callback; no instant WhatsApp reply seen (untested).",
+    "+2 can pay: 36 villas from about Rs 2.5 crore, several portfolio items, LinkedIn size band 51-200, paid ads plus a sales hire.",
+    "+1 reachable: a published call/WhatsApp number and domain emails on the company's own site, each with a source.",
+    "-1 resistance: an in-house chatbot already captures leads and an outside web developer could extend it; listings also sit on Square Yards."
+   ],
+   "gaps": [
+    "Decision-maker not verified: LinkedIn profile pages returned HTTP 999 (bot wall, not bypassed); names come only from search snippets and aggregator directories, and the entity names differ (Vistara vs Vistaram).",
+    "RERA number for Anahata Florenza comes only from a Square Yards listing; promoter name and registration were not checked on a GujRERA page or mirror. Other projects' RERA status not checked.",
+    "Ad destination not seen: 'Get Quote' links go to fb.me short links, which I did not open, so I cannot say whether they open WhatsApp, Messenger or a lead form. The third placement icon was not identified.",
+    "Ad count may be undercounted: I searched the phrase 'Vistara Realty' and the one advertiser page ID found; other pages (for example an Anahata Florenza page) were not looked up.",
+    "Google Maps reviews and any complaints about unanswered enquiries were not checked, so pain evidence is none found, not none exists.",
+    "Company history is unclear (LinkedIn founded 2019 vs a listing saying the LLP was incorporated 9 Apr 2025) and the Vadodara link is only the job post and one project; HQ is Gandhinagar or Ahmedabad.",
+    "Tool budget exceeded the suggested 30 calls slightly because of one failed script run and Ad Library clicks."
+   ],
+   "whatsapp_path": "observed",
+   "will_buy_view": "Possible but not likely on a first cold touch: they are active (live ad, sales hire, launches) and publish a WhatsApp number, so a first-reply service fits, but they already run their own lead chatbot with a human callback and have a web developer who may build it themselves. There is no evidence of slow replies, the need is inferred, and the owner is unverified, so expect a low reply chance like campaign 1.",
+   "must_not_claim": "Do not say Vistara is Vadodara-headquartered (site says Gandhinagar, LinkedIn says Ahmedabad). Do not say their ad opens WhatsApp (CTA is 'Get Quote', destination unseen) or that replies are slow or missed. Do not attribute the Bangalore pre-leased office ads (Jun 2025 to Mar 2026), the Pune resale-flat ad by 'vistararealty2024', or the UAE company at vistara-group.com to this builder. Do not call the number a confirmed WhatsApp account, do not use the Square Yards phone or email as theirs, do not quote the site's '13.5M sq ft delivered', and do not name Viral Soni or anyone as owner or tell them we know who they are.",
+   "language": "en",
+   "language_note": "Website, ad copy and chatbot are all English; no Gujarati or Hindi seen in the ad or site.",
+   "website": "https://vistararealty.com",
+   "website_fingerprint": "Own site built with Tailwind, GSAP, Lenis and AOS from public CDNs. Only tracking tag found is Google Analytics (gtag G-DT2SJZCTDN, loaded on every page); no Meta Pixel (fbq), no Google Tag Manager container, no hidden utm fields. No third-party CRM or chat vendor widget (no Tawk, Zoho, WATI, LeadSquared, HubSpot etc.). It does have its own menu-driven 'Vistara Chat Bot' (chatbot-questions.json) that collects name, phone and optional email, POSTs to /save-lead and replies that the team will call. Forms: contact (contact-submit, reCAPTCHA), brochure download on the Anahata page, careers; floating Call, WhatsApp and Enquiry buttons.",
+   "email_mx": "vistararealty.com: MX = Google (aspmx.l.google.com pref 1, alt2.aspmx.l.google.com pref 5, aspmx2.googlemail.com pref 10), so info@ and marketing@ are on a mail-capable domain. Checked 21 Oct 2026 with nslookup.",
+   "ad_age_note": "One active Meta ad from the 'Kalrav Farms' page, Library ID 958582830138430, started 10 Oct 2026 (11 days old on 21 Oct 2026), sustained and not a burst. The 'Vistara Realty' Facebook page itself has no ads in any status. Other ads in the library under the name 'Vistara Realty' (Bangalore office space, ended 9 Mar 2026; Pune resale flat by 'vistararealty2024', started 20 Oct 2026) belong to different advertisers and were excluded.",
+   "evidence_urls": [
+    "https://vistararealty.com/",
+    "https://vistararealty.com/contact-us",
+    "https://vistararealty.com/anahata-florenza",
+    "https://vistararealty.com/views/frontend/Assets/json/chatbot-questions.json",
+    "https://www.linkedin.com/company/vistara-realty-llp/",
+    "https://in.linkedin.com/jobs/view/real-estate-sales-executive-at-vistara-group-4477394043",
+    "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=Vistara%20Realty&search_type=keyword_exact_phrase&media_type=all",
+    "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&view_all_page_id=61585624752987&search_type=page&media_type=all",
+    "https://www.squareyards.com/vistara-anahata-florenza-ankhol-vadodara-npd-344755",
+    "https://remotejobs.org/companies/vistara-group",
+    "https://www.facebook.com/kalrav.farms.2025",
+    "https://www.zoominfo.com/pic/vistara-realty-llp/1293408573",
+    "https://www.addressbox.com/project-detail-page/residential-plot-for-sale-in-kalrav-farms-chikoowadi-mokhasan-gandhinagar?pid=BhRYQVhGVFo"
+   ]
+  },
+  {
+   "business": "BLJ Infra LLP",
+   "city": "Rajkot",
+   "project": "Silver Square (Mavdi, beside Aqua Elegance, Coconut County Party Plot Road, New 150 Ft Ring Road, Rajkot): 141 flats and 30 shops, 3 BHK about 1,020 to 1,250 sq ft",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "duplicate_of_known": "No. Not on the known list. Closest name overlap is Silver Group (Rajkot), which is a different developer: different Facebook page, different phone (098257 55580), different projects (Silver Residency bungalows). No BLJ partner surname appears anywhere in the stored campaign state. Partner-name overlap with NB Developer, Great Spaces, Parshwanath Corporation and Space Age Consultants was not checked.",
+   "website": "none found (no website in any ad CTA; name and project searches on 21 Oct 2026 show none)",
+   "website_fingerprint": "No website exists to fingerprint, so no curl was run. The three ads send people only to api.whatsapp.com (two ads) and an Instagram profile (one ad), so there is no site, lead form, chat widget, CRM script, fbq, GTM or utm hidden field to check. This is absence of a site, not proof that no CRM or WhatsApp auto-reply exists behind the number.",
+   "email_mx": "Not applicable: BLJ has published no domain email. The only email on any page I read is a masked free-mail address (starts \"blj\", ends gmail.com) on the Aurum RERA mirror, so no MX lookup was run. I did not use any unmasked address found by the earlier pass, because it was decoded by a tool and its length does not fit the RERA mask.",
+   "decision_maker": "No single owner: BLJ Infra LLP has 11 listed partners. Samirkumar Ratilal Hansalia is Partner 1 on the Aurum RERA mirror (the best person to ask for; list order is not proof that he decides on sales tools). Do not call anyone the owner.",
+   "decision_maker_confidence": "LIKELY",
+   "size_cues": "Silver Square: 141 flats + 30 shops (171 units), 3 blocks, 10 floors, about 1.49 acres, 443 parking (Aurum RERA mirror, 21 Oct 2026; floors/acres/parking from earlier pass). 11-partner LLP incorporated 21 Oct 2024. Partners also sit in sister LLPs behind four other Rajkot projects (about 700 flats in total, per earlier pass). Facebook page 98 followers, created Jun 2025 (from the brief, not re-checked: page unreadable). No staff count and no hiring found.",
+   "observed_facts": [
+    "21 Oct 2026, Meta Ad Library (own browser tab): 3 live ads, all started 12 Oct 2026: a Gujarati sample-flat video (two versions, one with a Send WhatsApp message button, one with an Instagram-profile button) and one English ad with a Send WhatsApp message button.",
+    "Meta Ad Library, India, keyword 'BLJ Infra', viewed 21 Oct 2026: about 3 results, all Active, all 'Started running on 12 Oct 2026' (Library IDs 2818399411876661, 1615656000052817, 1652805799527816). Source: Ad Library search URL in evidence_urls.",
+    "Ad 1652805799527816 (English, viewed 21 Oct 2026): copy about a premium 3 BHK near 150 Ft Ring Road, 'Enquire now to know the price, availability and site visit details', headline 'Book Your 3 BHK Visit Today', CTA button 'Send WhatsApp message' (type WHATSAPP). No phone number printed. Source: Ad Library.",
+    "Ad 2818399411876661 (Gujarati, 2:37 sample-flat video, viewed 21 Oct 2026): copy asks viewers to call 77788 11154 for sample flat visit and booking, and the CTA button is 'Send WhatsApp message' with destination domain API.WHATSAPP.COM. The link was not opened. Source: Ad Library.",
+    "Ad 1615656000052817 (same Gujarati video and text, viewed 21 Oct 2026): CTA button is 'Visit Instagram profile' (www.instagram.com), so BLJ has an Instagram profile that the earlier pass did not find. The handle was not seen. Source: Ad Library.",
+    "Aurum PropTech page (third-party mirror of GujRERA data, read 21 Oct 2026): promoter BLJ INFRA LLP, LLP incorporated 2024-10-21, 11 partners named, authorised signatory not listed, promoter mobile masked ('77' then stars), promoter email masked ('blj' then stars, gmail.com), no promoter website. Source: aurumproptech.in URL in evidence_urls.",
+    "Same Aurum page (21 Oct 2026): registration PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/MAA15663/110825/311229, approved 11 Aug 2025, end date 31 Dec 2029, 171 units (141 flats, 30 shops), booked units 0 (likely stale), progress 22.92% (Jan 2026) and 35.97% (Apr 2026), architect Parth Jayantilal Patel."
+   ],
+   "hypotheses": [
+    "Enquiries from the ads land on one mobile (calls and WhatsApp) answered by a partner or staff; they may wait at night or when the person is on site. No evidence either way.",
+    "The produced 2:37 video, two language versions and an Instagram variant suggest an agency or an in-house media person runs the ads. Unproven.",
+    "All three ads started the same day, so this may be a short launch push around the sample flat rather than a standing monthly spend. Unknown whether it continues past Diwali.",
+    "A free WhatsApp Business greeting or quick replies may already be set on the number. We cannot see this without contacting them.",
+    "The 0 booked units on the RERA mirror is probably stale, but if even partly true they need lead flow for 171 units."
+   ],
+   "case_for": "A real RERA developer with a 171-unit project in build-and-sell phase. Three ads active for 9 days, two of them send people into WhatsApp, which is the exact chat our first reply handles, and the Gujarati ad also promotes a sample flat visit, which maps to our visit-slot step. Strong ability to pay for a modest tool. The sales number is printed in their own ad, so the contact route is business-published.",
+   "case_against": "The need is inferred only: no review, comment or complaint about slow replies, and no way to see whether the number already has a greeting or CRM. Eleven partners and no identified sales decision-maker. One launch day, 9 days of ads, no spend data. The official GujRERA, Facebook and Instagram pages were unreadable, so identity and contacts rest on a third-party mirror plus the Ad Library. Likely one mobile answered by a person who will say they reply themselves, and a free WhatsApp Business greeting is a cheap substitute. Campaign 1 gave 0 replies from 22 on the same family of signals.",
+   "ability_to_pay": "High on paper, spend unverified. 141 flats at a portal-listed Rs 60 to 70 lakh for a 3 BHK (Houssed, third-party, not BLJ's own price list) plus 30 shops, a bank-approved project per the earlier pass, and a partner group with several Rajkot projects. Caveats: BLJ itself is 12 months old, the ad budget is not visible, and RERA shows 0 booked (probably stale).",
+   "resistance": "Moderate. No CRM, bot, agency contract or vendor was seen, but nothing inside WhatsApp can be seen. Diffuse decision-making across an 11-partner LLP. A polished video suggests an agency or in-house media person who may own the ad flow. They do not position against bots. Pain evidence: none found, no review or post saying nobody replied.",
+   "best_angle": "Your Silver Square ads that started on 12 Oct send people to WhatsApp to ask about the 3 BHK price, availability and a sample flat visit, and we can set up an automatic first reply for that chat (brochure, three questions on budget, flat type and visit time, a sample visit slot, then hand-over to your sales team).",
+   "best_channel": "A human-started WhatsApp message or call to 77788 11154, the number BLJ printed in its own Gujarati ad (the WhatsApp capability of that number is likely but unconfirmed). No domain email or enquiry form exists, and cold WhatsApp templates went 0 of 3 in campaign 1, so no template cold-send.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 77788 11154",
+     "source_url": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=BLJ%20Infra&search_type=keyword_unordered&media_type=all",
+     "note": "Sales line for sample flat visit and booking, printed in BLJ's own Gujarati ad (Library ID 2818399411876661, viewed 21 Oct 2026). Mobile format, so a personal-looking mobile used as the sales line; role of the person unknown. Also the Facebook page phone per the brief (page unreadable, not re-checked). Indian mobile, WhatsApp-capable is likely, not confirmed; the ad's WhatsApp button destination number was not seen."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/blj.infra.llp",
+     "source_url": "https://www.facebook.com/blj.infra.llp",
+     "note": "Advertiser page 'BLJ INFRA LLP | Rajkot' running the three active ads. Only the page title was readable on 21 Oct 2026 (HTTP 400 to curl); followers, phone and creation date are brief-only."
+    }
+   ],
+   "hunger_score": 5,
+   "hunger_tier": "warm",
+   "hunger_reasons": [
+    "+2 spend now: 3 live Silver Square ads, all started 12 Oct 2026 (9 days), two with a Send WhatsApp message button (Ad Library, 21 Oct 2026).",
+    "+0 urgency: the call to action is generic ('Book Your 3 BHK Visit Today') with no deadline, offer or scarcity.",
+    "+1 funnel gap: no website; enquiries go only to WhatsApp or a printed call number; no chat widget or form seen (absence of a site, not proof of no CRM).",
+    "+2 can pay: a 171-unit RERA project (141 flats and 30 shops per the Aurum mirror) and an 11-partner LLP.",
+    "+1 reachable: a sales number printed in BLJ's own ad (Ad Library, 21 Oct 2026).",
+    "-1 resistance: no identified sales decision-maker among 11 partners; a produced video suggests an agency or media person may run the ads."
+   ],
+   "gaps": [
+    "Official GujRERA project page not readable (JavaScript app): unmasked promoter mobile and email and the authorised signatory are unverified; all RERA facts come from the third-party Aurum mirror.",
+    "Whether the WhatsApp button in the ads points to 77788 11154 is unknown; the api.whatsapp.com link was deliberately not opened. The only printed number is labelled for calls.",
+    "Facebook page body, page phone, 98 followers and Jun 2025 creation date could not be re-read; Instagram handle unknown (an ad variant links to an Instagram profile).",
+    "Who runs the ads and the number (partner, staff, agency) and whether a WhatsApp greeting, CRM or telecaller exists.",
+    "Which of the 11 partners decides on marketing and sales tools.",
+    "No spend data, no Google listing or reviews, no hiring post found.",
+    "The earlier pass saw a second personal-looking mobile and a signatory label on two other RERA mirrors (gujrera.com, ahmedabadpropertyexpo.com). I could not find those pages again, so that mobile is not listed as a contact.",
+    "Partner-name overlap with NB Developer, Great Spaces, Parshwanath Corporation and Space Age Consultants not checked."
+   ],
+   "whatsapp_path": "observed",
+   "will_buy_view": "Probably not a quick yes: a 12-month-old 11-partner LLP running one 9-day launch campaign on a single mobile number will likely say someone replies themselves, and a free WhatsApp Business greeting is an easy substitute. Money is not the blocker, so a Silver Square-specific sample shown to the right partner is the only realistic route to a yes, and the odds of any reply from a cold first touch stay low.",
+   "must_not_claim": "Do not say or imply: that anyone is the owner, founder or MD (11-partner LLP); that 77788 11154 is the number behind the ad's WhatsApp button; that their enquiries go unanswered, are slow, or that they have no CRM, bot or sales team; that an agency runs their ads; that Rs 60 to 70 lakh is BLJ's own price (portal figure) or that Silver Square has few bookings (RERA figure is stale); that BLJ built Silver Avenue, 48 Avenue, 36 Avenue or Zen Garden (sister LLPs); that they have a website; that we read their Facebook page or know their Instagram handle; that anyone is hiring; that the ads have run longer than since 12 Oct 2026.",
+   "language": "gu",
+   "language_note": "The main creative (Gujarati sample-flat video, two ad versions) is in Gujarati with English phrases such as 'true luxury living'; one separate ad is fully in English and carries the WhatsApp CTA. Gujarati with English fallback is the best fit, but a human should choose.",
+   "ad_age_note": "3 ads, all active, all started 12 Oct 2026 (9 days old on 21 Oct 2026). One shared start date means a single launch campaign, older than the 3-day unproven-burst limit but not yet shown to be sustained. No spend figures visible.",
+   "evidence_urls": [
+    "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=BLJ%20Infra&search_type=keyword_unordered&media_type=all",
+    "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/silver-square/28057",
+    "https://www.facebook.com/blj.infra.llp",
+    "https://gujrera.gujarat.gov.in/",
+    "C:/Users/Administrator/Desktop/AISales_agent_team/agent/state/intent_test_2026-10-21/enrich9_full_output.json"
+   ]
+  },
+  {
+   "business": "Shree Namasya (project Shree Namasya Residency; promoter firm Shree Namasya Enterprise)",
+   "city": "Vadodara",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "duplicate_of_known": "No. Not on the known list, and a grep of agent/state (suppression.txt, sends.jsonl, events.jsonl, leads) found no send or suppression record for Shree Namasya, Sunfin Realty or this domain. Sunfin Realty (the partner brokerage) only appears in an earlier scan as a phone-only click-to-WhatsApp advertiser and was never contacted.",
+   "decision_maker": "Abhijit Rajendra Bhagwat is listed as a partner of the promoter firm Shree Namasya Enterprise (RERA mirror) and as a director of its corporate partner Sunfin Realty Pvt Ltd (company-register aggregator); nothing shows that he decides on sales tools.",
+   "decision_maker_confidence": "LIKELY",
+   "size_cues": "Developer arm of a broker. One RERA project of 97 units (82 flats + 15 shops, one combined block) with flats from Rs 59 lakh in the ads (my arithmetic: 82 x Rs 59 lakh = about Rs 48 crore at the entry price, shops excluded). Houssed, a portal, says 82 units / 2 towers, so the count conflicts. A second 7-unit project (\"Namasya\", New Sama) is listed as completed on their site. Partnership incorporated Aug 2024 per earlier enrichment; Facebook page created 18 Aug 2025 with 205 followers (given facts, not re-read); Instagram about 1.2k followers (earlier scrape). Partner Sunfin Realty has an Alkapuri office and 5 phone lines on its site, and also runs its own ad for this project. Sales team size unknown.",
+   "observed_facts": [
+    "Meta Ad Library (read 21 Oct 2026, India, exact phrase 'Shree Namasya', my own tab, closed after): 7 ads, all marked Active. Six are on the page 'Shree Namasya', one is on the page 'Sunfin Realty'. The library header says about 8 results, 7 loaded.",
+    "Ad start dates (Ad Library, read 21 Oct 2026): 28 Sep 2026 (1 ad), 8 Oct 2026 (3 ads), 17 Oct 2026 (2 ads) on the Shree Namasya page; 19 Oct 2026 (1 ad) on the Sunfin Realty page. That is new creatives added over 3 weeks, not a one-day burst.",
+    "Ad buttons (Ad Library, 21 Oct 2026): 4 of the 6 Shree Namasya ads (28 Sep, and three of 8 Oct) have a 'Send WhatsApp message' button. The 2 newest Shree Namasya ads (17 Oct) use a 'Get quote' button that links through fb.me, which looks like a Meta lead form, not WhatsApp. Sunfin's 19 Oct ad has the WhatsApp button. The number behind the WhatsApp button is not shown in the library.",
+    "Ad text (Ad Library, 21 Oct 2026): every Shree Namasya ad prints +91 70696 06777 as the enquiries / site-visit / 'Call' line, and none labels it as WhatsApp. Only the 28 Sep ad mentions a festive price (Rs 59 lakh onwards) and a ready sample house; later ads drop the word festive and say Rs 59 lakh onwards, 4-side-open 3 BHK, Atladra-Padra Road. Sunfin's 19 Oct ad prints a different line, 75673 11777, as 'Call Now'.",
+    "Ad language (Ad Library, 21 Oct 2026): four of the six Shree Namasya ads are written mainly in Gujarati script with English words; two (28 Sep and one of 17 Oct) are in Roman-script Hindi-English. Sunfin's ad is English.",
+    "Website shreenamasya.com (curl, 21 Oct 2026): WordPress with the Astra theme, Elementor 3.27.5 and Site Kit by Google; one Google tag (GT-T5RLSNM8). No Meta pixel (fbq), no Tag Manager container, no chat widget or chatbot script, no CRM or lead-tool script, no wa.me / api.whatsapp link, no utm hidden fields. Forms are Elementor forms named 'Query Form', 'Download Brochure' and 'Contact Us Form'; the contact form has a field labelled 'WhatsApp Mobile Number'. Whatever the forms send on the server side cannot be seen from the HTML.",
+    "Website contact page (fetched 21 Oct 2026): lists +91 70696 06777 under 'Registered Office' and 'Sale Inquiries', and info@shreenamasya.com. RERA number fields still show xxxx placeholders, the footer says Copyright 2025, and the site was built by Stroke and Arrow (design credit). The site links to Facebook and Instagram.",
+    "Email MX (nslookup, 21 Oct 2026): shreenamasya.com has one MX record, SMTP.GOOGLE.com (preference 1), so mail is hosted at Google. The SPF record lists websitewelcome.com and a server IP, not Google.",
+    "RERA record as shown by the third-party mirror Aurum PropTech (fetched 21 Oct 2026, not the official portal): promoter Shree Namasya Enterprise, a partnership; partners Abhijit Rajendra Bhagwat and Sunfin Realty Private Limited; 97 units (15 shops, 82 flats), 0 booked as shown; approved 20 Sep 2025; completion 31 Dec 2030; progress 6.4% (Jan 2026) and 8.4% (Apr 2026). The promoter mobile and email are masked (mobile starts 94, email starts 'mah' and ends gmail.com), so they differ from the published sales line and info@ inbox. The mirror says its data is collated and not guaranteed.",
+    "Partner brokerage site barodarealty.com (curl, 21 Oct 2026): lists Shree Namasya Residency as a property; no tracking tags, no chat widget, no WhatsApp link, no CRM script; no email address in the HTML; its MX is its own server (mail.barodarealty.com).",
+    "Web search (21 Oct 2026): a LinkedIn result titled 'ABHIJIT BHAGWAT - SUNFIN REALTY PRIVATE LIMITED' has a snippet saying he is launching his own housing project 'Shree Namasya Residency'. I did not open the profile (LinkedIn blocks fetches and I did not try to get around it). No job posting for sales or telecaller staff by Shree Namasya or Sunfin was found.",
+    "Facebook page facebook.com/shreenamasya/ (fetched 21 Oct 2026): only the title 'Shree Namasya | Vadodara' is readable without login, so followers, About and reviews could not be re-read; the 18 Aug 2025 / 205 followers figures are carried over from the facts you gave.",
+    "Pain evidence: none found for this project. Our own earlier Google-reviews scan (agent/state/campaigns/_research_raw.json, not re-checked) found low-rated 'not picking calls' reviews of Sunfin Realty dated 2017 to 2021 only, which are stale and are about the brokerage, not this project."
+   ],
+   "hypotheses": [
+    "Inferred, not observed: during the festive window, WhatsApp enquiries from the four WhatsApp-button ads probably arrive in bursts and out of hours, and an instant first reply with brochure, three questions and a visit slot could save follow-up work. No slow replies have been seen anywhere.",
+    "Because Sunfin Realty is a co-partner, runs its own ad for the project and has 5 phone lines, the same brokerage team probably handles the enquiries, and the likely answer is 'we handle it ourselves' or silence.",
+    "The two newest ads (17 Oct) are lead-form ads, so some budget is moving away from WhatsApp; where those form leads go is unknown, and an instant reply to form leads might matter as much as WhatsApp.",
+    "70696 06777 is probably a dedicated project sales line, because the RERA-filed promoter mobile (masked, starts 94) is a different number. It is not proven to be a WhatsApp number or Mr. Bhagwat's own mobile.",
+    "A second possible customer is Sunfin Realty itself (broker version of the product), since it also advertises with a WhatsApp button."
+   ],
+   "case_for": "A real RERA-registered developer with a named partner, 82 flats at Rs 59 lakh onwards, 7 live ads over 3 weeks across two pages with new creatives added on 17 and 19 Oct, a working Google-hosted email and a published sales line. The website has no WhatsApp link, chat widget or CRM tag, while four ads push people into WhatsApp and the contact form asks for a WhatsApp number, so the front door is visibly manual. The launch is new and the owner is a broker who understands enquiry-to-visit conversion.",
+   "case_against": "No pain evidence at all. The co-owning brokerage already advertises and answers calls for this project, so a first-reply service may feel redundant. The newest ads use lead forms, not WhatsApp, which weakens the WhatsApp-enquiry story. The builder arm is new (page 18 Aug 2025), the RERA mirror shows 0 of 97 booked (possibly stale), nobody is shown to hold the decision on tools, and the WhatsApp number behind the ads is unknown. Campaign 1 used similar signals and got 0 replies from 22 leads.",
+   "ability_to_pay": "Medium to high for a small monthly service: about Rs 48 crore of flats at the entry price, 7 live ads, an agency-built website, expo/portal listings and a long-running brokerage partner. Limits: the builder arm is new, 0 of 97 booked on a possibly stale mirror, and earlier research noted the corporate partner has little paid-up capital. Ad spend itself is not visible in the Ad Library.",
+   "resistance": "Medium. The partner Sunfin Realty sells the project through its own phone lines and runs its own WhatsApp-button ad, and the owner is a visible Vadodara broker who gets many vendor pitches. The website was built by an agency, but nothing shows an agency running ads. No existing CRM or chatbot was seen, but a WhatsApp Business greeting or auto-reply cannot be seen from outside. The owner has no direct line published and the generic inbox may be read by staff.",
+   "best_angle": "Your Shree Namasya Residency ads have sent people to WhatsApp since 28 Sep and your contact form asks for a WhatsApp number, so I would like to show how an automatic first reply (brochure, budget / flat type / visit-time questions, a sample-house visit slot, then hand-over to your sales team) would work for that project.",
+   "best_channel": "Email to info@shreenamasya.com (Google-hosted, MX confirmed), addressed to Mr. Bhagwat by name but not using any title. No cold WhatsApp (0 of 3 templates worked in campaign 1, and the ad's WhatsApp number is unknown), and no website forms.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "info@shreenamasya.com",
+     "source_url": "https://shreenamasya.com/contact-us/",
+     "note": "Domain email, generic inbox published by the business; MX is SMTP.GOOGLE.com (Google-hosted). Who reads it is unknown."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 70696 06777",
+     "source_url": "https://shreenamasya.com/contact-us/",
+     "note": "Sales line: listed as 'Registered Office' and 'Sale Inquiries' on the site, and as the enquiries / site-visit / 'Call' line in all Shree Namasya ads (Meta Ad Library, 21 Oct 2026). Looks like a mobile. Not published as WhatsApp, so only 'likely' WhatsApp-capable; whose phone it is, is unknown."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75673 11777",
+     "source_url": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=%22Shree%20Namasya%22&search_type=keyword_exact_phrase&media_type=all",
+     "note": "Sales line of the partner brokerage Sunfin Realty, printed as 'Call Now' in its 19 Oct 2026 ad for Shree Namasya (Library ID 1097899033093913). This is the brokerage's number, not a Shree Namasya contact, and should not be used as one."
+    },
+    {
+     "kind": "website",
+     "value": "https://shreenamasya.com",
+     "source_url": "https://shreenamasya.com/",
+     "note": "Official project website (agency-built WordPress). Enquiry and brochure forms exist but must not be used."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/shreenamasya/",
+     "source_url": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=%22Shree%20Namasya%22&search_type=keyword_exact_phrase&media_type=all",
+     "note": "Page 'Shree Namasya | Vadodara', the advertiser of the ads. Contents not readable without login."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/shreenamasya/",
+     "source_url": "https://shreenamasya.com/",
+     "note": "Project Instagram linked from the website; about 1.2k followers per an earlier scrape. No WhatsApp number was seen there."
+    }
+   ],
+   "email_mx": "shreenamasya.com: MX = SMTP.GOOGLE.com (preference 1), checked with nslookup on 21 Oct 2026, so mail is hosted at Google and the address can receive mail. (Partner site barodarealty.com has its own MX, mail.barodarealty.com, but no email address published in its HTML.)",
+   "website": "https://shreenamasya.com",
+   "website_fingerprint": "WordPress + Astra theme + Elementor 3.27.5 + Site Kit by Google, curl on 21 Oct 2026. Tags: one Google tag (GT-T5RLSNM8) only. Not found: Meta pixel (fbq), Tag Manager container, chat widget or chatbot (no tawk, tidio, crisp, zoho, hubspot, leadsquared, freshchat, interakt, wati), wa.me / api.whatsapp links, utm hidden fields. Forms: three Elementor forms (Query, Download Brochure, Contact Us); the contact form asks for a 'WhatsApp Mobile Number'; any server-side CRM or email hook is invisible. RERA fields still show xxxx placeholders. Note: a request with a generic 'Mozilla/5.0' user agent got HTTP 406, and the default curl request got 200 (an ordinary server filter, not a CAPTCHA).",
+   "hunger_score": 5,
+   "hunger_tier": "warm",
+   "hunger_reasons": [
+    "+3 spend now: 6 live ads on the Shree Namasya page (started 28 Sep, 8 Oct, 17 Oct) plus 1 on the partner Sunfin Realty page; 4 of the 6 have a Send WhatsApp message button (Ad Library, 21 Oct 2026).",
+    "+1 urgency: the site says Newly Launched and the 28 Sep ad has a festive price with a ready sample house; later ads drop the offer.",
+    "+0 funnel gap: the ads already open WhatsApp and a partner brokerage answers calls; the site has click-to-call and forms only, no chat widget or CRM trace, but whether an auto-reply exists is untested.",
+    "+2 can pay: about 82 flats at Rs 55-60 lakh (roughly Rs 45-49 crore list value of unsold flats; inventory, not cash), live ads and an agency-built site.",
+    "+1 reachable: info@shreenamasya.com (mail hosted by Google) and +91 70696 06777 are published on the business's own contact page.",
+    "-2 resistance: the partner brokerage Sunfin Realty sells the project through its own call-answering lines and runs its own WhatsApp-button ad."
+   ],
+   "gaps": [
+    "The official GujRERA project page was not read (the portal gave nothing usable); the mirror masks the promoter mobile and email and shows no authorised signatory, so there is no verified owner route.",
+    "Which WhatsApp number sits behind the ad button, and whether it is 70696 06777, is unknown; the Ad Library does not show it.",
+    "Who reads info@shreenamasya.com, and who runs the ads and social pages (owner, staff, Sunfin team or an agency), is unknown.",
+    "Where the leads from the two 17 Oct 'Get quote' ads go is unknown.",
+    "Facebook page details (created date, About, reviews, followers) could not be re-read without login; the 18 Aug 2025 and 205 followers figures are carried over from the facts you gave.",
+    "Sales team size, any telecallers, and any WhatsApp Business greeting or auto-reply already in use cannot be seen from outside.",
+    "No reviews, comments or hiring posts about this project were found, so there is no pain evidence; the LinkedIn profile could not be opened to confirm his role first-hand.",
+    "Ad spend is not shown by the Ad Library for these ads; 'Active' does not mean a large budget."
+   ],
+   "whatsapp_path": "possible",
+   "will_buy_view": "A real but modest maybe: they pay for ads and a website and the project is large enough for a small monthly service, but the owner's own brokerage already sells the project by phone, so the likeliest reply is 'we handle it ourselves' or silence. With no pain evidence and the newest ads moving to lead forms, I would expect no reply and treat this as a test of the email route and message, not as pipeline.",
+   "language": "",
+   "language_note": "Mixed: four ads mix Gujarati script with English, two are Roman-script Hindi-English, the website is English. Plain English for a first email.",
+   "must_not_claim": "Do not claim: slow or missed replies, lost enquiries, or that they have no chatbot or CRM (we cannot see inside the WhatsApp line or the forms); that 70696 06777 is a WhatsApp number or Mr. Bhagwat's own mobile; that the ads are WhatsApp-only (two are lead-form ads); that Mr. Bhagwat alone owns the firm or decides on tools, or any title such as CEO, association president or exhibitor; that units are unsold or that 97 flats exist (82 flats + 15 shops per the mirror, portals say 82 units); the 'No.1 3 BHK' or festive-offer wording as our own claim; that the 28 Sep festive offer is still running; that Sunfin's 75673 11777 or any Sunfin number is a Shree Namasya contact; the masked RERA mobile or email; or any price, result or free offer for our service.",
+   "evidence_urls": [
+    "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&q=%22Shree%20Namasya%22&search_type=keyword_exact_phrase&media_type=all",
+    "https://shreenamasya.com/",
+    "https://shreenamasya.com/contact-us/",
+    "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/shree-namasya-residency/27986",
+    "https://barodarealty.com/",
+    "https://www.facebook.com/shreenamasya/",
+    "https://www.facebook.com/SunFinRealty/",
+    "https://www.instagram.com/shreenamasya/",
+    "https://in.linkedin.com/in/abhijit-bhagwat-6543ba17b",
+    "C:/Users/Administrator/Desktop/AISales_agent_team/agent/state/intent_test_2026-10-21/ENRICH9_SUMMARY.md"
+   ]
+  }
+ ]
+}

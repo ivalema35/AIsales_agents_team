@@ -1,0 +1,25 @@
+APPROVAL NEEDED [5RB6S]
+WHATSAPP TEMPLATE (first touch)
+To: +916354529994
+Lead label (typed by the agent, not checked): RRR Detailing
+Template: iv_detailing_video_hi_v1 (hi)
+Header video: https://www.ivinfotech.com/assets/campaign/det-studios-v1-k7q3x9/detailing_hi_v1.mp4
+Agent's reason (typed by the agent, not checked): First-touch of the approved detailing template to RRR Detailing (slot a-instagram), company number, one lead only; send-day check done by the operator.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/det-studios-v1-k7q3x9/detailing_hi_v1.mp4
+--- text ---
+नमस्ते RRR Detailing टीम, हम IV Infotech, मेहसाणा से हैं।
+
+ऑनलाइन आपका स्टूडियो देखते हुए हमें एक छोटी-सी बात नज़र आई: आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है।
+
+हम एक सिंपल पेज बनाते हैं: पैकेज, पहले-बाद की फ़ोटो और WhatsApp पर बुकिंग का बटन। साथ में Google प्रोफ़ाइल की देखभाल करते हैं, और सेटअप हम ही करते हैं। ऊपर का वीडियो (करीब एक मिनट, कैप्शन के साथ, AI आवाज़ में) यही दिखाता है।
+
+जानना चाहें तो नीचे "हाँ, बताइए" दबा दीजिए; हमारी टीम का कोई व्यक्ति इसी चैट में बताएगा।
+--- end of text ---
+Footer: मैसेज बंद करने के लिए STOP लिखें
+Button [हाँ, बताइए]
+Button [अभी नहीं]
+Button [मैसेज बंद करें (STOP)]
+This code approves exactly the text above and nothing else.
+Reply OK 5RB6S to approve, NO 5RB6S to skip.
+Valid till 30 Oct 22:44 IST.

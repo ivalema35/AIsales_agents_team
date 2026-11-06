@@ -1,0 +1,28 @@
+APPROVAL NEEDED [9BNDD]
+WHATSAPP TEMPLATE (first touch)
+To: +919213637081
+Lead label (typed by the agent, not checked): Great Spaces
+Template: iv_en_realestate_demo_v1 (en)
+Header video: https://www.ivinfotech.com/assets/campaign/great-spaces-aaroham-bdjo4z/video.mp4
+Agent's reason (typed by the agent, not checked): wave 2: Great Spaces Aaroham (Hungry lead, English). Video + landing page + automatic demo are ready.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/great-spaces-aaroham-bdjo4z/video.mp4
+  https://www.ivinfotech.com/campaign/great-spaces-aaroham-bdjo4z
+--- text ---
+Namaste Great Spaces team,
+
+We are IV Infotech, Mehsana. We saw your ads for Great Spaces Aaroham.
+
+When an enquiry arrives at night or in a busy hour and the reply comes late, some buyers may move on to the next developer.
+
+We made a short video for Great Spaces Aaroham. In simple words it shows how every WhatsApp enquiry can get an automatic reply in about a minute, and how your team can save time and give buyers a quicker first reply.
+
+Watch the video, and if it looks useful, tap "Yes, send the demo" below.
+--- end of text ---
+Footer: Reply STOP to opt out
+Button [See details] opens: https://www.ivinfotech.com/campaign/great-spaces-aaroham-bdjo4z
+Button [Yes, send the demo]
+Button [No, thanks]
+This code approves exactly the text above and nothing else.
+Reply OK 9BNDD to approve, NO 9BNDD to skip.
+Valid till 20 Oct 00:59 IST.

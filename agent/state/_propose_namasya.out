@@ -1,0 +1,52 @@
+== propose [email]
+   EMAIL to in***@shreenamasya.com
+   action hash: a93fa6b74012ba0c...
+APPROVAL CODE: 3MZXZ   (expires 2026-10-23T05:09:05Z)
+-------- MESSAGE FOR THE OWNER (show in the chat exactly as printed) --------
+APPROVAL NEEDED [3MZXZ]
+EMAIL
+To: info@shreenamasya.com
+Lead label (typed by the agent, not checked): namasya
+Subject: Automatic WhatsApp replies for Shree Namasya enquiries
+Agent's reason (typed by the agent, not checked): Round 3 first-touch email: page, video and demo are live
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/email_banner.jpg
+  https://www.ivinfotech.com/campaign/shree-namasya-r5h6jb
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shree%20Namasya
+  https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/logo.png
+--- text ---
+[theme: corporate]
+
+Hello Shree Namasya team,
+
+We are IV Infotech, a software company in Mehsana, Gujarat. We help real-estate developers make sure every WhatsApp enquiry can get a first reply in about a minute: the brochure goes out, three quick questions are asked, a site-visit time is offered, and your team sees every enquiry in one list. We saw Shree Namasya ads that have a Send WhatsApp message button, so we made a short video and a page for the project.
+
+The video shows, in about 40 seconds, how a WhatsApp enquiry for Shree Namasya can get an automatic first reply. The chats in it are examples.
+
+[image] https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/email_banner.jpg | https://www.ivinfotech.com/campaign/shree-namasya-r5h6jb | Shree Namasya - watch the video
+
+[button] Watch the video (about 40 seconds) | https://www.ivinfotech.com/campaign/shree-namasya-r5h6jb
+
+We may also send this same note on WhatsApp, to the number published for Shree Namasya, so open whichever is easier. If you would rather not get it, reply "stop" to this email and we will not send it.
+
+Want to see it answer on WhatsApp? Tap the button below. WhatsApp opens with a message ready, you press Send, and our automatic assistant replies with a short sample chat for Shree Namasya from our own number. Nothing is connected to your number.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shree%20Namasya
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+IV Infotech is an independent company, not affiliated with Shree Namasya, WhatsApp or Meta.
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK 3MZXZ to approve, NO 3MZXZ to skip.
+Valid till 23 Oct 10:39 IST.
+-------- end of message --------
+(the same text is saved in agent/state/owner_messages/3MZXZ.txt - the owner can open it to compare)
+OWNER NOT MESSAGED (--no-notify). Show the message above to the owner in the chat, word for word. He approves by sending  OK 3MZXZ  from his own WhatsApp to the business number (costs him nothing; the CRM does not reply).
+Next: when he says it is done, run the same send command with  --live --approval 3MZXZ
+      (check the state any time with: python agent/tools/crm.py approval 3MZXZ)

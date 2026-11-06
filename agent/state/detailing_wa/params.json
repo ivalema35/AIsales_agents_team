@@ -1,0 +1,1249 @@
+{
+ "_about": "Per-lead values for the detailing template v1 (iv_detailing_video_hi_v1). body_params = [{{1}}, {{2}}] EXACTLY as they must be passed to propose.py wa-template / wa.py send-template as two --body-param values, in this order. Phone numbers are deliberately NOT here (they stay in the console lead entries and are never printed). Written 29 Oct 2026. Nothing was sent, created, submitted or deployed.",
+ "template": {
+  "name": "iv_detailing_video_hi_v1",
+  "spec": "agent/state/outreach/detailing_template_v1_spec.json",
+  "language_flag": "--lang hi   (wa.py defaults to en and never compares it with the template: a forgotten flag fails with Meta error 132001 AFTER the owner's OK code is spent)",
+  "variables": {
+   "1": "the studio's short name = brand_short below (it follows 'नमस्ते' and is followed by 'टीम')",
+   "2": "ONE literally-true observation from the 5-sentence dictionary below; no closing danda (the body puts '।' right after it)"
+  },
+  "lead_label_flag": "--lead \"<lead_label>\"  (becomes lead_ref in the CRM ledger and the hand-off name; owner-test sends must start with 'Owner test')",
+  "propose_pattern": "PYTHONIOENCODING=utf-8 python agent/tools/propose.py wa-template --to <91XXXXXXXXXX> --template iv_detailing_video_hi_v1 --lang hi --body-param \"<body_params[0]>\" --body-param \"<body_params[1]>\" --header-video-url <public https mp4> --lead \"<lead_label>\" --reason \"<slot, evidence, number label>\" --no-notify --ttl-hours 2",
+  "send_pattern": "python agent/tools/wa.py send-template --to <91XXXXXXXXXX> --template iv_detailing_video_hi_v1 --lang hi --body-param \"<body_params[0]>\" --body-param \"<body_params[1]>\" --header-video-url <public https mp4> --lead \"<lead_label>\" --live --approval <CODE>",
+  "header_video_url": "NOT HOSTED YET. A send needs a public https .mp4 served as video/mp4 (template creation does not). Hosting needs the owner's 'deploy it'."
+ },
+ "value_rules": [
+  "Every value is ONE line: no newline, no tab, no run of 5 or more spaces, no empty value (Meta send errors 132012/132018 come AFTER the owner's OK code is spent).",
+  "No double quote inside a value (PowerShell 5.1 strips it). The apostrophe in Walker's must be the plain ASCII apostrophe (U+0027).",
+  "Exactly 2 --body-param values. The values below were linted: no URL, no {{ }}, no emoji, no invisible characters, all NFC-normalised.",
+  "{{2}} comes ONLY from this fixed dictionary, never from scraped text. Re-check the sentence on the send day (listing facts expire in about 3 days) and record the result in the approval reason.",
+  "ONE number per brand (the listing's own Maps number), never the boss's personal number, never a landline (norm_phone refuses it), one lead at a time, about 60 s wait and a status read before the next.",
+  "Never mention their ads, offers or prices; never say 'you need a website'."
+ ],
+ "dictionary": {
+  "c": {
+   "hi": "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा",
+   "meaning": "the Google listing shows no website button",
+   "chars": 52
+  },
+  "b": {
+   "hi": "Google पर आपके सबसे नए 3 रिव्यू के जवाब अभी नहीं दिख रहे",
+   "meaning": "the owner has not replied to the newest 3 Google reviews",
+   "chars": 56
+  },
+  "a-signin": {
+   "hi": "आपकी Google लिस्टिंग का वेबसाइट बटन लॉगिन के बिना साइन-इन पेज पर ले जाता है",
+   "meaning": "the listing's website button opens a Google sign-in page (for a logged-out visitor)",
+   "chars": 75
+  },
+  "a-instagram": {
+   "hi": "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है",
+   "meaning": "the listing's website button opens an Instagram profile",
+   "chars": 67
+  },
+  "d": {
+   "hi": "आपकी वेबसाइट का Book Now कॉन्टैक्ट सेक्शन तक ले जाता है, बुकिंग फ़ॉर्म तक नहीं",
+   "meaning": "the site's Book Now goes to a contact section, not to a booking form",
+   "chars": 78
+  }
+ },
+ "dictionary_note": "a-signin is the slot verifier's sentence shortened by 12 characters with the same meaning (original: आपकी Google लिस्टिंग का वेबसाइट बटन बिना लॉगिन किए खोलने पर साइन-इन पेज पर जाता है). All five sentences describe only the studio's own Google listing or site.",
+ "send_order_note": "Default order = slot-verifier order (strongest, most stable slots first). Arihant is a HOLD. Alternative the owner may choose: start with the numbers that have WhatsApp evidence (Krishna Auto Coating, Walker's, Detailing Xpert, DNX). At most 3 sends on day 1, and only if the owner-number test passed. 3 consecutive non-deliveries = cold templates OFF.",
+ "leads": [
+  {
+   "order": 1,
+   "key": "detailing-krishna-auto-coating",
+   "brand_short": "Krishna Auto Coating",
+   "city": "Mehsana",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Krishna Auto Coating",
+   "body_params": [
+    "Krishna Auto Coating",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 495,
+   "fallback": null,
+   "recheck_on_send_day": "1) Open the listing's Maps link (in-app browser logged out, or a phone): the panel must still show an 'Add website' prompt and NO globe row with a site (seen true on 29 Oct). 2) Send ONLY to the Krishna Auto Coating listing's own Maps number: the sister listing Krishna Xtreme has a Linktree as its website, so this sentence would be false for that number (one message per brand). 3) Still trading (29 Oct panel: open, closes 8 pm).",
+   "caveats": "Do NOT use the reviews sentence for Krishna: of the newest 3 reviews only the 24 Oct one is answered (22 Oct and 12 Oct are not), so 'the newest 3 have no reply' would be false. Never mention the live Meta 'Call now' ad (started 28 Oct). The sentence says the button is not showing on the Google listing; it never says 'you have no website' and never 'people can only call' (the listing has a WhatsApp booking link)."
+  },
+  {
+   "order": 2,
+   "key": "detailing-the-walker-s-detailing-studio",
+   "brand_short": "Walker's Detailing Studio",
+   "city": "Ahmedabad",
+   "slot_code": "a-signin",
+   "slot_meaning": "the listing's website button opens a Google sign-in page (for a logged-out visitor)",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Walker's Detailing Studio",
+   "body_params": [
+    "Walker's Detailing Studio",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन लॉगिन के बिना साइन-इन पेज पर ले जाता है"
+   ],
+   "rendered_body_chars": 523,
+   "fallback": null,
+   "recheck_on_send_day": "Run: curl -s -o /dev/null -m 25 -A \"Mozilla/5.0\" -w \"%{http_code} %{redirect_url}\" https://sites.google.com/view/thewalkersdetailingstudio/home -> must print 302 and an accounts.google.com URL (true on 29 Oct). The Maps panel's website row must still show sites.google.com. If the link now returns 200, DROP the lead.",
+   "caveats": "The sentence is limited to a logged-out visitor on purpose ('लॉगिन के बिना'): an owner who is logged in to his own Google account may open the site normally, so never claim customers 'cannot open' it. Shortened by 12 characters from the slot verifier's wording (same meaning). Do NOT use the reviews sentence: the owner replied to all 5 newest reviews. A live ad with prices exists: never mention ads or prices."
+  },
+  {
+   "order": 3,
+   "key": "detailing-rrr-detailing",
+   "brand_short": "RRR Detailing",
+   "city": "Gandhinagar",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "RRR Detailing",
+   "body_params": [
+    "RRR Detailing",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 503,
+   "fallback": null,
+   "recheck_on_send_day": "On a phone or in-app browser the Maps listing's website row must still show instagram.com and tapping it must open the rrr__detailing profile. 29 Oct: the row shows instagram.com; the exact handle was NOT re-opened (Instagram blocks logged-out fetches), so the handle rests on the 28 Oct evidence: look at it on send day.",
+   "caveats": "Dropped the pack's tail 'not a website' on purpose (reads as a put-down for an Instagram-led business). Do NOT use the reviews sentence: the owner replied to 4 of the newest 5. The owner is engaged, so this is one of the better fits. No active ad found."
+  },
+  {
+   "order": 4,
+   "key": "detailing-dwarkesh-car-detailing-studio",
+   "brand_short": "Dwarkesh Car Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Dwarkesh Car Detailing",
+   "body_params": [
+    "Dwarkesh Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 497,
+   "fallback": null,
+   "recheck_on_send_day": "The Maps panel must still show no website row (29 Oct: no globe row, 131 reviews, open, closes 8 pm). Still trading: newest review 24 Oct.",
+   "caveats": "Do NOT use the reviews sentence: only 1 of the newest 3 reviews is answered (23 Oct). Grade C lead, but this sentence is the most stable kind (a listing field, not a review state). 'No active ad found' only means no hit for the exact name."
+  },
+  {
+   "order": 5,
+   "key": "detailing-detailing-xpert-gandhinagar",
+   "brand_short": "Detailing Xpert",
+   "city": "Gandhinagar",
+   "slot_code": "c",
+   "slot_meaning": "the owner has not replied to the newest 3 Google reviews",
+   "confidence": "medium",
+   "status": "sendable: slot c (no website button) used instead of b; re-observed 29 Oct in the logged-out Maps panel",
+   "lead_label": "Detailing Xpert",
+   "body_params": [
+    "Detailing Xpert",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 494,
+   "fallback": {
+    "slot_code": "c",
+    "body_params": [
+     "Detailing Xpert",
+     "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+    ],
+    "rendered_body_chars": 490,
+    "use_only_if": "a human phone check shows that at least one of the newest 3 reviews now HAS an owner reply AND the Maps panel still shows no website row (then the 'no website button' sentence is the only true one); otherwise skip this lead"
+   },
+   "recheck_on_send_day": "A human on a phone: Maps > the lead > Reviews > Sort > Newest: the newest 3 reviews must still show NO 'Response from the owner'. Logged-out Maps cannot sort by Newest (it forces a Google sign-in, which the agent must not do), so this was NOT verifiable on 29 Oct. If any of the newest 3 now has a reply, switch to the fallback sentence only if the Maps panel still shows no website row (29 Oct: none); otherwise skip the lead.",
+   "caveats": "'3' (not '4') on purpose: it stays true if a new unanswered review arrives or the 4th one gets a reply. Newest review (13 Aug) is about 11 weeks old, so the silence is long-standing. Generic name (same-named listings exist in other cities); the number is the Gandhinagar listing's. Two live click-to-WhatsApp ads: never mention them."
+  },
+  {
+   "order": 6,
+   "key": "detailing-carx-care-the-detailing-studio-and-service-station",
+   "brand_short": "Carx Care",
+   "city": "Gandhinagar",
+   "slot_code": "c",
+   "slot_meaning": "the owner has not replied to the newest 3 Google reviews",
+   "confidence": "medium",
+   "status": "sendable: slot c (no website button) used instead of b; re-observed 29 Oct in the logged-out Maps panel",
+   "lead_label": "Carx Care",
+   "body_params": [
+    "Carx Care",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 488,
+   "fallback": {
+    "slot_code": "c",
+    "body_params": [
+     "Carx Care",
+     "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+    ],
+    "rendered_body_chars": 484,
+    "use_only_if": "a human phone check shows that at least one of the newest 3 reviews now HAS an owner reply AND the Maps panel still shows no website row (then the 'no website button' sentence is the only true one); otherwise skip this lead"
+   },
+   "recheck_on_send_day": "Same human check as Detailing Xpert: the newest 3 reviews must still have no owner reply (not verifiable logged-out on 29 Oct). The owner does reply sometimes (replies on reviews 3 and 6 months old), so a fresh reply before send day is possible. Fallback sentence only if the Maps panel still shows no website row (29 Oct: none).",
+   "caveats": "A 5-month-old 1-star review has no reply: never mention it. Possible multi-outlet brand (unconfirmed). No active ad found."
+  },
+  {
+   "order": 7,
+   "key": "detailing-dnx-car-detailing-studio",
+   "brand_short": "DNX Car Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "d",
+   "slot_meaning": "the site's Book Now goes to a contact section, not to a booking form",
+   "confidence": "high",
+   "status": "sendable, but send late (thin gap)",
+   "lead_label": "DNX Car Detailing",
+   "body_params": [
+    "DNX Car Detailing",
+    "आपकी वेबसाइट का Book Now कॉन्टैक्ट सेक्शन तक ले जाता है, बुकिंग फ़ॉर्म तक नहीं"
+   ],
+   "rendered_body_chars": 518,
+   "fallback": null,
+   "recheck_on_send_day": "curl dnxdetailing.in to a file and search it for '<form', '<input', '<iframe', 'forms.gle': none may appear, and the Book Now link must still be href=\"#cta\" (29 Oct: static page, no form, Book Now goes to the #cta contact section). If a form appears, DROP the lead.",
+   "caveats": "The pack's 'Book Now button' is loose: in the HTML it is a nav menu link that goes to a contact section (call, WhatsApp, email cards); the sentence describes what it does. The gap is thin (the site already offers call, WhatsApp and email) and the reader may take it as criticism of a site he is proud of: send after the stronger leads; the owner may skip it. Two live ads: never mention them."
+  },
+  {
+   "order": 8,
+   "key": "detailing-motors-inn-car-detailing-studio",
+   "brand_short": "Motors Inn",
+   "city": "Ahmedabad",
+   "slot_code": "b",
+   "slot_meaning": "the owner has not replied to the newest 3 Google reviews",
+   "confidence": "medium",
+   "status": "HOLD if any of the newest 3 reviews now has a reply; otherwise send last",
+   "lead_label": "Motors Inn",
+   "body_params": [
+    "Motors Inn",
+    "Google पर आपके सबसे नए 3 रिव्यू के जवाब अभी नहीं दिख रहे"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "A human on a phone: the newest 3 reviews must still have no owner reply (newest review is only from 22 Oct, so a reply before send day is quite possible). NO fallback: the site motorsinn.in exists, so the 'no website button' sentence is false. If any of the newest 3 now has a reply, HOLD the lead.",
+   "caveats": "Weakest lead per the 28 Oct check: the site is fine and its form builds a pre-filled WhatsApp or email message, so our pitch overlaps what it already does. A paid ad was seen: never mention it."
+  },
+  {
+   "order": 9,
+   "key": "detailing-arihant-car-detailing-studio",
+   "brand_short": "Arihant Car Detailing",
+   "city": "Mehsana",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "low",
+   "status": "HOLD (do not send unless the dormancy test passes)",
+   "lead_label": "Arihant Car Detailing",
+   "body_params": [
+    "Arihant Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 496,
+   "fallback": null,
+   "recheck_on_send_day": "HOLD until a free dormancy test passes: one sign of recent activity such as a review or photo newer than 11 May 2026, a recent post on its Facebook or Instagram page, or a current Justdial or IndiaMART update. Only then re-check the no-website row (29 Oct: 140 reviews unchanged, 'Open, closes 7:30 pm', no website row). Trading itself is UNVERIFIED.",
+   "caveats": "The sentence is true; the LEAD is the weak part (Maps category 'Car accessories store', only 1 review in 12 months). A dormant listing's number may have been reassigned, and a cold template to a stranger is the worst case for the 3-non-deliveries rule and the template quality rating. No fallback sentence (a reviews sentence is meaningless here). Recommendation: skip."
+  },
+  {
+   "order": 10,
+   "key": "detailing-auto-clinic",
+   "brand_short": "Auto Clinic",
+   "city": "Ahmedabad",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Auto Clinic",
+   "body_params": [
+    "Auto Clinic",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 501,
+   "fallback": null,
+   "recheck_on_send_day": "Maps listing 'Auto Clinic' near Bellagio Road: website row must still show instagram.com -> https://www.instagram.com/autoclinic_ahmedabad/ (read 4 Nov 2026 about 10:55 IST). If it now shows a real website, DROP the lead.",
+   "caveats": "The owner replies to Google reviews, so never use the review slot. The Maps number is used (not the Llumar-locator number). Owner reach unproven; WhatsApp not confirmed."
+  },
+  {
+   "order": 11,
+   "key": "detailing-detailing-culture",
+   "brand_short": "Detailing Culture",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "high",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Detailing Culture",
+   "body_params": [
+    "Detailing Culture",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Maps listing DETAILING CULTURE (Bodakdev) must still show 'Add website' (no website row). Read 4 Nov 2026 about 11:20 IST. If a website row appears, DROP the lead.",
+   "caveats": "Number is the wa.me / phone on the studio's own site (the Maps listing has no phone); the Garware second number is NOT used. Small studio, 9 reviews; owner reach unproven."
+  },
+  {
+   "order": 12,
+   "key": "detailing-gujju-car-spa",
+   "brand_short": "Gujju Car Spa",
+   "city": "Gandhinagar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Gujju Car Spa",
+   "body_params": [
+    "Gujju Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 488,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Gujju Car Spa' (Gandhinagar): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 13,
+   "key": "detailing-devils-9-cars-spa",
+   "brand_short": "Devils9 Cars Spa",
+   "city": "Gandhinagar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Devils'9 Cars Spa",
+   "body_params": [
+    "Devils9 Cars Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 491,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Devils'9 Cars Spa' (Gandhinagar): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 14,
+   "key": "detailing-dk-car-spa-gandhinagar",
+   "brand_short": "DK Car Spa",
+   "city": "Gandhinagar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "DK Car Spa Gandhinagar",
+   "body_params": [
+    "DK Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 485,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'DK Car Spa Gandhinagar' (Gandhinagar): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 15,
+   "key": "detailing-mr-autotech",
+   "brand_short": "Mr AutoTech",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Mr AutoTech",
+   "body_params": [
+    "Mr AutoTech",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 486,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Mr AutoTech' (Ahmedabad): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 16,
+   "key": "detailing-rub-n-shine-car-detailing-studio",
+   "brand_short": "Rub N Shine",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Rub N Shine car detailing studio",
+   "body_params": [
+    "Rub N Shine",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 486,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Rub N Shine car detailing studio' (Ahmedabad): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 17,
+   "key": "detailing-srs-car-detailing-studio",
+   "brand_short": "SRS Car Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "SRS Car Detailing Studio",
+   "body_params": [
+    "SRS Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'SRS Car Detailing Studio' (Ahmedabad (Nikol)): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 18,
+   "key": "detailing-venus-car-studio",
+   "brand_short": "Venus Car Studio",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Venus Car Studio",
+   "body_params": [
+    "Venus Car Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 491,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Venus Car Studio' (Ahmedabad): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 19,
+   "key": "detailing-hetu-s-car-spa",
+   "brand_short": "Hetu's Car Spa",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Hetu's Car Spa",
+   "body_params": [
+    "Hetu's Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Hetu's Car Spa' (Ahmedabad): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 20,
+   "key": "detailing-a-cars-detailing-studio",
+   "brand_short": "A+ Cars Detailing",
+   "city": "Vadodara",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "A+ Cars Detailing Studio",
+   "body_params": [
+    "A+ Cars Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'A+ Cars Detailing Studio' (Vadodara): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 21,
+   "key": "detailing-carzhub-surat",
+   "brand_short": "CarzHub",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "CarzHub (Surat)",
+   "body_params": [
+    "CarzHub",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 482,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'CarzHub (Surat)' (Surat): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 22,
+   "key": "detailing-sp-car-care-ceramic-coating",
+   "brand_short": "SP Car Care",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "SP Car Care & Ceramic Coating",
+   "body_params": [
+    "SP Car Care",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 486,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'SP Car Care & Ceramic Coating' (Surat): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 23,
+   "key": "detailing-prime-auto-spa-car-wash-detailing",
+   "brand_short": "Prime Auto Spa",
+   "city": "North Gujarat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Prime Auto Spa (Car Wash & Detailing)",
+   "body_params": [
+    "Prime Auto Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Prime Auto Spa (Car Wash & Detailing)' (North Gujarat (Kadi/Kalol/Patan area; exact town not read)): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 24,
+   "key": "detailing-detailing-squad-nadiad",
+   "brand_short": "Detailing Squad",
+   "city": "Nadiad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Detailing Squad Nadiad",
+   "body_params": [
+    "Detailing Squad",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 490,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Detailing Squad Nadiad' (Nadiad): it must still show no website row and the same phone. If a website appears, DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 4 Nov 2026; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 25,
+   "key": "detailing-autobro-detailing-studio",
+   "brand_short": "Autobro Detailing Studio",
+   "city": "Ahmedabad",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "AUTOBRO DETAILING STUDIO",
+   "body_params": [
+    "Autobro Detailing Studio",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 514,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'AUTOBRO DETAILING STUDIO' (Ahmedabad (SG Highway / Makarba)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 26,
+   "key": "detailing-jb-the-car-detailing-studio",
+   "brand_short": "JB Car Detailing Studio",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "JB The Car Detailing Studio",
+   "body_params": [
+    "JB Car Detailing Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 498,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'JB The Car Detailing Studio' (Ahmedabad (Maninagar)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 27,
+   "key": "detailing-vb-the-car-detailing-hub",
+   "brand_short": "VB Car Detailing Hub",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "VB The Car Detailing Hub",
+   "body_params": [
+    "VB Car Detailing Hub",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 495,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'VB The Car Detailing Hub' (Ahmedabad (Ghodasar)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 28,
+   "key": "detailing-next-level-auto-detailing-studio",
+   "brand_short": "Next Level Auto Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Next Level Auto Detailing Studio",
+   "body_params": [
+    "Next Level Auto Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 500,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Next Level Auto Detailing Studio' (Ahmedabad (Bopal)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 29,
+   "key": "detailing-the-dom-s-car-detailing-studio",
+   "brand_short": "The Dom's Car Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "The Dom's Car Detailing Studio",
+   "body_params": [
+    "The Dom's Car Detailing",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 513,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'The Dom's Car Detailing Studio' (Ahmedabad (Gota)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 30,
+   "key": "detailing-a-one-auto-detailing",
+   "brand_short": "A One Auto Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "A One Auto Detailing",
+   "body_params": [
+    "A One Auto Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 495,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'A One Auto Detailing' (Ahmedabad (CBD Mall / SP Ring Road)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 31,
+   "key": "detailing-tc4-car-detailing",
+   "brand_short": "TC4 Car Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "TC4 Car Detailing",
+   "body_params": [
+    "TC4 Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'TC4 Car Detailing' (Ahmedabad (Vastrapur)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 32,
+   "key": "detailing-spray-spark",
+   "brand_short": "Spray & Spark",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Spray & Spark",
+   "body_params": [
+    "Spray & Spark",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 488,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Spray & Spark' (Ahmedabad (Sanjivani Hospital area)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 33,
+   "key": "detailing-detailing-pro-adajan",
+   "brand_short": "Detailing Pro",
+   "city": "Surat",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Detailing Pro (Adajan)",
+   "body_params": [
+    "Detailing Pro",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 503,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Detailing Pro (Adajan)' (Surat (Adajan)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 34,
+   "key": "detailing-gleam-car-detailing-studio",
+   "brand_short": "Gleam Car Detailing",
+   "city": "Surat",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Gleam Car Detailing Studio",
+   "body_params": [
+    "Gleam Car Detailing",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 509,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Gleam Car Detailing Studio' (Surat (Pal)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 35,
+   "key": "detailing-perfect-shine-car-detailing-center",
+   "brand_short": "Perfect Shine Car Detailing",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Perfect Shine Car Detailing Center",
+   "body_params": [
+    "Perfect Shine Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 502,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Perfect Shine Car Detailing Center' (Surat (Pratham Circle)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 36,
+   "key": "detailing-book-my-detailing",
+   "brand_short": "Book My Detailing",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Book My Detailing",
+   "body_params": [
+    "Book My Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Book My Detailing' (Surat (Dabholi)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 37,
+   "key": "detailing-classic-car-studio-rajkot",
+   "brand_short": "Classic Car Studio",
+   "city": "Rajkot",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Classic Car Studio (Rajkot)",
+   "body_params": [
+    "Classic Car Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 493,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Classic Car Studio (Rajkot)' (Rajkot (150 Feet Ring Rd)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-04; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 38,
+   "key": "detailing-sunshine-car-spa",
+   "brand_short": "Sunshine Car Spa",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Sunshine Car Spa",
+   "body_params": [
+    "Sunshine Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 491,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Sunshine Car Spa' (Ahmedabad (Ghatlodia)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 39,
+   "key": "detailing-sparkling-car-studio",
+   "brand_short": "Sparkling Car Studio",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Sparkling Car Studio",
+   "body_params": [
+    "Sparkling Car Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 495,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Sparkling Car Studio' (Ahmedabad (Sola)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 40,
+   "key": "detailing-autodox-carz",
+   "brand_short": "AutoDox Carz",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "AutoDox Carz",
+   "body_params": [
+    "AutoDox Carz",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 487,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'AutoDox Carz' (Surat (Vesu / Piplod)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 41,
+   "key": "detailing-mr-detailing-car-care-centre",
+   "brand_short": "Mr.Detailing Car Care",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Mr.Detailing Car Care Centre",
+   "body_params": [
+    "Mr.Detailing Car Care",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 496,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Mr.Detailing Car Care Centre' (Surat (Dindoli)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 42,
+   "key": "detailing-radhe-krishna-car-detailing",
+   "brand_short": "Radhe Krishna Car Detailing",
+   "city": "Vadodara",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Radhe Krishna Car Detailing",
+   "body_params": [
+    "Radhe Krishna Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 502,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Radhe Krishna Car Detailing' (Vadodara (Ajwa Rd)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 43,
+   "key": "detailing-csm-detailing-studio",
+   "brand_short": "CSM Detailing Studio",
+   "city": "Vadodara",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Csm Detailing Studio",
+   "body_params": [
+    "CSM Detailing Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 495,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Csm Detailing Studio' (Vadodara (Airport Circle)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 44,
+   "key": "detailing-top-7-detailing",
+   "brand_short": "Top 7 Detailing",
+   "city": "Vadodara",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "TOP 7 DETAILING",
+   "body_params": [
+    "Top 7 Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 490,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'TOP 7 DETAILING' (Vadodara (Bhayli)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 45,
+   "key": "detailing-detailuxe",
+   "brand_short": "Detailuxe",
+   "city": "Vadodara",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Detailuxe",
+   "body_params": [
+    "Detailuxe",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 499,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Detailuxe' (Vadodara (Bhayli)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 46,
+   "key": "detailing-brightspots-car-studio",
+   "brand_short": "Brightspots Car Studio",
+   "city": "Rajkot",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "BRIGHTSPOTS car studio",
+   "body_params": [
+    "Brightspots Car Studio",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 497,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'BRIGHTSPOTS car studio' (Rajkot (Bolbala Main Rd)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 47,
+   "key": "detailing-rideinstyl-ceramic-coating-ppf-studio",
+   "brand_short": "RideinStyl",
+   "city": "Vapi",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "RideinStyl - Ceramic Coating & PPF Studio",
+   "body_params": [
+    "RideinStyl",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 485,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'RideinStyl - Ceramic Coating & PPF Studio' (Vapi (NH48)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 48,
+   "key": "detailing-premium-auto-care-car-detailing-studio",
+   "brand_short": "Premium Auto Care",
+   "city": "Gandhidham",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Premium Auto Care & Car Detailing Studio",
+   "body_params": [
+    "Premium Auto Care",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Premium Auto Care & Car Detailing Studio' (Gandhidham): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 49,
+   "key": "detailing-9to9-car-detailing-studio-spa",
+   "brand_short": "9TO9 Car Detailing",
+   "city": "Bhuj",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "9TO9 Car Detailing Studio & Spa",
+   "body_params": [
+    "9TO9 Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 493,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing '9TO9 Car Detailing Studio & Spa' (Bhuj): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-05; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 50,
+   "key": "detailing-autoz-hub-ceramic-and-ppf-coating-centre",
+   "brand_short": "Autoz Hub",
+   "city": "Surat",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "AUTOZ HUB ceramic and PPF coating centre",
+   "body_params": [
+    "Autoz Hub",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 499,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'AUTOZ HUB ceramic and PPF coating centre' (Surat (Pal)): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 51,
+   "key": "detailing-veriton-automotive",
+   "brand_short": "Veriton Automotive",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Veriton automotive",
+   "body_params": [
+    "Veriton Automotive",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 493,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Veriton automotive' (Ahmedabad (Chandkheda)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 52,
+   "key": "detailing-jd-carzspa",
+   "brand_short": "JD Carzspa",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "JD Carzspa",
+   "body_params": [
+    "JD Carzspa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 485,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'JD Carzspa' (Ahmedabad (Kathwada Rd)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 53,
+   "key": "detailing-motorus-detailing-modification-studio-gota",
+   "brand_short": "Motorus Detailing",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Motorus Detailing & Modification Studio - Gota",
+   "body_params": [
+    "Motorus Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Motorus Detailing & Modification Studio - Gota' (Ahmedabad (Gota)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 54,
+   "key": "detailing-osean-auto-detail-workshop",
+   "brand_short": "Osean Auto Detail",
+   "city": "Surat",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Osean Auto Detail Workshop",
+   "body_params": [
+    "Osean Auto Detail",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 492,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Osean Auto Detail Workshop' (Surat (VIP Rd, Vesu)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 55,
+   "key": "detailing-kiyansh-autocare",
+   "brand_short": "Kiyansh AutoCare",
+   "city": "Navsari",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Kiyansh AutoCare",
+   "body_params": [
+    "Kiyansh AutoCare",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 491,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Kiyansh AutoCare' (Navsari): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 56,
+   "key": "detailing-m-y-car-z-spa",
+   "brand_short": "MY Car'z Spa",
+   "city": "Ankleshwar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "M Y CAR'Z SPA",
+   "body_params": [
+    "MY Car'z Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 487,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'M Y CAR'Z SPA' (Ankleshwar): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 57,
+   "key": "detailing-auto-1-car-spa",
+   "brand_short": "Auto-1 Car Spa",
+   "city": "Ankleshwar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Auto - 1 Car Spa",
+   "body_params": [
+    "Auto-1 Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Auto - 1 Car Spa' (Ankleshwar): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 58,
+   "key": "detailing-tlc-car-spa",
+   "brand_short": "TLC Car Spa",
+   "city": "Vadodara",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "TLC CAR SPA",
+   "body_params": [
+    "TLC Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 486,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'TLC CAR SPA' (Vadodara (New VIP Rd)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 59,
+   "key": "detailing-mr-clean-the-car-detailing-studio",
+   "brand_short": "Mr. Clean Car Detailing",
+   "city": "Himmatnagar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Mr. Clean the car detailing studio",
+   "body_params": [
+    "Mr. Clean Car Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 498,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Mr. Clean the car detailing studio' (Himmatnagar): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 60,
+   "key": "detailing-car-spa-godhra",
+   "brand_short": "Car Spa Godhra",
+   "city": "Godhra",
+   "slot_code": "a-instagram",
+   "slot_meaning": "the listing's website button opens an Instagram profile",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "CAR SPA GODHRA",
+   "body_params": [
+    "Car Spa Godhra",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+   ],
+   "rendered_body_chars": 504,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'CAR SPA GODHRA' (Godhra): the website row must be as recorded (slot a-instagram) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 61,
+   "key": "detailing-detailing-bros-surendranagar",
+   "brand_short": "Detailing Bros",
+   "city": "Surendranagar",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Detailing Bros - Surendranagar",
+   "body_params": [
+    "Detailing Bros",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Detailing Bros - Surendranagar' (Surendranagar): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  },
+  {
+   "order": 62,
+   "key": "detailing-chrome-car-spa",
+   "brand_short": "Chrome Car Spa",
+   "city": "Ahmedabad",
+   "slot_code": "c",
+   "slot_meaning": "the Google listing shows no website button",
+   "confidence": "medium",
+   "status": "sendable after the send-day re-check",
+   "lead_label": "Chrome Car Spa",
+   "body_params": [
+    "Chrome Car Spa",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+   ],
+   "rendered_body_chars": 489,
+   "fallback": null,
+   "recheck_on_send_day": "Open the Maps listing 'Chrome Car Spa' (Ahmedabad (Jodhpur / Satellite)): the website row must be as recorded (slot c) and the phone the same; otherwise DROP the lead. Also check it is not a multi-outlet chain.",
+   "caveats": "Only the Maps list card was read on 2026-11-06; owner reach and WhatsApp unproven."
+  }
+ ]
+}

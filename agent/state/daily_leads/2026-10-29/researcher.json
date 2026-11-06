@@ -1,0 +1,1155 @@
+{
+ "campaign": "WhatsApp patient desk for doctor-owned clinics (Gujarat)",
+ "researched": 6,
+ "grade_counts": {
+  "C": 2,
+  "reject": 3,
+  "B": 1
+ },
+ "ready_count": 1,
+ "leads": [
+  {
+   "business": "Re Life Clinic - Dr. Rikin M. Shah (also written Relife Clinic), Gota, Ahmedabad",
+   "first_grade": "C",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "weak",
+   "strongest_objection": "The lead rests on one fact that nobody but the finder has seen: the WhatsApp-opening Meta ad. The Ad Library page returned 403 for the investigator and for me, so the need and the pay signal are both unproven. Around that gap, the specialty is diabetes and obesity and not dentist, skin or physio. The doctor probably works at Marengo CIMS Hospital Mon-Sat 9-6, so the WhatsApp number is likely run by staff or by nobody. The clinic's own site has a leftover dental dropdown, three different phone numbers and a Practo listing that has never been claimed. Taken together, this looks like a loosely managed side practice. There is no observed evidence that enquiries go unanswered or that the clinic can pay.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Re Life Clinic - Dr. Rikin M. Shah (also written Relife Clinic), Gota, Ahmedabad",
+    "city": "Ahmedabad (Gota)",
+    "official_website": "https://www.shahrikin.com/",
+    "identity_verified": true,
+    "entity_type": "end_business",
+    "what_they_do": "Single-location, doctor-named outpatient clinic for diabetes (with a 'diabetes reversal' positioning), obesity / medical weight loss (GLP-1 injections, U Lipolysis), fatty liver, BP, thyroid, cholesterol. Consultant physician with MBBS, DNB, UK diabetes fellowship per own site.",
+    "size_cues": "One address (701 Aalps Euphoria, SG Highway, Gota). Site mentions two OPD cabins and a 15-patient waiting area, 'dedicated team' with no headcount, 12 years experience (Justdial snippet says 13). Practo lists only Dr. Rikin M. Shah. No branches found. Not a chain. Possible side-practice: a Marengo CIMS Hospital page lists a 'Dr Rikin Shah' (Consultant Diabetology and Obesity, same MBBS/DNB/UK fellowship, Mon-Sat 9-6), but it does not mention Re Life, so same-person is likely but unproven.",
+    "decision_maker": "Dr. Rikin M. Shah, named as the clinic's doctor on https://www.shahrikin.com/ and on Practo (https://www.practo.com/ahmedabad/clinic/re-life-clinic-dr-rikin-m-shah-nirnaynagar). No public page states he is the owner, but the clinic carries his name and the website is his personal domain.",
+    "verification_trail": [
+     "https://www.shahrikin.com/ (opened): confirms clinic name, Dr. Rikin M. Shah, Gota address, WhatsApp +91 63598 08381, general number 99981 83009, email relife.reversal.clinic@gmail.com, hours Mon-Sat 10-8, one location, tel: link points to 88667 93437, appointment form with leftover dental dropdown.",
+     "https://www.shahrikin.com/contact (opened): same contact details, no other branch, same number mismatch.",
+     "https://www.practo.com/ahmedabad/clinic/re-life-clinic-dr-rikin-m-shah-nirnaynagar (opened): independent listing, same address, only Dr. Rikin M. Shah listed, hours Mon-Sun 11-17 (differs from site), no phone shown, no online booking mentioned.",
+     "Justdial listing for Re Life Clinic - Dr. Rikin M. Shah, Gota (seen only as a search result; page returned 403): search snippet says same address, 4.9 rating from 94 ratings, 13 years, self-published 2024 award. Not opened, so unconfirmed.",
+     "https://www.marengoasiahospitals.com/doctor/dr-rikin-shah (opened): a Dr Rikin Shah, Consultant Diabetology and Obesity at Marengo CIMS Hospital, Mon-Sat 9-6; no mention of Re Life.",
+     "https://www.facebook.com/ads/library/?id=2221277505363053 (opened): HTTP 403, so the finder's ad evidence (WhatsApp CTA, start 2026-05-30) could NOT be re-checked by me.",
+     "https://www.facebook.com/profile.php?id=61550672711045 (opened): returned only the title 'Dr. Rikin Shah | Ahmedabad', nothing else usable.",
+     "https://g.co/kgs/YnSkN3i (opened): redirects to a Google search for 'Re Life Clinic - Dr. Rikin M. Shah' (a Google knowledge-graph listing exists), but no details could be read.",
+     "Web search for 'Relife Wellness Clinic Maninagar': nothing found, so no evidence of a second branch."
+    ],
+    "contacts": [
+     {
+      "kind": "whatsapp",
+      "value": "+91 63598 08381",
+      "note": "Likely WhatsApp (Indian mobile); site shows it as both the displayed phone and the WhatsApp button. Unknown whether the doctor or staff answers.",
+      "source_url": "https://www.shahrikin.com/contact"
+     },
+     {
+      "kind": "phone",
+      "value": "99981 83009",
+      "note": "Labelled 'general inquiry' on the site; likely front desk or staff.",
+      "source_url": "https://www.shahrikin.com/contact"
+     },
+     {
+      "kind": "phone",
+      "value": "88667 93437",
+      "note": "Only in the site's Call button link; differs from the displayed number, so unclear whose it is.",
+      "source_url": "https://www.shahrikin.com/"
+     },
+     {
+      "kind": "email",
+      "value": "relife.reversal.clinic@gmail.com",
+      "note": "Published, but email is not a way in for this campaign.",
+      "source_url": "https://www.shahrikin.com/contact"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.shahrikin.com/",
+      "note": "Own site with appointment form, WhatsApp and call buttons.",
+      "source_url": "https://www.shahrikin.com/"
+     },
+     {
+      "kind": "maps",
+      "value": "Google listing via g.co/kgs/YnSkN3i",
+      "note": "Exists per redirect; contents not readable.",
+      "source_url": "https://g.co/kgs/YnSkN3i"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Re Life Clinic (Dr. Rikin M. Shah) operates from one address: 701 Aalps Euphoria, SG Highway, beside Gota Chokdi flyover, Gota, Ahmedabad 382481; no other branch listed.",
+      "source_url": "https://www.shahrikin.com/contact"
+     },
+     {
+      "fact": "The same address and doctor name appear on Practo, which lists only Dr. Rikin M. Shah and no online booking.",
+      "source_url": "https://www.practo.com/ahmedabad/clinic/re-life-clinic-dr-rikin-m-shah-nirnaynagar"
+     },
+     {
+      "fact": "Own site offers a WhatsApp button (+91 63598 08381), a Call button (links to a different number, 88667 93437), a general number 99981 83009, and appointment/question web forms. Hours on site: Mon-Sat 10-8, Sunday closed.",
+      "source_url": "https://www.shahrikin.com/contact"
+     },
+     {
+      "fact": "Opening hours disagree across sources: site says Mon-Sat 10-8, Practo says Mon-Sun 11-17.",
+      "source_url": "https://www.practo.com/ahmedabad/clinic/re-life-clinic-dr-rikin-m-shah-nirnaynagar"
+     },
+     {
+      "fact": "Site's appointment form dropdown lists dental services (template leftover).",
+      "source_url": "https://www.shahrikin.com/"
+     },
+     {
+      "fact": "Specialty is diabetes, obesity, fatty liver, thyroid; the site shows no cosmetic or skin service (the finder's 'cosmetic service' claim is not supported by what I read).",
+      "source_url": "https://www.shahrikin.com/"
+     },
+     {
+      "fact": "A Dr Rikin Shah is listed as consultant at Marengo CIMS Hospital, Mon-Sat 9-6, with similar qualifications; Re Life is not mentioned there.",
+      "date": "2026-10-29",
+      "source_url": "https://www.marengoasiahospitals.com/doctor/dr-rikin-shah"
+     },
+     {
+      "fact": "Justdial search snippet (page not opened, 403): 4.9 rating from 94 ratings, 13 years in healthcare, self-published March 2024 award.",
+      "source_url": "https://www.justdial.com/Ahmedabad/Re-Life-Clinic-Dr-Rikin-M-Shah-Beside-Gota-Cross-Roads-FlyoverAbove-Somany-Tiles-Gota/079PXX79-XX79-231006000024-V1Z8_BZDET"
+     }
+    ],
+    "hypotheses": [
+     "Finder's claim (not re-verified by me, Ad Library returned 403): a Meta ad with WhatsApp CTA has run since 2026-05-30. If true, the clinic pays for enquiries.",
+     "Some WhatsApp enquiries may go unanswered after hours or when the doctor is in OPD or at the hospital. No evidence either way.",
+     "The doctor may split time with Marengo CIMS Hospital (same name, same field), which would make a patient desk more useful but also means the WhatsApp number may be staffed by a receptionist.",
+     "The mismatch of three numbers and the stale dental dropdown suggest loosely managed digital setup.",
+     "Diabetes/obesity follow-up patients are repeat visitors, so reminders could matter more than first-contact replies (inference only)."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "weak",
+    "ability_to_pay": "Cannot be shown from sources I could read. Possible signals: ad spend for 5 months (finder claim only, unconfirmed by me), premium positioning (GLP-1, diabetes reversal, U Lipolysis), 4.9 Justdial rating with 94 ratings (snippet only), own domain and site. Counter-signals: two OPD cabins, small team, Practo hours of 11-17 suggest a modest practice. A Rs 15-25k setup plus monthly fee looks affordable if the ad claim holds.",
+    "reachability": "business_contact",
+    "owner_direct_contact": "probably",
+    "resistance": "No known vendor. The site has its own web forms and a WhatsApp button, so some basic setup exists. 'Diabetes reversal' positioning is a medical-claims area, so the doctor may be cautious about automated patient messaging. A possible hospital consultant role (Marengo CIMS, unproven) would limit his time. No sign of an agency. Specialty (diabetes/obesity) is outside the core dentist, skin, physio list.",
+    "grade": "C",
+    "case_for": "Real, verified single-location, doctor-named clinic (not a chain), with a published WhatsApp number that is a mobile. Finder reports a WhatsApp-opening ad running about 5 months, which matches the best-lead criterion. Follow-up-heavy specialty fits reminders. No booking system visible beyond web forms. Strong Justdial rating suggests real patient flow.",
+    "case_against": "The key evidence (the ad) could not be re-checked by me, so need and pay are both only inferred. The WhatsApp number is not proven to reach the doctor rather than staff. Three different numbers and conflicting opening hours make it unclear who answers. Specialty is off the core list. The finder's 'cosmetic service' claim is not supported. A possible hospital job means he may be rarely at the clinic. Ownership is shown only by the name on the clinic.</case_against>\n<parameter name=\"best_angle\">A question only, no claim: who replies on the clinic's WhatsApp number (63598 08381) when the doctor is in OPD or the clinic is closed? Do not mention the ad's age or any lost patients.",
+    "best_channel": "WhatsApp (short human message or voice note) to +91 63598 08381, the number the clinic's own site publishes behind its WhatsApp button, so a first message there is expected. It plausibly reaches Dr. Shah or his desk, unproven; if staff answer, ask politely to be passed to the doctor. Do not use email. Before sending, open the Meta Ad Library entry in a normal browser to confirm the ad is still active. Upgrade to B if the ad is confirmed and the number is shown to reach the doctor.</best_channel>\n<parameter name=\"gaps\">[\"Could not open the Meta Ad Library entry (HTTP 403); ad start date, status and page identity unverified by me.\", \"Justdial and Google Maps listings could not be read; rating and review count come from a search snippet only.\", \"Not proven that Dr. Rikin M. Shah of Re Life is the same person as the Marengo CIMS consultant.\", \"Not proven who answers 63598 08381 or whose number 88667 93437 is.\", \"No public page states he is the owner.\", \"Facebook page contents not readable, so page likes (3569) and post activity are unverified.\", \"No evidence that enquiries go unanswered or that no-shows are a problem.\"]"
+   },
+   "challenge": {
+    "business": "Re Life Clinic - Dr. Rikin M. Shah (Relife Clinic), Gota, Ahmedabad",
+    "agree_with_grade": true,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "The business exists as described: a single-location, doctor-named clinic at 701 Aalps Euphoria, Gota, not a chain",
+      "verdict": "confirmed",
+      "note": "I re-opened shahrikin.com and its /contact page. Both show one address, Dr. Rikin M. Shah, and no other branch. The Practo listing shows the same address and doctor. That makes two independent sources, so it does not fail the 'unverifiable' test."
+     },
+     {
+      "claim": "The WhatsApp number +91 63598 08381 and the general number 99981 83009 are published by the clinic itself",
+      "verdict": "confirmed",
+      "note": "Both appear on the home page and the contact page. The WhatsApp link target is api.whatsapp.com/send?phone=916359808381. It is an Indian mobile, so 'likely WhatsApp' is fair. It is not proven that the doctor answers it."
+     },
+     {
+      "claim": "The Call button links to 88667 93437, which differs from the displayed number",
+      "verdict": "confirmed",
+      "note": "The home page shows tel:8866793437. The finder and investigator both reported this correctly."
+     },
+     {
+      "claim": "Opening hours conflict between the site and Practo",
+      "verdict": "confirmed",
+      "note": "The site says Mon-Sat 10-8, Sunday closed. Practo says Mon-Sun 11-17. The Practo page also shows a 'Claim this profile' prompt, so the listing is probably unclaimed and unmaintained. The investigator missed this. It weakens the Practo hours as a signal of how the clinic really runs."
+     },
+     {
+      "claim": "The finder said the clinic has a cosmetic service. The investigator said the site shows none.",
+      "verdict": "confirmed",
+      "note": "The site lists diabetes, obesity, GLP-1 injections, thyroid, fatty liver and U-Lipolysis. It lists no skin or cosmetic service. The finder's cosmetic claim is unsupported, so the specialty is off the core dentist, skin and physio list."
+     },
+     {
+      "claim": "The appointment form has leftover dental dropdown options",
+      "verdict": "confirmed",
+      "note": "I saw this on the home page. It suggests a template site that is not carefully maintained."
+     },
+     {
+      "claim": "A Dr Rikin Shah at Marengo CIMS Hospital (Mon-Sat 9-6) is probably the same person",
+      "verdict": "corrected",
+      "note": "The page lists the same qualifications (MBBS, DNB, UK diabetes fellowship) and the same interest in diabetes reversal and medical weight loss. It does not mention Re Life. It is a 9-6 hospital schedule, while the clinic site says 10-8. Same person is likely but unproven. If true, the doctor is at a hospital most of the day, so the clinic's WhatsApp is probably run by staff. It also means the clinic is perhaps a side practice and not the one he depends on."
+     },
+     {
+      "claim": "A Meta ad with a WhatsApp call to action has run since 2026-05-30, about 152 days",
+      "verdict": "unsupported",
+      "note": "The Ad Library URL returned HTTP 403 for me too. The central need and pay signal remains unverified by anyone except the finder. It must not be quoted as fact until someone opens it in a normal browser."
+     },
+     {
+      "claim": "Page likes 3569 and the Justdial rating of 4.9 from 94 ratings",
+      "verdict": "unsupported",
+      "note": "Neither page was readable. The Justdial figure is only a search snippet. I did not use either as a pay signal."
+     },
+     {
+      "claim": "Dr. Shah owns the clinic and is the decision-maker",
+      "verdict": "unsupported",
+      "note": "No page says he is the owner. The clinic carries his name and the site is on a domain named for him. 'Probably' is the most that can be said."
+     },
+     {
+      "claim": "Pay signal is weak and need is only inferred",
+      "verdict": "confirmed",
+      "note": "I found nothing observed that shows unanswered enquiries, no-shows, or ad spend. The only possible pay signals are a premium positioning (GLP-1, diabetes reversal) and the unverified ad. The home page offers WhatsApp, a call button and web forms, so some basic setup exists. This is not a full existing solution."
+     }
+    ],
+    "strongest_objection": "The lead rests on one fact that nobody but the finder has seen: the WhatsApp-opening Meta ad. The Ad Library page returned 403 for the investigator and for me, so the need and the pay signal are both unproven. Around that gap, the specialty is diabetes and obesity and not dentist, skin or physio. The doctor probably works at Marengo CIMS Hospital Mon-Sat 9-6, so the WhatsApp number is likely run by staff or by nobody. The clinic's own site has a leftover dental dropdown, three different phone numbers and a Practo listing that has never been claimed. Taken together, this looks like a loosely managed side practice. There is no observed evidence that enquiries go unanswered or that the clinic can pay.",
+    "corrections": [
+     "Practo shows a 'Claim this profile' prompt, so the listing is probably unclaimed. The conflicting Practo hours (11-17) are therefore weak evidence about how the clinic actually runs.",
+     "The Marengo CIMS page lists Mon-Sat 9-6 and says the doctor spent about five years at Vijayratna Clinic. It does not mention Re Life. Treat it as 'likely the same person, unproven'. If so, the clinic WhatsApp is probably staff-run.",
+     "The finder's 'cosmetic service' claim is unsupported. The site lists no skin or cosmetic service, only U-Lipolysis with no description.",
+     "The ad evidence (start date 2026-05-30, WhatsApp call to action, 3569 page likes) is unverified. Record it as 'finder claim, not re-checked', not as an observed fact.",
+     "Instagram instagram.com/dr.rikin.shah is published on the contact page. It was not opened and is not a contact route. Do not scrape it.",
+     "To earn B: someone opens the Ad Library entry in a normal browser and confirms an active WhatsApp-click ad and its start date, and shows that the 63598 08381 number reaches the doctor or a clinic desk. Even then the specialty is off the core list, so B is the ceiling without observed evidence of missed enquiries."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Dr. Dhamelia's Skin Laser & Hair Clinic",
+   "first_grade": "C",
+   "skeptic_grade": "reject",
+   "final_grade": "reject",
+   "challenged": true,
+   "downgraded_by_skeptic": true,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "weak",
+   "strongest_objection": "Nobody in this chain has seen the key evidence. The Ad Library (the 30+ day ad start date) returns 403 for the finder, the investigator and me. The Instagram caption with the address and number is read from third-party page metadata and could not be reproduced. The only thing I can confirm is a Facebook page title. Searches on the name, spellings, address and number found no website, Maps, Justdial, Practo or register entry. This is one confirmed title, not two independent sources showing a real doctor-run clinic. Doctor identity, branch count and who owns the number are all unknown, and the need is only inferred. A lead without a verifiable ad start date, an identifiable doctor or a verifiable number cannot be told apart from a namesake or a thin listing.",
+   "review_flag": "",
+   "reason_not_ready": "grade reject",
+   "dossier": {
+    "business": "Dr. Dhamelia's Skin Laser & Hair Clinic",
+    "city": "Ahmedabad (Vastral, east Ahmedabad)",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.facebook.com/119520334474962 (WebFetch): returned only the page title 'Dr. Dhamelia's Skin Laser & Hair Clinic', Ahmedabad. Confirms a Facebook page exists under that name; no category, address, phone, follower count or doctor's full name came back.",
+     "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=119520334474962 (WebFetch): HTTP 403. An Apify web-fetch of the same URL hung for about 90 seconds and returned nothing; I aborted it. I could NOT re-check the finder's claim of 4 active WhatsApp ads, the start dates, or the number in the ad text.",
+     "https://www.instagram.com/reel/DdL4vRJMWur/ (found through Apify rag-web-browser; the Instagram page metadata was read): a post dated 12 Sep 2026 by the account amdavadiichhorii__, which looks like a third-party Ahmedabad local-promotion or influencer page and not the clinic's own account. The caption says 'Book Your Appointment +91 70164 30087, Visit Dr dhamelia's skin laser hair clinic, Opp metro pillar 67, Rabari colony road, near Vastral, Ahmedabad', with #laserhairremoval and #navaratrispecial. It confirms the name, the address, and that the same mobile number appears outside the Ad Library.",
+     "WebSearch (8 queries: clinic name, spelling variants 'Dhameliya' and 'Dhamelia', the phone number, the address, 'Vastral'): found NO website, Google Maps entry, Justdial, Practo, Lybrate or medical-register entry for this clinic. Results listed other Vastral clinics (Shreeji at Metro Pillar 140, Aster, Twacha, Krishna, Pearl), none of them this one.",
+     "Result: 2 sources show the name exists (the Facebook page title and the third-party Instagram promo with an address). Neither is a map, register or own-website entry. Identity rests on thin evidence, so it is verified only weakly."
+    ],
+    "entity_type": "end_business",
+    "official_website": "not found (the finder also listed none)",
+    "what_they_do": "Skin, laser and hair clinic (laser hair removal is promoted). The name suggests a doctor-owner with the surname Dhamelia. Single location near Vastral, Ahmedabad: opposite Metro Pillar 67, Rabari Colony Road (from the Instagram promo of 12 Sep 2026). No second branch seen in any source.",
+    "size_cues": "One address seen and no branch list. No staff, years in practice, review count or rating found. It runs paid Meta ads (per the finder, not re-verified) and its number appears in an influencer page's promo. That points to a small solo or two-person clinic in an eastern suburb. It does not look like a chain or an agency.",
+    "decision_maker": "not found. The page name says 'Dr. Dhamelia', but no public page I could open gives the first name, qualification or registration number.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 70164 30087",
+      "note": "Likely WhatsApp (Indian mobile). It appears in the finder's Ad Library text (not re-verified) and in the 12 Sep 2026 Instagram promo as 'Book Your Appointment'. The Instagram post is by a third-party page, not the clinic's own account. Owner unknown: it could be the doctor's, a counsellor's or a front desk's.",
+      "source_url": "https://www.instagram.com/reel/DdL4vRJMWur/"
+     },
+     {
+      "kind": "facebook",
+      "value": "Facebook page 119520334474962 'Dr. Dhamelia's Skin Laser & Hair Clinic'",
+      "note": "Business page. The Ad Library view returned 403.",
+      "source_url": "https://www.facebook.com/119520334474962"
+     },
+     {
+      "kind": "maps",
+      "value": "Opp Metro Pillar 67, Rabari Colony Road, near Vastral, Ahmedabad (address text only)",
+      "note": "Address from the Instagram caption. No Google Maps entry found.",
+      "source_url": "https://www.instagram.com/reel/DdL4vRJMWur/"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "A Facebook page named 'Dr. Dhamelia's Skin Laser & Hair Clinic' (Ahmedabad) exists under ID 119520334474962; only the title was readable.",
+      "source_url": "https://www.facebook.com/119520334474962",
+      "date": "2026-10-29"
+     },
+     {
+      "fact": "The Instagram account amdavadiichhorii__ (probably a third-party local-promotion page) posted on 12 Sep 2026: 'Dr dhamelia's skin laser hair clinic, Opp metro pillar 67, Rabari colony road, near Vastral, Ahmedabad', booking number +91 70164 30087, Navratri special, laser hair removal. The post had 147 likes and 18 comments.",
+      "source_url": "https://www.instagram.com/reel/DdL4vRJMWur/",
+      "date": "2026-09-12"
+     },
+     {
+      "fact": "The clinic is located in Vastral, east Ahmedabad, which is inside the target geography. Only one address was seen.",
+      "source_url": "https://www.instagram.com/reel/DdL4vRJMWur/",
+      "date": "2026-09-12"
+     },
+     {
+      "fact": "The same mobile number is used in a promotional post outside the Ad Library. That is consistent with the finder's claim that the number is the clinic's booking number.",
+      "source_url": "https://www.instagram.com/reel/DdL4vRJMWur/",
+      "date": "2026-09-12"
+     }
+    ],
+    "hypotheses": [
+     "The finder's claim of 4 active WhatsApp-opening ads (oldest 2026-02-03, newest 2026-10-21) was not re-verified, because the Ad Library returned 403. If true, it is a strong pay signal: about 9 months of ad spend and fresh variants.",
+     "The clinic seems to buy local promotion in several ways (Meta ads, and an influencer page for a festival offer). That suggests it pays for patient acquisition and runs seasonal offers.",
+     "A walk-in-driven, lower-fee laser hair removal clinic in an eastern suburb probably has high enquiry volume on WhatsApp and a lot of no-shows. This is inferred only and is not shown by any source.",
+     "The number may reach a counsellor or front desk instead of the doctor. Influencer promos usually give the clinic's reception or booking line.",
+     "Missed after-hours enquiries and no-shows are unproven for this clinic."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "weak",
+    "ability_to_pay": "Unconfirmed. Observed: a festival promo on an influencer page (Sep 2026) and a booking number printed in it. The finder's 9-month Meta ad run would be a good pay signal, but I could not re-open it. Fees, branch count, review count and staff size are all unknown, so the pay signal stays weak until the ad history is checked. A single-site laser clinic can afford a Rs 15-25k setup in principle, but nothing proves it.",
+    "resistance": "No sign of a booking system, a website or a chatbot, because nothing was found. Possible agency or influencer-page involvement in its marketing. The owner's first name and reachability are unknown. Low-ticket clinics often handle WhatsApp through a counsellor, so the doctor may delegate and not decide.",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "best_channel": "WhatsApp to +91 70164 30087 is the only published route, and it is likely WhatsApp. But I cannot say it reaches the doctor-owner: it is the public booking number, shown in an influencer promo and (per the finder) in ads, so a counsellor or reception may answer. A bot or auto-greeting may also answer. Do not treat it as a decider route until a human confirms who answers. An opt-in route would be to send a click-to-WhatsApp enquiry through the clinic's own ad, but that means contacting them as a pretend patient, which the rules forbid. Email is not available.",
+    "best_angle": "If contacted at all, ask a question: 'Who answers the WhatsApp number on your laser hair removal ads when the clinic is closed?' Do not claim lost patients. Ask first to be put in touch with Dr. Dhamelia. Do not contact until the ad history and who owns the number are checked.",
+    "grade": "C",
+    "case_for": "In the target geography (Ahmedabad). Doctor-named single-site clinic, not a chain or agency as far as the sources show. Per the finder, it ran WhatsApp-opening ads for about 9 months with new variants as recently as 21 Oct. The same number appears in a 12 Sep 2026 festival promo, so it is an actively marketed booking line.",
+    "case_against": "Identity is thin: the only sources are a Facebook page title and a third-party Instagram post. There is no website, Maps entry, directory or register entry, and no doctor's first name or registration number. The ad evidence could not be re-verified (403). The number cannot be tied to the doctor-owner, so owner_direct_contact is 'unknown'. The need is only inferred. The clinic seems to be a low-ticket laser-hair-removal operation, which makes the budget uncertain, and its marketing may be run by an outside party. It meets the 'two independent sources' bar only barely, so it should not go ahead before a manual check of the Ad Library and Google Maps by a person with a normal browser.",
+    "gaps": [
+     "Ad Library page not readable (403), so the active ads, start dates (2026-02-03, 2026-02-09, 2026-10-21) and the number in the ad text are unverified.",
+     "No Google Maps or Justdial entry found, so the address, hours, reviews and branch count are unknown.",
+     "The doctor's first name, qualification and registration number are unknown (could be checked in the Gujarat Medical Council register).",
+     "Unknown whether +91 70164 30087 reaches the doctor, a counsellor or a bot.",
+     "No evidence of a current booking tool or a WhatsApp auto-reply.",
+     "Whether the Instagram promo was paid for by the clinic or posted by the page itself is unknown."
+    ]
+   },
+   "challenge": {
+    "business": "Dr. Dhamelia's Skin Laser & Hair Clinic, Vastral, Ahmedabad",
+    "agree_with_grade": false,
+    "final_grade": "reject",
+    "checks": [
+     {
+      "claim": "A Facebook page named \"Dr. Dhamelia's Skin Laser & Hair Clinic\" (ID 119520334474962) exists",
+      "verdict": "confirmed",
+      "note": "WebFetch returned only the page title \"Dr. Dhamelia's Skin Laser & Hair Clinic | Ahmedabad\". There is no address, phone, category, doctor name or follower count. This shows a page exists and nothing else."
+     },
+     {
+      "claim": "The business exists as described, shown by two independent public sources",
+      "verdict": "unsupported",
+      "note": "The only source I could re-open is the Facebook page title. I could not read the Instagram reel; WebFetch returned an empty shell. A search on the clinic name and spelling variants found no website, Maps, Justdial, Practo or register entry. A search on the phone number found nothing. That leaves one thin source I can verify, so the \"two independent sources\" bar is not met."
+     },
+     {
+      "claim": "The Instagram reel of 12 Sep 2026 gives the name, the address near Metro Pillar 67 / Rabari Colony Road, and the number +91 70164 30087",
+      "verdict": "unsupported",
+      "note": "I could not reproduce this. The investigator says it saw the reel only through Apify page metadata. The account (amdavadiichhorii__) is a third party, not the clinic. Even if the caption is read correctly, a promo from an outside page proves only that a name and number were posted, not that the clinic is real and run by a doctor."
+     },
+     {
+      "claim": "Four active WhatsApp-opening ads exist, the oldest started 2026-02-03 (about 268 days), and the newest started 2026-10-21",
+      "verdict": "unsupported",
+      "note": "The Ad Library URL returns 403 for me and for the investigator. The finder's own note says the Ad Library page was not opened. No one in this chain has seen the ads. The ad start date is the main evidence the brief asks for, and it is unverified."
+     },
+     {
+      "claim": "The number +91 70164 30087 comes from the ad text and is the clinic's WhatsApp booking number",
+      "verdict": "unsupported",
+      "note": "No readable source I can open shows this number. The investigator also noted it could belong to a counsellor, a desk or a bot. \"Likely WhatsApp\" is acceptable wording only as a guess."
+     },
+     {
+      "claim": "The clinic is a doctor-owned, independent, single-site practice (not a chain or an agency)",
+      "verdict": "unsupported",
+      "note": "The name suggests a doctor-owner. Branch count, the doctor's first name and registration are unknown. The investigator's \"single location\" rests on one third-party caption. Absence of other branches in the sources is not evidence that none exist."
+     },
+     {
+      "claim": "The need is observed (the clinic pays for ads and the enquiries go unanswered)",
+      "verdict": "refuted",
+      "note": "The investigator rightly marked need_evidence \"inferred\". Nothing about missed enquiries or no-shows is observed. The only pay-related signal, the ad history, is unverified. Only the ad claim could count as an observed signal, and it cannot be reproduced."
+     },
+     {
+      "claim": "Pay signal is weak but real, since the clinic does influencer promos and Meta ads",
+      "verdict": "corrected",
+      "note": "There is no verified pay signal. An influencer promo is a third-party post that may be unpaid or placed by someone else. Pay signal should be \"unknown\", not \"weak\"."
+     },
+     {
+      "claim": "Grade C (a real business with weak fit or weak evidence)",
+      "verdict": "corrected",
+      "note": "The reject rule applies: the business is unverifiable with the evidence available. The investigator's own case_against says so (thin identity, no register, no Maps). Grade C implies a real business, and that is not shown."
+     }
+    ],
+    "strongest_objection": "Nobody in this chain has seen the key evidence. The Ad Library (the 30+ day ad start date) returns 403 for the finder, the investigator and me. The Instagram caption with the address and number is read from third-party page metadata and could not be reproduced. The only thing I can confirm is a Facebook page title. Searches on the name, spellings, address and number found no website, Maps, Justdial, Practo or register entry. This is one confirmed title, not two independent sources showing a real doctor-run clinic. Doctor identity, branch count and who owns the number are all unknown, and the need is only inferred. A lead without a verifiable ad start date, an identifiable doctor or a verifiable number cannot be told apart from a namesake or a thin listing.",
+    "corrections": [
+     "Grade changed from C to reject, reason \"unverifiable\". Only one source (the Facebook page title) is reproducible; the Instagram caption and the Ad Library data are not.",
+     "The ad-count and start-date claims (4 ads, 2026-02-03, 2026-02-09, 2026-10-21) must be treated as unverified hypotheses, not observed facts. The finder says the Ad Library page was not opened.",
+     "The phone number's association with the clinic is unconfirmed. No readable page I could open shows it. Keep it labelled \"likely WhatsApp\" at most, owner unknown.",
+     "ability_to_pay should be \"unknown\", not \"weak\". An influencer promo is not proof of the clinic paying for anything.",
+     "What would earn a higher grade: a person with a normal browser opens the Ad Library for page 119520334474962 and records each ad's start date and click-to-WhatsApp format. The same person finds a Google Maps or Justdial listing (or a Gujarat Medical Council entry) with the same address and a doctor's first name. Then the lead can go to C, and to B if the ad is 30+ days old and the number looks like a doctor's mobile. The need stays inferred, so A is out of reach without further evidence.",
+     "Do not contact this lead until the manual check above is done. The check should be done by a person, not the pipeline."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "RQC Hair Transplant & Skin Clinic (Dr. Vivek Galani)",
+   "first_grade": "reject",
+   "skeptic_grade": null,
+   "final_grade": "reject",
+   "challenged": false,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "none",
+   "pay_signal": "strong",
+   "strongest_objection": "",
+   "review_flag": "",
+   "reason_not_ready": "Fails the campaign's chain rule (skip 2+ cities). The clinic's own website lists a Surat main clinic AND an Ahmedabad (Naroda) branch, each with its own phone number. A third Surat branch on another domain is unverified. There is also no proven doctor-direct number, and the finder's ad evidence could not be re-verified (Ad Library returned 403). Hair transplant is also a counsellor-led, long-consult sale, a weaker fit than dentist, skin or physio.",
+   "dossier": {
+    "business": "RQC Hair Transplant & Skin Clinic (Dr. Vivek Galani)",
+    "city": "Surat (main); Ahmedabad (second branch per own website)",
+    "official_website": "https://www.rqchairtransplant.com/",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.rqchairtransplant.com/ - clinic's own site: Dr. Vivek Galani founder and chief hair transplant surgeon (dermatologist, Terna Medical College, IADVL member); lists TWO branches: Surat (515 Infinity Tower, Varachha, 395003, +91 63557 57588) and Ahmedabad (432 Haridarshan Cross Road, Avani Icon, opp. Shelby Hospital, Naroda, +91 63557 48400); email rqchairtransplant@gmail.com; claims 10,000+ patients, 10+ years; no WhatsApp number, no chatbot; 'Get Priority Appointment' and 'Get Free Analysis' forms (24-hour response promised).",
+     "https://www.rqchairtransplant.com/contact-us - same Surat address and +91 63557 57588, hours Mon-Sat 9:30-7:30, Facebook/Instagram/YouTube/Twitter links, only a Name/Email/Mobile contact form, no WhatsApp listed. Fetch summary also noted an Ahmedabad branch in the navigation.",
+     "https://threebestrated.in/hair-transplant-surgeons-in-surat-gj - independent directory listing: same Surat address, phone 63557 57588, email, listed since 2015, Mon-Sat 9:30-7, hair transplant from Rs 50,000, consultation fee Rs 1,200, 4.9 TBR score; no branches mentioned. This is the second independent source confirming the business exists.",
+     "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=380127752524951 - finder's evidence URL; WebFetch returned HTTP 403, so I could NOT re-check the 4 ads or the 2026-04-08 start date.",
+     "https://www.facebook.com/RQCHairTransplant - fetch returned only the title 'RQC Hair Transplant | Surat'; nothing more usable.",
+     "https://www.beautynailhairsalons.com/IN/Surat/380127752524951/RQC-Hair-Transplant - HTTP 403; the search snippet only confirms the page id 380127752524951 maps to the name RQC Hair Transplant (Surat).",
+     "https://www.secondmedic.com/app/doctors-listing/dr-vivek-galanis-rqc-hair-transplant-skin-clinic - fetched page showed only SecondMedic's own number (+91 8447748545); nothing about RQC, so that is a portal number and not the clinic's.",
+     "Web searches also surfaced a second domain, drgalanishairtransplant.com, with a separate email, number +91 6355748400 and a Sarthana/Varachha Road Surat branch. The domain did not resolve when I fetched it (ENOTFOUND), so this is unverified and only a search snippet."
+    ],
+    "entity_type": "chain",
+    "what_they_do": "Doctor-founded hair transplant (FUE) and hair loss / skin clinic. Services: hair transplant, beard and eyebrow transplant, PRP, medical hair treatment, scalp micropigmentation. High-ticket (from Rs 50,000). Attracts patients from other Gujarat cities, other states and abroad, with video consults offered.",
+    "size_cues": "Own site claims 10,000+ patients, 1,500+ five-star reviews, 10+ years of clinical experience, and a clinic listed since 2015. The site names only one doctor and gives no staff count. It lists two branches in two cities (Surat and Ahmedabad). A possible third Surat location is unverified. It has a YouTube channel with patient journeys, and a Facebook page with about 12,120 likes per the finder.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 63557 57588",
+      "note": "Surat branch, published on the clinic's own site. Likely WhatsApp-capable Indian mobile, not confirmed. Unknown whether it reaches Dr. Galani or a front desk or counsellor.",
+      "source_url": "https://www.rqchairtransplant.com/contact-us"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 63557 48400",
+      "note": "Ahmedabad (Naroda) branch number on the home page. Likely WhatsApp, not confirmed.",
+      "source_url": "https://www.rqchairtransplant.com/"
+     },
+     {
+      "kind": "email",
+      "value": "rqchairtransplant@gmail.com",
+      "note": "Published email. Email is not a valid first-touch channel for this campaign.",
+      "source_url": "https://www.rqchairtransplant.com/contact-us"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.rqchairtransplant.com/",
+      "note": "Official site",
+      "source_url": "https://www.rqchairtransplant.com/"
+     },
+     {
+      "kind": "facebook",
+      "value": "https://www.facebook.com/RQCHairTransplant",
+      "note": "Business page link from the site",
+      "source_url": "https://www.rqchairtransplant.com/contact-us"
+     },
+     {
+      "kind": "instagram",
+      "value": "https://instagram.com/rqchairtransplant",
+      "note": "Business page link from the site",
+      "source_url": "https://www.rqchairtransplant.com/contact-us"
+     }
+    ],
+    "decision_maker": "Dr. Vivek Galani, founder and chief hair transplant surgeon, named on the clinic's own site and the Three Best Rated listing: https://www.rqchairtransplant.com/ and https://threebestrated.in/hair-transplant-surgeons-in-surat-gj",
+    "observed_facts": [
+     {
+      "fact": "The clinic's own website lists two branches in two cities, Surat (Varachha) and Ahmedabad (Naroda).",
+      "source_url": "https://www.rqchairtransplant.com/",
+      "date": "2026-10-29 (page as fetched)"
+     },
+     {
+      "fact": "Surat address is 515 Infinity Tower, Varachha, with phone +91 63557 57588. The Ahmedabad branch number is +91 63557 48400. No WhatsApp number is published and no chatbot is visible.",
+      "source_url": "https://www.rqchairtransplant.com/contact-us",
+      "date": "2026-10-29 (page as fetched)"
+     },
+     {
+      "fact": "An independent directory lists the Surat clinic as operating since 2015, with the same phone and address, a hair transplant price from Rs 50,000 and a consultation fee of Rs 1,200.",
+      "source_url": "https://threebestrated.in/hair-transplant-surgeons-in-surat-gj",
+      "date": "2026-10-29 (page as fetched)"
+     },
+     {
+      "fact": "The site has a 'Get Priority Appointment' button and a 'Get Free Analysis' form promising a response within 24 hours. Only a Name/Email/Mobile form is visible, with no slot picker or WhatsApp booking.",
+      "source_url": "https://www.rqchairtransplant.com/",
+      "date": "2026-10-29 (page as fetched)"
+     },
+     {
+      "fact": "The finder's claim of 4 active WhatsApp ads (oldest started 2026-04-08) is NOT re-verified. The Ad Library fetch returned HTTP 403.",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=380127752524951",
+      "date": "2026-04-08 (finder's claim, unverified)"
+     }
+    ],
+    "hypotheses": [
+     "The clinic probably runs click-to-WhatsApp ads (finder's claim, not re-checked by me); if so it pays for enquiries.",
+     "With two branches, high-ticket procedures and a 24-hour form follow-up promise, some enquiries may go unanswered after hours. This is unproven.",
+     "A hair transplant sale is a long counsellor-led consultation. A slot-and-reminder desk may suit it less than a dentist's repeat-visit flow.",
+     "The listed phone is probably answered by counsellors or a front desk, since the clinic claims 10,000+ patients across two branches, so an owner-direct route is unlikely."
+    ],
+    "need_evidence": "none",
+    "pay_signal": "strong",
+    "ability_to_pay": "Strong signals: Rs 50,000+ procedures, a claimed 10,000+ patients, two branches, a YouTube channel and a Facebook following of about 12,000, and (per the finder) several Meta ads running for 6+ months. The ad spend is unverified because the Ad Library fetch failed.",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "Larger operation with a probable counsellor team and a polished site, so it may have a CRM or call desk (unverified). It already has appointment and free-analysis forms. It positions as a national and international hair restoration brand. The listed number is most likely a front desk or counsellor line, not the doctor.",
+    "best_angle": "Not recommended for this campaign. If ever reopened, the angle would be the question 'who answers the clinic's WhatsApp number when the clinic is closed?', sent by a human on WhatsApp.",
+    "best_channel": "None recommended. If reopened: WhatsApp or a call from a human to +91 63557 57588 (Surat), described as likely WhatsApp but unconfirmed. It is unknown whether this reaches Dr. Galani, so do not treat it as owner-direct. Email is not a way in.",
+    "grade": "reject",
+    "reject_reason": "Fails the campaign's chain rule (skip 2+ cities). The clinic's own website lists a Surat main clinic AND an Ahmedabad (Naroda) branch, each with its own phone number. A third Surat branch on another domain is unverified. There is also no proven doctor-direct number, and the finder's ad evidence could not be re-verified (Ad Library returned 403). Hair transplant is also a counsellor-led, long-consult sale, a weaker fit than dentist, skin or physio.",
+    "case_for": "The business is real (two independent sources) and the doctor is named on its own site. It is high-ticket (Rs 50,000+), has a large claimed patient base and social following, and per the finder runs several WhatsApp-opening ads for 6+ months. The site has no WhatsApp number, no chatbot and no slot booking, so the gap is visible.",
+    "case_against": "Two cities means it is outside the campaign's independent-clinic profile. The ad evidence is unverified, the need is only inferred and the owner-direct number is unknown. The clinic looks big enough to have a counsellor or call team, and the best-fit workflow (appointment slot plus reminder) is weaker for a long counsellor-led hair transplant sale.",
+    "gaps": [
+     "Could not open the Meta Ad Library (HTTP 403), so the 4 active ads, the 2026-04-08 start date and the ad text/number are unverified.",
+     "Google Maps and Justdial listings were not reached, so the branch count is not confirmed from a map source.",
+     "The extra Sarthana/Varachha Road branch on drgalanishairtransplant.com is unverified, as the domain did not resolve.",
+     "Who answers +91 63557 57588 is unknown, and its WhatsApp status is unconfirmed.",
+     "The Facebook page content could not be read, so the follower count (12,120) and whether the page is agency-run are unchecked."
+    ]
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "ADIVA Center for Skin and Hair (Dr. Harshit Ranpara)",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": true,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "Nothing in the evidence shows this clinic has the problem the campaign sells a fix for. The only need signal is a review nobody has been able to read. If it exists as described, it is a complaint about phones and capacity at a clinic that says it is fully booked, not a missed WhatsApp enquiry. There is no sign of paid Meta ads, so the campaign's 'pays for enquiries' premise is untested. Owner-direct reach is also unproven: the published WhatsApp number sits behind 'our team', and the doctor's own mobile appears only on a third-party listing. B requires strong pay and reach with an inferred need. Pay is soft and reach is partly guessed. That makes this a real but weakly evidenced business, which is a C.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "ADIVA Center for Skin and Hair (Dr. Harshit Ranpara)",
+    "city": "Rajkot",
+    "official_website": "https://adivaclinic.com/",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://adivaclinic.com/ (opened) - official site: Adiva Center for Skin & Hair, Dr. Harshit Ranpara named as the doctor leading the team, single address Mediplex 1st Floor, 4-Manhar Plot Corner, Vidyanagar Main Road, Rajkot 360002, phone and WhatsApp +91 8160728372, email drhdranpara@gmail.com, hours Mon-Fri 10-1 and 5-8, Sat 10-1, Sunday closed, claims 25-27+ years and 34,000+ clients",
+     "https://adivaclinic.com/book-appointment/ (opened) - web form (name, mobile, treatment, preferred date/time), 'our team will contact you shortly to confirm'; no live slot picker or chatbot or WhatsApp widget seen; only one number and one location; Bhakti Nagar not mentioned",
+     "https://ishrs.org/doctor/629525 (opened) - independent society listing: Harshit Ranpara MD at Adiva Center For Skin & Hair, Mediplex, same address, phone +91 99257 73435, website fuehairtransplant.in",
+     "https://threebestrated.in/dermatologist-doctors-in-rajkot-gj (opened) - directory: same address, phones 81607 28372 and 96245 59193, same hours, 4.9 score, no other branches",
+     "https://www.hexahealth.com/rajkot/doctor/dr-harshit-ranpara-dermatologist (opened) - aggregator lists the clinic as 'Bhakti Nagar', one location only, 4.2/5 from 98 ratings, no text reviews; its phone numbers are HexaHealth's own helpline, not the clinic's; explains the finder's 'Bhakti Nagar' note (an area label for the same Mediplex address, not a second branch)",
+     "https://www.facebook.com/adivacenterforskinandhair (opened) - only the page title 'ADIVA - Centre for Skin and Hair | Rajkot' came back; page content not readable",
+     "Google review URL from the finder (opened) - returned only a 'Google Maps' heading, review text NOT readable, so the 2026-09-18 1-star review and the clinic's reply are NOT verified by me",
+     "https://www.facebook.com/ads/library/ (opened) - HTTP 403, could not check Meta ads directly",
+     "Apify automation-lab/facebook-ads-library for the clinic's Facebook page URL, country IN, all statuses, max 10 ads (about US$0.005) - returned 0 ads; inconclusive (could mean no ads or that the scraper could not resolve the page), not evidence that no ads run",
+     "WebSearch x3 (Dr Ranpara + Adiva Rajkot; Maps/phone; fuehairtransplant.in) - confirmed only directory/aggregator pages (threebestrated, hexahealth, lybrate, docindia); no chain, franchise or second branch; no Google Maps rating or review text surfaced"
+    ],
+    "entity_type": "end_business",
+    "what_they_do": "Single-location, dermatologist-led skin and hair clinic in Rajkot (Vidyanagar Main Road, Mediplex building). Focus on hair restoration and hair transplant (FUT/FUE, ABHRS diplomate, ISHRS member) plus skin treatments, lasers, PRP, acne scar care and hair removal. Dr. Harshit Ranpara, MD, DVD (Dermatology) leads it and appears to be the founder.",
+    "size_cues": "One address only. Self-claimed 25-27+ years, 34,000+ clients, 52+ treatments; the doctor's years/transplant counts vary across directories (28-32 years; 4,000-6,000 transplants), so treat as marketing. No other doctors or staff named on the site; the booking page says 'our team' will call, so some desk staff exist but their number is unknown. Aggregator shows 98 ratings at 4.2 (HexaHealth) and a 4.9 score (threebestrated), unreliable. Consultation fee Rs 800 (Lybrate). Not a chain or franchise.",
+    "decision_maker": "Dr. Harshit Ranpara, dermatologist, leads the clinic and is named on https://adivaclinic.com/ and https://ishrs.org/doctor/629525. Whether he is the owner is not stated outright, but the site email is drhdranpara@gmail.com and the Instagram handle is dr_harshit_ranpara, which makes it likely that he is the owner.",
+    "contacts": [
+     {
+      "kind": "whatsapp",
+      "value": "+91 8160728372",
+      "note": "Published on the clinic site as phone and as the WhatsApp (wa.me/918160728372) link for online consultation; Indian mobile, likely WhatsApp. Unknown whether the doctor or a desk person reads it.",
+      "source_url": "https://adivaclinic.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 8160728372",
+      "note": "Same number as above",
+      "source_url": "https://adivaclinic.com/"
+     },
+     {
+      "kind": "email",
+      "value": "drhdranpara@gmail.com",
+      "note": "Published on clinic site. Gmail address in the doctor's initials. Email is not a valid way in for this campaign.",
+      "source_url": "https://adivaclinic.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 99257 73435",
+      "note": "Listed against Dr. Ranpara's hair transplant profile (ISHRS); Indian mobile; possibly the doctor's hair transplant line. Was the ISHRS member's own entry, but not published on the clinic site. Unproven who answers.",
+      "source_url": "https://ishrs.org/doctor/629525"
+     },
+     {
+      "kind": "phone",
+      "value": "96245 59193",
+      "note": "Second number in a third-party directory only (threebestrated). Not on the clinic site; weak source.",
+      "source_url": "https://threebestrated.in/dermatologist-doctors-in-rajkot-gj"
+     },
+     {
+      "kind": "form",
+      "value": "https://adivaclinic.com/book-appointment/",
+      "note": "Web booking-request form; the clinic calls back to confirm. Do not submit.",
+      "source_url": "https://adivaclinic.com/book-appointment/"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.fuehairtransplant.in",
+      "note": "Doctor's hair transplant site per ISHRS; not opened by me.",
+      "source_url": "https://ishrs.org/doctor/629525"
+     },
+     {
+      "kind": "facebook",
+      "value": "https://www.facebook.com/adivacenterforskinandhair",
+      "note": "Linked from clinic site; content not readable by me",
+      "source_url": "https://adivaclinic.com/"
+     },
+     {
+      "kind": "instagram",
+      "value": "https://www.instagram.com/dr_harshit_ranpara",
+      "note": "Linked from clinic site; not opened (no personal profile scraping)",
+      "source_url": "https://adivaclinic.com/"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Single-location dermatologist-led skin and hair clinic at Mediplex, Vidyanagar Main Road, Rajkot; Dr. Harshit Ranpara named as lead doctor; no branches listed on any source I opened.",
+      "source_url": "https://adivaclinic.com/",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "The clinic publishes +91 8160728372 as phone and as its WhatsApp number for online consultation.",
+      "source_url": "https://adivaclinic.com/",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "The clinic's listed hours are Mon-Fri 10-1 and 5-8, Sat 10-1, Sunday closed, so it is closed every afternoon gap, evenings after 8, and all of Sunday.",
+      "source_url": "https://adivaclinic.com/",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "The online booking is a request form only (name, mobile, preferred date/time); the clinic phones back to confirm. No self-serve slot choice, no reminder mention, no chatbot or WhatsApp widget seen.",
+      "source_url": "https://adivaclinic.com/book-appointment/",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "ISHRS independent listing matches the same clinic name and address and shows a different mobile, +91 99257 73435.",
+      "source_url": "https://ishrs.org/doctor/629525",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "Aggregator rating: 4.2/5 from 98 ratings, 'No text reviews yet' (HexaHealth); 4.9 score (threebestrated). Self-reported on the clinic site: 34,000+ clients.",
+      "source_url": "https://www.hexahealth.com/rajkot/doctor/dr-harshit-ranpara-dermatologist",
+      "date": "2026-10-29 (fetched)"
+     },
+     {
+      "fact": "The clinic's own homepage and the book-appointment page do not mention Meta/WhatsApp advertising; I could not check the Ad Library (403) and an Apify page-URL ad scrape returned 0 ads (inconclusive).",
+      "source_url": "https://www.facebook.com/ads/library/",
+      "date": "2026-10-29"
+     }
+    ],
+    "hypotheses": [
+     "The finder's 2026-09-18 1-star Google review (phone on hold, advance booking impossible, 'fully booked' on the day, clinic reply admitting unclear communication and high demand) could NOT be opened by me, so it is a finder claim, not a verified fact. If true, it shows a phone and booking bottleneck at a busy clinic, not a WhatsApp one.",
+     "A clinic that is 'fully booked' with high demand may not feel an enquiry shortfall; the pain may be call-handling capacity, which a WhatsApp desk with self-pick slots can ease, but they may prefer more capacity, not automation.",
+     "The listed 8160728372 may be answered by a front-desk person ('our team will contact you') and not the doctor; the doctor-direct route is unproven, and the doctor's other number 99257 73435 might be a better personal line but is not published by the clinic itself.",
+     "Closed Sundays, midday and evenings after 8 PM means WhatsApp enquiries probably arrive when nobody can reply; this is inference from hours, not observed data.",
+     "The clinic may run click-to-WhatsApp ads (the finder gave no cross-check, my check was inconclusive); not established.",
+     "The hair-transplant focus means high ticket treatments, so a missed or slow enquiry could be worth a lot, but this is inference."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "ability_to_pay": "Plausibly good: a 25+ year dermatologist-led practice with a hair transplant and laser focus (high-value procedures), Rs 800 consultation fee, a rented first-floor clinic in a Mediplex medical building, claims 34,000+ clients, a dedicated site with a booking page, a YouTube channel. No hard revenue or ad-spend proof; Meta ad presence not confirmed. Likely able to pay Rs 15-25k + 5k a month if the doctor sees value.",
+    "reachability": "business_contact",
+    "owner_direct_contact": "probably",
+    "resistance": "Medium. The clinic reportedly feels 'high demand' (could mean no urgency to add capacity). It already has a site booking form with call-back and some desk staff of unknown size. Doctor is busy in clinic hours (10-1, 5-8) so the best time to message is outside them. No sign of an existing WhatsApp automation or booking tool. A hair transplant doctor may be wary of strangers and the 1-star review's phone problem is something the clinic has already acknowledged, so a first touch must not mention it. Not on the duplicates list.",
+    "grade": "B",
+    "case_for": "Real, verified, single-location, doctor-led clinic (site + ISHRS + directories agree) that is not a chain. Doctor is named, the clinic publishes a WhatsApp mobile number, and it has a clear high-ticket service line, which suggests ability to pay. Opening hours leave long gaps (closed 1-5 PM, after 8 PM and Sundays) and the booking is a request-then-call-back form, which is exactly the gap a WhatsApp patient desk fills. The finder's review (if genuine) points to phone and booking strain.",
+    "case_against": "The need is not observed by me: the Google review could not be opened, it is a phone complaint, and the clinic says it is fully booked, so lost enquiries are unproven. No evidence of Meta click-to-WhatsApp ads (check inconclusive), so it does not meet the 'best leads' ad test. Which person answers 8160728372 is unknown; the booking page says 'our team'. Hair-transplant is a more surgical specialty than the campaign's core dentist/skin/physio set, and the doctor's own numbers disagree across sources (two mobiles plus a third in a directory).",
+    "best_angle": "A short question, not a claim: 'Dr. Ranpara, when the clinic is closed or in a break, who replies if a patient messages your WhatsApp number?' Never mention the Google review, the phone wait times or lost patients. Offer to show a short WhatsApp desk where the patient picks a slot and gets one reminder.",
+    "best_channel": "WhatsApp (or a short voice note) from a human to +91 8160728372, the number the clinic itself publishes as its WhatsApp, at a time outside 10-1 and 5-8 (e.g. around 8:30-9 PM, not Sunday). It 'probably' reaches the doctor-led practice, but this is not proven; it may land with desk staff, so the message is addressed to Dr. Ranpara and asks to be passed on. If there is no reply, a human call to the same number during a break (around 1:15-4:30 PM) is the fallback. Do not use email (drhdranpara@gmail.com) or the web form. Do not use the ISHRS number 99257 73435 unless the owner approves, since the clinic itself has not published it.",
+    "gaps": [
+     "Google review dated 2026-09-18 not verified (page would not open); clinic reply and wording unseen",
+     "Meta Ad Library status unknown: 403 on direct fetch, Apify scrape returned 0 ads for the page URL (inconclusive); no ad start date, so the '30+ day WhatsApp ad' test is not met or failed",
+     "Who answers 8160728372 (doctor, receptionist, or both) is unknown",
+     "Whether Dr. Ranpara is the owner or just the lead doctor is not stated outright",
+     "Facebook and Instagram content, Google Maps listing, rating and review count could not be read",
+     "fuehairtransplant.in not opened (separate hair transplant site, may carry another WhatsApp number or booking tool)",
+     "Size of the desk team and any existing booking or CRM software not known"
+    ]
+   },
+   "challenge": {
+    "business": "ADIVA Center for Skin and Hair (Dr. Harshit Ranpara), Rajkot",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "The business exists as described: a single-location, doctor-led skin and hair clinic in Rajkot (Mediplex, Vidyanagar Main Road)",
+      "verdict": "confirmed",
+      "note": "I re-fetched adivaclinic.com. It shows the same address, one location, no branches, and Dr. Harshit Ranpara. The ISHRS page (ishrs.org/doctor/629525) gives the same clinic name and address independently. Two independent sources agree. The 'Bhakti Nagar' label comes from directories, not from the clinic. It is not a chain, agency or vendor."
+     },
+     {
+      "claim": "The clinic publishes +91 8160728372 as its phone and WhatsApp number",
+      "verdict": "confirmed",
+      "note": "adivaclinic.com lists the call number +91 8160728372 and an 'Online Consultation' link to wa.me/918160728372. It is likely WhatsApp. Who reads it is unknown."
+     },
+     {
+      "claim": "Hours are Mon-Fri 10-1 and 5-8, Sat 10-1, Sunday closed",
+      "verdict": "confirmed",
+      "note": "Matches the fetched homepage exactly. The gaps are observed. That patients message during those gaps and go unanswered is inference."
+     },
+     {
+      "claim": "The 2026-09-18 1-star Google review (phone on hold, advance booking impossible, 'fully booked', clinic reply admitting unclear communication) is a source of need",
+      "verdict": "unsupported",
+      "note": "I opened the finder's Google review URL and got only the 'Google Maps' heading, with no review text. The investigator had the same result. The review is not verified by anyone in this chain. Even if it is genuine, it is a phone-hold and capacity complaint, and a clinic that is 'fully booked' does not clearly have an enquiry-answering gap."
+     },
+     {
+      "claim": "The need is 'inferred' (not observed)",
+      "verdict": "confirmed",
+      "note": "The investigator labelled it correctly. Nothing I could open shows an unanswered WhatsApp enquiry, a no-show problem, or paid click-to-WhatsApp ads. The need rests on an unreadable review plus opening hours."
+     },
+     {
+      "claim": "Pay signal is 'strong'",
+      "verdict": "corrected",
+      "note": "This is overstated. The evidence is soft: a Rs 800 consultation fee from Lybrate, a rented first-floor clinic, and self-claimed '34,000+ clients' and '25+ years', which the investigator already found inconsistent across directories (28-32 years, 4,000-6,000 transplants). The 4.2 and 4.9 ratings are unreliable aggregator scores. There is no hard spend signal such as a verified Meta ad or a paid tool. I would call it 'plausible/moderate'."
+     },
+     {
+      "claim": "Owner_direct_contact is 'probably' (Dr. Ranpara is probably the owner and the number probably reaches him)",
+      "verdict": "unsupported",
+      "note": "The site never says he is the owner. It describes the head dermatologist only as 'one of Gujarat's most well-known dermatologists' and refers to a 'team'. The 'probably' rests on the Gmail initials (drhdranpara@gmail.com) and an Instagram handle. The booking page says 'our team will contact you' and the doctor's ISHRS page lists a different mobile (99257 73435). So 8160728372 is likely a desk or shared line. The campaign rule says 'probably' needs the ad, Maps listing or Facebook page to name the doctor and the number to be a mobile. The number is a mobile, but I could not read the Maps or Facebook page, so this fits only weakly."
+     },
+     {
+      "claim": "Meta click-to-WhatsApp ad running 30+ days (the 'best leads' test)",
+      "verdict": "not_checked",
+      "note": "The Ad Library is not reachable (403 for the investigator) and the Apify scrape returned 0 ads, which is inconclusive. No ad start date is recorded. The lead does NOT meet the campaign's best-lead criterion and nothing shows it pays Meta for enquiries."
+     },
+     {
+      "claim": "No existing solution (no chatbot or booking tool)",
+      "verdict": "corrected",
+      "note": "The site has a booking request form with callback, plus a WhatsApp consultation link, so some booking channel exists. I saw no automation or slot picker on the homepage, but I did not open the book-appointment page again or check the fuehairtransplant.in site. That site would not load for me (SSL error), so it stays unchecked."
+     },
+     {
+      "claim": "Specialty fit with the campaign",
+      "verdict": "corrected",
+      "note": "The clinic's emphasis is hair transplant (ABHRS, ISHRS, FUE). That is a surgical, high-ticket, consultation-led niche, and it is only partly the dentist/skin/physio profile. The investigator mentions this under case_against, but the grade does not reflect it."
+     },
+     {
+      "claim": "Not a duplicate of the leads list",
+      "verdict": "confirmed",
+      "note": "ADIVA is not on the duplicate list."
+     }
+    ],
+    "strongest_objection": "Nothing in the evidence shows this clinic has the problem the campaign sells a fix for. The only need signal is a review nobody has been able to read. If it exists as described, it is a complaint about phones and capacity at a clinic that says it is fully booked, not a missed WhatsApp enquiry. There is no sign of paid Meta ads, so the campaign's 'pays for enquiries' premise is untested. Owner-direct reach is also unproven: the published WhatsApp number sits behind 'our team', and the doctor's own mobile appears only on a third-party listing. B requires strong pay and reach with an inferred need. Pay is soft and reach is partly guessed. That makes this a real but weakly evidenced business, which is a C.",
+    "corrections": [
+     "Downgrade B to C. Pay is soft (self-claims and a Rs 800 fee, no ad or spend evidence), reach to the decision-maker is unproven, and the need is inferred from a review that was never read.",
+     "Pay signal 'strong' should read 'plausible/moderate'. The 34,000-client and years-of-experience claims are marketing and conflict across directories.",
+     "owner_direct_contact 'probably' should be 'unknown'. The site does not say Dr. Ranpara is the owner, and the published number is answered by 'our team'. The Gmail initials and Instagram handle are not proof.",
+     "The 2026-09-18 review must be recorded as UNVERIFIED (the page returns no text) and kept out of observed_facts. It is a finder claim only.",
+     "Record that the 'Meta ad running 30+ days' test is not met or unknown (no ad start date). This lead cannot be a best-lead.",
+     "Note that fuehairtransplant.in could not be opened (SSL error) and the book-appointment page was not re-checked, so 'no existing solution' is only partly checked.",
+     "To earn B: verify a click-to-WhatsApp ad with a start date, or read the Maps review text and confirm it. To earn A: also show the doctor is the owner and reads the published WhatsApp number (for example the doctor named on the Maps or Facebook page with that mobile)."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Narayan Skin Clinic (Dr. Ketan Kacha), Rajkot",
+   "first_grade": "reject",
+   "skeptic_grade": null,
+   "final_grade": "reject",
+   "challenged": false,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "none",
+   "pay_signal": "weak",
+   "strongest_objection": "",
+   "review_flag": "",
+   "reason_not_ready": "unverifiable. The business as described (a doctor-owned skin clinic running a WhatsApp ad) is not corroborated by two independent public sources. The Ad Library page could not be opened (HTTP 403, Apify timeout). The only third-party listing (Drlogy, a single aggregator) shows a Rs 100 homeopathic general physician with no skin services and no phone number. The Facebook page confirms only a name. The link between the Facebook page, the ad, the doctor and the mobile number rests only on the finder's claim. Could be re-opened as grade C if someone views the Ad Library page by hand and confirms the ad text, start date and that the number matches.",
+   "dossier": {
+    "business": "Narayan Skin Clinic (Dr. Ketan Kacha), Rajkot",
+    "city": "Rajkot",
+    "identity_verified": false,
+    "verification_trail": [
+     "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=436774416185247 - WebFetch returned HTTP 403; apify/web-fetch timed out after 120s (JS-rendered page). Finder's evidence (ad, start date 2026-06-15, doctor name, mobile 98240 75921) could NOT be re-checked.",
+     "https://www.facebook.com/436774416185247 - WebFetch returned only the page name 'Narayan skin clinic'. Confirms a Facebook page with that name exists for that ID; nothing else (no address, phone, category, about).",
+     "https://www.drlogy.com/rajkot/doctor/dr-ketan-kacha - Dr. Ketan Kacha, B.H.M.S. (V. H. Dave Homeopathic Medical College, Anand, 2006), reg. 961 Rajkot Mahanagar Palika 2015, listed as General Physician at Narayan Clinic since Jan 2007, services: consultation, home services, minor procedures, homeopathic consultation. No phone shown, no skin services listed.",
+     "https://www.drlogy.com/rajkot/clinic/narayan-clinic - Narayan Clinic, Gaytri Nagar Main Road, near Trishul Chowk, opp Raj Bank, Rajkot 360002; Mon-Sat 10-1 and 6-9; General Physician; one doctor listed, no other staff; fee Rs 100; Paytm/cash; established 2007; no phone shown; no skin info.",
+     "WebSearch 'Narayan Skin Clinic Rajkot', 'Narayan Clinic Gaytri Nagar Rajkot', 'Ketan Kacha Rajkot ... justdial/practo/sulekha/facebook' - only drlogy.com listings surfaced; no website, no Google Maps, Justdial, Practo, or Facebook-about page found for the business. Search results could not link the Facebook page to the drlogy listing."
+    ],
+    "entity_type": "end_business",
+    "official_website": "none found",
+    "what_they_do": "Per the only directory found (Drlogy), a one-doctor homeopathic (BHMS) general-physician clinic named 'Narayan Clinic' in Gaytri Nagar, Rajkot, running since 2007, Rs 100 consultation fee. A Facebook page named 'Narayan skin clinic' exists (ID 436774416185247), but its link to this clinic rests only on the finder's unverified claim about the ad text.",
+    "size_cues": "Single doctor, no other staff listed, no branches, no website, Rs 100 new-patient fee, clinic hours 10-1 and 6-9 Mon-Sat, established 2007, 72 Facebook likes per finder (not re-verified).",
+    "decision_maker": "Dr. Ketan Kacha (BHMS) is the only doctor listed at Narayan Clinic - https://www.drlogy.com/rajkot/clinic/narayan-clinic ; whether he owns the 'Narayan skin clinic' Facebook page / ad is unverified.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "98240 75921 (per finder, from Meta ad text; Indian mobile, likely WhatsApp, NOT re-verified by me)",
+      "note": "Could not open the ad; no published number found on any page I could read",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=436774416185247"
+     },
+     {
+      "kind": "facebook",
+      "value": "Narayan skin clinic (page ID 436774416185247)",
+      "note": "Page name only confirmed",
+      "source_url": "https://www.facebook.com/436774416185247"
+     },
+     {
+      "kind": "maps",
+      "value": "Gaytri Nagar Main Road, near Trishul Chowk, opp Raj Bank, Rajkot 360002 (Narayan Clinic, Drlogy listing; no Maps listing found)",
+      "note": "Address only, no phone on the listing",
+      "source_url": "https://www.drlogy.com/rajkot/clinic/narayan-clinic"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Drlogy lists Narayan Clinic, Gaytri Nagar Main Road, Rajkot, with one doctor, Dr. Ketan Kacha, BHMS, General Physician, established 2007, consultation Rs 100, Mon-Sat 10-1 and 6-9. No skin, hair or cosmetic services listed.",
+      "source_url": "https://www.drlogy.com/rajkot/clinic/narayan-clinic",
+      "date": "2026-10-29 (page copyright 2026, listing date not shown)"
+     },
+     {
+      "fact": "Dr. Ketan Kacha: BHMS 2006 (V. H. Dave Homeopathic Medical College), Rajkot Mahanagar Palika registration 961 (2015), listed services include homeopathic consultation and minor procedures.",
+      "source_url": "https://www.drlogy.com/rajkot/doctor/dr-ketan-kacha",
+      "date": "2026-10-29"
+     },
+     {
+      "fact": "A Facebook page named 'Narayan skin clinic' exists under ID 436774416185247 (name only; no other content could be read).",
+      "source_url": "https://www.facebook.com/436774416185247",
+      "date": "2026-10-29"
+     }
+    ],
+    "hypotheses": [
+     "The Facebook page 'Narayan skin clinic' is Dr. Ketan Kacha's homeopathic practice marketed as a skin clinic (name match and finder's ad-text claim only; not verified).",
+     "The finder's claim of one active WhatsApp ad since 2026-06-15 may be true, but I could not open the Ad Library (403 / timeout), so ad start date, text, doctor name and number are unverified claims.",
+     "A Rs 100-consultation single-doctor BHMS practice likely has a very small budget; Rs 15-25k setup plus monthly fee is probably a stretch.",
+     "Some enquiries may go unanswered after hours (unproven, inferred only from the offer's premise)."
+    ],
+    "need_evidence": "none",
+    "pay_signal": "weak",
+    "ability_to_pay": "Weak. Only directory data: Rs 100 new-patient fee, single doctor, no staff listed, no website. The only positive signal is the claimed Meta ad running 136 days, which I could not verify. A long-running ad would suggest some spend, but the amount is unknown.",
+    "resistance": "No evidence of an existing WhatsApp/booking system, but the doctor is a small-fee BHMS GP and may not value a paid tool. The business is called a skin clinic on Facebook but a general physician on Drlogy, so positioning is unclear. The doctor-direct number is only a claim from the ad text, which I could not check.",
+    "reachability": "none",
+    "owner_direct_contact": "unknown",
+    "grade": "reject",
+    "reject_reason": "unverifiable. The business as described (a doctor-owned skin clinic running a WhatsApp ad) is not corroborated by two independent public sources. The Ad Library page could not be opened (HTTP 403, Apify timeout). The only third-party listing (Drlogy, a single aggregator) shows a Rs 100 homeopathic general physician with no skin services and no phone number. The Facebook page confirms only a name. The link between the Facebook page, the ad, the doctor and the mobile number rests only on the finder's claim. Could be re-opened as grade C if someone views the Ad Library page by hand and confirms the ad text, start date and that the number matches.",
+    "case_for": "Single-doctor practice, which is the right buyer type. A WhatsApp-opening ad claimed to have run 136 days (since 2026-06-15) would mean they pay for enquiries. The Facebook page name 'Narayan skin clinic' matches the finder's lead, and Dr. Ketan Kacha is a real registered BHMS in Rajkot (Drlogy).",
+    "case_against": "The key evidence (ad, start date, number) could not be verified. Directory data shows a Rs 100-fee homeopathic general physician with no staff and no skin services, so ability to pay is weak and the 'skin clinic' description is unconfirmed. No website, no Maps listing, and no published phone on any page I could read. Only one independent listing source exists. Need is unobserved.",
+    "best_angle": "Not recommended for outreach now. If the ad is confirmed by hand, the first touch is a question, not a claim: who answers the clinic's WhatsApp number when the clinic is closed?",
+    "best_channel": "None until verified. If the ad is confirmed by hand, a human WhatsApp message or voice note to 98240 75921 (the mobile from the finder's ad text, likely WhatsApp), which probably reaches Dr. Kacha since the ad text reportedly names him. Do not use it unconfirmed.",
+    "gaps": [
+     "Meta Ad Library page could not be opened by me, so ad existence, start date, ad text, doctor name and number are all unverified.",
+     "No second independent source for the 'Narayan skin clinic' brand: no website, Google Maps, Justdial, Practo or Facebook About page was readable.",
+     "Not confirmed that the Facebook page and the Drlogy 'Narayan Clinic' are the same business.",
+     "Number of branches and staff unknown (Drlogy shows one doctor, no staff).",
+     "Ability to pay unknown beyond the Rs 100 fee on the directory.",
+     "Whether the number reaches the doctor or a receptionist, and whether it is an auto-greeting."
+    ]
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "Shivam Skin Hair & Laser Clinic",
+   "first_grade": "B",
+   "skeptic_grade": "B",
+   "final_grade": "B",
+   "challenged": true,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": true,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The need is purely inferred, and the decision-maker route is not proven. No source says who owns the clinic or who answers the WhatsApp number. The doctors' names come from a developer-made digital card, not from the clinic's own site or a Maps entry. The six ads look like boosted reels with SEO-style copy, so an agency or freelancer may run the ads and control the messaging. Nothing shows a missed enquiry. Pay evidence is thin: 88 Facebook likes, a template site with placeholder counters, a Rs 799 hook, and no spend data. The one pay-signal figure (Justdial 284 reviews) is unverified.",
+   "review_flag": "need is only INFERRED, not observed: owner should judge the angle before use",
+   "reason_not_ready": "",
+   "dossier": {
+    "business": "Shivam Skin Hair & Laser Clinic",
+    "city": "Surat (Nana Varachha)",
+    "official_website": "https://www.shivamclinik.com/",
+    "identity_verified": true,
+    "entity_type": "end_business",
+    "what_they_do": "Single-site skin, hair and laser clinic in Nana Varachha, Surat: acne, face glow, Hydrafacial, hair PRP / hair fall, laser hair removal, fungal infection, dandruff. Run by two named practitioners, Dr. Dipak Mandaviya and Dr. Bhavita Mandaviya (both listed as B.A.M.S.).",
+    "size_cues": "Likely one branch. One ad's text says \"Mota Varachha\" but no source shows a second site, and the only Mota Varachha \"Shivam\" clinic found is an unrelated homeopathic one. Instagram @shivam_skin_hair_laser_clinic has 11.6K followers and a bio claiming \"15K+ patients, 10+ years\"; the ad says \"12+ years, 20,000+ patients\" (self-claims, not verified). A search-result summary of Justdial says established 2015, rating 4.9 from 284 reviews (I could not open Justdial; it returned 403). The Facebook page has only 88 likes. Staff count unknown. Website is a template with placeholder counters (8286 / 8482) made by Techbit Design Studio.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 95373 88962",
+      "note": "Clinic appointments number. Printed in the Meta ads and on the clinic website; the digital card links it as WhatsApp. Likely WhatsApp, could be the desk or reception rather than the doctor.",
+      "source_url": "https://www.shivamclinik.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 95373 88997",
+      "note": "Second number printed in the ad text (acne ad, started 2026-08-13). Owner not stated. Likely WhatsApp.",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 95373 88973",
+      "note": "Listed against Dr. Dipak Mandaviya on the clinic's digital business card. Indian mobile, likely WhatsApp.",
+      "source_url": "https://digital-card.in/shivam/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 90232 99691",
+      "note": "Listed against Dr. Bhavita Mandaviya on the same digital card. The card's WhatsApp button also points at this number. Indian mobile, likely WhatsApp.",
+      "source_url": "https://digital-card.in/shivam/"
+     },
+     {
+      "kind": "email",
+      "value": "info@shivamclinic.com",
+      "note": "Generic inbox on the site (the site domain is shivamclinik.com, so the spelling differs). Email is not a way in.",
+      "source_url": "https://www.shivamclinik.com/"
+     },
+     {
+      "kind": "instagram",
+      "value": "@shivam_skin_hair_laser_clinic",
+      "note": "Business profile, 11.6K followers. Not used for outreach.",
+      "source_url": "https://www.instagram.com/shivam_skin_hair_laser_clinic/"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.shivamclinik.com/",
+      "note": "Address: 23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat 395006. Contact form only, no online booking.",
+      "source_url": "https://www.shivamclinik.com/"
+     }
+    ],
+    "decision_maker": "Dr. Dipak Mandaviya and Dr. Bhavita Mandaviya, named on the clinic's digital business card (https://digital-card.in/shivam/). The page does not say who owns the clinic. Shared surname suggests they run it together; this is an inference.",
+    "observed_facts": [
+     {
+      "fact": "The Meta Ad Library page 'Shivam Skin Hair & Laser Clinic' (page id 101194626197782, 88 likes) has 6 active ads, all with the 'Send WhatsApp message' call to action. Start dates: 2026-08-06 (two ads), 2026-08-08, 2026-08-13, 2026-09-16, 2026-09-18. The oldest has run about 84 days. All were still active when scraped on 2026-10-29. I could not open the Ad Library page directly (403), so I re-read it with a small Apify run (about US$0.005).",
+      "date": "2026-08-06",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782"
+     },
+     {
+      "fact": "Ad text prints the clinic address (23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat) and the numbers +91 95373 88962 / +91 95373 88997. One ad (2026-09-18, Gujarati) offers a free skin and hair consultation and a Face Glow & Acne treatment for Rs 799, and claims '12+ years' and '20,000+ patients'.",
+      "date": "2026-09-18",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782"
+     },
+     {
+      "fact": "One ad (start 2026-08-06) says 'Visit Shivam Skin Hair & Laser Clinic - Mota Varachha, Surat'. No other source confirms a Mota Varachha branch.",
+      "date": "2026-08-06",
+      "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782"
+     },
+     {
+      "fact": "The official site shows the same address and phone +91 95373 88962. It lists acne, Hydrafacial, hair PRP and laser hair removal. It has no doctor profiles, no online booking and no WhatsApp link. 'Book Now' leads to a contact form. Hours on the page contradict each other. The site credits Techbit Design Studio.",
+      "date": "2026-10-29",
+      "source_url": "https://www.shivamclinik.com/"
+     },
+     {
+      "fact": "The digital card names Dr. Dipak Mandaviya (+91 95373 88973) and Dr. Bhavita Mandaviya (+91 90232 99691), both B.A.M.S. 'Skin & Hair Experts'. It lists the clinic number 95373 88962 as 'appointments compulsory' and gives Skin OPD hours of 9:30-13:00 and 17:00-21:00. The card is by the same web developer, Techbit Design Studio.",
+      "date": "2026-10-29",
+      "source_url": "https://digital-card.in/shivam/"
+     },
+     {
+      "fact": "The Instagram profile has 11.6K followers and a bio reading 'Trusted by 15K+ Patients / 10+ Years Experience'. Posts continue through 2026-10-10 with reels and carousels. This points to an active content effort.",
+      "date": "2026-10-10",
+      "source_url": "https://www.instagram.com/shivam_skin_hair_laser_clinic/"
+     },
+     {
+      "fact": "A search listing shows a Justdial page for this clinic at Yogi Chowk, Nana Varachha. The search summary of it gives established 2015 and a 4.9 rating from 284 reviews. I could not open it myself, so this is second-hand.",
+      "date": "2026-10-29",
+      "source_url": "https://www.justdial.com/Surat/Shivam-Skin-Hair-Laser-Clinic-Near-Tulsi-Shyam-Soc-Vadi/0261PX261-X261-230913033810-M8M6_BZDET"
+     },
+     {
+      "fact": "Not the same clinic: 'Shivam Skin & Hair Care' (Dr. Vandana Dave, Adajan) and 'Shivam Clinic & Skin Care' (homeopathic, Dr. Jignesh Maniya, Mota Varachha). Do not mix their numbers or details with this lead.",
+      "date": "2026-10-29",
+      "source_url": "https://www.drlogy.com/surat/clinic/shivam-clinic-skin-care"
+     }
+    ],
+    "hypotheses": [
+     "The two Mandaviya doctors probably own and run the clinic, as a couple. This is inferred from the shared surname and the digital card, and no page says 'owner'.",
+     "The doctors' mobiles on the digital card were most likely given by the clinic, so they probably reach the doctors themselves. The card is a third-party page, not the clinic's own site, so this is a hypothesis.",
+     "The WhatsApp-opening ads probably route to 95373 88962, which may be answered by reception or a staff member. The ad's WhatsApp destination number is hidden in the Ad Library, so this is unverified.",
+     "They may miss some enquiries after OPD hours (21:00 close) or when the doctors are with patients. Nothing observed shows a missed enquiry. The need is only inferred from the fact that they pay for six WhatsApp ads and have no online booking.",
+     "They may already use a Meta click-to-WhatsApp auto-greeting or the WhatsApp Business app's away message. This cannot be seen from outside and should be asked, not assumed."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "reachability": "business_contact",
+    "owner_direct_contact": "probably",
+    "ability_to_pay": "Strong signal that they pay for Meta ads: 6 WhatsApp-opening ads running 12 weeks, with new creatives added in August and mid-September, a Rs 799 entry offer, and an active Instagram (11.6K followers). Justdial reportedly shows 284 reviews. A small single-site clinic with a template website and only 88 Facebook likes, so the budget is probably modest. A small paid pilot at the planned entry price looks affordable.",
+    "resistance": "Possible existing WhatsApp Business app use or an ad-agency or freelance marketer behind the creatives (the ads look professionally written and SEO-tagged, and the website developer is an outside studio). Could not check either. The Rs 799 price point and Gujarati-first content suggest price-sensitive local patients, so the owners may be cost-conscious. The BAMS qualification does not matter for fit, but the ads use 'best dermatologist' wording, so they sell hard on brand. The doctors are reachable only on mobile and are probably busy in OPD (9:30-13:00, 17:00-21:00), so timing matters. No chain or franchise signal.",
+    "grade": "B",
+    "case_for": "Doctor-named, single-site (probably) skin and hair clinic with 6 active WhatsApp-opening Meta ads, the oldest 84 days old (start 2026-08-06), so it matches the 'best lead' profile (30+ days). Both doctors' mobiles are published on a clinic-linked digital card, so a human WhatsApp message can reach the decider. The website has no online booking and the clinic's own card says appointments are compulsory, which matches the offer. Several creatives and a recent Rs 799 offer show an ongoing, steady ad spend.",
+    "case_against": "The need is only inferred; nothing observed shows a missed enquiry or no-shows. Doctor numbers come from a third-party digital card, not from the clinic's site or Google Maps, so 'reaches the owner' is not proven, and the clinic number may be a desk. Ownership is not stated anywhere. One ad mentions Mota Varachha, so a second branch is unverified. I could not open Justdial or Google Maps, so only the website, the Ad Library (via Apify), the digital card and Instagram confirm the business; that is enough for identity but the pay and size signals are thin (88 Facebook likes, template site). The ads might be run by an outside marketer who could object.",
+    "best_angle": "A question, not a claim: 'Dr. Dipak, your acne ads open WhatsApp. Who answers that number at 10 pm, or when both of you are with patients?' Offer to show a free sample reply plus slot picker on the clinic's own number.",
+    "best_channel": "WhatsApp from a human to Dr. Dipak Mandaviya's published mobile +91 95373 88973 (Dr. Bhavita on +91 90232 99691 as the second route). Both are listed against the doctors by name on the digital card, so they are the likeliest to reach the decider. Do not use 95373 88962 first, as it is the appointments line and a staff member may answer. Send outside OPD hours (not 9:30-13:00 or 17:00-21:00). Never email.",
+    "gaps": [
+     "Whether Dr. Dipak or Dr. Bhavita owns the clinic: not stated anywhere.",
+     "Whether 95373 88973 and 90232 99691 really belong to the doctors; the only source is a third-party digital card.",
+     "Whether a Mota Varachha branch exists (ad text only).",
+     "Google Maps listing and reviews not checked (no tool available); Justdial returned 403, so its data is second-hand.",
+     "Which number the WhatsApp ads actually open (hidden in the Ad Library).",
+     "Whether the clinic already has an auto-reply, away message or a booking tool.",
+     "Who runs the ads (clinic, agency or freelancer)."
+    ],
+    "verification_trail": [
+     "Meta Ad Library URL (https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782): direct fetch returned 403. Re-read through the Apify curious_coder/facebook-ads-library-scraper (about US$0.005): confirmed 6 active WhatsApp-message ads, start dates 2026-08-06 (x2), 08-08, 08-13, 09-16, 09-18, page name, 88 likes, address and numbers in the ad text.",
+     "https://www.shivamclinik.com/ : official site; confirmed name, Nana Varachha address, phone 95373 88962, email, services, no online booking, no doctor profiles, no WhatsApp link, developer Techbit Design Studio.",
+     "https://digital-card.in/shivam/ : clinic digital card; named Dr. Dipak Mandaviya and Dr. Bhavita Mandaviya (B.A.M.S.), their mobiles, appointment number, OPD hours, Instagram handle.",
+     "https://www.instagram.com/shivam_skin_hair_laser_clinic/ : public profile; 11.6K followers, bio claims, posts through 2026-10-10; no address or phone on page.",
+     "https://www.facebook.com/p/Shivam-Skin-Hair-laser-clinic-100095222924298/ : only the page title and Surat were visible; no other details.",
+     "https://www.facebook.com/101194626197782 : only the page title 'Shivam Skin Hair & Laser Clinic | Surat' was visible.",
+     "https://www.justdial.com/Surat/Shivam-Skin-Hair-Laser-Clinic-Near-Tulsi-Shyam-Soc-Vadi/0261PX261-X261-230913033810-M8M6_BZDET : fetch returned 403; only the search snippet shows it exists at Yogi Chowk (established 2015, 4.9 from 284 reviews, second-hand).",
+     "https://www.myupchar.com/en/doctors/surat/adajan-dn/dermatology/dr-vandana-dave-45948 : a different clinic (Shivam Skin & Hair Care, Adajan); excluded.",
+     "https://www.drlogy.com/surat/clinic/shivam-clinic-skin-care : a different, homeopathic clinic in Mota Varachha; excluded, so no branch is confirmed there.",
+     "Web searches for 'Mandaviya' and for a Mota Varachha Shivam skin clinic found no further listing or branch."
+    ]
+   },
+   "challenge": {
+    "business": "Shivam Skin Hair & Laser Clinic, Nana Varachha, Surat",
+    "agree_with_grade": true,
+    "final_grade": "B",
+    "checks": [
+     {
+      "claim": "Business exists as described and is the right entity (single skin/hair/laser clinic, Nana Varachha, Surat), not a namesake",
+      "verdict": "confirmed",
+      "note": "The site, the clinic digital card, the Meta Ad Library ad text and Instagram all show the same address (23 Shivam Row-House, Shyam Dham Chowk, Nana Varachha) and the same clinic line 95373 88962. Two independent sources (Meta Ad Library data and the clinic website) match. A web search found no third-party listing (Maps, Justdial, Practo) for this exact clinic. Search only surfaced different 'Shivam' clinics (Adajan, Mota Varachha), so the investigator was right to exclude those."
+     },
+     {
+      "claim": "6 active WhatsApp-opening ads, start dates 2026-08-06 (x2), 08-08, 08-13, 09-16, 09-18; oldest about 84 days",
+      "verdict": "confirmed",
+      "note": "I re-ran the Apify Facebook Ads Library scraper (about US$0.005). It returned 6 active ads, every one with CTA WHATSAPP_MESSAGE, page 'Shivam Skin Hair & Laser Clinic', 88 likes, and exactly those start dates. So the 30+ day ad criterion is met."
+     },
+     {
+      "claim": "Ad text publishes +91 95373 88962 and +91 95373 88997",
+      "verdict": "corrected",
+      "note": "Both numbers appear together only in the 08-13 acne ad. The 08-08 ad shows only 95373 88962. The other four ads show no number. 95373 88997 appears nowhere else, so its owner is unknown."
+     },
+     {
+      "claim": "One ad says Mota Varachha; possible second branch",
+      "verdict": "corrected",
+      "note": "The 08-06 ad body says 'Mota Varachha' and its SEO tag list contains 'shivam skin clinic mota varachha'. No other source shows a second site. The ad also has CTA WhatsApp but its text says 'DM us', and it says 'one of the best dermatologists in Surat'. This reads like reused or generic marketing copy, not evidence of a branch. Treat as one branch, unverified."
+     },
+     {
+      "claim": "Doctors Dr. Dipak Mandaviya and Dr. Bhavita Mandaviya (B.A.M.S.) with mobiles 95373 88973 and 90232 99691 on the digital card",
+      "verdict": "confirmed",
+      "note": "Digital-card page lists exactly these names, B.A.M.S. and numbers. But the clinic's own website names NO doctor and the Instagram bio names none. The card is by the web developer, Techbit Design Studio. The doctors' names are therefore single-sourced to a third-party page."
+     },
+     {
+      "claim": "The card's WhatsApp button also points at Dr. Bhavita's number (90232 99691)",
+      "verdict": "corrected",
+      "note": "The card's clinic WhatsApp link is api.whatsapp.com/send/?phone=919537388962 (the clinic line). What points at Dr. Bhavita's number is the link behind the clinic-line label in the Contacts section, which looks like a card error. So the clinic line is a WhatsApp number. Whether it is answered by the doctors or a desk is unknown."
+     },
+     {
+      "claim": "The doctors own the clinic (inferred from shared surname)",
+      "verdict": "unsupported",
+      "note": "The investigator labelled this a hypothesis, which is fair. No page says 'owner' or 'founder'. Do not treat either as the confirmed decision-maker."
+     },
+     {
+      "claim": "The doctors' mobiles probably reach the owner directly (owner_direct_contact = probably)",
+      "verdict": "corrected",
+      "note": "Defensible under the 'probably' rule: the card names the doctors and the numbers are Indian mobiles, not landlines. But the source is a developer-made card, and the card says 'appointments compulsory' on the clinic line. The mobiles may also be used for GPay (the card shows GPay images for both), so they may be personal numbers that the doctors do not want cold messages on. Keep 'probably', not higher."
+     },
+     {
+      "claim": "Justdial shows established 2015, 4.9 rating, 284 reviews",
+      "verdict": "unsupported",
+      "note": "Second-hand from a search snippet. I could not open Justdial and a fresh search did not return that page. Do not count it as a pay or size signal."
+     },
+     {
+      "claim": "Instagram 11.6K followers, bio '15K+ patients, 10+ years', posts through 2026-10-10",
+      "verdict": "confirmed",
+      "note": "Matches. Posts on 2026-10-10, 09-17, 09-15, 08-29, 08-24, 08-20 and more. The bio says 10+ years and the ad says 12+ years and 20,000+ patients, while the card says 10,000+ skin treatments and 3,000+ laser patients. Self-claims are inconsistent, so none are reliable."
+     },
+     {
+      "claim": "Strong pay signal for Meta ads",
+      "verdict": "corrected",
+      "note": "Six live ads for 12 weeks is real, but the ad texts are written like boosted Instagram reels ('Save this reel', 'DM us', hashtag blocks, SEO keyword brackets). Boosting reels is cheap, and the Ad Library does not show spend for these ads. Only 88 Facebook likes, a template site with placeholder counters (8286 / 8482 'years') and generic FAQ text unrelated to the clinic. A Rs 799 offer points to price-led, volume-driven marketing. I would call it moderate-to-strong evidence of ad spend but unknown budget."
+     },
+     {
+      "claim": "Need is only inferred (nothing observed shows missed enquiries or no-shows)",
+      "verdict": "confirmed",
+      "note": "Correct. The site has only a contact form and no booking, and the card says appointments are compulsory, but neither shows lost enquiries. This lead is B at best under the grade rule, not A."
+     },
+     {
+      "claim": "No chain, franchise or agency signal",
+      "verdict": "corrected",
+      "note": "No chain signal found. But there is a real agency or freelancer hypothesis: SEO keyword lists inside ad text, styled-Unicode copy, generic Mota Varachha wording, a consistent posting cadence and an outside web developer. If an agency runs the ads and the WhatsApp number, the doctor may not control it and the pitch could go to the wrong person. Not proven either way."
+     },
+     {
+      "claim": "Existing solution (auto-reply, booking tool)",
+      "verdict": "not_checked",
+      "note": "Cannot be seen from outside without messaging the clinic, which is forbidden. The site has no booking tool. The clinic line is a WhatsApp number but whether an away message or WhatsApp Business app is in use is unknown."
+     },
+     {
+      "claim": "Hours: card gives Skin OPD 9:30-13:00 and 17:00-21:00; site hours conflict",
+      "verdict": "confirmed",
+      "note": "Card hours match. Site footer says Mon-Thu 9-8, Fri-Sat 9-6, Sun closed, while the contact section says Mon-Fri 9-8 and daily 10-6. The site is unreliable on hours."
+     },
+     {
+      "claim": "Email info@shivamclinic.com differs from site domain shivamclinik.com",
+      "verdict": "confirmed",
+      "note": "The site shows info@shivamclinic.com while the domain is shivamclinik.com. It may be a typo and must not be used. Email is out of scope anyway."
+     },
+     {
+      "claim": "Not a duplicate of the existing lead list",
+      "verdict": "confirmed",
+      "note": "Not on the supplied duplicate list, and not in Mehsana."
+     }
+    ],
+    "strongest_objection": "The need is purely inferred, and the decision-maker route is not proven. No source says who owns the clinic or who answers the WhatsApp number. The doctors' names come from a developer-made digital card, not from the clinic's own site or a Maps entry. The six ads look like boosted reels with SEO-style copy, so an agency or freelancer may run the ads and control the messaging. Nothing shows a missed enquiry. Pay evidence is thin: 88 Facebook likes, a template site with placeholder counters, a Rs 799 hook, and no spend data. The one pay-signal figure (Justdial 284 reviews) is unverified.",
+    "corrections": [
+     "Ad numbers: 95373 88962 and 95373 88997 appear together in only one ad (2026-08-13); the 08-08 ad shows only 95373 88962; four ads show no number. 95373 88997 has no owner shown anywhere.",
+     "The card's WhatsApp link for the clinic goes to the clinic line 95373 88962. What points to Dr. Bhavita's mobile 90232 99691 is the link behind the clinic-line label in the Contacts section (looks like a card error). The investigator's wording was wrong.",
+     "The clinic website names no doctor. The doctors' names are single-sourced to a third-party digital card. Treat the decision-maker as a probable route, not an observed one.",
+     "Justdial figures (2015, 4.9, 284 reviews) are unverified second-hand data and should not be used as a size or pay signal.",
+     "Pay signal should read moderate, not strong: ads look like boosted reels; spend is hidden; 88 Facebook likes; template site with placeholder counters.",
+     "Add the agency or freelancer hypothesis as a main risk (SEO keyword brackets in ad text, styled-Unicode copy, 'DM us' text on a WhatsApp CTA ad, generic Mota Varachha wording). The Mota Varachha mention is most likely reused copy, not a branch.",
+     "The doctors' mobiles are shown with GPay images on the card, so they may be personal payment numbers. Keep owner_direct_contact at 'probably' and approach with care.",
+     "To earn an A: observe the need (for example a public Maps review or post complaining about unanswered calls or WhatsApp), or confirm the owner and that the clinic itself, not an agency, runs the ads and the WhatsApp number. To drop to C: if a Maps or Justdial check shows an agency running the page, or a second city branch."
+    ]
+   },
+   "console_entry": {
+    "type": "lead",
+    "key": "clinic-web-shivam-skin-hair-laser-clinic",
+    "data": {
+     "name": "Shivam Skin Hair & Laser Clinic",
+     "city": "Surat (Nana Varachha)",
+     "product": "A lean WhatsApp patient desk: an automatic reply to every enquiry (also when the clinic is closed or busy), the patient picks an appointment slot, ONE reminder 24 hours before with confirm or reschedule, and one simple list for the clinic. Recall and review requests only later, as paid add-ons. The first-touch angle is a question (who answers the clinic's WhatsApp number when the clinic is closed?), never a claim about lost patients.",
+     "campaign": "WhatsApp patient desk for doctor-owned clinics (Gujarat)",
+     "grade": "B",
+     "status": "researched",
+     "contacted": false,
+     "best_channel": "WhatsApp from a human to Dr. Dipak Mandaviya's published mobile +91 95373 88973 (Dr. Bhavita on +91 90232 99691 as the second route). Both are listed against the doctors by name on the digital card, so they are the likeliest to reach the decider. Do not use 95373 88962 first, as it is the appointments line and a staff member may answer. Send outside OPD hours (not 9:30-13:00 or 17:00-21:00). Never email.",
+     "best_angle": "A question, not a claim: 'Dr. Dipak, your acne ads open WhatsApp. Who answers that number at 10 pm, or when both of you are with patients?' Offer to show a free sample reply plus slot picker on the clinic's own number.",
+     "contacts": [
+      {
+       "kind": "phone",
+       "value": "+91 95373 88962",
+       "source": "https://www.shivamclinik.com/",
+       "note": "Clinic appointments number. Printed in the Meta ads and on the clinic website; the digital card links it as WhatsApp. Likely WhatsApp, could be the desk or reception rather than the doctor."
+      },
+      {
+       "kind": "phone",
+       "value": "+91 95373 88997",
+       "source": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782",
+       "note": "Second number printed in the ad text (acne ad, started 2026-08-13). Owner not stated. Likely WhatsApp."
+      },
+      {
+       "kind": "phone",
+       "value": "+91 95373 88973",
+       "source": "https://digital-card.in/shivam/",
+       "note": "Listed against Dr. Dipak Mandaviya on the clinic's digital business card. Indian mobile, likely WhatsApp."
+      },
+      {
+       "kind": "phone",
+       "value": "+91 90232 99691",
+       "source": "https://digital-card.in/shivam/",
+       "note": "Listed against Dr. Bhavita Mandaviya on the same digital card. The card's WhatsApp button also points at this number. Indian mobile, likely WhatsApp."
+      },
+      {
+       "kind": "email",
+       "value": "info@shivamclinic.com",
+       "source": "https://www.shivamclinik.com/",
+       "note": "Generic inbox on the site (the site domain is shivamclinik.com, so the spelling differs). Email is not a way in."
+      },
+      {
+       "kind": "instagram",
+       "value": "@shivam_skin_hair_laser_clinic",
+       "source": "https://www.instagram.com/shivam_skin_hair_laser_clinic/",
+       "note": "Business profile, 11.6K followers. Not used for outreach."
+      },
+      {
+       "kind": "website",
+       "value": "https://www.shivamclinik.com/",
+       "source": "https://www.shivamclinik.com/",
+       "note": "Address: 23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat 395006. Contact form only, no online booking."
+      }
+     ],
+     "observed_facts": [
+      "The Meta Ad Library page 'Shivam Skin Hair & Laser Clinic' (page id 101194626197782, 88 likes) has 6 active ads, all with the 'Send WhatsApp message' call to action. Start dates: 2026-08-06 (two ads), 2026-08-08, 2026-08-13, 2026-09-16, 2026-09-18. The oldest has run about 84 days. All were still active when scraped on 2026-10-29. I could not open the Ad Library page directly (403), so I re-read it with a small Apify run (about US$0.005). (2026-08-06, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+      "Ad text prints the clinic address (23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat) and the numbers +91 95373 88962 / +91 95373 88997. One ad (2026-09-18, Gujarati) offers a free skin and hair consultation and a Face Glow & Acne treatment for Rs 799, and claims '12+ years' and '20,000+ patients'. (2026-09-18, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+      "One ad (start 2026-08-06) says 'Visit Shivam Skin Hair & Laser Clinic - Mota Varachha, Surat'. No other source confirms a Mota Varachha branch. (2026-08-06, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+      "The official site shows the same address and phone +91 95373 88962. It lists acne, Hydrafacial, hair PRP and laser hair removal. It has no doctor profiles, no online booking and no WhatsApp link. 'Book Now' leads to a contact form. Hours on the page contradict each other. The site credits Techbit Design Studio. (2026-10-29, https://www.shivamclinik.com/)",
+      "The digital card names Dr. Dipak Mandaviya (+91 95373 88973) and Dr. Bhavita Mandaviya (+91 90232 99691), both B.A.M.S. 'Skin & Hair Experts'. It lists the clinic number 95373 88962 as 'appointments compulsory' and gives Skin OPD hours of 9:30-13:00 and 17:00-21:00. The card is by the same web developer, Techbit Design Studio. (2026-10-29, https://digital-card.in/shivam/)",
+      "The Instagram profile has 11.6K followers and a bio reading 'Trusted by 15K+ Patients / 10+ Years Experience'. Posts continue through 2026-10-10 with reels and carousels. This points to an active content effort. (2026-10-10, https://www.instagram.com/shivam_skin_hair_laser_clinic/)",
+      "A search listing shows a Justdial page for this clinic at Yogi Chowk, Nana Varachha. The search summary of it gives established 2015 and a 4.9 rating from 284 reviews. I could not open it myself, so this is second-hand. (2026-10-29, https://www.justdial.com/Surat/Shivam-Skin-Hair-Laser-Clinic-Near-Tulsi-Shyam-Soc-Vadi/0261PX261-X261-230913033810-M8M6_BZDET)",
+      "Not the same clinic: 'Shivam Skin & Hair Care' (Dr. Vandana Dave, Adajan) and 'Shivam Clinic & Skin Care' (homeopathic, Dr. Jignesh Maniya, Mota Varachha). Do not mix their numbers or details with this lead. (2026-10-29, https://www.drlogy.com/surat/clinic/shivam-clinic-skin-care)"
+     ],
+     "hypotheses": [
+      "The two Mandaviya doctors probably own and run the clinic, as a couple. This is inferred from the shared surname and the digital card, and no page says 'owner'.",
+      "The doctors' mobiles on the digital card were most likely given by the clinic, so they probably reach the doctors themselves. The card is a third-party page, not the clinic's own site, so this is a hypothesis.",
+      "The WhatsApp-opening ads probably route to 95373 88962, which may be answered by reception or a staff member. The ad's WhatsApp destination number is hidden in the Ad Library, so this is unverified.",
+      "They may miss some enquiries after OPD hours (21:00 close) or when the doctors are with patients. Nothing observed shows a missed enquiry. The need is only inferred from the fact that they pay for six WhatsApp ads and have no online booking.",
+      "They may already use a Meta click-to-WhatsApp auto-greeting or the WhatsApp Business app's away message. This cannot be seen from outside and should be asked, not assumed."
+     ],
+     "case_for": "Doctor-named, single-site (probably) skin and hair clinic with 6 active WhatsApp-opening Meta ads, the oldest 84 days old (start 2026-08-06), so it matches the 'best lead' profile (30+ days). Both doctors' mobiles are published on a clinic-linked digital card, so a human WhatsApp message can reach the decider. The website has no online booking and the clinic's own card says appointments are compulsory, which matches the offer. Several creatives and a recent Rs 799 offer show an ongoing, steady ad spend.",
+     "case_against": "The need is only inferred; nothing observed shows a missed enquiry or no-shows. Doctor numbers come from a third-party digital card, not from the clinic's site or Google Maps, so 'reaches the owner' is not proven, and the clinic number may be a desk. Ownership is not stated anywhere. One ad mentions Mota Varachha, so a second branch is unverified. I could not open Justdial or Google Maps, so only the website, the Ad Library (via Apify), the digital card and Instagram confirm the business; that is enough for identity but the pay and size signals are thin (88 Facebook likes, template site). The ads might be run by an outside marketer who could object. | Skeptic: The need is purely inferred, and the decision-maker route is not proven. No source says who owns the clinic or who answers the WhatsApp number. The doctors' names come from a developer-made digital card, not from the clinic's own site or a Maps entry. The six ads look like boosted reels with SEO-style copy, so an agency or freelancer may run the ads and control the messaging. Nothing shows a missed enquiry. Pay evidence is thin: 88 Facebook likes, a template site with placeholder counters, a Rs 799 hook, and no spend data. The one pay-signal figure (Justdial 284 reviews) is unverified.",
+     "next_step": "Owner review, then add to the campaign.",
+     "researched": "2026-10-29"
+    }
+   }
+  }
+ ],
+ "note": "console_entry is only filled for leads that pass every check; the owner reviews them before a push."
+}

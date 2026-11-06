@@ -1,0 +1,1717 @@
+[
+ {
+  "type": "lead",
+  "key": "re-gj-great-spaces-aaroham",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-a",
+   "tier-hungry",
+   "wave-2"
+  ],
+  "data": {
+   "name": "Great Spaces - Aaroham",
+   "legal_name": "Great Spaces Realty / Great Spaces Developers (Aaroham promoter: GSGKB Developers LLP)",
+   "city": "Vadodara",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "A",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Founders named on the site About page (https://greatspacesrealty.com/about-us/): Amit Anand (founder, Mechanical Engineer, IIM Ahmedabad, describes a 25-year technology and real-estate career) and Amit Desai (Civil Engineer, 26 years, technical design and processes). No personal phone is published. The GujRERA register also lists a founder-named mailbox at the business domain; I did not list it as a contact. First touch should go to the generic business email.",
+   "size_cues": "Small, young premium villa developer. WordPress shows the site was created 2026-03-03. Two RERA-registered projects (Novarra RAA16660 registered April 2026; Aaroham RAA17380 approved 2026-09-21) plus a third villa project on the site. Promoter entity is an LLP. Facebook page has 26 followers and 0 reviews; Google Maps shows Novarra at 4.4 (9 reviews) and Aaroham with no reviews. Careers page is one generic form with Sales & Marketing and Customer Relations roles. No branches, no listed company, not a chain, franchise or agency. The unit counts (Novarra about 70, Aaroham 37) and the third-party prices (about Rs 1.6 to 3.5 crore) come from the scouts and are not verified by me.",
+   "observed_facts": [
+    "Meta Ad Library (India, active ads), opened by me in the built-in browser on 2026-10-19: advertiser 'Great Spaces Developers' shows about 15 results. I read 10 distinct Library IDs. Novarra ads started 2026-08-25, 2026-09-12, 2026-09-13 and 2026-10-01 (two Navratri offer ads); five Aaroham 'coming soon' and 'Enquire now' ads started 2026-10-13, each with 2 versions. The advertiser name links to facebook.com/61590914716605, the same page the site links to.",
+    "Ad CTAs: Novarra ads use 'Book now' with the display link FB.ME ('Visit the site office to unlock the special offer', 'Book your site visit today'); Aaroham ads use Sign Up, Enquire Now and Book Now (e.g. 'Premium 4B3HK Courtyard Villas'). All copy is English. Ad destinations are not visible.",
+    "GujRERA record 32261 (fetched by me): project GREAT SPACES AAROHAM, promoter GSGKB DEVELOPERS LLP (LLP), registration RAA17380/210926/300631, application 2026-08-26, approved 21-09-2026, residential group housing, promoter mobile 9213637081, the same number as the site tel link and WhatsApp button.",
+    "WordPress page dates (wp-json): site home created 2026-03-03; /aaroham-villas/ created 2026-08-14, modified 2026-08-21; thankyou-page-aaroham-villas created 2026-08-14; unlisted but public /aaroham-villas-testing/ created 2026-10-08, modified 2026-10-12, a fuller Aaroham page with a Download Brochure button; home page modified 2026-10-12.",
+    "Live /aaroham-villas/ page is only a form: First Name, Last Name, Phone, Email, 'Enquire Now', with hidden datetime, utm_source, utm_medium and utm_campaign fields. Home and contact forms ask phone plus 'Interested In' and say 'Schedule a Visit'.",
+    "Thank-you page text: the team will be in touch shortly, with a fbq Lead event firing. This is the only observed post-enquiry promise: a human callback.",
+    "Novarra page has a 'Download Brochure' popup form (first name, last name, phone, email), so a web brochure gate exists for Novarra.",
+    "Site loads two Meta Pixels (2532150767250838, 27751959831151237), Google Tag Manager GTM-WLG6MMVH, Hostinger Reach embed, Elementor Pro 3.35.1. A floating WhatsApp button (wa.link/yt650i) points to api.whatsapp.com/send?phone=919213637081. No chatbot, live-chat, booking widget or CRM script keyword found in the home page source.",
+    "Domain mail runs on Zoho (MX mx/mx2/mx3.zoho.in, SPF include:zoho.in, zoho-verification TXT). Footer credit is 'Designed by rioconn'; rioconn.in lists creative, social, UI/UX web, SEO, influencer and performance marketing, with no WhatsApp/CRM/automation service listed and no mention of Great Spaces.",
+    "Facebook page: 26 followers, not yet rated (0 reviews), About lists reachus@greatspacesrealty.com and the website. Google Maps (limited view): Great Spaces Novarra Luxury Villas 4.4 (9), Great Spaces Novarra Road 3.0 (2), Great Spaces Aaroham Luxury Villas no reviews. Review text could not be read.",
+    "All evidence is inside the 90-day window: ads 2026-08-25 to 2026-10-13, RERA 2026-09-21, site edits 2026-10-12."
+   ],
+   "hypotheses": [
+    "Ad enquiries are probably called back by a person (the thank-you page says the team will be in touch shortly), so after-hours or launch-week leads wait. Not verified.",
+    "The FB.ME display link on the Novarra ads and the Sign Up or Book Now buttons on the Aaroham ads may point to Meta-native lead forms or Messenger rather than the website. If so, the pitch has to be 'pull Meta leads into an instant WhatsApp reply', and leads may not touch their WhatsApp number at all. Not verified.",
+    "An agency or a back-end Elementor/Zoho rule may already email an auto-reply or the brochure. This is the main objection to expect.",
+    "The rebuilt Aaroham page (edited 2026-10-12) suggests the main launch push is days to weeks away, which makes the next week the best time for a first email."
+   ],
+   "case_for": "I re-checked the pay signal myself in the Meta Ad Library (India, active, 2026-10-19) and it is real: the advertiser links to the same Facebook page the site links to (facebook.com/61590914716605), about 15 results, 10 distinct Library IDs read, running since 2026-08-25, with five new Aaroham teaser ads started 2026-10-13 and two Navratri offer ads started 2026-10-01. Aaroham is a fresh launch: GujRERA approval 2026-09-21, a separate Aaroham landing page that is just a name/phone/email form with hidden UTM fields, a thank-you page firing a Meta Lead event, and a rebuilt Aaroham page being edited on 2026-10-12. Our brief accepts 'they pay for enquiries', and this is a fresh, ad-driven, lead-heavy, high-ticket funnel. The thank-you page promises only that the team will be in touch shortly, so the observed follow-up model is a human callback, not an instant reply. The brand is young and small, with no CRM, bot or chat widget visible in the page source. The contact is clean: reachus@greatspacesrealty.com is published in the site footer and on the Facebook page About (two sources), the phone is also the GujRERA promoter mobile and the site's WhatsApp button target, and the domain mail is on Zoho with valid MX records. Language is English throughout.",
+   "case_against": "The need is inferred, not observed. We cannot see reply speed, whether a Meta lead-form or website lead already triggers an auto-reply, or whether the team already answers within minutes. Two scout claims are weaker than stated. 'No brochure delivery' is wrong for Novarra: it has a Download Brochure popup form (first name, last name, phone, email), so a web brochure already exists and the gap is the WhatsApp/after-hours channel, not the brochure. The Novarra ads show an FB.ME display link, and the Aaroham ads have Sign Up or Book Now buttons. Their destinations are not visible, and they may be Meta-native lead forms or Messenger, in which case the leads never touch the website form or the WhatsApp number we would reply from. Spend is unquantified (the Ad Library shows no amounts for India) and the ticket prices are third-party. The founders have a technology background and could build or buy automation. The site was built by an Ahmedabad agency (Rioconn), but I checked its page and it lists web design, social, SEO and performance marketing only; it names no WhatsApp automation or CRM service and does not mention Great Spaces, so the agency-runs-leads risk is unproven. Elementor Pro (form webhooks possible) and Zoho Mail (Zoho CRM possible) are installed, but I found no evidence of either integration. The WhatsApp number may be a personal or WhatsApp Business app number, so moving it to an API flow could be a real objection. The mailbox reachus@ has no evidence of being actively read beyond published MX records.",
+   "ability_to_pay": "Good but not quantified. Two RERA-registered premium villa projects (Novarra 4 BHK courtyard villas, Aaroham 4B3HK), a third on the site, and about two months of continuous multi-creative Meta advertising including video. Ad Library shows no spend figures for India, and the Rs 1.6 to 3.5 crore prices are third-party (not verified by me). A very young brand (site March 2026) with an LLP structure.",
+   "resistance": "Low to moderate. No CRM, bot, chat widget or automation vendor is visible, and they do not position against AI. Risks: Elementor Pro forms can post to webhooks and Zoho mail could mean Zoho CRM (neither evidenced); the founders describe a technology and IIM-A background and may build in-house; the Ahmedabad agency Rioconn built the site (its own page lists no WhatsApp or CRM service, so I rate it lower than the first qualifier did); the WhatsApp line may be a personal or WhatsApp Business app number, which makes moving to an API flow a likely objection. Owners are reachable only via the generic email.",
+   "best_angle": "Reference what is visible: the Aaroham 'coming soon to Bhayli' ads that started 2026-10-13 on top of the Navratri Novarra offers, and a thank-you page that promises a callback. Pitch that every ad enquiry (Meta form, WhatsApp button, web form or call) gets an instant WhatsApp reply with the Aaroham brochure, 3 qualifying questions and a site-visit slot, then follow-ups and one lead board, so launch-week leads are not waiting for a callback. Offer a short demo built on their own Aaroham brochure. Do not mention the unlisted /aaroham-villas-testing/ page or the RERA-register mailbox.",
+   "best_channel": "Email to reachus@greatspacesrealty.com, addressed to the Great Spaces team (no guessed personal address). Fallback after email: a human call to +91 92136 37081, which is also their published WhatsApp enquiry line. No cold WhatsApp template.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "reachus@greatspacesrealty.com",
+     "source": "https://greatspacesrealty.com/contact-us/",
+     "note": "Business email in the site footer (Cloudflare-obfuscated, decoded by me from the page source) and also published on the Facebook page About (https://www.facebook.com/people/Great-Spaces-Developers/61590914716605/). Domain MX is Zoho (mx.zoho.in), SPF include:zoho.in. Primary first-touch address."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 92136 37081",
+     "source": "https://greatspacesrealty.com/contact-us/",
+     "note": "Footer tel link on every page. It is also the promoter mobile in the GujRERA record for Aaroham (https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32261), which I fetched myself. Use for a human call after email only."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 92136 37081",
+     "source": "https://greatspacesrealty.com/",
+     "note": "Site WhatsApp button (wa.link/yt650i) redirects to api.whatsapp.com/send?phone=919213637081 with no prefilled text (checked by curl), so the business itself publishes this as a WhatsApp enquiry line. Do NOT cold-template to it (round 1 failed with Meta 131049/131026); human reply only, after email."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/people/Great-Spaces-Developers/61590914716605/",
+     "source": "https://greatspacesrealty.com/contact-us/",
+     "note": "Page 'Great Spaces Developers', 26 followers, 0 reviews, last post about 2 days before 2026-10-19; lists the same email and website. Same page that runs the ads."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/great.spaces.developers/",
+     "source": "https://greatspacesrealty.com/",
+     "note": "Linked from the site. No extra contact details."
+    },
+    {
+     "kind": "website",
+     "value": "https://greatspacesrealty.com",
+     "source": "https://greatspacesrealty.com/",
+     "note": "Forms exist (phone plus Interested In; Aaroham first/last/phone/email; Novarra brochure popup). We must not submit any of them."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 8,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: verified live Meta ads on 2026-10-19 (10 distinct IDs read, about 15 results), Novarra ads since 2026-08-25, five new Aaroham ads since 2026-10-13",
+    "+2 urgency: Aaroham is a fresh launch (RERA approved 2026-09-21, coming-soon ads, landing page rebuilt 2026-10-12), Navratri offers live and Diwali ahead",
+    "+1 funnel gap: phone-only or short forms, thank-you page promises a human callback, no booking slot or chatbot, several entry doors (forms, WhatsApp button, phone, ad buttons); held at +1 because reply speed and any back-end auto-reply are invisible and Novarra already has a brochure download gate",
+    "+1 can pay: two RERA-registered premium villa projects and two months of multi-creative paid ads; but ticket prices are third-party only and spend is unquantified",
+    "+1 reachable: business email published on the site footer and the Facebook page, plus a business phone that is also their published WhatsApp line",
+    "-1 resistance: agency-built Elementor Pro site with Zoho mail, technology-background founders who could build in-house, a CRM or back-end auto-reply cannot be ruled out; no CRM, bot or anti-AI positioning actually seen"
+   ],
+   "hunger_gaps": [
+    "WebSearch budget was exhausted before I started, so I did no news, portal, JustDial or review search, and I did not work around the limit. Everything comes from direct site fetches (curl), the GujRERA API, DNS, the Ad Library and Facebook in the built-in browser.",
+    "Google Maps opened only in a limited view in the built-in browser (the pane was not displayed), so I saw ratings (Novarra 4.4 from 9) but not review text, phone, hours or response notes.",
+    "Reply speed, any CRM, and any back-end auto-reply or brochure email cannot be seen from outside; nobody was contacted and no form was submitted.",
+    "Ad destinations (FB.ME, Sign Up, Book Now) and spend are not visible. I could not confirm whether leads arrive by Meta instant form, Messenger, WhatsApp or the website form.",
+    "I did not verify the scout figures: 37 units and 9,287 sq m for Aaroham, about 70 bungalows for Novarra, the other two LLPs (Crestpoint, Edifine), the portal prices and the YouTube date.",
+    "Whether Sumukh Villas is Great Spaces' own project, a partner project, or another developer's is unresolved: the Great Spaces site lists it as a sister property, but an advertiser called 'Sumukh Villas' runs a separate Navratri ad with different contacts (not used).",
+    "I did not probe whether reachus@ accepts or reads mail; only the Zoho MX and SPF records were checked."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Vadodara villa developer with a fresh launch (Aaroham) and Meta ads running since 25 Aug; five new ads on 13 Oct",
+   "why_hungry": [
+    "Aaroham villas: RERA approved 21 Sep, five new ads started 13 Oct",
+    "About 15 live Meta ads (checked 19 Oct), running since 25 Aug",
+    "Enquiries go to short web forms and one WhatsApp number; the thank-you page promises a callback"
+   ],
+   "next_step": "Wave 2: English page and video being built. First touch = email to the business address plus the WhatsApp template to the number they publish for WhatsApp, each with its own owner OK code.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded A; hunger 8/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "Every Ad Library creative I read, the website pages and the Facebook page are in English; no Gujarati or Hindi marketing seen.",
+   "website": "https://greatspacesrealty.com"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-swagat-developers-swagat-cilantra",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-a",
+   "tier-hungry",
+   "wave-2"
+  ],
+  "data": {
+   "name": "Swagat Developers - Swagat Cilantra",
+   "legal_name": "Swagat Developers (Surat; Meta page 'Swagat Builders', Facebook handle SwagatCorporation). NOT the Ahmedabad 'Swagat Group' (swagatgroup.in), which is a separate company.",
+   "city": "Surat (Vesu and New Althan)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "A",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Tushar Asodaria, Co-Founder (Sales & Strategy), per the About page at https://swagatdevelopers.in/about. Day-to-day owners of ads and sales are probably the Head of Marketing (Chirag Asodaria) and Head of Sales (Aditya Shekhda), per the same page. No personal email or phone is published for any of them, so address the first touch to the company mailbox.",
+   "size_cues": "Mid-size private Surat developer: since 2008, 13 projects listed, four RERA-registered Surat projects under four promoter entities (Cordelia 448 flats, Cilantra 144 flats), 11 named team members, Facebook 8K followers, Instagram about 12K, one head office in Vesu. Not a listed company and not a multi-city chain.",
+   "observed_facts": [
+    "Meta Ad Library (India), read by me in the built-in browser on 19 Oct 2026: page 'Swagat Builders' has 3 ACTIVE ads (IDs 1125941416441258, 1446930637416176, 1627588245520864), all 'Started running on 18 Oct 2026', total active time 21 hrs, all for Swagat Cilantra (3 BHK and 4 BHK penthouses, 2nd VIP Road, Vesu, 144 residences, sample flat ready, 'Book your site visit today'). Two use API.WHATSAPP.COM with a 'Send WhatsApp message' button; one links to SWAGATDEVELOPERS.IN. English text.",
+    "Earlier ad on the same page: Library ID 1745100773477384, Cilantra video ad, 6 Aug 2026 to 1 Sep 2026, now inactive. Searches for 'Swagat Callista' return no ads. Keyword 'swagatdevelopers.in' shows only the one website-link ad.",
+    "GujRERA public project list (Surat, residential), read 19 Oct 2026: SWAGAT CORDELIA, promoter SWAGAT INFRA, approved 12-10-2026, end date 31-12-2033; SWAGAT CILANTRA, promoter SWAGATBUILDCON, approved 23-06-2025, end 31-12-2030; SWAGAT CALLISTA, promoter SWAGAT BUILDERS, approved 01-11-2023; SWAGAT CLIFTON, promoter SWAGAT CORPORATION, approved 09-07-2018. Four separate promoter entities across four registered Surat projects.",
+    "Contact page (raw HTML checked with curl): 2 mailto links to info@swagatdevelopers.in, tel and wa.me links for 917874082362 and 919726887888. MX record for swagatdevelopers.in points to Google mail.",
+    "Website is a Next.js site. In all 13 JS chunks and the home HTML there is no chatbot, live-chat, CRM or WhatsApp-automation vendor; only the Meta Pixel (id 1343549486962685) and a Cloudflare beacon load from third-party hosts. The pixel fires PageView only (no Lead event on form submit). Forms post to the site's own /api/contact and /api/callback-request; callback text says 'Please enter your number and we will call you shortly'.",
+    "Cordelia web page: '448 Flats, Coming Soon', 'Exclusive 3 BHK campus in New Althan Coming Soon', 'Enquire Now' button, RERA_No null, no architect name. Cilantra web page: '144 Flats, Currently Under Construction', has a Download Brochure button, RERA_No null on the page, and its SEO keywords mention Swagat Callista and 'Possession by December 2025' (stale, copied text) while GujRERA end date is Dec 2030.",
+    "Project list has 13 projects: Cilantra, Callista, Swagat Homes, Texking under construction; Cordelia coming soon; 8 completed (Clifton, Crystal Palace, Shikhar Heights, Coral Heights, Rudram Avenue, Rasik Villa, Rudra Enclave, Rudraksh Residency). About page claims since 2008, 15+ projects, 5000+ families, 11 listed people including 7 co-founders/partners, plus Head Marketing, Head Sales, Team Lead Content & Marketing and Head Technical.",
+    "Home page shows 3 self-published 5-star testimonials; one praises 'quick response times'. No careers page, no 'Book site visit' button, no brochure auto-send seen.",
+    "Facebook page 'Swagat Builders': 8K followers, 'Not yet rated (0 reviews)', phone 078740 82362 and website swagatdevelopers.in match the site; latest post 2 days before 19 Oct 2026 with 1 reaction.",
+    "Separate company checked and set aside: Swagat Group Ahmedabad (swagatgroup.in) loads a Kenyt.AI chatbot (bot-loader.js, bot id 20842171) on its home page, publishes info@ and sales@swagatgroup.in, and has its own Meta Pixel. It already has a bot, is large (100+ projects claimed) and should not be used as this lead."
+   ],
+   "hypotheses": [
+    "Enquiries from the click-to-WhatsApp ads arrive on one or two mobile numbers the sales team also uses for calls, so night and weekend messages may wait for a human (not observed).",
+    "A Cordelia launch campaign will multiply WhatsApp enquiries and the 3-field callback form plus phone-only intake will struggle to qualify them (not observed; Cordelia has no brochure or RERA number on its page yet).",
+    "Ads and pixel may be run by an outside agency, which could decide who buys (not stated anywhere; I could not find an agency credit).",
+    "A Gujarati reply option could be a differentiator for Surat buyers (not observed; their marketing is English).",
+    "The first reply could send the Cilantra brochure now and a 'Cordelia details coming' note until its brochure exists."
+   ],
+   "case_for": "I tried to refute the A and the main claims held. (1) The pay signal is real: I re-read the Meta Ad Library myself on 19 Oct 2026 and page 'Swagat Builders' has 3 active ads, all 'Started running on 18 Oct 2026', two of them click-to-WhatsApp (API.WHATSAPP.COM destination, 'Send WhatsApp message', 'Book a Site Visit'). That is paying for enquiries that land in WhatsApp. There was also an earlier Cilantra video ad from 6 Aug to 1 Sep 2026, so this is the second paid burst in 3 months. (2) The scout's RERA claim is now verified on the official GujRERA public list: Swagat Cordelia (promoter Swagat Infra), reg. no. ...RAA17450/121026/311233, approved 12-10-2026, end date 31-12-2033, so a 448-flat project was registered 7 days ago and can now be marketed. (3) Email route is real: info@swagatdevelopers.in is a mailto link on their own contact page, and the domain has a live Google mail MX record. (4) Not a chain or agency: private Surat developer since 2008 with several promoter entities on GujRERA (Swagat Corporation, Builders, Buildcon, Infra), 13 projects listed, Facebook page 8K followers. (5) No bot, CRM or live-chat vendor found: I downloaded all 13 JS chunks and found no third-party host except the Meta Pixel and a Cloudflare beacon; the contact form posts to their own /api/contact and /api/callback-request. No anti-AI stance. (6) The Facebook page phone (078740 82362) matches the website, so the number is theirs. Priority city, English-language marketing, evidence under 2 days old.",
+   "case_against": "A holds on 'they pay for enquiries', NOT on 'they answer slowly', which is pure hypothesis. Weak points: (a) The ad burst is only 21 hours old and the Ad Library shows no spend amount, so it could be a short test or a boost run by an outside agency; the earlier run lasted about 26 days with one ad. (b) Cilantra has been registered since 23 Jun 2025 (16 months), so the ads sell remaining inventory, not a fresh launch; Cordelia itself has no brochure, RERA number or floor plans on its web page yet, so its launch date is not public. (c) A testimonial published on their own site praises 'quick response times', which is self-published and undated but is the opposite of a slow-reply story, so the first touch must not claim slowness. (d) The About page names a Head of Sales, a Head of Marketing and a content/marketing team lead, so an in-house team (and possibly a CRM or telecallers) probably exists; invisible from outside. (e) Click-to-WhatsApp ads can carry a Meta greeting or run on a WhatsApp Business API number, which would make the 'no instant reply' gap smaller than assumed; I cannot see which number the ads route to without opening the chat, which I must not do. (f) Only a generic info@ mailbox is published, no named person's email. (g) The scout's lead 'Swagat Group' (Ahmedabad) is a different company and is NOT this one: it runs a Kenyt.AI website chatbot and automated brochure forms, so it was wrongly bundled.",
+   "ability_to_pay": "Good. Two projects marketed at the same time, a new 448-flat registration, a long delivery record and paid ads in two separate bursts in 2026. The ad budget itself is not visible, so 'good' rests on size and ad history, not on known spend.",
+   "resistance": "Low to moderate. No chatbot, CRM, WhatsApp-automation vendor or agency credit found, and no anti-AI position. Named Head Sales, Head Marketing and content lead mean an in-house team may already answer WhatsApp and calls. Whether the WhatsApp number behind the ads is the WhatsApp Business app with an auto-greeting, or an API number, is unknown. The owner is reachable only through the generic mailbox and the two office numbers.",
+   "best_angle": "Be specific and do not claim slow replies. Open with: your Swagat Cilantra click-to-WhatsApp ads went live on 18 Oct, and Swagat Cordelia (448 flats) was RERA-registered on 12 Oct, so a burst of WhatsApp enquiries is coming. An instant reply with the brochure, 3 quick questions (BHK, budget, timeline) and a site-visit slot, plus follow-ups and one lead board your sales team can see, would be ready before that burst. Offer a short demo on their own Cilantra ad.",
+   "best_channel": "Email to info@swagatdevelopers.in as the first touch (business-published, source https://swagatdevelopers.in/contact). Follow with a human phone call to a published number. Do not send a cold WhatsApp template to the ad numbers, because round 1 failed with Meta codes 131049/131026.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "info@swagatdevelopers.in",
+     "source": "https://swagatdevelopers.in/contact",
+     "note": "Business-published mailto link on the contact page and footer. Generic mailbox. Domain has a live Google mail MX record. Best first-touch channel."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 97268 87888",
+     "source": "https://swagatdevelopers.in/contact",
+     "note": "Published as a wa.me link and a tel link on the contact page. Mobile, so likely WhatsApp-capable. Not confirmed as the number the ads route to."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 78740 82362",
+     "source": "https://swagatdevelopers.in/contact",
+     "note": "Published as a wa.me link and a tel link. The same number is on the Facebook page (https://www.facebook.com/SwagatCorporation/), so it is verifiably theirs. Likely WhatsApp-capable."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97268 87888 / +91 78740 82362",
+     "source": "https://swagatdevelopers.in/contact",
+     "note": "Office click-to-call numbers. Office: 117 Raghuvir Business Park, Udhna Magdalla Road, Vesu, Surat."
+    },
+    {
+     "kind": "website",
+     "value": "https://swagatdevelopers.in/",
+     "source": "https://swagatdevelopers.in/",
+     "note": "Contact form with 3 fields (name, number, message) plus a 'Request call back' option; the form promises a call, with no instant reply or booking step."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/SwagatCorporation/",
+     "source": "https://www.facebook.com/SwagatCorporation/",
+     "note": "Page 'Swagat Builders', 8K followers, 0 reviews, last post 2 days before 19 Oct 2026. This is the advertiser of the Meta ads."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/swagatdevelopers",
+     "source": "https://swagatdevelopers.in/contact",
+     "note": "Linked in the site footer."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+2 spend now: 3 live Meta ads (2 click-to-WhatsApp) started 18 Oct 2026, after an earlier 26-day run 6 Aug to 1 Sep 2026; not +3 because the burst is 21 hours old, covers one project and shows no spend amount",
+    "+2 urgency: GujRERA approved the 448-flat Swagat Cordelia on 12 Oct 2026 (verified), the site shows it 'Coming Soon' with Enquire Now, Cilantra has a sample flat ready, and Diwali (8 Nov 2026) is ahead",
+    "+1 funnel gap: enquiries come in through WhatsApp ads, two WhatsApp/phone numbers and a 3-field callback form that promises a call; no booking flow, brochure auto-send, chatbot or Lead pixel event. Only +1 because 'no instant reply' cannot be seen from outside, ads may carry a Meta greeting, and a site testimonial claims quick response",
+    "+2 can pay: 13 projects, four registered Surat promoter entities, two projects (144 and 448 flats) being sold or launched together, paid ads in two bursts this year",
+    "+1 reachable: business-published info@swagatdevelopers.in (live mail MX) plus two WhatsApp-labelled numbers",
+    "-1 resistance: About page lists a Head of Sales, Head of Marketing and a content lead, so an in-house team likely exists; no CRM, bot, agency or anti-AI stance is visible"
+   ],
+   "hunger_gaps": [
+    "Which WhatsApp number the click-to-WhatsApp ads route to, whether it has an auto-greeting, and whether it is the WhatsApp Business app or an API number: not visible without opening the chat, which I must not do.",
+    "Ad spend and how long the 18 Oct burst will run: the Ad Library shows only the start date and 21 hours of active time.",
+    "Whether an internal CRM or telecaller team exists: only the Head Sales and Head Marketing roles on the About page hint at it.",
+    "No named person's email is published, only the generic info@ mailbox.",
+    "WebSearch hit its shared call limit, so I could not check news, Google reviews, 99acres or MagicBricks listings, job posts for CRM or telecallers, or the 'built by 3wcreators LLP' claim from the other qualifier; I found no designer credit anywhere in the rendered site.",
+    "What did not work: a guessed GujRERA detail URL returned 404 (the public list filter worked instead); 3wcreators.com blocked curl with HTTP 406; the Ad Library all-status keyword search for 'Swagat Builders' was flooded with unrelated 2020 CREDAI ads, so I used narrower queries; Apify was not used (limit exhausted).",
+    "GujRERA also lists a gmail-style email and a mobile number for each promoter entity; I deliberately did not copy them because they are not business-marketing contacts."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Surat developer: Cilantra ads (two with a WhatsApp button) went live 18 Oct and the 448-flat Cordelia was RERA-registered 12 Oct",
+   "why_hungry": [
+    "3 live Meta ads since 18 Oct, 2 of them click-to-WhatsApp",
+    "Cordelia (448 flats) RERA-registered 12 Oct, site shows Coming Soon with Enquire Now",
+    "Enquiries go to WhatsApp, two numbers and a callback form; no booking step seen"
+   ],
+   "next_step": "Wave 2: English page and video being built. First touch = email to the business address plus the WhatsApp template, each with its own owner OK code.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded A; hunger 7/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "All three live ads, the earlier Cilantra ad and the whole website are in English. Surat buyers may also use Gujarati, but their own marketing is English, so an English first touch is right.",
+   "website": "https://swagatdevelopers.in/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-shrinivas-organisors-supercity",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-3"
+  ],
+  "data": {
+   "name": "Shrinivas Organisors - SuperCITY",
+   "legal_name": "Shrinivas Organisors Pvt Ltd (SuperCITY Lifestyle Township)",
+   "city": "Ahmedabad (office at Science City / Bhadaj; township and the Grace project are in Kalol taluka, Gandhinagar district)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Not publicly stated. The website contact page names one contact person beside two of the phone numbers, with no role given, so he is not a verified owner or director. Address the first email to the enquiry/sales desk, not to a named person.",
+   "size_cues": "155-acre horizontal township near Science City; about 15 projects on the site (ongoing Prime, Shine, Divine, Joy, Luxuria 1-3, Arcade, Super Industrial Park, Super Estate; completed Glare, Dream, Honour, Grand, Glory, Pride). Facebook 63K followers, 94% recommend from 36 reviews. Instagram 6,028 followers, 2,104 posts. Named in the 2020 GIHED CREDAI virtual property show developer list, and Instagram highlights show GIHED'26 and NAREDCO, so it is an active CREDAI-circle developer. Local single-brand company, not a listed or national chain. It is large enough that a site sales desk or call team is likely.",
+   "observed_facts": [
+    "Meta Ad Library (India), checked 2026-10-19 in the built-in browser: page superCITY (page id 361837937180696) has exactly 2 Active ads, both for SuperCity Luxuria 2. ID 2344130766399110 started 1 Oct 2026 (See Details); ID 1427305102183529 started 16 Oct 2026 (Sign Up). Both say 'This ad has multiple versions'.",
+    "Ad copy is Gujarati script with English words (3 & 4 BHK, Site Visit, enquiry); the 16 Oct ad says '3 BHK up to 2301 Sq. Ft.', 'Science City 2 minutes', 'Possession Soon, Limited Units Available'. Both ask the reader to enquire for project details and a site visit.",
+    "Ad link destination is the generic fb.me placeholder (on-Facebook destination); it is not a website landing page and not a wa.me link.",
+    "The same advertiser name superCITY appears in the 2020 GIHED CREDAI virtual property show developer list in the Ad Library, so it is a long-standing CREDAI-circle developer (a 2020 fact, not recent evidence).",
+    "GujRERA public record project id 31945: project GRACE, promoter SHRINIVAS ORGANISORS PRIVATE LIMITED (company), mixed development, Kalol (G), Gandhinagar, under Ahmedabad Urban Development Authority, application 2026-08-15, approved 17-10-2026. The record has a promoter email and mobile; it has no website and no unit counts.",
+    "supercitylife.com is live (HTTP 200). Footer says (c) 2024 Shrinivas Organisors Pvt. Ltd. The home, contact and Luxuria 2 pages do not name Grace.",
+    "No WhatsApp, wa.me, chat, live-chat, CRM or Meta Pixel string in the HTML of the contact and Luxuria 2 pages. Only Google tags: AW-628195293 (config only), GA4 G-7XLK4Z0V91, legacy UA-203932799-1.",
+    "The enquiry form action is https://supercitylife.com/contact_us/sendMail (own mail script, no third-party form or CRM). Publicly listed doors: that form, inquiry@supercityproject.com, three phone numbers, Facebook, Instagram, LinkedIn, YouTube.",
+    "Contact page: office Bhadaj Dental College Road, near Hare Krishna temple road, Science City, Ahmedabad 382721; phones +91 75748 72552 / 72553 and +91 90999 77909; one named person with no role.",
+    "supercityproject.com has an MX record (mail exchanger is the domain itself) and an SPF record that lists its own hosting IPs plus relay.mailchannels.net, which points to a self-hosted/shared-hosting mailbox rather than a managed suite. This only suggests mail can be delivered; it does not prove the mailbox is monitored.",
+    "Facebook page superCITY: 63K followers, 94% recommend (36 reviews), intro lists 075748 72552 and contact@supercityproject.com; latest post about 1 day old (Joy, ~2026-10-18). The reviews tab showed only one visible review (6 Aug 2023, positive). No WhatsApp button or number on the page text.",
+    "Instagram @supercity_life: 6,028 followers, 2,104 posts; latest post dated Oct 17, 2026 (Joy, 1 & 2 BHK, 'Ready to move with BU Permission', phone 90999 77909, RERA No RAA09873). Highlights: Festival, Luxuria2, Joy, Divine, Prime, Luxuria 3, GIHED'26, NAREDCO.",
+    "Website footer credits a web-design studio (pvotdesigns.com); no ad agency or CRM vendor was found."
+   ],
+   "hypotheses": [],
+   "case_for": "Independently re-verified today (2026-10-19): the Meta Ad Library (India) lists 2 ACTIVE ads for page superCITY, both for Luxuria 2: ID 2344130766399110 started 1 Oct 2026 (button See Details) and ID 1427305102183529 started 16 Oct 2026 (button Sign Up), each with multiple versions. Both end with an enquiry call to action for project details and a site visit. The destination link is the generic fb.me placeholder, which Meta uses for on-Facebook destinations, so a Meta lead form is plausible. The website (HTML checked on the home, contact and Luxuria 2 pages) has no WhatsApp number, wa.me link, chat widget, CRM or pixel script. The enquiry form posts to the site's own sendMail script, so web leads go to email only. Facebook and Instagram show no WhatsApp contact either; the Instagram post of 2026-10-17 tells people to phone 90999 77909. So enquiries from ads, expos, social and the website all reach a few phone lines and one mailbox by hand, with no instant reply, brochure or booking flow. The new Grace project was approved on GujRERA on 2026-10-17 (fresh, but not yet advertised or listed on the site). The business publishes a real enquiry email on its own domain (inquiry@supercityproject.com, mailto on the contact page; the domain has an MX record) and a second one on Facebook. Ability to pay is clear from the township size and steady paid and organic activity.",
+   "case_against": "The need is inferred, not shown. No review text, complaint or other evidence of slow replies was found: the only Facebook review visible in the reviews tab was one positive review from Aug 2023. A 15-project township with a named contact person and a site office most likely has an in-house sales desk, and the polished mixed Gujarati/English ad copy suggests an agency or in-house marketer; either could already log Meta leads in a CRM or sheet. Ad leads probably land in a Meta-side form or Messenger, so the missing website WhatsApp button matters less for them. Scale is unknown: only 2 live ads, both for one project whose copy says Possession Soon / Limited Units Available, which suggests a sell-down push rather than a big new inflow; India shows no ad spend data. Grace is registered but not yet on the site or in any ad. The scout's Google Ads claim is overstated: the AW-628195293 tag is a bare config tag with no conversion event, so it does not prove paid Google clicks. The scout's 440 flats + 22 shops and 'promoter record lists supercitylife.com' could not be verified (the GujRERA record has neither). The website footer says 2024. The decision-maker is unnamed.",
+   "ability_to_pay": "Strong. 155-acre township, about 15 projects across residential, commercial and industrial plotting, 63K Facebook followers, live Meta ads in two bursts this month, GIHED/NAREDCO event activity, and a new mixed-development project registered 2026-10-17. Ad spend itself is not visible, and the only paid-spend proof is the Meta ads (the Google AW tag is config only).</ability_to_pay>\n<parameter name=\"resistance\">Low to medium, no direct evidence either way. No CRM, chatbot, live-chat script or anti-bot positioning on the site, and no ad agency named. Unknown: whether the Meta lead form feeds an in-house CRM or call desk, who answers the three phone numbers, and who runs the ads. The owner is not named, so the first touch goes to the enquiry inbox.</resistance>\n<parameter name=\"best_angle\">One concrete line about the live Luxuria 2 ads (running since 1 Oct, new version 16 Oct) and the new Grace registration, then the missing door: their ads, site and social all end in a form, an email or a phone call, with no WhatsApp route. Offer an instant WhatsApp first reply with the brochure, three qualifying questions and a site-visit slot, plus follow-ups and one board that shows which ad or project each lead came from. Frame it as the instant-reply and follow-up layer on top of whatever sales desk they have, and make no claim that they reply slowly.",
+   "resistance": "",
+   "best_angle": "",
+   "best_channel": "Email to inquiry@supercityproject.com (published on the website contact page); contact@supercityproject.com from Facebook as a second route if there is no reply. No cold WhatsApp template to the phone numbers first: round 1 template sends to ad numbers failed with Meta 131049/131026, and these numbers are not labelled WhatsApp anywhere. A human phone call to +91 75748 72552 (or the 90999 77909 sales line from the Instagram post) is the fallback. Do not submit the website form.</best_channel>\n<parameter name=\"hypotheses\">[\"Enquiries from the Luxuria 2 ads, expos and calls are answered by hand and some wait for hours, especially at night; not evidenced.\", \"Ad leads probably arrive in a Meta-side form or Messenger (fb.me destination, Sign Up button on the 16 Oct ad, no Meta Pixel on the site), so the owner may not see one combined view of leads by source or project.\", \"A Grace launch on top of running projects will raise enquiry load, but Grace is not yet on the site or in ads, so the timing of that load is unknown.\", \"The sales desk may already log leads in a CRM or spreadsheet; if so the value is the instant reply and follow-up, not a new CRM.\", \"The Possession Soon / Limited Units wording on Luxuria 2 may mean it is near sell-out, which would lower enquiry volume from those ads.\"]",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "inquiry@supercityproject.com",
+     "source": "https://supercitylife.com/contact-us",
+     "note": "Business-published enquiry inbox: on the contact page, as a mailto on the site pages, and on the home page. Domain has an MX record. Best first-touch address."
+    },
+    {
+     "kind": "email",
+     "value": "contact@supercityproject.com",
+     "source": "https://www.facebook.com/superCITYlife/",
+     "note": "Listed in the Facebook page intro (page live 2026-10-19, latest post 1 day old). Same domain; use only as a second route if there is no reply."
+    },
+    {
+     "kind": "email",
+     "value": "supercity.luxuria2@gmail.com",
+     "source": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/31945",
+     "note": "Promoter email on the GujRERA register record for Grace. A gmail address named after Luxuria 2, so possibly a project or legacy mailbox. Low confidence as a sales inbox; do not use first."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75748 72552",
+     "source": "https://supercitylife.com/contact-us",
+     "note": "Main number: tel link in the site header and contact page, and the phone on the Facebook page. Mobile-range, so likely WhatsApp-capable but not confirmed; no WhatsApp label anywhere."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75748 72553",
+     "source": "https://supercitylife.com/contact-us",
+     "note": "Listed beside the named contact person. Likely WhatsApp-capable, not confirmed."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 90999 77909",
+     "source": "https://www.instagram.com/supercity_life/p/Den74I2jZYo/",
+     "note": "Also on the contact page. The Instagram post of 2026-10-17 (Joy, ready to move) says 'Learn more at 90999 77909', so this is the number they put in sales posts. Likely WhatsApp-capable, not confirmed."
+    },
+    {
+     "kind": "website",
+     "value": "https://supercitylife.com/contact-us",
+     "source": "https://supercitylife.com/contact-us",
+     "note": "Quick Inquiry form (name, email, phone, message) that posts to the site's own sendMail script. Do not submit."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/superCITYlife",
+     "source": "https://www.facebook.com/superCITYlife/",
+     "note": "Official page, 63K followers; runs the Luxuria 2 ads."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/supercity_life/",
+     "source": "https://www.instagram.com/supercity_life/",
+     "note": "Official account, 6,028 followers; bio links only to supercitylife.com; latest post 2026-10-17."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 8,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: 2 ACTIVE Meta ads started 1 Oct and 16 Oct 2026 (latest 3 days old), multiple versions each (re-verified in the Ad Library today); spend amount not visible",
+    "+1 urgency: Grace approved on GujRERA 2026-10-17 and ads push 'Possession Soon / Limited Units', but no Grace launch, ad or site page was found, so only a small urgency credit",
+    "+2 funnel gap: no WhatsApp number or button on site, Facebook or Instagram, no chatbot; web form goes to an own mail script; three phone lines plus one mailbox cover ads, social, expos and calls",
+    "+2 can pay: 155-acre township, about 15 projects, 63K Facebook followers, CREDAI-circle developer, new RERA project",
+    "+1 reachable: business-published inquiry@supercityproject.com on its own website plus published phones",
+    "-1 resistance: a township this size probably has a site sales desk, and the Meta lead form or an ad agency may already feed a CRM or sheet; none of it is visible, so only a small deduction"
+   ],
+   "hunger_gaps": [
+    "Slow replies are not evidenced: no review text, complaint or mystery-shop data. Only one Facebook review (Aug 2023, positive) was visible without a login. Mystery shopping was not done because we must not contact anyone.",
+    "WebSearch budget was exhausted, so no news, directory, job-posting (telecaller/CRM executive) or portal-listing (99acres/MagicBricks) search was done. Those would be the best way to find an in-house sales team or CRM.",
+    "Guessed GujRERA promoter-listing endpoints returned 404, so the other registered SuperCITY projects were not independently confirmed by me.",
+    "Not verified: the scout's '440 flats + 22 shops' for Grace and the claim that the promoter record lists www.supercitylife.com. The record I fetched shows neither.",
+    "The Google Ads tag only proves a Google Ads account tag exists; there is no conversion event and no spend evidence for Google.",
+    "Ad Library shows no spend or impressions for India commercial ads, and inactive ads are not retained, so ad history and volume are unknown. Only 2 active ads were found for the page.",
+    "Instagram and Facebook were read without a login, so post history and comments were only partly visible; only the latest Instagram post (2026-10-17) and the Facebook post (~2026-10-18) were dated.",
+    "The site's privacy-policy, credits and about URLs return the home page, so no company directors, CIN or vendor credits could be read. The decision-maker is unidentified.",
+    "A promoter mobile and a gmail address appear on the GujRERA record for Grace; the mobile was left out of the contact list to keep personal data down, and whether either is monitored is unknown."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "155-acre Ahmedabad township with 2 live ads (latest 16 Oct); probably has its own sales desk",
+   "why_hungry": [
+    "2 active Meta ads started 1 Oct and 16 Oct",
+    "New project approved on GujRERA 17 Oct",
+    "No WhatsApp number on the site, Facebook or Instagram; three phone lines and one mailbox"
+   ],
+   "next_step": "Wave 3: Gujarati ads with English words. Check the mail record before using the email (it points at the domain itself).",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 8/10"
+    }
+   ],
+   "language": "gu",
+   "language_note": "Their own Meta ads (IDs 2344130766399110 and 1427305102183529) are Gujarati script with English words mixed in. The website, Facebook intro, Instagram bio and Instagram captions are English. Write the email in English and offer a Gujarati/English WhatsApp experience.",
+   "website": "https://supercitylife.com"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-rameshwar-developers",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-3"
+  ],
+  "data": {
+   "name": "Rameshwar Developers",
+   "legal_name": "Rameshwar Developers (Rameshwar Group; Google Ads advertiser name begins \"Rameshwar Infrabuild Developers Priv...\"; Facebook pages Luxuriom.RameshwarDevelopers and Rameshwar Developers)",
+   "city": "Ahmedabad (Kasindra, Sarkhej-Dholka Highway; also Visalpur and Dholka)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Site's About page (fetched 2026-10-19) lists Leadership: Ramniranjan Modi (Chairman), Naresh Modi (Managing Director), Vishal Pansari and Vikas Agarwal (Directors). No direct contact for any of them is published; address the email to the sales or marketing head, not to a named person. Site testimonials praise named in-house sales staff, so a real sales team exists.",
+   "size_cues": "Mid-size regional family group, not a national or listed chain. Family business since 1980 (Naresh Marble and Ceramics), building since 2007. Site counters: 20+ years, 1700 bungalows, 36 lakh sq ft under construction; mission to build 20,000 homes by 2036. Google Maps shows about 10 separate project listings, the main one 4.3 stars (319 reviews) and project listings 4.6 to 5.0 stars with roughly 1,900 reviews in total. 8 distinct sales numbers across projects. Careers page lists in-house IT Executive, Digital Marketing Executive, Collection Executive, Legal Assistant, HR and Talent Acquisition roles. Awards, CREDAI (Jan 2026) and NAREDCO (Dec 2025) expos, a Mumbai property fest (May 2026), a Taj Skyline launch event (Jun 2025), Channel Partner and NRI programmes. That is a corporate-style structure, closer to a large developer than a small builder.",
+   "observed_facts": [
+    "Meta Ad Library (India, Active, keyword 'Rameshwar Developers'), opened in the built-in browser 2026-10-19: 22 ad entries loaded from the pages Luxuriom.RameshwarDevelopers and Rameshwar Developers, start dates 24 Jul to 7 Oct 2026 (three started 7 Oct, nine started 24 Sep to 1 Oct). The page says '~79 results' but I only counted the 22 that loaded; many say 'multiple versions' or '2 to 5 ads use this creative'. Every entry names a Rameshwar project and number.",
+    "Google Ads: on Google Maps (2026-10-19) the top result for 'Rameshwar Developers Kasindra Ahmedabad' carries a 'Sponsored' label with an ad click link (gclid) and a Luxuriom Bellevue ad text, advertiser name starting 'RAMESHWAR INFRABUILD DEVELOPERS PRIV...'. So they pay for Google search/Maps as well as Meta.",
+    "Ad CTAs: Book Now, Get Quote, Get offer, See Details, Learn More. Entry doors printed in ads: 'fill the form', 'DM ROYAL', 'Call/WhatsApp', 'Call Now', website form, the site's wa.me button.",
+    "Ad copy promises speed: 'fill the form and we'll confirm your slot within the hour' (ads from 24 and 30 Sep), 'Fill the form. We'll send the full cost sheet and EMI breakdown today' (1 Oct), 'Fill the form for floor plans and the Utsav price list' (24 Sep). The same ads print 'Call Time 10:00 AM to 7:00 PM' and 'Call Time 10:00 AM to 6:30 PM'. Google Maps listings show 'Closes 6:30 pm' / '7 pm' / '6 pm'.",
+    "A retargeting-style ad is live ('You checked out Luxriom Imperia. The Royal Utsav offer won't wait', from 1 Oct). Diwali deadline: 'book before Diwali', 0% interest till possession, Rs 9 to 25 lakh benefit; Daffodils pre-launch from 24 Sep; Diwali 2026 is 8 Nov.",
+    "Every ad number matches a Google Maps listing of theirs: 99090 76276 (Bellevue), 95120 12005 (Luxuriom Elite), 99780 78022 (City Honour), 95123 45275 (Paradise / City Glory), 99780 78023 (Dream), 95120 12009 (Crystal Bungalows), 90999 76976 (main). So the numbers are really theirs.",
+    "Website (fetched by curl 2026-10-19, home, contact, Bellevue, Imperia): Next.js site made by Zestra. Scripts found: Google Tag Manager, GA4, Facebook Pixel, Microsoft Clarity, Metricool. No chatbot, live-chat or WhatsApp-automation widget (checked for Crisp, Tidio, Tawk, Wati, Interakt, Gupshup, Zoho, HubSpot, LeadSquared, Kommo, Bitrix, Calendly, Intercom, ManyChat, Chatwoot): none. The only chat route is a plain wa.me link.",
+    "Site backend (read from the public page code): forms post to api.rameshwardevelopers.com (/api/inquiries/save, then /api/mail/project-inquiry or /api/mail/contact, which send an email), and site content is pulled from the Reecosys platform (reecosys.com/api/Admin, tenant 'rameshwardevelopers'). Reecosys's own admin page (public, fetched 2026-10-19) shows modules for lead management, lead assignment, follow-up, tasks, call logs, campaigns and a booking dashboard, and no WhatsApp mention. So web-form leads are stored in a real estate admin platform with lead tools, not only emailed.",
+    "Generic contact-form thank-you page (public) says only 'Team Rameshwar Developers will get back to you shortly', with no time and no WhatsApp or auto reply shown. The project thank-you code can show project documents after a submit, so a brochure may be handed over on screen (not tested, forms not submitted).",
+    "Contact form has no budget, BHK or visit-date field (Name, Email, Phone only).",
+    "Careers page (fetched 2026-10-19) lists Digital Marketing Executive and IT Executive among openings, i.e. in-house marketing and IT roles, which weakens the 'outside agency runs it' guess. Site testimonials praise named in-house sales staff and loan-processing help.",
+    "Facebook page: 109K followers, 94% recommend (11 reviews), phone 090999 76976, salesrameshwar@gmail.com. Google Maps main listing 4.3 stars (319 reviews); review topics include 'cooperative staff'. I could not read or search review text (Google asks for sign-in; I did not sign in), so no complaint about slow replies was found either way.",
+    "The Bellevue landing page has a misspelled mailto (info@rameshardevelopers.com): a site typo, do not use.",
+    "Not on the already-in-campaign list (no alias match)."
+   ],
+   "hypotheses": [
+    "Evening, night and NRI form leads wait until the next 10 AM call window, which contradicts 'confirm your slot within the hour'. Inferred from printed call hours and Maps closing times; real reply time not tested (we may not contact them or pose as a buyer).",
+    "Leads from Facebook lead forms, DMs, calls and the wa.me button probably live in different phones and inboxes. The Reecosys admin may hold web-form leads, but whether Meta lead-form and DM leads are fed into it is unknown.",
+    "The generic web form (3 fields, 'will get back shortly') suggests no instant WhatsApp reply with price list, qualifying questions and visit slot; our offer would add that layer on top of whatever lead log they have.",
+    "'DM ROYAL' may be a keyword DM automation (ManyChat style) or a human reply. Unverified.",
+    "Diwali (8 Nov) is peak season; the team may be too busy to evaluate a new tool before then, or may welcome help with the festive rush."
+   ],
+   "case_for": "Fresh, large, dated spend on Meta (22 ads, newest 7 Oct) and Google, on Rs 2 to 4 Cr products with a Diwali cut-off on 8 Nov. Their own ads promise speed ('slot within the hour', 'cost sheet today') while printing call hours that end at 6:30 to 7 PM, and the web form is a plain 3-field form that answers 'will get back shortly'. No chatbot or WhatsApp automation anywhere we looked. A business-published email exists (info@), the WhatsApp and phone numbers are verified as theirs, and the business is regional, not a listed or national chain. Instant WhatsApp reply with budget, villa size and timeline questions plus a visit slot fits the printed promise.",
+   "case_against": "The need is inferred, not observed: no complaint or measured delay was found, and Google review text could not be read. They are a mid-to-large regional developer (about 1,900 Google reviews across projects, in-house IT, marketing, legal and HR roles, 8 sales lines, named sales staff, expo and launch-event machinery), which sits near the 'large developer with in-house team' reject line. Their site backend is a real estate platform whose admin has lead management, assignment, follow-up and booking tools, so 'one lead board' is not a differentiator and a CRM may already exist; only WhatsApp instant reply and qualification are clearly missing. Email goes to a shared inbox with no named owner (Managing Director is named on the site but has no published contact). Diwali is the busiest week, so a reply before 8 Nov is unlikely.",
+   "ability_to_pay": "Strong. Rs 2 to 4.36 Cr product, 22 live Meta ads plus paid Google placement, 109K Facebook followers, about 1,900 Google reviews across project listings, awards and expo presence. Regional, not national or listed.",
+   "resistance": "Medium. Likely already has a lead-tracking backend (Reecosys tenant with assignment, follow-up, call-log and booking modules) and an in-house marketing and IT team. No bot, chat widget or anti-AI positioning seen; 'DM ROYAL' automation unknown. Owner not directly reachable by a published route.",
+   "best_angle": "Their own printed promise: 'fill the form and we'll confirm your slot within the hour' against call hours that end at 6:30 to 7 PM. Offer only the WhatsApp layer on top of what they have: every form, DM and wa.me enquiry gets an instant WhatsApp reply with the price list or brochure, three questions (budget, villa size, timeline) and a visit slot, with reminders and follow-ups before Diwali, feeding whatever lead system they already use. Do not pitch 'a lead board' as the headline. Offer to pilot on one project (Imperia or Daffodils).",
+   "best_channel": "Email to info@rameshwardevelopers.com (business-published), in English. Then a human phone call to the main published number 90999 76976 if there is no reply in about 3 days. No cold WhatsApp template and no form submission.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "info@rameshwardevelopers.com",
+     "source": "https://www.rameshwardevelopers.com/contact-us",
+     "note": "Main business email, in the footer of every page and on the contact page (re-verified by curl 2026-10-19). Best first-touch address. Shared inbox, owner unknown."
+    },
+    {
+     "kind": "email",
+     "value": "Inquiry@rameshwardevelopers.com",
+     "source": "https://www.rameshwardevelopers.com/luxriom-imperia",
+     "note": "Project contact email on the Luxriom Imperia page. Secondary route only."
+    },
+    {
+     "kind": "email",
+     "value": "salesrameshwar@gmail.com",
+     "source": "https://www.facebook.com/rameshwardevelopers/about",
+     "note": "Listed in the official Facebook page About block (seen 2026-10-19). Gmail, fallback only."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 90999 76976",
+     "source": "https://www.rameshwardevelopers.com/contact-us",
+     "note": "Main number: tel link on every page, Facebook About page, Google Maps main listing (closes 6:30 pm)."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 90999 76976",
+     "source": "https://www.rameshwardevelopers.com/",
+     "note": "wa.me/919099976976 floating button with prefilled 'Hi, I contacted you Through your Website'. Published enquiry route and the number is theirs. Do NOT cold-template to it (round 1 failed with Meta 131049/131026 on ad numbers); use only for a human message after email."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 90999 76276",
+     "source": "https://www.google.com/maps/search/Rameshwar+Developers+Kasindra+Ahmedabad",
+     "note": "Luxuriom Bellevue number: in live ads ('Call/WhatsApp') and on the Bellevue Google Maps listing and landing page. Verified as theirs; a different line from 76976, not a typo."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95120 12005",
+     "source": "https://www.google.com/maps/search/Rameshwar+Developers+Kasindra+Ahmedabad",
+     "note": "Luxuriom Elite / Imperia / Royal Utsav line: Maps listing, Imperia page tel link, live ads."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99780 78022 / 99780 78023 / 99780 78024 / 95123 45275 / 95120 12009",
+     "source": "https://www.google.com/maps/search/Rameshwar+Developers+Kasindra+Ahmedabad",
+     "note": "Per-project lines on their Google Maps listings (City Honour, Dream, Paradise, City Glory, Crystal Bungalows) and in live ads (3 BHK scheme, Sky, Daffodils). Ad/project lines: use for a human call at most."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/rameshwardevelopers",
+     "source": "https://www.facebook.com/rameshwardevelopers/about",
+     "note": "Official page, 109K followers, 94% recommend (11 reviews). Property developer category."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/rameshwardevelopers",
+     "source": "https://www.rameshwardevelopers.com/contact-us",
+     "note": "Linked from the site footer. Not opened."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.rameshwardevelopers.com/",
+     "source": "https://www.rameshwardevelopers.com/",
+     "note": "Official site. 'Inquire Now' form is Name, Email, Phone only, with a Cloudflare Turnstile check. Do not submit it."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: 22 live Meta ads loaded (start dates 24 Jul to 7 Oct 2026, three started 7 Oct) plus a paid Google Ads placement on Maps, seen 2026-10-19.",
+    "+2 urgency: Royal Utsav Diwali deadline (8 Nov), Daffodils pre-launch, several launches at once, retargeting ads running.",
+    "+1 funnel gap: five entry doors and call hours ending 6:30 to 7 PM against a 'within the hour' promise, 3-field form with no booking flow and no WhatsApp auto reply visible. Held at +1, not +2, because the real reply time is unobserved and the site can hand over documents after a submit.",
+    "+2 can pay: Rs 2 to 4.36 Cr villas, heavy multi-channel spend, about 1,900 Google reviews across projects, 1700 bungalows per the site, awards and expos.",
+    "+1 reachable: business-published info@ email plus a published WhatsApp and phone for enquiries.",
+    "-2 resistance: site and lead backend run on a real estate platform with lead assignment, follow-up, call-log and booking features; in-house IT and digital marketing roles; 8 sales lines and named sales staff; 'DM ROYAL' may already be automated. Would be -3 if their sales team is confirmed to use it for follow-up."
+   ],
+   "hunger_gaps": [
+    "Real response time was not tested (not allowed to contact or pose as a buyer), so the slow-reply need is a hypothesis built on printed call hours and the 'within the hour' promise.",
+    "Google review text could not be read or searched (Google asks for sign-in and I did not sign in); only the 4.3 (319) rating and topic chips were seen. Facebook shows only one visible review without login. No slow-reply complaint was found, but also none ruled out.",
+    "Whether their team actually uses the Reecosys lead tools (assignment, follow-up, call logs), and whether Facebook lead-form and DM leads flow into any CRM, is unknown. The Reecosys vendor homepage itself does not say what it sells; the feature list comes from its public admin page.",
+    "Whether an outside agency runs the ads and lead follow-up is unknown (the in-house Digital Marketing opening argues against it).",
+    "The '~79 results' count in the Ad Library was not verified; only 22 ads loaded (the list can be scrolled further). The ads' lead forms (Facebook instant form or website) were not opened.",
+    "Web search was unavailable (shared budget used up), so I could not check other portals (99acres, Housing, MagicBricks, JustDial) for extra lead sources or complaints.",
+    "Instagram and YouTube were not opened. RERA numbers not captured.",
+    "Security note, not for outreach: a live API credential is visible in the site's public JavaScript. I did not use it, did not copy it into this report, and deleted my downloaded copy of that script. Do not mention it in any first touch."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Large Ahmedabad villa developer with 22 live Meta ads and a Diwali deadline; probably has its own sales tools",
+   "why_hungry": [
+    "22 live Meta ads (24 Jul to 7 Oct) plus Google Ads on Maps",
+    "Royal Utsav Diwali offer ends 8 Nov; Daffodils pre-launch",
+    "Form promises a reply within the hour but call hours end around 6:30 to 7 PM"
+   ],
+   "next_step": "Wave 3: bigger team and a lead platform with follow-up features, so a harder sell. Mixed English and Gujarati marketing.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "",
+   "language_note": "Website is English. Their ads mix English (long copy), Gujarati (Royal Utsav and sample-villa creatives) and Hindi (sample-villa video). An English email is safe; add a short Gujarati line for a call.",
+   "website": "https://www.rameshwardevelopers.com/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-space-age-consultants-arvind-sensora",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-2"
+  ],
+  "data": {
+   "name": "Space Age Consultants - Arvind Sensora",
+   "legal_name": "Space Age Consultants (ads also run under the Facebook page name SAC AHM)",
+   "city": "Ahmedabad (office: Swapna Commercial Complex, Jawahar Chowk, Maninagar)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Mr. Amit Bhargava, founder and CEO (named in the About text at https://spaceageconsultants.com/about/). Whether inquiry@ is read by him or by staff is not shown anywhere.",
+   "size_cues": "Small independent brokerage with one office (Maninagar). Self-stated: established 2010, Gujarat/Maharashtra/Karnataka RERA, works with Godrej, Adani and Applewoods, Dubai developer associations. Facebook intro says Authorized Channel Partner of Godrej Properties (self-stated). Facebook followers 1.7K and 449; Google Maps 5.0 from only 3 ratings. Team size not stated; the website's Meet Our Team block is leftover template filler (Lorem ipsum, stock names). Domain registered 2026-03-11 (registry RDAP), WordPress/Houzez theme built by Novarsis Technology (Indore), 16 listings from several developers (Godrej, Birla, Arvind, Shilp, Pacifica) with some leftover demo content. Not a chain and not a marketing agency, but it resells large listed developers' stock.",
+   "observed_facts": [
+    "Meta Ad Library, India, active ads, keyword 'Space Age Consultants', opened in the built-in browser on 2026-10-19: 8 ads from 'Space Age Consultants' and 'SAC AHM' (the other 3 results, az_estate_consultant and two AditiJain.Co ads, are unrelated advertisers and were excluded). Library IDs and start dates: 1082212764506205 (12 Sep, Naranpura 4 BHK pre-launch, See details), 1875079710527753 (30 Sep, Arvind Uplands, Sign up), 2608410609585139 (30 Sep, Arvind Aqua City, See details), 1495224872433547 and 1136680372656993 (16 Oct, Arvind Sensora pre-launch plots, Apply now, page SAC AHM), 2570856876729717 (18 Oct, 'multiple versions', Send WhatsApp Message, EOI Rs 50,000 and first 300 buyers), 2138516683448267 (18 Oct, Goregaon West coming soon, Sign up), 2365209074305751 (18 Oct, Adani Shantigram The Storeys, Get quote).",
+    "The 18 Oct ads show 'Total active time' of 17 to 18 hrs, consistent with a 2026-10-19 viewing. The three ads that started 12 Sep and 30 Sep were therefore already live on 14 Oct (round 1 reported only 1 ad).",
+    "Ad text is all English. Contact printed in the creatives: 98980 27250 | 75678 82288 only; the Shantigram ad says 'Contact Space Age Consultants for Site Visit & Details' without a number. No website, form or WhatsApp number is printed in the ad text.",
+    "Link captions on the Sign up / See details / Get quote ads show FB.ME, and the Sensora ads show a lead-form style caption ('Arvind Sensora, Ahmedabad' with Apply now). This points to Meta instant forms, not to their website, which has no Meta pixel or Google tag in its source.",
+    "Website https://spaceageconsultants.com: mailto inquiry@spaceageconsultants.com, tel links for both numbers, address in Maninagar, founder Mr. Amit Bhargava (CEO), 'established in 2010', RERA in three states and Godrej / Adani / Applewoods past work are self-stated. The contact page is /contact/ (HTTP 200); /contact-us/ is 404. Footer credits 'Design & Developed by Novarsis Tech'.",
+    "Domain spaceageconsultants.com was registered 2026-03-11 (registry RDAP, expiry 2028-03-11). The WordPress 'Hello world' post is dated 2026-03-02, demo agents and agencies from the 2016 Houzez theme are still in the sitemap, and the About page still shows Lorem ipsum and stock team names. The firm's claimed 16-year history therefore is not reflected in the website's age.",
+    "DNS: MX records mx1/mx2.hostinger.com and SPF include for Hostinger mail, so the domain is set up to receive business email.",
+    "Website source has a Click to Chat for WhatsApp plugin configured with number 919898027250 and an Elementor/Houzez inquiry form posting to admin-ajax. No chat vendor, booking tool or CRM script found. A HubSpot WordPress plugin is present but its own comment says the embed JS is disabled because no portalId is configured.",
+    "Sitemap lists 16 property pages dated March 2026, including Godrej, Birla, Arvind, Shilp and Pacifica projects; no pages for Arvind Sensora or Adani Shantigram, so the site lags behind the ads.",
+    "Facebook SpaceAgeConsultants: 1.7K followers, 0 reviews, 'Authorized Channel Partner of GODREJ PROPERTIES LIMITED', address Jawahar Chowk Maninagar, phone 098980 27250, latest post 2 days before 2026-10-19 (Sensora). SAC AHM: 449 followers, 0 reviews, bio says Space Age Consultants, Ahmedabad and PAN India partnering with developers in several cities and Dubai, only post seen dated 12 June 2025.",
+    "Google Maps listing 'Space Age Consultants' (real estate consultant): 5.0 from 3 ratings, same Maninagar address, website spaceageconsultants.com, phone 098980 27250, open until 10 pm. No review text was loaded.",
+    "Identity is confirmed across the website, both Facebook pages, Google Maps and the ads by the shared name, address and phone."
+   ],
+   "hypotheses": [
+    "Hypothesis: with 5+ developers' projects running at once and every ad pointing at two phones, enquiries after office hours or during bursts (Sensora EOI push) are answered late and by hand, and the right brochure per project is sent manually. Not observed.",
+    "Hypothesis: the Sign up / Apply now / Get quote ads are Meta instant forms whose leads sit in Meta Leads Center or an email inbox until someone calls. Not confirmed from outside.",
+    "Hypothesis: the founder plus one or two staff handle all calls on the two numbers, so one missed call is one lost EOI. Team size unknown.",
+    "Hypothesis: Godrej, Adani, Arvind or Birla may require channel partners to register leads in the developer's own CRM, which would reduce what we can add. Unverified.",
+    "Hypothesis: a one-project pilot on the Sensora EOI campaign is the easiest first sale because it has a stated cap and a clear next step (EOI call or site visit)."
+   ],
+   "case_for": "Directly observed and fresh: 8 live paid ads on 2026-10-19, 5 of them started 16-18 Oct, mixing instant-form style CTAs and a Send WhatsApp Message ad, all printing the same two phone numbers and nothing else. Several developers' projects run at once, so each enquiry needs the right brochure, price sheet and EOI or site-visit slot, which is exactly our first reply plus 3 qualifying questions plus slot plus follow-up plus one lead board. Founder-run, so the decision-maker is close. A business-published email exists on a domain with live mail (MX), and the main phone is cross-published on the website, Facebook and Google Maps. English language, Gujarat base, small enough to say yes quickly.",
+   "case_against": "The need is inferred, not observed: no review, post or page shows slow replies, and the lead flow cannot be seen from outside. Pay signal is real as ad activity but weak as ability to pay (3 Google ratings, 1.7K followers, domain 7 months old, template site, no spend figures). The 'ads jumped from 1 to 8 since round 1' story is overstated: 3 of the 8 ads started 12 Sep and 30 Sep, so at least 3 were already live on 14 Oct; the real step-up is 3 to 8 and round 1 probably missed some. It is a reseller of big listed developers (Arvind SmartSpaces, Adani, Godrej, Birla) whose own CP programmes and CRMs may already capture or own part of the lead flow. Generic inquiry@ mailbox set up with a new site and may be unwatched; the free-mail addresses on the Facebook intros are personal-looking and lower value. WhatsApp-first outreach is not usable after round 1.",
+   "ability_to_pay": "Moderate and unproven. For: 8 live ads at once, high ticket sizes where one closed sale pays a large commission, long-standing Maps listing. Against: tiny social and review footprint, new domain, unfinished site, no spend figures in the Ad Library for non-political ads, so budget is inferred from ad count only. A small monthly pilot fee is plausible; anything large is not evidenced.",
+   "resistance": "Low on public evidence, but with unknowns that could be high. Nothing found about a bot, CRM, agency or anti-AI stance. Unknown: whether Godrej, Adani, Arvind or Birla force channel partners to register leads in the developer's own CRM or give them a lead tool, whether the instant-form ads feed a CRM, and whether the WhatsApp ad has a greeting message. The shared inquiry@ mailbox may be read slowly or by someone other than the founder. Do not cold-WhatsApp the ad numbers: that route failed in round 1 (131049 / 131026).",
+   "best_angle": "Name what we saw: eight live ads this week across Arvind Sensora (EOI, first 300), Aqua City, Uplands and Shantigram, every enquiry landing on two phone numbers. Offer a small pilot on the Sensora EOI campaign only (one project, about one week): instant WhatsApp reply with the Sensora brochure and price sheet, 3 questions (plot size, budget, timeline), an EOI-call or site-visit slot, follow-ups, and one lead board. Keep it short and ask only for a yes or no to a 10-minute call.",
+   "best_channel": "Email first to inquiry@spaceageconsultants.com addressed to Mr. Amit Bhargava, in English. If no reply after a few days, a human phone call to the published +91 98980 27250 (the number their own site uses for its WhatsApp chat button). No cold WhatsApp template to the ad numbers and no website form.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "inquiry@spaceageconsultants.com",
+     "source": "https://spaceageconsultants.com/contact/",
+     "note": "Primary. Published in the Contact Details block on the homepage, /contact/ and /about/ and as a mailto link (fetched 2026-10-19). Domain registered 2026-03-11 and has live MX records (Hostinger mail) plus a matching SPF record, so a real mailbox setup exists; not SMTP-probed (that would count as contacting them). Who reads it is unknown."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 98980 27250",
+     "source": "https://spaceageconsultants.com/contact/",
+     "note": "Published on the website (tel link), Facebook page https://www.facebook.com/SpaceAgeConsultants/ (098980 27250) and the Google Maps listing (098980 27250, open until 10 pm), and printed in all 8 ads. Best verified number."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 98980 27250",
+     "source": "https://spaceageconsultants.com",
+     "note": "The site's Click to Chat plugin is configured with 919898027250, so the business itself publishes it for WhatsApp. Still a person's number: use for a human call, not a template send (131049 / 131026 failures in round 1). Likely a mobile."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75678 82288",
+     "source": "https://spaceageconsultants.com/contact/",
+     "note": "Second number: on the website and printed in all ads (Ad Library: https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&search_type=keyword_unordered&q=Space%20Age%20Consultants). Not on Facebook or Maps, so only two business-owned sources."
+    },
+    {
+     "kind": "website",
+     "value": "https://spaceageconsultants.com",
+     "source": "https://spaceageconsultants.com",
+     "note": "Address 2, Swapna Commercial Complex, Jawahar Chowk, Maninagar, Ahmedabad 380008. Same address and website on the Google Maps listing."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/SpaceAgeConsultants/",
+     "source": "https://www.facebook.com/SpaceAgeConsultants/",
+     "note": "Main page, 1.7K followers, 0 reviews, last post 2 days before 2026-10-19 (Arvind Sensora). Intro also lists a free-mail address (fallback only, not repeated here)."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/SACAHM/",
+     "source": "https://www.facebook.com/SACAHM/",
+     "note": "Second ad page, 449 followers, runs the two 16 Oct Sensora ads. Intro lists a free-mail address (fallback only, not repeated here)."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: I opened the Meta Ad Library (India, active) on 2026-10-19 and counted 8 live ads from the pages 'Space Age Consultants' and 'SAC AHM' (started 12 Sep, 30 Sep x2, 16 Oct x2, 18 Oct x3). Spend amount is not shown, but live and fresh paid ads are directly observed.",
+    "+1 urgency: pre-launch / EOI stage is real in the ad copy (Sensora 'EOI Rs 50,000, limited to first 300 EOIs', Goregaon 'Coming soon'), but no dated deadline or event was found, 'first 300' is marketing copy, and the Naranpura 'pre-launch' ad has already run 37 days. Held at +1, not +2.",
+    "+1 funnel gap: ad creatives print only two phone numbers; 4 entry doors in play (instant-form style CTAs Sign up / Apply now / Get quote with FB.ME links, one Send WhatsApp Message ad, calls); 5+ developers' projects each need their own brochure; website has no chatbot or booking flow (page source checked). Whether any instant reply exists could not be checked without contacting them, so only +1.",
+    "+1 can pay: 8 concurrent ads on high-ticket stock (Rs 31 lakh plots to Rs 5.5 Cr flats) and a Google Maps listing that predates the site. Held to +1 because footprint is small (1.7K and 449 followers, 3 Google ratings, domain only registered 2026-03-11, site still a template) and spend per ad is unknown.",
+    "+1 reachable: business-published email inquiry@spaceageconsultants.com on the website homepage and /contact/ page, domain has live MX records (Hostinger mail), and the same phone 098980 27250 appears on the website, Facebook page and Google Maps listing.",
+    "+0 resistance: no bot, CRM, agency or anti-AI positioning found. A HubSpot WordPress plugin is installed but its own page comment says the embed is disabled because no portal is configured, so it is not a live CRM. Web vendor (Novarsis Technology, Indore) is credited in the footer; it is not shown to run ads or lead handling."
+   ],
+   "hunger_gaps": [
+    "Whether the Send WhatsApp Message ad or any instant-form ad already has an auto-reply or greeting message cannot be seen without contacting them.",
+    "Ad spend and reach are not shown in the Ad Library for these ads, so ability to pay is inferred from ad count and ticket size only.",
+    "Godrej, Adani, Arvind and Gujarat RERA agent registration are self-stated and unverified; the RERA portal was not queried (form and captcha based).",
+    "Team size, who reads inquiry@, and whether any CRM or developer lead tool is used are unknown.",
+    "Did NOT work: WebSearch was unavailable (budget used up), so no independent third-party mention of the firm or founder was found; Google Maps review text did not load (only the 3-rating summary); the web vendor's site (novarsistech.com) is a JavaScript-only page, so its service list could not be read; no Instagram or LinkedIn profile was checked.",
+    "I did not re-verify the free-mail addresses beyond seeing them listed in the Facebook intros; they are personal-looking and fallback only."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Ahmedabad channel partner with 8 live ads on two Facebook pages (Arvind Sensora EOI and other projects); enquiries land on two phone numbers",
+   "why_hungry": [
+    "8 live ads on two Facebook pages (checked 19 Oct)",
+    "Arvind Sensora pre-launch: EOI of Rs 50,000 for the first 300",
+    "Ads print only two phone numbers; no booking step seen"
+   ],
+   "next_step": "Wave 2: English page and video being built (pilot on the Sensora EOI ads). First touch = email plus the WhatsApp template, each with its own owner OK code. Ability to pay is the weak point.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "All 8 live ad texts are English with emoji and hashtags, the website and the Google Maps listing are English, and both Facebook intros are English. No Gujarati or Hindi copy seen anywhere. Write to them in English.",
+   "website": "https://spaceageconsultants.com"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-nyalkaran-group",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-3"
+  ],
+  "data": {
+   "name": "Nyalkaran Group",
+   "legal_name": "Nyalkaran Group (brand: Shree Siddheshwar)",
+   "city": "Vadodara",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Six Golaviya partner-owners are named on https://www.nyalkarangroup.com/about_the_owners.html (Ashwin, Vijay, Alpesh, Chirin, Shailesh, Gokul). Ashwin is described in brand and strategy terms. No marketing or sales head is named anywhere public, so address the first email to the Nyalkaran Group team, with no guessed name.",
+   "size_cues": "Observed: 19 project pages with RERA numbers, 12 project-named ad pages, 19 Meta Pixel IDs, six partner-owners, a trademark certificate, a channel-partner programme, established 2010 per the site, 4000+ families per the site's profile page. Facebook page 1.1K followers and 1 review. The Instagram bio claim of 50+ projects and 10,000+ units was reported by the earlier qualifier and I did not verify it. Regional Vadodara group, not a listed or national chain, not an agency.",
+   "observed_facts": [
+    "Meta Ad Library (India, Active, keyword 'Nyalkaran Group'), read by me in the built-in browser on 2026-10-19: about 160 results. I read about 24 cards. Every card is Active. Start dates run from 15 Aug 2026 to 23 Sep 2026, the newest 26 days old. Many cards show '2-5 ads use this creative and text', so distinct creatives are far fewer than 160. Source: https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&search_type=keyword_unordered&q=Nyalkaran%20Group",
+    "Advertiser names on the cards: Shree Siddheshwar Highline, Hometown, Hillcreast, Havelock, Helicon, Hilltown, Holyland, Highness, Highwing _ Nyalkaran Group, Highdeck_Nyalkaran Group, Hollyhock _ Nyalkaran Group, and 'Nyalkaran Group' (Helenium and Hamilton).",
+    "CTAs on the cards I read: 'Get quote' with an FB.ME caption (Hometown, Hillcreast, Havelock, Helicon, Highdeck) and 'See details' with a nyalkarangroup.com link (Highline). Several cards show no CTA label. None uses a WhatsApp or Messenger CTA. Every ad body prints a 'Call' number, different per project (for example 99786 48982 Highline/Holyland, 99786 60929 Hillcreast, 90999 68595 Helicon, 97272 58046 Hilltown, 97123 40290 Havelock, 87588 85541 Hometown, 97123 44350 Highdeck, 70690 51908 Highness, 70690 11352 Hollyhock, 81413 26289 Hamilton).",
+    "Ad copy languages: English for most; Hinglish and Hindi in Hometown ('Apna business ... establish karein', Devanagari tagline); Gujarati script plus English in the Helenium ad ('Site Visit book karo' style CTA). Offers: Havelock '10% discount', Hollyhock 4 BHK from Rs 1.10 Cr, Hometown shops from Rs 43.51 lakh, 'Furnished sample apartment ready' on Helenium and Hollyhock.",
+    "I fetched the home page, contact_us, 19 project pages, careers, profile, owners, media, testimonials and channel_partner pages with curl. Each project page has its own tel link(s); 13 of the 19 also carry the same shared trio (99048 06221/23/29). 17 pages have their own Gmail inbox (sshilltown1008@gmail.com style); Hallmark and Harbour have only the general Gmail. No wa.me link appears on any project page. wa.me appears only on the home page.",
+    "Page code has only Google Tag Manager (GTM-W7S46CC5), gtag, Meta Pixel, jQuery, slider and FontAwesome scripts. No chat, chatbot, booking or CRM script. Forms post to PHP files on their own server.",
+    "19 distinct Meta Pixel IDs across the home page and project pages (a different pixel on almost every project page, for example 661180606144158 on Hollyhock, 2255240815303666 on Hilltown).",
+    "DNS: MX records point to Mailhostbox (business mail host); SPF lists only Mailhostbox, with no marketing or CRM sender. Weak evidence that no separate mail-automation tool sends from this domain.",
+    "Careers form (https://www.nyalkarangroup.com/careers.html) dropdown: Account Assistant, CA, Legal Advisor, HR, Tally Caller, Sales Executive, Graphics designer, Video Grapher, Social Media Manager, Supervisor, Engineer, Security, Driver, Office Boy, Other. Generic 'send resume' form, undated. There is no plain 'Caller' role, only 'Tally Caller'.",
+    "About the Owners page names six Golaviya partners (Ashwin, Vijay, Alpesh, Chirin, Shailesh, Gokul), not seven. No marketing or sales head is named. Ashwin is described as the strategy and brand-minded partner.",
+    "Site claims: established 2010, 4000+ families given possession, projects in Vadodara and Ahmedabad. The home page also has a channel-partner (broker) registration form, a vendor registration form, a blog (posts dated 2026/07), a trademark certificate PDF and RERA numbers on project pages.",
+    "Footer credit on every page: 'Designed by 3WC', linking to 3wcreators.com (website design, social media creatives, basic SEO). A website vendor, not shown to run the ads.",
+    "Official Facebook page (opened in my tab): 1.1K followers, 1 review ('Not yet rated'), Send message button, phone 90810 86677, last post 11 Oct 2026."
+   ],
+   "hypotheses": [
+    "Leads from the 'Get quote' forms and the per-project call numbers are handled by separate people or lines, so reply speed probably differs by project and nobody sees one funnel. This is an inference from the setup; I saw no response-time data.",
+    "The 19 pixel IDs and the 11+ ad numbers look like a trained media buyer or agency. If so, that person may gatekeep the pitch, or may already push Meta leads into a CRM or sheet that the calling team uses.",
+    "The most plausible gap is the first minutes after a lead-form submission and after-hours enquiries, plus brochure and site-visit scheduling per project. Their callers are probably used to calling cold form leads. A fair pitch is 'instant reply and qualification before your caller phones, plus one board', not 'replace your team'.",
+    "marketing@ may be read by an owner, a marketing person or the designer vendor. I do not know. Expect the first email to need a nudge by phone.",
+    "The festive window (Navratri now, Diwali early Nov 2026) and fresh creatives from 19-23 Sep make a small pilot on two projects timely. This is my inference; no ad mentions a festive deadline."
+   ],
+   "case_for": "The core claims hold when re-checked. (1) Paid enquiries are real and current: I re-read the Meta Ad Library (India, Active, keyword 'Nyalkaran Group') in my own browser tab today. It shows about 160 results, and the cards I loaded all say Active with start dates from 15 Aug to 23 Sep 2026, so all fall inside the 90-day window. (2) Several ads use 'Get quote' with an FB.ME link, which looks like a Meta lead form (not confirmed), and every ad body carries a different 'Call' number per project. None of the ~24 cards I read uses a WhatsApp or Messenger CTA. (3) The site has 19 project pages, each with its own phone number(s) and, for 17 of them, its own Gmail inbox. Forms are plain PHP forms on their own server (enquire_now.php, per-project reach_us.php and download_brochure.php), and no chat widget, bot or CRM script appears in the page code. (4) The email is theirs and live-looking: marketing@nyalkarangroup.com is a mailto link in the home page footer, and the domain has real MX records (Mailhostbox). (5) It is a regional Vadodara developer, not a listed or national chain, and RERA numbers are on the project pages. (6) It matches the campaign test 'they pay for enquiries' directly, with many projects at once, so one instant WhatsApp reply with the right brochure, 3 questions, a site-visit slot and one board across projects has a clear fit.",
+   "case_against": "The need is assumed, not seen: nothing public shows slow replies, and phone-led ads with a dedicated number per project suggest a staffed calling set-up that may already be fast. This is the most organised prospect type in the round. The code has a separate Meta Pixel on almost every project page (19 distinct IDs, home page included) under one Google Tag Manager container, which looks like deliberate per-project media buying by a trained marketer or agency. The site credits 3WC (a web and social-creatives studio) as designer. The careers form lists HR, Sales Executive, Social Media Manager, Graphics designer and Video Grapher, so an in-house sales and marketing team is likely (the list is generic and undated, so open vacancies are not proven). Six Golaviya partners own it and no marketing head is named, so marketing@ may be a shared or agency-watched inbox. Scale claims are unverified: the official Facebook page has only 1.1K followers and 1 review, against a claimed 50+ projects and 10,000+ units. The WhatsApp number is a general line, and cold WhatsApp to ad numbers already failed in round 1.",
+   "ability_to_pay": "High on volume: 12 pages running about 160 active ad results started within the last 9 weeks, 19 projects, premium inventory (4 BHK from Rs 1.10 Cr at Hollyhock, shops from Rs 43.51 lakh at Hometown, per the ad copy). The spend amount is not visible in the Ad Library for non-political ads. The 'Get quote' ads are probably lead ads, which means they pay per enquiry.",
+   "resistance": "Moderate and unconfirmed. No CRM, bot, named agency or anti-AI stance found. Risks: a likely media buyer or agency (pixel per project, 3WC web/social vendor), probable in-house sales and social team, six partners deciding, an unnamed marketing owner, and calling-led ads that may already have staffed lines.",
+   "best_angle": "Point at what they can see from outside: 12 project pages advertise at once, each with its own number and 'Get quote' form, and one site with no booking flow. Offer a free two-project pilot (for example Hollyhock and Hilltown): an instant WhatsApp reply with that project's brochure, 3 qualifying questions (budget, BHK, timeline), a site-visit slot, follow-ups, and one lead board across all projects. Frame it as warming leads for their callers. Say nothing about their current reply speed.",
+   "best_channel": "Email to marketing@nyalkarangroup.com, with nyalkarangrup@gmail.com as the second address. If there is no reply after a few days, a human call to +91 96012 90354. Use the published wa.me number +91 90810 86677 only after they reply and agree. Do not use the ad numbers for WhatsApp templates and do not submit any website form.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "marketing@nyalkarangroup.com",
+     "source": "https://www.nyalkarangroup.com/",
+     "note": "Business-domain address, mailto link in the home page footer. It is NOT on the contact page. The earlier source URL /contact returns a 302 redirect to the home page, and /contact_us.html shows only the Gmail address. MX records exist (Mailhostbox). Best first-touch address."
+    },
+    {
+     "kind": "email",
+     "value": "nyalkarangrup@gmail.com",
+     "source": "https://www.nyalkarangroup.com/contact_us.html",
+     "note": "General company Gmail, spelled 'grup' exactly as published. Also on the home page and most project pages. Use as the second address."
+    },
+    {
+     "kind": "email",
+     "value": "sshelenium@nyalkarangroup.com",
+     "source": "https://www.nyalkarangroup.com/shree_siddheshwar_helenium.html",
+     "note": "Helenium project desk on the company domain. The other 16 project desks are separate Gmail addresses, not listed here."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 96012 90354",
+     "source": "https://www.nyalkarangroup.com/contact_us.html",
+     "note": "Company phone, tel link on the contact page and home footer. For a human call only."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97252 02886",
+     "source": "https://www.nyalkarangroup.com/contact_us.html",
+     "note": "Second company phone, tel link on the contact page and home footer."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 90810 86677",
+     "source": "https://www.nyalkarangroup.com/",
+     "note": "wa.me click-to-chat link on the home page header and footer (not on /contact_us.html or any project page). The official Facebook page lists the same number as its phone. A general line, not an ad number. Do not cold-template it."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.nyalkarangroup.com/",
+     "source": "https://www.nyalkarangroup.com/",
+     "note": "Has an Enquire Now form (enquire_now.php) and per-project forms. We must not submit them."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/nyalkarangroupofficial",
+     "source": "https://www.nyalkarangroup.com/",
+     "note": "Opened in my browser tab and readable today. 1.1K followers, 1 review (not rated), a 'Send message' button, last post 11 Oct 2026 (Navratri greeting). The 12 project-named pages run the ads, not this page."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/nyalkaran_group/",
+     "source": "https://www.nyalkarangroup.com/",
+     "note": "Official handle linked from the site footer. I did not re-read it; the earlier qualifier reported about 6,475 followers."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: about 160 active Ad Library results from 12 project advertiser pages, starts 15 Aug to 23 Sep 2026, all Active on 2026-10-19; 'Get quote' lead-style ads confirm they pay for enquiries",
+    "+1 urgency: 'Introducing Helenium' (new project) and creatives refreshed 19-23 Sep, but the newest ad is 26 days old and no ad names a festive deadline, so Diwali is only my inference",
+    "+2 funnel gap: ads are call-number led with a different number per project, 17 per-project Gmail inboxes, plain PHP forms, no chat, booking or CRM script, no WhatsApp CTA on any ad I read",
+    "+2 can pay: 19 RERA-listed project pages, premium 4 BHK from Rs 1.10 Cr, 12 concurrent ad pages; real spend amount is not visible",
+    "+1 reachable: business-domain email marketing@nyalkarangroup.com published in the home page footer with live MX, plus a published wa.me number and two phones",
+    "-2 resistance: a pixel per project and a web/social vendor credit suggest a media buyer or agency, and the careers form lists HR, sales, social media, graphics and video roles; six partner-owners decide; no CRM, bot or anti-AI position confirmed"
+   ],
+   "hunger_gaps": [
+    "What did NOT work: the web search budget was used up, so I could not check Google Maps rating, news, job postings, or whether the owners are linked to Siddhi Developers/Trinetra (already in the campaign). I did not work around it. The brand and surname differ, but the link is unconfirmed.",
+    "What did NOT work: the cited source URL https://www.nyalkarangroup.com/contact returns a 302 redirect to the home page. The real contact page is /contact_us.html and it lacks marketing@ and the wa.me link; both are on the home page.",
+    "What did NOT work: I cannot tell whether 'Get quote' is a Meta instant form or a website form (the FB.ME caption suggests an instant form), who answers the call numbers, how fast, or whether leads go to a CRM. There is no way to find this out without contacting them.",
+    "I loaded only about 24 of roughly 160 Ad Library results, so the count includes duplicates and the true number of distinct creatives is lower. Ad spend is not shown.",
+    "Scale claims (50+ projects, 10,000+ units) are unverified: the website says 4000+ families, and the Facebook page shows 1.1K followers and 1 review. I did not re-open Instagram.",
+    "The careers list is undated and generic, so it proves roles exist, not open vacancies. 'Tally Caller' is probably accounts-related, not telecalling.",
+    "Tooling note: my first curl save landed in a scratchpad shared with other agents and was overwritten by another agent's file (a different developer's home page). I refetched everything into my own folder and used nothing from that other file."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Vadodara developer advertising 12 projects at once; phone-led enquiries with one number per project",
+   "why_hungry": [
+    "About 160 active ads across 12 project pages (checked 19 Oct)",
+    "Each project has its own phone number and a Get quote form; no chat or booking",
+    "Premium 4 BHK from Rs 1.10 crore, 19 RERA-listed project pages"
+   ],
+   "next_step": "Wave 3: most organised of the round (media buyer or agency likely). Mixed English, Hindi and Gujarati ads.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "",
+   "language_note": "Their own ads mix English with Hinglish/Hindi (Hometown) and Gujarati script (Helenium); the website is English. An English email with one short Hinglish line is safe. Evidence: Ad Library copy read today.",
+   "website": "https://www.nyalkarangroup.com/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-1-clik-property",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "waiting-list"
+  ],
+  "data": {
+   "name": "1 Clik Property",
+   "legal_name": "1 Clik Property (1Clik; website 1clikproperty.com)",
+   "city": "Surat (Vesu)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Ramesh Kataria. His own ad (started 4 Oct 2026) says \"Contact: Ramesh Kataria - 9978800128\", and the business email on the website and Facebook page starts with his name. That he is the owner or principal is inferred; no page states it. The website names no founder (the \"founder\" and team sections are template placeholders with fake names).",
+   "size_cues": "Small, apparently single-office, owner-led brokerage. Instagram 8,495 followers; Facebook 4.1K followers, \"Not yet rated (1 review)\", and the latest page post 6 days before the visit had 2 reactions, so the audience is mostly paid. The website figures (25 years, 525 clients, 302 transactions) sit next to Lorem ipsum, fake team names, a US phone, example.com emails and non-Surat project titles, so they are template filler and not usable. Two different Vesu addresses are published (the website says FF-2 Aagam Emporio, the Facebook page says Office 823-824 Homeland City), which could be a move or two offices. Staff count is not published anywhere.",
+   "observed_facts": [
+    "Meta Ad Library (India, active, checked in the built-in browser 2026-10-19): about 20 active ads from page '1 Clik Property - Best Real Estate Agency in Surat'; I counted 20 Library IDs.",
+    "Ad start dates seen: 16 Jun (x2), 18 Jun, 27 Jun (x2), 14 Jul, 11 Aug, 23 Aug (x2), 26 Aug, 5 Sep (x2), 14 Sep (x2), 18 Sep, 4 Oct (x2), 12 Oct (x2), 14 Oct 2026. So 7 started 14 Sep or later, 5 since 4 Oct, and the newest is 5 days old.",
+    "About 19 of the 20 ads show the 'Send WhatsApp message' button (destination domain api.whatsapp.com); the rest end with 'Call Now +91 99788 00128' or 'DM or call'. Several say 'Book your site visit today' or 'schedule a site visit'. The ad text is English with English hashtags.",
+    "One ad (4 Oct, Library ID 3763775020437169) names 'Ramesh Kataria - 9978800128' as the contact and carries a 'Low impression count' tag (<100 impressions), so it is brand new.",
+    "Inventory in the ads: 75,000 and 3,00,000 sq ft warehouses, rented commercial properties for sale to investors (Kotak, Axis Bank, Kalyan Jewellers, Lenskart, VinFast, Louis Philippe tenants, rents Rs 1.65 to 4.5 lakh per month), furnished flats (Vesu, Gauravpath Road) and a bungalow plot in Pal.",
+    "Website 1clikproperty.com is WordPress with Elementor and the Astra Starter Templates plugin. It has Lorem ipsum testimonials, fake team names (Mike Rich, Jenny Smith and others), a US header phone (+1 212 255 5511), contact@example.com and support@example.com, template project titles in New York, Malmo and other non-Surat places, and 'Get a Quote' links pointing to '#'. Its page metadata shows a September 2026 edit (modified 2026-09-04).",
+    "The real contact block on the website is: +919978800128, rameshkataria8@gmail.com, and 'FF-2, Aagam Emporio, Opp Balaji Hero, Udhna Magdalla Rd, Vesu'. The site has no WhatsApp link or float button. The only enquiry routes are the form (fields: name, email, phone, message of up to 180 characters) and a LatePoint booking button 'Talk to a Property Expert'. No chatbot or CRM script is loaded.",
+    "Facebook page 1ClikProperty: Estate agent, 4.1K followers, 'Not yet rated (1 review)', shows the same mobile and email plus a different address (Office No. 823-824, Homeland City, Vesu, Surat 395009), and links to the same website. Instagram @1clikproperties (8,495 followers) bio links to the same website. These cross-links confirm that the website, ads, Facebook and Instagram are one business.",
+    "The website contact block and the Facebook About tab both publish rameshkataria8@gmail.com.",
+    "Not in the already-in-campaign list and not a chain, franchise or large developer."
+   ],
+   "hypotheses": [
+    "With 20 ads sending clicks to WhatsApp and one mobile number, the owner will miss or slow-reply night and on-site enquiries, and qualification (own use or investment, budget, area) is done by hand. NOT observed; we did not and must not contact them to test it.",
+    "Ramesh Kataria is the owner or principal and the person who answers the WhatsApp. Inferred from the ad text and the email prefix only.",
+    "The ads' WhatsApp button points at +91 99788 00128 on the WhatsApp Business app. The Ad Library does not show the destination number.",
+    "The website was built from a starter template in Feb 2026 (the uploads folder has 2026/02 files) and is not a real conversion channel; most demand comes from the paid ads.",
+    "He may value a 'lead board plus follow-ups' pitch more than 'instant reply' alone, because investor deals involve repeated follow-up calls over days."
+   ],
+   "case_for": "1) Live and recent paid spend, verified in the Meta Ad Library today: 20 active ads, all English, oldest started 16 Jun 2026, newest 14 Oct 2026, so he is actively buying enquiries. The count has more than doubled since round 1 (9 ads). 2) Nearly every ad uses the WhatsApp message button, and many end with \"Call Now +91 99788 00128\" or \"Book your site visit today\", so all demand funnels to one mobile. 3) The site has no WhatsApp button or chat. Its form asks for name, email, phone and a 180-character message, and nothing visible suggests an instant reply. 4) Enquiry types (rent, sale, investment, warehouse, residential) vary a lot, so the qualifying questions and site-visit booking would help. 5) No sign of an in-house CRM, bot or agency, and no anti-bot positioning. 6) A business-published email on two separate sources (website and Facebook About), plus a phone that appears in the ads, website and Facebook, with a named contact person.",
+   "case_against": "1) The need for instant replies is a hypothesis. We have no evidence of slow replies, bad reviews or missed enquiries (Facebook shows one review, unrated). 2) Small owner-led brokerage with a Gmail address and a template website still carrying placeholder content. That suggests limited tech budget and it may not be the person who buys software. 3) Much of the inventory is high-ticket rented-property investment deals (Cr-level, low volume) that are usually closed on a call, so automation value per lead is higher but volume may be low. 4) The WhatsApp ad number is probably on the WhatsApp Business app. Moving it to an API-based flow is a real change for him, and it is unconfirmed which number the ads actually point to. 5) The email is a personal-style Gmail, so we cannot tell how often it is read, and cold WhatsApp to this number is likely to fail as in round 1. 6) He is a broker, not a developer with a pipeline of units, so the repeat site-visit and brochure flow fits only partly.",
+   "ability_to_pay": "Moderate. For: 20 simultaneous live ads, the oldest running since 16 Jun 2026, so about 4 months of continuous paid spend. Listings are Cr-scale (rent of Rs 1.65 to 4.5 lakh per month, flats at Rs 1.15 Cr), so one closed deal carries real commission. Against: Gmail address, an unfinished template website, a single office, and no published team or funding. Ad spend amounts are not shown (not a political ad), so budget is inferred only from ad count and age. Software budget is unproven.",
+   "resistance": "No evidence of an existing vendor, CRM, bot or agency, and no anti-bot or anti-AI positioning. The site has the LatePoint booking plugin installed (\"Talk to a Property Expert\" button) plus Forminator and SureForms contact forms, but the page looks like an unfinished starter template (the booking button links to \"#\"), so these look like template leftovers. Whether LatePoint is actually used is unknown. Practical resistance is more likely to be the owner's own habit of replying by phone and WhatsApp himself, and the WhatsApp Business app vs API change. He is reachable: a named person with a published email and mobile.",
+   "best_angle": "Reference his own ads. About 20 live creatives, 7 of them started since 14 Sep and 5 since 4 Oct, almost all with a \"Send WhatsApp message\" button, all landing on one mobile. Propose the \"after the ad click\" layer: an instant reply to the WhatsApp enquiry with the property sheet or video, 3 qualifying questions adapted to his mix (own use or investment, budget or rent, area/size), a site-visit slot, follow-ups for silent leads, and one lead board so no enquiry is lost at night or while he is on site. Keep it short, English, and offer to show it on one of his own listings (for example the Kotak or Axis rented property). Do not claim his replies are slow; we have not tested that.",
+   "best_channel": "Email first, to rameshkataria8@gmail.com. It is published on the website contact block and on the Facebook About tab, so it counts as business-published. Follow up with a human phone call to +91 99788 00128 a few days later. Do not use a cold WhatsApp template to that number: it is the number his WhatsApp-click ads feed, and round 1 cold templates to ad numbers failed (Meta 131049/131026). Do not use the website form. It sends to his inbox anyway, and submitting forms is outside the rules.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "rameshkataria8@gmail.com",
+     "source": "https://1clikproperty.com/",
+     "note": "Business email in the website 'Contact Us' block (also on /contact-us/). Gmail address. Confirmed again as the email on the Facebook page About tab."
+    },
+    {
+     "kind": "email",
+     "value": "rameshkataria8@gmail.com",
+     "source": "https://www.facebook.com/1ClikProperty/about",
+     "note": "Same address, second independent source (Facebook page 'Email address' field)."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99788 00128",
+     "source": "https://1clikproperty.com/",
+     "note": "Website contact block; also shown as 099788 00128 on the Facebook page and as 'Call Now: +91 99788 00128' in most live ads. Indian mobile, so likely WhatsApp-capable (not confirmed). The ads' WhatsApp button destination number is not shown in the Ad Library, so it is not confirmed to be this number."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99788 00128",
+     "source": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&search_type=keyword_unordered&q=1%20Clik%20Property",
+     "note": "Ad Library, checked 2026-10-19: ad 3763775020437169 (started 4 Oct 2026) says 'Contact: Ramesh Kataria - 9978800128'; most ads say 'Call Now: +91 99788 00128'."
+    },
+    {
+     "kind": "website",
+     "value": "https://1clikproperty.com/",
+     "source": "https://1clikproperty.com/",
+     "note": "WordPress/Elementor site on an Astra starter template, with a contact form (name, email, phone, message). Do not submit it."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/1ClikProperty/",
+     "source": "https://www.facebook.com/1ClikProperty/",
+     "note": "Page 'Estate agent', 4.1K followers. Lists address Office 823-824, Homeland City, Vesu, Surat 395009."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/1clikproperties/",
+     "source": "https://www.instagram.com/1clikproperties/",
+     "note": "@1clikproperties, 8,495 followers; bio links to the website."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: 20 live Meta ads (checked 2026-10-19), running since 16 Jun, 7 started since 14 Sep and 5 since 4 Oct, newest 14 Oct",
+    "+1 urgency: ads and creatives are being refreshed week by week ahead of the festive season, but there is no named new project or launch date",
+    "+1 funnel gap: every enquiry door (WhatsApp button, 'Call Now', site form, Facebook, Instagram) leads to one phone number or inbox. The site has no WhatsApp button or visible instant reply. The booking plugin is a template leftover. No proof that replies are slow",
+    "+1 can pay: about 4 months of continuous multi-ad spend and Cr-level deals, offset by a Gmail address, a single office and an unfinished template website",
+    "+1 reachable: business-published email (website and Facebook About) plus a published mobile and a named contact",
+    "-0 resistance: no CRM, bot, agency or anti-bot positioning found, but the vendor question is only unobserved, not disproven"
+   ],
+   "hunger_gaps": [
+    "Google Maps/Business listing, rating and review count were not checked: the WebSearch budget for this run was used up, and I did not work around it.",
+    "No check of third-party portals (99acres, MagicBricks, JustDial, IndiaMART) or news mentions, for the same reason, so there is no independent proof of team size, years in business or reputation.",
+    "Who actually answers WhatsApp, how fast, and whether the number runs on the WhatsApp Business app or an API/CRM is unknown. The Ad Library does not show the destination number of the WhatsApp button.",
+    "Ad spend and impressions are not shown (only one new ad carries a low-impression tag).",
+    "Owner status of Ramesh Kataria is inferred, not stated on any page.",
+    "Two different published addresses (website vs Facebook); not resolved.",
+    "Whether the LatePoint booking button and the contact forms are actually wired up and monitored is unknown.",
+    "The Facebook Page Transparency tab did not expand, so page creation date and page admin country were not seen.",
+    "Whether rameshkataria8@gmail.com is actively monitored is unknown. Do NOT use oneclikproperties@gmail.com (only the WordPress author and schema metadata, never displayed as a contact), +1 (212) 255-5511, contact@example.com or support@example.com (template placeholders)."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Surat broker with about 20 click-to-WhatsApp ads since June; every enquiry lands on one mobile",
+   "why_hungry": [
+    "20 live Meta ads (checked 19 Oct), running since 16 Jun, 5 started since 4 Oct",
+    "Almost all ads carry a Send WhatsApp message button",
+    "WhatsApp, call, form, Facebook and Instagram all lead to one phone number or inbox"
+   ],
+   "next_step": "Waiting list: small owner-led broker with a Gmail address only. Look again after wave 2 results.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "All 20 ads, the website, the Facebook page text and the Instagram bio are in English (with English hashtags and some emoji). No Gujarati or Hindi marketing text seen. Write the email in English; the owner is likely Gujarati-speaking, so offer a Gujarati or Hindi follow-up on the call.",
+   "website": "https://1clikproperty.com/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-parshwanath-corporation-parshwanath-emerald",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-2"
+  ],
+  "data": {
+   "name": "Parshwanath Corporation - Parshwanath Emerald",
+   "legal_name": "Parshwanath Corporation (Parshwanath Group, Ahmedabad) - advertiser of Parshwanath Emerald, Adalaj",
+   "city": "Ahmedabad (office Ashram Road); project in Adalaj, on the Ahmedabad-Gandhinagar side",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Not publicly stated. The site publishes no director or founder name (Founder's Message link is empty). The homepage media block only shows a caption 'Mr. N.C Patel with Award' (Ahmedabad Realty Conclave 2017) with no role given, so do not treat him as the decision-maker. Treat the 'Marketing' desk behind marketing@ as the entry point.",
+   "size_cues": "Parshwanath Group says it comprises four firms (Shree Parshwanath Corporation, Parshwanath Realty Pvt. Ltd., Parshwanath Corporation, Parshwanath Corporation Ltd.). Site counters: 56 years, 121 projects (About page says 118-123), 21,000 units, 14.18 million sq ft built up. Single-city (Ahmedabad) developer, not a national chain. BSE-listed arm: Parshwanath Corporation Ltd (511176), market cap about Rs 26.8 cr, promoters 74.69%, FY26 standalone sales Rs 0.62 cr, and the aggregator notes it currently has no project of its own (Screener, fetched 2026-10-19), so the listed shell is not the operating developer of Emerald. Also named in a 2020 GIHED CREDAI property-show developer list. Homepage banners also mention Metro City Phase 4 (Chandkheda), Atlantis Park (Sughad) and Business Park (S.G. Highway) but only Emerald is under 'Ongoing Projects'.",
+   "observed_facts": [
+    "Meta Ad Library, India, fetched in the built-in browser 2026-10-19: page 'Parshwanath Corporation' has 7 active listings (about 9 ads), every one 'Started running on 3 Oct 2026'. Library IDs include 28601946132776667, 2131550864107647, 1820144202338037, 2478289876011746, 1405143211141806, 1075698398646362, 1135512369064608.",
+    "Ad copy is English: 'Buy a 2BHK at Parshwanath Emerald, Adalaj - starting Rs 55 Lakhs', 'Sample House Ready | Fast-Track Possession', 'Limited units only - Book your site visit today!'. Five listings show an FB.ME link, headline 'Spacious 2 BHKs in Adalaj From Rs 55 Lakhs', text '100% Loan Available - Book Your Visit Now!' and a 'Book now' button; two video listings show no button.",
+    "A keyword search for 'Parshwanath' (all statuses) found no earlier ads from this page, only other advertisers (CREDAI/GIHED 2020 posts that list the company as a participant, unrelated Parshwanath-named businesses). So the 3 Oct 2026 batch is the only paid activity visible.",
+    "Website (fetched 2026-10-19): business email marketing@parshwanath.co.in and mail@parshwanath.co.in; phones +91 79 27540848 (Mkt.), +91 79 27540647 (Adm.), and '+ 91 9712088888 (Whatsapp)' as a tel: link. Address: 50, Third Floor, Harsiddha Chambers, Income Tax Cross Roads, Ashram Road, Ahmedabad 380014.",
+    "Raw HTML check: no wa.me or api.whatsapp link and no chat widget script (tawk, crisp, tidio, zoho, intercom, wati, gupshup etc. all absent) on the homepage or Emerald page; only Google gtag. Forms (Emerald Download Brochure, Contact Us, Contact Us page, Channel Partner, Careers) post to thankyou.php with name, email, phone, message fields.",
+    "Emerald page (parshwanath.co.in/emerald/): 2 BHK, Adalaj on the Ahmedabad-Kalol Highway, specifications and layout plans only. It shows no price, no RERA number, no possession date, no 'sample house' mention and no site-visit booking. Server header says last modified 2024-01-19, and it still says '56+ years' - it is not tied to the Oct 2026 ads.",
+    "The ads send people to a Facebook lead form (FB.ME) rather than the website, so the website's weak funnel matters less; what happens after the lead form (CRM, auto-reply, who calls) is not visible. We did not open the form.",
+    "Facebook About (browser, logged-out, 2026-10-19) lists marketing@parshwanath.co.in, 079 2754 0848 and +91 97120 88888; 'Property developer'; 11K followers; 90% recommend from 7 reviews. Latest post 3 days old, 2 reactions.",
+    "The site's About page lists four group firms including 'Parshwanath Corporation Ltd.'. Screener (2026-10-19) shows that BSE-listed company at about Rs 26.8 cr market cap, promoters 74.69%, sales Rs 0.62 cr in FY26, and a note that it has no project of its own. The advertiser page name is 'Parshwanath Corporation', not '... Ltd'.",
+    "Correction to scout: the site does not say '38 years' or '7 ongoing projects'. It says 56 years / 121 projects / 21,000 units and lists ONE ongoing project (Emerald). The '7' is the number of ad listings."
+   ],
+   "hypotheses": [
+    "Facebook lead-form leads (name and phone) arriving at night or on weekends wait for a callback from the Marketing landline; a landline-heavy contact set suggests no instant WhatsApp reply. NOT verified - we did not and may not enquire.",
+    "A 160-unit project (scout figure, not verified by us) with a 'site visit' promise would gain from instant brochure + 3 qualifying questions + visit slot + reminders, and a lead board to see which of the 7 creatives bring real visits.",
+    "The campaign may be run or managed by a digital agency, and leads may already sit in a CRM or a spreadsheet. Unknown.",
+    "Emerald may be mostly sold (scout says possession due about Dec 2026); the push could be for the last units, which lowers the lifetime value of a lead system but raises urgency."
+   ],
+   "case_for": "[\"Fresh, visible, paid push: about 9 live ads started 3 Oct 2026, English, aimed at site visits - matches our hook exactly.\", \"Business-published email (marketing@) appears on the website and the Facebook About, plus a second mailbox, so email-first works and does not depend on a failing WhatsApp template.\", \"Real, established single-city developer (since 1967, Ashram Road office, active Facebook/Instagram) that can afford a small monthly tool.\", \"Channel-partner programme, several entry doors and landline-heavy contacts hint at a manual, phone-driven sales process.\", \"No sign of a competing bot or an anti-AI stance.\"]",
+   "case_against": "[\"The need is inferred from absence (no chat, no wa.me, no booking) and the ads use a Facebook lead form; we have no direct evidence of slow replies or complaints.\", \"Only one campaign, 16 days old, and the project may be nearly sold out, so the buying window could be short.\", \"The website is stale (Emerald page from Jan 2024) and the group is partly a BSE-listed entity; a formal sales or CRM process may already exist behind the lead form.\", \"Brief says reject listed companies: the listed arm is a Rs 27 cr micro-cap shell and not the advertiser, so I do not treat it as a listed chain, but the owner should decide.\", \"No named decision-maker; the first email goes to a shared marketing mailbox.\"]",
+   "ability_to_pay": "Moderate to adequate. Seven-plus video/static creatives, Rs 55 lakh unit price, 38+ years, Ashram Road office, 11K Facebook and 9.3K Instagram followers. Spend not visible; the listed arm is tiny (FY26 sales Rs 0.62 cr), so the buyer is probably a private group firm whose finances we cannot see.",
+   "resistance": "Low to unknown. No bot, agency or CRM named anywhere; no anti-AI positioning. Risks: a possible agency running the ads, an existing lead-form-to-CRM link we cannot see, and a shared mailbox with no named owner.",
+   "best_angle": "Email the Emerald campaign: 'Your Emerald ads (live since 3 Oct) promise a site visit - we answer every Facebook lead-form enquiry on WhatsApp within a minute with the brochure, 3 qualifying questions (budget, 2 BHK need, timeline) and a site-visit slot, then follow up and show all leads on one board.' Ask for a short call; do not claim we measured their reply time.",
+   "best_channel": "Email to marketing@parshwanath.co.in (cc mail@parshwanath.co.in only if the owner agrees); fallback is a human call to the Marketing landline +91 79 27540848. Do not send a cold WhatsApp template to +91 97120 88888 first.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "marketing@parshwanath.co.in",
+     "source": "https://parshwanath.co.in/",
+     "note": "Business-published; mailto on homepage, Emerald page and listed in FB About. Best first-touch route. Whether a person reads it daily is unknown."
+    },
+    {
+     "kind": "email",
+     "value": "mail@parshwanath.co.in",
+     "source": "https://parshwanath.co.in/contact_us.html",
+     "note": "Business-published on the Contact Us page under 'Parshwanath Group' (general mailbox)."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 79 27540848",
+     "source": "https://parshwanath.co.in/",
+     "note": "Labelled Marketing; Ahmedabad landline. Fallback for a human call. Also on Emerald page."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 79 27540647",
+     "source": "https://parshwanath.co.in/",
+     "note": "Labelled Admin (office line), not a sales line."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 97120 88888",
+     "source": "https://parshwanath.co.in/",
+     "note": "Published by the business as '(Whatsapp)' on every page, and in FB About as a phone. It is a tel: link, not wa.me, so it is likely WhatsApp-capable but not confirmed. A cold template to this number may fail like round 1 (131049/131026), so do not use it as the first touch."
+    },
+    {
+     "kind": "website",
+     "value": "https://parshwanath.co.in/",
+     "source": "https://parshwanath.co.in/emerald/",
+     "note": "Static site; Emerald page last modified 2024-01-19 per server header, homepage 2025-09-11. Forms: Download Brochure and Contact Us (Emerald), Contact Us, Channel Partner, Careers."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/ParshwanathCorp/",
+     "source": "https://www.facebook.com/ParshwanathCorp/",
+     "note": "Page 'Parshwanath Corporation', category Property developer, about 11K followers, 90% recommend (7 reviews), last visible post 3 days before 2026-10-19 with 2 reactions. About section lists the same email and phones."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/parshwanathcorp/",
+     "source": "https://www.instagram.com/parshwanathcorp/",
+     "note": "About 9,298 followers, 356 posts (public meta description, fetched 2026-10-19)."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: Meta Ad Library (browser, 2026-10-19) shows a live campaign from the page 'Parshwanath Corporation': 7 listings (about 9 ads, two listings cover 2 ads each), all 'Started running on 3 Oct 2026' (16 days), several video creatives. No earlier ads from this page appear in the library, so this is a fresh push.",
+    "+1 urgency: ads run in Navratri/pre-Diwali season (Diwali 8 Nov 2026) with 'Limited units only', 'Sample House Ready', 'Fast-Track Possession'. Capped at +1 because Emerald itself is not a new launch and we could not verify RERA/possession/inventory.",
+    "+1 funnel gap: ads use a Facebook lead-form route (FB.ME link, 'Book now') and promise a site visit; the website has no wa.me link, no chat widget and no booking flow, only 3 phone numbers (two landlines), 2 plain PHP forms (Emerald page, Contact Us), a channel-partner form and 2 mailboxes. Capped at +1 because we have NOT measured their reply time (we may not enquire) and a lead form may already auto-reply.",
+    "+1 can pay: 38+ years since 1967, Ashram Road office, claims 121-123 projects and 21,000 units, FB 11K followers, Instagram 9.3K followers, a multi-creative video campaign at Rs 55 lakh ticket size. Capped at +1 because ad spend is not shown for commercial ads in India and the only listed group entity is tiny (see case_against).",
+    "+1 reachable: business-published email marketing@parshwanath.co.in (website mailto, Emerald page, and FB About) plus mail@parshwanath.co.in on Contact Us, and published phones.",
+    "+0 resistance: no evidence of an in-house CRM, bot, named agency or anti-bot positioning (site footer credits a web vendor, compubrain.com, for the site only). Existence of a CRM behind the lead form is unknown, not zero."
+   ],
+   "hunger_gaps": [
+    "Could not verify how fast they answer a lead-form enquiry (read-only rule; no test enquiry allowed).",
+    "No CRM / agency / vendor evidence either way.",
+    "Emerald RERA number, unit count, possession date and remaining inventory not verified; WebSearch budget was exhausted so no news, RERA, aggregator listing or review search was possible. The scout's '160 units, possession about Dec 2026' is unconfirmed.",
+    "Which legal entity of the four group firms owns and sells Emerald is not confirmed. Only the BSE-listed one is a public company, and it appears to have no project of its own.",
+    "Decision-maker (owner/director/marketing head) not named anywhere public.",
+    "Ad spend not visible (Meta does not show it for commercial ads in India).",
+    "Whether the +91 97120 88888 number works on WhatsApp is not confirmed (tel: link only).",
+    "Facebook posts and reviews were only partly visible logged out; no review text about slow replies was seen."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Long-established Ahmedabad developer; Emerald (Adalaj) lead-form ads live since 3 Oct",
+   "why_hungry": [
+    "Emerald ads live since 3 Oct (checked 19 Oct)",
+    "Ads promise a site visit through a Facebook lead form; the site has no WhatsApp link or booking",
+    "Established since 1967, about 11K Facebook followers"
+   ],
+   "next_step": "Wave 2: English page and video being built. First touch = email to the marketing address plus the WhatsApp template to the number they label WhatsApp, each with its own owner OK code.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "Their own ads and website are in English; only the tagline is Gujarati ('Ghar nu Ghar'). Send the email in English.",
+   "website": "https://parshwanath.co.in/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-cs-group-terra",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-hungry",
+   "wave-3"
+  ],
+  "data": {
+   "name": "CS Group - Terra",
+   "legal_name": "CS Group (CS Infrabuild Private Limited / CS Infraspace; consumer brand \"Terra By CS\")",
+   "city": "Gandhinagar (Zundal); office in Shahibaug, Ahmedabad",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Not publicly stated. The About page has three placeholder team slots (Name / CEO / Founder / Manager). The GujRERA record names only the company as promoter. Address the company, not a person.",
+   "size_cues": "Small, local, single-brand developer. Private Limited company, two Zundal projects at once (Terra Sky tower; Terra Rise registered 2026-10-17). One-project WordPress site with placeholder text, last edited mid-2025. Meta Page 'Terra By CS' has 42 followers, Instagram @terrabycs has 846. Ticket size is high: lead-form budget bands run 85 Lakh to 1 Crore per 3BHK. Four different phone numbers appear across site, ads and the register (see contacts), so enquiries are split across several people or phones. No branches, no named staff. Unit counts and plot size quoted by the scout for Terra Rise are NOT verified by me.",
+   "observed_facts": [
+    "GujRERA public record, project id 32237, fetched 2026-10-19 by curl: project TERRA RISE, Mixed Development, promoter CS INFRABUILD PRIVATE LIMITED (type COMPANY), application submitted 2026-08-24, approved 17-10-2026, promoter email terra.sales@csgrp.in. The register shows only these basic fields; unit counts, plot size and completion date from the scout are not on it and are unverified. Source: https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32237",
+    "Meta Ad Library, India, all statuses, read 2026-10-19 in the built-in browser: Page 'Terra By CS' (id 573361959183866) shows about 8 results, all Active. Six distinct Library IDs read: 1767024377751915 started 3 Oct 2026; 2124482918198055, 4373415449635256, 2516079645536184, 1459222959404010 and 1386476876644398 started 10 Oct 2026. CTA on every card is 'Get Quote'. No older or inactive ads appeared.",
+    "Ad details tie the advertiser to the business: the ad links point to https://csgrp.in/terra-sky/ and https://www.instagram.com/terrabycs/. The advertiser block lists Facebook 'Terra By CS' with 42 followers and Instagram @terrabycs with 846.",
+    "Ad 1767024377751915 uses a Meta instant form: preferred budget (86 to 90 Lacs / 91 to 95 Lacs), 'When Would You Like to Visit?' (Today / Tomorrow / Weekend), Full name, Phone number, WhatsApp number, Job title, with the text 'This business will be able to send you messages in WhatsApp'. Thank-you screen: 'Our representative will connect with you shortly to assist with your visit.' Its call link is tel:+919016764067. Form text says 'Possession in 10 Months'.",
+    "The 10 Oct ads' form (read on one of them) asks: comfortable with possession by March 2029 (Yes/No), budget (85-90 Lakh / 91-95 Lakh / 96 Lakh-1 Cr), name, phone, WhatsApp number (same opt-in text), street address. Thank-you screen: 'For More Info: +91 9720792207'. Call link tel:+919720792207. The ads say possession March 2029, 236 to 260 Sq.Yd. 3BHK, 'Enquire and Site Visit Book', near Hillock Hotel, Zundal.",
+    "Ad Library searches: exact phrase 'Terra Sky Zundal' returned no ads; no other advertiser was found promoting Terra Sky for CS Group.",
+    "Website csgrp.in (curl): WordPress. Via the WP REST API pages were last modified 2025-03 to 2025-07 (spin-the-wheel 2025-06-20, home 2025-04-03, contact-us 2025-07-08, terra-sky 2025-03-12, about-us 2025-03-11), and there are no posts. No Terra Rise page. Home hero still has 'Lorem ipsum'. About page shows placeholder team entries; Terms and Privacy links go to '#'; footer says Copyright 2025.",
+    "Site contact points: mailto:terra.sales@csgrp.in, tel:+919429034567, wa.me/919429034567, Instagram link; office SF-203, Soliter Building, Shahibaug, Ahmedabad 380004. The Contact page has one Forminator form (id 462, fields not read). The Terra Sky page has a brochure PDF link and no form. No RERA number is shown on the site pages I fetched.",
+    "Home page HTML has no Meta pixel strings, no chat or WhatsApp-automation vendor strings (checked wati, interakt, gupshup, tawk, hubspot, zoho, leadsquared, sell.do, tidio, livechat, botpress). The one 'crisp' hit is a WordPress CSS shadow preset, not a widget.",
+    "Instagram @terrabycs (built-in browser, not logged in): 846 followers, 4 following, bio about Terra Sky, premium 3BHK and shop, link csgrp.in, highlights 'Coming Soon', 'Drone Shoot', 'Teaser'. Post dates and captions are not readable without login.",
+    "Not on the exclusion list. Not a chain, franchise or agency. No LinkedIn or X pages were opened."
+   ],
+   "hypotheses": [
+    "HYPOTHESIS: leads from 'Get Quote' wait for a manual callback, and out-of-hours submissions wait longest. Based only on the thank-you text; reply speed not tested.",
+    "HYPOTHESIS: the WhatsApp opt-in on the forms means the ad account is linked to a WhatsApp number, possibly with an agency or vendor sending the first message. If so, our edge shrinks to booking, follow-up and the board. Unverified.",
+    "HYPOTHESIS: four phone numbers (site, two ads, register) mean enquiries land with different people and nothing joins them into one lead list.",
+    "HYPOTHESIS: Terra Rise will need its own brochure, ads and lead handling within weeks, which is the natural moment for one board across both projects.",
+    "HYPOTHESIS: the ad copy differs on possession (10 months vs March 2029), so the marketing is run informally. This may mean low appetite for new tools or a real need for tidy flows."
+   ],
+   "case_for": "Three checked, dated facts: live paid Meta lead ads since 3 and 10 Oct 2026; a new RERA approval on 17 Oct 2026; and a business-published email that matches the government register. I confirmed the ads belong to this business, because the ad links point to csgrp.in/terra-sky and to the @terrabycs Instagram page. The follow-up after a lead submits is human ('representative will connect shortly') and enquiries are spread over four numbers, with a second project arriving, so a single instant reply, brochure, visit-slot confirmation, follow-up and one board have real room. Small independent developer, so a direct decision is likely. Not a chain, agency or already in the campaign.",
+   "case_against": "The pain (slow replies) is not observed; I did not test their reply speed (read-only). Their Meta forms already ask budget bands, possession comfort and visit day and collect a WhatsApp number with opt-in, so the '3 qualifying questions' part of our offer is partly done and a pitch built on it would look uninformed. The opt-in suggests a WhatsApp-linked ad account and maybe an outside agency or vendor, unknown. Ability to pay has thin proof: 42-follower Meta page, stale placeholder-filled site, no spend data. Ad copy is inconsistent (one form says 'Possession in 10 Months', the Oct 10 ads say March 2029), which points to loose, DIY marketing. Terra Rise is not on the site or in ads yet. Nobody is named, and a sales mailbox may be read by junior staff.",
+   "ability_to_pay": "Moderate, thin proof. For: 85 Lakh to 1 Crore per 3BHK, a 13-floor tower, a second RERA project, six live ads in 16 days. Against: 42-follower Meta page, stale DIY site, no spend figures. Likely can afford a small monthly fee, not an enterprise price.",
+   "resistance": "Low to medium, unproven. No CRM, bot, named agency or anti-bot stance is published. But the forms already pre-qualify leads and carry a WhatsApp opt-in, which hints at an existing WhatsApp-linked setup or an agency running ads. Owner not named; unknown who reads terra.sales@.",
+   "best_angle": "Start from what we saw and skip the qualifying-questions pitch. Their own thank-you screen says a representative will connect shortly, and leads already hand over a WhatsApp number with opt-in. Offer to send that lead a WhatsApp message within seconds of the form being submitted: the Terra Sky brochure, a one-tap confirmation of the Today/Tomorrow/Weekend visit slot they picked, then follow-ups for those who do not answer the callback, all on one board across Terra Sky and Terra Rise. Ask one question: what happens between 'Get Quote' submit and the first call at 11pm? Offer a 10-minute demo built on Terra Sky. Make no claim about their reply speed.",
+   "best_channel": "Email first to terra.sales@csgrp.in. If there is no reply in 2 to 3 days, one human call to a number they publish for enquiries (the website number, or the 'For More Info' number in their ads). No cold WhatsApp template to any of these numbers (round 1 failed with Meta codes 131049/131026); use WhatsApp only after they reply.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "terra.sales@csgrp.in",
+     "source": "https://csgrp.in/contact-us/",
+     "note": "Verified by me: mailto link on home and contact pages; same address is the promoter email on https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32237. Best first-touch route."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 94290 34567",
+     "source": "https://csgrp.in/contact-us/",
+     "note": "Main enquiry number on the website (tel link). Human call only."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 94290 34567 (wa.me/919429034567)",
+     "source": "https://csgrp.in/contact-us/",
+     "note": "Published as a wa.me click-to-chat link, so likely WhatsApp-capable and invited for enquiries. Same number as the phone. Do not cold-send a template."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 90167 64067",
+     "source": "https://www.facebook.com/ads/library/?id=1767024377751915",
+     "note": "Call link inside their own live Terra Sky ad (started 3 Oct 2026). Not on the website, so a second intake number."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97207 92207",
+     "source": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&view_all_page_id=573361959183866",
+     "note": "Call link and 'For More Info' line in their 10 Oct 2026 ads (either 2124482918198055 or 1386476876644398; I did not isolate which). Third intake number. Human call only."
+    },
+    {
+     "kind": "website",
+     "value": "https://csgrp.in",
+     "source": "https://csgrp.in/",
+     "note": "One-project WordPress site. The Contact page has a Forminator form; not submitted."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/terrabycs/",
+     "source": "https://www.instagram.com/terrabycs/",
+     "note": "Brand account 'Terra By CS', 846 followers, bio mentions Terra Sky and 'Beside Sakar Prime'. No phone or email in the bio."
+    },
+    {
+     "kind": "facebook",
+     "value": "Meta Page 'Terra By CS' (page id 573361959183866, 42 followers)",
+     "source": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=IN&view_all_page_id=573361959183866",
+     "note": "Advertiser page seen in the Ad Library. Not a separate contact route."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 7,
+   "hunger_tier": "hungry",
+   "hunger_reasons": [
+    "+3 spend now: Meta Ad Library (India, all statuses, read 2026-10-19 in the built-in browser) shows Page 'Terra By CS' (page id 573361959183866) with about 8 ad results, 6 distinct Library IDs read, all Active. One started 3 Oct 2026 (1767024377751915), five started 10 Oct 2026. Each uses a Meta instant form, so they pay for enquiries now.",
+    "+2 urgency: GujRERA approval of Terra Rise on 17 Oct 2026 (2 days ago) and a Terra Sky 'Sample House Ready' push with site-visit asks; festive buying season is close. Held at +2 although Terra Rise is not advertised yet, because Terra Sky ads already run.",
+    "+1 funnel gap: the form's thank-you screen says a representative will connect shortly (a human callback), the other ads end with a phone number for more info, the site has no booking flow and the brochure is a bare PDF, and enquiries are spread over four phone numbers. Held at +1, not +2, because the Meta forms already ask budget, possession comfort and visit day, so part of our qualifying step already exists, and reply speed was never tested.",
+    "+1 can pay: ticket of 85 Lakh to 1 Crore per unit on a 13-floor tower, two concurrent projects, six ads in 16 days. Held at +1 because the Meta page has only 42 followers, the site is stale and DIY, and the ad budget is unknown.",
+    "+1 reachable: business-published mailbox terra.sales@csgrp.in (mailto links on csgrp.in, same address as promoter email on the GujRERA record) plus published phone numbers and a wa.me link.",
+    "-1 resistance: the instant forms already carry a WhatsApp number field with Meta's WhatsApp opt-in text, which suggests a WhatsApp-linked ad account and possibly an agency or vendor behind it (not proven), and they already pre-qualify leads in the form. No bot, CRM or anti-bot positioning is published."
+   ],
+   "hunger_gaps": [
+    "WebSearch budget was used up for this turn, so I could not look for third-party listings (99acres, MagicBricks), news, broker or agency credits, or other CS Group projects. Not worked around.",
+    "Reply speed was not tested (read-only), so the slow-reply need is inferred.",
+    "Ad spend, reach and the Meta Page creation date are not public in the Ad Library for India; the Page About tab showed no transparency data.",
+    "Whether an agency or a WhatsApp vendor runs lead handling is unknown.",
+    "Instagram post dates and captions are behind the login wall; the scout's 7-17 Oct post range is unconfirmed.",
+    "Terra Rise unit count (120 flats + 22 shops), plot size and completion date from the scout are unverified; Terra Sky '101 units' is unverified.",
+    "Guessed GujRERA promoter-level endpoints returned 404, so other projects by CS Infrabuild could not be listed. A promoter mobile also appears on the register; I left it out as it is a registry field, not an enquiry line.",
+    "Decision-maker is unnamed and who reads terra.sales@ is unknown."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Gandhinagar developer: Terra Rise got RERA approval on 17 Oct and Terra Sky ads ask for site visits",
+   "why_hungry": [
+    "About 8 ads under Terra By CS, six started in the last 16 days",
+    "Terra Rise RERA approval on 17 Oct 2026",
+    "Meta forms promise a callback; no instant reply or booking seen"
+   ],
+   "next_step": "Wave 3: ads are Gujarati with English words, so a Gujarati voice and template come first. Business email is published.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 7/10"
+    }
+   ],
+   "language": "gu",
+   "language_note": "Ad body copy is Gujarati script with English words (Spacious, Possession, Enquire, Site Visit). Lead-form questions, answer options and the thank-you screens are in English. Website, Instagram bio and GujRERA data are English. Buyers are Gujarati-speaking families, so the WhatsApp flow should handle Gujarati and English; a first-touch email can be short English with one Gujarati line.",
+   "website": "https://csgrp.in"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-swarna-group-swarna-avsar",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-warm",
+   "low-priority"
+  ],
+  "data": {
+   "name": "Swarna Group - Swarna Avsar",
+   "legal_name": "Swarna Group (Swarna Avsar, Swarna Lagom)",
+   "city": "Surat (Vanakla / Jahangirabad, Palanpore-Ugat Canal Road)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Not named anywhere public (site, About, Careers, Facebook About). Family-run; next generation took over in a 2020 demerger from Shanti Group. Do not guess a name; address the first email to the sales or management team at info@.",
+   "size_cues": "Small to mid, family-run, one sales office (Mon-Sun 9:30-19:30). Only 2 projects under the Swarna name since 2020 (Lagom finished, Avsar in sales). The '37 years / 2,100+ families / 22-23 projects' claims are Shanti Group heritage (About page timeline starts with Shanti projects from 1989). The About page says 38+ years and 2,958+ families while the ads say 37 years and 2,100+ families, so the numbers are loose marketing. CREDAI member per the project page. Facebook ad page 150 followers and 0 reviews; Instagram about 1.3k (round-1 figure, not re-checked). Careers page lists 5 undated openings (Sales Executive, Civil/Site Engineer, Site Supervisor, Junior Accountant, Intern). Not a national or listed chain.",
+   "observed_facts": [
+    "Meta Ad Library, India, keyword 'Swarna Group Surat', status Active, opened 2026-10-19 in the built-in browser: '~18 results'; 13 distinct cards loaded, all from the one page 'Swarna Group'. Repeats: two cards say '3 ads use this creative and text' and one says '2 ads'.",
+    "Start dates of the 13 cards: 29 Jun, 29 Jun-ish second card not separate (list read: 29 Jun, 14 Jul x2, 15 Jul, 20 Aug, 22 Jul, 26 Jul, 28 Jul, 9 Sep, 30 Sep x2, 13 Oct 2026). Newest Library ID 1129032499607957 started 13 Oct 2026, so the evidence is 6 days old.",
+    "The keyword 'Swarna Avsar' with status All returned the same 13 active cards, 0 inactive and only the page 'Swarna Group': no earlier or stopped ads exist for this keyword, so paid advertising on this page began on 29 Jun 2026.",
+    "CTAs: 'Send WhatsApp message' (api.whatsapp.com) on 4 cards, 'Get quote' on 2 cards and 'Sign up' on 2 cards (both fb.me lead forms), 'See details' to swarnagroup.in on 2 cards, and several cards with no button. Ad text asks buyers to WhatsApp for site visit or sample flat visit, and two ads print the phone 99250 26000.",
+    "Distinct ad texts are about 4: a 37-years/RERA brand ad, a rent-to-own EMI ad (1230-1350 sq.ft, Limited Units), a furnished sample flat ad, and a Jahangirabad luxury flats and shops ad with the phone number. Ad copy is Gujarati script with English words and some Roman Gujarati.",
+    "Website contact page (fetched 2026-10-19): Sales Line +91 99250 26000, Email info@swarnagroup.in, Monday-Sunday 9:30 AM-7:30 PM, 'Site visits are available by appointment', form note 'Your details are saved to our CRM and WhatsApp opens automatically'.",
+    "Site JS (contact page chunk, read 2026-10-19): the form sends the buyer's details with fetch to its own /api/submit-lead (source 'website-contact-form'), then opens wa.me/919925026000 with a prefilled message the buyer sends. /api/submit-lead is the only API endpoint in all 19 JS chunks fetched; no chatbot, WhatsApp API vendor or CRM vendor name appears in the front-end code.",
+    "Project page: 'Our team responds within 2 hours. Fill the form or reach us directly on WhatsApp for an instant reply', next to the hours 9:30 AM-7:30 PM. A Download Brochure button exists. Units listed: 20 shops, 26 units 2 BHK Wing B ('Limited Units'), 122 units 2 BHK Wings A and C ('Booking Fast'); these are total units, not what is left.",
+    "Site assets load from a Firebase Storage bucket named swarna-group-crm; the footer names no web vendor.",
+    "Facebook page swarnagroup01 About (opened 2026-10-19): 150 followers, 0 reviews, 063587 92762, +91 99250 26000, info@swarnagroup.in, a post 4 days old ('Construction Update - September 2026').",
+    "About page timeline: Shanti Group founded 1988/89; Swarna Group formed in 2020 by a 'natural demerger' as the next generation stepped in; Swarna Lagom completed; Swarna Avsar under construction. Claims differ across pages (ads 37 years and 2,100+ families, About 38+ years and 2,958+ families; ad flat size 1230-1350 sq.ft vs website RERA carpet 710-742 sq.ft).",
+    "Careers page (undated) lists 5 openings including a Sales Executive for site visits and 'enquiry to booking', plus Junior Accountant who works in Tally."
+   ],
+   "hypotheses": [
+    "Evening and night clicks on the 'Send WhatsApp message' ads wait until 9:30 AM unless the business app has an away message (not observed; we cannot test it).",
+    "The CRM stores web-form leads but sends no automatic WhatsApp reply, qualifies nobody and does not book the sample-flat slot (the site never mentions any of these).",
+    "Leads from the Meta 'Get quote' and 'Sign up' lead forms may sit in the Meta lead centre or be exported by hand (unknown where they go).",
+    "The 'instant reply' wording on the project page is marketing copy, not automation.",
+    "A new ad account that began on 29 Jun 2026 and has only a few creatives may be run by an outside freelancer or agency, which would make the owner the buyer and the agency a blocker or a referrer.",
+    "If the RERA number format means a completion date of 31 Dec 2028, the Dec 2026 possession line is a sales message and the project has a long selling runway, which helps the need but weakens the urgency."
+   ],
+   "case_for": "Re-checked today in the Meta Ad Library (built-in browser): about 18 active ads, 13 distinct cards, all from the single page 'Swarna Group', start dates 29 Jun to 13 Oct 2026 (newest 6 days old). Many are click-to-WhatsApp ('Send WhatsApp message', 'WhatsApp karo for site visit / sample flat visit') plus Meta lead forms ('Get quote', 'Sign up'). So they really pay for enquiries and the entry point is one WhatsApp/phone number. The sales line is staffed only 9:30-19:30; the project page itself says 'Our team responds within 2 hours' for the form and offers WhatsApp for 'an instant reply' during the same office hours. The website form posts to their own CRM and then just opens a WhatsApp chat from the buyer to the company number (read in the site JS), so the real reply still depends on a person. The business email info@swarnagroup.in is published on the contact page, in the footer and in the Facebook page About, so email-first is possible. The project is large enough to carry a small monthly fee, and Diwali (8 Nov 2026) is three weeks away.",
+   "case_against": "1) The slow-reply need is inferred, not observed: no complaint, no review (0 Facebook reviews) and no tested response time exists; we may not test it. 2) A bespoke in-house CRM already exists: the form posts to the site's own /api/submit-lead (the only API endpoint in 19 JS chunks) and every site image sits in a Firebase project named swarna-group-crm. Whoever built it can add a WhatsApp auto-reply cheaply and our 'one lead board' overlaps. 3) The ad count is inflated by repeats: only about 4 distinct ad texts, reused across many video cuts ('3 ads use this creative and text' on two cards and '2 ads' on one). 4) This page is a new advertiser: no inactive or older ads show for it, the first ad is 29 Jun 2026, and the page has only 150 followers, so monthly spend per ad is unknown and may be small. 5) The Dec 2026 'urgency' is ad copy: by the standard GujRERA number format (inference, not checked on the portal) the number shows registration 30 Aug 2024 and a completion date of 31 Dec 2028. 6) No named decision-maker; info@ may be read by office staff or by whoever runs the ads. 7) An outside agency may run the ads (the scout saw a #sopanrealty hashtag, but I could not find any hashtag in any Swarna ad text and could not look the name up). 8) They are hiring a Sales Executive, which suggests they solve reply capacity with people.",
+   "ability_to_pay": "Moderate to good, not proven. A 3-wing, 148-flat RERA project with 20 shops, continuous ads since 29 Jun 2026, a custom Next.js site and CRM already paid for, and five open roles show money is spent on sales and marketing. Against that: 150 Facebook followers, only 2 projects under the Swarna name since 2020, no visible ad spend (India commercial ads show none), and only about 4 distinct ad creatives. Fits a small monthly fee, not a large project.",
+   "resistance": "Medium. Confirmed: a custom in-house CRM captures web-form leads (own /api/submit-lead, Firebase swarna-group-crm), so part of the 'lead board' pitch overlaps and the person or vendor who built it is a gatekeeper. Not found: any chatbot, auto-reply, WhatsApp API vendor or anti-AI wording in the front-end code or on the pages. Unverified: an outside agency running the ads (no hashtag found in any Swarna ad text; the name could not be looked up). Owner reachable only through the generic info@ box and the sales line.",
+   "best_angle": "Be the missing after-hours layer on top of the CRM they already have. Their project page offers 'an instant reply' on WhatsApp while the number is staffed only 9:30-19:30, and their ads (for example the 13 Oct lead-form ad and the sample-flat ad) send buyers to WhatsApp for a sample-flat visit. Offer an instant Gujarati/English reply with the Swarna Avsar brochure, 3 qualifying questions and a sample-flat slot, plus reminders and no-show follow-up, feeding their current CRM or a simple board. Keep the email short, name the ad and the sample flat, ask for a 10-minute look, and do not claim they reply slowly.",
+   "best_channel": "Email to info@swarnagroup.in (business-published on the contact page, footer and Facebook About). Fallback: a human phone call to +91 99250 26000 in their hours 9:30-19:30. No cold WhatsApp template, because round 1 failed on ad numbers and this is their buyer-enquiry line.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "info@swarnagroup.in",
+     "source": "https://www.swarnagroup.in/contact",
+     "note": "Business email as a mailto link on the contact page and in the footer of every page; the same address is in the About box of https://www.facebook.com/swarnagroup01/ (checked 2026-10-19). Generic box, no named person."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99250 26000",
+     "source": "https://www.swarnagroup.in/contact",
+     "note": "Sales line (tel link), hours Mon-Sun 9:30 AM-7:30 PM. Also printed in the text of Ad Library ID 1129032499607957 and 2549687005453542 and listed on the Facebook About. Use for a human call in these hours."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 99250 26000",
+     "source": "https://www.swarnagroup.in/contact",
+     "note": "Published by the business itself as a wa.me/919925026000 link (Chat on WhatsApp, Enquire Now, form hand-off). It is their buyer-enquiry number. The Ad Library does not show which number the click-to-WhatsApp ads open, so do not assume it is this one. Round 1 showed cold templates to ad numbers fail (131049/131026), so do not use it for a cold template."
+    },
+    {
+     "kind": "phone",
+     "value": "063587 92762 (+91 63587 92762)",
+     "source": "https://www.facebook.com/swarnagroup01/",
+     "note": "Second number in the Facebook page About, not on the website. Role unknown, so only 'likely' WhatsApp-capable. Re-verified 2026-10-19."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.swarnagroup.in",
+     "source": "https://www.swarnagroup.in/contact",
+     "note": "Contact form (name, phone, email, enquiry type, message) feeds their CRM, then opens WhatsApp for the buyer. Office: F4 Swarna Avsar, beside Swarna Lagom, Palanpore Canal Road, Vanakla, Surat 395005. Must not be submitted by us."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/swarnagroup01/",
+     "source": "https://www.facebook.com/swarnagroup01/",
+     "note": "The page that runs the ads (150 followers, 0 reviews). The website links to the older page https://www.facebook.com/swarnagroup7."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/swarnagroup",
+     "source": "https://www.swarnagroup.in",
+     "note": "Linked from the website footer. Not opened or scraped today."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 6,
+   "hunger_tier": "warm",
+   "hunger_reasons": [
+    "+3 spend now: 13 live Meta ad cards (about 18 ads) started 29 Jun to 13 Oct 2026, mostly click-to-WhatsApp and lead forms; seen directly today (spend size unknown, only about 4 distinct texts, page has 150 followers)",
+    "+1 urgency: ads push 'Limited Units' and Dec 2026 possession and Diwali is 3 weeks away, but it is not a new launch (RERA number suggests registration in Aug 2024) and the promised date looks like ad copy",
+    "+2 funnel gap: WhatsApp and phone only, one number staffed 9:30-19:30, no booking flow, site 'responds within 2 hours', form only hands the buyer over to WhatsApp, and there are 5 doors (WhatsApp ads, Meta lead forms, phone in ad text, website form, Chat button)",
+    "+1 can pay: 148-unit RERA project plus 20 shops, 3.5 months of ads, custom site, hiring; held at 1 because the page is small, there are only 2 projects since 2020 and the real ad budget is unknown",
+    "+1 reachable: business-published email on three pages and a published phone/WhatsApp number for enquiries",
+    "-2 resistance: a bespoke in-house CRM already takes web leads (own /api/submit-lead, Firebase swarna-group-crm), they are hiring a Sales Executive, and an outside agency is possible but unverified"
+   ],
+   "hunger_gaps": [
+    "WebSearch budget was already used up, so the agency name (#sopanrealty), Shanti Group's size and news, and Google reviews could not be looked up; the hashtag was not found in any Swarna ad text, so the scout's agency hint is unverified.",
+    "Whether the CRM behind /api/submit-lead sends any WhatsApp auto-reply, and who built it, is unknown.",
+    "Which number the click-to-WhatsApp ads open is not visible in the Ad Library.",
+    "Real ad spend and results are not visible; only about 4 distinct creatives are running.",
+    "No evidence about actual reply speed exists: 0 Facebook reviews, Google Maps reviews not read, and we may not test the number.",
+    "GujRERA portal not checked, so the registration and completion dates read from the RERA number format are an inference.",
+    "How many Swarna Avsar units are still unsold is unknown (the page lists total units only).",
+    "Careers page openings carry no dates.",
+    "Instagram follower count and any agency tag there were not re-checked today.",
+    "Owner or decision-maker name is not published; info@ may be read by office staff or the ad agency."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Surat developer with 13 live Meta ad cards, but it already runs its own lead CRM",
+   "why_hungry": [
+    "13 live Meta ad cards (about 18 ads) from June to 13 Oct, mostly click-to-WhatsApp and lead forms",
+    "Dec 2026 possession and Diwali ahead",
+    "WhatsApp number is staffed only 9:30 to 19:30"
+   ],
+   "next_step": "Low priority. Phone call only: swarnagroup.in has no mail record, so an email would probably bounce. Has its own CRM.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 6/10"
+    }
+   ],
+   "language": "gu",
+   "language_note": "Their ads are mostly Gujarati script with English words and some Roman-script Gujarati; the website, careers and project copy are English. Write the first email in simple English with one Gujarati line; make the WhatsApp reply flow bilingual Gujarati/English.",
+   "website": "https://www.swarnagroup.in"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-satyagrah-developers",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-b",
+   "tier-warm",
+   "wave-3"
+  ],
+  "data": {
+   "name": "Satyagrah Developers",
+   "legal_name": "Satyagrah Developers",
+   "city": "Anand (Gujarat). The website shows only Anand-area projects; the scout's claim of Ahmedabad portal listings could not be verified (web search budget was exhausted)",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Mr. Vipul Maheshwari, named as owner on https://satyagrahdevelopers.com/about_company.html. He has a YouTube channel (@satyagrahbyvipul) and is publicly the face of the firm. He is described as working \"along with his partners\". No direct contact for him personally is published; reach him through the business email or phones.",
+   "size_cues": "Independent single-city developer, not a chain. The About page says about 15 years since 2009, 14 completed projects, about 50 direct staff, 600+ customers. The site lists 7 ongoing projects plus 3 upcoming (club/resort, weekend villas, nature resort). Office at 206 Anand Central Square, Anand 388001. Facebook page has 707 followers and 0 reviews. Instagram has 2,629 followers. This is a small to mid-size local audience.",
+   "observed_facts": [
+    "Fetched 2026-10-19: the home page returns HTTP 200 with Last-Modified 2026-10-14 (07:06 GMT). satya_sanskar.html is also 2026-10-14, satya_aashish.html is 2026-10-13 10:44, and satya_alankar.html and satya_villa.html are 2026-10-14. Most other pages (contact_us, about_company, project_status, upcoming_projects, testimonials) share one identical timestamp, 2026-10-13 08:54:05, which looks like a bulk re-upload. Treat Last-Modified as 'site touched recently', not as proof of a specific launch date.",
+    "The home page labels Satya Aashish and Satya Sanskar '(Newly launched)'. The launch date is not stated anywhere.",
+    "Funnel doors seen on the site: a 'Book your Site Visit' header button, a wa.me link to +91 81412 52999, a 'Get Brochure on Whatsapp' button on project pages, two call numbers, two emails, and a contact form. The form asks for name, contact number ('Share your whatsapp number'), price range (25 lakh to 1.5 crore plus), location (16 Gujarati area options) and 'Interested In' (7 projects), then posts to contact_us.php.",
+    "Broken-looking brochure link: the 'Get Brochure on Whatsapp' button on satya_aashish.html, satya_sanskar.html, satya_anand.html, satya_satsang.html and satya_suvidha.html links to wa.me/+9712177723, not to the published +91 81412 52999. As written, that is +971 2177723, a UAE-format number with no Indian 91 prefix. On satya_sanskar.html the floating WhatsApp bubble also points to it. Only satya_alankar.html uses the correct 81412 52999 link. satya_villa.html has no brochure button. Both 'Newly launched' projects carry the odd link. The commented-out older block on the Aashish page used 81412 52999 with prefilled text 'Hello, I Want Satya Aashish Brochure Details'. The link was read in the page source only and was not opened or tested.",
+    "satya_sanskar.html still carries meta descriptions that say 'Satya Alankar', so the page looks cloned from the Alankar page. This points to a quick page build.",
+    "The page source shows a Meta Pixel (id 4398699240446902) firing PageView only. No Lead or Contact event is sent. Google Analytics (G-728MS4JM4J) and Google Tag Manager (GTM-KPDPLR98) are also present.",
+    "No CRM, chatbot or WhatsApp-automation vendor appears in the source of the pages fetched. The check covered Reecosys, LeadSquared, Zoho, Wati, Interakt, Gupshup, Kenyt, Tawk, Crisp, Tidio, Intercom, HubSpot, ManyChat, Freshworks, Bitrix and similar names. Nothing was found in the source. This does not rule out a back-office CRM behind the PHP mailer.",
+    "Meta Ad Library, logged-out browser, India, checked 2026-10-19: no ads for 'Satyagrah Developers' (all statuses), for 'Satyagrah' (active), for 'Satya Aashish' (active), or for the exact phrase 'Satya Sanskar' (active). A control search, 'bungalows Anand', returned about 29 active ads from other Anand builders, for example Pinal Developers with ads since 2026-08-05, Buildquick Infrastructure since 2026-07-15 and Shubham Infrastructure since 2026-10-17. So the library works and other local builders are advertising. No live Satyagrah ads were found under those names.",
+    "Facebook page (viewed 2026-10-19): 707 followers, 0 reviews, 'Always open', and the About panel lists 081412 52999 and sales@satyagrahdevelopers.com. The latest post is about 2 days old, a Gujarati Navratri post ('make your dream home reality this Navratri') with a 30-second video and 6 reactions. Navratri and Dussehra are running now and Diwali is about three weeks away.",
+    "Instagram (fetch summary): 2,629 followers. Posts are dated 2026-10-02, 10-07, 10-12 and 10-16, with captions pointing to 'Book your site visit' and the phone number printed on the images. Organic posting is roughly weekly or better.",
+    "The site's LocalBusiness markup lists opening hours of 09:30 to 19:00 on all seven days. The firm has a single office at Anand Central Square. The privacy policy is dated 2024-10-23.",
+    "The site credits 3W Creators LLP (web developer) in the footer and author meta. No evidence was found of who runs their ads or enquiries.",
+    "The suppliers-only email satyagrahdevelopers@yahoo.com is on the contact page for construction-material suppliers. It is not a sales route and should not be used."
+   ],
+   "hypotheses": [
+    "Enquiries mostly arrive by WhatsApp tap and phone call, and the form number is treated as a WhatsApp number to follow up manually. Reply speed is unknown and was not tested.",
+    "The brochure button on five project pages may open the wrong chat, because the link is missing the 91 prefix. If so, the highest-intent action on the Aashish and Sanskar pages leaks enquiries every day. This is an inference from the href only.",
+    "Enquiries probably go unanswered between 19:00 and 09:30 and during site-visit hours, given the single office and stated hours. This is not tested.",
+    "With a PageView-only pixel and no live ads found, paid Meta lead-gen is probably not the main source. Enquiries may come from organic posts, Google, portals and word of mouth. Spend is not verified.",
+    "The owner appears hands-on (YouTube channel, named on the About page), so he may be the one who sees a first email. The owner is reachable via the business mailbox, but this is not confirmed.",
+    "The 3W Creators web agency may also handle his social media or ads. If so, it could be a gatekeeper or competing influence. Unknown."
+   ],
+   "case_for": "Independent Gujarat developer with 7 live projects, two just launched, in the Navratri to Diwali window. The owner is named and has a public profile. The funnel is WhatsApp and phone only: a form that collects a WhatsApp number, budget and area, with no visible instant reply or booking. The brochure-on-WhatsApp button on five project pages, including both new launches, appears to point to a non-Indian number, which is a concrete and checkable leak. No CRM, bot or automation vendor was found. A valid business-published sales@ mailbox exists on their own domain, plus phones and a WhatsApp link. Organic posting is frequent (Instagram 2026-10-16, Facebook about 2 days ago).",
+   "case_against": "The core 'pays for enquiries' signal is missing: no live Meta ads were found under the company or project names, while competing Anand builders are running dozens. The Pixel only fires PageView. Enquiry volume and reply speed are unknown, so slow answering is a hypothesis. They may already have in-house sales staff replying on WhatsApp (about 50 staff overall). The audience is small and the market is Tier-3 Anand, outside the five priority cities though allowed. The Last-Modified freshness is partly a bulk re-upload (most pages share one 2026-10-13 timestamp). The scout's claim that the Gujarati form prompts show they are 'buying local-language leads' is unsupported; it only shows a local-language form. The Ahmedabad portal listings claim could not be verified. RERA numbers were not seen on the pages checked and were not verified.",
+   "ability_to_pay": "Moderate. A multi-project builder with about 15 years in business, 14 delivered projects, about 50 staff and a pipeline of club, resort and villa projects, selling bungalows up to the 1.5 crore band. Ad spend is not verified (no live ads found) and the social audience is small. Expect a modest monthly-fee buyer, not an enterprise one.",
+   "resistance": "Low as far as can be seen. No CRM, chatbot or WhatsApp-automation vendor in the page source, and no anti-bot or anti-AI positioning. Unknowns: the web agency 3W Creators LLP may influence tools or marketing; an in-house sales team may answer WhatsApp well; the owner may prefer personal handling, since the brand is built around Mr. Maheshwari. Both phones are published, so a human call is possible.",
+   "best_angle": "Lead with the checkable broken link and the festive window. For example: the 'Get Brochure on WhatsApp' button on the Satya Aashish and Satya Sanskar pages opens +971 2177723 instead of your 81412 52999, so brochure requests may be going nowhere. Then offer a one-week, no-risk pilot of an instant WhatsApp first reply with the brochure, three qualifying questions and a site-visit slot, timed for Dussehra and Diwali. Frame the broken link as a thing noticed, not as proof of lost leads (hypothesis). Do not claim they run ads.",
+   "best_channel": "Email to sales@satyagrahdevelopers.com (business-published, own-domain mailbox with valid MX), addressed to the team with a line for Mr. Vipul Maheshwari. Follow up with a human phone call to +91 99096 22300 or +91 81412 52999 during their published hours (09:30 to 19:00). Do not send a cold WhatsApp template (round 1 failed with Meta codes 131049/131026). Use WhatsApp only after they reply or opt in. Do not use the web form.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "sales@satyagrahdevelopers.com",
+     "source": "https://satyagrahdevelopers.com/contact_us.html",
+     "note": "Business-published sales mailbox on their own domain. The same address is shown on the Facebook About panel. Domain has MX records (mailhostbox) so the mailbox exists. Primary first-touch address."
+    },
+    {
+     "kind": "email",
+     "value": "satyagrahdeveloper@gmail.com",
+     "source": "https://satyagrahdevelopers.com/contact_us.html",
+     "note": "Second published email, listed beside the sales address on every page. Also named in the privacy policy as the address for opt-out requests, so it is monitored for that. Use only as a fallback."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99096 22300",
+     "source": "https://satyagrahdevelopers.com/contact_us.html",
+     "note": "Published call number, listed next to the second number on every page. A human call route."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 81412 52999",
+     "source": "https://satyagrahdevelopers.com/contact_us.html",
+     "note": "Published as 'For Bookings & Inquiries' on the project pages. Also shown on the Facebook About panel as 081412 52999 and printed on Instagram post images."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 81412 52999",
+     "source": "https://satyagrahdevelopers.com/",
+     "note": "The site's wa.me click-to-chat link (wa.me/+918141252999) is labelled WhatsApp. Use it as the human WhatsApp route only after a reply or opt-in. Cold templates to ad numbers failed in round 1."
+    },
+    {
+     "kind": "website",
+     "value": "https://satyagrahdevelopers.com/",
+     "source": "https://satyagrahdevelopers.com/",
+     "note": "Enquiry form at contact_us.html posts to contact_us.php. Do not submit it."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/satyagrahdevelopers",
+     "source": "https://www.facebook.com/satyagrahdevelopers",
+     "note": "Page 'Satyagrah Developers | Anand', 707 followers, category Construction company. Lists the same phone, email and address."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/satyagrahdeveloper",
+     "source": "https://www.instagram.com/satyagrahdeveloper/",
+     "note": "2,629 followers. Per the fetch summary, posts dated 2026-10-02, 10-07, 10-12 and 10-16."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 6,
+   "hunger_tier": "warm",
+   "hunger_reasons": [
+    "+1 spend now: two projects labelled 'Newly launched' on a site touched 2026-10-13/14, plus a Meta Pixel and GTM installed. But no live Meta ads were found under any Satyagrah or project name (control search proved the library works), so no live-spend points.",
+    "+1 urgency: festive window. Their own Gujarati Navratri post is about 2 days old and Diwali is about three weeks out. The 'newly launched' labels are not counted a second time here.",
+    "+2 funnel gap: WhatsApp and phone-led funnel with 7 project doors, a form that collects a WhatsApp number plus budget and area, and no instant reply or booking flow. The brochure-on-WhatsApp button on 5 of 7 project pages, including both new launches, points to a +971 number missing the 91 prefix. Published hours end at 19:00.",
+    "+1 can pay: 7 ongoing and 3 upcoming projects, 14 completed, about 50 staff, 15 years in business, bungalow price bands up to 1.5 crore plus. Held at 1 because ad spend is unverified, the audience is small (707 Facebook and 2,629 Instagram followers) and Anand is a Tier-3 market.",
+    "+1 reachable: business-published sales@ mailbox on their own domain (MX valid), two published phones and a wa.me link, all with source URLs.",
+    "-0 resistance: no CRM, chatbot or bot-positioning found, and no agency named for marketing. The site designer, 3W Creators LLP, and any back-office CRM are unknown."
+   ],
+   "hunger_gaps": [
+    "Reply speed and enquiry volume are untested (read-only; no enquiry was sent).",
+    "Paid-ad status: only Ad Library keyword searches under 'Satyagrah Developers', 'Satyagrah', 'Satya Aashish' and the phrase 'Satya Sanskar' were run. Searches for Alankar, Anand, Villa, Satsang and Suvidha were not run. Ads under another page name, such as an agency page, cannot be excluded, and the logged-out Ad Library shows only active ads.",
+    "The launch dates of Satya Aashish and Satya Sanskar are not stated. Last-Modified headers are shared across many pages and are only a weak freshness signal.",
+    "Whether wa.me/+9712177723 really misroutes was not tested (opening it was out of scope). It is read from the page source only, and could be an intentional second number.",
+    "Third-party sources were not checked (99acres, Magicbricks, Housing, Justdial, Google Maps reviews, RERA register), so the scout's 'Ahmedabad portal listings' claim, review sentiment and RERA registration are unverified. The WebSearch budget was exhausted. The Google Maps page returned no content via fetch.",
+    "Instagram post dates and follower counts come from a fetch summary, not from a direct screenshot. The YouTube channel returned only a page shell, so no subscriber or upload data.",
+    "Unknown whether a back-office CRM or call team sits behind contact_us.php, and unknown who (3W Creators LLP or others) runs their social media."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "Anand developer with 7 ongoing projects; its Get Brochure on WhatsApp button may open a wrong number (to verify)",
+   "why_hungry": [
+    "7 ongoing and 3 upcoming projects, about 50 staff",
+    "WhatsApp and phone-led funnel across 7 project pages; no instant reply or booking seen",
+    "No live Meta ads found, so the pay signal is weak"
+   ],
+   "next_step": "Wave 3: verify the broken brochure button first, then Gujarati first touch. Business email is published.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded B; hunger 6/10"
+    }
+   ],
+   "language": "gu",
+   "language_note": "Home-page hero headline, form prompt and all 16 location options on the enquiry form are in Gujarati. Project names, specs, buttons and the price bands are in English. The latest Facebook post (about 2 days before 2026-10-19) is in Gujarati and refers to Navratri. An English email with one Gujarati line fits their own marketing.",
+   "website": "https://satyagrahdevelopers.com/"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "re-gj-nitya-buildcon-nitya-aurelia",
+  "tags": [
+   "round-2",
+   "real-estate",
+   "grade-c",
+   "tier-warm",
+   "parked"
+  ],
+  "data": {
+   "name": "Nitya Buildcon - Nitya Aurelia",
+   "legal_name": "Nitya Buildcon LLP",
+   "city": "Ahmedabad (Ashram Road / Usmanpura). The LLP itself is registered in Porbandar.",
+   "product": "AI automation",
+   "campaign": "AI automation - Gujarat real estate",
+   "campaign_key": "ai-automation-real-estate-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "decision_maker": "Jignesh Lakhani. He is the authorised signatory in the GujRERA promoter record (https://gujrera.gujarat.gov.in/user_reg/promoter/promoter23964) and is also named under \"Our Team\" on https://nityabuildcon.in/about/. The same record lists two other partners, one in Porbandar and one in Jamnagar. The About page also names a Mr Raj Thakkar as \"Visionary Construction Leader\", but he is not in the RERA partner list, so his role is unclear. No owner is explicitly stated anywhere.",
+   "size_cues": "Small and new. The LLP was incorporated 2024-10-09. Its registered office is in Porbandar, with partners in Porbandar and Jamnagar. Nitya Aurelia is its ONLY GujRERA project (44 flats + 10 shops, 1,837.97 sqm land, 6,501.21 sqm carpet area, start 2026-05-16, completion 2029-04-30). No RERA agents are registered on the project yet. The Ahmedabad project is an expansion from Saurashtra. Social following is tiny: Instagram 6, Facebook 2. The \"+2000 clients\" claim on the site is unverified and does not fit a 2-year-old LLP.",
+   "observed_facts": [
+    "GujRERA public API, project regid 32094 (fetched 2026-10-19): NITYA AURELIA, promoter NITYA BUILDCON LLP, Mixed Development, status 'New', application 2026-08-14, APPROVED 01-10-2026, start 16-05-2026, completion 30-04-2029, 44 flats + 10 shops, land 1,837.97 sqm, carpet 6,501.21 sqm. The agent list is empty (no RERA-registered brokers on it yet). Source: https://gujrera.gujarat.gov.in/project_reg/public/getproject-details/32094",
+    "GujRERA promoter record 23964: LLP, incorporated 2024-10-09, registered office in Porbandar (Aum Avenue). Three partners/associates: two Porbandar, one Jamnagar. Authorised signatory is Jignesh Lakhani. Only 1 project listed for this promoter.",
+    "https://nityabuildcon.in still says 'RERA Registration No: In Process' on 2026-10-19, 18 days after approval. The WordPress sitemap shows the homepage last modified 2026-08-27. Footer reads '(c) 2025'. Site is managed by NetSofters LLP (footer credit). NetSofters's own site markets custom ERP/CRM development.",
+    "The Nitya Aurelia microsite https://nityabuildcon.in/NityaAurelia/public/ is a separate small app. Its form posts to /NityaAurelia/public/contact/send, it has no RERA number, price or launch date, the footer credits Spin360 as designer, and gallery alt text mentions 'Ekaiva' (a leftover name, developer unclear).",
+    "Entry doors seen: floating WhatsApp (wa.link/sic9v8), phone, gmail, 2 Elementor enquiry forms (home and contact pages), a microsite form, and a channel-partner form (asks Name, Email, Phone, Date of birth, Message). 'Enquire Now' scrolls to a form. No chatbot or live-chat widget, no booking or site-visit scheduler found in the HTML or page text.",
+    "The footer 'CALL US' link is tel:+91994658999 (9 digits after +91, one short). Other tel links are correct (tel:+919974658999).",
+    "No Meta pixel, Google Tag Manager, gtag or Analytics, Clarity or Hotjar found in the HTML of the homepage or the microsite (grep of downloaded HTML).",
+    "Meta Ad Library, country India, status All: keyword searches 'Nitya Buildcon', 'Nitya Aurelia' and 'nityabuildcon' each returned 'No ads match your search criteria'. A control search ('Godrej Properties') returned about 1,900 results, so the library was working.",
+    "Instagram nitya_buildcon_: 6 followers, 8 following. Posts seen on 2026-09-19, 21, 23, 25, 27, 29, 10-01, 10-03, 10-05 (carousels) and reels on 10-12, 10-14, 10-17. Facebook page: 2 followers, 'Property developer', last post about 2026-10-18, 0 reviews.",
+    "Google Maps place 'Nitya Aurelia' exists (the site links to it). Reviews not checked.",
+    "All site text and social copy are in English. Testimonials name six clients (Jamnagar commercial, premium flat, affordable flats). They are unverified."
+   ],
+   "hypotheses": [
+    "HYPOTHESIS: Once launch marketing starts, enquiries will arrive across WhatsApp, phone, gmail, website forms and channel partners with no shared system, so replies will be slow and leads will get lost. Not observed today.",
+    "HYPOTHESIS: The enquiry forms probably send to the gmail inbox (Elementor forms default to email). The destination is not visible, so I did not verify it.",
+    "HYPOTHESIS: The Porbandar/Jamnagar listings and the '+2000 clients' claim suggest the partners come from a local brokerage or consultancy background, which would make them comfortable with WhatsApp-first selling. Unverified.",
+    "HYPOTHESIS: They will start paid Meta or Google ads closer to launch. A recheck in 2 to 4 weeks (Meta Ad Library queries 'Nitya Aurelia' and 'Nitya Buildcon') would turn this into evidence.",
+    "HYPOTHESIS: The broken footer tel link suggests nobody is testing the contact flow, which would mean a lead-handling gap."
+   ],
+   "case_for": "1. Fresh and verified: RERA approved 2026-10-01 (19 days ago), with a visible daily pre-launch content push on Instagram (2026-09-19 to 2026-10-17) and Facebook (about 2026-10-18).\n2. The funnel is entirely manual and has many doors: floating WhatsApp, a phone number, a free gmail address, two website forms, a separate microsite form, and a channel-partner form. There is no chatbot, no booking flow and no lead system visible. The footer \"CALL US\" tel link is broken.\n3. A business-published email, phone and WhatsApp all exist, with a named signatory.\n4. It is a real project in Gujarat, not a chain, with a premium address and real size (about 6,500 sqm carpet area).\n5. A new broker channel (Channel Partner page) will add enquiry sources and make a single lead board useful.",
+   "case_against": "1. The campaign asks for enquiries that arrive and are answered slowly, or enquiries they pay for. Neither is observed. There are ZERO ads in the Meta Ad Library (3 queries), no Meta pixel, no GTM and no GA on either site. The audience is 2 to 6 followers, so there is no evidence any enquiries are arriving yet.\n2. Ability to pay is unproven. This is a 2-year-old LLP with a first project, tiny social accounts and no ad spend.\n3. The need is a hypothesis, not a fact. The launch date is not published.\n4. The only email is a free gmail address, possibly read by one person.\n5. Two web vendors are already involved: NetSofters LLP (sells custom ERP/CRM) manages the main site, and Spin360 designed the microsite. A CRM pitch from them is possible.\n6. The \"2000 clients\" and brokerage-style Porbandar/Jamnagar listings suggest the owners are small regional operators, not a big sales operation.",
+   "ability_to_pay": "Medium-low and unproven. For: a real 54-unit mixed project on Ashram Road (6,501 sqm carpet per RERA), a managed WordPress site plus a separate designed microsite, and an active content calendar. Against: the LLP is only about 2 years old with one registered project, the social accounts have 2 to 6 followers, no paid ads exist in the Meta Ad Library, and no pixel is installed. Any figure for the project's sale value would be my estimate, not a fact.",
+   "resistance": "Low. No in-house CRM, bot or ad agency is evidenced. The main site is managed by NetSofters LLP, an Ahmedabad vendor that markets custom ERP/CRM, so a CRM-first pitch from them is a possible competitor. The microsite was made by a separate designer (Spin360). Nothing positions against AI or bots. The owner is reachable, but the visible inbox is a free gmail. The practical risk is that the owners are small and decide slowly, or that they have no budget before launch.",
+   "best_angle": "Launch readiness, one line: \"Nitya Aurelia just got RERA approval. When launch enquiries and broker leads arrive on WhatsApp, the phone and the gmail address, we send an instant WhatsApp reply with the brochure, ask 3 qualifying questions and offer a site-visit slot, then follow up automatically, with all leads on one board.\" Mention that the site's footer call link is broken only if the campaign allows pointing out flaws; otherwise leave it out. Do not claim they get many enquiries (none is evidenced).",
+   "best_channel": "Email to nityaaureliasales@gmail.com as the first touch, per the campaign rule. Follow up with a human phone call to the published number (+91 9974658999) a few days later. Do NOT use a cold WhatsApp template (round 1 hit Meta codes 131049/131026, and the account type is unknown). Do not use the website form.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "nityaaureliasales@gmail.com",
+     "source": "https://nityabuildcon.in/contact/",
+     "note": "Sales inbox. Free gmail. Also published on the homepage footer (mailto link), the channel-partner page and the microsite https://nityabuildcon.in/NityaAurelia/public/. Best first-touch route. Probably read by the owner or a small team."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 9974658999",
+     "source": "https://nityabuildcon.in/contact/",
+     "note": "Shown as 'Call Now' on the site and on the Facebook page (099746 58999). Indian mobile format, so LIKELY WhatsApp-capable. Note the footer tel link on the site is broken (tel:+91994658999, one digit short)."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "https://wa.link/sic9v8",
+     "source": "https://nityabuildcon.in/",
+     "note": "Floating WhatsApp button on the site. I resolved the redirect (HTTP 301) and it points to api.whatsapp.com/send?phone=919974658999, the same number as the phone above. Whether it is a WhatsApp Business account is unknown."
+    },
+    {
+     "kind": "email",
+     "value": "nityabuildconllp@gmail.com",
+     "source": "https://gujrera.gujarat.gov.in/user_reg/promoter/promoter23964",
+     "note": "Firm-level email the LLP itself filed in the public GujRERA promoter record. Not a marketing inbox. Use only as a fallback or to cross-check identity. A second mobile (ending 8998, the authorised signatory's) is also in that record. I am deliberately not listing it as a contact because it is the signatory's own number and not a sales line."
+    },
+    {
+     "kind": "website",
+     "value": "https://nityabuildcon.in/contact/",
+     "source": "https://nityabuildcon.in/contact/",
+     "note": "Enquiry form (Name, Phone, Email, Message), Elementor form. Destination not observable. Do not submit."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/NityaBuildcon.in",
+     "source": "https://nityabuildcon.in/",
+     "note": "Page 'Nitya Buildcon', category Property developer, 2 followers, 0 reviews, phone 099746 58999 listed."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/nitya_buildcon_/",
+     "source": "https://nityabuildcon.in/",
+     "note": "6 followers. Bio 'Elevating Lifestyles / Coming Soon / Ahmedabad'. No contact details in the bio."
+    }
+   ],
+   "researched": "2026-10-19",
+   "note": "All facts come from public sources dated within 90 days. The need is inferred from their own ads and funnel, not observed as slow replies. Nobody has been contacted.",
+   "hunger_score": 6,
+   "hunger_tier": "warm",
+   "hunger_reasons": [
+    "+1 spend now: fresh launch (RERA approved 2026-10-01) with a daily organic content push since 2026-09-19, but ZERO paid ads in the Meta Ad Library and no ad pixel",
+    "+1 urgency: new project, 'Coming Soon' bio and RERA just approved; but no launch date published, and festive season (Diwali, early November) is only a generic tailwind",
+    "+2 funnel gap: WhatsApp link, phone, gmail, three forms and a channel-partner form, no chatbot or booking flow, broken footer tel link",
+    "+1 can pay: premium Ashram Road address and a real 54-unit, about 6,500 sqm carpet project; offset by a 2-year-old LLP with one project, no ad spend and a tiny following",
+    "+1 reachable: business-published email, phone and a resolvable WhatsApp link",
+    "+0 resistance: no CRM, bot or ad agency seen (a web vendor that sells CRM exists, but no CRM is evidenced; owner is reachable)"
+   ],
+   "hunger_gaps": [
+    "No evidence that any enquiries are arriving or that replies are slow, and no evidence of paid enquiries (no ads, no pixel).",
+    "No portal listings, news or reviews checked: the WebSearch budget for this run was exhausted, so I could not search 99acres, MagicBricks, Housing, news or Google reviews. I did not work around the limit.",
+    "Instagram and Facebook captions and post engagement could not be read (the fetch returned no captions).",
+    "The launch date, price and RERA number on the public site are not published, so the launch window is unknown.",
+    "The destination of the website forms and who reads the gmail inbox are not observable (I may not submit forms).",
+    "Whether 9974658999 is a WhatsApp Business account is unknown. 'Likely WhatsApp-capable' only.",
+    "Whose number 9974658999 is, and whether it is different from the signatory's RERA-filed mobile, is unknown.",
+    "The '+2000 clients' claim, the six testimonials and Mr Raj Thakkar's role are unverified.",
+    "The Meta Ad Library keyword search only matches ad text and page names, so an ad run under another page name could be missed.",
+    "What did NOT work: WebSearch (budget exhausted), the Facebook WebFetch (truncated, so I used the built-in browser instead), the Instagram WebFetch (no captions), and the microsite (no RERA, price or date to read)."
+   ],
+   "proof_level": "Public evidence only (checked 2026-10-19). Nobody was contacted and reply speed was not measured, so this is a likelihood, not proof. The real test is the reply to a soft first message.",
+   "summary": "New Ashram Road project (RERA 1 Oct) with no paid ads yet",
+   "why_hungry": [
+    "New project, RERA approved 1 Oct",
+    "Daily organic posts since 19 Sep",
+    "WhatsApp, phone, Gmail and three forms; no booking step seen"
+   ],
+   "next_step": "Parked: no ads and no sign of enquiry volume. Look again after the launch.",
+   "history": [
+    {
+     "date": "2026-10-19",
+     "text": "Found during round 2 of the lead research for this campaign"
+    },
+    {
+     "date": "2026-10-19",
+     "text": "Public evidence checked and graded C; hunger 6/10"
+    }
+   ],
+   "language": "en",
+   "language_note": "The website, the microsite, the Instagram and Facebook copy and the channel-partner page are all in English. No Gujarati or Hindi marketing found. (The brand has Porbandar/Jamnagar roots, so Gujarati replies from buyers there are possible but not evidenced.)",
+   "website": "https://nityabuildcon.in"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "research-done-ai-automation-real-estate-gujarat-2026-10-round-2",
+  "data": {
+   "kind": "research_done",
+   "text": "Round 2 lead research done: 12 new leads (2 A, 9 B, 1 C). Free sources only (GujRERA, Meta Ad Library, web). Nobody contacted.",
+   "campaign": "AI automation - Gujarat real estate"
+  }
+ }
+]

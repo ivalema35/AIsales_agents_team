@@ -1,0 +1,3 @@
+Owner-quiet mode is ON (set 2026-10-16 on the owner's request: WhatsApp messages to him cost credits; he reads updates and gives approvals in the desktop chat).
+While this file exists, notify_owner.py / send_owner_file.py send the OWNER nothing (no WhatsApp, no email) and propose.py will not create WhatsApp approvals.
+Messages to leads and the approval gate are NOT affected. Delete this file to switch it off.

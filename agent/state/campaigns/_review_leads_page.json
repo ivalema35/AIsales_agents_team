@@ -1,0 +1,180 @@
+[
+ {
+  "lens": "security",
+  "verdict": "The Leads page itself is solid against injection (no XSS, no unsafe hrefs, auth enforced), but I would not deploy until the open redirect in the login flow is fixed and the console is protected against oversized agent-written entries, which can push the service past its 300 MB memory cap.",
+  "findings": [
+   {
+    "severity": "medium",
+    "file": "console/app.py",
+    "line": 215,
+    "issue": "Open redirect after login: the check `nxt.startswith('/') and not nxt.startswith('//')` is bypassed with a tab character, so the owner can be sent to an attacker's site right after entering the password.",
+    "evidence": "Ran against the Flask test client (Werkzeug 3.1.5, Python 3.11.9). GET /login?next=/%09/evil.example/phish renders a form whose action keeps that next value. POSTing the correct password and CSRF token returns 302 with Location: //evil.example/phish, which browsers treat as https://evil.example/phish. Same result for next=/%09/evil.example. The existing test only covers `//evil.example`, so it misses this. Also, next containing %0a or %0d raises an unhandled 500 on the login POST because the header value contains a newline. Impact: phishing from the real console domain, for example a fake 'session expired, sign in again' page, reachable by sending the owner a crafted link.",
+    "fix": "Only redirect to known paths. The next value is only ever set from request.path, so use an allowlist such as `nxt in {'/', '/leads', '/products', '/campaigns'}`, otherwise redirect to '/'. If a general check is kept, reject any value containing a control character or backslash, then run urlsplit and require an empty scheme and netloc and a path that starts with a single '/'."
+   },
+   {
+    "severity": "medium",
+    "file": "console/app.py",
+    "line": 164,
+    "issue": "Every page that lists leads (/leads, / and /products) loads and JSON-parses the full data of up to 500 lead entries, and nothing limits how many Python objects a 64 KB entry can expand into. A set of valid API writes can push the process past the unit file's MemoryMax=300M, so the service is killed on every page load.",
+    "evidence": "Posted one lead through the real API with observed_facts = [[]]*15000 (60,049 bytes, under the 64 KB cap), which returned 201. API writes without a key always insert a new row and there is no row-count cap. With 500 identical leads (30 MB of JSON in total), GET /leads, GET / and GET /products each peaked at about 511 MB of Python heap (tracemalloc) and took roughly 10 s. deploy_console.sh sets MemoryMax=300M with Restart=always. The owner has no way to delete entries, because the console is read-only for them. Needs the agent API key to set up, but the agent reads untrusted web content, and a loop bug would have the same effect.",
+    "fix": "Do not parse whole entries just to list or count them. The Leads list only needs a few fields, so select them with json_extract in SQL. Use SELECT COUNT(*) for the Overview and Products counts. Add write-time limits in clean(): maximum nesting depth (around 6), maximum list length (around 200), and a maximum number of entries per type."
+   },
+   {
+    "severity": "medium",
+    "file": "console/app.py",
+    "line": 426,
+    "issue": "PATCH shallow-merges new data into the stored data and never re-checks the 64 KB limit on the merged result. One lead can therefore grow without bound through repeated small PATCHes, and that one entry is then parsed on every page load.",
+    "evidence": "A single 70 KB write is rejected with 400. But 150 PATCH calls, each adding a new 60 KB key to the same lead, all returned 200 and the entry reached 9.0 MB, about 140 times the cap. GET /leads then peaked at 18 MB for that one lead. About 2,300 PATCHes would exceed MemoryMax=300M with a single entry, and each PATCH also re-parses the whole entry.",
+    "fix": "After building `merged`, check `len(json.dumps(merged)) <= 65536` and return 400 otherwise, using the same rule as clean(). Apply the same depth and list-length limits to the merged data."
+   },
+   {
+    "severity": "low",
+    "file": "console/leads_view.py",
+    "line": 36,
+    "issue": "text_list() runs text() on every element of the list and only then cuts the result to maxn items. A lead whose evidence list has thousands of tiny items makes /leads do a huge amount of useless work, because prepare() runs for all leads on every request.",
+    "evidence": "A 63 KB observed_facts list of 21,000 integers, which the API accepts (201), costs 38 ms per prepare() call. With 500 such leads, GET /leads took 21 s of CPU on this machine, compared with about 1 s for GET / on the same data. The production unit runs one gunicorn worker with 4 threads and CPUQuota=40%, so a few owner reloads can occupy all threads and stall the agent's API writes.",
+    "fix": "Slice before mapping: `value = list(value)[:maxn * 3]`, or stop once maxn non-empty items are collected. Also run prepare() in full only for the selected lead, and compute only the list fields for the rest."
+   }
+  ]
+ },
+ {
+  "lens": "correctness",
+  "verdict": "No crash, escaping or CSP problem found: all 59 tests pass and hostile data stayed escaped. Fix the wrong phone links, the false \"Not contacted yet\" chip and the campaign-to-leads link before the owner relies on the page, because those give wrong answers. The tests also leave the filter and selection logic largely unproven.",
+  "findings": [
+   {
+    "severity": "medium",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\leads_view.py",
+    "line": 56,
+    "issue": "tel: and wa.me links are wrong for Indian numbers with a leading 0 (STD landlines, national-format mobiles) and for 1800 toll-free numbers. _digits() only adds the 91 prefix when there are exactly 10 digits.",
+    "evidence": "Ran contact_link on these values. '0261 2345678' gives 'tel:+02612345678' and 'https://wa.me/02612345678'. '(0261) 234 5678' gives the same. '079-26421234' gives 'tel:+07926421234'. '09714442928' gives 'tel:+09714442928'. '1800 123 4567' gives 'tel:+18001234567', which is a US +1 number. The owner sells in Surat and Gujarat, where businesses publish exactly these formats. The tests only cover 10-digit and +91 numbers.",
+    "fix": "In _digits(): if the digits start with '0' and the length is 11 to 12, strip the 0s and prefix 91. Treat 11-digit numbers starting with 1800 as Indian toll-free, not +1. Return '' when the shape is not recognised, so the number shows as plain text. Add tests for the leading-0 and 1800 cases."
+   },
+   {
+    "severity": "medium",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\leads_view.py",
+    "line": 102,
+    "issue": "The 'Not contacted yet' chip (leads.html:90) is asserted whenever the 'contacted' value is not a bool/int and the status is not in a short hard-coded list. A lead that was contacted can show 'Not contacted yet', and the chip can contradict the status chip beside it.",
+    "evidence": "prepare() with status 'researched' and contacted set to '2026-10-12', 'yes', 'true' or '1' (any string) returns contacted=False. A lead with status 'demo_booked' renders the chips 'Demo booked' and 'Not contacted yet' side by side (checked through the real page). The agent invents its own statuses (the docstring says it decides what to track), and the list ('contacted','sent','replied','interested','meeting','won','lost') is closed. For an outreach tool, wrongly saying 'not contacted' invites a duplicate message.",
+    "fix": "Parse 'contacted' explicitly: bool, 0/1, and strings like true/yes/1 or a non-empty date mean True. Make contacted a three-state value (True, False, None). Show 'Not contacted yet' only when it is known to be False, or when the status is in a known not-contacted set (new, researched, ready, queued, approved). Show nothing for unknown statuses."
+   },
+   {
+    "severity": "medium",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\app.py",
+    "line": 308,
+    "issue": "Links from the Campaigns and Products pages do not always land on the leads they count. The campaign identity is split between campaign_key and the campaign name, the product value is not normalised the same way on both pages, and a campaign without a key links to the unfiltered list.",
+    "evidence": "(a) app.py's own docstring documents lead data as 'name, product, campaign, why, status', with no campaign_key. Campaign 'clinics-2026' (leads=2) with two name-only leads links to /leads?campaign=clinics-2026, which lists [] and 'No leads match these filters'. campaign_ref() only matches the key if the lead has one. (b) If some leads of one campaign have campaign_key and others only the name, the chips show two separate entries both named 'Websites for clinics' with counts 2 and 1. (c) A campaign created without a key (the API allows key=None) renders url_for('leads', campaign=None), which is /leads: all leads, under that campaign's count. (d) products() compares str(lead['product']).lower() against the raw name, while /leads compares the normalised text() value against the raw URL parameter. A product 'Odd  spaced' (two spaces) or 'Trail ' shows 1 lead on /products, and its link lists []. A product with no name links to /leads?product= and counts only leads whose product is '' (a lead with product=None is not counted).",
+    "fix": "In fits(), match the campaign filter against both lead['campaign_key'] and lead['campaign'] (case-insensitive). Build campaign_opts from the campaign entries (key to name) so key and name collapse into one chip. Do not render the link in campaigns.html:98 when c.key is falsy. Normalise the product parameter with lv.text(product).lower() on /leads, and normalise the same way in products()."
+   },
+   {
+    "severity": "medium",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\tests\\test_leads.py",
+    "line": 78,
+    "issue": "Several tests prove less than their names claim. The filter-count and selection logic can be broken without any test failing.",
+    "evidence": "I copied console/ to a scratch folder, applied one mutation at a time, and ran the whole suite. These changes all left it green. (1) Dropping skip_grade, or computing grade_counts with fits(lead): the 'counts' test only checks unfiltered pages, where both give the same numbers. (2) Taking the default selection from everyone[0] instead of shown[0]: no test combines a filter with 'nothing chosen'. test_unknown_or_bad_lead_id_falls_back has one lead, so it cannot tell a real fallback from the only lead. (3) filtered=False, so 'Clear filters' never appears: it is not asserted anywhere. (4) link() keeping 'all' values: not asserted. (5) Removing the row's aria-current: not asserted. (6) Removing the [:12] contacts cap and the product chip: not asserted. (7) Replacing the |select|join sub-line with city + ' - ' + product, which shows ' - ' for a lead with no city: not asserted. test_navigation_and_links_from_other_pages only checks that an href string exists and never follows it, so it cannot show the campaign-link problem above. test_hostile_data has one lead with one campaign, so the campaign and status chips (hidden when there is a single option) are never rendered with hostile text. I rendered them by hand and they were escaped.",
+    "fix": "Add: a faceted-count test (grade counts change with status and campaign filters); a filtered default-selection test with at least two leads; follow the Campaigns and Products links and assert the leads shown; a lead with no city or product; a hostile test with two campaigns and two statuses; 'Clear filters' present when filtered and absent otherwise; the aria-current row; more than 12 contacts."
+   },
+   {
+    "severity": "low",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\app.py",
+    "line": 164,
+    "issue": "The Leads page, the Products lead counts and the Overview 'Leads found' KPI all read entries('lead') with the default LIMIT 500, ordered by updated_at DESC. With more than 500 leads the oldest-updated ones silently disappear, and the page reports the capped number as the total.",
+    "evidence": "I inserted 520 lead rows. The page showed '500 leads' in the kicker, '500 shown', and 'All 500', with no warning. A lead whose id is beyond the cap cannot be opened, because ?lead=<id> falls back to the first lead.",
+    "fix": "Count with SELECT count(*) for the total, and show a visible 'showing the 500 most recently updated' note. Or raise the limit for leads and paginate."
+   },
+   {
+    "severity": "low",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\app.py",
+    "line": 312,
+    "issue": "The numbers on the filter chips are computed inconsistently, and rejected or ungraded leads cannot be reached by any filter. The grade chips are faceted by the other filters, but the campaign and status chips always show unfiltered totals, so a chip can promise leads that do not exist.",
+    "evidence": "With 'grade=A' active, the Status chip 'Contacted 1' is still shown. Clicking it goes to /leads?grade=A&status=contacted, which shows 'No leads match these filters'. The grade chips for All, A, B and C come from fits(skip_grade=True), but campaign_opts and status_opts count over everyone. Leads graded 'reject' or ungraded (including 'rejected', 'A+', 'A-', 'Grade A', which grade_of maps to '') count in 'All' but in no chip: with 8 leads the chips read All 8, A 1, B 2, C 1. The page labels a rejected lead 'Grade X' in the ring, its aria-label and the detail header, and the grade filter has no way to select it.",
+    "fix": "Compute the campaign and status counts with the same faceting as the grade counts (each facet ignores only its own filter). Add 'Rejected' and 'Not graded' chips, or explain the gap. Show 'Rejected' instead of 'Grade X'. Accept 'rejected' and 'A+'/'A-' in grade_of."
+   },
+   {
+    "severity": "low",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\templates\\leads.html",
+    "line": 62,
+    "issue": "On phone and tablet widths (1100px and below) the first lead row looks selected while no lead is open, and the search box does nothing while a lead's detail is open. The implicit selection of shown[0] is shared with the narrow layout, which hides the detail.",
+    "evidence": "With no ?lead=, app.py:321 sets selected to shown[0], so its row gets aria-current='true'. app.css:272 styles it as raised and highlighted. At 1100px and below, app.css:352 hides .lead-detail when no lead is chosen, so the user sees a highlighted row with nothing open (screen readers announce 'current' too). With ?lead=ID (class show-detail), app.css:353 hides the whole list, but the search input in the topbar (leads.html:8) stays visible. Typing in it changes only the hidden list.",
+    "fix": "Only set aria-current on a row when explicit is true (the desktop default selection can still show the first lead's detail). Hide the search label in the narrow layout when .show-detail is present, for example with the same main:has(.leads-layout.show-detail) rule."
+   },
+   {
+    "severity": "low",
+    "file": "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\console\\leads_view.py",
+    "line": 94,
+    "issue": "Contact rows: the source link is lost when the 'source' field is a label and 'source_url' holds the real URL, and brand names are mis-cased.",
+    "evidence": "safe_url(c.get('source') or c.get('source_url')) picks the first truthy value, not the first valid one. A contact with source='Google Maps listing' and source_url='https://maps.example/x' gets source='', so no 'Source' link is shown. The kind label uses str.capitalize(), which lowercases the rest: the real campaign data shows 'Whatsapp' (and the code would give 'Linkedin' and 'Google maps') in the owner-facing UI.",
+    "fix": "Use safe_url(c.get('source')) or safe_url(c.get('source_url')). For kind labels, upper-case only the first letter and use a small map for brand names (WhatsApp, LinkedIn, Google Maps)."
+   }
+  ]
+ },
+ {
+  "lens": "ux-a11y",
+  "verdict": "Not ready for a phone-using owner: the page works, but long agent-written campaign or status names break the layout, the detail cards get too narrow at 1100-1300px, and the light-theme grade and status colours miss WCAG AA. The repo was not touched; I rendered seeded pages in headless Chrome from the scratchpad.",
+  "findings": [
+   {
+    "severity": "medium",
+    "file": "console/static/app.css",
+    "line": 187,
+    "issue": "Chips for agent-written text (campaign, product, city, status) are white-space:nowrap with no max-width. They overflow their tile, cause sideways page scroll, and squeeze the lead name in the list.",
+    "evidence": "With one 82-char campaign name (\"Wire harness and cable assembly manufacturers in Rajkot and Morbi - Gujarat outreach\"):\n- At 600px the .head-meta chip's right edge is 626 against the tile's 553, and scrollWidth is 626 against a 569 viewport.\n- At 1200px the chip ends at 1310 against the tile's 1137, hanging out of the card.\n- On a 375px phone the head column is only about 237px (about 33 characters); a 35-char name just fits, longer ones overflow.\n- The same happens to the Campaign filter chips (.chip-link, line 264): a long name pushes them past the viewport.\n- In the list, a long status label (status allows 30 chars, e.g. \"awaiting_owner_approval...\") makes .lead-side as wide as the label, and the .lead-main strong shrinks to 24px, so the name shows as \"Ep...\" or \"K\".",
+    "fix": "Give .chip and .chip-link max-width:100%, white-space:normal and overflow-wrap:anywhere (or ellipsis plus a title). Cap the status chip in .lead-side at about 120px with text-overflow:ellipsis. Optionally let .head-meta chips wrap."
+   },
+   {
+    "severity": "medium",
+    "file": "console/static/app.css",
+    "line": 302,
+    "issue": "The two-column .detail-grid (\"What the agent saw\" / \"Fit and risks\") only collapses at 1100px, the same breakpoint where the list/detail split goes away. Between roughly 1101px and 1300px the two cards are about 140-200px of text wide.",
+    "evidence": "Measured text width of the evidence column (.facts .txt): 141px at 1200px, 181px at 1280px, 261px at 1440px (viewports minus scrollbar). The 1120px screenshot shows evidence wrapping every 2-3 words. The lead-head name column wraps the h2 onto four lines at 1120px.",
+    "fix": "Keep .detail-grid single-column while the 372px list is beside it (collapse below about 1500px, or use a container query on .lead-detail), or narrow the list column to about 320px."
+   },
+   {
+    "severity": "medium",
+    "file": "console/static/app.css",
+    "line": 189,
+    "issue": "In light mode the new colours fail WCAG AA 4.5:1 for small text.",
+    "evidence": "Computed on the real surface (glass over page, light theme):\n- .chip.warn 3.99:1 (3.6:1 over the purple aurora blob). This is the Ready, Queued, Approved and Hold chip and the grade C ring (13px).\n- .chip.ok 4.44:1 and the grade A ring text 4.4:1.\n- Grade B ring (accent-2 on its 14% tint) 4.25:1.\n- Spotlight .kicker \"First-touch plan\" (11px, accent-2 on the accent/accent-2 tint, lines 295-298) 3.9:1 (3.5:1 over the blob).\n- Muted .kicker labels (\"Campaign\", \"Status\") and .link \"Clear filters\" sit directly on the aurora and drop to 4.1:1 and 3.3:1.\n- Dark theme is fine (about 5-10:1; only .chip.bad and .idle dip to 3.8-4.0 over the blob centres). The 26px big ring passes as large text.",
+    "fix": "Darken the light tokens. For example --warn #854d0e (5.5:1 / 4.9:1 on the blob), --ok #065f46 (6.1:1), and a text-only teal #0a5a6e for small accent-2 text and the spotlight kicker (5.6:1 on its tint). Or give the chips a solid, near-white background instead of a translucent tint."
+   },
+   {
+    "severity": "medium",
+    "file": "console/templates/leads.html",
+    "line": 8,
+    "issue": "The search box lives in the topbar. When a lead is open at 1100px or less, the list it filters is display:none, so the box is visible but does nothing. On phones it also makes the sticky header about 125px tall (about 19% of the screen).",
+    "evidence": "The 375px render of ?lead=ID shows the full-width \"Search leads\" field above the \"All leads\" back link; typing filters hidden .lead-item elements and nothing changes. The :has() rule at app.css line 355 hides .seg.wide and .filters but not the topbar action. At 375px the topbar measures about 126px (title plus search row). app.css has no scroll-padding-top, so focused links on the long detail page can sit under it.",
+    "fix": "Hide or disable the search when .show-detail is set at 1100px or less (render the box inside .lead-list instead of the topbar, or add a body class). Add scroll-padding-top equal to the topbar height."
+   },
+   {
+    "severity": "medium",
+    "file": "console/templates/leads.html",
+    "line": 62,
+    "issue": "Every row is a plain link that reloads the whole page, and app.js does nothing to preserve state. The list's own scroll position resets to the top, the chosen row is not scrolled into view, and keyboard focus returns to the top of the page.",
+    "evidence": "The desktop list is a sticky scroller (app.css line 268, max-height calc(100dvh - 116px)). With 14 leads it already scrolls (about 12 rows fit). Picking lead 14 reloads with the list at the top and the aria-current row out of view. app.js has only the drawer, theme and filter code. DOM order is list then detail, so a keyboard or screen-reader user has to tab through every row (one stop per lead, up to 500) after each selection to reach the detail. There is no skip link to the detail.",
+    "fix": "Add a small script: on load, scrollIntoView({block:'nearest'}) the [aria-current] row inside .lead-list. Put id=\"lead-detail\" on the article (tabindex=-1) and a \"Skip to lead details\" link before the list, or focus the detail heading when ?lead= is present."
+   },
+   {
+    "severity": "low",
+    "file": "console/templates/leads.html",
+    "line": 17,
+    "issue": "Rejected leads appear as \"Grade X\" with a red ring (aria-label \"Grade X\", visible kicker \"GRADE X\"), which a non-technical owner cannot decode. They and ungraded leads cannot be filtered, so the grade tabs do not add up.",
+    "evidence": "leads_view.grade_of maps \"reject\" to \"X\". The tabs (line 32) only offer All, A, B and C. Seeded data: All 14, but A+B+C = 12. The row \"Rejected Co\" shows a red X ring, and the big ring on its detail card reads \"Grade X\". The page has no legend.",
+    "fix": "Show \"Rejected\" instead of \"Grade X\" (aria-label too), and add a \"Rejected / Not graded\" tab, or a one-line note that A to C are the only grades and X means rejected."
+   },
+   {
+    "severity": "low",
+    "file": "console/app.py",
+    "line": 313,
+    "issue": "The Campaign and Status chip counts ignore the other active filters, while the grade tabs respect them. The numbers on chips do not match what a click shows.",
+    "evidence": "With ?grade=A&campaign=c2 the grade tabs read All 5, A 1, B 2, but the Status chips still read 2/1/3/2/3/2/1 (14 leads in total) and one lead is shown. Clicking \"Researched 3\" gives \"No leads match these filters\". campaign_opts and status_opts are counted over all leads (lines 314-317), not through fits().",
+    "fix": "Count each chip group with fits() while skipping that group's own filter. Optionally dim or disable options with a zero count."
+   },
+   {
+    "severity": "low",
+    "file": "console/templates/leads.html",
+    "line": 99,
+    "issue": "Small accessibility and semantics gaps in the detail view.",
+    "evidence": "- When nothing is opened at 1100px or less, the first row still gets aria-current=\"true\" and the raised, outlined look (app.py line 321 passes the implicit selected lead). The 375px list screenshot shows a selection that does not exist.\n- \"First-touch plan\" is a <p class=kicker>, not a heading, so heading navigation skips the main card. The \"Select a lead\" empty state (line 154) is an h3 with no h2 above it.\n- That empty state says \"Pick a lead on the left\" even when the left list says \"No leads match these filters\".\n- The grade ring (role=img \"Grade A\") is followed by the visible text \"Grade A\" (line 94), so it is announced twice.\n- clip() (line 22) makes the summary's accessible name the whole 240-char excerpt plus \"Read more\". When expanded, \"Show less\" sits above the full text (screenshot), so the user must scroll back up to collapse it.",
+    "fix": "Use aria-current only when explicit is true. Make the plan label an h3. Add an h2 (visually hidden) or use h2 for the empty states. Set aria-hidden on the visible duplicate. Add aria-label=\"Read more\" to the summary, and move the toggle below the text or add a second \"Show less\" after it."
+   }
+  ]
+ }
+]

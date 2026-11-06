@@ -1,0 +1,1061 @@
+{
+ "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+ "researched": 6,
+ "grade_counts": {
+  "C": 6
+ },
+ "ready_count": 0,
+ "leads": [
+  {
+   "business": "Class One Infra (partnership firm; project Class One Evoq, Raiya Hills, Rajkot). Finder's name \"Classone Group\" not found in any source",
+   "first_grade": "C",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The only evidence that this firm has a WhatsApp enquiry channel worth automating is the two Meta ads, and nobody could open them: the Ad Library returned 403 for me and for the investigator. The only phone number found is on a listing portal's buttons and most likely belongs to the portal, not the builder. So there is no verified need signal and no verified business-published contact, which leaves only a real but low-visibility firm that is a plausible fit by inference.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Class One Infra (partnership firm; project Class One Evoq, Raiya Hills, Rajkot). Finder's name \"Classone Group\" not found in any source",
+    "city": "Rajkot (Raiya Hills, Sopan Luxuria Road)",
+    "identity_verified": true,
+    "official_website": "not found (no developer site, Instagram or Facebook page surfaced in search)",
+    "what_they_do": "Rajkot residential developer, partnership firm incorporated 14 Aug 2023. One RERA-registered project, Class One Evoq: a single tower of 15 floors with 56 4-BHK units (carpet about 1,140-1,150 sq ft), listed at Rs 80-85 lakh. Possession is scheduled for 31 Dec 2029.",
+    "entity_type": "end_business",
+    "size_cues": "The RERA record lists 8 named partners, a project with 56 units, 0.6 acres, 1 tower and 15 floors, and RERA-reported construction progress of 14.2% (Jan 2026) and 22.05% (Apr 2026). Approval was 18 Jul 2025 and the firm was incorporated Aug 2023, so it is a young firm. Houssed says the builder has 2 projects (1 ongoing, 1 completed) but does not name the completed one. A separate \"Class One Buildtech LLP\" (incorporated Jan 2025) appeared in search, but no source links it to this firm. No staff or branch data was found. It is not a chain or franchise and not an agency.",
+    "verification_trail": [
+     "https://www.facebook.com/ads/library/?id=1141357448479865 - WebFetch returned HTTP 403. An Apify web-fetch run also did not finish (JS page), so I aborted it after about 2 minutes. The finder's two Meta ads, the 2026-10-13 start date, the WhatsApp CTA, the 'Chat with us' headline and the printed phone number are NOT re-verified by me.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534 - Mirror of the Gujarat RERA record. Confirmed promoter Class One Infra (partnership firm), incorporated 14 Aug 2023, RERA No. PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/RAA15532/180725/311229, approved 18 Jul 2025, end date 31 Dec 2029, 56 units, 8 named partners, project address, quarterly progress 14.2% (Jan 2026) and 22.05% (Apr 2026). Promoter email and mobile are masked on the page.",
+     "https://houssed.com/rajkot/class-one-infra/class-one-evoq-161259 - Independent listing portal. Confirmed project, 56 units, 4 BHK, Rs 80-85 lakh, address Sopan Hill Main Road near Swastik Highlands, the same RERA number, and a Connect Now WhatsApp link to +91 81691 14718. It does not say whether that number is the builder's or the portal's.",
+     "https://houssed.com/rajkot/sale/builder/class-one-infra-817414 - Builder profile on the same portal. Says 2 projects (1 ongoing, 1 completed) and lists no website. Promotional text only.",
+     "WebSearch 'Classone Evoq Rajkot Raiya Class One Infra', '\"Class One Infra\" Rajkot builder', 'Class One Evoq 99acres Rajkot Raiya' and a social/website query - no official site, Instagram or Facebook page for the developer found. The name 'Classone Group' did not appear anywhere. A 99acres listing was mentioned in one result summary (price on request, possession Dec 2029) but I did not open it."
+    ],
+    "contacts": [
+     {
+      "kind": "whatsapp",
+      "value": "+91 81691 14718 (likely WhatsApp; unclear if the builder's own or the portal's lead-routing number)",
+      "source_url": "https://houssed.com/rajkot/class-one-infra/class-one-evoq-161259",
+      "note": "The portal's 'Connect Now' WhatsApp link for this project and builder profile. Not confirmed as published by the business itself. The finder says a phone is printed in the Meta ad, but I could not open the ad to compare."
+     },
+     {
+      "kind": "form",
+      "value": "RERA-registered promoter email and mobile exist but are masked (cla*********@gmail.com, 93*******)",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534",
+      "note": "The full values are on the official Gujarat RERA project page (gujrera.gujarat.gov.in). I did not retrieve it, so no usable contact from this source."
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Class One Infra is a partnership firm, incorporated 14 Aug 2023, with 8 named partners including Bhavin Udaykumar Nathwani. Its project Class One Evoq (RERA PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/RAA15532/180725/311229) was approved 18 Jul 2025, with 56 units and completion due 31 Dec 2029.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534",
+      "date": "2025-07-18 (approval)"
+     },
+     {
+      "fact": "The RERA data shows construction progress of 14.2% (Jan 2026) and 22.05% (Apr 2026). The page also shows 0 of 56 units booked, but this is a RERA self-declaration and likely stale, so it is not evidence of unsold stock.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534",
+      "date": "2026-04"
+     },
+     {
+      "fact": "Houssed lists Class One Evoq as a New Launch, 4 BHK, carpet about 1,140-1,150 sq ft, Rs 80-85 lakh, 56 units, 1 tower of 15 floors, with a WhatsApp 'Connect Now' link to +91 81691 14718.",
+      "source_url": "https://houssed.com/rajkot/class-one-infra/class-one-evoq-161259"
+     },
+     {
+      "fact": "No website or social page of the developer could be found. Its only public web footprint seen is the RERA record and listing portals.",
+      "source_url": "https://houssed.com/rajkot/sale/builder/class-one-infra-817414"
+     }
+    ],
+    "hypotheses": [
+     "The finder's claim of two active Meta ads started 2026-10-13 with a WhatsApp CTA is plausible but UNVERIFIED by me (the Ad Library returned 403). If true, they pay for WhatsApp-click leads and have a live inbound channel to automate.",
+     "A sales team that runs ad-driven WhatsApp enquiries for a 56-unit, Rs 80-85 lakh project probably misses some evening and night enquiries. This is inference only, with no evidence of actual response times.",
+     "The firm likely sells through a small in-house team and/or channel brokers. Nothing was found about its sales setup or whether it already uses a WhatsApp tool or a CRM.",
+     "Gross inventory is roughly 56 x Rs 80-85 lakh, about Rs 45-48 crore, so the firm can afford a small automation fee. This is arithmetic from the listed price and unit count."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "reachability": "business_contact",
+    "ability_to_pay": "Strong inference, not a direct signal. Inventory is about 56 units at Rs 80-85 lakh, which gives roughly Rs 45-48 crore gross. The firm has 8 partners, RERA approval, and 22% construction progress by Apr 2026. If the finder's Meta ads are real, it is also spending on paid media. No budget, turnover or ad-spend figure was found.",
+    "decision_maker": "Partner Bhavin Udaykumar Nathwani is the first of 8 named promoter partners on the public RERA record (https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534). No page says who handles sales or marketing, so the actual decision-maker is not found.",
+    "resistance": "Low to moderate, mostly unknown. No website, no known CRM or WhatsApp vendor, and no sign of a competing agency. Unknowns: whether sales is outsourced to brokers or a channel partner, and whether the 8-partner structure slows decisions. The only phone found (+91 81691 14718) may be a listing-portal lead route, which would make a first touch misdirected.",
+    "best_angle": "Reference the project by name: 'We saw Class One Evoq running click-to-WhatsApp ads. Evening and night enquiries get an instant brochure, 3 quick questions and a site-visit slot, with one list for your sales team.' Offer to show it on their own enquiry number. Do not claim any observed miss in response time.",
+    "best_channel": "Phone call to the number the business itself prints in its Meta ad, once someone verifies that number manually, or a click-to-WhatsApp message through the ad's own CTA as an opt-in route. Do not use the Houssed number unless confirmed as the builder's. Alternatively, get the full RERA promoter mobile and email from the official Gujarat RERA page (public register).",
+    "gaps": [
+     "Meta Ad Library evidence not re-verified (403; Apify fetch did not complete). The ad dates, CTA and printed phone are unconfirmed by me.",
+     "No official website, Instagram or Facebook page found, so the business's own published contacts are unconfirmed.",
+     "RERA promoter email and mobile are masked in the mirror I used. I did not open the official gujrera.gujarat.gov.in project page.",
+     "'Classone Group' name unverified. The firm is Class One Infra; the relation to Class One Buildtech LLP is unknown.",
+     "The completed earlier project is unnamed. The sales model (in-house vs brokers/channel partners) and any existing WhatsApp or CRM tool are unknown."
+    ],
+    "grade": "C",
+    "reject_reason": "",
+    "case_for": "The business exists and is verified through a RERA record (via a mirror) plus an independent listing portal. It is a real, young, single-project Rajkot developer with a high-ticket product (Rs 80-85 lakh x 56 units) and eight named partners. It is in the target geography and size band, with no site or CRM vendor visible. If the finder's WhatsApp-CTA ads are real, it matches the offer well.",
+    "case_against": "The key evidence (the ads) could not be re-checked, so the need is inferred only. No official website or business-published contact was found, and the only phone is from a listing portal and may not be the builder's. The decision-maker is unclear among 8 partners, and sales may be handled by brokers or a channel partner. The RERA units-booked figure of 0 of 56 is probably stale and gives no signal."
+   },
+   "challenge": {
+    "business": "Class One Infra (project Class One Evoq, Raiya Hills, Rajkot); finder's name \"Classone Group\" not found in any source",
+    "agree_with_grade": true,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "The business exists as described (Rajkot developer, one project, Class One Evoq) and is the right entity",
+      "verdict": "confirmed",
+      "note": "Two independent public sources agree. The RERA mirror at aurumproptech.in shows promoter Class One Infra (partnership firm, incorporated 14 Aug 2023, 8 named partners), project approved 18 Jul 2025, 56 4-BHK units, Tulsi Park, Sopan Luxuria Road, Raiya Hills, Rajkot. The Houssed portal shows the same RERA number, 56 units, 1 tower of 15 floors, Rs 80-85 lakh. Note the RERA page is a mirror, not gujrera.gujarat.gov.in itself."
+     },
+     {
+      "claim": "The name is 'Classone Group'",
+      "verdict": "corrected",
+      "note": "No source uses 'Classone Group'. The promoter is 'Class One Infra'. Any message should use that name."
+     },
+     {
+      "claim": "Two active Meta ads started 2026-10-13 with a WhatsApp CTA, 'Chat with us' headline and a printed phone number",
+      "verdict": "unsupported",
+      "note": "The Ad Library URL returned HTTP 403 for me as well, as it did for the investigator. Neither check could see the ads. The key need signal (WhatsApp-click ads) has no verified evidence and no verified date. It remains a finder claim."
+     },
+     {
+      "claim": "The phone +91 81691 14718 is a business-published contact",
+      "verdict": "refuted",
+      "note": "On the Houssed page the number sits on the portal's own 'Connect Now' and 'Get Brochure' buttons, with a prefilled 'Hi, I'm looking to buy a residential property in Rajkot' message. It is not in a builder section, and Houssed lists a separate support number (+91 70300 66666). It is most likely the portal's lead-routing number. A web search for the number found nothing. The finder's 'phone printed in the ad' is unverified, and it is not shown that it matches this number."
+     },
+     {
+      "claim": "The firm has a real ability to pay (investigator rated 'strong')",
+      "verdict": "corrected",
+      "note": "This is only arithmetic: 56 units at Rs 80-85 lakh is about Rs 45-48 crore gross. RERA progress of 14.2% (Jan 2026) and 22.05% (Apr 2026) shows the project is under construction. There is no direct evidence of marketing spend, since the ads are unverified. The RERA page shows 0 of 56 units booked, which is a self-declaration and likely stale. Treat the pay signal as moderate and inferred."
+     },
+     {
+      "claim": "The need (slow replies, evening and night misses) is observed",
+      "verdict": "unsupported",
+      "note": "The need is inferred only. No response-time evidence, no existing-tool evidence, and no sales-setup evidence exists. The finder's 'each unanswered night-time enquiry is costly' is a hypothesis."
+     },
+     {
+      "claim": "Reachable decision-maker route",
+      "verdict": "unsupported",
+      "note": "Eight partners are named on the RERA record (Bhavin Udaykumar Nathwani is listed first), but nothing says who handles sales or marketing. The promoter mobile and email are masked on the mirror (93xxxxxxxx, cla...@gmail.com). No official website, Instagram or Facebook page was found, so no business-published contact exists. The unmasked values are on the official Gujarat RERA page, which I did not open."
+     },
+     {
+      "claim": "Not a chain, agency or vendor, and in the target geography",
+      "verdict": "confirmed",
+      "note": "Single-project partnership firm in Rajkot. Houssed says the builder has 2 projects (1 ongoing, 1 completed) but does not name the completed one. The 'Class One Buildtech LLP' mentioned by the investigator is not linked to this firm by any source."
+     }
+    ],
+    "strongest_objection": "The only evidence that this firm has a WhatsApp enquiry channel worth automating is the two Meta ads, and nobody could open them: the Ad Library returned 403 for me and for the investigator. The only phone number found is on a listing portal's buttons and most likely belongs to the portal, not the builder. So there is no verified need signal and no verified business-published contact, which leaves only a real but low-visibility firm that is a plausible fit by inference.",
+    "corrections": [
+     "Use the name 'Class One Infra' (project Class One Evoq); 'Classone Group' appears in no source.",
+     "Do not treat +91 81691 14718 as the builder's number. It is on Houssed's own Connect Now and Get Brochure buttons, and it is probably the portal's lead route.",
+     "The pay signal is inferred from price times unit count, not observed. The Meta ad spend is unverified.",
+     "The 0 of 56 units booked figure on the RERA mirror is a self-declaration and not evidence of unsold stock.",
+     "To earn B: get the ads verified by a human opening the Ad Library page, with advertiser name, start date and CTA. Alternatively get the full promoter mobile and email from the official gujrera.gujarat.gov.in project page, or a published builder contact. To earn A: also show an observed slow-reply or after-hours gap, and name a sales or marketing decision-maker."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Shreem Avdhesh (Shree Avdhesh Developers, partnership firm) - part of an informal \"Shreem\" project brand, Odhav, Ahmedabad",
+   "first_grade": "C",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The one item that would earn the lead a higher grade is the Meta WhatsApp ad, and no one has seen it. With the ad unverified, the need is purely inferred, and reach is third-party portal contacts plus an unverified ad phone number. B needs a strong reach signal, which this lacks. The project is a real, RERA-registered one with about 395 unsold units, but that is general project data, not evidence that enquiries are slow to get a reply.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Shreem Avdhesh (Shree Avdhesh Developers, partnership firm) - part of an informal \"Shreem\" project brand, Odhav, Ahmedabad",
+    "city": "Ahmedabad (Odhav, S.P. Ring Road)",
+    "identity_verified": true,
+    "official_website": "none found (no developer website on any listing or RERA record; only an architect-affiliate site shreemdesign.com)",
+    "what_they_do": "Builds Shreem Avdhesh, a mixed residential (2/3 BHK) and commercial project on S.P. Ring Road, Odhav, Ahmedabad. It is registered under two RERA numbers (MAA11534 for blocks A, I+J+K, and MAA11539 for blocks B to H) and is under construction, due Dec 2027. The same partner group appears to run other \"Shreem\" projects (Shreem Luxuria, Hanspura) through sister partnership firms.",
+    "entity_type": "end_business",
+    "verification_trail": [
+     "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536 - RERA-derived record: promoter Shree Avdhesh Developers (partnership, reg GUJAH202973, incorporated 4 Aug 2022), 6 named partners, project at FP 73 Odhav opp. Girivar Pride S.P. Ring Road, RERA MAA11539/310323, 384 units (139 booked, 245 unbooked), est. cost about Rs 99.65 cr, total Rs 108 cr, progress 60.27% (Apr 2026), contractor Rudra Infra. Promoter email/mobile masked.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh-1/18539 - second RERA registration MAA11534/290323, same promoter, 230 units (80 booked, 174 unbooked in blocks A and I+J+K), 55.56% progress.",
+     "https://gharpe.com/ahmedabad/shreem-avdhesh - listing: 2/3 BHK, 14 floors, 378 units, Rs 31-45 lakh, possession 31 Dec 2027. Phone on page is GharPe's own, not the developer's. No Shreem Group mention.",
+     "https://www.addressofchoice.com/shreem-avdhesh-odhav-ahmedabad-p78483 - second listing, same developer name and RERA MAA11534. Contacts are the portal's own. Data inconsistent (says Ready to Move).",
+     "https://www.a2zproperty.in/Gujarat/Ahmedabad/shreem-avdhesh-1/index.html - listing shows promoter Shree Avdhesh Developers with phone +91 9824331641 and email shreemavdhesh@gmail.com. This is a third-party portal, so it is not confirmed as business-published.",
+     "https://shreemdesign.com/ - architect/structural firm at 601 The Allen Town, S.P. Ring Road, Nikol; director Yogesh Panchal; lists Shreem Avdhesh, Shreem Arise, Shreem Luxuria, Shreem Maxima as projects; info@shreemdesign.com. No 'Shreem Group' mention. Yogeshkumar Pravinchandra Panchal is also a named partner of the developer in the RERA record, so the link is likely but is my inference from matching names.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-luxuria/18020 - sister project Shreem Luxuria (Hanspura) by Shree Gigev Developers with overlapping partners (Vekariya, J. Patel, H. Patel, Panchal); 292 flats + 24 shops + 108 offices, total cost about Rs 144.5 cr, 81.56% progress (Apr 2026). Confirms a multi-project partner group.",
+     "WebSearch results (Shreem Group Ahmedabad / Shreem Maxima) - no official 'Shreem Group' site; Shreem Maxima is by Keshvam Developers per Housing.com and RERA record. Houssed/CommonFloor 'Shreem Group' profiles are unrelated or unverifiable (Gandhinagar plots / Vadodara). Not used as facts.",
+     "https://www.facebook.com/ads/library/?id=2045598407088530 - NOT verified: WebFetch returned HTTP 403 and Apify web-fetch timed out after 120s (cost under US$0.04). The finder's ad claims remain unconfirmed by me."
+    ],
+    "contacts": [
+     {
+      "kind": "email",
+      "value": "shreemavdhesh@gmail.com",
+      "source_url": "https://www.a2zproperty.in/Gujarat/Ahmedabad/shreem-avdhesh-1/index.html",
+      "note": "Shown as promoter email on a third-party portal; not seen on a business-owned page. Treat as unconfirmed-likely."
+     },
+     {
+      "kind": "phone",
+      "value": "+91 9824331641",
+      "source_url": "https://www.a2zproperty.in/Gujarat/Ahmedabad/shreem-avdhesh-1/index.html",
+      "note": "Indian mobile, likely WhatsApp, not confirmed. Posted by a third-party portal, ownership unconfirmed."
+     },
+     {
+      "kind": "phone",
+      "value": "+91 96248 42535",
+      "source_url": "https://www.facebook.com/ads/library/?id=2045598407088530",
+      "note": "From the finder's claim only (printed in a Meta ad). I could not open the ad, so unverified. Likely WhatsApp if the ad is real."
+     },
+     {
+      "kind": "email",
+      "value": "info@shreemdesign.com",
+      "source_url": "https://shreemdesign.com/",
+      "note": "Architect firm (Shreem Design), not the developer. Related only via partner/director name Yogesh Panchal (my inference). Use only as a warm route, not as the developer's inbox."
+     },
+     {
+      "kind": "maps",
+      "value": "601, The Allen Town, Opp. Kia Showroom, S.P. Ring Road, Nikol, Ahmedabad (Shreem Design office); project site FP 73 Odhav, opp. Girivar Pride, S.P. Ring Road",
+      "source_url": "https://shreemdesign.com/",
+      "note": "Office address of the architect affiliate, plus the project site address from the RERA record (aurumproptech URL above). No developer sales office found."
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Shree Avdhesh Developers is a partnership firm (inc. 4 Aug 2022) with six named partners including Prakashbhai Madhubhai Vekariya, Dineshkumar Batukbhai Patel, Jagdishkumar Pragjibhai Patel, Yogeshkumar Pravinchandra Panchal, Harsh Jagdishbhai Patel and Meetkumar Patel. Promoter shows 0 completed projects and 1 ongoing.",
+      "date": "RERA data, progress as of Apr 2026",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536"
+     },
+     {
+      "fact": "Shreem Avdhesh: 384 units under RERA MAA11539 (139 booked, 245 unbooked) plus 230 units under MAA11534 (80 booked, 174 unbooked), so about 419 unsold units remain across both registrations. Estimated cost about Rs 99.65 cr, total about Rs 108 cr. Completion due 31 Dec 2027; 60.27% progress.",
+      "date": "Apr 2026",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536"
+     },
+     {
+      "fact": "The same partner set, via Shree Gigev Developers, runs Shreem Luxuria in Hanspura (total cost about Rs 144.5 cr, 81.56% progress). This shows a group building multiple Rs 100 cr+ projects.",
+      "date": "Apr 2026",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-luxuria/18020"
+     },
+     {
+      "fact": "Shreem Design (architect/structural firm, director Yogesh Panchal) lists Shreem Avdhesh among its projects. Yogeshkumar Pravinchandra Panchal is a partner in the developer firm per RERA.",
+      "date": "undated",
+      "source_url": "https://shreemdesign.com/"
+     },
+     {
+      "fact": "No developer website appears on any listing, RERA-derived record or search; listing portals (GharPe, Address of Choice, a2zproperty) carry the project, so enquiries come through portals and presumably ads.",
+      "date": "2026-10-27 (search)",
+      "source_url": "https://gharpe.com/ahmedabad/shreem-avdhesh"
+     },
+     {
+      "fact": "Listing portals contradict each other on unit count (224/378/384/434), price and status (Ready to Move vs under construction), so portal data is low quality.",
+      "date": "2026-10-27",
+      "source_url": "https://www.addressofchoice.com/shreem-avdhesh-odhav-ahmedabad-p78483"
+     }
+    ],
+    "hypotheses": [
+     "The finder's two Meta ads (14 and 16 Oct 2026) with WhatsApp CTA could not be verified by me; if real, the team already pays for WhatsApp-click enquiries and handles them manually. This is the finder's claim, not my observation.",
+     "With roughly 419 unsold units and 14 months to the Dec 2027 completion date, plus likely festival-season ad spend, speed-to-first-reply probably matters commercially.",
+     "Evening and night enquiries probably wait for a human, because the firm has no visible sales team or website. This is inference.",
+     "'Shreem Group' is likely a loose brand for sister partnership firms around the Vekariya/Patel/Panchal partners; no legal entity named Shreem Group was found.",
+     "Shreem Design's director Yogesh Panchal is probably the same person as developer partner Yogeshkumar Pravinchandra Panchal, which makes info@shreemdesign.com a warm route to the partners. Unconfirmed."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "reachability": "business_contact",
+    "grade": "C",
+    "case_for": "Real, RERA-registered, owner-run developer. About Rs 108 cr live project with roughly 419 unsold units, a sister project of Rs 144 cr, and partners who can pay for a small automation. No website and portal-led marketing suggest no existing CRM or bot. A phone/WhatsApp route exists. If the Meta WhatsApp ads are real, it is a strong fit and should move to B (possibly A with a named decision-maker).",
+    "case_against": "I could not confirm the key evidence (the ad), so the need is inferred only. No developer-owned contact is verified: the email and phone come from third-party portals, and the ad number is unverified. Six partners and no named sales head, so decision-maker unclear. Portal data is inconsistent, and the Shreem brand spans several separate firms, so it is unclear who actually decides on marketing tools. Under the grade rule, B needs strong pay AND strong reach with an inferred need; reach here is weak.",
+    "ability_to_pay": "Strong. Project cost about Rs 108 cr (Avdhesh) and about Rs 144.5 cr for the sister project (Luxuria); contractor engaged and 60 to 80% built. Both are RERA-derived figures, not company accounts. A small automation retainer is trivial against marketing spend.",
+    "decision_maker": "not found. Six partners are named in the public RERA record (aurumproptech URL above), but the page does not say who handles sales or marketing. Yogesh Panchal is listed as director of Shreem Design (shreemdesign.com), but that is the architect firm.",
+    "size_cues": "One main project of 614 units across two RERA registrations (about 419 unsold), sister project Shreem Luxuria with 424 units/shops/offices, Shreem Maxima (Keshvam Developers) carries the same brand. Firm incorporated Aug 2022 with 0 completed projects. Six partners; contractor Rudra Infra. No visible sales team size.",
+    "resistance": "Low to moderate. No website or visible CRM/bot found. Possible barriers: the decision sits with several partners; they may use the broker-led or portal-led sales process and a call-based follow-up; the ad phone may be a personal mobile handled by one person. Unknown whether a vendor already runs their ads and WhatsApp.",
+    "best_angle": "Ask first for the sales head or partner who handles the Meta ad enquiries. Then offer a first reply in about a minute with a brochure and site-visit slot for Shreem Avdhesh, framed around the roughly 419 unsold units and evening or night enquiries. Mention the ad only if you have opened it yourself.",
+    "best_channel": "Phone call or WhatsApp to the number printed in the Meta ad (+91 96248 42535, likely WhatsApp), after a person at IV Infotech opens the ad and confirms it. Click-to-WhatsApp via their own ad is the cleanest opt-in route. Warm fallback: info@shreemdesign.com, reaching Yogesh Panchal as a partner.",
+    "gaps": [
+     "Meta Ad Library entry 2045598407088530 could not be opened (403, then Apify timeout), so the ad, WhatsApp CTA, dates and phone are unverified.",
+     "No developer-owned website or social page found; no confirmed developer-published phone or email.",
+     "Phone +91 9824331641 and shreemavdhesh@gmail.com come only from a third-party portal; ownership unconfirmed.",
+     "Link between Shreem Design director Yogesh Panchal and the developer partner Yogeshkumar Pravinchandra Panchal is by name match only.",
+     "Who handles sales and ads, and whether an agency or CRM is already in place, is unknown.",
+     "Gujarat RERA portal was not checked directly; RERA data comes from the aurumproptech aggregator."
+    ]
+   },
+   "challenge": {
+    "business": "Shreem Avdhesh (promoter Shree Avdhesh Developers, partnership firm), Odhav, S.P. Ring Road, Ahmedabad. \"Shreem Group\" is not an entity found anywhere.",
+    "agree_with_grade": true,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Business exists as described; right entity (RERA developer Shree Avdhesh Developers, Odhav)",
+      "verdict": "confirmed",
+      "note": "Re-opened both aurumproptech RERA-derived pages: promoter Shree Avdhesh Developers, partnership firm, reg GUJAH202973, inc. 4 Aug 2022, six named partners, site FP 73 Odhav opp. Girivar Pride, S.P. Ring Road, RERA MAA11539 and MAA11534, due 31 Dec 2027. A search also returned GharPe, Address of Choice and Squareyards listings. This is an aggregator copy of RERA, not the Gujarat RERA portal itself. I found no map listing or developer site, so the second independent source is only the portals."
+     },
+     {
+      "claim": "About 419 unsold units across both RERA registrations",
+      "verdict": "corrected",
+      "note": "The second registration (MAA11534, blocks A and I+J+K) shows 80 booked and 150 unbooked of 230 units (A: 13 booked/43 unbooked; I+J+K: 67/107). The dossier's 174 unbooked is wrong; 174 is the total unit count of block I+J+K. Correct total unsold is 245 + 150 = 395, not about 419. The 384-unit registration (139 booked, 245 unbooked) is correct."
+     },
+     {
+      "claim": "Project cost about Rs 99.65 cr estimated, Rs 108 cr total; progress 60.27% (Apr 2026)",
+      "verdict": "confirmed",
+      "note": "Page shows estimated project cost 996,500,000 and total 1,080,048,477 (currency not stated on the page, so rupees is an assumption). Progress 60.27% for April 2026. I did not re-check the contractor name. These are RERA-declared figures, not proof of cash or ability to pay."
+     },
+     {
+      "claim": "Meta ads (14 and 16 Oct 2026) with WhatsApp CTA and phone +91 96248 42535 exist for this project",
+      "verdict": "unsupported",
+      "note": "I could not open the Ad Library entry: HTTP 403. A search for the number was declined, so I did not check whether it appears elsewhere. The need signal and that phone number are therefore only the finder's claim. Without the ad, the need is purely inferred."
+     },
+     {
+      "claim": "Phone +91 9824331641 and shreemavdhesh@gmail.com belong to the developer",
+      "verdict": "corrected",
+      "note": "Both are on the a2zproperty.in project page under the project's own Contact section, separate from the portal's own number and email. They are probably project contacts, but they sit on a third-party portal whose disclaimer says data is best-effort. They are not seen on a business-owned page, so the dossier's 'unconfirmed-likely' label is right. Say 'likely WhatsApp' only for the mobile."
+     },
+     {
+      "claim": "No developer website and no visible CRM or bot",
+      "verdict": "unsupported",
+      "note": "Absence of a site is consistent with every page I opened, but absence of evidence does not show that no sales team, agency, CRM or WhatsApp tool exists."
+     },
+     {
+      "claim": "Shreem Design (info@shreemdesign.com) is linked to the developer through Yogesh Panchal",
+      "verdict": "corrected",
+      "note": "shreemdesign.com confirms an architecture firm run by Yogesh Panchal, Founder and Director, at 601 The Allen Town, S.P. Ring Road, Nikol, listing Shreem Arise, Avdhesh, Luxuria and Maxima as projects. It does not say it is the developer and does not mention Shreem Group. A partner called Yogeshkumar Pravinchandra Panchal is in the RERA record, so the link is a name match only. An architect inbox is not a route to the sales decision-maker."
+     },
+     {
+      "claim": "Shreem Group / sister project Shreem Luxuria (Rs 144.5 cr) shows a multi-project group",
+      "verdict": "not_checked",
+      "note": "I did not re-open the Luxuria page. The group link rests on overlapping partner names, so treat it as inference."
+     },
+     {
+      "claim": "Decision-maker not found",
+      "verdict": "confirmed",
+      "note": "Six partners are named in the RERA-derived record; no sales head or marketing owner is published. This is the main gap against grade A or B."
+     }
+    ],
+    "strongest_objection": "The one item that would earn the lead a higher grade is the Meta WhatsApp ad, and no one has seen it. With the ad unverified, the need is purely inferred, and reach is third-party portal contacts plus an unverified ad phone number. B needs a strong reach signal, which this lacks. The project is a real, RERA-registered one with about 395 unsold units, but that is general project data, not evidence that enquiries are slow to get a reply.",
+    "corrections": [
+     "Unsold units are about 395 (245 + 150), not about 419; the second registration has 150 unbooked, not 174.",
+     "'Shreem Group' is not a verified entity; the promoter is Shree Avdhesh Developers. The Shreem Luxuria / Shree Gigev Developers link rests on overlapping partner names and was not re-checked.",
+     "Phone +91 9824331641 and shreemavdhesh@gmail.com sit under the project's Contact section on a2zproperty.in, so they are probably the project's contacts, but they are not on a business-owned page.",
+     "The Meta ad, its dates, the WhatsApp CTA and the +91 96248 42535 number remain unverified (Ad Library returned 403). Do not state them as fact in outreach.",
+     "To earn B: a person opens the Ad Library entry and confirms the advertiser is this project and that the ad has a WhatsApp CTA. To earn A: also a named partner or sales head, plus a number published by the business itself (ad, site or a Page it owns)."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Shivanta Group (Vadodara) - project Shivanta Krushnam, New Manjalpur",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": true,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The entire case for this lead is a Meta ad that neither the investigator nor I could open. Its WhatsApp CTA, start date and second phone number come only from the finder. The project it is supposed to promote, Shivanta Krushnam, appears in no source I could reach, and the 191-unit figure has no source at all. The company site cannot be opened either. What is left is a real small Vadodara developer with a directory-listed phone and a brand name shared by several unrelated firms. That is a plain C, not a B: the need is only inferred, the pay signal is moderate, and the route to a decision-maker is a single directory number.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Shivanta Group (Vadodara) - project Shivanta Krushnam, New Manjalpur",
+    "city": "Vadodara (New Manjalpur)",
+    "identity_verified": true,
+    "official_website": "https://shivantagroup.com/ (expired TLS certificate; I could not open it myself, content seen only via search-result snippets)",
+    "what_they_do": "Vadodara residential and commercial developer. Per its own site (seen via search snippets) it lists Shivanta Krushnam (New Manjalpur, ongoing), Shivanta Ramam, Villa, Skyview and Shree Rang Vatika, and says it has been building since 2021.",
+    "entity_type": "end_business",
+    "size_cues": "Small to mid local developer, founded about 2021. At least 5 projects listed (Krushnam, Ramam G+15 with shops, Villa 23 units, Skyview G+13, Shree Rang Vatika 49 units in Karjan). Employee count is unreliable (RocketReach is inconsistent). The finder's 191-unit figure for Krushnam is NOT verified; I found no RERA ID or unit count for it. Shivanta Villa has a RERA ID (RAA12533/251023) and Shree Rang Vatika has RAA12805/240124/311226.",
+    "decision_maker": "Founders per the About page of shivantagroup.com (seen only in a search snippet, https://shivantagroup.com/about/): Hardik Shah, Nachiket Gandhi and Manoj Sharma. Which one runs sales is not found. Caution: RERA records for \"Shivanta Highstreet\" name the promoter as Shivanta Buildcon (partners Manish Punjabi, Maheshbhai Punjabi, Pradyumansinh Rathod), and \"Shivanta Lk 15\" is by Shivanta Developers (Chintankumar Thakrar). These look like separate firms sharing the brand and are NOT confirmed to be part of Shivanta Group.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 92270 31144",
+      "note": "Office number on shivantagroup.com per search snippet; same number on the Meta ad (per finder) and on the bharatpropertty.com listing. Likely WhatsApp (Indian mobile), not confirmed.",
+      "source_url": "https://bharatpropertty.com/estate_developer/shivanta-group/"
+     },
+     {
+      "kind": "phone",
+      "value": "8141133114",
+      "note": "Second number printed in the Meta ad per the finder only; I could not re-open the ad (HTTP 403), so it is not confirmed by me.",
+      "source_url": "https://www.facebook.com/ads/library/?id=1383953363769565"
+     },
+     {
+      "kind": "website",
+      "value": "https://shivantagroup.com/",
+      "note": "Official site, expired TLS certificate. Pages seen via search snippets: /about/ and /project/.",
+      "source_url": "https://shivantagroup.com/"
+     },
+     {
+      "kind": "maps",
+      "value": "Shivanta Krushnam, Nr. Aarya Four Square Complex, 24 Mtr. Billa Bong School Road, New Manjalpur, Vadodara",
+      "note": "Project address as the site states it (search snippet).",
+      "source_url": "https://shivantagroup.com/"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Official site lists Shivanta Krushnam in New Manjalpur as Ongoing, near Aarya Four Square Complex on Billa Bong School Road. Menu also lists Ramam, Villa, Skyview and Shree Rang Vatika. Tagline 'Building Landmarks Since 2021'. Office phone (+91) 92270 31144. Seen only in a search-result snippet; my own fetch failed on the expired certificate.",
+      "source_url": "https://shivantagroup.com/",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "About page (via snippet) says the group was founded by Hardik Shah, Nachiket Gandhi and Manoj Sharma. The year in the text may be a placeholder.",
+      "source_url": "https://shivantagroup.com/about/",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "Third-party directory lists Shivanta Group with 4 projects (Ramam under construction, Villa 23 villas under construction, Skyview ready, Shree Rang Vatika ready) and phone +91 92270 31144.",
+      "source_url": "https://bharatpropertty.com/estate_developer/shivanta-group/",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "Houssed lists Shivanta Group's Shree Rang Vatika, Karjan: 49 units, RERA PR/GJ/VADODARA/KARJAN/Others/RAA12805/240124/311226, possession 30 Dec 2026. No developer phone or email on that page.",
+      "source_url": "https://houssed.com/vadodara/shivanta-group/shivanta-shree-rang-vatika-11681",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "Shivanta Villa has RERA ID PR/GJ/VADODARA/VADODARA/Others/RAA12533/251023, planned completion 2026-12-31 (search snippet).",
+      "source_url": "https://www.a2zproperty.in/Gujarat/Vadodara/shivanta-villa/index.html",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "A LinkedIn post by Hardik Shah (about 7 months old) described Krushnam as 'Exclusive 3 BHK living with shops', labelled Coming Soon. Seen only via a search snippet; I did not open the profile.",
+      "source_url": "https://www.linkedin.com/in/hardik-shah-635b62301/",
+      "date": "2026-10-27"
+     }
+    ],
+    "hypotheses": [
+     "The finder says the Meta ad runs a WhatsApp CTA 'Book Your Site Visit!' (started 2026-10-09). I could not re-check it (HTTP 403), so this is a claim, not a fact I confirmed.",
+     "If the ad does route to WhatsApp, leads probably land on one office number (92270 31144) and are answered by staff by hand, so evening and night enquiries may wait. Inferred, not observed.",
+     "The 191-unit figure for Krushnam is unverified. The project is probably newly launched and may still need RERA registration or marketing push.",
+     "Shivanta Buildcon and Shivanta Developers are probably separate partnership firms using the brand. They should not be treated as the same buyer unless confirmed.",
+     "Five-plus projects at different stages suggest steady enquiry inflow and real marketing spend, but that is inferred."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "ability_to_pay": "Reasonable. It is an active multi-project developer (five or more projects, two with RERA IDs) with a branded site, and it reportedly runs paid Meta ads for Krushnam. A local developer this size should afford a small automation fee. No financials seen.",
+    "reachability": "business_contact",
+    "best_channel": "Click-to-WhatsApp or a direct call to the published office number +91 92270 31144 (likely WhatsApp), asking for Hardik Shah or the sales head. No email found. Do not message from a disguised customer account.",
+    "best_angle": "Short note: 'You run site-visit ads for Krushnam. Does an evening or night enquiry get a reply within a minute? We set up a first reply with brochure, 3 questions and site-visit slot, and a single list for your sales team.' Offer to show it on their own project.",
+    "resistance": "Unknown. No evidence of an existing WhatsApp bot or CRM, but I could not open the site to check for a chat widget. The founders are named, so reaching them is probably easy. The site has an expired certificate, which hints at weak tech upkeep (so they may value outside help) but also at low priority on digital. Risk of mixing up with the unrelated Shivanta Buildcon and Shivanta Developers.",
+    "gaps": [
+     "Could not open the Meta ad (403), so the WhatsApp CTA, start date, headline and second phone are unconfirmed by me.",
+     "Could not open shivantagroup.com (expired certificate); I did not bypass it. All site facts come from search snippets and third-party listings.",
+     "No RERA ID or unit count found for Krushnam, so the 191-unit claim is unverified.",
+     "Which founder handles sales is not found.",
+     "No email published that I could see.",
+     "Whether they already use a WhatsApp bot or CRM is not checked.",
+     "Link between Shivanta Group and Shivanta Buildcon / Shivanta Developers is unclear."
+    ],
+    "verification_trail": [
+     "https://www.facebook.com/ads/library/?id=1383953363769565 - WebFetch returned HTTP 403; ad NOT re-verified.",
+     "https://shivantagroup.com/ and http://www.shivantagroup.com - WebFetch and Apify web-fetch both failed with an expired TLS certificate. A curl that skips certificate checks was blocked and I did not retry it.",
+     "Web search results (snippets) for shivantagroup.com, /about/ and /project/ - confirm project list, Krushnam address, 'Since 2021', office phone 92270 31144 and founder names.",
+     "https://bharatpropertty.com/estate_developer/shivanta-group/ - independent directory: 4 Shivanta Group projects and phone 92270 31144 (matches the site).",
+     "https://houssed.com/vadodara/shivanta-group/shivanta-shree-rang-vatika-11681 - Shivanta Group project in Karjan, 49 units, RERA ID, possession date; no developer contact.",
+     "https://www.a2zproperty.in/Gujarat/Vadodara/shivanta/index.html - Shivanta Harni is by Shree Maruti Developers (different developer).",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/shivanta-highstreet/19658 - promoter is Shivanta Buildcon (partners Punjabi/Rathod); entity differs from Shivanta Group.",
+     "https://www.gujrera.com/p/vadodara/shivanta-lk-15-vadodara/ - Shivanta Lk 15 is by Shivanta Developers (Chintankumar Thakrar); another separate entity.",
+     "Searches for 'Shivanta Krushnam' and RERA: no RERA ID or unit count found for Krushnam."
+    ],
+    "grade": "B",
+    "case_for": "Real, verifiable Vadodara developer with several projects and RERA-registered ones. Krushnam is confirmed as an ongoing project. A published office number is on the site and the directory. Founders are named. If the finder's ad is real, it sends buyers to WhatsApp, which is exactly the first-reply gap our offer fixes. Small owner-led firm, so a quick decision is likely.",
+    "case_against": "Need is only inferred: I could not re-check the ad or the site, and nothing shows slow replies or lost enquiries. The 191-unit figure is unverified. No email, and the only contact is one office number. Brand overlap with Shivanta Buildcon and Shivanta Developers could cause mix-ups. Unknown whether they already use a bot or CRM."
+   },
+   "challenge": {
+    "business": "Shivanta Group (Vadodara), project Shivanta Krushnam",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Shivanta Group exists as a Vadodara developer (right entity)",
+      "verdict": "confirmed",
+      "note": "Two independent directories name it: bharatpropertty.com (developer page, 4 projects, phone +91 9227031144, which I re-fetched) and houssed.com (Shree Rang Vatika, Karjan, 49 units, RERA RAA12805/240124/311226, developer 'Shivanta Group'). That is enough to show the business exists."
+     },
+     {
+      "claim": "Active Meta ad from 2026-10-09 with WhatsApp CTA 'Book Your Site Visit!', two phone numbers, website",
+      "verdict": "unsupported",
+      "note": "The ad URL returns HTTP 403 for me too, as it did for the investigator. The only source for this claim is the finder. The whole 'need observed' case rests on it, so it is not verified."
+     },
+     {
+      "claim": "Shivanta Krushnam exists as an ongoing New Manjalpur project (and has 191 units)",
+      "verdict": "unsupported",
+      "note": "Two web searches for 'Shivanta Krushnam' return nothing about it. Only a Harni project (Shree Maruti Developers), a Trisha Infrastructure 'Shivanta' and 'Matru Shivanta Ramam' show up. The site that supposedly lists it will not open (expired TLS certificate). The 191-unit figure has no source anywhere."
+     },
+     {
+      "claim": "Official site shivantagroup.com content, founders Hardik Shah / Nachiket Gandhi / Manoj Sharma, 'Since 2021'",
+      "verdict": "unsupported",
+      "note": "The site cannot be fetched (certificate expired). A search for the founder names returns nothing about Shivanta. These details come only from search snippets the investigator saw and I could not reproduce. Treat the founder names as unconfirmed."
+     },
+     {
+      "claim": "Phone +91 92270 31144 belongs to Shivanta Group",
+      "verdict": "confirmed",
+      "note": "Shown on the bharatpropertty.com developer page. It is a third-party directory, not the business's own page, so I treat it as 'likely WhatsApp' only. The second number 8141133114 is unverified."
+     },
+     {
+      "claim": "Shivanta Group is a multi-project developer (5+ projects, RERA registered), supporting a 'strong' pay signal",
+      "verdict": "corrected",
+      "note": "The directory lists 4 projects. Houssed lists Shree Rang Vatika (49 units) under Shivanta Group, but lists Shivanta Ramam (130 units, RERA MAA14690) under Matru Chhaya Developers, with no mention of Shivanta Group. So Ramam looks like a partner or JV project, not clearly the group's own. The 'five-plus' figure is not supported. No financial data was seen. The pay signal is moderate at best, not strong, and the ad spend that would support it is itself unverified."
+     },
+     {
+      "claim": "Need (slow first reply) is observed",
+      "verdict": "refuted",
+      "note": "Nothing observed shows slow replies, lost enquiries or missing automation. The investigator's own dossier labels it 'inferred', and the only hint (a WhatsApp ad) could not be re-checked. This is a hypothesis, not an observed need."
+     },
+     {
+      "claim": "Decision-maker route is reachable",
+      "verdict": "corrected",
+      "note": "There is one office or sales mobile from a directory and no email. Which founder runs sales is unknown. Several 'Shivanta' brands (Buildcon, Developers, Shree Maruti Developers, Trisha, Matru Chhaya) are different firms, so there is a real risk of a namesake mix-up. A WhatsApp number on a Houssed page (+91 81691 14718) belongs to the portal's lead flow, not to the business."
+     }
+    ],
+    "strongest_objection": "The entire case for this lead is a Meta ad that neither the investigator nor I could open. Its WhatsApp CTA, start date and second phone number come only from the finder. The project it is supposed to promote, Shivanta Krushnam, appears in no source I could reach, and the 191-unit figure has no source at all. The company site cannot be opened either. What is left is a real small Vadodara developer with a directory-listed phone and a brand name shared by several unrelated firms. That is a plain C, not a B: the need is only inferred, the pay signal is moderate, and the route to a decision-maker is a single directory number.",
+    "corrections": [
+     "Downgrade from B to C. The need is inferred only, and the ad and the Krushnam project are unverified.",
+     "Remove the 191-unit claim. No source supports it.",
+     "Pay signal should be 'moderate', not 'strong'. The group lists 4 projects in the directory, and Ramam is shown as a Matru Chhaya Developers project.",
+     "Founder names and the site text rest on search snippets that I could not reproduce. Treat them as unconfirmed.",
+     "Name the namesake firms (Shivanta Buildcon, Shivanta Developers, Shree Maruti Developers, Trisha Infrastructure, Matru Chhaya Developers) so nobody contacts the wrong one.",
+     "To earn B: open the Meta ad (or get a screenshot) showing the advertiser page, the WhatsApp CTA and the date. Also confirm Krushnam through a RERA entry or the site once its certificate is fixed, and confirm the advertiser is the same entity as the one with phone 92270 31144."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Shree Siddhivinayak Reality (Shree Siddhivinayak Realities), project Vincy Tower, Rajkot",
+   "first_grade": "C",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "weak",
+   "strongest_objection": "The only evidence of any need or ad spend is a Meta ad nobody could open (HTTP 403, and the Apify fetch failed). Everything else is a RERA mirror and portal listings showing that a small firm exists. A pitch built on that ad would be a pitch built on a claim we cannot check.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Shree Siddhivinayak Reality (Shree Siddhivinayak Realities), project Vincy Tower, Rajkot",
+    "city": "Rajkot (project: Railnagar Main Road, near Madhapar Circle, 360006); promoter office Dhrol, Jamnagar",
+    "identity_verified": true,
+    "official_website": "none found",
+    "what_they_do": "Small partnership-firm developer building Vincy Tower, a mixed-use project (2/3 BHK flats and shops; 42 flats and 17 shops across Blocks A+B per the RERA mirror) in Rajkot, plus two small residential projects in Dhrol, Jamnagar (Haridwar Heights, Haridwar Ashish).",
+    "entity_type": "end_business",
+    "verification_trail": [
+     "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/vincy-tower/25528 - opened: RERA data mirror (third party, not the official portal) confirms Vincy Tower, Near Madhapar Circle, Railnagar Main Road, Rajkot 360006; promoter Shree Siddhivinayak Reality (partnership firm, incorporated 21 Jun 2022, GUJJUN04608); partners Vikas Amrutlal Bhimani (Dhrol, Jamnagar) and Mayur Keshavjibhai Vansjalia (Rajkot); approved 10 Mar 2025; 59 units (42 flats, 17 shops), 0 shown as booked; progress 46.37% Apr 2026; end date 31 Dec 2027; promoter email/mobile masked; no project website.",
+     "https://rajkotpropertyexpo.gujrera.com/project/vincy-tower-25528 - opened: second independent listing (Rajkot Property Expo directory) confirms the same project and promoter; authorized signatory Vikas Bhimani; office Plot 31, Sandipani School area, Kharva Road, Dhrol, Jamnagar 361210; phone 9879149190; email haridwarheightsrera@gmail.com; no website.",
+     "https://bharatpropertty.com/property/vincy-tower-luxurious-2-and-3-bhk-flats-shops-and-showrooms/ - opened: third listing (property portal, last updated 7 Dec 2024) shows Vincy Tower under 'Shee Siddhivinayak Realty (Rajkot)' with the same phone 9879149190; price not stated ('Ask for Price'); calls status 'ready possession', which conflicts with RERA's 46% progress in Apr 2026.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/jamnagar/haridwar-heights/18336 - opened: same promoter's Haridwar Heights, Dhrol, 10 flats, 9 booked, 90% built; shows the firm is a small 2022-formed developer with a track record of small projects (RERA experience fields show 0).",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/jamnagar/haridwar-ashish/22358 - seen via search only (not opened): second Dhrol project by the same promoter, approved 23 May 2024.",
+     "https://www.facebook.com/ads/library/?id=1075919292110933 - WebFetch returned HTTP 403; an Apify web-fetch attempt on it ran 2 minutes without output and was aborted (cost about US$0.01). The Meta ad, its 21 Oct 2026 start date, its WhatsApp CTA and the three phone numbers are NOT verified by me.",
+     "WebSearch for the three ad phone numbers (9687516666, 9925913232, 9607579396) returned no page naming them, so they are not linked to the business by any public page I could open. Searches for 'Vincy Tower Rajkot' returned no website, news, or social page of the developer."
+    ],
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 9879149190 (likely WhatsApp; Indian mobile)",
+      "note": "Listed as phone of authorized signatory Vikas Bhimani on the RERA directory page and as the Vincy Tower contact on a property portal",
+      "source_url": "https://rajkotpropertyexpo.gujrera.com/project/vincy-tower-25528"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 9879149190",
+      "note": "Same number shown as the developer contact for Vincy Tower on a second portal",
+      "source_url": "https://bharatpropertty.com/property/vincy-tower-luxurious-2-and-3-bhk-flats-shops-and-showrooms/"
+     },
+     {
+      "kind": "email",
+      "value": "haridwarheightsrera@gmail.com",
+      "note": "Developer email on the RERA directory page; the name matches their Dhrol project, not Vincy Tower. Published by the RERA record, so treat as the RERA-filing address, likely lightly monitored.",
+      "source_url": "https://rajkotpropertyexpo.gujrera.com/project/vincy-tower-25528"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 9687516666, +91 9925913232, +91 9607579396",
+      "note": "Claimed by the finder as printed in the Meta ad. NOT verified: the ad page returned 403 and no public page links these numbers to the business. Do not use until the ad is seen.",
+      "source_url": "https://www.facebook.com/ads/library/?id=1075919292110933"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Vincy Tower is RERA-listed (mixed development, 2/3 BHK flats and shops) near Madhapar Circle, Railnagar Main Road, Rajkot, promoter Shree Siddhivinayak Reality, approved 10 Mar 2025, expected end 31 Dec 2027.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/vincy-tower/25528",
+      "date": "2025-03-10"
+     },
+     {
+      "fact": "Promoter is a partnership firm incorporated 21 Jun 2022 with partners Vikas Amrutlal Bhimani and Mayur Keshavjibhai Vansjalia; authorized signatory Vikas Bhimani; head office in Dhrol, Jamnagar (about 100 km from Rajkot).",
+      "source_url": "https://rajkotpropertyexpo.gujrera.com/project/vincy-tower-25528"
+     },
+     {
+      "fact": "The project has 59 units (42 flats, 17 shops); the mirror shows 0 booked, and reported construction progress of 22% (Oct 2025), 34.35% (Jan 2026), 46.37% (Apr 2026). The booked count may simply not be updated by the promoter.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/vincy-tower/25528",
+      "date": "2026-04"
+     },
+     {
+      "fact": "The project is marketed on at least two public portals with phone 9879149190 and an 'Ask for Price' form; no price shown.",
+      "source_url": "https://bharatpropertty.com/property/vincy-tower-luxurious-2-and-3-bhk-flats-shops-and-showrooms/",
+      "date": "2024-12-07"
+     },
+     {
+      "fact": "Same promoter has a track record of small projects: Haridwar Heights, Dhrol (10 flats, 9 booked, 90% built) and Haridwar Ashish, Dhrol.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/jamnagar/haridwar-heights/18336"
+     },
+     {
+      "fact": "No official website, Instagram/Facebook page, Google Maps listing or news item for the developer or Vincy Tower was found by search.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/vincy-tower/25528"
+     }
+    ],
+    "hypotheses": [
+     "A Meta ad with WhatsApp CTA started 21 Oct 2026 (finder's claim, not re-verified) would mean they already buy leads that land on WhatsApp and phone, so first-reply speed matters.",
+     "Three phone numbers in an ad (finder's claim) would suggest the owner and a few helpers answer manually, possibly missing evening and night enquiries; this is inference, no public page shows how they handle enquiries.",
+     "The 0 booked units on the RERA mirror, together with a live ad campaign, could mean slow sales, but it may only be an un-updated field.",
+     "The firm is small and owner-led (two partners, a relatively new firm, no website), so the decision-maker is probably Vikas Bhimani or Mayur Vansjalia; Mayur's Rajkot address suggests he may run Rajkot sales, unconfirmed."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "decision_maker": "Vikas Bhimani, authorized signatory and partner of Shree Siddhivinayak Reality, per https://rajkotpropertyexpo.gujrera.com/project/vincy-tower-25528 (second partner Mayur Keshavjibhai Vansjalia, Rajkot, per https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/vincy-tower/25528). Whether either handles sales enquiries is not stated anywhere.",
+    "size_cues": "Two-partner firm formed June 2022; RERA experience fields show 0 completed/ongoing; 3 RERA projects seen (Vincy Tower with 59 units, plus two small Dhrol projects of about 10 flats). Small, owner-led, local. No website, no staff count.",
+    "ability_to_pay": "Weak to moderate. For: a 59-unit project about 46% built, and (unverified) paid Meta ads. Against: new firm, no website or brand presence, 0 booked units on the RERA mirror, no price or revenue data. A small recurring fee is plausible but not evidenced; a high-ticket custom build is not.",
+    "resistance": "Low on the vendor/system side: no website, CRM or WhatsApp tool visible, no agency named anywhere. Likely resistance: owner reachable mostly by phone; Dhrol head office means decision-makers may not be in Rajkot; the three ad numbers (if real) suggest a manual process that works for them. The only email is a RERA-filing address named after a different project, so likely poorly monitored. One portal says 'ready possession' while RERA shows 46% progress, an inconsistency not to mention.",
+    "best_angle": "Do not pitch on the ad (we have not seen it). Open with a plain public fact: Vincy Tower is on RERA and listed on portals with 'Ask for Price' forms, so enquiries probably arrive on phone and WhatsApp at any hour; offer a demo that sends the brochure, asks 3 questions and offers a site-visit slot within about a minute, with one list for whoever sells.",
+    "best_channel": "Phone call to the published number 9879149190 (Vikas Bhimani's signatory number), or WhatsApp only through an opt-in route such as a click-to-WhatsApp from their own ad or portal enquiry. No cold WhatsApp (cold WA templates were 0/3 in campaign 1). Re-verify the ad in the Meta Ad Library in a normal browser first, and only then use the ad's own numbers.",
+    "gaps": [
+     "Ad evidence not re-verified: Meta Ad Library returned 403 and an Apify fetch produced nothing, so the 21 Oct 2026 start, WhatsApp CTA and the three numbers are unconfirmed.",
+     "No public page shows who answers enquiries, whether they use a CRM, or how fast they reply.",
+     "Booked-unit count is 0 on the RERA mirror; real sales status unknown.",
+     "Official Gujarat RERA portal not checked directly (only a mirror and a directory); registration number should be confirmed there.",
+     "Whether 9879149190 is the sales number or only the RERA-filing number is unknown.",
+     "No evidence of marketing spend other than the finder's ad claim."
+    ],
+    "grade": "C",
+    "case_for": "Genuine small owner-led Rajkot developer with a live RERA project of 59 units still being built and sold. Right size for the offer (no in-house team, website or vendor visible). A named partner and a published mobile exist. If the finder's ad is real, they already pay for WhatsApp-bound leads.",
+    "case_against": "The need rests only on the finder's ad, which I could not open, so it is inferred, not observed. Pay signal is weak (new firm, no web presence, 0 booked on the RERA mirror). The listed phone and email are RERA-filing details, and the email is named after another project. Head office is in Dhrol, Jamnagar, not Rajkot. Nothing public shows a slow-reply problem. It could move up to B if the ad is confirmed in a normal browser with its three numbers, and to A only with a stronger pay signal and a confirmed decision-maker route."
+   },
+   "challenge": {
+    "business": "Shree Siddhivinayak Reality (Shree Siddhivinayak Realities), project Vincy Tower, Rajkot",
+    "agree_with_grade": true,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Business exists as described: Vincy Tower, Rajkot, promoter Shree Siddhivinayak Reality (partnership), partners Vikas Bhimani and Mayur Vansjalia",
+      "verdict": "confirmed",
+      "note": "I re-opened the Aurum RERA mirror and the Rajkot Property Expo directory. Both show the same project, promoter, partners, pincode 360006 and approval date 10 Mar 2025. Both are RERA-derived, so they are not fully independent. The bharatpropertty.com portal is a third listing. The two-source test is only just met."
+     },
+     {
+      "claim": "59 units (42 flats, 17 shops), 0 booked, progress 46.37% in Apr 2026",
+      "verdict": "corrected",
+      "note": "59 units and the 0 booked figure are correct. The same mirror page shows 0.0% in the Building Blocks section and 22% (Oct 2025), 34.35% (Jan 2026) and 46.37% (Apr 2026) in the quarterly section. The page itself says these conflict. The progress figures are unreliable, so they do not show real construction or sales status."
+     },
+     {
+      "claim": "Contact 9879149190 belongs to the business and comes from the cited pages",
+      "verdict": "confirmed",
+      "note": "It is listed as the authorized signatory/contact on the directory page and as the contact on bharatpropertty.com (poster 'Shee Siddhivinayak Realty -Rajkot'). The investigator's 'likely WhatsApp' wording is acceptable. Whether it is a sales number or only a filing number is unknown."
+     },
+     {
+      "claim": "Email haridwarheightsrera@gmail.com is the developer email",
+      "verdict": "confirmed",
+      "note": "It appears on the directory page under 'Email Developer'. It is named after another project, so it is probably a RERA-filing address. The investigator's caution is right."
+     },
+     {
+      "claim": "Meta ad started 2026-10-21 with a WhatsApp CTA and three phone numbers (9687516666, 9925913232, 9607579396)",
+      "verdict": "unsupported",
+      "note": "The Facebook Ad Library URL returned HTTP 403 for me too. A search on the three numbers returned no page naming the business. The ad, its date, the CTA and the numbers remain unverified, and the whole 'need' rests on them. The investigator was right not to use these numbers."
+     },
+     {
+      "claim": "Need is observed",
+      "verdict": "refuted",
+      "note": "The need is only inferred. It rests on an unverified ad and on the general assumption that portal enquiries arrive by phone or WhatsApp. No public page shows a slow-reply problem or how enquiries are handled. 'Three numbers means manual multi-person handling' is a hypothesis. Grade A is ruled out. B needs the ad confirmed."
+     },
+     {
+      "claim": "Pay signal is weak",
+      "verdict": "confirmed",
+      "note": "New firm formed 2022, no website, no brand presence, 0 booked on the mirror and no price data. The 59-unit project is a modest positive. The 'ready possession' wording on a Dec 2024 portal listing conflicts with the RERA status. That is an evidence-quality issue and it stays unresolved."
+     },
+     {
+      "claim": "Not a chain, agency or vendor, and no existing solution visible",
+      "verdict": "confirmed",
+      "note": "It is a small owner-led partnership developer. I found no website, CRM or agency. Absence of evidence is not proof, since the ad may be run by an agency."
+     },
+     {
+      "claim": "Decision-maker route: Vikas Bhimani, Dhrol, Jamnagar",
+      "verdict": "corrected",
+      "note": "Vikas Bhimani is the authorized signatory per the directory. Nothing shows he handles sales. Head office is in Dhrol, about 100 km from Rajkot, so the route is a phone number only, not a verified decision-maker route."
+     },
+     {
+      "claim": "Not a namesake",
+      "verdict": "confirmed",
+      "note": "Other 'Siddhivinayak' results (Siddhi Vinayak Mavdi, Shree Siddhivinayak Elegance, Mumbai projects) are different entities. The investigator tied the identity to the RERA promoter record, which is correct."
+     }
+    ],
+    "strongest_objection": "The only evidence of any need or ad spend is a Meta ad nobody could open (HTTP 403, and the Apify fetch failed). Everything else is a RERA mirror and portal listings showing that a small firm exists. A pitch built on that ad would be a pitch built on a claim we cannot check.",
+    "corrections": [
+     "The need is inferred, not observed. Remove the finder's 'signal_observed' ad details from any fact list and keep them as an unverified claim.",
+     "The RERA mirror's progress figures conflict (0.0% in the blocks section against 46.37% in the quarterly section), so do not cite 46% as a fact.",
+     "The 'ready possession' wording on a Dec 2024 portal listing conflicts with RERA (end date Dec 2027). Do not rely on that listing for status.",
+     "The two verification sources are both RERA-derived. Existence is verified, but the investigator should not call it three independent sources.",
+     "To reach B, someone must open the ad in a normal browser and confirm the advertiser name, the start date, the WhatsApp CTA and the numbers. To reach A, a stronger pay signal and a verified sales contact are also needed."
+    ],
+    "business_note_placeholder": "ignore"
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Sunfin Realty Pvt Ltd (Baroda Realty / BarodaRealty.com), Vadodara",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": true,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The only evidence of an observed need (the Meta WhatsApp-CTA ads) cannot be verified, and the ad's phone number (70461 16777) matches nothing on any Sunfin page; the site's own number is 70461 19777. No Sunfin project in Gotri, Sevasi or Manjalpur turns up in search. Without those ads, what is left is a real but small broker (Rs 1 lakh paid-up capital) with no observed need and no named decision-maker contact route. This is grade C, not B.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Sunfin Realty Pvt Ltd (Baroda Realty / BarodaRealty.com), Vadodara",
+    "city": "Vadodara (registered office Alkapuri; agent listing Gotri)",
+    "official_website": "https://www.barodarealty.com/ (portal of Sunfin Realty; sunfinrealty.com is only a parked domain-for-sale page, not theirs)",
+    "identity_verified": true,
+    "what_they_do": "Local real estate advisory and transactions firm (broker / channel-sales style, not clearly a construction developer): buy, sell, rent, lease, invest in residential, commercial, industrial and land; markets third-party projects and resale flats through its BarodaRealty.com portal. Sunfin Realty is also named as developer/seller on the Sunfin Namasya listing (Sama, 7 units, 1 tower). Not a chain or franchise on the evidence found.",
+    "entity_type": "end_business",
+    "size_cues": "Company (CIN U70101GJ2011PTC067766) incorporated 9 Nov 2011, active; two directors on the register (Abhijit Rajendra Bhagwat, Gaurangi Abhijit Bhagwat; seen only in a search-engine snippet of the Zauba page, which returned 403 when opened). Website claims 5000 happy clients, 1500 residential and 700 commercial properties, 500 projects (self-claimed). Five published phone lines. Instagram @sunfin_realty has 2,201 followers and 10 reels between 25 Jun and 5 Oct 2026. Headcount unknown.",
+    "verification_trail": [
+     "Web search 'Sunfin Realty Vadodara' -> only directory pages; surfaced addressofchoice and squareyards project pages naming the firm.",
+     "https://www.addressofchoice.com/unfin-namasya-sama-vadodara-p82079 (opened) -> developer listed as Sunfin Realty Pvt Ltd, project Unfin/Sunfin Namasya, New Sama, Vadodara, 'Ready to Move', possession Jan 2024; describes firm as 'Vadodara-based real estate advisory firm'; shows +91 7303838764 (a listing-portal number, not clearly Sunfin's).",
+     "https://www.squareyards.com/vadodara-residential-property/sunfin-namasya/318797/project (opened) -> Sunfin Namasya, 7 units, 1 tower, under construction (contradicts the status above); developer not named on this page.",
+     "https://barodarealty.com/ (opened) -> 'internet platform of Sunfin Realty', 'Vadodara's no. 1 Real Estate Advisory and Transactions Company', five phone numbers, FB and IG links, inquiry forms, no visible WhatsApp contact or chatbot, footer 'Designed by 3wcreators LLP'.",
+     "https://www.barodarealty.com/property-detail/1827 (opened) -> a New Gotri 4 BHK listing; buy/sell numbers 75673 11777 and 70461 19777; 'Inquire Now' and 'Let's Connect' forms; WhatsApp button is only a share button.",
+     "https://www.realestateindia.com/profile/sunfin-realty-pvt-ltd-in-gotri-vadodara-801152/ (opened) -> Sunfin Realty Pvt Ltd, near Kalp Desire, Gotri, Vadodara; phone masked 70461xxxxx; RERA status not shown; no contact person.",
+     "Web search 'Sunfin Realty Vadodara founder OR director' -> Zauba Corp snippet: Sunfin Realty Private Limited, CIN U70101GJ2011PTC067766, incorporated 09 Nov 2011, active, 407 4th floor Dwarkesh Complex, R.C. Dutt Road, Alkapuri; directors Abhijit Rajendra Bhagwat, Gaurangi Abhijit Bhagwat.",
+     "https://www.zaubacorp.com/SUNFIN-REALTY-PRIVATE-LIMITED-U70101GJ2011PTC067766 (tried) -> HTTP 403, so register details rest on the search snippet only.",
+     "https://www.instagram.com/sunfin_realty (opened, public business account) -> bio 'most prolific and successful real estate advisory & transactions company of Vadodara', 2,201 followers, website barodarealty.com, 10 reels 25 Jun to 5 Oct 2026.",
+     "https://www.facebook.com/SunFinRealty (tried) -> only title 'Sunfin Realty | Vadodara' returned.",
+     "https://www.facebook.com/ads/library/?id=1426039099499383 (tried: WebFetch 403; Apify web-fetch timed out after 120s, about US$0.03 spent) -> the finder's ad evidence could NOT be re-checked by me.",
+     "https://sunfinrealty.com (opened) -> parked GoDaddy domain-for-sale page, not the company; sunfinrealty.in does not resolve.",
+     "Web searches for the ad number '70461 16777' and for Sunfin launches in Gotri/Sevasi/Manjalpur -> nothing found; no independent confirmation of those projects or of the ad number."
+    ],
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 75673 11777 (sell/lease line) - likely WhatsApp, not confirmed",
+      "note": "Published by the business on its portal",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 70461 19777 (buy/lease line) - likely WhatsApp, not confirmed",
+      "note": "Published by the business. The finder's ad number is 70461 16777, similar but different; I could not match it to any business page",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 94293 11707 - likely WhatsApp, not confirmed",
+      "note": "Published in site footer",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "phone",
+      "value": "0265 2358777 and 0265 2339777",
+      "note": "Vadodara landlines, published in footer",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.barodarealty.com/",
+      "note": "Has 'Inquire Now' and 'Let's Connect' forms (not to be submitted by us); no email address found",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "instagram",
+      "value": "https://www.instagram.com/sunfin_realty",
+      "note": "Business account, 2,201 followers, links to barodarealty.com",
+      "source_url": "https://www.instagram.com/sunfin_realty"
+     },
+     {
+      "kind": "facebook",
+      "value": "https://www.facebook.com/SunFinRealty",
+      "note": "Business page linked from their site; content not readable by me",
+      "source_url": "https://barodarealty.com/"
+     },
+     {
+      "kind": "maps",
+      "value": "407, 4th floor, Dwarkesh Complex, R.C. Dutt Road, Alkapuri, Vadodara 390007 (registered office); an agent listing says near Kalp Desire, Gotri",
+      "note": "From the register snippet and RealEstateIndia, not from the site itself",
+      "source_url": "https://www.realestateindia.com/profile/sunfin-realty-pvt-ltd-in-gotri-vadodara-801152/"
+     }
+    ],
+    "decision_maker": "not found as a named decision-maker on a public business page. The company register (via Zauba search snippet; page itself 403) lists directors Abhijit Rajendra Bhagwat and Gaurangi Abhijit Bhagwat, but no public page says who runs sales or marketing. URL: https://www.zaubacorp.com/SUNFIN-REALTY-PRIVATE-LIMITED-U70101GJ2011PTC067766",
+    "observed_facts": [
+     {
+      "fact": "Sunfin Realty Pvt Ltd is an active private company incorporated 9 Nov 2011, registered office 407 Dwarkesh Complex, R.C. Dutt Road, Alkapuri, Vadodara (search snippet of the Zauba Corp page; page itself returned 403).",
+      "source_url": "https://www.zaubacorp.com/SUNFIN-REALTY-PRIVATE-LIMITED-U70101GJ2011PTC067766",
+      "date": "2026-10-27 (snippet)"
+     },
+     {
+      "fact": "The firm calls itself Vadodara's no. 1 real estate advisory and transactions company and claims 5000 clients, 1500 residential and 700 commercial properties, 500 projects.",
+      "source_url": "https://barodarealty.com/",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "Their site publishes five phone lines and enquiry forms; no WhatsApp contact button or chatbot is visible (the WhatsApp button is only for sharing a listing).",
+      "source_url": "https://www.barodarealty.com/property-detail/1827",
+      "date": "2026-10-27"
+     },
+     {
+      "fact": "The portal lists Gotri properties (a New Gotri 4 BHK with possession March 2026), so they are active in the Gotri area the finder mentioned.",
+      "source_url": "https://www.barodarealty.com/property-detail/1827",
+      "date": "photos dated 17-08-2024 by file name; page read 2026-10-27"
+     },
+     {
+      "fact": "Instagram business account @sunfin_realty has 2,201 followers and posted 10 reels between 25 Jun and 5 Oct 2026, so social marketing is active.",
+      "source_url": "https://www.instagram.com/sunfin_realty",
+      "date": "2026-10-05 latest post"
+     },
+     {
+      "fact": "Sunfin Realty is named as developer of Sunfin Namasya, Sama Savli Road, Vadodara (7 units, 1 tower); one directory calls the firm an advisory firm; two directories disagree on whether the project is ready or under construction.",
+      "source_url": "https://www.addressofchoice.com/unfin-namasya-sama-vadodara-p82079",
+      "date": "2026-10-27 (possession Jan 2024 per page)"
+     },
+     {
+      "fact": "A directory places a Sunfin Realty Pvt Ltd agent office near Kalp Desire, Gotri, Vadodara, RERA status 'not available'.",
+      "source_url": "https://www.realestateindia.com/profile/sunfin-realty-pvt-ltd-in-gotri-vadodara-801152/",
+      "date": "2026-10-27"
+     }
+    ],
+    "hypotheses": [
+     "The finder's claim of three active WhatsApp-CTA Meta ads (two from 2026-09-15, one from 2026-09-23, phone 70461 16777, 'Schedule your site visit today') is plausible for a broker of this size, but I could not open the ad page, so it is UNVERIFIED by me; 70461 16777 is not on any Sunfin page I saw (their published numbers are 70461 19777 and 75673 11777), so even the advertiser identity is not independently matched.",
+     "If WhatsApp-CTA ads are live, enquiries arrive on WhatsApp, and a firm with five phone lines probably handles them with telecallers or a small team, so slow evening and night replies are likely but not shown.",
+     "As a broker marketing many projects, a first-reply and qualification bot could help them screen buyers; they may also run ads for builder clients.",
+     "They may already use a CRM or lead tool behind the portal (built by a web agency, 3wcreators LLP); unknown.",
+     "The company is likely owner-led by the two directors; the decision-maker is probably one of them, unconfirmed."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "reachability": "business_contact",
+    "grade": "B",
+    "case_for": "Real, 15-year-old Vadodara firm, in the target persona (project broker/marketer) and the right city. Strong pay signal: registered company since 2011, staffed office, several phone lines, large self-claimed deal volume, regular social posting through Oct 2026, and (per the finder, unverified by me) several concurrent paid ads with a WhatsApp CTA and site-visit goal. Their site has no WhatsApp contact button or chatbot, only forms and landlines, so a fast first reply is plausibly missing. Published mobiles give a direct route.",
+    "case_against": "The key evidence (the Meta ads) could not be re-checked, and the ad number does not match any number the business publishes, so need and even advertiser identity rest on the finder's word. No named decision-maker on a public page and no email, only phone lines and forms. A firm with 5+ lines and a claimed 5000 clients may already have telecallers and a CRM, and calls itself no. 1, so it may resist. Sources contradict each other (Sunfin Namasya status, a different phone on one directory), and it is more broker than developer, so the pitch needs to fit that.",
+    "best_angle": "Start from what is visible: they push buyers to book site visits and take enquiries by phone and forms, but the portal has no WhatsApp contact and only office lines. Offer a small test: first reply within about a minute with brochure, 3 qualifying questions and a site-visit slot, including evenings and nights, plus one shared lead list. Open by asking who answers WhatsApp enquiries after office hours, before pitching.",
+    "best_channel": "Phone call to the published buy-side line +91 70461 19777 asking for the owner or sales head (confirm the name on that call), then a short WhatsApp note only after they say yes or via a click-to-WhatsApp route from their own ad. Do not use the portal forms.",
+    "gaps": [
+     "Meta ad evidence not re-verified (Ad Library blocked: WebFetch 403, Apify fetch timed out); ad phone 70461 16777 not matched to the business.",
+     "No named owner or sales head on a public business page; the directors come only from a search snippet of Zauba (page 403).",
+     "No email address found.",
+     "Headcount, existing CRM or WhatsApp tooling and how enquiries are handled today are unknown.",
+     "Whether the advertised Gotri-Sevasi and Manjalpur projects are Sunfin's own or builder clients' is unknown; GujRERA not queried.",
+     "Facebook page content not readable."
+    ],
+    "resistance": "Moderate. Likely has telecallers and a lead process for a 15-year, multi-line operation; calls itself no. 1, so the owner may be confident and hard to impress. No evidence of an existing WhatsApp automation or named vendor (site built by web agency 3wcreators LLP). Owner reachable only through general office lines.",
+    "ability_to_pay": "Good. Incorporated company since 2011 with a staffed Alkapuri office, self-reported large transaction volume, ongoing social posting, and (per the finder, unverified) several concurrent paid ads. A low-cost automation subscription is within reach if they see the value."
+   },
+   "challenge": {
+    "business": "Sunfin Realty Pvt Ltd (BarodaRealty.com), Vadodara",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Business exists as described: Sunfin Realty Pvt Ltd, Vadodara real estate advisory/broker, operating BarodaRealty.com",
+      "verdict": "confirmed",
+      "note": "Two independent sources agree: barodarealty.com (self-described platform of Sunfin Realty, Vadodara advisory and transactions firm) and a Zauba Corp search result for the CIN U70101GJ2011PTC067766 (active, incorporated 9 Nov 2011, registered office Alkapuri). The Housing.com listing also names SUNFIN Realty as a seller. Existence is not in doubt. Zauba's own page returns 403, so the register details come from the search result, and the company page itself was not opened."
+     },
+     {
+      "claim": "It is not a chain, agency or vendor; it is the right entity and not a namesake",
+      "verdict": "confirmed",
+      "note": "No evidence of a chain. The finder's claimed ad phone (70461 16777) differs from the number on the site (70461 19777), so the ad advertiser could be a namesake or a different Sunfin number; this was not resolved."
+     },
+     {
+      "claim": "Three active Meta WhatsApp-CTA ads (2 on 2026-09-15, 1 on 2026-09-23), 'Schedule your site visit today', for Gotri-Sevasi and Manjalpur projects",
+      "verdict": "unsupported",
+      "note": "The Ad Library page returns 403 to me too. A search for the ad phone number found nothing. A search for Sunfin projects in Gotri, Sevasi or Manjalpur found none; the only Sunfin project found elsewhere is Sunfin Namasya in Sama. The only Sunfin Housing.com listing is a resale triplex in Vadsar, developed by Pramukh Buildcon. This is the only observed need, and it cannot be verified."
+     },
+     {
+      "claim": "Need is 'inferred' (not observed) in the dossier",
+      "verdict": "confirmed",
+      "note": "The investigator was honest on this. Nothing independently observed shows slow replies or a missing WhatsApp flow. The site's lack of a WhatsApp button is observed, but it is weak evidence of a need, since the site does not look like a place that handles WhatsApp leads."
+     },
+     {
+      "claim": "Pay signal is 'strong'",
+      "verdict": "corrected",
+      "note": "Zauba lists authorised capital of Rs 25 lakh and paid-up capital of only Rs 1 lakh. That is a small private company. The '5000 clients / 500 projects' figures are self-claimed marketing. Instagram has 2,201 followers. A 15-year-old company with a multi-line office suggests a modest, stable broker, so 'moderate' is fairer than 'strong'. The paid ads, the main pay evidence, are unverified."
+     },
+     {
+      "claim": "Contacts: +91 75673 11777, 70461 19777, 94293 11707, landlines 0265 2358777/2339777 published on barodarealty.com",
+      "verdict": "confirmed",
+      "note": "I re-opened barodarealty.com and the same five numbers are listed. No email and no street address are on the site. Calling them 'likely WhatsApp' is acceptable, though the landlines are not."
+     },
+     {
+      "claim": "Decision-maker: directors Abhijit Rajendra Bhagwat and Gaurangi Abhijit Bhagwat",
+      "verdict": "confirmed",
+      "note": "The directors appear in the Zauba search result for this CIN. No public business page names who runs sales or who would decide on a purchase. The route to a decision-maker is a general office line only."
+     },
+     {
+      "claim": "The business is a developer/'project marketer' that fits the persona",
+      "verdict": "corrected",
+      "note": "barodarealty.com does not say it develops; it advertises advisory services, 'no brokerage from buyers' and a 'Featured Builders' section, which indicates a portal/broker. The persona (small developers and project brokers) technically includes brokers, but Sunfin is a resale and rental portal operator more than a new-project channel seller. The developer claim for Sunfin Namasya (7 units) comes from a single directory and a second directory disagrees about its status."
+     }
+    ],
+    "strongest_objection": "The only evidence of an observed need (the Meta WhatsApp-CTA ads) cannot be verified, and the ad's phone number (70461 16777) matches nothing on any Sunfin page; the site's own number is 70461 19777. No Sunfin project in Gotri, Sevasi or Manjalpur turns up in search. Without those ads, what is left is a real but small broker (Rs 1 lakh paid-up capital) with no observed need and no named decision-maker contact route. This is grade C, not B.",
+    "corrections": [
+     "Downgrade B to C: need is not observed, only inferred, and the one piece of observed-need evidence (the Meta ads) is unverifiable and has a mismatched phone number.",
+     "Pay signal should be 'moderate', not 'strong': Zauba shows paid-up capital of Rs 1 lakh (authorised Rs 25 lakh); the '5000 clients' claim is self-reported marketing.",
+     "Business type is mostly a resale/rental advisory portal and broker, not a developer; the single 'developer' reference (Sunfin Namasya, Sama, 7 units) is from one directory and sources conflict on its status.",
+     "Search found no Sunfin project in Gotri, Sevasi or Manjalpur; the finder's project locations are not supported. The only other Sunfin listing found is a Vadsar resale triplex built by Pramukh Buildcon.",
+     "To earn B: capture the Meta Ad Library page showing the advertiser's page name, matching it to Sunfin Realty / barodarealty.com, and confirm the ad phone belongs to them (or that the ads are live for their own projects). To earn A: also name the person who handles sales or marketing from a business-published page.",
+     "Zauba company page returned 403, so the register details (CIN, date, directors, address, capital) rely on a search result that reproduces the page; treat as likely but not directly opened."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Kishan Antilia (RERA promoter Ambica Inc), part of the Ambica / Kishan family of projects in Bhayli, Vadodara",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "downgraded_by_skeptic": true,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "strong",
+   "strongest_objection": "The only evidence of any need or of a reachable route is a Meta ad that nobody except the finder has opened. Without it, what remains is a real RERA developer with no website, no named owner, no verified contact, and an inferred need. That fits grade C, not B. The Grade B rule needs observed need, or a strong pay AND reach signal. Reach here is two unverified phones plus a portal WhatsApp line that is not the developer's. The ad phones may also be a telecaller or agency line.",
+   "review_flag": "",
+   "reason_not_ready": "grade C",
+   "dossier": {
+    "business": "Kishan Antilia (RERA promoter Ambica Inc), part of the Ambica / Kishan family of projects in Bhayli, Vadodara",
+    "city": "Vadodara (Bhayli Canal Road / Vasna Bhayli Road)",
+    "official_website": "none found (no developer website on any listing; the finder also had none)",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.facebook.com/ads/library/?id=1400703488886438 - WebFetch returned HTTP 403 and an Apify web-fetch timed out after 120s. I could NOT re-check the finder's ad, its start date, its CTA or the two phone numbers.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824 - a mirror of the Gujarat RERA record. Confirms project KISHAN ANTILIA, promoter AMBICA INC (partnership firm, incorporated 2022-10-10), behind Bright Day School, Bhayli Canal Road, Vadodara 391410. RERA no. PR/GJ/VADODARA/VADODARA/Vadodara Municipal Corporation/RAA13554/230524/311229, approved 2024-05-23, end date 2029-12-31, 60 units (Tower A 20, Towers B+C 40). 6 partners named. Booked units shown as 0 in one section and 3 in another. Masked phone 96******** and a gmail address. No website.",
+     "https://houssed.com/vadodara/ambica-infracon/ambica-kishan-antilia-11691 - a second, independent listing. Confirms 'Ambica Kishan Antilia', Bhayli, 4 BHK, 1,710-2,560 sq ft carpet, Rs 1.3-2.1 Cr, 60 units, 3 towers / 10 floors, 1.01 acres, possession 30 Dec 2029. Developer shown as Ambica Infracon with 4 projects (3 ongoing, 1 completed). WhatsApp link +91 81691 14718, which may be the portal's line, not the developer's.",
+     "https://houssed.com/vadodara/sale/builder/ambica-infracon-3483 - builder profile. Ambica Infracon (Ahmedabad-based per the page) lists Kishan Antilia, Kishan Altis (Bhayli) and Kishan Vintage 2 (Kamlapura). No website, office address or years in business given.",
+     "https://www.addressofchoice.com/ambica-kishan-antilia-bhayli-vadodara-p77998 - a third listing that conflicts with the first two: 168 units, 'Ready to Move', Rs 72 Lakh-1.05 Cr, developer 'Krishna Developers'. Treated as unreliable. The phones on it belong to the portal.",
+     "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-altis/17556 - sister project Kishan Altis, Bhayli. Promoter AMBICA INFRA (partnership, incorporated 2019-01-19), 10 partners, 36 flats, 16 booked, 72% progress as of Apr 2026. Two partners (Sanjaykumar Jamnadas Dharsandia, Twinkle Dharsandia) and Jayantibhai Prajapati also appear on Kishan Antilia's promoter. This confirms a repeat developer group.",
+     "WebSearch for the ad phones 84696 18000 / 84697 18000 - no page found, so they are not confirmed anywhere public. WebSearch for a Facebook or Instagram page of Kishan Antilia - none found."
+    ],
+    "entity_type": "end_business",
+    "what_they_do": "Ambica Inc (promoter) is building Kishan Antilia, a premium 4 BHK residential project in Bhayli, Vadodara: 60 flats in 3 towers on about 1 acre, priced at about Rs 1.3-2.1 Cr, with possession due in Dec 2029. It belongs to a group of Ambica-promoted 'Kishan' projects (Kishan Altis, Kishan Galaxy, Kishan Vintage 2). Names are inconsistent across sources (Ambica Inc / Ambica Infra / Ambica Infracon). The link to the separate 'Kishan Group' (Atladara) is unproven.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "84696 18000",
+      "source_url": "https://www.facebook.com/ads/library/?id=1400703488886438",
+      "note": "Claimed by the finder as printed in the Meta ad. NOT verified by me (the ad page was unreachable). Likely WhatsApp-capable Indian mobile, not confirmed."
+     },
+     {
+      "kind": "phone",
+      "value": "84697 18000",
+      "source_url": "https://www.facebook.com/ads/library/?id=1400703488886438",
+      "note": "Same as above: finder claim from the ad, unverified. The two numbers differ only in one digit, which suggests a sales or telecaller line pair."
+     },
+     {
+      "kind": "whatsapp",
+      "value": "+91 81691 14718",
+      "source_url": "https://houssed.com/vadodara/ambica-infracon/ambica-kishan-antilia-11691",
+      "note": "'Connect Now' link on a portal listing. May be the portal's or a broker's line; do not treat as the developer's own."
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Kishan Antilia is RERA-registered (RAA13554), promoter Ambica Inc (partnership), 60 units, approved 2024-05-23, completion due 2029-12-31, construction in progress.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824",
+      "date": "2024-05-23"
+     },
+     {
+      "fact": "The RERA mirror shows only 0 to 3 of 60 units booked, with two sections of the page disagreeing. The project is early stage with most inventory unsold. The date of the data snapshot is not shown.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824"
+     },
+     {
+      "fact": "4 BHK, Rs 1.3-2.1 Cr, 1,710-2,560 sq ft carpet, listed as a new launch, possession 30 Dec 2029.",
+      "source_url": "https://houssed.com/vadodara/ambica-infracon/ambica-kishan-antilia-11691"
+     },
+     {
+      "fact": "The same developer group runs several projects: Kishan Altis (36 flats, 16 booked, 72% progress as of Apr 2026), Kishan Galaxy and Kishan Vintage 2.",
+      "source_url": "https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-altis/17556"
+     },
+     {
+      "fact": "The finder reports a Meta ad started 2026-09-26 with a WhatsApp message CTA, 'DM or call for details' and two phones. I could not re-open it, so this is the finder's claim only.",
+      "source_url": "https://www.facebook.com/ads/library/?id=1400703488886438",
+      "date": "2026-09-26"
+     }
+    ],
+    "hypotheses": [
+     "Ads route leads to WhatsApp, DM and phone, so slow evening or night replies probably lose enquiries. This is inferred from the finder's description of the ad plus how this sector works, not from any observed delay.",
+     "With only 0-3 of 60 premium units booked, every enquiry is valuable, so first-reply speed likely matters more to this project than to a sold-out one.",
+     "The two near-identical numbers (84696/84697 18000) look like a dedicated sales or telecaller line pair, so a sales team or agency may already handle replies.",
+     "The group may already use a CRM or an ad agency for lead handling. This is unknown."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "strong",
+    "ability_to_pay": "Rs 1.3-2.1 Cr ticket size, 60-unit project on about 1 acre (potentially Rs 80-120 Cr of inventory by my rough arithmetic), a multi-project track record (Kishan Altis is 72% built and 16 of 36 flats are booked), and an active paid Meta campaign per the finder (unverified). The group can easily afford a small automation fee.",
+    "reachability": "business_contact",
+    "decision_maker": "not found. No public page names an owner or sales head by role. The RERA mirror lists partners (Jayantibhai Prajapati, Sanjaykumar Jamnadas Dharsandia, Twinkle Dharsandia, Vijaybhai Ghaghara, Varsha Padaliya, Ashish Faldu) but gives no roles. Source: https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824. Do not approach individuals from this list.",
+    "size_cues": "Mid-size local developer group. 3-4 projects (Kishan Antilia, Kishan Altis, Kishan Galaxy, Kishan Vintage 2). Two partnership firms (Ambica Infra, Ambica Inc) with 6-10 partners each. Kishan Antilia is 60 units in 3 towers on 1.01 acres. No staff count, no website, no branches found.",
+    "resistance": "Unknown, probably moderate. No developer website or social page was found, so no sign of an existing CRM or chatbot, but the ad pushes people to phones and WhatsApp, so someone already answers them. There is no named owner, and the contacts are only the ad phones, which are likely a telecaller or sales line. Entity names are inconsistent across sources and the brand may be run through a channel-partner agency. Premium buyers at 1.3-2.1 Cr may prefer a human reply. The phone numbers could not be re-verified.",
+    "best_angle": "Speed at night, for a high-ticket project with almost all inventory unsold. Offer to test the project's own ad enquiries: a first reply in about a minute with the brochure and 3 quick questions (budget, timeline, site-visit slot), plus one list for the sales team. Show the evening and night gap on their own ad before pitching anything.",
+    "best_channel": "Phone, a polite call to the ad number during business hours asking for the sales head or owner. If a click-to-WhatsApp route exists on the ad, a first message through that opt-in route is acceptable (they invited enquiries through it). No cold bulk WhatsApp.",
+    "gaps": [
+     "The Meta ad (id 1400703488886438) could not be opened (HTTP 403 and Apify timeout), so the ad's existence, start date, CTA and both phone numbers are the finder's claims only and are not confirmed.",
+     "No official developer website, email or social page found.",
+     "No named owner or sales head with a public role.",
+     "Entity relationship between Ambica Inc, Ambica Infra, Ambica Infracon and 'Kishan Group' is unclear, and one portal names 'Krishna Developers'.",
+     "Booked-unit count conflicts (0 vs 3) and the snapshot date is unknown.",
+     "No evidence of current reply speed, existing CRM, or an agency handling leads."
+    ],
+    "grade": "B",
+    "case_for": "Real RERA-registered developer, confirmed by two independent public sources. A high-ticket 4 BHK project (Rs 1.3-2.1 Cr) with most units apparently unsold, so each enquiry is worth a lot. It runs, per the finder, a paid ad that routes to WhatsApp and phone, which is exactly the use case for our offer. The group has several projects and can afford a small fee. A direct sales phone is reachable through the ad.",
+    "case_against": "The key evidence (the Meta ad and its phones) was not re-verified, so the need is only inferred. No named decision-maker, website or email. The phone pair may be a telecaller or agency line that sits between us and the owner. Entity naming is messy. A sales team or channel partner may already cover replies, and premium buyers may prefer a personal call. The grade stays B only because pay and reach are strong. It would drop to C if the ad turns out not to exist.</case_against>\n</invoke>\n"
+   },
+   "challenge": {
+    "business": "Kishan Antilia (promoter Ambica Inc), Bhayli, Vadodara",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Kishan Antilia exists as a RERA-registered project by Ambica Inc, Bhayli, Vadodara, 60 units",
+      "verdict": "confirmed",
+      "note": "I re-fetched the Aurum PropTech RERA mirror. It shows RAA13554, partnership firm Ambica Inc, 60 units (Tower A 20, Tower B+C 40), approved 23 May 2024, completion 31 Dec 2029, address behind Bright Day School, Bhayli Canal Road, Vadodara 391410. The Houssed listing independently carries the same RERA number and the same 60 units, so two sources agree on identity."
+     },
+     {
+      "claim": "4 BHK, Rs 1.3-2.1 Cr, 1,710-2,560 sq ft, possession Dec 2029",
+      "verdict": "confirmed",
+      "note": "Houssed shows exactly these figures. A web search also surfaced a conflicting listing (168 units, from Rs 72 lakh, possession June 2029). The investigator already flagged that portal as unreliable, and the RERA filing supports 60 units."
+     },
+     {
+      "claim": "A Meta ad started 2026-09-26 with a WhatsApp CTA and phones 84696 18000 and 84697 18000 (the only source of the need)",
+      "verdict": "unsupported",
+      "note": "The Ad Library URL returned HTTP 403 to me, as it did to the investigator. A search for both numbers returned nothing relevant. I could not confirm that the ad exists, its date, its CTA, or its advertiser. The dossier carries these as finder claims, but the grade still rests on them."
+     },
+     {
+      "claim": "Need is inferred (slow reply loses enquiries)",
+      "verdict": "confirmed",
+      "note": "The dossier correctly labels the need as inferred. No public page I found shows reply delays, unanswered enquiries, or night-time gaps. The need is a hypothesis only."
+     },
+     {
+      "claim": "Contact: two phones from the ad are directly reachable business contacts",
+      "verdict": "unsupported",
+      "note": "Neither number appears on any page I could open. The WhatsApp number +91 81691 14718 on the Houssed listing belongs to a portal listing, not to the developer. The RERA mirror masks the promoter's phone and email. The investigator is right not to treat the portal line as the developer's own."
+     },
+     {
+      "claim": "Strong pay signal (Rs 80-120 Cr inventory, multi-project track record)",
+      "verdict": "corrected",
+      "note": "The ticket size and project count are supported by the listings. The Rs 80-120 Cr figure is the investigator's own arithmetic, not a source. The RERA page shows only 0-3 of 60 units booked and the two sections of the page disagree. The active-ad evidence behind the pay signal is also unverified. Capacity to pay is plausible, not demonstrated. Sister project Kishan Altis (16 of 36 booked, 72% progress as of Apr 2026) comes from the investigator's other cited page, which I did not re-open."
+     },
+     {
+      "claim": "Decision-maker route",
+      "verdict": "confirmed",
+      "note": "No named role-holder exists. The RERA mirror lists six partners with no roles. The investigator rightly advises against approaching individuals from the list."
+     },
+     {
+      "claim": "Not a chain, agency or vendor, and in geography",
+      "verdict": "confirmed",
+      "note": "Ambica Inc is a small partnership developer in Vadodara. The link to the separate Kishan Group in Atladara is unproven. The names Ambica Inc, Ambica Infra and Ambica Infracon are inconsistent across sources, and one portal names Krishna Developers."
+     }
+    ],
+    "strongest_objection": "The only evidence of any need or of a reachable route is a Meta ad that nobody except the finder has opened. Without it, what remains is a real RERA developer with no website, no named owner, no verified contact, and an inferred need. That fits grade C, not B. The Grade B rule needs observed need, or a strong pay AND reach signal. Reach here is two unverified phones plus a portal WhatsApp line that is not the developer's. The ad phones may also be a telecaller or agency line.",
+    "corrections": [
+     "Lower the grade from B to C. The need is only inferred, and the one source for the ad, its start date and both phone numbers could not be opened by the investigator or by me (HTTP 403).",
+     "The Rs 80-120 Cr inventory figure is the investigator's own arithmetic and not an observed fact. Do not present it as such.",
+     "Do not treat +91 81691 14718 as a developer contact. It is the portal's listing line. The investigator already says this, so keep it excluded from the outreach route.",
+     "The 0-3 booked units on the RERA mirror have no snapshot date and the page contradicts itself. Do not use this to claim most inventory is unsold.",
+     "To earn B: someone opens the Ad Library entry (for example by hand in a normal browser) and confirms the advertiser, the start date, the WhatsApp CTA and the two phone numbers. Alternatively, find a developer-published contact (site, RERA entry or listing) showing the same numbers, plus a named owner or sales head. To earn A: also show an observed reply gap, or a clear sign of an in-house or agency sales team that is missing."
+    ]
+   },
+   "console_entry": null
+  }
+ ],
+ "note": "console_entry is only filled for leads that pass every check; the owner reviews them before a push."
+}

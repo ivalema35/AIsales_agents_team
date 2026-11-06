@@ -1,0 +1,39 @@
+APPROVAL NEEDED [HNDWP]
+EMAIL
+To: priderealtors2024@gmail.com
+Lead label (typed by the agent, not checked): Pride Group
+Subject: A short video for Pride Aura
+Reply-To: info@ivinfotech.com
+Agent's reason (typed by the agent, not checked): Wave 1 first-touch email for Pride Aura (address from the public record, said so in the text). Owner asked to send to Pride.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/pride-aura-e6ph9g/email_banner.jpg
+  https://www.ivinfotech.com/campaign/pride-aura-e6ph9g
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Pride%20Aura
+  https://www.ivinfotech.com/assets/campaign/pride-aura-e6ph9g/logo.png
+--- text ---
+[theme: volume]
+
+Hello Pride Aura team,
+
+We are IV Infotech, Mehsana. We found this address in the public records for Pride Aura. This is a sales note from a software company, not about any filing or registration.
+
+We saw ads for Pride Aura, so we made a short video and a page for it.
+
+Many of the Pride Aura ads we saw have a Send WhatsApp message button. Here is how each message can get an automatic reply in about a minute.
+
+[image] https://www.ivinfotech.com/assets/campaign/pride-aura-e6ph9g/email_banner.jpg | https://www.ivinfotech.com/campaign/pride-aura-e6ph9g | Pride Aura - watch the video
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/pride-aura-e6ph9g
+
+Want to see it working? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for Pride Aura from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Pride%20Aura
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK HNDWP to approve, NO HNDWP to skip.
+Valid till 17 Oct 04:51 IST.

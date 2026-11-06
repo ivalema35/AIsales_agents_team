@@ -1,0 +1,28 @@
+{
+ "rank": 3,
+ "business": "Auto Clinic - Car Detailing, PPF and Coating Studio (Llumar authorised partner)",
+ "city": "Bellagio Road / Iscon-Ambli area, Ahmedabad",
+ "what_they_do": "Detailing, PPF, ceramic coating; Llumar partner",
+ "website": "none found",
+ "website_status": "none found (Instagram only)",
+ "signal_observed": "The Llumar India dealer locator row for Auto Clinic has an Instagram handle (@autoclinic_ahmedabad) and no website; two searches for an official site found none; directories list a 4.6 rating.",
+ "signal_url": "https://www.grasi.in/locate-llumar-dealer",
+ "signal_date": "undated by source (checked 2026-11-04)",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "Premium film partner but no own site found; relies on Instagram/Google. Fits 'no working own website'.",
+ "contact_routes": "Phone 9909956565 (Llumar locator row; same number on https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing). Email vaibhavsolanki050@gmail.com is on the locator row (not a route).",
+ "brand_franchise_flag": "single studio (no multi-outlet claim found)",
+ "newest_review_date": "unknown",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "c (no website button) ONLY after someone confirms on the Google listing; not provable from here",
+ "tier": "signal_only",
+ "multi_source": true,
+ "source_ids": [
+  "garware-llumar-registers",
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "low-medium",
+ "keep_reason": "Phone confirmed in two places; absence of a site is a negative finding, so the signal is not fully proven.",
+ "unknowns": "Google website button; address conflict (Bellagio Rd vs Ambli Rd); owner name."
+}

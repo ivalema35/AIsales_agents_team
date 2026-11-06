@@ -1,0 +1,54 @@
+[
+ {
+  "type": "lead",
+  "name_contains": "Shyamal Park Lane",
+  "set": {
+   "status": "contacted",
+   "contacted": true,
+   "next_step": "First touch done (22 Oct): email + video message from the owner's own WhatsApp. Watch page opens / demo taps; a DEMO reply arrives on the owner's WhatsApp. If no reaction, one short follow-up in 2-3 days."
+  },
+  "history_add": {
+   "date": "2026-10-22",
+   "text": "Sent from the owner's own WhatsApp at 11:16 IST: video with a message (research, what we offer, page + demo links). Also: email 10:59 IST."
+  }
+ },
+ {
+  "type": "lead",
+  "name_contains": "Anahata Florenza",
+  "set": {
+   "status": "contacted",
+   "contacted": true,
+   "next_step": "First touch done (22 Oct): email + video message from the owner's own WhatsApp. Watch page opens / demo taps; a DEMO reply arrives on the owner's WhatsApp. If no reaction, one short follow-up in 2-3 days."
+  },
+  "history_add": {
+   "date": "2026-10-22",
+   "text": "Sent from the owner's own WhatsApp at 11:19 IST: video with a message (research, what we offer, page + demo links). Also: email 10:45 IST."
+  }
+ },
+ {
+  "type": "lead",
+  "name_contains": "Silver Square",
+  "set": {
+   "status": "contacted",
+   "contacted": true,
+   "next_step": "First touch done (22 Oct): email + video message from the owner's own WhatsApp. Watch page opens / demo taps; a DEMO reply arrives on the owner's WhatsApp. If no reaction, one short follow-up in 2-3 days."
+  },
+  "history_add": {
+   "date": "2026-10-22",
+   "text": "Sent from the owner's own WhatsApp at 11:21 IST: video with a message (research, what we offer, page + demo links). Also: no email address found."
+  }
+ },
+ {
+  "type": "lead",
+  "name_contains": "Shree Namasya",
+  "set": {
+   "status": "contacted",
+   "contacted": true,
+   "next_step": "First touch done (22 Oct): email + video message from the owner's own WhatsApp. Watch page opens / demo taps; a DEMO reply arrives on the owner's WhatsApp. If no reaction, one short follow-up in 2-3 days."
+  },
+  "history_add": {
+   "date": "2026-10-22",
+   "text": "Sent from the owner's own WhatsApp at 11:23 IST: video with a message (research, what we offer, page + demo links). Also: email 10:47 IST."
+  }
+ }
+]

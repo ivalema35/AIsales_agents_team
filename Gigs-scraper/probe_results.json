@@ -1,0 +1,137 @@
+{
+ "HN (Algolia)": {
+  "status": 200,
+  "bytes": 13919,
+  "flag": ""
+ },
+ "Bluesky search": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Mastodon hashtag": {
+  "status": 200,
+  "bytes": 17900,
+  "flag": ""
+ },
+ "X search (web)": {
+  "status": 200,
+  "bytes": 17299,
+  "flag": ""
+ },
+ "X via nitter": {
+  "status": 0,
+  "bytes": 80,
+  "flag": ""
+ },
+ "X via xcancel": {
+  "status": 451,
+  "bytes": 0,
+  "flag": ""
+ },
+ "LinkedIn search": {
+  "status": 200,
+  "bytes": 53249,
+  "flag": "login/captcha wall"
+ },
+ "Facebook group": {
+  "status": 404,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Telegram (t.me/s)": {
+  "status": 0,
+  "bytes": 80,
+  "flag": ""
+ },
+ "Freelancer.com API": {
+  "status": 200,
+  "bytes": 17564,
+  "flag": ""
+ },
+ "Upwork search": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Upwork RSS": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Fiverr buyer req": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "PeoplePerHour": {
+  "status": 200,
+  "bytes": 312063,
+  "flag": ""
+ },
+ "Truelancer": {
+  "status": 429,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Guru": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Indie Hackers": {
+  "status": 410,
+  "bytes": 0,
+  "flag": ""
+ },
+ "Quora": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "IndiaMART buyleads": {
+  "status": 200,
+  "bytes": 17051,
+  "flag": "login/captcha wall"
+ },
+ "Naukri freelance": {
+  "status": 200,
+  "bytes": 35596,
+  "flag": ""
+ },
+ "Internshala freelance": {
+  "status": 200,
+  "bytes": 526650,
+  "flag": "login/captcha wall"
+ },
+ "Contra": {
+  "status": 200,
+  "bytes": 14842,
+  "flag": ""
+ },
+ "GitHub issues": {
+  "status": 200,
+  "bytes": 38768,
+  "flag": ""
+ },
+ "Product Hunt makers": {
+  "status": 403,
+  "bytes": 0,
+  "flag": ""
+ },
+ "DuckDuckGo html": {
+  "status": 200,
+  "bytes": 28336,
+  "flag": ""
+ },
+ "Bing html": {
+  "status": 200,
+  "bytes": 126521,
+  "flag": ""
+ },
+ "Google html": {
+  "status": 200,
+  "bytes": 92367,
+  "flag": ""
+ }
+}

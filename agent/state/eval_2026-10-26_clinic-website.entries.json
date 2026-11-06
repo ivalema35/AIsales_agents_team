@@ -1,0 +1,71 @@
+[
+ {
+  "type": "lead",
+  "key": "clinic-web-bhavyaa-hi-tech-dental-clinic",
+  "data": {
+   "name": "Bhavyaa Hi-Tech Dental Clinic (Maps title: \"Bhavyaa Hi Tech Dental Clinic\"; Meta page: \"Bhavyaa Hitech Dental Clinic\")",
+   "city": "Shilaj, Ahmedabad (Swati Clover, Shop 210, Near Shilaj Circle, SP Ring Road, 380059)",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call (or short in-person visit, Shilaj is about 70 km from Mehsana) to the published clinic number +91 98985 78853 during clinic hours (e.g. just after 5 PM or late morning), asking for the doctor. A cold WhatsApp message to that number is not an opt-in route, so use WhatsApp only after the call and with permission. No email exists and no warm or partner route was found.",
+   "best_angle": "Build the first touch on their own 24 Oct ad: it sends people to a Google search panel with only a phone number, and the clinic is closed 1-5 PM, after 8 PM and on Sundays. Offer a simple clinic website plus a WhatsApp booking button with an automatic reply, linked from the Google profile and used as the ad destination, so every ad click can book an appointment even when the desk is closed. Do not pitch the Google profile fix, since it is already strong.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 98985 78853",
+     "source": "https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I",
+     "note": "Primary phone on the claimed Google Maps listing (scraped 2026-10-26). Indian mobile number, so likely WhatsApp-capable (not confirmed). Same number printed in the ad body."
+    },
+    {
+     "kind": "phone",
+     "value": "9898578853",
+     "source": "https://www.facebook.com/ads/library/?id=2164893067570522",
+     "note": "Same number shown in the ad text dated 2026-10-24, so the business itself published it in two places."
+    },
+    {
+     "kind": "maps",
+     "value": "https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I",
+     "source": "https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I",
+     "note": "Claimed Google Business Profile; Google posts all carry a 'Call now' button; 'Appointments recommended' attribute set."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://facebook.com/61590766161143",
+     "source": "https://www.facebook.com/ads/library/?id=2164893067570522",
+     "note": "Business Facebook page that runs the ad (page id 1058243674048549); 0 likes. Page not opened beyond the Ad Library data."
+    },
+    {
+     "kind": "instagram",
+     "value": "@bhavyaa.hitech.dental.clinic",
+     "source": "https://www.facebook.com/ads/library/?id=2164893067570522",
+     "note": "Handle named in the ad body. Profile not scraped."
+    }
+   ],
+   "observed_facts": [
+    "Ad 2164893067570522 by page 'Bhavyaa Hitech Dental Clinic' is flagged active in the Meta Ad Library, started 2026-10-24; the library's end-date field reads 2026-10-25, so it may already be stopped or the field may just be the last-seen date. CTA is 'See details', not WhatsApp or Book. Placements include Facebook, Instagram, Audience Network, WhatsApp, Threads. (2026-10-24, https://www.facebook.com/ads/library/?id=2164893067570522)",
+    "The ad's link (https://share.google/1zJROwwBhu7h41npC) leads to a Google Search results page for the clinic name, not to an own website or booking page. The ad body gives only a phone number for contact. (2026-10-26, https://www.facebook.com/ads/library/?id=2164893067570522)",
+    "This is the only ad this page has ever had in the Meta Ad Library (1 ad total, active plus inactive). The Facebook page shows 0 likes and a numeric-ID profile URL that suggests a newly created page. (2026-10-26, https://www.facebook.com/ads/library/?id=2164893067570522)",
+    "Google Maps listing is claimed (claimThisBusiness=false), category Dental clinic, 25 reviews averaging 5.0 (25 of 25 are 5-star), only 1 image on the listing, no website field, phone +91 98985 78853. (2026-10-26, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)",
+    "Opening hours on Maps: Mon-Sat 10 AM-1 PM and 5-8 PM, Sunday closed. 'Appointments recommended' attribute is set; the only contact action on every Google post is 'Call now'. (2026-10-26, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)",
+    "The Google profile is actively managed: 8 SEO-style posts (2026-07-24, then 09-16, 09-22, 09-28, 09-30, 10-02, 10-04, 10-06), each ending in 'Call now' or 'Book your consultation'; the owner replies to reviews, often the same day (e.g. reply on 2026-10-23 to a review posted 2026-10-23). (2026-10-23, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)",
+    "Services listed by the clinic itself: dental implants, braces, Invisalign, root canal, cosmetic dentistry, wisdom tooth removal, scaling. A post dated 2026-09-16 claims '14+ years of clinical experience' (about the dental team/doctor, not the clinic's age). (2026-09-16, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)",
+    "Dr. Harita (M.) Patel is named as the treating dentist in Google reviews, and the clinic's own reply (2026-09-28) thanks patients for trusting 'Dr. Harita Patel and Bhavyaa HiTech Dental Clinic'. Maps attribute: identifies as women-owned. (2026-09-28, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)",
+    "Three of the 10 newest reviews were posted on the same day (2026-07-01) with polished, generic wording, and one has no text; the rest are specific and recent (2026-09-21 to 2026-10-23). One reviewer (2026-08-15) says they have been going there for 6 years. (2026-08-15, https://www.google.com/maps/place/?q=place_id:ChIJlTkxiFKbXjkRUkCQ-Juz_-I)"
+   ],
+   "hypotheses": [
+    "Patients who see the ad or the Google panel outside clinic hours (before 10 AM, 1-5 PM, after 8 PM, all Sunday) can only phone, so some enquiries probably go unanswered. Inferred from the call-only CTA and the hours; no review or other source says calls go unanswered.",
+    "The SEO-style Google posts, the hashtag-stuffed ad body and the quick review replies may mean the clinic has a freelancer or agency running its Google and Meta presence since about mid-September 2026, or that the doctor is doing it herself. Inferred from style and timing only. If a vendor exists, they may resist a website or WhatsApp offer, or may be the right partner route.",
+    "The ad sends traffic to Google rather than a site probably because there is no site. This is consistent with the Maps listing but cannot be proven without a web search for an unlinked domain.",
+    "This looks like a clinic in an early marketing push (new Facebook page, first ever ad, posting burst since 2026-09-16), which is a good timing window for a website and WhatsApp booking offer.",
+    "The same-day cluster of 2026-07-01 reviews might be solicited or batch-posted. Not verified, and it does not change the fit; it is only a credibility note."
+   ],
+   "case_for": "Real, active single-location clinic in Shilaj, Ahmedabad, inside the target geography and an independent doctor-led end business (not a chain or agency). The need is directly observed: no website on the Maps listing, a paid ad that points to a Google search panel, a call-only contact path, and limited opening hours (closed 1-5 PM, after 8 PM and on Sundays). It sells premium treatments (implants, Invisalign, braces) and has just started spending on its first ad, so it is in a visible digital-growth phase. A phone number is published twice and the owner answers Google reviews quickly, so someone is attentive.\", \"case_for_note_see_next_field\":\"n/a\"}",
+   "case_against": "Ability to pay is thin: the only evidence of paid spend is one ad that is 2 days old (the library end-date may even be 2026-10-25), on a Facebook page with 0 likes and a Maps listing with 1 photo. The Google profile is already complete and actively managed, so the 'complete Google Business Profile' part of our offer is mostly already done; what remains is a website plus WhatsApp booking. A freelancer or agency may already be handling the Google and Meta presence (inferred). There is no email and no website, the only route is the clinic phone (a cold WhatsApp to it would not be opted in), and the decision-maker (Dr. Harita Patel) is named only as the treating dentist, not confirmed as owner. All 25 reviews are 5-star with a same-day cluster on 2026-07-01, which is a mild credibility flag. Unlinked-website existence could not be ruled out because web search was unavailable. | Skeptic: The only direct evidence of need is a blank website field. Everything else about the clinic's online presence is already handled: the Google profile is rich, with templated posts and review replies since about June 2026, and the Meta ad is a pasted Reels caption boosted to a Google panel. That pattern points to an outside freelancer or agency who already controls the Google and Meta presence. The clinic may therefore already have a vendor who owns, or will resist, the website and WhatsApp decision. The pay signal is one boosted reel with unknown spend that may already have ended (library end-date 2026-10-25). The only route to the doctor is one clinic mobile, with no email, form or opted-in WhatsApp, and our WhatsApp-template and email routes have no contact data to use. If an unlinked own site exists (not ruled out: no WebSearch, Instagram bio unread) or the vendor builds sites, this drops to C.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ }
+]

@@ -1,0 +1,4 @@
+{
+ "last_inbound_id": 2,
+ "note": "ids <= 2 are the two old September email replies already seen; the heartbeat only looks at newer ones"
+}

@@ -1,0 +1,206 @@
+{
+ "claims": {
+  "verdict": "fix_needed",
+  "summary": "The English and Gujarati templates use none of the banned words. \"free\", \"instant\", \"gets\" and \"every\" do not appear. There is no price, guarantee, staff name, personal number or \"your ads\" (the text says \"the {project} ads\"). \"can work\" is used, the opt-out line is present, and nothing poses as a customer. \"does anyone reply before the next morning?\" is a real question and not a claim, so it passes. The problems are in the per-lead facts. The Class One \"WhatsApp button\" claim is unverified. The \"ads\" plural is wrong for Kishan Antilia and unproven for Shivanta Krushnam. Several brand names do not match what we sourced. Three things behind the message also break the rules: the video, the demo bot's reply texts, and the Shivanta \"3 BHK\" label. Fix the two blockers and the should_fix items before the owner sends anything.",
+  "issues": [
+   {
+    "lead": "Class One: \"We saw the WhatsApp button on the Class One Evoq ads\" is unverified",
+    "severity": "blocker",
+    "problem": "The pack says the Class One ad's CTA button text was NOT read. The only verified facts are the ad exists, is active since 13 Oct, and prints a phone number. For the other three leads a 'Send WhatsApp message' CTA was read. For Class One, 'the WhatsApp button' is a claim we cannot back, and the number printed in the ad may belong to a 'Call now' or 'Learn more' CTA.",
+    "suggested_fix": "On send day, open the Class One Evoq ad in the Ad Library and read the CTA. If it is a WhatsApp CTA, record it in facts_verified and send as is. If not, or if it cannot be read, replace that sentence for this lead with 'We saw the Class One Evoq ads, with a phone number in them.' and change the question to 'When someone messages that number late in the evening, ...'."
+   },
+   {
+    "lead": "Shivanta demo: \"3 BHK\" type is not a sourced fact",
+    "severity": "blocker",
+    "problem": "demo_projects.json gives Shivanta Krushnam the types [\"3 BHK\", \"Tell me more\"]. The verified facts mention only '191 apartments' and no BHK type, so '3 BHK' is a factual default shown to the developer under his own project name. The copy rules require the developer's own unit wording and no factual defaults. Shreem (2 BHK, 3 BHK), Kishan (4 BHK) and Class One (4 BHK) are sourced; Shivanta is not.",
+    "suggested_fix": "Read the BHK or unit wording from the Krushnam ad or from www.shivantagroup.com. If it cannot be sourced, change the type options to [\"Tell me more\", \"Not sure yet\"] or another neutral pair. Redeploy demo_projects.json to the VPS and re-test the link for this project."
+   },
+   {
+    "lead": "Plural \"ads\" for Kishan Antilia and Shivanta Krushnam",
+    "severity": "should_fix",
+    "problem": "Kishan Antilia has ONE active ad ('One active Meta ad since 26 Sep'), so 'the Kishan Antilia ads' is false. For Shivanta, six ads are active, but only 'the Krushnam ad' is verified to carry the CTA 'Book Your Site Visit / Send WhatsApp message'. The other five are Ramam and Kapurai villas, so plural 'Shivanta Krushnam ads' is unproven. Shreem (2 ads) and Class One (2 ads with the same creative) are fine.",
+    "suggested_fix": "Make the sentence number-aware: Kishan gets 'the Kishan Antilia ad', Shivanta gets 'the Shivanta Krushnam ad', Shreem and Class One keep 'ads'. In Gujarati use જાહેરાતમાં for the singular. Do not count the ads from memory; recount them in the Ad Library on send day."
+   },
+   {
+    "lead": "Brand names do not match what we sourced (greeting \"Hi {brand} team\")",
+    "severity": "should_fix",
+    "problem": "Class One: the verified advertiser is 'Classone Group' (one word), the pack greets 'Class One team', and no source supports 'Class One Infra'. Shreem Group and Kishan Antilia: facts_verified never names the advertiser page, so 'Hi Shreem Group team' and 'Hi Kishan Antilia team' are unsourced. Shreem's two ads print two different phones, and the number we are sending to may be a channel partner or broker. Kishan: brand equals project, so the filled text says 'Kishan Antilia' three times ('Hi Kishan Antilia team', 'the Kishan Antilia ads', 'chat for Kishan Antilia'), which reads as a mail-merge. Shivanta: the ad facts say 'Krushnam', and 'Shivanta Krushnam' is brand plus project, not shown as the developer's own wording.",
+    "suggested_fix": "Use the exact Ad Library page name for {brand} (Class One: 'Classone Group'). Where the advertiser is not confirmed (Shreem, Kishan), use 'Hi team' with no brand. For Kishan, drop the repeated name. Confirm the project wording ('Krushnam' versus 'Shivanta Krushnam') against the ad and the website, then use it identically in the text, the link and the bot list."
+   },
+   {
+    "lead": "Attached video's voice-over breaks the rules (\"every ... gets\", guarantee)",
+    "severity": "should_fix",
+    "problem": "The attached reel (whatsapp_automation_hi_claude_v1_720.mp4, 38.94 s) says 'अब हर enquiry को लगभग एक मिनट में, automatic WhatsApp reply मिलता है' (every enquiry gets an automatic reply in about a minute) and 'बिलकुल नहीं!' (absolutely not, to 'will it look like a bot'). That is the banned 'every/gets' promise plus a guarantee, while the message text carefully says 'can work'. The hook 'आपने reply किया... अगली सुबह... Customer किसी और से बात कर चुका था', with the on-screen '11 घंटे बाद / आपका reply 10:15 AM', presents slow replies as the viewer's own story. We do not know that. Only the spoken 'सोचिए' (imagine) softens it.",
+    "suggested_fix": "The owner chose this video, so do not swap it silently. Tell him these lines break his own rules and get an explicit yes to send as is, or re-take the voice with 'can' wording ('हर enquiry को ... मिल सकता है') and drop 'बिलकुल नहीं'. Do not describe the video in the message as anything stronger than 'how an automatic first reply can work'."
+   },
+   {
+    "lead": "\"the same chat\" overstates what the demo does",
+    "severity": "should_fix",
+    "problem": "The English line is 'To see the same chat for {project}' and the Gujarati is 'એ જ ચેટ'. The video shows a brochure PDF ('Thank you! ये रहा brochure / Details.pdf'). The demo bot has no brochure step: intro plus Q1 budget, Q2 type, Q3 best time, a site-visit slot, a sample card, then the CTA. The template's own parenthetical lists '(brochure, 3 quick questions, a site-visit time)', so the lead will notice the brochure is missing.",
+    "suggested_fix": "Reword to 'To try a short sample of this chat for {project} on WhatsApp, tap:' (Gujarati: 'આ ચેટનો નાનો નમૂનો ... અજમાવવા ટેપ કરો'). Or add a brochure step to the bot."
+   },
+   {
+    "lead": "Demo bot reply texts the link leads to contain banned words",
+    "severity": "should_fix",
+    "problem": "In demo_responder.py the TEXTS['about'] reply is sent if the lead answers 'details', 'who are you', 'what do you do' or 'more info'. It reads 'an instant reply to every enquiry ... This chat is a free sample.' That uses 'instant', 'every' and 'free', all banned in cold copy, and it is a likely reply to our message.",
+    "suggested_fix": "Before the send, change TEXTS['about'] to 'an automatic first reply to each enquiry can ...' and remove 'free'. Redeploy to the VPS. Or get the owner's explicit decision that the bot may use those words."
+   },
+   {
+    "lead": "Language mismatch across message, video and bot",
+    "severity": "should_fix",
+    "problem": "The Gujarati message for Shreem attaches a Hindi-voiced reel, and the link opens an English-only bot (every TEXTS string and the prefilled text is English). The three English-template leads (Shivanta, Kishan, Class One) also get a Hindi voice-over with Devanagari captions. Neither template tells the reader the video is in Hindi. The Gujarati 'એ જ ચેટ' (the same chat) is not the same language.",
+    "suggested_fix": "Add a few words such as '(Hindi voice)' to the video sentence, or have the owner accept this knowingly. Gujarati: 'વિડિયો હિન્દીમાં છે'. A Gujarati voice-over and bot texts are future options; do not claim sameness."
+   },
+   {
+    "lead": "Link opens a +1 (555) number while the text says Mehsana",
+    "severity": "should_fix",
+    "problem": "https://wa.me/15559597730 opens a chat with a +1 555 959 7730 (US-format) number, but the message says 'this is IV Infotech from Mehsana'. Our own CAMPAIGN1_DIAGNOSIS notes already list the +1 (555) number as a trust problem. A cold recipient can read 'tap this link to a foreign number' as phishing or spam. The prefilled text starts 'Yes, send the demo...', which answers a question the message never asked.",
+    "suggested_fix": "State the destination in one clause: 'tap to open our demo number on WhatsApp (+1 555 959 7730):'. Optionally ask the question explicitly ('Want to try a sample?'), so the prefilled 'Yes' makes sense."
+   },
+   {
+    "lead": "Wording nits: hook question, Gujarati grammar, \"40-second\"",
+    "severity": "nit",
+    "problem": "(a) The hook is compliant only while it stays a question. 'does anyone reply before the next morning?' makes no claim, but any rewrite as a statement would assert slow replies, which we do not know. (b) Gujarati: 'રાત્રે મોડેથી' means late at night, while the English says 'late in the evening'; 'બીજી સવાર પહેલાં' is awkward for 'next morning'; 'હું મહેસાણાથી IV Infotech તરફથી.' has no verb. (c) The video is 38.94 s, so '40-second' is a round-up; our earlier learning (C6) used 'under 40 seconds'. (d) 'this is IV Infotech', 'We saw', 'We made' and 'I will not message again' mix we and I.",
+    "suggested_fix": "Keep the hook as a question. Gujarati: 'રાત્રે મોડેથી' becomes 'સાંજે મોડેથી' or the English becomes 'late at night'; 'બીજા દિવસની સવાર પહેલાં'; 'હું મહેસાણાથી IV Infotech તરફથી લખું છું.' Use 'under 40 seconds'. Optionally use 'I' throughout, since the owner sends it himself."
+   },
+   {
+    "lead": "Demo bot sample budget bands and deployment check",
+    "severity": "nit",
+    "problem": "The bot shows invented price bands under each lead's project name (Kishan Antilia 'Above 2 crore', Class One Evoq 'Up to 80 lakh', Shivanta 'Up to 75 lakh'). The bands are marked 'sample' only in the final card, not in the question. Also, backend/services/demo_projects.json holds the 4 new keys locally, but nothing in the pack shows they were pushed to the VPS. If they are not deployed, the link opens the generic 'your project' chat and the 'for {project}' claim is false.",
+    "suggested_fix": "Make the Q1 label say '(sample)' or use neutral bands. Run the vps_demo_projects_update step. Before sending, tap each of the 4 links from a test phone and confirm the project name appears in the first bot message. Also note that STOP replies sent to the owner's personal WhatsApp are not seen by the bot's suppression list, so the owner must log them in the do-not-contact list by hand."
+   }
+  ]
+ },
+ "reader": {
+  "verdict": "fix_needed",
+  "summary": "Reader-persona verdict: a Gujarat sales head would roughly follow the message in 10 seconds. It names the ad he runs and the question is easy to picture. The weak points are that the offer is never stated, the link looks like a US number, and the \"same chat\" claim overreaches. At a glance it reads like \"someone sharing a video\", not \"a vendor offering WhatsApp auto-reply\". A tap is plausible. A reply is less likely, because the opening question has an obvious \"yes, of course\" answer.\n\nNo hard copy rule is broken in the message text itself. I found no \"free\", \"instant\", \"gets\" or \"every\", no price or guarantee, no staff name, no boss number and no \"your ads\". The opt-out line is present. Three factual lines do break the \"no unsourced claim\" rule: Class One's \"WhatsApp button\", the plural \"ads\" for Kishan and Shivanta, and \"the same chat\". The video also breaks the rule on \"every\" (see the video issue).\n\nFacts I checked:\n- The video runs 38.94 s, so \"40-second\" is fine.\n- The video voice is Hindi (hi-IN, ElevenLabs take) and generic, not per-lead. The message never says so.\n- The demo number 15559597730 is the real verified \"IV Infotech\" API number. It displays as +1 555-959-7730, which a Gujarati developer will read as a US number.\n- The demo bot's budget bands are our own \"sample\" bands. Type buttons come from the ads (Shreem 2/3 BHK, Shivanta 3 BHK, Kishan 4 BHK, Class One 4 BHK).\n\nFilled demo links (use as is):\n- Shreem: https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shreem%20Avdhesh\n- Shivanta: https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shivanta%20Krushnam\n- Kishan: https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Kishan%20Antilia\n- Class One: https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Class%20One%20Evoq\n\nSmallest-edit English template (rule-clean, about 80 words, same length as now):\n\"Hi {brand} team, this is IV Infotech from Mehsana. We set up WhatsApp auto-reply for real-estate developers, and we saw the WhatsApp button on the {project} ad.\n\nIf someone taps it after office hours, the first reply can still go out while your team is offline. Our 40-second video (attached, Hindi voice) shows a sample: brochure, 3 quick questions, a site-visit time.\n\nWant to try a demo chat for {project}? Tap, then press Send: {demo_link}\n\nReply STOP and I will not message again.\"\n\nSmallest-edit Gujarati template:\n\"નમસ્તે {brand} ટીમ, હું મહેસાણાની IV Infotech તરફથી લખું છું. અમે real-estate ડેવલપર્સ માટે WhatsApp auto-reply સેટ કરીએ છીએ. {project} ની જાહેરાતમાં WhatsApp બટન જોયું.\n\nરાત્રે મોડેથી કોઈ તેના પર ટેપ કરે, ત્યારે આપની ટીમ ઑફલાઇન હોય તો પણ પહેલો reply જઈ શકે છે. 40 સેકન્ડનો વિડિયો (હિન્દી અવાજમાં) સાથે છે: brochure, 3 નાના સવાલ, site visit નો સમય.\n\n{project} નો demo ચેટ અજમાવવો હોય તો ટેપ કરો અને Send દબાવો: {demo_link}\n\nSTOP લખશો તો હું ફરી મેસેજ નહીં કરું.\"\n\nPer-lead: use \"ad\" (singular) for Kishan and Shivanta, and for Class One keep the \"WhatsApp button\" line only after someone reads the ad's CTA. Otherwise drop that clause.",
+  "issues": [
+   {
+    "lead": "classone",
+    "severity": "blocker",
+    "problem": "The shared line 'We saw the WhatsApp button on the {project} ads' is unsourced for Class One. The pack says 'The ad's CTA button text was NOT read by us.' If that ad has a 'Learn more' or 'Call now' button, the first sentence is false and the sales head sees it at once. The same pack also says the phone was 'read as' 9157596575 from '91 575 96 575', so the number itself is a guess.",
+    "suggested_fix": "Open the Class One Evoq ad in the Ad Library and read the CTA before sending. If it is not 'Send WhatsApp message', use 'We saw the Class One Evoq ad on Meta' and 'If someone messages on WhatsApp after office hours...'. Confirm the number format with one look at the ad image."
+   },
+   {
+    "lead": "kishan, shivanta",
+    "severity": "should_fix",
+    "problem": "Plural 'ads' is wrong for two leads. Kishan Antilia has ONE active ad ('One active Meta ad since 26 Sep'), and the message also repeats the name ('Hi Kishan Antilia team ... the Kishan Antilia ads'). For Shivanta only the Krushnam ad is verified to have the WhatsApp CTA. The group runs six ads across Krushnam, Ramam and Kapurai, so 'Shivanta Krushnam ads' overstates. The pack's own text calls the project 'Krushnam', so 'Shivanta Krushnam' is our compound, not their wording.",
+    "suggested_fix": "Use 'ad' (singular) for Kishan and Shivanta, and plural only for Shreem (two ads). For Shivanta check whether their ad copy says 'Krushnam' or 'Shivanta Krushnam' and use that exact wording in {project} and in the prefilled link."
+   },
+   {
+    "lead": "What is being offered is never stated",
+    "severity": "should_fix",
+    "problem": "The message reads as 'someone shares a video about how an automatic first reply can work'. It never says that IV Infotech sets this up for developers, so a busy reader cannot tell if this is a vendor pitch, a newsletter or a tip. The 'automatic first reply' phrase is jargon. It is unclear which first reply (to what) or what is automatic.",
+    "suggested_fix": "Add one plain sentence: 'We set up WhatsApp auto-reply for real-estate developers.' Replace 'an automatic first reply' with 'the first reply can still go out while your team is offline'. Keep 'can'."
+   },
+   {
+    "lead": "Opening question",
+    "severity": "should_fix",
+    "problem": "'When someone taps it late in the evening, does anyone reply before the next morning?' has an obvious defensive answer ('of course we do'). It reads as an audit of his team, and we know nothing about their reply speed. It is also the first thing after the greeting, so the offer arrives late.",
+    "suggested_fix": "Drop the yes/no question and state the capability: 'If someone taps it after office hours, the first reply can still go out while your team is offline.' This makes no claim about them and the reader can nod. Or keep a softer version: 'What does someone see when they tap it after office hours?'"
+   },
+   {
+    "lead": "'the same chat' / 'એ જ ચેટ'",
+    "severity": "should_fix",
+    "problem": "'To see the same chat for {project} on WhatsApp' and 'એ જ ચેટ' promise that the video shows his project's chat. The attached video is one generic reel, not per-lead. It has a Hindi voice and an 'EXAMPLE' board. The reader taps, sees a different flow and feels misled.",
+    "suggested_fix": "English: 'Want to try a demo chat for {project}?' Gujarati: '{project} નો demo ચેટ અજમાવવો હોય તો ટેપ કરો.' Also say 'sample' for the video, as in 'shows a sample'."
+   },
+   {
+    "lead": "Demo link",
+    "severity": "should_fix",
+    "problem": "The link is a long percent-encoded wa.me URL ('Yes%2C%20send%20the%20demo%20for%20Shivanta%20Krushnam'). It opens a chat with +1 555-959-7730, which looks like a fake or US number to a Gujarat developer and can read as a scam. The prefilled text is only in the compose box, so a reader who taps and does not press Send gets nothing. The prefilled text is English even in the Gujarati message, which is fine but unexplained.",
+    "suggested_fix": "Put the link alone on its own line and add 'tap, then press Send' (Gujarati: 'ટેપ કરો અને Send દબાવો'). Add 'IV Infotech business chat' before the link so the verified name matches the sender. Do not add a second link, because the one-link rule stays."
+   },
+   {
+    "lead": "Attached video vs copy rules",
+    "severity": "should_fix",
+    "problem": "The owner's own instruction is to send this reel, so I am not asking to change it. But its voice track breaks the rules the message follows. 'अब हर enquiry को लगभग एक मिनट में, automatic WhatsApp reply मिलता है' is an 'every ... gets' promise with a time claim. 'बिलकुल नहीं!' and 'Customer किसी और से बात कर चुका था' assert things we cannot source. The video is Hindi, while the message promises only 'how an automatic first reply can work' and never says Hindi. This also contradicts the message's careful 'can'.",
+    "suggested_fix": "Tell the owner the video says 'हर ... मिलता है' and 'लगभग एक मिनट'. If he accepts it, say '(Hindi voice, sample)' in the message so expectations are right. If not, re-cut the line to 'मिल सकता है' before sending."
+   },
+   {
+    "lead": "Gujarati wording",
+    "severity": "should_fix",
+    "problem": "Several phrases read stiff or wrong to a Gujarati reader. 'બીજી સવાર પહેલાં' reads like 'another morning'. 'હું મહેસાણાથી IV Infotech તરફથી' has no verb. 'અમે ... વિડિયો બનાવ્યો છે કે automatic પહેલો reply...' is a clumsy 'that' clause. 'તે સાથે મોકલ્યો છે' is stiff. 'visit નો સમય' is unclear (whose visit?). '{project} માટે ... જોવા માટે' repeats 'માટે'. 'તમે' tone is also less respectful than 'આપ' for a business reader.",
+    "suggested_fix": "Use 'હું મહેસાણાની IV Infotech તરફથી લખું છું', and 'બીજા દિવસની સવાર' (or drop it). Use '40 સેકન્ડનો વિડિયો સાથે છે', 'site visit નો સમય' and 'આપની ટીમ'. Replace the double 'માટે' with '{project} નો demo ચેટ અજમાવવો હોય તો ટેપ કરો'. See the full Gujarati rewrite in the summary."
+   },
+   {
+    "lead": "'brochure' in the parenthesis",
+    "severity": "nit",
+    "problem": "The message lists 'brochure, 3 quick questions, a site-visit time' as what the sample shows. The demo slugs are '...-demo-only' and the bot uses our own sample budget bands, and the video says 'details' rather than 'brochure'. I could not confirm that the bot sends a brochure for each project.",
+    "suggested_fix": "Check one demo end to end. If it sends a demo page and not a brochure, write 'details' instead of 'brochure'."
+   },
+   {
+    "lead": "Sender identity",
+    "severity": "nit",
+    "problem": "The message opens 'this is IV Infotech' and closes 'I will not message again'. A human 'I' with no name makes it read like a template. A first name would raise trust more than any other edit, but 'staff names' are banned by our rules.",
+    "suggested_fix": "No edit unless the owner decides. Raise it as an open decision: owner's own first name on his own WhatsApp message, yes or no."
+   }
+  ]
+ },
+ "guj": {
+  "verdict": "fix_needed",
+  "summary": "I read messages_draft.json and reviewed only template_gu, the Gujarati message for Shreem Group. It is understandable but reads as a word-for-word translation, with two broken sentences, one meaning mismatch, and a few unnatural phrases. All rule checks pass. The Gujarati has no \"free\", \"instant\", \"gets\" or \"every\", no price or guarantee, no staff name, no boss number and no \"your ads\". It says \"{project} ની જાહેરાતો\" (the {project} ads), uses \"કરી શકે\" (can work), and makes no claim beyond the ads existing and having a WhatsApp button. The opt-out line is present. Spelling of the main words is correct: નમસ્તે, મહેસાણા, જાહેરાતો, સવાલ, મેસેજ, નહીં. Politeness is right: a consistent respectful (તમે) register with \"ટેપ કરો\" and \"લખશો\", and no casual forms. Mixing Latin-script reply, automatic, brochure, WhatsApp and STOP is how real Gujarati business chat reads, and the loanword genders (reply and video masculine, button neuter) agree with the verbs. Keep {brand}, {project} and the project name in Latin script, as the developer writes them.\n\nCORRECTED FINAL GUJARATI (placeholders kept):\n\nનમસ્તે {brand} ટીમ, અમે મહેસાણાની IV Infotech તરફથી લખીએ છીએ. {project} ની જાહેરાતોમાં WhatsApp બટન જોયું. મોડી સાંજે કોઈ તેના પર ટેપ કરે તો સવાર પડે તે પહેલાં કોઈ reply કરે છે ખરું?\n\nઅમે 40 સેકન્ડનો એક વીડિયો બનાવ્યો છે, જેમાં automatic પહેલો reply કેવી રીતે કામ કરી શકે તે બતાવ્યું છે (brochure, 3 ટૂંકા સવાલ, site visit નો સમય). એ આ મેસેજ સાથે મોકલ્યો છે.\n\n{project} માટે એ જ ચેટ WhatsApp પર જોવા અહીં ટેપ કરો: {demo_link}\n\nSTOP લખીને reply કરશો તો હું ફરી મેસેજ નહીં કરું.\n\nMeaning matches the English template line for line. \"late in the evening\" is now મોડી સાંજે, \"site-visit time\" is site visit નો સમય, \"quick questions\" is ટૂંકા સવાલ, and \"It is attached\" is એ આ મેસેજ સાથે મોકલ્યો છે. The first-person plural \"લખીએ છીએ\" avoids a gendered verb. \"હું ... નહીં કરું\" is gender-neutral, so the \"we\" in the opening and \"I\" in the opt-out mirror the English.",
+  "issues": [
+   {
+    "lead": "Opening sentence has no verb",
+    "severity": "blocker",
+    "problem": "\"હું મહેસાણાથી IV Infotech તરફથી.\" is a fragment: \"I, from Mehsana, from IV Infotech\" with no predicate. It is the first line a Gujarati developer reads, and it looks machine-translated. \"મહેસાણાથી\" (from Mehsana, by origin) also reads oddly next to an organisation name.",
+    "suggested_fix": "Use \"નમસ્તે {brand} ટીમ, અમે મહેસાણાની IV Infotech તરફથી લખીએ છીએ.\" This has a verb, uses the natural \"મહેસાણાની IV Infotech\", and \"લખીએ છીએ\" is the same for any speaker's gender."
+   },
+   {
+    "lead": "\"બનાવ્યો છે કે\" is ungrammatical",
+    "severity": "blocker",
+    "problem": "\"અમે 40 સેકન્ડનો એક વિડિયો બનાવ્યો છે કે automatic પહેલો reply કેવી રીતે કામ કરી શકે\" uses \"કે\" (that) as if the video were made \"that\" something. It does not say the video shows how an automatic first reply can work. Gujarati needs \"જેમાં ... બતાવ્યું છે\" (in which ... is shown).",
+    "suggested_fix": "\"અમે 40 સેકન્ડનો એક વીડિયો બનાવ્યો છે, જેમાં automatic પહેલો reply કેવી રીતે કામ કરી શકે તે બતાવ્યું છે (brochure, 3 ટૂંકા સવાલ, site visit નો સમય).\""
+   },
+   {
+    "lead": "\"રાત્રે\" (night) does not match \"late in the evening\"",
+    "severity": "should_fix",
+    "problem": "The English says \"late in the evening\" but the Gujarati says \"રાત્રે મોડેથી\" (late at night). \"રાત્રે મોડેથી\" is also not the natural order; people say \"મોડી રાત્રે\" or \"મોડી સાંજે\".",
+    "suggested_fix": "Use \"મોડી સાંજે\" to match the English exactly. Use \"મોડી રાત્રે\" only if the owner wants night."
+   },
+   {
+    "lead": "\"બીજી સવાર પહેલાં કોઈ reply કરે છે?\" is a calque and blunt",
+    "severity": "should_fix",
+    "problem": "\"બીજી સવાર\" literally means \"another/second morning\" and is not how \"the next morning\" is said. The bare question \"કોઈ reply કરે છે?\" is abrupt for a cold message to a business, and \"કોઈ\" appears twice in one sentence.",
+    "suggested_fix": "\"... કોઈ તેના પર ટેપ કરે તો સવાર પડે તે પહેલાં કોઈ reply કરે છે ખરું?\" The idiom \"સવાર પડે તે પહેલાં\" means before morning comes, and the particle \"ખરું\" softens the question. It stays a question, with no claim that they reply slowly."
+   },
+   {
+    "lead": "\"visit નો સમય\" and \"3 નાના સવાલ\" lose meaning",
+    "severity": "should_fix",
+    "problem": "The English says \"a site-visit time\" but the Gujarati says only \"visit નો સમય\", which could mean any visit. \"નાના સવાલ\" means small questions, not the \"quick\" questions the English describes.",
+    "suggested_fix": "Use \"site visit નો સમય\" (real-estate chat writes site visit in Latin) and \"3 ટૂંકા સવાલ\"."
+   },
+   {
+    "lead": "\"તે સાથે મોકલ્યો છે\" is clumsy",
+    "severity": "should_fix",
+    "problem": "\"તે સાથે\" reads as \"with that\", with no object for \"with\". The English \"It is attached\" means the video goes along with this message.",
+    "suggested_fix": "\"એ આ મેસેજ સાથે મોકલ્યો છે.\" \"મોકલ્યો\" agrees with the masculine \"વીડિયો\"."
+   },
+   {
+    "lead": "\"માટે ... માટે\" repeated in one sentence",
+    "severity": "nit",
+    "problem": "\"{project} માટે એ જ ચેટ WhatsApp પર જોવા માટે ટેપ કરો\" uses \"માટે\" twice. It sounds stiff and has no \"અહીં\" (here) before the link.",
+    "suggested_fix": "\"{project} માટે એ જ ચેટ WhatsApp પર જોવા અહીં ટેપ કરો: {demo_link}\". Dropping the second \"માટે\" and not using \"{project} ની ચેટ\" also avoids the uncertain gender of the loanword \"ચેટ\"."
+   },
+   {
+    "lead": "\"STOP લખશો તો\" does not say reply",
+    "severity": "nit",
+    "problem": "The English says \"Reply STOP\", but \"STOP લખશો તો\" only says \"if you write STOP\", with no reply to this message. The register is polite and fine.",
+    "suggested_fix": "\"STOP લખીને reply કરશો તો હું ફરી મેસેજ નહીં કરું.\""
+   },
+   {
+    "lead": "Spelling \"વિડિયો\"",
+    "severity": "nit",
+    "problem": "\"વિડિયો\" is understood, but \"વીડિયો\" is the more common standard spelling.",
+    "suggested_fix": "Use \"વીડિયો\"."
+   },
+   {
+    "lead": "Video file may be in Hindi",
+    "severity": "nit",
+    "problem": "The video path is \"whatsapp_automation_hi_claude_v1_720.mp4\". The \"_hi_\" suggests a Hindi version, but this message is Gujarati and Shreem's own ads are in Gujarati. The message also says the link shows \"એ જ ચેટ\" (the same chat as in the video), and the prefilled demo text is English (\"Yes, send the demo for ...\").",
+    "suggested_fix": "Confirm the owner is fine sending the \"_hi_\" video to a Gujarati lead, and that the demo bot's replies match the video, before sending."
+   }
+  ]
+ }
+}

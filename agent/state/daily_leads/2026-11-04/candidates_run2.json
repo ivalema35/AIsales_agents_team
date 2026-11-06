@@ -1,0 +1,132 @@
+[
+ {
+  "name": "AUTOBRO DETAILING STUDIO",
+  "short": "Autobro Detailing Studio",
+  "city": "Ahmedabad (SG Highway / Makarba)",
+  "phone": "090334 21420",
+  "rating": "4.8",
+  "reviews": 137,
+  "slot": "a-instagram",
+  "website_host": "instagram.com"
+ },
+ {
+  "name": "JB The Car Detailing Studio",
+  "short": "JB Car Detailing Studio",
+  "city": "Ahmedabad (Maninagar)",
+  "phone": "096624 69929",
+  "rating": "4.7",
+  "reviews": 173,
+  "slot": "c"
+ },
+ {
+  "name": "VB The Car Detailing Hub",
+  "short": "VB Car Detailing Hub",
+  "city": "Ahmedabad (Ghodasar)",
+  "phone": "077779 92642",
+  "rating": "5.0",
+  "reviews": 138,
+  "slot": "c"
+ },
+ {
+  "name": "Next Level Auto Detailing Studio",
+  "short": "Next Level Auto Detailing",
+  "city": "Ahmedabad (Bopal)",
+  "phone": "094080 34007",
+  "rating": "4.5",
+  "reviews": 284,
+  "slot": "c"
+ },
+ {
+  "name": "The Dom's Car Detailing Studio",
+  "short": "The Dom's Car Detailing",
+  "city": "Ahmedabad (Gota)",
+  "phone": "097730 85495",
+  "rating": "4.9",
+  "reviews": 111,
+  "slot": "a-instagram",
+  "website_host": "instagram.com"
+ },
+ {
+  "name": "A One Auto Detailing",
+  "short": "A One Auto Detailing",
+  "city": "Ahmedabad (CBD Mall / SP Ring Road)",
+  "phone": "097250 47041",
+  "rating": "4.8",
+  "reviews": 46,
+  "slot": "c"
+ },
+ {
+  "name": "TC4 Car Detailing",
+  "short": "TC4 Car Detailing",
+  "city": "Ahmedabad (Vastrapur)",
+  "phone": "090999 80530",
+  "rating": "4.6",
+  "reviews": 61,
+  "slot": "c"
+ },
+ {
+  "name": "Spray & Spark",
+  "short": "Spray & Spark",
+  "city": "Ahmedabad (Sanjivani Hospital area)",
+  "phone": "073832 63263",
+  "rating": "4.6",
+  "reviews": 194,
+  "slot": "c"
+ },
+ {
+  "name": "Coating Buddies",
+  "short": "Coating Buddies",
+  "city": "Ahmedabad (Ring Road)",
+  "phone": "081548 97959",
+  "rating": "4.8",
+  "reviews": 48,
+  "slot": "c"
+ },
+ {
+  "name": "Detailing Pro (Adajan)",
+  "short": "Detailing Pro",
+  "city": "Surat (Adajan)",
+  "phone": "091068 51450",
+  "rating": "4.8",
+  "reviews": 45,
+  "slot": "a-instagram",
+  "website_host": "instagram.com"
+ },
+ {
+  "name": "Gleam Car Detailing Studio",
+  "short": "Gleam Car Detailing",
+  "city": "Surat (Pal)",
+  "phone": "099097 57775",
+  "rating": "4.9",
+  "reviews": 95,
+  "slot": "a-instagram",
+  "website_host": "instagram.com"
+ },
+ {
+  "name": "Perfect Shine Car Detailing Center",
+  "short": "Perfect Shine Car Detailing",
+  "city": "Surat (Pratham Circle)",
+  "phone": "098253 78385",
+  "rating": "4.4",
+  "reviews": 43,
+  "slot": "c"
+ },
+ {
+  "name": "Book My Detailing",
+  "short": "Book My Detailing",
+  "city": "Surat (Dabholi)",
+  "phone": "099988 82425",
+  "rating": "5.0",
+  "reviews": 61,
+  "slot": "c"
+ },
+ {
+  "name": "Classic Car Studio (Rajkot)",
+  "short": "Classic Car Studio",
+  "city": "Rajkot (150 Feet Ring Rd)",
+  "phone": "080004 91914",
+  "rating": "5.0",
+  "reviews": 44,
+  "slot": "c"
+ }
+]

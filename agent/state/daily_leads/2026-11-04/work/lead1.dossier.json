@@ -1,0 +1,73 @@
+{
+  "business": "Detailing Culture",
+  "city": "Bodakdev (SG Highway), Ahmedabad",
+  "identity_verified": true,
+  "verification_trail": [
+    "https://detailingculture.in/ : own site, live; address Shop No-1, Gurudwar Lane, SG Highway, Behind Western Park, Opp Balaji Home's, Bodakdev, Ahmedabad 380054; hours Mon-Sat 11-19, Sun closed; services list; footer 'automotive care and Marine PPF for yachts and boats'",
+    "https://detailingculture.in/contact : phone/WhatsApp +91 91063 26281 (wa.me/919106326281); an email shown on the page (value withheld here, see contacts)",
+    "https://detailingculture.in/booking : form fields name, phone, vehicle, service category, preferred service, date, time (mandatory); 4-step 'Booking Submitted > Confirmation Message > Team Follow-Up > Service Appointment'; no prices, no packages by car size. Nothing submitted.",
+    "https://detailingculture.in/gallery/photos : text 'No project photos have been added yet' (seen 2026-11-04)",
+    "https://detailingculture.in/gallery/videos : 'No project videos have been added yet' (seen 2026-11-04)",
+    "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad : independent third-party page lists 'Detailing Culture (Garware Application Studio)' at the identical address, phone 9825033072 (one of 3 Garware Application Studios in the Locate Us list)",
+    "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7 (Get Direction link from the Garware row) redirects to a Google Maps place named DETAILING CULTURE at 23.0468N 72.5138E (Bodakdev); the Maps page itself is not readable with our tools (no rating, reviews, phone)",
+    "https://www.instagram.com/detailing_culture1/ : public profile 'DETAILING CULTURE', professional detailing studio, Bodakdev Ahmedabad, 426 followers, ~12 visible posts, no phone/email/website in bio, only a Maps link",
+    "https://www.facebook.com/p/Detailing-Culture-61592006451171/ : only the page title was readable; no details",
+    "WebSearch for the name + area returned no other listing (no JustDial/directory hit); so independent confirmations = Garware locator + Maps link, plus own site"
+  ],
+  "official_website": "https://detailingculture.in",
+  "what_they_do": "Single-outlet car detailing studio in Bodakdev: PPF, ceramic and graphene coating, deep cleaning, interior/exterior detailing; also accessories, modification, denting/painting, servicing, car buy/sell, and Marine PPF (190 micron 'Premium' 5-year warranty, 210 micron 'Ultimate' 8-year warranty). Listed by Garware as a Garware Application Studio.",
+  "entity_type": "end_business",
+  "size_cues": "One outlet, no branches or franchise claim, no years-in-business or car-count claim on site. 426 Instagram followers. Facebook page ID looks recently created (inference). Site says a 'team' follows up on bookings, so more than one person. Wide service list (6 categories) suggests a general auto shop that also does detailing.",
+  "decision_maker": "not found (no owner name on site, Garware page, Instagram bio)",
+  "contacts": [
+    { "kind": "whatsapp", "value": "+91 91063 26281", "source_url": "https://detailingculture.in/contact", "note": "wa.me link and phone on the studio's own site; Indian mobile, likely WhatsApp-capable; who answers (owner vs front desk/team) unknown" },
+    { "kind": "phone", "value": "+91 91063 26281", "source_url": "https://detailingculture.in/", "note": "same number as above" },
+    { "kind": "phone", "value": "9825033072", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "note": "published by Garware (third party) for this studio, not by the studio itself; different number from the site; unknown whose it is" },
+    { "kind": "email", "value": "detailingculture@gmail.com", "source_url": "https://detailingculture.in/contact", "note": "published on own contact page; not a way in for this campaign (WhatsApp is the channel)" },
+    { "kind": "website", "value": "https://detailingculture.in", "source_url": "https://detailingculture.in/", "note": "own site, live" },
+    { "kind": "instagram", "value": "https://www.instagram.com/detailing_culture1/", "source_url": "https://www.instagram.com/detailing_culture1/", "note": "business profile" },
+    { "kind": "facebook", "value": "https://www.facebook.com/p/Detailing-Culture-61592006451171/", "source_url": "https://detailingculture.in/", "note": "linked from own site" },
+    { "kind": "maps", "value": "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "note": "resolves to a Google Maps place 'DETAILING CULTURE'; phone and website button on the listing could not be read" }
+  ],
+  "observed_facts": [
+    { "fact": "Own site /gallery/photos says no project photos have been added yet", "source_url": "https://detailingculture.in/gallery/photos", "date": "2026-11-04 (date opened; page shows no date)" },
+    { "fact": "Own site /gallery/videos says no project videos have been added yet", "source_url": "https://detailingculture.in/gallery/videos", "date": "2026-11-04 (date opened; page shows no date)" },
+    { "fact": "Site has a working-looking booking form (name, phone, vehicle, category, service, date, time) but no prices and no packages by car size; only Marine PPF has two tiers", "source_url": "https://detailingculture.in/booking", "date": "2026-11-04" },
+    { "fact": "No testimonials or Google-review block on the home page", "source_url": "https://detailingculture.in/", "date": "2026-11-04" },
+    { "fact": "Garware lists the studio as a Garware Application Studio at the same address", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "date": "2026-11-04" },
+    { "fact": "Instagram profile has 426 followers and about 12 visible posts", "source_url": "https://www.instagram.com/detailing_culture1/", "date": "2026-11-04" }
+  ],
+  "hypotheses": [
+    "The site and the Facebook page look new (Facebook ID range, empty galleries), so the galleries are probably 'not filled yet' rather than neglected; the owner may fill them himself within weeks",
+    "A custom-coded site with a /api/bookings backend probably means a developer or agency built it, so they may already have a web vendor",
+    "Newly started or recently expanded studios often have few Google reviews, which a proof page could help; unproven because Maps is unreadable",
+    "The 91063 26281 number is probably the studio line; whether the owner or a front-desk person answers is unknown"
+  ],
+  "need_evidence": "observed",
+  "ability_to_pay": "Mixed. Positive: Garware Application Studio listing, Marine PPF (premium tiers with 5/8-year warranty), a custom booking site recently built, a 6-category service business on SG Highway (a premium area). Negative: only 426 Instagram followers, new-looking social presence, no ad evidence (Ad Library not checked, not cheap), no review volume known. Offer is about Rs 15-25k setup plus about Rs 5k/month, which is plausible but not proven.",
+  "pay_signal": "weak",
+  "reachability": "business_contact",
+  "owner_direct_contact": "unknown",
+  "resistance": "Has an own site with a booking form already built (a vendor may exist); our 'booking page' half is largely done, only the 'proof' half is missing. Site is clearly in launch phase, so the owner may fill the galleries himself. Garware may supply marketing material. Owner name and who answers the 91063 number are unknown.",
+  "grade": "B",
+  "reject_reason": "",
+  "case_for": "Real single-outlet studio, identity confirmed in three places (own site, Garware locator with identical address, Google Maps link). A need we SEE and that is literally true today: both gallery pages on their own site say no photos or videos yet, there is no review block, and no packages by car size, which is exactly the proof half of our offer. They are investing (new site, Garware studio, premium Marine PPF), so they are in a build phase and open to tools. A published wa.me WhatsApp number exists.",
+  "case_against": "The gap is a 'not yet filled' state on a new site, not neglect, and the booking half of our offer already exists, so the pitch is narrower than for a studio with no site. It is not one of the campaign's a/b/c/d slots and nothing is proven about Google reviews or the profile (Maps unreadable). Pay signal is weak to moderate (426 followers, no ads known). It is a general auto shop with six service lines, not a pure detailer. Owner not named; two different phone numbers; no proof the WhatsApp number reaches the decider. Possible existing web vendor.",
+  "best_angle": "One literally true sentence: 'your site has a booking form, but the photo and video galleries say no projects have been added yet'. Offer to build the proof side: before/after gallery, Google reviews block, packages by car size next to the existing Book button. Never say customers are lost. Do not mention the Garware listing as leverage beyond saying we saw it, and no prices in the message.",
+  "best_channel": "WhatsApp, human-approved, to +91 91063 26281 (the number the studio itself publishes with a wa.me link on its own site). It is the studio's own line, but who reads it is not proven, so open by asking for the owner. Do not use 9825033072 (published by Garware, not by the studio). Not email.",
+  "gaps": [
+    "Google Maps listing unreadable: phone, website button target, rating, newest review date and owner replies unknown",
+    "Whether 91063 26281 or 9825033072 reaches the owner is unknown; owner name not found",
+    "Whether the studio runs Meta ads is not checked (Ad Library exact-name search would be needed)",
+    "Whether the site is newly launched and the galleries are about to be filled",
+    "Facebook page content unreadable"
+  ],
+  "phone_published": "+91 91063 26281 (own site, with wa.me link); 9825033072 listed by Garware, not by the studio; the number on the Maps listing could not be read",
+  "website_status": "own site alive (detailingculture.in), booking form present, gallery pages empty, no review block; the Maps website-button target is unknown",
+  "newest_review_date": "unknown (Google Maps not readable)",
+  "owner_replies_in_newest_3": "unknown",
+  "brand_franchise_flag": "single outlet, no franchise claim; Garware Application Studio is a film-supplier approved-applicator label, not a franchise of the studio",
+  "safe_first_message_slot": "other (not a/b/c/d): 'site has a booking form but the photo and video galleries say no projects added yet'. a/b not provable (Maps unreadable), c not applicable (a site exists), d not applicable (the form exists)",
+  "ready_for_campaign": false,
+  "ready_reason": "Grade B, but owner_direct_contact is unknown (two different numbers, no owner name, a 'team' handles bookings) and the slot is outside a-d; the Maps phone/review state could not be checked."
+}

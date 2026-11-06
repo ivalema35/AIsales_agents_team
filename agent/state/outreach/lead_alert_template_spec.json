@@ -1,0 +1,13 @@
+{
+ "name": "iv_lead_alert_v1",
+ "language": "en",
+ "category": "UTILITY",
+ "body": "IV Infotech sales agent update: {{1}}\n\nDetails: {{2}}\n\nPlease open the chat to reply.",
+ "body_examples": [
+  "a lead needs you",
+  "Project: Sample Heights. They wrote: can someone call me tomorrow. Agent replied: our team will message you. Chat: wa.me/919800000000"
+ ],
+ "footer": "",
+ "buttons": [],
+ "purpose": "owner_alert"
+}

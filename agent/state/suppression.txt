@@ -1,0 +1,1 @@
+sales@elenza.group|email BOUNCED (Resend, 2026-10-16 16:35 IST): address does not accept mail - do not retry|resend-bounce|2026-10-16T16:36:05+05:30

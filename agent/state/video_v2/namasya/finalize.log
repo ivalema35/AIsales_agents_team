@@ -1,0 +1,6 @@
+breaks: [(4.05, 5.24, 1.19), (11.0, 12.09, 1.09), (16.4, 17.55, 1.15), (23.92, 25.2, 1.28), (29.44, 30.7, 1.26)]
+total 40.51 [(1, 0.0, 4.646, 4.053), (2, 4.646, 11.543, 5.759), (3, 11.543, 16.98, 4.317), (4, 16.98, 24.559, 6.364), (5, 24.559, 30.071, 4.242), (6, 30.071, 40.51, 7.408)]
+story.html -> C:\Users\Administrator\Desktop\AISales_agent_team\agent\pilot\video\dist\story
+wrote namasya/story_final.html 25049 bytes
+OK C:\Users\Administrator\Desktop\AISales_agent_team\agent\state\video_v2\namasya\renders\namasya_final.mp4 4.3 MB 40.5 s
+DONE: /c/Users/Administrator/Desktop/AISales_agent_team/agent/state/video_v2/namasya/renders/namasya_final.mp4

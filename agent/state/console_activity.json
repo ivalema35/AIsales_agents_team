@@ -1,0 +1,28 @@
+[
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261030-alt-krishna",
+  "created_at": "2026-10-30T05:58:45+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Krishna Auto Coating",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template (second line)",
+   "at": "2026-10-30T05:58:45Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Krishna Auto Coating, second line: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261030-alt-rrr",
+  "created_at": "2026-10-30T05:59:52+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "RRR Detailing",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template (Justdial number)",
+   "at": "2026-10-30T05:59:52Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to RRR Detailing, Justdial number: NOT delivered (Meta 131026, not on WhatsApp)"
+  }
+ }
+]

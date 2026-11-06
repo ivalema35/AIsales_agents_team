@@ -1,0 +1,45 @@
+[
+  {
+    "type": "campaign",
+    "key": "clinics-whatsapp-patient-desk-gujarat-2026-10",
+    "tags": ["round-1", "clinics"],
+    "data": {
+      "name": "Clinics: WhatsApp patient desk + appointment booking (Gujarat)",
+      "product": "AI automation",
+      "status": "active",
+      "start": "2026-10-28",
+      "end": "2026-11-04",
+      "unit": "USD",
+      "budget_cap": 5,
+      "budget_used": 0,
+      "budget_note": "About 0.2 USD a day of Apify from the daily lead run. No paid sends yet.",
+      "daily_send_cap": 10,
+      "target_leads": 30,
+      "leads": 0,
+      "sent": 0,
+      "delivered": 0,
+      "failed": 0,
+      "replies": 0,
+      "page_opens": 0,
+      "segment": "Doctor-owned clinics (dentist, skin / cosmetic, hair, physio) in Mehsana, Ahmedabad and Gandhinagar that already pay for Meta click-to-WhatsApp ads or take bookings on WhatsApp and phone",
+      "offer": "WhatsApp patient desk for doctor-owned clinics: a first reply to each enquiry in about a minute with a booking slot to choose, a reminder before the appointment, a 6-month recall and a review request. We set everything up; the doctor spends about 10 minutes once. Prices are never quoted in the first message.",
+      "evidence_methods": [
+        "Meta Ad Library: active clinic ads with a WhatsApp button (they pay for enquiries, so a slow reply or a no-show costs them money)",
+        "Google Maps: the clinic's own listing with a published phone number and reviews (owner-run, not a chain)",
+        "Job posts for a receptionist or telecaller (a sign the front desk is overloaded)"
+      ],
+      "design_pack": "Light Claude-style reel theme (cream paper with squares, orange accent); the clinic version uses a clinic chat mock",
+      "rules": "Nothing is sent without the owner's OK. WhatsApp 1:1 from a human to the doctor's published number only; never email; never a bot or auto-greeting number; no fake patient enquiries; no price in the first message; one first touch and one follow-up on day 3; STOP is final. A website is NOT the pitch (owner: patients in India do not choose a clinic from its website).",
+      "validation_plan": "7-day test: 30 clinics, up to 10 personalised first touches a day. First touch = one line + one image of a sample chat for that clinic + a one-word reply. Success = at least 3 replies or taps in 7 days. Zero by day 7 = switch to coaching institutes. Compare reply rate by clinic type (dental / skin / physio).",
+      "waves": [
+        {"wave": 1, "group": "Hungry", "leads": 10, "rule": "active Meta ad with a WhatsApp button + a doctor-direct number; one touch, follow-up on day 3"},
+        {"wave": 2, "group": "Warm", "leads": 20, "rule": "only after the wave-1 reply rate is known"}
+      ],
+      "milestones": [
+        {"date": "2026-10-28", "label": "Campaign created: product changed from website to a WhatsApp patient desk (owner decision)"},
+        {"date": "2026-10-28", "label": "Daily lead agent retargeted to this campaign (doctor-direct WhatsApp number required)"},
+        {"date": "2026-11-04", "label": "7-day checkpoint: replies / taps vs the success rule"}
+      ]
+    }
+  }
+]

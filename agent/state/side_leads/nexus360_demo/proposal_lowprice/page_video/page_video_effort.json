@@ -1,0 +1,86 @@
+{
+  "_about": "Effort, time and cost numbers for the Nexus360 builder page + video (side lead, 20 Oct 2026). Every number is MEASURED (with how), FACT (with source file), or ASSUMPTION (with a range). Nothing here is shown to Sridhar as is; it feeds the estimate workstream.",
+  "machine": "Windows Server 2022, Intel Xeon E5-1620 (4 cores, 8 threads), 64 GB RAM, no GPU used; Playwright chromium + ffmpeg from C:/ivtools/venv",
+  "measured_today": {
+    "frame_capture_jpeg_q92_720x1280_fps": 14.3,
+    "frame_capture_png_720x1280_fps": 7.3,
+    "frame_capture_with_recording_as_image_sequence_fps": 15.8,
+    "how": "90 to 120 frames of the existing agent/state/outreach/assets/master_video.html (and a test page) screenshotted through Playwright, 20 Oct 2026, scratch folder only",
+    "ffmpeg_extract_8s_1080x1920_h264_to_240_jpeg_frames_seconds": 1.2,
+    "ffmpeg_encode_240_frames_to_mp4_seconds": 1.1,
+    "video_element_seek_inside_page": "DOES NOT WORK: 4 of 4 sampled frames were byte-identical although the clip changes. Do not seek a <video> element per frame. Cut the recording into numbered JPEG frames and swap an <img> per frame instead (works, frames differ)."
+  },
+  "facts_from_repo": {
+    "campaign1_render_time": "4 renders of the 38 s video in 5.8 min = about 1.45 min each (agent/docs/CAMPAIGN_LEARNINGS.md line 71; agent/state/outreach/assets/render_r2.log). The playbook's '5 min' is the older figure; the appendix of CAMPAIGN_LEARNINGS says to plan 2-5 min until re-measured.",
+    "campaign1_video_size": "about 2.1 MB per 38 s video (agent/state/outreach/assets/renders/*.mp4)",
+    "owner_voice_take": "about 35 min each (CAMPAIGN_LEARNINGS line 74)",
+    "word_timing": "The speech-to-text step is English only; for Gujarati the plan uses per-scene captions, not word by word (agent/state/outreach/master_voice_gu_v1.md; agent/video/toolpaths.py). A Hindi cut works the same way: scene lengths come from the length of each voice clip.",
+    "renderer_limits": "agent/video/render_master.py hardcodes 5 scene segments in the audio join (if k < 4) and reads words from timeline.json; it renders sequentially into one shared frames_tmp folder. A 4-scene Hindi cut needs a small adaptation.",
+    "ai_voice": "ElevenLabs free-plan audio is not commercially usable; a paid plan with the commercial licence is needed, and an AI-voice disclosure (agent/docs/AGENTIC_SALES_BLUEPRINT.md lines 55 and 80). Plan price not checked.",
+    "campaign1_delivery": "2 of 7 cold WhatsApp templates arrived on time (agent/docs/CAMPAIGN1_DIAGNOSIS_2026-10-20.md, section 2 item 4)",
+    "campaign1_rework": "2 of 6 wave-2 renders were rework because of a wrong name slot (CAMPAIGN_LEARNINGS C7)",
+    "campaign1_scores": "page 4.6/10, video 4.4/10 (CAMPAIGN1_DIAGNOSIS section 5)"
+  },
+  "one_time_build_for_nexus360": {
+    "page_and_video_designs_done_today": "builder_page_sample.html, video_animatic.html, video_storyboard.html (this folder)",
+    "adapt_renderer_and_page_template": {"hours": "1 to 3", "label": "ASSUMPTION", "what": "4-scene Hindi timeline from clip lengths, load recording frames, Nexus360 page template in the build script, hosting under www /campaign per the standing hosting decision"},
+    "sridhar_time": {"hours": "1.5 to 2.5", "label": "ASSUMPTION", "what": "2 screen recordings (30-60 min with retakes), 4 voice clips in Hindi (30-60 min, owner takes were about 35 min), logo/photo/number/permissions (20 min), read the claim lines (20 min)"},
+    "hindi_native_check": {"minutes": 15, "label": "ASSUMPTION"},
+    "first_render_and_review": {"minutes": "20 to 40", "label": "ASSUMPTION", "what": "one render about 1 min, then review of stills and fixes"}
+  },
+  "per_builder_page": {
+    "compute": "seconds (build script fills a record into the template)",
+    "human_check_minutes_each": {"low": 0.5, "high": 2, "label": "ASSUMPTION", "what": "look at the title block and hook; the long-name overflow problem from campaign 1 is scripted away by a worst-case-name test"},
+    "per_50_minutes": {"low": 25, "high": 100},
+    "fields_that_change": ["builder", "project", "city", "CG RERA number", "date"]
+  },
+  "per_builder_video": {
+    "frames": 510,
+    "frames_basis": "17.0 s x 30 fps",
+    "render_seconds_each": {"measured_basis": 39, "plan_low": 40, "plan_high": 90, "how": "510 frames at the campaign's all-in 13.1 fps (1140 frames in about 87 s) = 39 s; today's capture speed 14.3 fps agrees", "label": "MEASURED basis plus slack"},
+    "per_50_machine_minutes": {"measured_basis": 33, "plan_low": 35, "plan_high": 75, "sequential": true, "note": "parallel renders would need a per-run frames folder; 2 to 3 in parallel might double throughput on 8 threads (ASSUMPTION, untested)"},
+    "human_check_minutes_each": {"low": 0.5, "high": 1, "label": "ASSUMPTION", "what": "look at the hook frame and the ask frame"},
+    "per_50_human_minutes": {"low": 25, "high": 50},
+    "file_size_mb_each": {"animation_only": 0.9, "with_real_recordings_range": "1.5 to 3", "label": "ASSUMPTION from 2.1 MB per 38 s; WhatsApp video limit is 16 MB"},
+    "money": "no API spend if Sridhar records the voice; local compute only"
+  },
+  "options_compared": {
+    "A_one_master_video_plus_personalised_page_header_and_first_line": {
+      "extra_per_builder_video_work": "none",
+      "extra_per_50": "none",
+      "personalisation_kept": "title block on the page (builder, project, city, RERA no., date) and the project name in the WhatsApp line",
+      "risk": "the viewer sees a generic video; no data says a name in the video lifts replies"
+    },
+    "B_per_builder_video_name_project_city": {
+      "extra_per_builder": "about 40 to 90 s of machine time plus 0.5 to 1 min of human attention",
+      "extra_per_50": "about 1 to 2 hours in total (35-75 min machine, 25-50 min human)",
+      "risk": "one more artefact per builder that can carry a wrong name (campaign 1: 2 of 6 renders were rework); more files to approve; Meta template with video header needs one approved sample, whether a different video per recipient is allowed on the BSP was not checked (UNKNOWN)"
+    },
+    "recommendation": "Option A first. The cost of B is small in hours, but there is no evidence that it changes the outcome, and delivery (2 of 7 cold templates on time) and reader identity (RERA numbers often reach an operator) decide more than the name in the video. Re-decide after the first 50 sends, using page-open, play and 75 percent view beacons, not replies (too few replies to compare). Spend a per-builder render only on the top 10 owner-level leads if the master video shows real watch-through.",
+    "why_not_an_a_b_test": "At a few percent reply rate, 10 vs 10 builders cannot show a difference. Campaign 1 had an effective n of 1 to 4."
+  },
+  "claims_ledger": [
+    {"claim": "Indents are checked before approval against project stock, unused stock at other sites, material on order, similar recent indents and BOQ overruns", "source": "nexus360.in (AI features), read 20 Oct 2026", "status": "from the vendor's own site; Sridhar to confirm against the live product"},
+    {"claim": "The checks appear on one screen", "source": "none", "status": "NOT CLAIMED: removed from page and video"},
+    {"claim": "Material received is reconciled against the PO; PO entry shows last price, 6-month range, lowest price", "source": "nexus360.in", "status": "from site; confirm"},
+    {"claim": "Leads from all sources and brokers; follow-ups and site visits in an activity planner; deal pipeline", "source": "nexus360.in", "status": "from site; confirm"},
+    {"claim": "Deal becomes a customer with a payment schedule; collections tracked against it", "source": "nexus360.in", "status": "from site; confirm"},
+    {"claim": "Plain-English questions return tables or charts; works in a browser on desktop, tablet, phone", "source": "nexus360.in", "status": "from site; confirm"},
+    {"claim": "Used on 20+ projects by 200+ people", "source": "nexus360.in", "status": "from site; confirm it is still true"},
+    {"claim": "Mahavir Group, Rajnandgaon is a customer", "source": "nexus360.in", "status": "show only with Sridhar and the customer's permission"},
+    {"claim": "Sridhar replies himself, no bot", "source": "Sridhar's call on 20 Oct", "status": "his commitment; he must confirm he or his team answers"},
+    {"claim": "Savings, ROI, time saved, instant, results of other builders, other states", "source": "none", "status": "NOT CLAIMED anywhere"}
+  ],
+  "demo_plan_for_sridhar_without_a_rendered_video": {
+    "principle": "Show the page, the timing and the words today; the real video follows his two recordings. Nothing is sent or deployed.",
+    "run_order_10_to_12_minutes_on_the_owner_s_screen_share": [
+      "1. builder_page_sample.html in a phone-width window. Open it with ?builder=Sample+Builders&project=Sample+Heights&city=Durg to show the five personalised fields fill in (fictional names, no real builder shown).",
+      "2. Press the Book a demo button: the sample shows what the live button does. Show the WhatsApp preview with the message already typed and Send not pressed.",
+      "3. video_animatic.html: play the Hindi cut, then English only, then Per-builder version; show the Unsafe zones switch and the 28 px rule.",
+      "4. video_storyboard.html: the timeline, the words of each scene, the list of what he supplies.",
+      "5. Close with the three decisions: voice (his Hindi voice, English, or captions only), hosting and permission for customer names, and master video vs per-builder video."
+    ],
+    "send_after_the_call": ["builder_page_mobile_firstscreen.png and builder_page_mobile.png", "video_storyboard_mobile.png", "the 8 stills in stills/ if he wants to forward the idea to his team"],
+    "optional_next_step_not_done_today": "After the owner approves, render the animatic to a silent MP4 (about 40 s of computer time) so Sridhar can watch it on his phone in WhatsApp. Then replace the two placeholder boxes with his recordings the day they arrive."
+  }
+}

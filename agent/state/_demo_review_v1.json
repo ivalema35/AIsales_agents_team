@@ -1,0 +1,321 @@
+{
+ "review:conversation": {
+  "verdict": "fix_first",
+  "summary": "Safe to deploy the code while demo_mode stays off; do NOT send DEMO ON (or the template wave) until findings 1-8 are fixed. I read all the listed files and ran about 60 experiment cases through the real webhook. All experiment files named zz_review_copy_* are deleted. The repo is as I found it, the 229 tests still pass, and other reviewers' zz_review_attack_* and zz_review_statedb_* files were left alone.\n\nWhat is fine:\n- Every button set is within WhatsApp limits. I checked all 4 projects in demo_projects.json plus the generic one, all 5 steps, and every slot label over 400 days (longest 17 chars). Titles are 20 chars or fewer, there are at most 3 buttons, bodies are far below 1024 and labels are unique.\n- It only replies inside the 24 h window, never writes first, and never echoes the lead's words.\n- The intro discloses an automatic demo, names IV Infotech, Mehsana, and gives STOP and PERSON.\n- Plain \"STOP\", \"no thanks\" and \"stop sending\" give one confirmation, suppress the number and then stay silent.\n- The numbered fallback reads fine apart from the digit clash in finding 5.\n- Flow length (intro plus 5 taps, 7 messages from us) is acceptable but can drop to 5 messages by putting the intro and Q1 in one interactive message and the card and CTA in one.\n\nMain problems: refusals in common wordings are ignored (finding 1), a STOP after YES gets no reply (2), the owner's test run writes real suppression and hand-off rows (3), reactions and double taps are counted as unclear answers (4), digit answers land on the wrong option (5), \"ok\" and \"No problem\" are read as YES and NO (6), and the hand-off promises are unsupported (7). Replacement wording for the whole flow is in finding 13.",
+  "findings": [
+   {
+    "severity": "blocker",
+    "where": "services/demo_responder.py::_on_session_message (only is_optout() is checked); cognition/hard_classifiers.py::_OPTOUT_PATTERNS (r'\\bno thanks?\\b' does not match 'No, thanks')",
+    "scenario": "Demo is running (state: active, step budget). The lead says no in a common way, and I ran each case. Not recognised: tapping the template's 'No, thanks' button (kind button or interactive), typing 'No, thanks', 'no, thank you', 'nahi chahiye', 'band karo', 'mat bhejo', \"don't message me\", 'Please do not message me again', 'leave me alone', and Gujarati 'બંધ કરો'. In every case the session stays active, nothing is suppressed, and the lead gets the robot line 'I am an automatic demo, so I can only take the options shown...'. A lead who keeps refusing hits MAX_UNRECOGNISED. The third refusal then sends 'Let me get a person from our team to help you. They will message you here soon.' and creates a priority-normal hand-off for the owner. Only 'stop', 'unsubscribe', 'not interested', 'no thanks' (no comma) and similar are caught. At the CTA step only a bare first word 'no' or 'nahi' works.",
+    "impact": "This is the opt-out promise. The demo is the first part of the system that auto-replies, so a lead who says 'please do not message me again' receives up to three more automatic messages and then a human follow-up. That is the classic block/report trigger and a Meta opt-out violation. The CRM itself only stored these words and never replied, so this is new harm created by the responder.",
+    "fix": "Keep the fix demo-local. Do not widen the global is_optout, because the CRM deliberately treats a template 'No, thanks' tap as NO-without-suppress. In demo_responder.py add:\n_DECLINE_RE = re.compile(r\"\\b(no|nahi|nahin|nope)\\b[\\s,.!-]*(thanks?|thank\\s+you|thx|chahiye|joiye)\\b|\\bno\\s+more\\b|\\bleave\\s+me\\s+alone\\b|\\b(don'?t|dont|do\\s+not)\\s+(message|text|send|contact|call|disturb|whatsapp)\\b|\\b(band|bandh)\\s+(karo|kro|kar\\s+do)\\b|\\bmat\\s+(bhejo|karo|kro)\\b|\\bnathi\\s+joitu\\b|બંધ|बंद|नहीं\\s*चाहिए\", re.I)\nThen at the top of _on_session_message:\ndeclined = _DECLINE_RE.search(typed or '')\nif is_optout(typed) or declined:\n    if not is_optout(typed) and session.source != 'owner':\n        _suppress(db, session.phone)   # record_inbound did not suppress these wordings\n    _finish(db, session, 'stopped', 'stop', 'demo_stopped', 'The lead stopped the demo'); return\nI ran this regex on 16 strings. It matches all the refusals above and does not match 'No problem, send me the price', '3 BHK', 'Not sure yet', 'Another time' or 'Yes, contact me'. Also call _suppress BEFORE sending the confirmation in _finish and in the CTA 'no' branch. Today the 'We will not message you about this again' text goes out first and _suppress swallows its own errors, so a failed write leaves the promise unrecorded. Add tests for each wording above."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_handle_lead_message ('if session is None and not trigger: return', placed before any STOP handling) and TEXTS['yes'] / TEXTS['person']",
+    "scenario": "Lead finishes the demo and taps 'Yes, contact me'. The reply says 'If you want to stop, reply STOP.' The lead then types STOP. I ran this. The CRM suppresses the number (suppressed=1), but nothing is sent back, because the session is now handed_off and the early return fires. The AgentHandoff row and the CRM to-do card stay status 'open'. Same after PERSON, and also after DEMO OFF, STOP ALL or the 23 h expiry.",
+    "impact": "The one message that invites STOP never confirms it, and the lead cannot tell whether it worked. The owner's open 'high priority, contact this lead' card now points at a number that said STOP. A human working the card can message it by hand. Silence after an invited STOP is a block/report risk.",
+    "fix": "In _handle_lead_message, before the early return: if session is None and the typed text is an opt-out and there is a DemoSession for this phone with status handed_off or done and updated_at inside SESSION_HOURS, then (a) send TEXTS['stop'] once, (b) set that session to 'stopped', and (c) mark the open AgentHandoff for contact '+'+phone as cancelled (add a status 'cancelled' or write an agent_activity event the card reads). Let this one ack bypass the _suppressed() check, since the CRM suppressed the number a moment earlier. Add a test: YES, then STOP, then expect exactly one ack and the handoff closed."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::start_session, ::_handoff, ::_on_session_message CTA 'no' branch (session.source == 'owner' is never checked)",
+    "scenario": "Owner sends 'DEMO RUN Pride Aura' and taps through to 'No, thanks'. I ran this. suppression_list now holds ('WHATSAPP','9000000001','STOP'), the owner's own number, permanently. Running to 'Yes, contact me' creates a real AgentHandoff plus a TodoItem (is_blocker=1, priority high, 'Pride Aura (demo)', contact = the owner's number) and WhatsApps the owner 'DEMO: Pride Aura (+91 ******0001) finished the demo and said YES, contact me. Reply to them on WhatsApp: +919000000001'. Every owner run also sends 'DEMO started: ...' to the owner himself.",
+    "impact": "A rehearsal pollutes production state. The owner's phone lands on the do-not-contact list, and the agent's send tools block on contact_suppression before every live send. agent/memory.md plans own-number template tests on the owner's two numbers next, and those would be refused. A fake high-priority hand-off card sits in the CRM inbox and the heartbeat may act on it.",
+    "fix": "In start_session skip _alert_owner when source == 'owner'. In _handoff and the CTA 'no' branch return early when session.source == 'owner'. Instead send the owner one line: 'Test run finished. Nothing was suppressed and no hand-off was created.' Add tests: an owner run to 'No, thanks' leaves suppression_list empty, and an owner run to 'Yes' leaves AgentHandoff and TodoItem empty."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message (falls through to the 'unknown' branch for every message that is not a recognised option)",
+    "scenario": "All of these were run mid-demo. (a) A 👍 reaction on our intro (WhatsApp type 'reaction', text '[reaction: 👍]'). It counts as an unclear answer and gets 'I am an automatic demo, so I can only take the options shown...'. Three reactions give the 'Let me get a person from our team' hand-off. (b) A typed 👍, a sticker, a location or a contact card are handled the same way. (c) A double tap on a button just answered ('75 lakh to 1.5 cr' sent twice, or an old button higher up the chat) gets the robot nudge although the next question is already showing, because the stale label is not an option of the current step.",
+    "impact": "Reactions, stickers and double taps are everyday WhatsApp behaviour. The lead is told off by a bot right after answering correctly, and a few harmless taps can promise a human follow-up nobody asked for. This is a quality-rating and annoyance risk.",
+    "fix": "At the top of _on_session_message (after the STOP check): if kind == 'reaction': return (never counts, never replies). If the text has no letters or digits (emoji only), or the kind is sticker, return without counting. If the text equals an answer stored for an earlier step (compare _norm(text) with _answers(session).values()), ignore it silently. Count only real text and media toward MAX_UNRECOGNISED. Add tests for reaction, stale tap and emoji."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::match_option ('if t.isdigit(): return n - 1')",
+    "scenario": "Question 2 'Which type?' has buttons '3 BHK | 4 BHK | Not sure yet'. A buyer types the obvious '3'. match_option returns position 3, so the card says 'Type: Not sure yet'. Typing '4' gives None, which is an unclear answer. Run for all 4 real projects: Pride Aura and BRIJ Sandalwood '3' maps to 'Not sure yet' and '4' to None. NB Legacy Tower ('4 BHK | 5 BHK | Not sure') '4' and '5' map to None and '2' to '5 BHK'. Elenza Gardens ('2 BHK | Shop | Not sure') '2' maps to 'Shop' instead of '2 BHK'. The numbered fallback shows '3. Not sure yet' next to '1. 3 BHK', so the numbers clash with the BHK counts.",
+    "impact": "A wrong answer is stored silently and then shown on the HOT card in front of a developer, in 3 of the 4 live projects. That is embarrassing in a sales demo.",
+    "fix": "A bare number must mean the option whose label starts with that number. In match_option replace the isdigit branch with:\nby_label = [i for i, o in enumerate(normed) if o.split()[0] == t]\nif len(by_label) == 1: return by_label[0]\nand drop positional digits. In the numbered fallback use letters (TEXTS['numbered'] = 'Reply with the letter:' and lines 'A. 3 BHK', 'B. 4 BHK', 'C. Not sure yet') and accept single letters a to c. I checked the by_label rule on the four type sets: '3' gives 3 BHK, '4' gives 4 BHK, '5' gives 5 BHK, '2' gives 2 BHK."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_yes_no (reads only the FIRST word) and the CTA branch of _on_session_message",
+    "scenario": "At 'Would you like this...?' I ran these. 'ok thanks, will think about it' gives handed_off, a hand-off for the owner and 'A person from IV Infotech will message you here soon', i.e. treated as YES. 'ok' and 'sure later' do the same. 'No problem, send me the price' gives status done, the number permanently SUPPRESSED, and 'We will not message you about this again', i.e. treated as NO. 'nahi abhi nahi, baad me' (not now, later) is also NO plus a permanent block. Also unhandled: a typed 👍 and 'Not now' / 'maybe' just get the robot nudge.",
+    "impact": "An interested lead (asking for the price) is blocked forever. An undecided lead gets a human follow-up they did not request. The consent decision rests on the first word of free text.",
+    "fix": "Decide YES or NO by the whole message, not the first word. Use _norm(text) in {'yes','yes please','ok','okay','haan','ha','sure','yep'} for YES, and {'no','nahi','nope','nahin'} for NO (the button titles are matched exactly by match_option already). Anything longer goes to the unclear path or, if it contains an explicit ask for a person, to PERSON. Treat a lone 👍 as YES only at the CTA step. Add tests for the phrases above."
+   },
+   {
+    "severity": "major",
+    "where": "TEXTS['yes'], TEXTS['person'], TEXTS['unknown_handoff'], _handoff and _alert_owner",
+    "scenario": "At 11 PM IST a lead taps 'Yes, contact me'. Reply: 'A person from IV Infotech will message you here soon.' The WhatsApp alert to the owner is sent only if the owner wrote to us in the last 24 h (agent_service.owner_last_seen). Otherwise only the hand-off row is written, and per agent/memory.md the agent heartbeat that reads it is a desktop process polling every 10-15 min. Separately, three unclear answers send 'Let me get a person from our team to help you. They will message you here soon.' to a lead who never asked for a person. The landing page says 'Free. No call unless you ask.'",
+    "impact": "'Soon' has no hours or limit, so nights and Sundays are over-promised. After 24 h from the lead's last message a free-form reply is no longer allowed, so a late human reply needs a template. An unrequested human follow-up contradicts the page promise and is a block risk.",
+    "fix": "Make the promise honest and time-free. TEXTS['yes'] = 'Thank you. A person from IV Infotech will message you on this chat during working hours (10 AM to 7 PM, Monday to Saturday). Reply STOP if you change your mind.' (the hours are placeholders; the owner must confirm the real ones). TEXTS['person'] = 'Sure. A person from IV Infotech will message you on this chat during working hours (10 AM to 7 PM, Monday to Saturday). Reply STOP if you change your mind.' For the third unclear answer do NOT hand off. Send TEXTS['unknown_end'] = 'I could not follow that, so I will stop here. Reply PERSON if you want our team to message you.', set the session to 'done', and create no hand-off and no owner alert. Hand-offs then exist only for explicit YES or PERSON."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::visit_slots and _question('slot'); TEXTS['q_time'] / TEXTS['card']",
+    "scenario": "Today is Friday 16 Oct 2026 and I ran it. The buttons read 'Sat 24 Oct, 11 AM | Sun 18 Oct, 4 PM | Another time': out of date order, with the Saturday 8 days away and the Sunday in 2 days. Every Friday behaves like this. The slot times are also fixed whatever the lead chose in Question 3. A lead who picks 'Evening' is offered 'Sat 11 AM', and the card prints 'Best time: Evening ... Visit: Sat 24 Oct, 11 AM' on the same card. The prompts say 'Question 1 of 3' ... 'Question 3 of 3', then a fourth unnumbered question, then a fifth.",
+    "impact": "The core pitch screen contradicts itself and looks buggy on the first day it is shown to a real lead.",
+    "fix": "Sort the two slots by date, and take the hour from the Question 3 answer: {'Morning':'11 AM','Afternoon':'3 PM','Evening':'6 PM'}, giving labels like 'Sun 18 Oct, 6 PM' (16 chars, fits the 20 limit). In visit_slots build (day, label) tuples and return the labels from sorted(). Change the slot prompt to TEXTS['q_slot'] = 'Last step. Pick a site-visit time (sample)'. Optionally drop Question 3 and let the slot be Question 3 (this also shortens the flow), but then update the landing page line 'Budget, type and the best time to visit', which currently says the same thing."
+   },
+   {
+    "severity": "major",
+    "where": "TEXTS['stop'] ('You will not get any more messages from IV Infotech.')",
+    "scenario": "A lead says STOP in the demo. Suppression is written for channel WHATSAPP only (suppression_list is keyed by channel + identifier, and contact_suppression checks phone and email separately). agent/memory.md describes plain-text email sequences (Day 0, 3, 7) to the same businesses.",
+    "impact": "The confirmation states a promise the system cannot keep if the same business is also on an email sequence. A false opt-out statement hurts trust and complaint handling.",
+    "fix": "TEXTS['stop'] = 'Done. We will not send you any more WhatsApp messages. Sorry for the trouble.' and TEXTS['no'] = 'No problem. Thank you for your time. We will not message you on WhatsApp about this again.' Optionally also suppress the lead's EMAIL if a CRM lead with that phone exists."
+   },
+   {
+    "severity": "major",
+    "where": "TEXTS['unknown'] and the unknown branch of _on_session_message; no 'about' reply",
+    "scenario": "Mid-demo the lead writes 'what is this?', 'who are you', 'price?', 'kya hai ye', 'send brochure', 'hello' or 'demo kya hai'. Each gets the same 'I am an automatic demo, so I can only take the options shown. Please tap one of the buttons, or reply PERSON...'. The nudge does not repeat the question, so the lead must scroll to find the buttons. It does not mention STOP. In the numbered fallback (no buttons exist) it still says 'tap one of the buttons'. Voice notes and images get the same line.",
+    "impact": "The most likely reply from a cold-template reader is 'what is this?'. A second-language reader gets a robotic non-answer and is two strikes from a human hand-off. This raises the block/report rate.",
+    "fix": "Add an about answer for r\"\\b(what is this|what'?s this|who are you|who is this|what do you do|kya hai|kaun ho|kon ho|more info|details)\\b\", sent once per session and not counted as unclear: TEXTS['about'] = 'IV Infotech (Mehsana) builds automatic WhatsApp replies for real-estate developers: an instant reply to every enquiry, a few questions, a site-visit time and one list for your team. This chat is a free sample. Please tap one option below to continue, or reply STOP to end.' Send every nudge as the current question with the line prepended, so the buttons are right there in one message: TEXTS['unknown'] = 'Sorry, this automatic demo only understands the options below. Please tap one. (Reply PERSON for our team, or STOP to end.)' and TEXTS['unknown_media'] = 'Sorry, I cannot open voice notes or pictures. Please tap one option below. (Reply PERSON for our team, or STOP to end.)'. In fallback mode say 'Reply with one letter' instead of 'tap'."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_PERSON_RE",
+    "scenario": "Mid-demo each of these gets 'Sure. A person from our team will message you here soon.', a hand-off and an owner alert: 'I will talk to my partner and let you know', 'I am the sales manager', 'someone else handles this', 'speak to my team first'. The regex matches bare 'talk to', 'speak to', 'someone' and 'manager'.",
+    "impact": "The lead is promised and sent a follow-up they did not ask for. It also fills the owner's hand-off list with false positives.",
+    "fix": "Use an explicit-request pattern: _PERSON_RE = re.compile(r\"\\b(talk|speak|connect(\\s+me)?)\\s+(to|with)\\s+(a|an|your|the|some)?\\s*(real\\s+)?(person|human|someone|team|executive|manager|agent)\\b|^\\s*(person|human|agent)\\s*[.!]*\\s*$|\\bcall\\s*(me|back)\\b\", re.I). I ran it. It still matches 'Person', 'can I talk to a person please', 'call me tomorrow' and 'speak to a manager', and no longer matches the four false cases."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_on_session_message (calls is_optout(text) / is_autoreply(text) on the placeholder, not the caption); api/inbound.py passes describe_message()'s text",
+    "scenario": "A document named 'stop.pdf' or a shared location named 'Bus Stop' (placeholder '[document: stop.pdf]' / '[location: Bus Stop (..)]') during a demo ends the demo and sends 'Done. You will not get any more messages from IV Infotech.', but nothing is suppressed (SuppressionEntry count 0). The CRM deliberately checks only the typed caption (see describe_message's docstring).",
+    "impact": "A false opt-out confirmation with no matching suppression. The demo's view of 'STOP' disagrees with the CRM's.",
+    "fix": "In _handle_lead_message call kind, text, caption = describe_message(msg) and use typed = text if kind in TEXT_KINDS else (caption or ''). Pass typed into every is_optout / is_autoreply / _PERSON_RE / trigger check, as record_inbound already does. Also, the 'will be back' autoreply pattern silently swallows 'I will be back in 10 minutes, then send details' (verified: no reply, no count). That is acceptable for now but worth knowing."
+   },
+   {
+    "severity": "minor",
+    "where": "TEXTS['intro'], ['q_budget'], ['q_type'], ['card'], ['q_cta']; GENERIC_PROJECT wording",
+    "scenario": "Copy read as a second-language reader. (1) The intro does not say why they got it or that it takes about a minute, and with the generic project it reads 'made for your project... a buyer of your project'. (2) 'What budget are you looking at?' asked of a developer, with no hint to answer as a buyer. (3) 'Which type?' is terse. (4) The card is headed SAMPLE BUYER but shows the lead's own taps, and 'Status: HOT' and 'WARM' are never explained. (5) 'nothing is booked' / 'Nothing was booked' conflicts with the RERA wording rule in agent/memory.md ('scheduled', never 'booked'). (6) 'on your own number' in the CTA is vague. (7) The message names differ: 'IV Infotech' vs 'our team'.",
+    "impact": "Confusing but not unsafe. Fixing it reduces 'what is this?' replies.",
+    "fix": "Replace the TEXTS with:\nintro: 'Hello, this is IV Infotech, Mehsana. You asked for our demo, so here it is: an automatic WhatsApp chat made for {project}. No person is typing.\\n\\nPlay a buyer and tap 3 answers, about 1 minute. Nothing is scheduled and nothing is shared.\\n\\nReply STOP to end it, or PERSON to talk to our team.' (a good option: send this and Question 1 as ONE interactive message, which also avoids two sends arriving out of order)\nq_budget: 'Question 1 of 3\\nAs a buyer, what budget are you looking at?'\nq_type: 'Question 2 of 3\\nWhich type do you want?'\ncard: 'That is the demo. For each buyer, your team would see a card like this:\\n\\nSAMPLE BUYER - {project}\\nBudget: {budget}\\nType: {type}\\nBest time: {time}\\nVisit: {slot}\\nStatus: {status}\\n\\nBuyers who picked a visit time come first in your list. These are the answers you just tapped. Nothing was scheduled and nothing was shared.' with status 'HOT (picked a visit time)' / 'WARM (no visit time yet)'\nq_cta: 'Would you like this for {project}, on your own WhatsApp number and with your own brochure?\\n\\nReply STOP if you want no more messages.' (can be merged with the card into one message, about 420 chars)\nOptional: add one Hinglish line to the intro ('STOP likhne par yeh band ho jayega.'); a full Gujarati/Hindi version is a later job once the owner can proofread it."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_handoff and ::start_session (_alert_owner texts)",
+    "scenario": "The owner receives 'DEMO started: Pride Aura (+91 ******0001)' for every demo, and for a hot lead 'DEMO: Pride Aura (+91 ******0001) finished the demo and said YES, contact me. Reply to them on WhatsApp: +919811100001'. The number is masked in one place and printed in full in the same line. The budget, type, time and visit slot the lead chose are missing from the WhatsApp text (they sit only in the CRM hand-off brief). The 24 h reply deadline is not stated.",
+    "impact": "The owner cannot decide or act from the alert alone. The 'started' pings are noise, and each one fails silently when the owner's own 24 h window is closed.",
+    "fix": "Drop the 'DEMO started' alert. Send only the end alerts, with the real number and the answers: 'HOT demo lead: {project}\\n+{phone} tapped YES, contact me.\\nWants: {budget} | {type} | {time} | visit {slot}\\nReply on WhatsApp before {HH:MM} (24 h rule): wa.me/{phone}' and 'Demo lead asked for a PERSON: {project}, +{phone}, was at step {step}. Reply on WhatsApp before {HH:MM}: wa.me/{phone}'. Compute HH:MM as last_inbound_at + 24 h in IST. Send nothing when source == 'owner'."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_owner_message (static 'demo-on' reply); _TRIGGER_RE; GENERIC_PROJECT",
+    "scenario": "(a) While STOP ALL is active the owner sends DEMO ON. Reply: 'Demo responder is ON. Anyone who taps ... gets the automatic demo, any time of day.' No word that nothing will be sent. (b) First messages \"Don't send the demo\" and 'Please do not send the demo' START a demo, because _TRIGGER_RE finds 'send the demo' inside the negation. (c) If the mode is off, the server is paused or a cap is hit, a lead who taps 'Yes, send the demo' gets total silence. Replies like a typed 'Yes' or 'demo please' also get nothing, which is acceptable because the page pre-fills the exact text.",
+    "impact": "The owner's status confirmation can mislead. An accidental demo goes to a person who said not to. Lead taps are silently lost if the template is sent before DEMO ON.",
+    "fix": "(a) Build all four owner replies through status_text(): 'Demo responder: mode ON, PAUSED by STOP ALL, nothing is sent until RESUME.' (b) In is_trigger return False when the text contains a negation before the match (r\"\\b(don'?t|do\\s+not|dont|no)\\b.{0,12}\\bsend\") or any opt-out wording. (c) Operationally, do not start the template wave until DEMO ON is confirmed with STATUS."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_norm / match_option / _yes_no (ASCII-only), TEXTS (English only)",
+    "scenario": "Replies in Gujarati or Devanagari script ('હા', 'हाँ', 'ના') normalise to an empty string. They are never matched as answers or as yes/no, and they get the English robot nudge. The only non-English words that work are the Latin-script 'haan', 'ha' and 'nahi', and only at the CTA step.",
+    "impact": "For a Gujarat audience, a language-mismatched flow is a conversion and opt-out risk. The stop-word fix in finding 1 covers the safety side. A full language option is a feature, not a defect.",
+    "fix": "For now: fix the opt-out words (finding 1) and accept 'હા/हाँ' (yes) and 'ના/नहीं' (no) at the CTA step. Later: add an optional 'Hindi / Gujarati' first-question button and a second TEXTS table once the owner has proofread the Gujarati script (agent/memory.md already plans that)."
+   }
+  ]
+ },
+ "review:safety": {
+  "verdict": "fix_first",
+  "summary": "I found no way to switch the demo ON as a stranger, no spoofed owner, no send on an untrusted or paused/off/test-mode path, no echo of lead text, no webhook 500 (odd JSON shapes, int ids, a 200 KB body, missing credentials all returned 200), and no loop with an away-message bot (it is bounded at 2 nudges plus 1 hand-off). The old owner commands (OK/NO/STOP ALL/RESUME) still work while an owner demo is open. Fix the items below before DEMO ON is opened to real leads. Item 1 is a blocker for the owner flow, and items 2 to 4 are majors on the opt-out promise and on messaging the wrong number.\n\nMethod: 5 temporary experiment files (zz_review_attack_exp1 to 5) ran only against the test DB with a fake _post; no network, VPS or real credentials were touched and no real WhatsApp message was sent. All of mine are deleted. The 229 tests still pass. The zz_review_statedb_* files in backend/tests belong to another reviewer and were left alone.\n\nChecked and fine:\n- A non-owner \"DEMO ON\" does nothing.\n- 10-digit, +91 and other spellings of the owner number are ignored and never reach the lead flow.\n- An untrusted webhook never sends.\n- A STOP typed outside a demo is suppressed by record_inbound before the hook.\n- A trigger from a suppressed number gets silence.\n- Webhook retries are deduped.\n- Test mode leaks nothing, because the filter runs before _mark_seen.\n- PII in events and logs is masked; the full phone appears only in the hand-off and the owner alert.\n- The LIKE '_' wildcard in _project_from_template_message is reproducible (context id \"_____\" picked BRIJ Sandalwood), but it can only select a project from our own list, so it is harmless.",
+  "findings": [
+   {
+    "severity": "blocker",
+    "where": "services/demo_responder.py::_owner_message (final 'stored' branch) + _active_session (23 h window) + _on_session_message",
+    "scenario": "Owner sends DEMO RUN to test, leaves it unfinished, then writes ordinary chat to the agent within 23 h. Reproduced: 'stop the Acme campaign please' -> owner_inbox row marked processed_at (the agent never sees it) and the owner receives 'Done. You will not get any more messages from IV Infotech.'; 'ok go ahead' -> robotic 'I am an automatic demo...' nudge and the row is marked processed; 'please ask the manager to call Acme' -> a fake hand-off, an owner alert and a to-do. A session 22 h old still swallows; at 24 h it does not. Also reproduced: finishing the owner test with 'Yes, contact me' creates a real high-priority blocker to-do for the owner himself, and 'No, thanks' adds the owner's number to suppression_list. After STOP ALL the owner's demo still answers.",
+    "impact": "Silently discards owner instructions that used to reach the agent. A plain 'STOP' or 'pause' (not the exact 'STOP ALL') never reaches the agent, and the owner is told the opposite of what happened. OK/NO/STOP ALL/RESUME and approvals are not affected, because they return a different outcome before this branch.",
+    "fix": "In _owner_message change the last branch to taps only and a short life: `if outcome == \"stored\" and kind in (\"button\", \"interactive\"):` then `session = _active_session(db, phone)` and require `session is not None and session.source == \"owner\" and session.updated_at >= _since(1)`. Never treat free text from the owner as a demo answer, and do not call _mark_owner_row_processed for text. In _on_session_message / _finish skip _suppress, _handoff and the owner alert when `session.source == \"owner\"`."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message (is_optout, _PERSON_RE, _yes_no only at the cta step) + cognition/hard_classifiers.py::_OPTOUT_PATTERNS",
+    "scenario": "Mid-demo the lead says 'no', 'not now' or 'later': 2 nudges, then 'Let me get a person ... They will message you here soon' and a hand-off. 'band karo', 'nahi chahiye', 'mat bhejo' behave the same (3 bot messages, hand-off, no suppression). is_optout is False for \"Don’t contact me\" (curly apostrophe, the iOS and Android default), \"don't message me\", 'remove my number', 'leave me alone', 'no need', 'S T O P' and 'unsub'. 'please don't call me' matches _PERSON_RE (call\\s*me) and yields 'Sure. A person from our team will message you here soon.' plus a HIGH-priority blocker to-do.",
+    "impact": "A recipient who declined in English or Gujarati/Hindi (the target audience) keeps getting automatic messages and is promised a human follow-up. This is the opt-out promise on a path that sends automatically. The keyword list is shared with the CRM, but the demo is the first thing to reply to these messages.",
+    "fix": "Add a demo-local soft-stop check before _PERSON_RE, after normalising the apostrophe: `text = text.replace(\"’\", \"'\")` then `_SOFT_STOP_RE = re.compile(r\"^\\s*(no|nope|nahi|nahin|not now|later|bas|band|ruko)\\b|band\\s*kar|bas\\s*kar|mat\\s*bhej|nahi\\s*chahiye|don'?t\\s+(contact|message|call|text)|do\\s+not\\s+(contact|message|call|text)|leave\\s+me\\s+alone|remove\\s+my\\s+number|\\bunsub\", re.I)`. On a match do the same as STOP: `_finish(db, session, \"stopped\", \"stop\", ...)` and `_suppress(db, session.phone)`. Make the unknown-answer ladder 1 nudge and then silence (no 'a person will message you' promise)."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message (is_optout(text) on the placeholder) vs services/whatsapp_message.py::describe_message / inbound_service.record_inbound (checks the caption only)",
+    "scenario": "Lead in an active demo sends a document named stop.pdf, or shares a location named 'Bus Stop Mehsana'. record_inbound suppresses nothing, because it checks only the caption. The demo runs is_optout('[document: stop.pdf]') -> True and sends 'Done. You will not get any more messages from IV Infotech. Thank you.' Result: session 'stopped', 0 suppression rows, contact_suppression() says suppressed False.",
+    "impact": "A written promise of no more messages that the CRM does not honour; other campaigns can still message the number.",
+    "fix": "In _handle_lead_message compute `_k, _t, caption = describe_message(msg)` and `check = text if kind in (\"text\", \"button\", \"interactive\") else (caption or \"\")`. Use `check` (not `text`) for is_optout, is_autoreply and _PERSON_RE in _on_session_message and in the `_suppressed(...) and not (session and is_optout(...))` line."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_handle_lead_message (phone = normalize_wa_number(sender)) with api/inbound.py::_handle_one_message (sender = normalize_mobile(...) or ...)",
+    "scenario": "A Singapore number (+65 9123 4567) writes 'send the demo' with from='6591234567' (10 digits starting with 6). normalize_mobile accepts it as an Indian mobile and normalize_wa_number turns it into '916591234567'. Reproduced: both the intro and Q1 were POSTed to '916591234567' and the DemoSession was stored under that number. Other 10-digit E.164 numbers starting 6-9 (Brunei +673, Fiji +679, Timor-Leste +670 and similar) do the same.",
+    "impact": "The responder messages a number that never wrote to us (Meta should reject it outside the 24 h window, but not if that Indian number is in-window). The real sender gets nothing, and caps and suppression are shared between two different people.",
+    "fix": "Reply to exactly what the provider reported: `phone = re.sub(r\"\\D\", \"\", str(msg.get(\"from\") or \"\"))` in _handle_lead_message. contact_suppression already tries the raw digits as a candidate."
+   },
+   {
+    "severity": "minor",
+    "where": "api/inbound.py::_handle_one_message -> record_inbound (enqueues CLASSIFY_INBOUND) combined with the demo",
+    "scenario": "When the sender is already a CRM Lead, the trigger plus 3 taps produced 4 CLASSIFY_INBOUND jobs (reproduced), one LLM call per sample answer. The classifier can mark them INTERESTED / DEMO_REQUESTED, set HOT_LEAD, and (if ACKNOWLEDGMENT_REPLY_ENABLED is on) send its own FALLBACK_REPLY ('someone from our team will personally follow up') next to the demo's messages.",
+    "impact": "LLM cost and a duplicate or conflicting reply to the same lead. Conditional on the sender being in the CRM; the setting defaults to off.",
+    "fix": "Add a helper `demo_responder.in_demo(db, phone)` and skip `enqueue(db, \"CLASSIFY_INBOUND\", ...)` in record_inbound for senders with an active demo session. Alternatively pass `skip_classify=True` from _handle_one_message."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_TRIGGER_RE / is_trigger",
+    "scenario": "'please don't send the demo' and 'No need to send the demo' each started a session and sent 2 messages (reproduced).",
+    "impact": "Starts a demo for someone declining it. They did write first, so it stays inside the window, but it is unwanted.",
+    "fix": "In is_trigger return False when `re.search(r\"\\b(don'?t|dont|do not|never|no need to|not)\\s+(\\w+\\s+){0,2}send\\b\", text.replace(\"’\", \"'\"), re.I)`."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_on_session_message (no kind filter) + api/inbound.py hook",
+    "scenario": "A reaction (👍 on the intro) or sticker in a live demo counts as an unclear answer. Three reactions produced 2 'I am an automatic demo...' nudges, then a person hand-off, an owner alert and a to-do (reproduced).",
+    "impact": "Wrong robotic replies and a spurious hand-off for a harmless gesture.",
+    "fix": "At the top of _handle_lead_message, before _mark_seen: `if kind in (\"reaction\", \"sticker\"): return`."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py: _caps_ok is checked only in start_session; the trigger branch of _on_session_message; _alert_owner/_handoff",
+    "scenario": "(a) MAX_MESSAGES_PER_DAY=5, one session, 60 repeated 'send the demo' with fresh wamids -> 60 replies, msgs_sent 62, unrecognised stays 0, session still active (trigger repeats never count). (b) After a cap is hit, 200 further triggers: 0 replies, no hand-off, no owner notice, demo_seen grows by 200 rows and is never purged. (c) 45 different numbers: 40 sessions, 80 owner WhatsApp alerts and 40 hand-off to-dos in one day; the other 5 leads were silently dropped.",
+    "impact": "The message cap only gates new sessions. Real leads are silently lost once any 40 numbers use up the day, and the owner is not told. Alert and to-do spam is bounded but high. The table keeps growing.",
+    "fix": "In _on_session_message count a repeated trigger like an unknown answer (`unrecognised += 1`) and stop auto-replying after 3. Add `if session.msgs_sent >= 30: return` plus a global-cap check before sends. When start_session returns None for caps, create one hand-off and one owner note per day (`_handoff(..., reason=\"demo cap reached\")` on the first cap hit). Drop the per-session 'DEMO started' alert. Purge demo_seen: `db.query(DemoSeen).filter(DemoSeen.ts < _since(168)).delete()` in start_session."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::start_session / _advance / _finish (check-then-act, no re-read before each send)",
+    "scenario": "(1) Two taps by the same lead (different wamids) at the same instant both pass _active_session and _caps_ok: 2 sessions, 4 messages, and the per-phone cap of 2 is used up at once (reproduced with threads). (2) A double tap on an answer sends 'Question 2' twice. (3) STOP processed while a tap is mid-_advance: the lead receives 'Question 2 of 3' after the 'Done. You will not get any more messages' confirmation (reproduced).",
+    "impact": "Duplicate or late messages, including one after STOP; a double tap burns the day's per-phone allowance.",
+    "fix": "Add a partial unique index `CREATE UNIQUE INDEX uq_demo_active ON demo_sessions(phone) WHERE status='active'` and catch IntegrityError in start_session (treat as a trigger repeat). Before every non-closing send call `db.refresh(session)` and return if `session.status != 'active'`."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_post (timeout=10, three sequential calls) and ::_post when credentials are missing",
+    "scenario": "Starting a demo makes 3 sequential HTTP calls in the webhook request: the owner alert first, then the intro, then Q1 (measured: 3 calls, 0.94 s at 0.3 s each). If the BSP hangs, one trigger can hold a sync worker for 30 s or more (requests timeout=10 applies to connect and read separately; the PRD runs `gunicorn -w 4`, default 30 s timeout), so 4 concurrent triggers can stall the whole CRM, including the owner approval webhook. With WHATSAPP_TOKEN/PHONE_ID unset: all four requests returned 200, but sessions are still created and advance with msgs_sent 0, caps are burned, 'DEMO ON/OFF' is never confirmed, and every message logs a stack trace.",
+    "impact": "Under provider trouble the demo can delay the old owner and approval path. With missing credentials the owner sees no error and leads get nothing.",
+    "fix": "Use `timeout=(3, 5)` in _post. In start_session move `_alert_owner(...)` below the try/except that sends the intro and Q1. In _handle_lead_message add `if not (Config.WHATSAPP_TOKEN and Config.WHATSAPP_PHONE_ID): return` before _mark_seen, and log that once at WARNING."
+   },
+   {
+    "severity": "minor",
+    "where": "cognition/hard_classifiers.py::_QUOTE_START_RE (r\"\\r?\\n\\s*>\"), called by is_optout/is_autoreply",
+    "scenario": "One 4096-character message made only of newlines (or '\\n\\t' pairs) costs about 167 ms (about 82 ms for the \\n\\t form) per is_optout call (quadratic). The demo adds is_optout + is_autoreply for in-session messages on top of record_inbound's two calls.",
+    "impact": "A cheap CPU-burn per message from anyone who can message the business number.",
+    "fix": "In demo_responder clip the text before any regex: `text = (text or \"\")[:1000]` at the top of _handle_lead_message. In the classifier change `\\r?\\n\\s*>` to `\\r?\\n[ \\t]*>`."
+   },
+   {
+    "severity": "minor",
+    "where": "services/owner_channel.py::verify_webhook_request (design, not new code)",
+    "scenario": "With only WHATSAPP_WEBHOOK_SECRET (?k= in the URL), anyone who learns the URL, for example from an access log that records query strings, can POST a forged inbound. The owner number is not secret (it is in config.py defaults). They can send 'DEMO ON' as the owner, or send 'send the demo' from any victim number and make the responder message it if that number is inside its 24 h window.",
+    "impact": "The same trust model as the existing approvals, but 'DEMO ON' and forged triggers become a new capability behind the same secret.",
+    "fix": "Set WHATSAPP_APP_SECRET as well if the BSP signs bodies (X-Hub-Signature-256), and keep ?k= out of the web server access-log format."
+   }
+  ]
+ },
+ "review:correctness": {
+  "verdict": "fix_first",
+  "summary": "Verdict: fix first. Deploying with the demo OFF is safe (hooks swallow errors, owner approvals and chat keep working even if the demo tables are missing), but there is one real blocker and several major defects, so DEMO ON for real leads should wait.\n\nI ran 55+ experiment tests, real-thread races and 30 mutation runs against the 32 tests. All experiment files were deleted. Only the original test files remain in backend/tests, no source file was edited, and 229 tests pass.\n\nBlocker: an owner-run demo (DEMO RUN) that is left open swallows the owner's normal chat to the agent for 23 hours. This does not need DEMO ON; it works even when the mode is off.\n\nMajor defects:\n- Two messages of one lead handled by two workers duplicate sessions and questions, and can send a question after a STOP.\n- Reactions and stale taps get an \"I am an automatic demo...\" scolding.\n- Free text starting with \"no\" at the final offer writes a permanent do-not-contact entry.\n- File names and location names are read as STOP, so the \"you will not get any more messages\" promise is made without suppressing the number.\n- A failed resend clears the resend flag.\n- The typed-answer matcher records wrong answers, for example \"2\" becomes \"Shop\".\n\nChecked and fine:\n- 23 h window maths, including the ISO string comparisons. Every send is a reply to a message just received, so the 24 h rule cannot be broken.\n- Frozen _slots. I verified that a day change between asking and answering still accepts the frozen label.\n- visit_slots across Mon-Sun, month, year and leap-year boundaries. Labels are at most 17 characters.\n- A retry of the same wamid, whether in a later POST or twice inside one POST.\n- A batch of several messages of one lead in one POST, processed in order.\n- SQLAlchemy hygiene after rollback. Objects stay attached and reload lazily, with no detached-object use.\n- Migrations. schema.sql creates both tables on an old DB and is idempotent when run twice (checked on a simulated old DB).\n- Code deployed before migrate.py. The demo is silent, but owner approvals and owner chat are unaffected.\n- Emoji, Gujarati and Hindi text, 4096-character inputs and None bodies do not crash.\n- No self-trigger: none of the TEXTS contains \"send the demo\".\n\nNot reproduced, worth a look by whoever owns that lens: for a known CRM lead, record_inbound enqueues a CLASSIFY_INBOUND job, and that job can send its own WhatsApp reply when the auto-reply system settings are on. That could double-respond to demo answers.",
+  "findings": [
+   {
+    "severity": "blocker",
+    "where": "services/demo_responder.py::_owner_message (the `outcome == \"stored\"` branch) together with _active_session; session.source == \"owner\"",
+    "scenario": "Owner sends \"DEMO RUN Pride Aura\", taps a few answers (or none) and walks away. The session stays status='active' for 23 h, and _active_session is the only expiry. Owner then writes his normal chat to the agent, e.g. \"stop the Brij campaign for today please\". Reproduced: the owner_inbox row gets processed_at set, so the agent never sees it. The demo reads the word \"stop\", ends the session, and sends the owner \"Done. You will not get any more messages from IV Infotech.\" Also reproduced with \"what is the status of the leads today?\", \"did Pride group reply?\" and \"send me the report\": two \"I am an automatic demo...\" nudges, then \"Let me get a person from our team...\" plus an AgentHandoff row, and all four rows are marked processed. Still swallowed 10 h after the last demo activity. Any text containing person/human/someone/talk to/manager is read as PERSON and also ends the session.",
+    "impact": "Breaks the existing owner-to-agent channel: real instructions (including stop/pause-type ones) are silently consumed and marked processed, and the owner gets bot replies instead. It works with demo_mode=off because DEMO RUN ignores the mode. Approval codes (OK/NO xxxxx), STOP ALL and RESUME are unaffected, because apply_owner_command handles them before the demo hook.",
+    "fix": "In _owner_message, consume owner text only when it is plainly a demo answer. That means kind in (button, interactive), or match_option(text, _step_options(session)) is not None, or the whole message is STOP or PERSON. Otherwise do nothing: do not call _mark_owner_row_processed, do not call _on_session_message, and do not call _mark_seen. Also give owner-run sessions a short idle expiry (about 20-30 min): in _active_session use a smaller window when source == 'owner'. Add a \"DEMO STOP\" command. Add a test: DEMO RUN, then owner text \"stop the campaign\" must leave processed_at NULL and send nothing."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_handle_lead_message -> _on_session_message -> _advance/_finish/_bump (read session, then save and send, with no compare-and-set); _mark_seen only dedupes the same wamid",
+    "scenario": "Two distinct inbound messages of one lead handled by two workers at once, for example a double tap on one answer. Real-thread run with no hooks (2 threads, separate SessionLocal, 12 trials): the same \"75 lakh to 1.5 cr\" tap with two different wamids sent \"Question 2 of 3\" twice in 11 of 12 trials. Deterministic repro: worker B finishes the whole step while worker A holds the stale session object, then A runs _advance again and sends Q2 a second time. msgs_sent in the DB was 3 although 4 messages were sent, because _bump does an in-memory `session.msgs_sent + n` that overwrites B's increment. A stale worker also rewinds `step` and replaces `answers` with its old copy. With a STOP handled between A's suppression check and A's send, the lead receives \"Done. You will not get any more messages...\" and then \"Question 2 of 3\". A double tap on \"Yes, contact me\" would likewise create two hand-offs and two thank-you messages.",
+    "impact": "Duplicate questions, lost progress, undercounted daily message cap, and a message after the STOP confirmation. That last one violates the opt-out promise, though it needs a window of a few milliseconds.",
+    "fix": "Make every transition an optimistic compare-and-set. `n = db.query(DemoSession).filter(DemoSession.id==session.id, DemoSession.step==old_step, DemoSession.status=='active').update({...}, synchronize_session=False); db.commit(); if n != 1: return`. Send only if you won. Use SQL expressions for counters: `msgs_sent=DemoSession.msgs_sent + sent`. Re-check the session status and `_suppressed` right before each send. Add a threaded regression test using two SessionLocal sessions."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_handle_lead_message / start_session / _caps_ok (check-then-insert; no UNIQUE guard on active sessions); schema.sql demo_sessions",
+    "scenario": "Two trigger messages (\"Yes, send the demo\" tap plus typed \"send the demo\", different wamids) reach two workers before either has committed its DemoSession. Both _active_session calls return None, both pass _caps_ok, both insert. Reproduced: 2 active sessions (ids differ), 4 messages sent (two intros, two Question 1), and 2 of the lead's 2 daily per-phone sessions used up. The older active row is never closed.",
+    "impact": "The lead gets the intro twice. The per-phone cap of 2 per 24 h is burned by one tap, so the lead's next legitimate demo is silently refused. The caps themselves can be overshot by concurrency.",
+    "fix": "Add a partial unique index: `CREATE UNIQUE INDEX IF NOT EXISTS uq_demo_active_phone ON demo_sessions(phone) WHERE status='active'`. Before inserting, run `UPDATE demo_sessions SET status='expired' WHERE phone=? AND status='active' AND updated_at < since(23h)`. In start_session catch IntegrityError and treat it as \"session already exists\": resend the current question or return. Also close stale 'active' rows instead of leaving them forever."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_handle_lead_message (no kind filter) -> _on_session_message unknown branch; api/inbound.py calls the hook for reactions too",
+    "scenario": "A lead long-presses a demo message and reacts with a thumbs-up. record_inbound stores it feed-only, then the demo hook runs with kind='reaction' and text '[reaction: 👍]'. Reproduced: three reactions give two \"I am an automatic demo, so I can only take the options shown...\" messages, then \"Let me get a person from our team...\", then status handed_off, an AgentHandoff row and an owner alert.",
+    "impact": "Unwanted messages to a lead who did nothing wrong, and a false hand-off. The CRM deliberately treats reactions as not a reply, but the demo does not.",
+    "fix": "At the top of _handle_lead_message, before _mark_seen, `if kind == \"reaction\": return`. Consider doing the same for sticker, contacts and unsupported. Add a test."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message / match_option (stale or repeated tap counted as unclear); the context.id of the reply is never used",
+    "scenario": "Lead taps the same Q1 button twice, or taps an older question's button. Reproduced: tap 1 advances to Q2, tap 2 (new wamid, label \"75 lakh to 1.5 cr\") no longer matches the type options, so the lead gets \"I am an automatic demo, so I can only take the options shown...\" and unrecognised=1. A batch of [trigger, budget tap, type tap, same type tap] ends with the scolding. Three such taps in a row hand the lead off to a person.",
+    "impact": "A correct lead is scolded and can be handed off. WhatsApp button replies stay tappable forever, so this is common.",
+    "fix": "Store the wamid of the last question sent (the _post response has `messages[0].id`) in the session. For interactive/button replies whose msg['context']['id'] differs from it, ignore silently (optionally resend), and do not count them in `unrecognised`. Also ignore a tap whose label equals the answer already stored for an earlier step."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_yes_no and the `cta` branch of _on_session_message (_suppress on 'no')",
+    "scenario": "At the final offer the lead types free text. Reproduced: \"No idea what it costs, tell me more\" and \"no, but send the brochure\" give status done, the \"We will not message you about this again\" reply, and a permanent suppression_list row. \"sure not now\", \"ok what is this?\" and \"ha\" count as YES: hand-off plus \"A person from IV Infotech will message you\". Only the first word is examined.",
+    "impact": "A warm lead is irreversibly put on the do-not-contact list, or a non-lead is handed to a human as hot. suppression_list has no undo.",
+    "fix": "For typed text accept only an exact option or a whole-message yes/no word (`_norm(text) in {\"yes\",\"ok\",\"haan\",...}`, and likewise for no). Anything else counts as unclear and falls to the nudge/PERSON path. Call _suppress only for the tapped 'No, thanks' button or an exact typed 'no'/'no thanks', not for a message that merely starts with 'no'."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message (is_optout(text), is_autoreply(text), and match_option(text, CTA) with no kind guard) fed with describe_message placeholders",
+    "scenario": "The CRM deliberately checks only the caption for non-text kinds, but the demo checks the placeholder text. Reproduced: a location share named \"Bus stop\" (text '[location: Bus stop (23.6,72.4)]') while a demo is active gives status stopped and the lead receives \"Done. You will not get any more messages from IV Infotech. Thank you.\", but suppression_list stays empty (0 rows). A document named \"No thanks.pdf\" at the offer step does the same. A document or image whose placeholder contains \"yes contact me\" at the cta step would also be matched as YES, because the cta branch calls match_option unguarded.",
+    "impact": "A false opt-out confirmation with no actual suppression, so the 'you will not get any more messages' promise is broken. Filenames and place names are treated as the lead's words.",
+    "fix": "Use `kind, text, caption = describe_message(msg)`. For non-text kinds run is_optout, is_autoreply, _PERSON_RE and every match_option only on `caption`, never on the placeholder. Wrap the cta match_option call in the same `kind in (\"text\",\"button\",\"interactive\")` guard as the other steps. If the demo says STOP is confirmed, call add_suppression itself so the promise does not depend on another layer."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::_on_session_message (trigger branch and `needs_resend` branch: `_save(needs_resend=0)` BEFORE sending), _advance, start_session",
+    "scenario": "(a) Provider down: start_session fails, so needs_resend=1. Lead writes \"hello?\" and the resend also fails. The flag is already cleared (needs_resend=0). Provider recovers. Lead writes \"hello??\" and gets \"I am an automatic demo, so I can only take the options shown...\" instead of the question. Reproduced. (b) Worker killed mid-send (SystemExit, as with gunicorn's worker-timeout abort; this codebase's llm_client.py documents such a kill): _advance already saved step='type' with needs_resend=0, so nothing remembers the unsent question. Reproduced: step 'type', needs_resend 0. Note start_session sends the owner alert (HTTP, up to 10 s) before the lead's intro, so 3 serial 10 s calls equal gunicorn's default 30 s. (c) If the sample-card send fails on the way to the cta step, the resend sends only the CTA question, so the card is never shown (reproduced). (d) A provider 200 with a non-JSON body makes _post raise after delivery, so needs_resend=1 and the next message duplicates the question (reproduced).",
+    "impact": "Lead is left without the next question and is scolded when they write again; message sequence is wrong. Nothing retries, and the lead must write again to recover.",
+    "fix": "Write-ahead: set needs_resend=1 in the same _save that advances step (and at session creation), and clear it inside _bump only after the sends succeeded. In the resend and trigger branches clear the flag only after a successful send (or set it back to 1 in the except). When resending at step 'cta' also resend the card. Make _post return `{}` if resp.json() fails after raise_for_status. Move _alert_owner after the lead's sends, or into a try with a short timeout."
+   },
+   {
+    "severity": "major",
+    "where": "services/demo_responder.py::match_option (digit shortcut, whitespace-sensitive exact match, substring rules) and _TRIGGER_RE",
+    "scenario": "Results against the shipped options. Wrong silent answers from the digit shortcut: typing \"3\" at the type step records \"Not sure yet\" (Pride Aura: 3 BHK / 4 BHK / Not sure yet); typing \"2\" records \"4 BHK\" (Pride) or \"Shop\" (Elenza, whose real options are 2 BHK / Shop), which then appears on the sample card as \"Type: Shop\". \"4\" gives None. Unrecognised: \"3bhk\", \"3BHK\", \"4bhk\", \"2bhk\" (no space), \"75 lakh\", \"75\", \"1.5 cr\", \"under 75 lakh\", \"anytime\", \"after noon\", \"saturday\". Substring and negation errors: \"3 or 4 bhk\" gives 4 BHK, \"2 or 3 bhk\" gives 3 BHK, \"not 3 bhk\" and \"i dont want 3 bhk\" give 3 BHK, \"a shopping complex\" gives Shop, \"noon\" gives Afternoon. Gujarati/Hindi-script answers and emoji (\"હા\", \"हाँ\", \"👍\") normalise to '' and so count as unclear (two nudges, then a hand-off). A negated trigger such as \"please do not send the demo, I am busy\" starts a demo.",
+    "impact": "Wrong answers recorded silently and shown to the prospect on the sample card; the most natural typed answers (\"3bhk\", \"75 lakh\") are rejected, so real prospects hit the unclear limit and get handed off.",
+    "fix": "Apply the digit shortcut only when the options were actually sent as a numbered list (set a session flag in the 4xx fallback in _send_buttons), never when the labels start with digits. Compare with spaces removed (`t.replace(' ','') == o.replace(' ','')`). Drop the `o in t` direction or require a unique longest match, and treat any message containing 'not', 'no', 'dont' plus an option as unclear. When two options match, ask again instead of guessing. Add Devanagari and Gujarati yes/no words to _YES_WORDS and _NO_WORDS. Reject triggers preceded by a negation."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_owner_message ('demo-run' branch), _caps_ok, _suppress; owner-run sessions use the lead code",
+    "scenario": "Reproduced. (a) The owner's DEMO RUN counts against MAX_SESSIONS_PER_PHONE_PER_DAY=2: the 3rd DEMO RUN inside 24 h gets no reply at all (start_session returns None, only a log line). (b) Tapping \"No, thanks\" in an owner-run demo adds the owner's own number to suppression_list (channel WHATSAPP, reason STOP), permanently. (c) Tapping \"Yes, contact me\" creates a high-priority AgentHandoff plus a TodoItem with is_blocker=1 for the owner's own test, and an alert to himself.",
+    "impact": "Owner testing is confusing (silent ignore), pollutes the CRM suppression list and the to-do inbox with blockers, and may block any send path that checks suppression for the owner's number.",
+    "fix": "For source='owner' sessions: skip the caps, skip _suppress, skip _handoff (or use priority normal and no blocker), and reply \"limit reached\" when start_session returns None."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py: caps are only evaluated in start_session; the trigger-resend, needs_resend and unknown branches send without any count check",
+    "scenario": "Reproduced with MAX_MESSAGES_PER_DAY=5: after one session started, 30 inbound \"send the demo\" messages (new wamids) produced 30 outbound replies.",
+    "impact": "MAX_MESSAGES_PER_DAY does not bound what the responder sends. A stranger or a looping bot can make it send unlimited replies.",
+    "fix": "Add a per-session cap, e.g. `session.msgs_sent >= 15` goes silent or hands off, and check the daily total before each resend."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::_finish (status saved, thank-you sent, then _handoff afterwards)",
+    "scenario": "Reproduced: the worker is aborted (SystemExit) while the \"Thank you. A person from IV Infotech will message you...\" message is sent after the lead taps \"Yes, contact me\". Result: session.status='handed_off', AgentHandoff count 0, no TODO and no owner alert.",
+    "impact": "The hottest signal can be lost. It remains in agent_inbound_feed, so it is recoverable, but nothing flags it.",
+    "fix": "Create the hand-off before the lead-facing send, or in the same transaction as the status change; only then send."
+   },
+   {
+    "severity": "minor",
+    "where": "services/demo_responder.py::visit_slots",
+    "scenario": "On a Friday (checked 2026-10-16, 2027-02-26, 2028-02-25) the list is [\"Sat 24 Oct, 11 AM\", \"Sun 18 Oct, 4 PM\"]. Saturday is 8 days away and Sunday is 2 days away, so the options are out of date order. Month, year and leap-year rollovers are correct and labels are at most 17 characters.",
+    "impact": "Cosmetic. The buttons look odd on the sample.",
+    "fix": "Compute both dates, sort by date, then label them."
+   },
+   {
+    "severity": "minor",
+    "where": "tests/test_demo_responder.py (32 tests): several do not test what their names claim, found by mutation (30 mutants run)",
+    "scenario": "Mutants that still left all 32 tests green: (1) test_a_crashing_responder_cannot_break_the_normal_inbound_flow passes with the try/except in maybe_handle_lead_message and after_owner_message removed, because api/inbound.py's own per-message handler absorbs the error. (2) test_typed_numbers_and_words_are_understood passes with digit mapping 0-based/wrong, because it never checks which option was stored. (3) _active_session ignoring updated_at (no 23 h window). (4) the `unrecognised=0` reset in _advance removed. (5) the needs_resend flag not set in _advance's failure branch (only start_session's failure is tested). (6) the owner 'A demo is already running' guard removed. (7) _alert_owner turned into a no-op. (8) removing the `source == 'owner'` check. (9) removing the frozen `_slots` (I verified manually that it works). (10) removing the 20-character title clip (no option is over 20 characters). (11) the intro send removed: test_owner_can_run_the_demo_on_his_own_phone_even_when_it_is_off still has sent[0] satisfied by the owner alert, not the intro. There is also no test for batches, concurrency, or owner chat arriving while an owner-run demo is open (test_owner_chat_is_not_swallowed_when_no_owner_demo_is_running only covers the no-session case, which is the gap behind the blocker).",
+    "impact": "The suite gives false comfort on exactly the areas where the defects above sit.",
+    "fix": "Add tests for: owner chat during an open owner-run demo; the stored value after typed '2'/'3'; 23 h expiry (set updated_at to 23h01m ago); the _advance failure then a successful resend; two-session threaded races; a webhook batch of several messages from one lead; reactions; stale taps. Make the crash test call maybe_handle_lead_message directly with _handle_lead_message patched to raise, and assert it returns."
+   },
+   {
+    "severity": "minor",
+    "where": "agent/docs/AGENT_API_CONTRACT.md migration checklist and services/demo_responder.py::after_owner_message",
+    "scenario": "The migrate checklist lists owner_inbox, agent_approvals, agent_flags, agent_activity, agent_handoffs and agent_inbound_feed, but not demo_sessions or demo_seen. Reproduced with those two tables dropped: DEMO ON still replies that the responder is ON, a lead trigger sends nothing, and DEMO STATUS gets no reply. Owner approval and owner chat were unaffected (good).",
+    "impact": "If someone skips migrate.py and switches DEMO ON, the owner is told it is on while every lead is silently ignored.",
+    "fix": "Add the two tables to the checklist. In the demo-on handler, run a cheap `SELECT 1 FROM demo_sessions` and say \"tables missing, run migrate.py\" if it fails."
+   }
+  ]
+ }
+}

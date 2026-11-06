@@ -1,0 +1,25 @@
+{
+  "name": "iv_detailing_video_en_v1",
+  "language": "en",
+  "category": "MARKETING",
+  "header": {
+    "format": "VIDEO",
+    "file": "../outreach/assets/SAMPLE_detailing_hi_v1.mp4"
+  },
+  "body": "Namaste {{1}} team 🙏\n\nHum IV Infotech, Mehsana se hain. Aapke studio ko online dekhte hue humne ek baat notice ki: {{2}}.\n\nHum detailing studios ke liye ek simple booking page banate hain (packages, before-after work, reviews, WhatsApp booking message) aur Google profile ka upkeep bhi karte hain. Upar ka short video (lagbhag 1 minute) yahi dikhata hai.\n\nZyada jaanna chahenge? Neeche \"Haan, bataiye\" tap kijiye.",
+  "body_examples": [
+    "Sunrise Car Studio",
+    "aapki Google listing me website ka button nahi dikh raha"
+  ],
+  "footer": "Reply STOP to opt out",
+  "buttons": [
+    {
+      "type": "QUICK_REPLY",
+      "text": "Haan, bataiye"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "Abhi nahi"
+    }
+  ]
+}

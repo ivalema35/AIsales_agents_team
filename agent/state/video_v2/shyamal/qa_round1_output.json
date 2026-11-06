@@ -1,0 +1,722 @@
+{
+  "summary": "Four independent reviewers judge the Shyamal v2 lead video stills + script (visual, claims, lead persona, persuasion vs the Nexus360 NotebookLM reference), then one synthesis of fixes. Read-only.",
+  "agentCount": 5,
+  "logs": [
+    "Reviews: visual=6, claims=5, lead=6, persuasion=6"
+  ],
+  "result": {
+    "reviews": [
+      {
+        "key": "visual",
+        "score_out_of_10": 6,
+        "verdict": "Not ready to send to a real builder. The illustrations in scenes 2, 3 and 5 are warm and polished, with a consistent buyer character. The Shyamal navy and gold open and the IV Infotech close bookend the video well, and it is cleaner than the Nexus360 reference. But the video falls short of the owner's \"NotebookLM-like, very little text, neat\" brief in four ways. Scenes 3 and 4 show a fake chat under the lead's own logo with no EXAMPLE label. Scene 4 is crammed, with its payoff cropped by the bottom frame edge. Scenes 1 and 6 are flat gradient templates with no illustration or mascot. Phone-UI overlays cover about half of scenes 3, 4 and 5, and a Shyamal logo bug sits on every frame while IV Infotech appears only at the very end. Fix the labelling, safe-area and attribution problems first, then thin out the text. Then replace scene 1, scene 6 and the scene 5 mascot and tower.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "3 and 4 (night message, auto reply)",
+            "problem": "The fake WhatsApp chat is shown as coming from 'Shyamal Park Lane', with their logo as avatar, 'online' status, a buyer message and an automatic reply. No EXAMPLE label is visible in either frame. The only EXAMPLE tag is the small pill in scene 5, and 'Illustration of your ad' in scene 2 is tiny. This breaks the 'every mock labelled Example' and 'no fake buyer enquiries presented as real' rules, and a builder could read it as a real conversation on their own number.",
+            "fix": "Add a persistent EXAMPLE pill (same tan pill as scene 5, at least 26px) on the phone header or top-right of the chat in scenes 3 and 4. Change the status line from 'online' to 'Example chat'. If the label animates in later, make it present for the whole scene, not a flash."
+          },
+          {
+            "severity": "blocker",
+            "scene": "4 (auto reply)",
+            "problem": "The chat is overloaded and cropped by the frame. It holds about 25 words, a PDF card and five chips. The 'Pick a site visit time' bubble and its two chips run into the bottom edge (y 1170-1280), and the bubble is cut off. That is exactly where WhatsApp's full-screen controls and the in-chat play/duration overlay sit. The visit-slot payoff, the key sales beat, is the least visible element. A 10px sliver of the buyer's earlier green bubble also peeks under the header and looks like a glitch.",
+            "fix": "Show one beat at a time: brochure, then three questions, then visit slots, each replacing the last, or scroll with the newest bubble centred. Keep all essential content between about y 130 and y 1080. Shorten the bubbles ('Brochure sent', 'Budget? 3 or 4 BHK? Visit time?'). Remove the clipped sliver by scrolling the chat cleanly."
+          },
+          {
+            "severity": "important",
+            "scene": "All scenes (muted autoplay)",
+            "problem": "None of the six frames carries a caption of the voice-over. The reference has big word-by-word captions in a dark box at the bottom. Here a muted viewer only sees small label chips, and scenes 3-5 have no free space for a caption because the phone or list overlay fills the lower half. Captions-first is a campaign rule.",
+            "fix": "Add one short caption line per scene (about 6 words, white on a dark pill, at least 36px). Put it around y 960-1040 in a band reserved for it, which means shrinking the phone and list overlays to about 40% of the frame height. Keep it inside the safe area."
+          },
+          {
+            "severity": "important",
+            "scene": "2 to 5 (all illustrated scenes)",
+            "problem": "The Shyamal logo sits as a corner bug at the top-left of every illustrated scene. IV Infotech's own logo appears only in the last frame, and the robot's tiny 'iv' badge is the only earlier trace. For about 40 seconds the video reads as Shyamal's own video, which undercuts 'our name only IV Infotech' and the independence message. Scene 2 shows the logo three times (bug, card header, banner). At 56px the logo is also a muddy blob.",
+            "fix": "Remove the corner bug in scenes 2-5. Use the Shyamal logo only where it would really appear (inside the ad mock and as the chat avatar). Put a small, quiet IV Infotech mark in that corner, or nowhere. Move the independence line up to scene 1 or 2 as a small persistent strip."
+          },
+          {
+            "severity": "important",
+            "scene": "1 (brand open) and 6 (CTA)",
+            "problem": "Both bookends are flat navy gradients with centred logo and text and a few floating dust particles. There is no illustration, character or motion hook, so the video opens and closes like a generic template. This is the least NotebookLM-like part. In scene 1 the particles drift across the 'Park Lane' and 'Bhayli' text and look like dust specks. About 260px at the bottom is empty, and the gap between the wordmark and the project title is large.",
+            "fix": "Open with an illustrated skyline or Diwali diya scene behind the Shyamal lockup, or at least add a character or robot cameo. Close scene 6 with the IV robot waving next to the IV Infotech logo. Keep the particles away from text, or fade them out. Tighten the vertical rhythm and centre the group optically."
+          },
+          {
+            "severity": "important",
+            "scene": "6 (CTA)",
+            "problem": "The 'Yes, send the demo' pill looks like a tappable button, but it is a picture inside the video, so viewers will tap it and nothing happens. It is also a weak ghost outline. The line 'in the button below this video' is awkward English, and its arrow is tiny. The white logo plate is the brightest element and outweighs the CTA. About 270px of dead space separates the headline from the button. The independence and AI-voice line is about 17px, grey on navy, in the bottom control zone, and may be hidden or unreadable on a phone.",
+            "fix": "Make it a quote, not a button, for example: Tap 'Yes, send the demo' below, with a clear downward arrow or hand pointing out of the frame. Soften the logo plate or make it smaller. Raise the disclaimer to at least 24px, move it above y 1050, shorten it to 'Independent concept. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice.' and raise its contrast."
+          },
+          {
+            "severity": "important",
+            "scene": "3 (night message)",
+            "problem": "The lower 30% of the frame (y 915-1280) is a large empty beige chat panel under one bubble. It looks unfinished. Together with the header status 'online' and the 10:47 PM chip, it reads as 'Shyamal is online and ignoring this buyer'. That edges toward showing the lead's team failing, and slow replies are not a verified fact. The flat phone-UI card also clashes with the painterly illustration and looks pasted on.",
+            "fix": "Shrink the phone to about 35% of the height, or crop it to just the bubble and header. Fill the space with the illustration instead. Drop 'online' and show a neutral 'Example chat' header. Keep the scene about the buyer, not about silence."
+          },
+          {
+            "severity": "important",
+            "scene": "2 (ad and tap)",
+            "problem": "Four things. (1) The illustration ends in a hard horizontal edge at about y 668 and flat peach gradient fills the rest, so it looks like a pasted image. (2) The tap ripple is a ring with no finger or cursor and covers the 'ssage' of 'Send WhatsApp message'. (3) The buyer's furrowed brow and open mouth read as alarmed or worried, not curious about a Diwali ad. (4) The 18px 'Illustration of your ad' caption is white on peach (contrast about 1.6:1) and sits in the bottom control zone.",
+            "fix": "Extend or outpaint the illustration so it runs behind the card, or blend the seam with a gradient. Put the ripple on the button's left or centre with a finger or hand icon and keep it off the label. Regenerate the buyer with a curious smile. Make the note dark text on a pill, at least 24px, above y 1080."
+          },
+          {
+            "severity": "important",
+            "scene": "5 (morning list)",
+            "problem": "A photoreal 3D tower sits at the right, clashing with the flat painterly style. It could be read as Shyamal Park Lane itself, which is an unverified depiction of their building. A stray orange shape is clipped at the right edge (about y 590) and a grey chair is cropped behind the card. The card's top edge cuts exactly at the laptop base, an awkward tangent. The robot differs from scene 4: it is one blob with raised arms, shorter, with no visible 'iv' chest badge. Each of the three list rows carries four text items.",
+            "fix": "Delete the tower or replace it with a flat, generic skyline. Clean the edge clutter. Redraw or reuse the exact scene 4 robot, with the 'iv' badge on the chest. Reduce each row to the name plus Hot/New plus the visit slot. Keep the EXAMPLE pill but enlarge it."
+          },
+          {
+            "severity": "important",
+            "scene": "All scenes (text amount)",
+            "problem": "The brief asked for very little text. The ad card in scene 2 carries about 15 words, the chat in scene 4 about 25, and the list in scene 5 about 30. Phone-UI cards and lists cover roughly the bottom half of scenes 2-5 and push the illustration into the top half. Compared with the reference's full-bleed illustration plus a short caption, the UI overlays dominate and a lot of small text must be read in 5-6 seconds. Several sub-labels are about 18-20px and grey: 'Sent automatically', 'Visit Sat 11:00 AM', 'From Diwali ad'.",
+            "fix": "Cap each scene at about 8-10 words of UI text plus the chip and caption. Scene 2: keep the logo, the offer pill and the green button, and drop the duplicate offer pill and 'Ready possession'. Scene 4: use icon-led bubbles. Scene 5: show 3 names with Hot/New pills. Raise all sub-labels to at least 24px with darker grey."
+          },
+          {
+            "severity": "important",
+            "scene": "4 (auto reply), mascot and buyer",
+            "problem": "The buyer has the same pose and neutral face as scene 3, so there is no emotional payoff when the reply arrives. The robot floats at the right edge, smaller than the buyer and not interacting with the phone or chat. It touches its head with a lilac hand that reads as a salute or a glitch.",
+            "fix": "Swap in a smiling or relieved buyer variant. Have the robot hold or point at the phone or message bubbles at a larger scale. Redraw the hand."
+          },
+          {
+            "severity": "nice",
+            "scene": "2, 3, 4, 5 (top safe area)",
+            "problem": "The chips and the logo bug sit at y 64-130, in the top 10% where the WhatsApp full-screen header and status bar overlay the video. In the chat-bubble preview, vertical video is also centre-cropped, so edge elements may be cut. In scene 3 the crescent moon collides with the right edge of the chip.",
+            "fix": "Move chips and key labels to y 140-200 or lower, and keep every essential element inside roughly the central 4:5 area, y about 140-1080 of 1280. Nudge the chip so it clears the moon."
+          },
+          {
+            "severity": "nice",
+            "scene": "1 (brand open)",
+            "problem": "The 'Diwali offer · First 5 bookings' tan pill looks like a button but is only a label. The ® and the muddy olive and teal of the logo tile are as published and acceptable. The lead's logo, name and theme are used correctly at the start, but there is no independence line on the first screen where their brand is most prominent.",
+            "fix": "Restyle the pill as a flat tag, or put it in a ribbon style so it does not read as tappable. Keep the logo untouched. Add a small 'Independent concept' note on scene 1 or 2."
+          },
+          {
+            "severity": "nice",
+            "scene": "Cross-scene consistency",
+            "problem": "Navy and gold appears only in scenes 1 and 6. Scenes 2-5 use unrelated warm, teal and peach palettes, so the Shyamal theme disappears after the opening. The chat UI is a generic WhatsApp look-alike in dark teal.",
+            "fix": "Carry a thin navy and gold element through the scenes, for example the chip colour and the card header. Keep the warm, night and morning colour coding, which does help the story."
+          }
+        ],
+        "what_works": [
+          "Scene 1 opens with the lead's own S logo, 'shyamal' wordmark, project name and offer in their navy and gold theme, as the brief asked. The logo is large, the hierarchy is clear (logo, project, location, offer), and nothing is cropped.",
+          "The illustrated scenes 2, 3 and 5 are warm, cohesive flat-vector art that is clearly closer to a NotebookLM or Gemini overview than the old generic template. Diwali lights, diyas and marigold in scene 2, the teal night window with phone glow in scene 3, and the pastel morning office in scene 5 give a clear warm, night, morning story arc.",
+          "The buyer character (blue sweater, dark cap) stays consistent across scenes 2, 3 and 4. The cheerful teal-kurta woman in scene 5 matches the style, so the cast feels like one illustrator's work.",
+          "The robot mascot in scene 4 is cute, on-brand and reads as 'helper' at a glance. The 'iv' badge ties it to IV Infotech without using a competing logo.",
+          "Scene 5's list card is the cleanest UI in the video. Round numbered avatars, Hot and New pills and clearly labelled 'Sample buyer 1/2/3' keep it honest and legible, and 'EXAMPLE' is labelled there.",
+          "The chip system at the top (Your Diwali ad, 10:47 PM night, Reply in about a minute, Morning hot buyers first) is consistent in shape and type. It gives a muted viewer a minimal story, and the wording follows the soft-claim rules with no 'free' or 'instant' and no invented numbers.",
+          "Scene 6 closes with a clean IV Infotech logo, a short 'See it for Shyamal Park Lane' headline and the independence plus AI voice-over line. The navy bookend echoes scene 1, and the headline is concise and aligned with the voice-over.",
+          "Type is consistent across scenes (a geometric display face for headings plus Inter for UI), and the text that is present is generally high-contrast and horizontally centred or well aligned inside the cards.",
+          "The ad replica in scene 2 sticks to verified facts (3 and 4 BHK, Bhayli, ready possession, the Send WhatsApp message button) and avoids prices and unverified claims. It is clearly marked 'Illustration of your ad'."
+        ]
+      },
+      {
+        "key": "claims",
+        "score_out_of_10": 5,
+        "verdict": "Not safe to send as is. The factual copy is mostly clean: no \"free\", no \"instant\", no invented numbers, no directors' names, no claim that Shyamal's replies are slow, and no team shown failing. The blockers are labelling and attribution. Scenes 3 and 4 show no EXAMPLE label in the stills, even though the brief says they carry one. Shyamal's logo sits on every scene while IV Infotech is not named until scene 6. The independence and AI-voice line is tiny, low-contrast and only on the last frame. Scene 2 also generalises a button that exists on only one of the three ad versions. All of this is fixable with overlay, caption and wording changes. Only the scene 2 buyer expression and the scene 5 tower need an illustration change. I could judge only what the six stills show. Burned-in captions and the WhatsApp message wrapper were not visible to me.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "3 and 4 (night chat, auto-reply chat)",
+            "problem": "Neither still shows an EXAMPLE label, although the brief says both are 'EXAMPLE chat'. Only scene 5 has the EXAMPLE pill and 'Sample buyer' naming, and scene 2 has a tiny 'Illustration of your ad'. Scene 3 is a fake buyer enquiry ('Hi, I want details of Shyamal Park Lane', 10:47 PM, double ticks). Scene 4 is a fake auto-reply under Shyamal's real logo and name, with a green 'online' status. Together these look like a real screenshot of Shyamal's WhatsApp account. This breaks the rules 'every mock labelled Example' and 'no fake buyer enquiries presented as real'. It is also the kind of thing Meta's template review or Shyamal could treat as misleading.",
+            "fix": "Put a clear 'EXAMPLE' pill on the phone frame in scenes 3 and 4, the same size and style as scene 5's, for the whole scene. Change the chips to 'Example - 10:47 PM, night' and 'Example - reply in about a minute'. Change the header line from 'Shyamal Park Lane / online' to 'Shyamal Park Lane / example chat' and drop 'online'. Keep the label clear of any burned-in captions."
+          },
+          {
+            "severity": "blocker",
+            "scene": "2 to 5 (corner logo) and 1 (poster frame)",
+            "problem": "Shyamal's S logo is a persistent corner bug on scenes 2, 3, 4 and 5. Scene 1, which becomes the poster frame in the WhatsApp chat, is Shyamal's logo, wordmark, navy-and-gold theme and offer pill, with no IV Infotech mark and no 'concept' wording. IV Infotech appears only in scene 6, about 40 seconds in. A muted viewer who stops watching early, or anyone it is forwarded to, sees what looks like Shyamal's own branded video. That implies endorsement or affiliation, which the campaign rules forbid. A corner bug is also how a brand normally watermarks its own content.",
+            "fix": "Remove Shyamal's logo from the corner bug in scenes 2 to 5. Use the small IV Infotech mark there, or no bug at all. Keep Shyamal's logo only in scene 1 and inside the mock ad, chat and list. In scene 1, add a small but legible line under the offer pill: 'A concept by IV Infotech'. Put the IV Infotech mark in the lower third of scene 1 as well."
+          },
+          {
+            "severity": "blocker",
+            "scene": "6 (footer) and 2 ('Illustration of your ad')",
+            "problem": "The footer 'Independent concept. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.' is about 17 px tall on a 720 px canvas, in pale grey-blue on navy, in the bottom 5% of the frame, and only on the final scene. In a WhatsApp bubble that is roughly 7 dp, and it risks being covered by the duration pill or cropped. It is not adequate or readable. 'Illustration of your ad' in scene 2 is the same size and is semi-transparent white on peach, with very poor contrast. 'AI voice-over' is never visible to anyone who stops early. 'Independent concept' also does not say who made it.",
+            "fix": "Show the line from scene 1 in small form and again in scene 6, at least 30 px tall, near-white on navy, inside the central 80% of the frame, for at least 4 seconds in scene 6. Suggested text: 'Concept video made by IV Infotech. Not from or approved by Shyamal Group. Not affiliated with WhatsApp or Meta. AI voice-over.' Make scene 2's label 'Illustration - not your actual ad' at the same size on a solid pill. Repeat the line in the WhatsApp message body text, which is always visible. Test on a real phone."
+          },
+          {
+            "severity": "important",
+            "scene": "2",
+            "problem": "Voice: 'A buyer sees your Diwali ad, and taps Send WhatsApp message.' Chip: 'Your Diwali ad'. The verified facts are that there are three active versions and only one has the Send WhatsApp message button. The other two use a Get quote form. As written, the button looks like a feature of all their Diwali ads, and Shyamal will know that is not so. The mock card also shows a Page name, 'Shyamal Park', and Meta's 'Sponsored' label. The Page name is not in the verified facts.",
+            "fix": "Voice: 'On one of your Diwali ads, a buyer can tap Send WhatsApp message.' Chip: 'Your Diwali ad - WhatsApp version'. Check the exact Page name in the Ad Library and use only that, or use the Page name as it appears in the ad. Keep the offer text exactly as they publish it. Leave out the asterisked terms (Rs 51 lakh*, 100% SBI loan*), as you already do."
+          },
+          {
+            "severity": "important",
+            "scene": "5",
+            "problem": "The chip 'Morning - hot buyers first' and the 'Hot' / 'New' tags claim lead ranking and scoring. The verified pitch is brochure, three qualifying questions, a visit slot and hand-over. 'From Diwali ad' on every row also claims ad-source tracking, which is not in the pitch. The voice line 'who asked, what they want, and who picked a visit' does not mention hot buyers, so the chip says more than the voice. Unless the CRM does this, it is a capability claim without support.",
+            "fix": "Chip: 'Morning - who asked, who picked a visit'. Replace 'Hot' with 'Visit booked' and 'New' with 'Asked'. Drop 'From Diwali ad', or change it to 'Interested in 3 BHK'. If hot ranking really is a product feature, say so in the voice and keep it labelled Example."
+          },
+          {
+            "severity": "important",
+            "scene": "3 and 4 (voice and framing)",
+            "problem": "Voice: 'It is almost eleven at night. The buyer wants details.' followed by 'In about a minute, the buyer can get...'. Scene 3 shows the buyer's message with a large empty chat below it, and scene 4's chip says 'Reply in about a minute'. Together they imply that today a night-time enquiry goes unanswered, and that Shyamal's team is the cause. That is a problem we did not observe, and the rules say never to show the lead's team failing. The scene 4 chip is also unconditional ('Reply in...') while the voice says 'can get'.",
+            "fix": "Frame it as hypothetical. Voice: 'Say it is almost eleven at night, and a buyer asks for details.' Then: 'With an automatic first reply, the buyer can get the brochure, three quick questions and a site visit time in about a minute.' Chip: 'Example - can reply in about a minute'. Fill the scene 3 chat area so it does not read as an ignored message."
+          },
+          {
+            "severity": "important",
+            "scene": "2 and 5 (characters and background)",
+            "problem": "The scene 2 buyer has a raised brow and an open 'o' mouth. It reads as shock or doubt at Shyamal's ad, and echoes the stressed man in the Nexus360 reference. In scene 5 an invented glass tower stands just above the card titled 'Shyamal Park Lane'. It reads as their project, and Shyamal will see it is not their building.",
+            "fix": "Redraw the scene 2 buyer with a neutral or interested expression. Remove the tower from scene 5, or replace it with a clearly generic skyline that is not next to the project name."
+          },
+          {
+            "severity": "important",
+            "scene": "1 and 2 (logo fidelity)",
+            "problem": "The logo carries a registered-trademark mark, and in scene 1 it is large and set in a gradient square. Use of their name and logo is allowed 'only as published by them'. If the ® is not on their own published logo, we are adding it. If the logo or wordmark was redrawn or recoloured, that is a trademark and misrepresentation risk. In scenes 1 and 2 the S logo is also big and dominant, with their navy-and-gold theme, so it reads as official.",
+            "fix": "Use the unaltered logo file from shyamalgroup.co.in, with their own ® only if it is part of that file. Do not stretch, recolour or animate it. Keep it clear of other graphics and smaller than the IV Infotech mark once IV is added in scene 1."
+          },
+          {
+            "severity": "important",
+            "scene": "1 (and voice 1)",
+            "problem": "'Diwali offer - First 5 bookings' and the voice 'A Diwali offer, for the first five bookings.' restate their offer in our own video as a plain statement. The facts are verified, but a limited-count offer can end before the video is watched or forwarded. It then reads as an IV Infotech or Shyamal announcement. The ad's own wording is 'first 5 bookings only' with terms behind asterisks.",
+            "fix": "Attribute it to them. On screen: 'Your Diwali offer - first 5 bookings only'. Voice: 'Shyamal Park Lane. Your Diwali offer, for the first five bookings.' Keep price and loan terms out."
+          },
+          {
+            "severity": "important",
+            "scene": "All (captions)",
+            "problem": "The six stills show no burned-in captions, only chips and UI. WhatsApp autoplays muted, and the reference video burns every spoken phrase in as a caption bar. If captions are added later, I have not seen them. Muted viewers currently get only the chips, so the pitch and the 'can get' softening are lost. The reference also shows a style of number claim ('92 Hours / month saved', 'Zero manual prospecting') that must not be copied.",
+            "fix": "Burn in captions that match the final voice script word for word, so every caption word passes this review. Keep them out of the EXAMPLE pills, the ad button area and the footer line. Do not add any hours-saved, percentage or '24/7'-style figure."
+          },
+          {
+            "severity": "important",
+            "scene": "4",
+            "problem": "The 'Brochure PDF - Sent automatically' item assumes Shyamal has a published Park Lane brochure. That is not in the verified facts. The slots 'Sat 11:00 AM' and 'Sat 4:00 PM' look like commitments to their site-visit availability. 'Three quick questions' appears as three button labels (Budget?, 3 & 4 BHK?, Visit time?), and then a separate 'Pick a site visit time' follows. That shows visit time twice.",
+            "fix": "Check that a Park Lane brochure is published on shyamalgroup.co.in, or label it 'Project brochure'. Mark the slots as examples inside the EXAMPLE label. Change the questions to 'Budget? / 3 or 4 BHK? / When to visit?' and follow with the slot picker."
+          },
+          {
+            "severity": "important",
+            "scene": "6 and the WhatsApp message wrapper",
+            "problem": "Voice: 'Tap, Yes, send the demo.' The comma is awkward. An outlined 'Yes, send the demo' button inside the video looks tappable but is not. The real quick-reply label must match it exactly, or the instruction is wrong. The page button is not mentioned. Outside the video, the WhatsApp Business Messaging Policy requires the recipient to have opted in, and the body text should repeat the independence and AI-voice line. Confirm the number is a business number Shyamal publishes for enquiries.",
+            "fix": "Voice: 'Want to see this for Shyamal Park Lane? I V Infotech can show you. Tap the button that says: Yes, send the demo.' Screen text: 'Tap the button below' with the arrow. Confirm the template button label is exactly 'Yes, send the demo'. Add 'Concept by IV Infotech. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.' to the template body. Keep the lead's contact path to a number they publish for enquiries."
+          },
+          {
+            "severity": "nice",
+            "scene": "All (placement)",
+            "problem": "The top chips and corner logo, and the footer and 'Illustration' text at the very bottom edge, sit in areas that WhatsApp may crop or overlay on a 9:16 header video, with the duration pill at the bottom left. The brief gives no safe-zone check.",
+            "fix": "Keep all labels and disclosures within the central 80% of the frame. Check the in-chat preview on a real phone before sending."
+          },
+          {
+            "severity": "nice",
+            "scene": "4 and 5 (mascot)",
+            "problem": "The 'iv' robot appears in the buyer's room and in the team's office. In scene 5 it has no 'iv' marking and floats beside Shyamal's staff. It is harmless, but it could suggest our robot is on their team.",
+            "fix": "Keep the 'iv' badge on the robot in every scene it appears in, and keep it as an IV Infotech helper. Label it 'IV, the helper robot' only if needed for clarity."
+          }
+        ],
+        "what_works": [
+          "The copy avoids the banned and risky words. There is no 'free', no 'instant', no invented stats, no prices, no director names, and the asterisked terms (Rs 51 lakh*, 100% SBI loan*) are left out.",
+          "The ad facts shown are all verified: 3 & 4 BHK, Bhayli, Vadodara, ready possession, first 5 bookings, and the Send WhatsApp message button.",
+          "No unverified claim about Shyamal appears. Nothing says they reply slowly, lack a CRM, lack an auto-reply or have no WhatsApp number, and no team is shown failing.",
+          "The voice uses soft, rule-approved phrasing ('can get', 'about a minute').",
+          "Scene 5 sets the pattern for the other mocks. It has a visible 'EXAMPLE' pill and 'Sample buyer 1/2/3' instead of invented names.",
+          "Scene 4 labels the brochure 'Sent automatically', which honestly discloses automation. No WhatsApp or Meta logos are used.",
+          "Scene 6 names IV Infotech and the voice says 'I V Infotech', and an independence and AI-voice line exists in some form.",
+          "The design is clean, has very little text, and follows the NotebookLM-style reference. The illustrated characters, the IV robot and the navy-and-gold theme do what the owner asked."
+        ]
+      },
+      {
+        "key": "lead",
+        "score_out_of_10": 6,
+        "verdict": "ROLE-PLAY AS THE DIRECTOR (family-run Vadodara builder, Diwali campaign running, 25+ years, many vendor pings). Honest probability that I tap \"Yes, send the demo\" as it stands: about 6% (range 4-8%). With the three changes at the bottom: about 10-12%. It is visibly better than a generic template and clearly about MY project, but it is 47 seconds long, makes me wait about 36 seconds to learn who is selling and what it is called, and the ask is vague.\n\nSecond by second (timings are my estimate from voice pace: S1 0-5s, S2 5-11s, S3 11-17s, S4 17-27s, S5 27-36s, S6 36-47s).\n0-1s: First frame. My own gradient S logo, navy and gold, \"Shyamal Park Lane, Bhayli, Diwali offer, First 5 bookings.\" I pause for a second because it is mine. Then a small prickle: who is using my logo? The sender name is a stranger and nothing on screen says who made this. If WhatsApp shows a thumbnail with a play button instead of autoplaying, this frame is the thumbnail: it earns the tap on recognition alone, but it has no hook or benefit.\n1-5s: The video tells me my own offer back. Zero new information. This is where a busy director who is half-reading swipes away. I stay only because of the logo.\n5-11s: Diwali room, my ad card, tap on \"Send WhatsApp message.\" Best moment so far: it is specific and true (one of my ads does have that button). I lean in. Nits: the buyer looks startled or suspicious, not keen; the \"Illustration of your ad\" note is too small to read on a phone.\n11-17s: Night, 10:47 PM, a message with grey ticks and a big empty chat. I understand the set-up. I also feel a small sting: the picture says \"nobody answers at night.\" It is not insulting enough to make me stop, but one more beat of waiting and I would swipe.\n17-27s: The reply arrives: brochure, three questions, two Saturday visit slots, plus a cute robot. I understand it in about 3 seconds: an auto-reply that sends the brochure and books a visit. But the word \"automatic\" is never spoken and is only in tiny grey text, and the chip says \"Reply in about a minute,\" which reads like my team replying. Doubts: we already send brochures by hand; will a robot say something silly to a Rs 50 lakh buyer; does it work on our number?\n27-36s: Morning list with Hot, Hot, New and visit slots. This is the scene that tells me what I gain, and the team member is smiling, not blamed. Good. But the photoreal tower on her desk is not my building (I would notice instantly), there is a stray cut-off fragment at the right edge, and \"Sample buyer 1/2/3\" is honest but flat.\n36-47s: Only now do I learn it is IV Infotech. A large white logo slab, an empty gap, a fake button inside the video that I cannot tap, and an independence line too small and faint to read. \"Demo of what? Will they start calling me?\" I tap only if I happen to be curious and free. Most directors would not.\n\nFake, pushy, insulting? Not pushy and not fake: the claims are soft (\"about a minute\"), there is no price, no \"free,\" no numbers, and the team is never shown failing. The only sting is the empty night chat in scene 3. A real compliance gap: the stills of the chat scenes (3 and 4) carry no EXAMPLE label, although only scene 5 does.\n\nTHE 3 CHANGES THAT WOULD MOST RAISE THE TAP RATE\n1. Rebuild the first 5 seconds and cut the length to about 30 seconds. Open straight on the verified fact that shows we looked at their real ad (\"Your Diwali ad has a Send WhatsApp message button\"), with a small \"Made for Shyamal Group by IV Infotech\" line in the first 2 seconds so I know who and why. Merge scenes 2 and 3, trim scene 1 to 3 seconds and scene 6 to about 6 seconds.\n2. Name the offer in plain words and add reassurance, readable muted. Put \"Automatic reply\" in the chip and say it in the voice (\"An automatic reply can send...\"). Add one short caption per scene (5-8 words, safe zone, dark pill), as the Nexus360 reference did with its big captions. In scene 5 add \"your team takes over from there,\" so I do not fear a robot replacing my people.\n3. Make the ask small, concrete and safe, and clear the trust cracks. CTA: \"Tap below to get a one-minute sample chat for Shyamal Park Lane on WhatsApp\" (add \"no call needed\" only if that is true). Remove the fake in-video button. Add EXAMPLE pills to scenes 3 and 4. Enlarge the independence and AI-voice line and also put it in the WhatsApp message text. Remove the generic tower.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "3 and 4 (night chat, automatic reply)",
+            "problem": "Neither chat mock carries an EXAMPLE label in the stills, although the spec says EXAMPLE chat and the campaign rule is that every mock is labelled Example. Only scene 5 has the EXAMPLE pill, and scene 2 has a tiny 'Illustration of your ad' note. A fake Shyamal Park Lane WhatsApp thread with the real logo and a buyer message, unlabelled, is exactly what looks like a fake enquiry or a spoof to the real owner.",
+            "fix": "Add a persistent gold EXAMPLE pill (same style as scene 5) on the phone header in scenes 3 and 4 for the whole scene. Make 'Illustration of your ad' in scene 2 the same pill style and at least twice its current size. If the label exists at other timestamps, show it in a frame that survives a thumbnail or screenshot."
+          },
+          {
+            "severity": "important",
+            "scene": "1 (brand open, 0-5s)",
+            "problem": "The first 5 seconds only repeat my own ad to me, with no hook and no benefit. Nothing says who is sending this or why my logo is on it, so it can look like my own creative, my agency's work or a logo misuse. The independence line only appears in the last 2 seconds, which muted viewers who leave early never see.",
+            "fix": "Keep the logo recognition moment for about 1.5 seconds, then immediately state the hook with a verified fact ('Your Diwali ad has a Send WhatsApp message button'). Add a small sender line on the same frame: 'Made for Shyamal Group by IV Infotech'. Shorten scene 1 to 3 seconds."
+          },
+          {
+            "severity": "important",
+            "scene": "Whole video (47s)",
+            "problem": "47 seconds is too long for a cold vendor message to a busy director in Diwali week. Most viewers leave in the first 10 to 15 seconds, and the offer (scene 4) only starts at about 17 seconds and the sender is revealed at about 36 seconds.",
+            "fix": "Target 28-32 seconds. Merge scenes 2 and 3 into one 'ad, tap, night message' beat of about 8 seconds, scene 1 at 3 seconds, scene 4 at about 8 seconds, scene 5 at about 7 seconds, scene 6 at about 6 seconds. Keep scene 5 because it is the clearest 'what I gain'."
+          },
+          {
+            "severity": "important",
+            "scene": "4 (automatic reply)",
+            "problem": "The core product word 'automatic' is neither spoken nor shown prominently: the voice says the buyer 'can get the brochure...' and the only on-screen cue is tiny grey 'Sent automatically.' The chip 'Reply in about a minute' reads as if my team replies, and a minute even sounds slow. A muted viewer sees a nice chat but not 'a system does this while your team is asleep.' There is also no reassurance that my team still owns the conversation.",
+            "fix": "Chip: 'Automatic reply - about a minute'. Voice: 'An automatic reply can send the brochure, ask three quick questions and offer a visit time.' Enlarge the 'Sent automatically' tag. In scene 5 say 'your team takes over from there.' Keep the claims soft and avoid 'instant'."
+          },
+          {
+            "severity": "important",
+            "scene": "All scenes (muted viewing)",
+            "problem": "The Nexus360 reference carries its story with large word-level captions at the bottom, which is what makes it work with sound off. This video only has small chips and mock UI text, so a muted viewer gets the what (ad, night chat, reply, list) but not the so-what, and relies on a voice they will not hear.",
+            "fix": "Add one short caption per scene (5-8 words, large, on a dark pill, in the lower-middle safe zone) with the benefit, e.g. 'Enquiry at 10:47 PM', 'Brochure and visit slots in about a minute', 'Morning: who asked, who booked a visit'. Keep the total text count low, but let the captions tell the story alone."
+          },
+          {
+            "severity": "important",
+            "scene": "3 (night message)",
+            "problem": "A long still shot of an empty chat, grey double ticks and the word 'night' implies that nobody answers at 10:47 PM. A proud family-run builder can read this as 'you reply late' (not verified and not said, but implied) and the scene ends on a cliff-hanger with no resolution.",
+            "fix": "Reframe from waiting to opportunity: chip 'Your ad runs at night too', and show typing dots or the robot waking within the same scene so the empty-chat state lasts about 2 seconds, not 6. Reword the voice to 'Your Diwali ad keeps working at night. A buyer writes at 10:47 PM.' Never show a silent team."
+          },
+          {
+            "severity": "important",
+            "scene": "5 (morning list)",
+            "problem": "A photoreal-looking high-rise model sits on the desk in a flat illustration, which is a style mismatch and almost certainly not Shyamal Park Lane. A builder spots a wrong building instantly, and it undermines the 'about YOUR project' feeling. There is also a stray cut-off fragment at the right edge and a washed-out peach background with lower contrast than the other scenes.",
+            "fix": "Remove the tower, or replace it with a flat navy-gold illustrated building that makes no claim to be theirs, or use a render only if it is published by them on their own site. Clean the right-edge fragment. Add 'Asked 10:47 PM' to row 1 so the list connects back to scene 3."
+          },
+          {
+            "severity": "important",
+            "scene": "4 (and 3, 5)",
+            "problem": "Key content hugs the edges: the visit-slot buttons sit about 37px from the bottom, the chips sit at the very top, and the scene 4 phone mock is cut off at the bottom. WhatsApp crops tall header videos in the chat bubble and overlays play, mute and duration controls, so the slot buttons and top chips can be cut off or covered.",
+            "fix": "Keep all key text and UI inside a central safe zone (roughly y 160-1080 of 1280) or test on a real phone in a real chat. Move the phone mock up about 100px and cut the lower bubbles to two."
+          },
+          {
+            "severity": "important",
+            "scene": "6 (call to action)",
+            "problem": "The independence line ('Independent concept. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.') is about 17px, low-contrast grey-blue on navy, in the final 2 seconds only. The 'Yes, send the demo' button inside the video is not tappable and tends to get tapped anyway. It is unclear what the 'demo' is, who sends it, and whether a sales call follows. 'See this' in the voice is vague.",
+            "fix": "Make the disclaimer at least 28px with higher contrast and repeat 'AI voice-over' and 'independent concept' in the WhatsApp message text. Change the in-video button to a plain label or arrow. Reword the ask: 'Want to see how this would look for Shyamal Park Lane? Tap below to get a one-minute sample chat on WhatsApp.' Add 'no call needed' only if that is true."
+          },
+          {
+            "severity": "nice",
+            "scene": "6 (call to action)",
+            "problem": "A big dead gap sits in the middle of the frame, the IV Infotech logo is a large white slab (about twice the width of the Shyamal logo in scene 1), and the friendly robot mascot is missing in the one scene where we ask for the tap.",
+            "fix": "Bring the waving IV robot into the empty gap next to the ask and shrink the logo card to about 60% width. Bring the 'iv' badge onto the robot in scene 5 too."
+          },
+          {
+            "severity": "nice",
+            "scene": "4 (automatic reply)",
+            "problem": "The pills 'Budget?', '3 & 4 BHK?', 'Visit time?' read as topic chips, not questions, and 'Visit time?' duplicates the 'Pick a site visit time' bubble below it. The buyer has the identical expression as in scene 3, so there is no payoff beat. The robot is small, half overlapping the phone frame, and its 'iv' badge is barely legible.",
+            "fix": "Rewrite as 'What is your budget?', '3 or 4 BHK?' and let the slot bubble be the third step. Give the buyer a small smile in scene 4. Enlarge the robot by about 30% and keep it clear of the phone frame."
+          },
+          {
+            "severity": "nice",
+            "scene": "2 (ad and tap)",
+            "problem": "The buyer's raised eyebrow and open mouth look suspicious or startled, not interested. The CTA button shows a phone handset icon instead of a WhatsApp or chat glyph, which a builder who runs these ads may notice. The 'Your Diwali ad' chip is at the top, about 550px away from the ad card it labels.",
+            "fix": "Redraw the buyer with a curious, mildly pleased look. Use a WhatsApp-style chat glyph on the button. Move the 'Your Diwali ad' chip next to the card or attach an arrow."
+          },
+          {
+            "severity": "nice",
+            "scene": "1-5 (logo repetition)",
+            "problem": "The Shyamal logo is stamped top-left on every scene, plus in the ad card, the fake WhatsApp avatar and the list header. By scene 5 it starts to feel like brand hijacking rather than a tribute, especially with the sender revealed only at the end.",
+            "fix": "Keep the Shyamal logo large in scene 1 and on the ad/phone mocks where it is naturally present. Remove the top-left corner stamp from scenes 3-5, or swap it for a small 'IV Infotech' mark so there is a visible sender throughout."
+          },
+          {
+            "severity": "nice",
+            "scene": "5 (morning list)",
+            "problem": "'Sample buyer 1/2/3' is honest but lifeless. Hot, Hot, New with visit slots is the strongest 'what I gain' moment but it is not linked to the 10:47 PM message from scene 3.",
+            "fix": "Keep the labels honest, e.g. 'Example buyer A', and add one concrete detail on row 1: 'Asked at 10:47 PM'. Show the 'Hot' rows with their visit slots a beat before the voice reads them."
+          }
+        ],
+        "what_works": [
+          "Instant recognition. Frame 1 uses the real gradient S logo, the navy and gold theme, the project name, Bhayli and the exact offer 'Diwali offer - First 5 bookings', so it feels made for me and not a generic template. This is what stops the scroll or earns the thumbnail tap.",
+          "Scene 2 shows an ad card that matches my real ad (3 and 4 BHK, ready possession, first 5 bookings, a Send WhatsApp message button) inside a warm Diwali room. It proves they looked at my real ad and makes the pitch feel specific and true.",
+          "The illustration style is warm, consistent and closer to the Nexus360 NotebookLM look than the old template: flat characters, a Diwali palette in scene 2, a moody teal night in scene 3, a bright morning office in scene 5, and the same buyer carried across scenes.",
+          "Scene 4 explains the product visually in about 3 seconds (brochure, three quick questions, two visit slots), and the IV robot gives automation a friendly face instead of a technical one.",
+          "Scene 5 is the strongest 'what I gain' frame: a clean list with Hot and New tags, 'From Diwali ad', and visit slots. The team member is shown happy and in control, never failing, so nothing insults the lead's team.",
+          "Claims are restrained and safe: 'about a minute', no price, no 'free', no 'instant', no invented numbers, 'Sample buyer' placeholders, an independence line and an AI voice-over disclosure. Nothing unverified about the lead (late replies, no CRM, unit counts) is claimed in words.",
+          "Text volume is low and typography is clean and on-brand (navy, gold, white), which fits the 'very little text, neat and clean' brief."
+        ]
+      },
+      {
+        "key": "persuasion",
+        "score_out_of_10": 6,
+        "verdict": "Clean, on-brand and compliant-minded, but it is a tidy explainer, not yet a persuasive video, and I judge it weaker than the Nexus360 reference where it matters most: the first 3 seconds. Limit of this review: I only saw six stills, not the audio or motion. Pacing comments come from the script (about 85 words, roughly 35 s of speech in a 47 s video), so check them against the real render.\n\nWhy the reference is more convincing:\n(1) It opens on the viewer's own pain. A stressed founder holds his head over a spreadsheet, so the viewer thinks \"that's me\" before anything is explained. Ours opens on a logo slate that reads their own ad headline back to them, which gives recognition but no tension and nothing new.\n(2) It shows his plan as a diagram of his own objects (his ERP, the RERA directory, the follow-up branches). The viewer sees the machine and the sender's understanding of him in one glance. Ours never draws the chain ad tap, reply, visit, team list as one picture, so the viewer has to hold six scenes in memory. The only visible Shyamal-specific things are their logo and ad words.\n(3) Word-synced captions sit on every frame, so muted playback still works. None of our six frames has a caption line, and the bottom 45% of scenes 2 to 5 is taken by cards with no room for one.\n(4) It ends on a payoff number. We cannot invent one, so our payoff has to come from their own facts, and the best one is the \"first 5 bookings\" in their ad.\n\nWhere this video is already ahead of the reference: brand fit, a consistent character, a day, night, morning colour arc, and a visual product demo. Those strengths are only worth anything if someone keeps watching.\n\nHow to get past the reference without breaking the claims rules:\n(a) Hook on their ad. Open on their Diwali ad with the WhatsApp button glowing, not on a slate.\n(b) Make \"automatic\" and the IV robot explicit, because nothing in the voice or visuals currently says so.\n(c) Turn \"first 5 bookings\" into the stakes.\n(d) Add a one-glance flow strip at the end as our version of the reference's diagram.\n(e) Add captions and EXAMPLE labels everywhere.\n(f) Fill the CTA scene.\n(g) Cut scenes 1 and 2 together so the product shows up by about 8 s, not about 20 s.\n\nSuggested running order, about 38 to 42 s:\n- S1, 0 to 4 s. Logo pops, then morphs into the ad card. Voice: \"One of your Diwali ads has a Send WhatsApp message button. Where can one tap lead?\"\n- S2, 4 to 8 s. The buyer taps it.\n- S3, 8 to 13 s. Night, 10:47 PM. Voice: \"It is 10:47 PM. With only five bookings on offer, this buyer wants details tonight.\"\n- S4, 13 to 26 s. IV arrives and the chat builds in step with the voice.\n- S5, 26 to 34 s. The team's morning list, then the flow-strip recap.\n- S6, 34 to 42 s. CTA with the mascot.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "1 - brand open (first 3 s, also the WhatsApp poster frame)",
+            "problem": "The hook is a brand slate. Giant logo, name, offer pill, and the voice just recites their own ad headline. There is no tension, no new information, no hint of what is on offer, and no sender identity (nothing says IV Infotech or that this is an idea for them). The bottom third and the gap between logo and text are empty. As the thumbnail in the chat it looks like a forwarded Shyamal creative, not a message addressed to them. The reference's first frame is a recognisable human pain moment.",
+            "fix": "Cut the slate to about 2.5 s and make it a match-cut into the ad. The logo pops, then shrinks and slides up to become the avatar of an illustrated ad card. The card carries their Diwali offer pill, 3 and 4 BHK, and the green Send WhatsApp message button with a soft glow. In-video caption: \"One of your Diwali ads has a WhatsApp button\". Voice: \"One of your Diwali ads has a Send WhatsApp message button. Where can one tap lead?\" Put a small IV robot and the words \"An idea for Shyamal Park Lane\" in the top strip so the poster reads as addressed to them. This keeps the logo, name and theme at the very start, as the owner asked, and adds a curiosity question. The question is neutral and does not claim they fail anywhere."
+          },
+          {
+            "severity": "blocker",
+            "scene": "All scenes - captions",
+            "problem": "None of the six frames has a burned-in caption of the voice-over. The reference has a word-synced caption box on every frame. WhatsApp plays muted, so a muted viewer sees only the chips (\"Your Diwali ad\", \"10:47 PM - night\", \"Reply in about a minute\", \"Morning - hot buyers first\") and cannot follow the story or the offer. The layout has no space for captions: cards fill y 650 to 1280 in scenes 2 to 5.",
+            "fix": "Add short word-synced captions of 3 to 6 words per beat (for example \"Buyer taps your ad\", \"10:47 PM. Wants details tonight\", \"IV replies in about a minute\", \"Team sees hot buyers first\"). Keep the reference's dark rounded caption box. Put them in a fixed band at about y 1040 to 1110 between the card and the bottom edge, and shift the cards up about 120 px. Make the caption text at least 36 px. Chips can stay for time-of-day labels, but captions carry the meaning."
+          },
+          {
+            "severity": "blocker",
+            "scene": "3 and 4 - chat mocks",
+            "problem": "Only scene 5 has an EXAMPLE tag. The scene 3 and scene 4 WhatsApp mocks (a Shyamal-named chat with a buyer message and an auto-reply) have no Example label. Scene 2 has only a tiny, low-contrast \"Illustration of your ad\" at the very bottom. This breaks \"every mock labelled Example\" and \"no fake buyer enquiries presented as real\". A Shyamal-named chat with a buyer message could pass as a real enquiry if screenshotted or forwarded.",
+            "fix": "Add the same gold EXAMPLE tag used in scene 5 to the phone header (top right) in scenes 3 and 4, and keep it on screen for the whole scene. In scene 2 turn \"Illustration of your ad\" into a visible pill under the card, 24 px or larger, with higher contrast. Label the example slots as well (for example \"Example times\")."
+          },
+          {
+            "severity": "important",
+            "scene": "4 and voice line 4 - the single outcome",
+            "problem": "The promise is an automatic first reply, but the voice never says \"automatic\", never says it goes out from their WhatsApp, and never introduces IV the robot. The robot first appears in scene 4 as a small figure on the windowsill, not connected to the chat. The only place \"automatically\" appears is the micro-text \"Sent automatically\" on the PDF card. A viewer can read scene 4 as the team replying within a minute. The voice line is also a three-item list, with no emotional beat.",
+            "fix": "Rewrite as two beats. Beat A (about 3 s): robot flies in holding the brochure. Voice: \"Within about a minute, IV, an automatic helper, replies on your WhatsApp.\" Beat B (about 4 s): items pop in step with the words. Voice: \"The brochure. Three quick questions. Two visit times.\" Add a caption \"Automatic reply\" and give the robot an iv chest badge and a name tag. Avoid \"instant\" and \"free\"."
+          },
+          {
+            "severity": "important",
+            "scene": "2 and 3 - emotion and stakes",
+            "problem": "There is no pain or stakes, so no emotional pull. In scene 2 the buyer's raised brow and open mouth read as confusion or worry, not interest. In scene 3 his face is neutral and scene 4 is the same frame with a robot added, so he never shows relief or delight. The voice line \"It is almost eleven at night\" is a timestamp with no implication. The only emotional payoff in the whole video is the smiling team member in scene 5.",
+            "fix": "Scene 2: change the buyer to a pleased, interested look (small smile, leaning in) as he taps. Scene 3: tired but hopeful face and a single waiting cue (the clock chip, the moon, a lone delivered tick). Do not show the team failing or a dark or empty office. Add stakes using their own fact: \"It is 10:47 PM. With only five bookings on offer, this buyer wants details tonight.\" Scene 4: swap in a new buyer pose with a smile, then a thumbs-up or a relaxed lean-back when the brochure lands. This is the emotional beat the reference gets from the stressed face."
+          },
+          {
+            "severity": "important",
+            "scene": "4 - layout, density and the one-minute proof",
+            "problem": "All of the content is on screen at once (about 11 text items: bubble, PDF card, three question chips, slot heading, two slot chips) while the voice lists it over about 8 s. The chat runs to the bottom edge (the Sat 4:00 PM chip sits around y 1245), so it is at risk from the WhatsApp bubble and UI crop. \"Visit time?\" appears twice (a question chip and the slot picker). Nothing shows the minute passing, although \"about a minute\" is the key claim.",
+            "fix": "Stage the reveal in step with the voice. The brochure card pops on \"brochure\", the three question chips on \"three quick questions\", the two slot chips on \"visit times\". Use two different third questions (for example Budget, 3 or 4 BHK, Possession timing) so the slot picker is not a duplicate. Add timestamps: buyer 10:47 PM, auto-reply 10:48 PM. That shows \"about a minute\" without inventing a result. Move the chat up so nothing important sits below y 1150. Check on a real phone how WhatsApp crops a 720x1280 header, and keep key text inside the centre safe area, roughly y 190 to 1090."
+          },
+          {
+            "severity": "important",
+            "scene": "2 and all scenes - use of researched facts",
+            "problem": "The research is shown mostly as decoration. The Shyamal logo appears two to three times per frame (a corner watermark in every scene, the banner, the chat avatar), but the findings that would make Shyamal feel studied are missing: that their WhatsApp-button ad is one of three live versions, that the offer is limited to five bookings (used as a label only, not as the stakes), and what the flow looks like for their project. The reference shows the lead's own plan as a diagram. Ours never draws the chain, and scene 2 repeats the scene 1 slate (same logo, name and pill).",
+            "fix": "Scene 2 or 1: show three stacked ad cards and lift the one with the green Send WhatsApp message button (no mention of the other two, since nothing is verified about them). Use \"first five bookings\" as the stakes line in scene 3. After scene 5, add a 2 s flow strip in their navy and gold with the IV robot as a node: Ad tap, IV reply (about a minute), Visit time, Team list. Label it \"Example flow for Shyamal Park Lane\". This is the equivalent of the reference's diagram. Remove the corner logo watermark. Keep their logo only where it naturally belongs (the ad card avatar and the chat avatar)."
+          },
+          {
+            "severity": "important",
+            "scene": "All scenes - identity and independence",
+            "problem": "IV Infotech's name first appears at about 40 s in scene 6. The independence and AI-voice line appears only in the last frame, in tiny low-contrast type of about 18 px. For the first 40 s the video carries only Shyamal branding on every frame, so a screenshot or forward looks like Shyamal's own creative.",
+            "fix": "Add a persistent tiny mark in the bottom-left, \"IV Infotech - independent concept\" with the robot icon, from frame 1 to the end. Increase the scene 6 footer to at least 26 px and raise its contrast. Keep the corner area free of the Shyamal logo (see previous fix)."
+          },
+          {
+            "severity": "important",
+            "scene": "6 - call to action",
+            "problem": "A large dead gap (about y 600 to 850) sits between the headline and the button. The robot, who is the brand character in scenes 4 and 5, is missing. The scene never restates the benefit, and it does not say what the demo is. The voice line \"Tap, Yes, send the demo\" is awkward for TTS. The in-video pill looks like a tappable button that does nothing. The disclaimer footer is tiny.",
+            "fix": "Put the waving IV robot in the gap and one benefit line (\"A first reply to every Diwali-ad enquiry, even at night\"). Say what the demo is only if it is true (for example a short sample chat with your project name). Voice: \"Each enquiry from your ad can get a first reply, even at night. Want to see it for Shyamal Park Lane? I V Infotech can show you. Tap the button below: Yes, send the demo.\" Make the on-video pill look like a pointer (a plain label with an arrow to the real button) rather than a button, and match its wording exactly to the real quick-reply label."
+          },
+          {
+            "severity": "important",
+            "scene": "1 - voice-over pronunciation",
+            "problem": "The voice opens by saying \"Shyamal\" and the lead's own project name in the first second. An ElevenLabs Indian-English voice can mispronounce Shyamal (it can come out as SHAY-mul instead of SHYAA-mul). A wrong pronunciation of their own name in the first second is a trust-killer, and \"I V Infotech\" also needs to be checked.",
+            "fix": "Generate and listen to the first line before rendering. Use a phonetic spelling in the script (\"Shyaamal\") or a pronunciation dictionary or phoneme tag in ElevenLabs. Re-check \"Bhayli\" and \"Diwali\" if they are voiced. Keep the on-screen text spelled correctly."
+          },
+          {
+            "severity": "important",
+            "scene": "1 to 3 - pacing",
+            "problem": "Roughly 14 s, about 30% of the video, passes before the product (the reply) appears. Scenes 1 to 3 together carry about 31 words. Scenes 1 and 2 repeat the same brand and offer information, and scene 3 is nearly the same frame as scene 4. Scene 4, the money scene, gets about 8 s for three items. The video is 47 s while the speech is about 35 s, so there are around 12 s of gaps and slow holds, and a cold WhatsApp video loses viewers at that length.",
+            "fix": "Merge scenes 1 and 2 into one 8 s move (logo to ad card to tap). Make scene 3 about 5 s. Give scene 4 about 13 s with staged reveals, scene 5 about 8 s plus a 2 s flow strip, and scene 6 about 7 s. Target 38 to 42 s total. Keep the whole file a small mp4 (mostly static frames compress well)."
+          },
+          {
+            "severity": "nice",
+            "scene": "4 and 5 - mascot",
+            "problem": "The robot is drawn in a glossy gradient style that clashes with the flat-vector humans. The iv chest badge from scene 4 is missing in scene 5. In scene 5 the robot waves with raised arms but does not interact with the team member or the list. The woman at the laptop does not look at the list the card shows.",
+            "fix": "Redraw or restyle the robot in the same flat style as the humans, with the iv badge always present. In scene 5 let it hand a card or point at the list, and make the team member look at the screen and smile. Add a small phone or Call chip on the Hot rows to show what the team does next."
+          },
+          {
+            "severity": "nice",
+            "scene": "1 and 6 - personalisation (optional)",
+            "problem": "The directors' names (Chirag and Amitkumar Tilva, from their own site) could add a lot of pull, but this is only safe if the recipient is certain.",
+            "fix": "Only if the number is confirmed to belong to that director, open the voice with \"Chirag ji,\" (or the right name). If there is any doubt, use \"Shyamal Group team\". A wrong name is worse than none."
+          }
+        ],
+        "what_works": [
+          "Their brand theme is used faithfully and looks deliberate: navy and gold, the gradient S logo, and the Shyamal Park Lane and Diwali offer wording as they publish it. It is instantly recognisable to the lead.",
+          "The story is simple and linear, with one idea per scene. The day, night, morning colour arc is clear, and the buyer character stays consistent through scenes 2 to 4.",
+          "Scene 2 is the strongest personalised visual. It uses their real ad words (3 and 4 BHK, Bhayli, Ready possession, first five bookings) and the Send WhatsApp message button, with a tap ripple. It shows the research without making any unverified claim.",
+          "Scene 4 shows the right product pieces (brochure, three quick questions, visit slots) in a believable chat, and the IV robot is on-brand and cute. The \"Sent automatically\" micro-label is a good touch that should be echoed in the voice.",
+          "Scene 5 is compliant and positive. It has an EXAMPLE tag, \"Sample buyer\" names, a smiling team member, and no scene that shows the lead's team failing.",
+          "Text is minimal and chips are short, which matches the \"very little text\" brief. Claims are soft (\"about a minute\", \"can get\") with no \"free\", no \"instant\", and no invented numbers.",
+          "The CTA repeats the exact button label, the voice discloses it is AI, and the independence line is present, so the compliance basics are covered even though they need to appear earlier."
+        ]
+      }
+    ],
+    "synthesis": {
+      "overall": "All four reviews score the video 5 to 6 out of 10. They agree on the same blockers: no EXAMPLE label on the chat scenes, Shyamal branding on every frame with IV Infotech only at the end, a tiny disclaimer, no captions, and a crammed scene 4. Rules are applied in order: campaign honesty first, then what the director needs to see, then polish. How the disagreements were settled: (1) Length: 47s is cut to about 40s (the reviews asked for 30 to 42s). The product now shows by about 14s, not about 20s, and the voice drops to about 84 words. (2) The reviews asked for WhatsApp glyphs, a lead-scoring flow strip and director names. None of these are used, because the rules ban WhatsApp or Meta logos and unsupported capability claims, and the director names cannot be confirmed. (3) The 'Hot / New' ranking becomes 'Visit booked / Asked'. (4) The top chips are replaced by one caption pill per scene, which also frees the unsafe top 10% of the frame. Global layout rules for every scene: all essential content sits at y 140 to 1080 of 1280; the caption pill (navy with a thin gold line, 36px or larger, white text, 8 words or fewer, max 2 lines) sits at y 940 to 1030; UI cards sit at y 150 to 920 and are never taller than that; sub-labels are at least 24px in dark grey; at most about 10 words of UI text per scene. Do the must_fix list first, then re-record or generate the audio from the new script. Outside the scene template (not part of this list): confirm the real quick-reply label is exactly 'Yes, send the demo'; repeat 'Concept by IV Infotech. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.' in the WhatsApp message body; do not promise 'no call needed' or describe the demo unless it is true.",
+      "must_fix": [
+        {
+          "scene": "3 and 4 (night chat, auto reply), plus 2 and 5",
+          "change": "Add a persistent EXAMPLE pill (same tan pill as scene 5, 26px or larger) on the phone header for the whole of scenes 3 and 4. Change the chat header status from 'online' to 'Example chat'. Scene 2 note becomes a solid pill, 24px or larger, dark text, above y 1080. Make the scene 5 EXAMPLE pill larger too.",
+          "why": "Every reviewer called this a blocker. A fake Shyamal-named chat with their logo and no label reads as a real enquiry or a spoof."
+        },
+        {
+          "scene": "1 to 5 (attribution)",
+          "change": "Remove the Shyamal corner bug from scenes 2 to 5. Keep their logo only inside the ad mock, the chat avatar and scene 1. In the top-left (y 150 or lower) of scenes 1 to 5 put the small IV robot mark plus 'Concept by IV Infotech' (24px or larger). In scene 1 also add 'A concept by IV Infotech - not affiliated with Shyamal Group' (24px or larger, light on navy, y about 900 to 960) so the WhatsApp poster frame carries the sender.",
+          "why": "For 40 seconds the video looks like Shyamal's own creative, which implies affiliation. The director also asks 'who is using my logo?' in frame 1."
+        },
+        {
+          "scene": "6 (disclaimer) and 1",
+          "change": "Scene 6 disclaimer: 28px or larger, near-white on navy, wrapped over 3 lines at y 900 to 1040, visible for 4s or more. Text: 'Independent concept by IV Infotech. Voice is AI. Not affiliated with Shyamal Group, WhatsApp or Meta.' Move it out of the bottom edge.",
+          "why": "The current 17px grey-blue line sits in the WhatsApp control zone and is unreadable on a phone. It is the only independence and AI-voice disclosure."
+        },
+        {
+          "scene": "All scenes (captions and safe area)",
+          "change": "Replace the top chips with one caption pill per scene (text in wording_changes). Shrink the phone and list cards to y 150 to 920 and keep every essential element in y 140 to 1080. Nothing important touches the bottom edge or the top 10%.",
+          "why": "WhatsApp autoplays muted and crops or overlays the top and bottom of the header video. Captions-first is a campaign rule, and all four reviews flagged the missing captions."
+        },
+        {
+          "scene": "3 (night message) and the scene 3/4 framing",
+          "change": "Make it hypothetical in voice and caption ('Say it is 10:47 at night'). Shrink the phone to about 35% of the frame height and show the illustration behind it, so there is no large empty chat panel. Drop the 'online' status. Keep the focus on the buyer, not on an unanswered message.",
+          "why": "An empty chat with 'online' implies Shyamal's team ignores night enquiries. That was not observed, and the rules say never to show the lead's team failing."
+        },
+        {
+          "scene": "2 (ad and tap)",
+          "change": "Voice and caption say 'One of your Diwali ads' (only one of the three versions has the WhatsApp button). Show the page name exactly as in the Ad Library, or drop that line. Remove the 'Ready possession' text and the duplicate offer pill. Keep the logo, '3 & 4 BHK - Bhayli', the offer pill and the green 'Send WhatsApp message' button. Use a generic chat-bubble icon on the button, not a WhatsApp logo.",
+          "why": "Claim accuracy: the button exists on one ad version only, and the page name 'Shyamal Park' is not verified. The rules also ban WhatsApp and Meta logos."
+        },
+        {
+          "scene": "4 (auto reply)",
+          "change": "Stage the reveal, one beat at a time, each replacing the last and centred: (1) brochure card with an 'Automatic reply' tag (24px or larger), 10:48 PM stamp on the first bubble; (2) three question chips 'Budget? / 3 or 4 BHK? / Buying timeline?'; (3) two visit-time chips under a 'Visit time' heading, marked 'Example times'. Delete the 'Pick a site visit time' bubble, the duplicate 'Visit time?' chip and the 10px sliver of the old green bubble. Keep everything above y 1080.",
+          "why": "The scene is overloaded (about 25 words, five chips), cropped at the bottom edge, and the key payoff is the least visible. The word 'automatic' was only tiny grey text."
+        },
+        {
+          "scene": "5 (morning list)",
+          "change": "Delete the 3D tower, the orange shape clipped at the right edge and the cropped chair. Rows show: name, pill, slot. 'Example buyer A / B / C' - 'Visit booked' - 'Sat 11:00 AM'; 'Visit booked' - 'Sat 4:00 PM'; 'Asked' with no slot. Remove 'From Diwali ad'. Use the exact scene 4 robot (with the 'iv' chest badge) and make the team member look at the list.",
+          "why": "The tower reads as their building (unverified). 'Hot' and 'hot buyers first' claim lead scoring, and 'From Diwali ad' claims ad-source tracking; neither is in the verified pitch."
+        },
+        {
+          "scene": "6 (CTA)",
+          "change": "Replace the outlined 'Yes, send the demo' button with plain text: Tap the button below, then the quoted label 'Yes, send the demo', with a clear down arrow pointing out of the frame. Delete 'in the button below this video'. Shrink the white IV logo plate to about 60% width, and put the waving IV robot in the empty middle gap.",
+          "why": "Viewers will tap a fake in-video button and nothing happens. The dead gap and oversized logo plate outweigh the ask. The ask must match the real quick-reply label exactly."
+        },
+        {
+          "scene": "Timing and structure",
+          "change": "Cut from 47s to about 40s: scene 1 about 3.5s (logo lockup, logo is not altered), scene 2 about 6s, scene 3 about 5s, scene 4 about 11.5s (three staged beats), scene 5 about 7s, scene 6 about 7s. Hold the empty-chat state of scene 3 to 2s or less. Use the new voice script so the product appears by about 14s and the sender is named in the first 3s.",
+          "why": "The lead and persuasion reviews agree the first 15s decide the tap. The product and the sender should not wait until 20s and 36s. The 40s target is a compromise between the 30s and 42s suggestions."
+        }
+      ],
+      "should_fix": [
+        {
+          "scene": "1 (brand open)",
+          "change": "Put a flat Diwali illustration (diyas, string lights, marigold) behind the Shyamal lockup instead of an empty gradient. Fade the dust particles out so they do not cross the text. Tighten the gap between wordmark and project title and centre the group optically. Restyle the offer pill as a flat ribbon tag so it does not look tappable. Keep the logo and its colours unaltered, with the registered mark only if it is in their own published file.",
+          "why": "Scene 1 is a flat template that is the least NotebookLM-like part. Logo fidelity is a trademark and misrepresentation risk."
+        },
+        {
+          "scene": "2 (ad and tap, art)",
+          "change": "Extend the background art behind the ad card so there is no hard seam at y about 668. Regenerate the buyer with a curious smile instead of a startled face. Put the tap ripple on the button's centre-left with a finger icon, clear of the label text.",
+          "why": "The seam looks pasted. The raised brow and open mouth read as worry, and the ripple covers the 'ssage' of the button label."
+        },
+        {
+          "scene": "3 (night message, art)",
+          "change": "Fill the freed space with the night-window illustration and glow. Nudge the moon away from the old chip position (the chip is gone).",
+          "why": "The flat phone-UI card clashes with the painterly art when it is large."
+        },
+        {
+          "scene": "4 (buyer and robot)",
+          "change": "Swap in a smiling or relieved buyer pose. Enlarge the robot by about 30%, have it hold or point at the phone, and redraw the lilac hand that reads as a salute. Make the 'iv' badge clearly legible. Restyle it in the same flat style as the humans.",
+          "why": "No emotional payoff when the reply arrives, and the robot currently floats unconnected."
+        },
+        {
+          "scene": "5 and 6 (consistency)",
+          "change": "Use the same robot file in scenes 4, 5 and 6 (with the 'iv' badge each time). Give the scene 5 robot a small action, such as handing over a card.",
+          "why": "The scene 5 robot differs from scene 4 and could look like part of Shyamal's team without the badge."
+        },
+        {
+          "scene": "All scenes (theme thread)",
+          "change": "Style the caption pills in navy with a thin gold line, and use the same navy or gold on the card headers, so the Shyamal colours carry through scenes 2 to 5.",
+          "why": "Navy and gold appear only in scenes 1 and 6. This is a cheap way to keep the theme."
+        },
+        {
+          "scene": "All scenes (text size)",
+          "change": "Raise all grey sub-labels ('Sent automatically', slot times, '10:47 PM') to 24px or larger in darker grey. Cap UI text at about 10 words per scene.",
+          "why": "The brief was 'very little text', and the current 18 to 20px grey labels are unreadable at phone size."
+        },
+        {
+          "scene": "4 (brochure check)",
+          "change": "Before rendering, confirm a Park Lane brochure is published on shyamalgroup.co.in. If not, keep the card label as 'Project brochure' with the word 'Example' inside the EXAMPLE label.",
+          "why": "A published brochure is not in the verified facts."
+        },
+        {
+          "scene": "Voice pronunciation",
+          "change": "Generate and listen to the first line before rendering the full audio. If 'Shyaamal' still comes out wrong, use an ElevenLabs pronunciation dictionary entry or phoneme tag. Check 'Diwali' and 'I V Infotech' too. Keep the on-screen spelling as 'Shyamal'.",
+          "why": "A wrong pronunciation of their own name in the first second is a trust-killer."
+        }
+      ],
+      "wording_changes": [
+        {
+          "where": "Scene 1 - offer pill",
+          "old": "Diwali offer - First 5 bookings",
+          "new": "Your Diwali offer - first 5 bookings only"
+        },
+        {
+          "where": "Scene 1 - new line under the pill (and caption)",
+          "old": "(none)",
+          "new": "A concept by IV Infotech - not affiliated with Shyamal Group. Caption: An IV Infotech idea for Shyamal Park Lane"
+        },
+        {
+          "where": "Scene 2 - top chip",
+          "old": "Your Diwali ad",
+          "new": "Remove chip. Caption: One of your Diwali ads: Send WhatsApp message"
+        },
+        {
+          "where": "Scene 2 - bottom note",
+          "old": "Illustration of your ad",
+          "new": "Illustration, not your actual ad"
+        },
+        {
+          "where": "Scene 2 - ad card page name",
+          "old": "Shyamal Park",
+          "new": "Page name exactly as in the Ad Library, or remove the line"
+        },
+        {
+          "where": "Scene 2 - ad card",
+          "old": "Ready possession (plus the duplicate offer pill)",
+          "new": "Remove both. Keep 3 & 4 BHK - Bhayli, the offer pill, and the Send WhatsApp message button"
+        },
+        {
+          "where": "Scene 3 - top chip and chat header",
+          "old": "10:47 PM - night / Shyamal Park Lane, online",
+          "new": "Caption: Example: 10:47 PM, a buyer asks for details. Header: Shyamal Park Lane / Example chat, plus the EXAMPLE pill"
+        },
+        {
+          "where": "Scene 4 - top chip",
+          "old": "Reply in about a minute",
+          "new": "Caption: Example: automatic reply, about a minute"
+        },
+        {
+          "where": "Scene 4 - tag on the PDF card",
+          "old": "Brochure PDF - Sent automatically",
+          "new": "Project brochure - Automatic reply (24px or larger)"
+        },
+        {
+          "where": "Scene 4 - question chips",
+          "old": "Budget? / 3 & 4 BHK? / Visit time?",
+          "new": "Budget? / 3 or 4 BHK? / Buying timeline?"
+        },
+        {
+          "where": "Scene 4 - slot step",
+          "old": "Pick a site visit time (bubble) + Sat 11:00 AM / Sat 4:00 PM chips",
+          "new": "Heading: Visit time. Chips: Sat 11:00 AM / Sat 4:00 PM, inside the EXAMPLE label (Example times)"
+        },
+        {
+          "where": "Scene 5 - top chip",
+          "old": "Morning - hot buyers first",
+          "new": "Caption: Next morning: who asked, who booked a visit"
+        },
+        {
+          "where": "Scene 5 - row names, pills and sublabel",
+          "old": "Sample buyer 1/2/3 - Hot, Hot, New - From Diwali ad",
+          "new": "Example buyer A/B/C - Visit booked, Visit booked, Asked - remove 'From Diwali ad'"
+        },
+        {
+          "where": "Scene 6 - headline and CTA",
+          "old": "Yes, send the demo (outlined button) / in the button below this video",
+          "new": "Headline: See it for Shyamal Park Lane. Under it: Tap the button below: 'Yes, send the demo' (plain text with a down arrow, no button styling)"
+        },
+        {
+          "where": "Scene 6 - footer",
+          "old": "Independent concept. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.",
+          "new": "Independent concept by IV Infotech. Voice is AI. Not affiliated with Shyamal Group, WhatsApp or Meta."
+        }
+      ],
+      "voice_script_changes": "Changed. Paste this into ElevenLabs, one line per scene (the words in brackets are timing and are not spoken). About 84 words, about 35s of speech, video about 40s. Use the phonetic spelling 'Shyaamal' for the voice only.\n\n1 [0 to 3.5s]: An I V Infotech idea, for Shyaamal Park Lane.\n2 [3.5 to 9.5s]: One of your Diwali ads has a Send WhatsApp message button.\n3 [9.5 to 14.5s]: Say it is ten forty-seven at night. A buyer asks for details.\n4 [14.5 to 26s]: An automatic reply can send a brochure, ask three quick questions, and offer visit times, in about a minute.\n5 [26 to 33s]: By morning, your team sees who asked and who booked a visit, then takes over.\n6 [33 to 40s]: Want to see this for Shyaamal Park Lane? Tap the button below. It says: Yes, send the demo.\n\nWhat changed and why: scene 1 now names the sender (before, IV Infotech was named only at about 36s). Scene 2 says 'One of your Diwali ads' (before, 'A buyer sees your Diwali ad, and taps...'), because only one ad version has the button. Scene 3 is hypothetical ('Say it is...') and no longer implies Shyamal's team misses night enquiries. Scene 4 says the word 'automatic' out loud, keeps the soft 'can send' and 'about a minute', and does not use 'instant' or 'free'. Scene 5 adds 'then takes over' so the director sees the team staying in charge, and drops 'what they want'. Scene 6 removes the awkward 'Tap, Yes, send the demo' and the 'I V Infotech can show you' line, because the sender is already named in scene 1 and the footer. The AI-voice and independence line is on screen in scene 6 (28px or larger) and should also be in the WhatsApp message text.\n\nElevenLabs notes: generate scene 1 alone first and listen to the name; fix the pronunciation of 'Shyaamal' (use a pronunciation dictionary or phoneme tag if the spelling trick fails). Write 'I V' with a space so it is read as letters. Add a pause (a line break or a short break tag) after scene 2 so the tap animation lands, and after scene 4 so the visit-time beat is not rushed. If you keep a version with the two extra words 'Where can one tap lead?' at the end of scene 2, it adds about 2s and was dropped to keep the length near 40s. Do not add any numbers, hours saved or 24/7 claims.",
+      "keep_as_is": [
+        "Scene 1 uses their real logo, navy and gold theme, project name, Bhayli and the offer. The director recognises it instantly. Only add the sender line and the flat ribbon; do not recolour or redraw the logo.",
+        "The warm flat illustration style in scenes 2, 3 and 5, with the day, night, morning colour arc and the consistent buyer (blue sweater, dark cap) across scenes 2 to 4.",
+        "The ad replica facts in scene 2: 3 and 4 BHK, Bhayli, first 5 bookings, the Send WhatsApp message button. Keep leaving out the asterisked terms (Rs 51 lakh*, 100% SBI loan*) and all prices.",
+        "The IV robot in scene 4 as the friendly face of the automation (redraw the hand and enlarge it, keep the 'iv' badge and the character).",
+        "The scene 5 list card layout (round numbered avatars, pills, slots) and the smiling team member. The team is shown in control and never failing.",
+        "Soft claims: 'about a minute', 'can send', no 'free', no 'instant', no invented numbers, no director names, no claim that Shyamal replies slowly or has no CRM.",
+        "The scene 6 headline 'See it for Shyamal Park Lane' and the IV Infotech logo as the close, with the navy bookend echoing scene 1.",
+        "Type system: geometric display face for headings plus Inter for UI, high contrast, centred or aligned inside the cards."
+      ]
+    }
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Review"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Synthesize"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "review:visual",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "adb5561b33e2ee797",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792574703918,
+      "queuedAt": 1792574703816,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Not ready to send to a real builder. The illustrations in s…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~47 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a demo button and a page button. Product pitched: an automatic WhatsApp first reply for property enquiries (brochure, three q…",
+      "promptFramed": true,
+      "lastProgressAt": 1792574881622,
+      "tokens": 86518,
+      "toolCalls": 9,
+      "durationMs": 177702,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"Not ready to send to a real builder. The illustrations in scenes 2, 3 and 5 are warm and polished, with a consistent buyer character. The Shyamal navy and gold open and the IV Infotech close bookend the video well, and it is cleaner than the Nexus360 reference. But the video falls short of the owner's \\\"NotebookLM-like, very little text, neat\\\" brief in four ways. S…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "review:claims",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "aaf6992be9cb70668",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792574703918,
+      "queuedAt": 1792574703817,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Not safe to send as is. The factual copy is mostly clean: n…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~47 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a demo button and a page button. Product pitched: an automatic WhatsApp first reply for property enquiries (brochure, three q…",
+      "promptFramed": true,
+      "lastProgressAt": 1792574872604,
+      "tokens": 69645,
+      "toolCalls": 8,
+      "durationMs": 163685,
+      "resultPreview": "{\"score_out_of_10\":5,\"verdict\":\"Not safe to send as is. The factual copy is mostly clean: no \\\"free\\\", no \\\"instant\\\", no invented numbers, no directors' names, no claim that Shyamal's replies are slow, and no team shown failing. The blockers are labelling and attribution. Scenes 3 and 4 show no EXAMPLE label in the stills, even though the brief says they carry one. Shyamal's logo sits on every sc…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "review:lead",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "a23f77b10a251ec40",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792574703919,
+      "queuedAt": 1792574703817,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "ROLE-PLAY AS THE DIRECTOR (family-run Vadodara builder, Diw…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~47 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a demo button and a page button. Product pitched: an automatic WhatsApp first reply for property enquiries (brochure, three q…",
+      "promptFramed": true,
+      "lastProgressAt": 1792574929442,
+      "tokens": 91687,
+      "toolCalls": 9,
+      "durationMs": 220473,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"ROLE-PLAY AS THE DIRECTOR (family-run Vadodara builder, Diwali campaign running, 25+ years, many vendor pings). Honest probability that I tap \\\"Yes, send the demo\\\" as it stands: about 6% (range 4-8%). With the three changes at the bottom: about 10-12%. It is visibly better than a generic template and clearly about MY project, but it is 47 seconds long, makes me wai…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "review:persuasion",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "a2089e3ffe53f0da7",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792574703919,
+      "queuedAt": 1792574703818,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Clean, on-brand and compliant-minded, but it is a tidy expl…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~47 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a demo button and a page button. Product pitched: an automatic WhatsApp first reply for property enquiries (brochure, three q…",
+      "promptFramed": true,
+      "lastProgressAt": 1792574918916,
+      "tokens": 69617,
+      "toolCalls": 8,
+      "durationMs": 209881,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"Clean, on-brand and compliant-minded, but it is a tidy explainer, not yet a persuasive video, and I judge it weaker than the Nexus360 reference where it matters most: the first 3 seconds. Limit of this review: I only saw six stills, not the audio or motion. Pacing comments come from the script (about 85 words, roughly 35 s of speech in a 47 s video), so check them a…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "synthesize",
+      "phaseIndex": 2,
+      "phaseTitle": "Synthesize",
+      "agentId": "a50f8a2079e9e4d91",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792574932839,
+      "queuedAt": 1792574932785,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "All four reviews score the video 5 to 6 out of 10. They agr…",
+      "promptPreview": "You merge four independent reviews of a lead video into ONE prioritized change list. Resolve disagreements by following the campaign rules first (honesty beats persuasion), then the lead persona, then visual polish. Only list changes that are buildable in an HTML/CSS scene template with illustrated stills and an ElevenLabs voice. If the voice script should change, give the full new script (the own…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575090689,
+      "tokens": 81058,
+      "toolCalls": 1,
+      "durationMs": 157849,
+      "resultPreview": "{\"overall\":\"All four reviews score the video 5 to 6 out of 10. They agree on the same blockers: no EXAMPLE label on the chat scenes, Shyamal branding on every frame with IV Infotech only at the end, a tiny disclaimer, no captions, and a crammed scene 4. Rules are applied in order: campaign honesty first, then what the director needs to see, then polish. How the disagreements were settled: (1) Leng…"
+    }
+  ],
+  "totalTokens": 398525,
+  "totalToolCalls": 35
+}

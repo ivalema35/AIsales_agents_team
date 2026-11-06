@@ -1,0 +1,36 @@
+APPROVAL NEEDED [3ZFSQ]
+EMAIL
+To: info@brijgroup.in
+Lead label (typed by the agent, not checked): Brij Group
+Subject: Following up: short video for BRIJ Sandalwood
+Reply-To: info@ivinfotech.com
+Agent's reason (typed by the agent, not checked): Touch 2 (Day 3): short follow-up to the first email of 16 Oct; Brij opened the page once on 17 Oct and did nothing else. Owner asked for it.
+Links the lead will see:
+  https://www.ivinfotech.com/campaign/brij-sandalwood-5mbzd3
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20BRIJ%20Sandalwood
+  https://www.ivinfotech.com/assets/campaign/brij-sandalwood-5mbzd3/logo.png
+--- text ---
+[theme: corporate]
+
+Hello Brij Group team,
+
+A short follow-up to our note from last Friday. We made a short video and a page for BRIJ Sandalwood that show how a WhatsApp enquiry can get an automatic reply in about a minute.
+
+If it looks useful, a quick look is enough:
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/brij-sandalwood-5mbzd3
+
+If you would like to see it answer on WhatsApp, tap below. We reply with a short sample chat for BRIJ Sandalwood from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20BRIJ%20Sandalwood
+
+If this is not relevant for you, just reply "stop" and we will not write again.
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK 3ZFSQ to approve, NO 3ZFSQ to skip.
+Valid till 19 Oct 21:18 IST.

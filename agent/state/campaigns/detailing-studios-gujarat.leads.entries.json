@@ -1,0 +1,2689 @@
+[
+ {
+  "type": "lead",
+  "key": "detailing-krishna-auto-coating",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Krishna Auto Coating",
+   "city": "Mehsana",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot c: the Google listing has no website button), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Live Meta ad seen (Call now, started 28 Oct); same brand as Krishna Xtreme: message ONE number once.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 93273 66780",
+     "source": "https://www.google.com/maps/search/?api=1&query=Krishna%20Auto%20Coating&query_place_id=ChIJ0X4rv4FBXDkRCvr1__PECSk",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99255 53493",
+     "source": "https://www.google.com/maps/place/Krishna+Xtreme+Car+Detailing+Studio,+Mehsana/@23.6115473,72.3612505,17z/data=!3m1!4b1!4m6!3m5!1s0x395c438c0cfc6cb9:0x73bd3641379f4c37!8m2!3d23.6115473!4d72.3612505!16s%2Fg%2F11h7nbgr8c",
+     "note": "Alternative route found 30 Oct 2026 (published by the business); reaches: Brand's second line, shown for the Radhanpur Road (Xtreme) branch and the brand ; confidence high. Not used yet."
+    },
+    {
+     "kind": "email",
+     "value": "sunilprajapati11912@gmail.com",
+     "source": "https://www.facebook.com/krishnaautocoating/",
+     "note": "Alternative route found 30 Oct 2026 (published by the business); reaches: Whoever manages the page mailbox, a personal-name Gmail so probably the owner or; confidence high. Not used yet."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists in Mehsana (Nagalpur, Highway), phone matches, not closed (Maps data via Apify place-ID scrape 28 Oct 2026; WebFetch of Maps returns an empty page). No website; WhatsApp booking link present; 4.8 stars, 231 reviews. Newest 3 reviews: 24 Oct answered, 22 Oct and 12 Oct not, so 'last 3 have no reply' would be false. Ad 1161029812924965 confirmed: page krishna_auto_coating (1,533 likes), started 28 Oct, Call now, copy 'Slot book 9327366780' = the Maps number. Sister listing: Krishna Xtreme."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Wait for a person (button tap or typed reply); no more template touches for this brand (2 used). Anything further = the owner's own 1:1 message.",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: delivered 8 s later; its WhatsApp Business bot answered with an automatic greeting."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "Looked for alternative business-published contact routes (the WhatsApp number answered with a bot): 2 new route(s) saved under contacts; nothing was contacted."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "The first message (main line) was opened/read at 11:07 IST. The same template was then sent to the brand's second line (published on its Linktree and Xtreme listing): delivered 7 s later."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-xpert-gandhinagar",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Detailing Xpert - Gandhinagar",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot b: the newest Google reviews have no owner reply (4 unanswered)), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Two live click-to-WhatsApp ads seen (26-28 Oct); do not mention the ads.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 63546 96849",
+     "source": "https://www.google.com/maps/search/?api=1&query=Detailing%20Xpert%20-%20Gandhinagar&query_place_id=ChIJNzue8ycqXDkR-_bHsROmj7s",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Sargasan, Gandhinagar), phone matches, no website, 4.9 stars, 42 reviews, newest review 13 Aug 2026; newest 4 reviews unanswered (first reply is on the 5th). Two click-to-WhatsApp ads confirmed on page Detailing Xpert Gandhinagar (143 likes): 4719268468302036 (started 27 Oct, Gujarati Diwali copy) and 1148404271495151 (started 26 Oct, general ceramic-coating copy, not Diwali; shows end date 27 Oct though flagged active). The name is generic: other listings in Ahmedabad (Thaltej), Gandhidham, Jaipur, Delhi; no brand site found, so no chain proof, but owner-run is unconfirmed."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Check the receipt tomorrow; do not message by hand until it is clear",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: sent, but no delivery receipt yet (a late delivery is possible)."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-the-walker-s-detailing-studio",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "The Walker's Detailing Studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "ready",
+   "contacted": false,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "en",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot a: the website button on the Google listing opens a Google sign-in page), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Meta ad seen; do not mention it or the prices in it.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99740 93606",
+     "source": "https://www.google.com/maps/search/?api=1&query=The%20Walker%27s%20Detailing%20Studio&query_place_id=ChIJ19fFWIyHXjkRcsYniCZ_Rmc",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Nava Naroda/Nikol, Ahmedabad), phone matches, 4.9 stars, 152 reviews. The Maps website link (sites.google.com/view/thewalkersdetailingstudio/home) returns a 302 to accounts.google.com sign-in for a logged-out visitor (curl and WebFetch, 28 Oct 2026): problem confirmed. Owner replied to all 5 newest reviews, so the reviews slot is false. NEW: an active click-to-WhatsApp ad 1603165798491463 (page TheWalkersDetailingStudioNikol, 19 likes, started 7 Oct) carries the Maps phone and a price list, so it spends now; do not mention ads or prices."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Not reached by the template. Owner may send his own 1:1 WhatsApp message (never a same-day template retry)",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: NOT delivered: Meta error 131049 (per-user marketing message limit)."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-dnx-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "DNX Car Detailing Studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "en",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot d: the site has a Book Now button but no booking form), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Meta ad seen (page private in the Ad Library).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96382 45705",
+     "source": "https://www.google.com/maps/search/?api=1&query=DNX%20Car%20Detailing%20Studio&query_place_id=ChIJX0JoDauHXjkRyth5m-tnNlk",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    },
+    {
+     "kind": "email",
+     "value": "dnxdetailing.99@gmail.com",
+     "source": "https://dnxdetailing.in/",
+     "note": "Alternative route found 30 Oct 2026 (published by the business); reaches: unknown (likely owner or studio management; a Gmail inbox, no reader named); confidence high. Not used yet."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Nikol, Ahmedabad), phone matches, 4.9 stars, 45 reviews. dnxdetailing.in loads with call, WhatsApp and email links; the 'Book Now' menu item scrolls to a contact section and the HTML has no form; no analytics or ad-pixel tags in the served HTML (script-injected tags would not show). Owner replied to all 5 newest within hours in templated wording (my inference: tool-generated, so skip the reviews slot). NEW: ad status is known: 2 active click-to-WhatsApp ads (2305410660226804 started 21 Oct; 1109601145333091 started 27 Oct; page 21 likes; Maps phone in copy)."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Wait for a person (button tap or typed reply); do not answer the bot",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: delivered 8 s later; its WhatsApp bot answered with an automatic enquiry form."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "Looked for alternative business-published contact routes (the WhatsApp number answered with a bot): 1 new route(s) saved under contacts; nothing was contacted."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-motors-inn-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Motors Inn - Car Detailing Studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "en",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot b: the newest Google reviews have no owner reply (5 unanswered)), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Meta ad seen.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 63522 24007",
+     "source": "https://www.google.com/maps/search/?api=1&query=Motors%20Inn-Car%20Detailing%20Studio&query_place_id=ChIJ9yUR-c2HXjkRko3VnUBVtZ8",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Nikol, Ahmedabad), phone matches, 5.0 stars, 30 reviews, newest 22 Oct; newest 5 unanswered. motorsinn.in loads; it has a booking form whose script appears to build a pre-filled WhatsApp message or email draft (inferred from page code; no server endpoint found); no tel: link; no analytics tags. NEW: it pays for promotion: ad 3005976076418366 from a 45k-like food page (started 27 Oct) carries Motors Inn's phone and Nikol address; a PPF ad 2104098513561267 from page 'Motors Inn' (38 likes, started 6 Oct) is a name-only match."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-krishna-xtreme-car-detailing-studio-mehsana",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Krishna Xtreme Car Detailing Studio, Mehsana",
+   "city": "Mehsana",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot a: the Linktree website link returns 404; b: newest reviews unanswered), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. Same brand as Krishna Auto Coating: ONE message to ONE number.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99255 53493",
+     "source": "https://www.google.com/maps/search/?api=1&query=Krishna%20Xtreme%20Car%20Detailing%20Studio%2C%20Mehsana&query_place_id=ChIJuWz8DIxDXDkRN0yfN0E2vXM",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Radhanpur Road, Mehsana), phone matches, 4.3 stars, 64 reviews, WhatsApp link on Maps. Maps 'website' is linktr.ee/krishnacoating (loads). None of the newest 5 reviews answered, including a detailed 1-star from 1 Sep 2026 and two 1-stars from 11 Apr. NEW: the Linktree's own Website link (krishna-auto-coating.business.site) returns 404 on 28 Oct; its Facebook link is krishnaautocoating, the same page that runs Krishna Auto Coating's ad, and its WhatsApp number is this listing's number. Likely the same brand as lead 1; same owner not confirmed (different phone and address). No active ad found for the exact name."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-dwarkesh-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Dwarkesh Car Detailing Studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "en",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot c: the Google listing has no website button), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. No active ad found (exact-name search).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 91739 56488",
+     "source": "https://www.google.com/maps/search/?api=1&query=Dwarkesh%20Car%20Detailing%20Studio&query_place_id=ChIJ9bCvZDWHXjkRACZkQnPdLX4",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Nikol, Ahmedabad), phone matches, no website, 5.0 stars, 131 reviews, newest 24 Oct 2026. Of the newest 3 only the 23 Oct one is answered (1 of 3); 4 of the newest 5 are unanswered. No active ad found for the exact name."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Wait for a person (button tap or typed reply)",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: delivered 9 s later."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-rrr-detailing",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "RRR Detailing",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot a: the website button opens an Instagram profile, not a website), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. No active ad found; owner answers most reviews, so do not use slot b.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 63545 29994",
+     "source": "https://www.google.com/maps/search/?api=1&query=RRR%20Detailing&query_place_id=ChIJ2fXROEQrXDkRfAu2Nvljizc",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    },
+    {
+     "kind": "phone",
+     "value": "08401152286",
+     "source": "https://www.justdial.com/Gandhinagar-Gujarat/RRR-DETAILING-Nr-Sargasan-Cross-Road-Sargasan/9999PXX79-XX79-240901185047-Q9B8_BZDET",
+     "note": "Alternative route found 30 Oct 2026 (published by the business via a third-party directory); reaches: unknown, likely the owner or whoever handles Justdial leads; it is a different l; confidence medium. Not used yet."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Sargasan, Gandhinagar), phone matches. Maps website is instagram.com/rrr__detailing, a public profile (1,704 followers); the logged-out bio shows services and a Maps link only, no WhatsApp or site link. 4.9 stars, 101 reviews, newest 10 Oct 2026; owner replied to 2 of the newest 3 (4 of 5). No active ad found."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Owner may call the Justdial number or message 1:1; the first message reached the studio's WhatsApp bot.",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: delivered 7 s later; its WhatsApp bot answered with an automatic services list."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "Looked for alternative business-published contact routes (the WhatsApp number answered with a bot): 1 new route(s) saved under contacts; nothing was contacted."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "The same template was sent to the second number found on Justdial: NOT delivered (Meta 131026, the number is not on WhatsApp). No more template touches for this brand (2 used)."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-carx-care-the-detailing-studio-and-service-station",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Carx Care The Detailing Studio and Service Station (Raysan)",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "contacted",
+   "contacted": true,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot b: the newest Google reviews have no owner reply (5 unanswered)), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. No active ad found; possible multi-outlet brand (not confirmed).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 98981 79639",
+     "source": "https://www.google.com/maps/search/?api=1&query=Carx%20Care%20The%20Detailing%20Studio%20and%20Service%20Station%20Raysan%20Gandhinagar&query_place_id=ChIJQzr4JUuBXjkRoYHuIl1v02E",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Raysan, Gandhinagar), phone matches, no website, 4.8 stars, 105 reviews, newest 12 Sep 2026; newest 5 reviews unanswered. No active ad found. A partial India-wide Maps name search found only this Gujarat outlet plus an unrelated 4-review 'Carx care' in Varanasi: no chain evidence, but not exhaustive."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "verified",
+   "next_step": "Wait for a person (button tap or typed reply); do not answer the bot",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) sent from the company number: delivered 6 s later; its WhatsApp Business account answered with an automatic greeting."
+    },
+    {
+     "date": "2026-10-30",
+     "text": "Looked for alternative business-published contact routes (the WhatsApp number answered with a bot): 0 new route(s) saved under contacts; nothing was contacted."
+    }
+   ]
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-arihant-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "round-1"
+  ],
+  "data": {
+   "name": "Arihant Car Detailing Studio",
+   "city": "Mehsana",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-28 (Gujarat scan + independent re-check by a second agent on 28 Oct 2026)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Gandhinagar, English for Ahmedabad; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp, 1:1, to the number the studio publishes on its Google Maps listing. One message per brand, 10-12 new chats a day at most, no links in message 1.",
+   "best_angle": "Open with ONE thing literally true on THEIR Google or site page (slot c: the Google listing has no website button), then ask whether most bookings come through WhatsApp or phone (a one-word reply is enough). Never mention their ads, offers or prices; no price, free, instant, every or guarantee; no owner first name unless the studio's own page shows it. LOWEST priority: only 1 review in the last 12 months, trading unconfirmed.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 76000 93078",
+     "source": "https://www.google.com/maps/search/?api=1&query=Arihant%20Car%20Detailing%20Studio&query_place_id=ChIJ8Re4PzRBXDkRWd1y8VagFds",
+     "note": "Published on the studio's own Google Maps listing (checked 28 Oct 2026); not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "Listing exists (Highway Road, Mehsana), phone matches, Maps category 'Car accessories store', no website, 5.0 stars, 140 reviews, not marked closed. Newest 5 reviews all unanswered. But the newest review is 11 May 2026 and the one before it is 13 Aug 2025: only 1 review in the last 12 months, so it may be dormant; trading is unconfirmed. No active ad found for the exact name."
+   ],
+   "hypotheses": [
+    "The pain is inferred, not seen: we see a missing or broken website link, silent reviews and ads that go to WhatsApp or a call, not lost bookings. These studios win customers without a site (see the review counts)."
+   ],
+   "case_against": "Evidence is one scan of top-ranked studios; the Rs 5k a month fee holds only if the weekly work is visible; free tools exist (Google profile, Linktree, WhatsApp Business).",
+   "verification": "partly"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-auto-clinic",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Auto Clinic",
+   "city": "Ahmedabad (Iscon / Bellagio Road)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens the studio Instagram profile (seen 2026-11-04). Owner replies to reviews, so do not use the review slot.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95864 61141",
+     "source": "Google Maps listing \"Auto Clinic\" (read 2026-11-04)",
+     "note": "The listing's own Maps number; WhatsApp not confirmed; unknown whether owner or front desk."
+    },
+    {
+     "kind": "phone",
+     "value": "9909956565",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "Published by/for the business on the Llumar dealer row and repeated on localeye.in directory. Indian mobile: likely WhatsApp-capable, NOT confirmed. NOT seen on the Google Maps listing (Maps not reachable from here), so 'phone published on "
+    },
+    {
+     "kind": "phone",
+     "value": "9909956565",
+     "source": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing",
+     "note": "Second independent directory source for the same number."
+    },
+    {
+     "kind": "email",
+     "value": "v*********050@gmail.com",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "Personal-style Gmail on a supplier locator; NOT a sales route, email does not count for this campaign."
+    },
+    {
+     "kind": "instagram",
+     "value": "@autoclinic_ahmedabad",
+     "source": "https://www.instagram.com/autoclinic_ahmedabad/",
+     "note": "Business page; no phone or link in bio. Do not DM (cold)."
+    },
+    {
+     "kind": "website",
+     "value": "none found",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "No website on locator row, localeye, or Instagram bio; no site surfaced in searches."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps listing \"Auto Clinic\" (Bellagio Road, Ahmedabad): 4.6 stars, 444 reviews; the website button opens https://www.instagram.com/autoclinic_ahmedabad/ (no real site); the owner replies to reviews (seen 2026-11-04).",
+    "Llumar India dealer locator lists Auto Clinic, Ahmedabad, with phone and Instagram handle and no website field. [https://www.grasi.in/locate-llumar-dealer, page footer 2025; checked 2026-11-04]",
+    "Same phone number appears in an independent directory entry (localeye) with no website. [https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing, checked 2026-11-04]",
+    "Instagram page AUTOCLINIC states since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4.5k followers; bio has no website link. [https://www.instagram.com/autoclinic_ahmedabad/, checked 2026-11-04]",
+    "Two different street descriptions for the studio (Bellagio Road near Iscon Flyover, beside Maruti 360, 380053 vs Ambli Road, beside Rajwadi Tea Stall, 380058) - same Iscon area, can be the same place described differently, but unreconciled. [https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing, checked 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C before the Maps check; owner reach still unproven (the Maps number differs from the Llumar-locator number).",
+   "verification": "Maps listing read 2026-11-04 (rating, website button, phone, owner replies). Identity: Llumar dealer locator + Instagram + Maps."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-culture",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Detailing Culture",
+   "city": "Ahmedabad (Bodakdev)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Slot c (the Google listing shows no website button), verified 2026-11-04. Number = the wa.me / phone on the studio's own site (the Maps listing has no phone). Small, new studio (9 reviews).",
+   "contacts": [
+    {
+     "kind": "whatsapp",
+     "value": "+91 91063 26281",
+     "source": "https://detailingculture.in/contact",
+     "note": "wa.me link and phone on the studio's own site; Indian mobile, likely WhatsApp-capable; who answers (owner vs front desk/team) unknown"
+    },
+    {
+     "kind": "phone",
+     "value": "+91 91063 26281",
+     "source": "https://detailingculture.in/",
+     "note": "same number as above"
+    },
+    {
+     "kind": "phone",
+     "value": "9825033072",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "published by Garware (third party) for this studio, not by the studio itself; different number from the site; unknown whose it is"
+    },
+    {
+     "kind": "email",
+     "value": "detailingculture@gmail.com",
+     "source": "https://detailingculture.in/contact",
+     "note": "published on own contact page; not a way in for this campaign (WhatsApp is the channel)"
+    },
+    {
+     "kind": "website",
+     "value": "https://detailingculture.in",
+     "source": "https://detailingculture.in/",
+     "note": "own site, live"
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/detailing_culture1/",
+     "source": "https://www.instagram.com/detailing_culture1/",
+     "note": "business profile"
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/p/Detailing-Culture-61592006451171/",
+     "source": "https://detailingculture.in/",
+     "note": "linked from own site"
+    },
+    {
+     "kind": "maps",
+     "value": "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "resolves to a Google Maps place 'DETAILING CULTURE'; phone and website button on the listing could not be read"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps listing DETAILING CULTURE (Bodakdev): 5.0 stars, 9 reviews; the listing shows \"Add website\" and \"Add place's phone number\", i.e. no website button and no phone on Google (read 2026-11-04). The studio's own site detailingculture.in has a booking form and a wa.me link.",
+    "Own site /gallery/photos says no project photos have been added yet [https://detailingculture.in/gallery/photos, 2026-11-04 (date opened; page shows no date)]",
+    "Own site /gallery/videos says no project videos have been added yet [https://detailingculture.in/gallery/videos, 2026-11-04 (date opened; page shows no date)]",
+    "Site has a working-looking booking form (name, phone, vehicle, category, service, date, time) but no prices and no packages by car size; only Marine PPF has two tiers [https://detailingculture.in/booking, 2026-11-04]",
+    "No testimonials or Google-review block on the home page [https://detailingculture.in/, 2026-11-04]",
+    "Garware lists the studio as a Garware Application Studio at the same address [https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad, 2026-11-04]",
+    "Instagram profile has 426 followers and about 12 visible posts [https://www.instagram.com/detailing_culture1/, 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C: real studio, but owner reach unproven and no direct sign of lost enquiries.",
+   "verification": "Maps listing read 2026-11-04 (no website, no phone on the listing); own-site contact read the same day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-gujju-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Gujju Car Spa",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 78620 35430",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Gujju Car Spa, Gandhinagar: 4.9 stars, 144 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-devils-9-cars-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Devils'9 Cars Spa",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81548 97389",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Devils'9 Cars Spa, Gandhinagar: 4.4 stars, 240 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-dk-car-spa-gandhinagar",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "DK Car Spa Gandhinagar",
+   "city": "Gandhinagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 77779 99117",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: DK Car Spa Gandhinagar, Gandhinagar: 5.0 stars, 102 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-mr-autotech",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Mr AutoTech",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 98790 03203",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Mr AutoTech, Ahmedabad: 4.9 stars, 265 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-rub-n-shine-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Rub N Shine car detailing studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81281 97819",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Rub N Shine car detailing studio, Ahmedabad: 4.3 stars, 72 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-srs-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "SRS Car Detailing Studio",
+   "city": "Ahmedabad (Nikol)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 76230 45507",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: SRS Car Detailing Studio, Ahmedabad (Nikol): 5.0 stars, 43 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-venus-car-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Venus Car Studio",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 92658 55276",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Venus Car Studio, Ahmedabad: 4.9 stars, 172 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-hetu-s-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Hetu's Car Spa",
+   "city": "Ahmedabad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99093 94957",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Hetu's Car Spa, Ahmedabad: 4.4 stars, 79 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-a-cars-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "A+ Cars Detailing Studio",
+   "city": "Vadodara",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81280 80819",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: A+ Cars Detailing Studio, Vadodara: 5.0 stars, 129 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-carzhub-surat",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "CarzHub (Surat)",
+   "city": "Surat",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 88668 24720",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: CarzHub (Surat), Surat: 4.7 stars, 163 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-sp-car-care-ceramic-coating",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "SP Car Care & Ceramic Coating",
+   "city": "Surat",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 80005 22511",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: SP Car Care & Ceramic Coating, Surat: 5.0 stars, 55 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-prime-auto-spa-car-wash-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Prime Auto Spa (Car Wash & Detailing)",
+   "city": "North Gujarat (Kadi/Kalol/Patan area; exact town not read)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 72260 41191",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Prime Auto Spa (Car Wash & Detailing), North Gujarat (Kadi/Kalol/Patan area; exact town not read): 5.0 stars, 146 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-squad-nadiad",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Detailing Squad Nadiad",
+   "city": "Nadiad",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, slot c, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96629 43332",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Detailing Squad Nadiad, Nadiad: 4.5 stars, 76 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened, chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-autobro-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "AUTOBRO DETAILING STUDIO",
+   "city": "Ahmedabad (SG Highway / Makarba)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90334 21420",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: AUTOBRO DETAILING STUDIO, Ahmedabad (SG Highway / Makarba): 4.8 stars, 137 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-jb-the-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "JB The Car Detailing Studio",
+   "city": "Ahmedabad (Maninagar)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96624 69929",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: JB The Car Detailing Studio, Ahmedabad (Maninagar): 4.7 stars, 173 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-vb-the-car-detailing-hub",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "VB The Car Detailing Hub",
+   "city": "Ahmedabad (Ghodasar)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 77779 92642",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: VB The Car Detailing Hub, Ahmedabad (Ghodasar): 5.0 stars, 138 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-next-level-auto-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Next Level Auto Detailing Studio",
+   "city": "Ahmedabad (Bopal)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 94080 34007",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Next Level Auto Detailing Studio, Ahmedabad (Bopal): 4.5 stars, 284 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-the-dom-s-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "The Dom's Car Detailing Studio",
+   "city": "Ahmedabad (Gota)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 97730 85495",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: The Dom's Car Detailing Studio, Ahmedabad (Gota): 4.9 stars, 111 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-a-one-auto-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "A One Auto Detailing",
+   "city": "Ahmedabad (CBD Mall / SP Ring Road)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 97250 47041",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: A One Auto Detailing, Ahmedabad (CBD Mall / SP Ring Road): 4.8 stars, 46 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-tc4-car-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "TC4 Car Detailing",
+   "city": "Ahmedabad (Vastrapur)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90999 80530",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: TC4 Car Detailing, Ahmedabad (Vastrapur): 4.6 stars, 61 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-spray-spark",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Spray & Spark",
+   "city": "Ahmedabad (Sanjivani Hospital area)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 73832 63263",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Spray & Spark, Ahmedabad (Sanjivani Hospital area): 4.6 stars, 194 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-pro-adajan",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Detailing Pro (Adajan)",
+   "city": "Surat (Adajan)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 91068 51450",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Detailing Pro (Adajan), Surat (Adajan): 4.8 stars, 45 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-gleam-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Gleam Car Detailing Studio",
+   "city": "Surat (Pal)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99097 57775",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Gleam Car Detailing Studio, Surat (Pal): 4.9 stars, 95 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-perfect-shine-car-detailing-center",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Perfect Shine Car Detailing Center",
+   "city": "Surat (Pratham Circle)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 98253 78385",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Perfect Shine Car Detailing Center, Surat (Pratham Circle): 4.4 stars, 43 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-book-my-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Book My Detailing",
+   "city": "Surat (Dabholi)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99988 82425",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Book My Detailing, Surat (Dabholi): 5.0 stars, 61 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-classic-car-studio-rajkot",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Classic Car Studio (Rajkot)",
+   "city": "Rajkot (150 Feet Ring Rd)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-04).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 80004 91914",
+     "source": "Google Maps results list (read 2026-11-04)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-04: Classic Car Studio (Rajkot), Rajkot (150 Feet Ring Rd): 5.0 stars, 44 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-sunshine-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Sunshine Car Spa",
+   "city": "Ahmedabad (Ghatlodia)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 75677 35635",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Sunshine Car Spa, Ahmedabad (Ghatlodia): 4.9 stars, 204 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-sparkling-car-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Sparkling Car Studio",
+   "city": "Ahmedabad (Sola)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99245 05093",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Sparkling Car Studio, Ahmedabad (Sola): 4.8 stars, 58 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-autodox-carz",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "AutoDox Carz",
+   "city": "Surat (Vesu / Piplod)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99745 58098",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: AutoDox Carz, Surat (Vesu / Piplod): 4.9 stars, 76 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-mr-detailing-car-care-centre",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Mr.Detailing Car Care Centre",
+   "city": "Surat (Dindoli)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99794 83029",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Mr.Detailing Car Care Centre, Surat (Dindoli): 5.0 stars, 59 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-radhe-krishna-car-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Radhe Krishna Car Detailing",
+   "city": "Vadodara (Ajwa Rd)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95861 30367",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Radhe Krishna Car Detailing, Vadodara (Ajwa Rd): 5.0 stars, 143 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-csm-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Csm Detailing Studio",
+   "city": "Vadodara (Airport Circle)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 63514 94395",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Csm Detailing Studio, Vadodara (Airport Circle): 4.8 stars, 43 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-top-7-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "TOP 7 DETAILING",
+   "city": "Vadodara (Bhayli)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 83473 44522",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: TOP 7 DETAILING, Vadodara (Bhayli): 5.0 stars, 158 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailuxe",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Detailuxe",
+   "city": "Vadodara (Bhayli)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96017 31460",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Detailuxe, Vadodara (Bhayli): 5.0 stars, 41 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-brightspots-car-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "BRIGHTSPOTS car studio",
+   "city": "Rajkot (Bolbala Main Rd)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 92657 17142",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: BRIGHTSPOTS car studio, Rajkot (Bolbala Main Rd): 5.0 stars, 71 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-rideinstyl-ceramic-coating-ppf-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "RideinStyl - Ceramic Coating & PPF Studio",
+   "city": "Vapi (NH48)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95457 78806",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: RideinStyl - Ceramic Coating & PPF Studio, Vapi (NH48): 4.9 stars, 392 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-premium-auto-care-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Premium Auto Care & Car Detailing Studio",
+   "city": "Gandhidham",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 75750 40475",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: Premium Auto Care & Car Detailing Studio, Gandhidham: 4.9 stars, 66 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-9to9-car-detailing-studio-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-05",
+   "maps-list"
+  ],
+  "data": {
+   "name": "9TO9 Car Detailing Studio & Spa",
+   "city": "Bhuj",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-05 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-05).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90995 90019",
+     "source": "Google Maps results list (read 2026-11-05)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-05: 9TO9 Car Detailing Studio & Spa, Bhuj: 4.3 stars, 101 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-autoz-hub-ceramic-and-ppf-coating-centre",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "AUTOZ HUB ceramic and PPF coating centre",
+   "city": "Surat (Pal)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 88661 50002",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: AUTOZ HUB ceramic and PPF coating centre, Surat (Pal): 4.9 stars, 1235 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-veriton-automotive",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Veriton automotive",
+   "city": "Ahmedabad (Chandkheda)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81550 02219",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Veriton automotive, Ahmedabad (Chandkheda): 4.9 stars, 101 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-jd-carzspa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "JD Carzspa",
+   "city": "Ahmedabad (Kathwada Rd)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 94275 25335",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: JD Carzspa, Ahmedabad (Kathwada Rd): 4.8 stars, 72 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-motorus-detailing-modification-studio-gota",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Motorus Detailing & Modification Studio - Gota",
+   "city": "Ahmedabad (Gota)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 77780 84707",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Motorus Detailing & Modification Studio - Gota, Ahmedabad (Gota): 5.0 stars, 84 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-osean-auto-detail-workshop",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Osean Auto Detail Workshop",
+   "city": "Surat (VIP Rd, Vesu)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 99987 67577",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Osean Auto Detail Workshop, Surat (VIP Rd, Vesu): 5.0 stars, 68 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-kiyansh-autocare",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Kiyansh AutoCare",
+   "city": "Navsari",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 97149 93166",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Kiyansh AutoCare, Navsari: 4.7 stars, 79 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-m-y-car-z-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "M Y CAR'Z SPA",
+   "city": "Ankleshwar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 88668 00408",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: M Y CAR'Z SPA, Ankleshwar: 4.8 stars, 78 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-auto-1-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Auto - 1 Car Spa",
+   "city": "Ankleshwar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 74909 13083",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Auto - 1 Car Spa, Ankleshwar: 4.8 stars, 64 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-tlc-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "TLC CAR SPA",
+   "city": "Vadodara (New VIP Rd)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90994 46639",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: TLC CAR SPA, Vadodara (New VIP Rd): 4.4 stars, 125 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-mr-clean-the-car-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Mr. Clean the car detailing studio",
+   "city": "Himmatnagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 97239 24384",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Mr. Clean the car detailing studio, Himmatnagar: 4.6 stars, 73 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-car-spa-godhra",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "CAR SPA GODHRA",
+   "city": "Godhra",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens an Instagram profile (seen 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90335 25348",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: CAR SPA GODHRA, Godhra: 4.7 stars, 143 reviews, a phone number, and a Website button that opens instagram.com."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-bros-surendranagar",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Detailing Bros - Surendranagar",
+   "city": "Surendranagar",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95124 42452",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Detailing Bros - Surendranagar, Surendranagar: 5.0 stars, 42 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-chrome-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-11-06",
+   "maps-list"
+  ],
+  "data": {
+   "name": "Chrome Car Spa",
+   "city": "Ahmedabad (Jodhpur / Satellite)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-06 (Google Maps list view in the browser)",
+   "language": "EN",
+   "language_note": "Template is Hindi; reply in the language the owner uses (Gujarati / Hindi / English).",
+   "best_channel": "Template iv_detailing_video_hi_v1, one lead at a time, after the send-day re-check and the owner's OK code.",
+   "best_angle": "Slot c: the Google listing shows no website button (seen in the Maps results list 2026-11-06).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 75749 22347",
+     "source": "Google Maps results list (read 2026-11-06)",
+     "note": "The listing's own number; WhatsApp not confirmed; owner vs front desk unknown."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps list view 2026-11-06: Chrome Car Spa, Ahmedabad (Jodhpur / Satellite): 4.5 stars, 41 reviews, a phone number, and NO Website button."
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Only the Maps list card was read: the listing was not opened; chain / multi-outlet status, owner identity and WhatsApp were not checked.",
+   "verification": "Maps results list only (not opened); re-check on the send day."
+  }
+ }
+]

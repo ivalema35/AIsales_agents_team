@@ -1,0 +1,270 @@
+{
+ "employee_cases": [
+  {
+   "label": "CG junior caller / appointment setter",
+   "fixed": 15000,
+   "pf_edli_admin": 975,
+   "esi": 488,
+   "incentive": 2000,
+   "phone": 600,
+   "crm": 0,
+   "equipment": 0,
+   "cash_monthly": 19062,
+   "recruit_amortised": 312,
+   "ramp_amortised": 625,
+   "allin_monthly": 20000,
+   "annual_ctc_fixed": 180000
+  },
+  {
+   "label": "CG mid BDE (central case)",
+   "fixed": 25000,
+   "pf_edli_admin": 1625,
+   "esi": 0,
+   "incentive": 5000,
+   "phone": 800,
+   "crm": 800,
+   "equipment": 1100,
+   "cash_monthly": 34325,
+   "recruit_amortised": 1042,
+   "ramp_amortised": 1562,
+   "allin_monthly": 36929,
+   "annual_ctc_fixed": 300000
+  },
+  {
+   "label": "CG experienced BDE (ERP/real-estate, can talk to owners)",
+   "fixed": 40000,
+   "pf_edli_admin": 2600,
+   "esi": 0,
+   "incentive": 8000,
+   "phone": 1000,
+   "crm": 1400,
+   "equipment": 1250,
+   "cash_monthly": 54250,
+   "recruit_amortised": 2500,
+   "ramp_amortised": 2500,
+   "allin_monthly": 59250,
+   "annual_ctc_fixed": 480000
+  },
+  {
+   "label": "Metro mid-level BDE (Bengaluru modelled median Rs 4.9 L)",
+   "fixed": 40833,
+   "pf_edli_admin": 2654,
+   "esi": 0,
+   "incentive": 8000,
+   "phone": 1000,
+   "crm": 1400,
+   "equipment": 1250,
+   "cash_monthly": 55137,
+   "recruit_amortised": 2552,
+   "ramp_amortised": 2552,
+   "allin_monthly": 60241,
+   "annual_ctc_fixed": 489996
+  }
+ ],
+ "employee_low_high": [
+  {
+   "label": "CG low corner (Rs 15k fixed, minimal extras)",
+   "fixed": 15000,
+   "pf_edli_admin": 975,
+   "esi": 488,
+   "incentive": 2000,
+   "phone": 600,
+   "crm": 0,
+   "equipment": 0,
+   "cash_monthly": 19062,
+   "recruit_amortised": 312,
+   "ramp_amortised": 625,
+   "allin_monthly": 20000,
+   "annual_ctc_fixed": 180000
+  },
+  {
+   "label": "CG high corner (Rs 45k fixed)",
+   "fixed": 45000,
+   "pf_edli_admin": 2925,
+   "esi": 0,
+   "incentive": 10000,
+   "phone": 1000,
+   "crm": 1400,
+   "equipment": 1250,
+   "cash_monthly": 61575,
+   "recruit_amortised": 2812,
+   "ramp_amortised": 2812,
+   "allin_monthly": 67200,
+   "annual_ctc_fixed": 540000
+  }
+ ],
+ "employee_cost_per_hour": 210,
+ "employee_cost_per_100_researched": [
+  15737,
+  20982,
+  31474
+ ],
+ "system_compute_rs_per_builder": [
+  37,
+  76,
+  208
+ ],
+ "system_cost_to_serve_per_100_researched": [
+  6803,
+  12600,
+  28294
+ ],
+ "system_cost_to_serve_month1_pool150": {
+  "compute": 11400,
+  "video": 3000,
+  "whatsapp": 264,
+  "labour": 19350,
+  "tools": 3000,
+  "total": 37014
+ },
+ "system_cost_to_serve_steady": {
+  "compute": 608,
+  "video": 180,
+  "whatsapp": 98,
+  "labour": 9675,
+  "tools": 3000,
+  "total": 13561
+ },
+ "cp_2_of_7": [
+  3.7,
+  71.0
+ ],
+ "cp_3_of_7": [
+  9.9,
+  81.6
+ ],
+ "cp_0_of_9": [
+  0.0,
+  33.6
+ ],
+ "cp_0_of_30": [
+  0.0,
+  11.6
+ ],
+ "expected_qc_90d": {
+  "employee_pool72_90d": [
+   0.28,
+   1.15,
+   4.21
+  ],
+  "system_pool72_90d": [
+   0.0,
+   0.32,
+   1.56
+  ],
+  "hybrid_pool72_90d": [
+   0.28,
+   1.38,
+   5.3
+  ],
+  "employee_pool150_90d": [
+   0.59,
+   2.4,
+   8.78
+  ],
+  "system_pool150_90d": [
+   0.0,
+   0.68,
+   3.24
+  ],
+  "hybrid_pool150_90d": [
+   0.59,
+   2.87,
+   11.04
+  ],
+  "employee_pool470_90d": [
+   1.85,
+   7.52,
+   27.49
+  ],
+  "system_pool470_90d": [
+   0.0,
+   2.12,
+   10.15
+  ],
+  "hybrid_pool470_90d": [
+   1.85,
+   9.0,
+   34.6
+  ]
+ },
+ "breakeven_required_system_qc_per_month": {
+  "20000": {
+   "0.5": 0.27,
+   "1.0": 0.54,
+   "2.0": 1.08,
+   "4.0": 2.17
+  },
+  "35000": {
+   "0.5": 0.47,
+   "1.0": 0.95,
+   "2.0": 1.9,
+   "4.0": 3.79
+  },
+  "50000": {
+   "0.5": 0.68,
+   "1.0": 1.35,
+   "2.0": 2.71,
+   "4.0": 5.42
+  }
+ },
+ "fee_to_employee_ratio": {
+  "20000": 0.54,
+  "35000": 0.95,
+  "50000": 1.35
+ },
+ "cost_per_qc_employee": {
+  "0.5": 73858,
+  "1.0": 36929,
+  "2.0": 18464,
+  "4.0": 9232
+ },
+ "equalising_fee_pool72_central": 10386,
+ "equalising_fee_pool150_central": 10386,
+ "equalising_fee_pool470_central": 10386,
+ "employee_first90_cost": 73858,
+ "pilot_sizing": {
+  "13": {
+   "p_any_at_2_5": 0.28,
+   "p_any_at_5": 0.49,
+   "p_any_at_10": 0.75,
+   "upper95_if_zero": 0.206
+  },
+  "27": {
+   "p_any_at_2_5": 0.5,
+   "p_any_at_5": 0.75,
+   "p_any_at_10": 0.94,
+   "upper95_if_zero": 0.105
+  },
+  "29": {
+   "p_any_at_2_5": 0.52,
+   "p_any_at_5": 0.77,
+   "p_any_at_10": 0.95,
+   "upper95_if_zero": 0.098
+  },
+  "45": {
+   "p_any_at_2_5": 0.68,
+   "p_any_at_5": 0.9,
+   "p_any_at_10": 0.99,
+   "upper95_if_zero": 0.064
+  },
+  "100": {
+   "p_any_at_2_5": 0.92,
+   "p_any_at_5": 0.99,
+   "p_any_at_10": 1.0,
+   "upper95_if_zero": 0.03
+  }
+ },
+ "breakeven_fee_by_rho": {
+  "0.25": 9232,
+  "0.5": 18464,
+  "0.75": 27697,
+  "1.0": 36929,
+  "1.5": 55394
+ },
+ "pilot_floor_3_months_avg_per_month": 21379,
+ "pilot_floor_3_months_total": 64136,
+ "employee_annual_allin_central": 443148,
+ "new_projects_per_month": 8.4,
+ "new_qualifying_builders_per_month": 4.1
+}

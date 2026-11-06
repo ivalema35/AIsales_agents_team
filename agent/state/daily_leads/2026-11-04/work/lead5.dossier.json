@@ -1,0 +1,62 @@
+{
+  "business": "Dignity Cares (Dignity Care, Garware Application Studio)",
+  "city": "Ghodasar, Ahmedabad",
+  "identity_verified": true,
+  "verification_trail": [
+    "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad - Garware's own applicator list shows 'Dignity Care (Garware Application Studio)', 75 New Arti Society, Tulsikunj, Prakash Nagar, Ghodasar, Ahmedabad 380050, phone 9925784929, no website; its Get Direction map link resolves to the Google Maps place 'Empire Heights' (Ghodasar), which reconciles the address conflict with Justdial",
+    "Justdial listing (seen via search snippet only, page itself returned 403): 'Dignity Cares', 4 Ground Floor, Empire Heights, Ghodasar 380050; car wash, detailing, wrapping, teflon coating; 4.2 from 4 reviews; hours about 9:30-20:00; a second older Justdial page (about 917 days old) repeats the address",
+    "https://dignitycare.in - Hostinger 'Parked Domain' page, no owner or business named; NOT attributable to the studio",
+    "WebSearch for name + phone + Ahmedabad: no Instagram, Facebook, own website or Google Maps review data surfaced; no other independent source found"
+  ],
+  "official_website": "none found (dignitycare.in is a parked Hostinger page, ownership unconfirmed)",
+  "website_status": "none found / possibly a parked domain (unconfirmed). Google listing website button NOT checked",
+  "what_they_do": "Car wash, car detailing, wrapping, Teflon coating; listed by Garware as a PPF application studio. Likely a small car wash plus detailing outlet rather than a pure detailing studio.",
+  "entity_type": "end_business",
+  "size_cues": "Single outlet. Justdial 4 reviews only (4.2). Open for roughly 2.5 years going by the older Justdial listing (inferred from listing age). Garware applicator listing indicates a manufacturer-approved PPF installer, no staff count.",
+  "decision_maker": "not found",
+  "contacts": [
+    {"kind": "phone", "value": "9925784929 (Indian mobile, likely WhatsApp-capable)", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "note": "Published by the manufacturer (Garware) in its applicator register, not confirmed as the number on the studio's own Google Maps listing; unknown whether it reaches the owner or a front desk"},
+    {"kind": "maps", "value": "Google Maps place 'Empire Heights', Ghodasar (via maps.app.goo.gl/dCm6ZRnhF3ACYKGi6)", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "note": "Resolves to the building, not clearly to a business profile; the studio's own Maps profile (phone, website button, reviews) was not reachable"},
+    {"kind": "maps", "value": "Justdial listing Dignity Cares, Ghodasar", "source_url": "https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services", "note": "Page blocked (403); only seen via search snippet; no contact read from it"}
+  ],
+  "observed_facts": [
+    {"fact": "Garware lists Dignity Care as a Garware Application Studio in Ghodasar with phone 9925784929 and no website", "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad", "date": "checked 2026-11-04 (page undated)"},
+    {"fact": "Justdial lists Dignity Cares at Empire Heights, Ghodasar for car wash, detailing, wrapping and teflon coating, 4.2 stars from 4 reviews; no website in the snippet", "source_url": "https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services", "date": "checked 2026-11-04 via search snippet"},
+    {"fact": "dignitycare.in resolves to a Hostinger parked-domain page with no owner named", "source_url": "https://dignitycare.in", "date": "2026-11-04"}
+  ],
+  "hypotheses": [
+    "Studio may have no working own website (only two directory-style listings found), which would make slot c (no website button) the opening, but this is unverified until the Google profile is seen",
+    "The parked dignitycare.in may belong to the studio and be unused; no evidence",
+    "Phone 9925784929 probably reaches the owner or a small team given the single-outlet scale, but it comes from the manufacturer register, not the studio's own listing",
+    "Garware certification suggests it sells PPF/coating jobs of meaningful ticket size, so it can probably afford Rs 5k a month; unproven"
+  ],
+  "need_evidence": "inferred",
+  "ability_to_pay": "Weak to modest signal: Garware-approved applicator (suggests PPF work) but only 4 Justdial reviews, no ads seen (ad status not checked), no visible Instagram or reviews presence, may be mostly a car-wash business.",
+  "pay_signal": "weak",
+  "reachability": "business_contact",
+  "owner_direct_contact": "unknown",
+  "resistance": "None observed. No vendor or website visible. Risk that it is mainly a car-wash point (excluded type) and that the owner is not the phone answerer.",
+  "grade": "C",
+  "reject_reason": "",
+  "case_for": "Real, single-outlet Gujarat studio verified by two independent sources (Garware register and Justdial) that agree on name, area and services; no own website visible; Garware-approved PPF installer; phone published by a third party is an Indian mobile.",
+  "case_against": "Need is only 'no website found', not observed on the Google profile (website button, reviews and owner replies never seen); phone is from the manufacturer, not the studio's own Maps listing, owner reach unknown; weak pay signal (4 reviews, no ads known); may be a plain car-wash business with detailing as a sideline; no Instagram or Facebook found so little proof content to build a proof page from; address differs between sources (reconciled via map link).",
+  "best_angle": "Slot c only, and only after someone looks at the Google Maps profile and confirms there is no website button: a short note that we noticed the studio has no website link on Google and that customers cannot tap to book or see before and after proof; offer a one-page booking and proof page. Do not claim lost bookings. Do not use until slot c is confirmed.",
+  "best_channel": "WhatsApp or call on 9925784929 (likely WhatsApp) but only once the number is matched to the studio's own Maps listing; no opt-in route exists, so first-touch requires owner approval of this specific lead. Not ready now.",
+  "gaps": [
+    "Own Google Maps profile: published phone, website button, newest 3 reviews and owner replies, review count and dates",
+    "Whether dignitycare.in belongs to the studio",
+    "Instagram or Facebook presence (none found by search)",
+    "Who the owner is and whether 9925784929 reaches him",
+    "Ad Library status (not checked, low expected value)",
+    "Whether it is mainly a car wash point or a real detailing/PPF studio",
+    "Justdial page body (403)"
+  ],
+  "phone_published": "9925784929 on Garware applicator register (manufacturer, not confirmed on the studio's own Maps listing)",
+  "newest_review_date": "unknown (Justdial: 4 reviews, dates not seen; Google reviews not seen)",
+  "owner_replies_in_newest_3": "unknown",
+  "ad_status": "not checked",
+  "brand_franchise_flag": "single outlet; Garware Application Studio is a manufacturer certification, not a franchise of a studio brand",
+  "safe_first_message_slot": "c, conditional on confirming no website button on the Google profile; none confirmed yet",
+  "ready_for_campaign": false,
+  "reason_not_ready": "Grade C: need inferred, owner-direct contact unknown (number from manufacturer register, not the studio's own listing), weak pay signal, slot not confirmed."
+}

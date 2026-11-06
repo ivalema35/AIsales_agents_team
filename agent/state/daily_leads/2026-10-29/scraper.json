@@ -1,0 +1,921 @@
+{
+ "campaign": "WhatsApp patient desk for doctor-owned clinics (Gujarat)",
+ "need": "Doctor-owned clinics (dentist, skin / cosmetic / hair, physio) that already pay Meta for click-to-WhatsApp ads, so they pay for enquiries. UNPROVEN and still to be tested: that they fail to answer some of those enquiries (after hours, busy chairs) or lose patients to no-shows. Never write it as a fact about the clinic.",
+ "plan_round1": {
+  "need_analysis": {
+   "summary": "Doctor-owned clinics in Gujarat that already pay Meta for click-to-WhatsApp ads, so they pay per enquiry. Whether they fail to answer some of those enquiries (after hours, busy chairs) or lose patients to no-shows is unproven and is what the first-touch question tests. The aim is to find the owner-doctor of a 1-3 branch clinic who is demonstrably paying for WhatsApp enquiries now.",
+   "who_has_this_need": "Independent doctor-owned clinics with 1-3 branches in Ahmedabad, Surat, Rajkot, Gandhinagar doing high-value work (hair transplant, skin and cosmetic, implants and dental, ortho, physio packages) and running a WhatsApp-opening Meta ad for 30+ days.",
+   "observable_signals": [
+    "Active Facebook/Instagram ad whose call-to-action is WhatsApp (Send WhatsApp message, wa.me or api.whatsapp.com link) with a start date 30+ days ago in the Meta Ad Library",
+    "Ad copy or page name naming a doctor ('Dr ...') and a city or locality in the target geography",
+    "Small number of distinct pages and branches for the advertiser (1-3), not a chain or an agency page",
+    "Google Maps listing with a mobile (not landline) number and owner-doctor name, few branches",
+    "Public Google reviews, newer than 90 days, complaining about unanswered calls, no reply on WhatsApp or long waits (used only as a signal, never mentioned to the clinic)",
+    "Clinic hiring a receptionist, telecaller or front-desk person (job post) as a sign that enquiry handling is manual"
+   ],
+   "where_signals_show": [
+    "Meta Ad Library (facebook.com/ads/library), keyword search with country=IN, active ads",
+    "Google Maps listing and its reviews",
+    "Clinic's own website or public Facebook page (footer or contact page) for the business-published mobile and the doctor name",
+    "Job boards (Indeed, Naukri, Apna) for receptionist or telecaller posts",
+    "Practo, JustDial, Sulekha (only list the type of business, not the need)"
+   ],
+   "disqualifiers": [
+    "Chains or 3+ branches or 2+ cities",
+    "Multi-speciality hospitals, hospital or booking desks",
+    "Agency-run pages (page owner or ad link points to an agency, many unrelated advertisers)",
+    "Doctors listed only on Practo or a platform with no clinic of their own",
+    "Ayurved polyclinics",
+    "Only contact is a landline desk, auto-greeting, call centre, or email",
+    "Ad start date under 30 days, or ad no longer active",
+    "Anything already in the existing leads list (Mehsana clinics, Zorbal, Amica, Dabhi, Sure Align, S M Wellness, Bhavyaa, Apollo, etc.)"
+   ]
+  },
+  "considered": [
+   {
+    "source": "Meta Ad Library via Apify curious_coder/facebook-ads-library-scraper (keyword search URLs, country IN, active)",
+    "category": "ad library",
+    "signal_for_this_need": "Strongest available: it shows the exact behaviour in question, a clinic paying Meta for enquiries, with a CTA type (WhatsApp) and a start date that proves 30+ days of spend. The research verdict names this as the best lead source.",
+    "volume_in_geo": "High. Dental, hair and skin keywords with city names return dozens of active Indian clinic advertisers per city; after chain/agency filters expect roughly 5-10 per 120 ads.",
+    "reachability": "Page name and ad copy often name the doctor; link_url sometimes contains a wa.me number. Mobile then confirmed on the clinic's own site, Maps listing or Facebook page about section (published by the business).",
+    "cost_usd": 0.1,
+    "risk": "Ad Library is public data and the actor reads public pages. Keyword search cannot filter by city so results depend on city words in ad text; some noise from agencies. Actor is a community actor, reliability moderate.",
+    "verdict": "chosen",
+    "why": "Only source that shows the need signal (paid WhatsApp enquiries, running 30+ days) itself rather than just listing clinics."
+   },
+   {
+    "source": "Google Maps places plus keyword-filtered reviews via Apify compass/crawler-google-places",
+    "category": "maps and review sites",
+    "signal_for_this_need": "Medium-strong: reviews dated within 90 days that say calls are not picked up or WhatsApp is not answered are a direct trace of the failure the offer fixes; the listing also gives phone, category and review count. Complements the ad signal (ad shows spend, reviews show leakage).",
+    "volume_in_geo": "Large list of clinics per city, but only a minority have matching recent reviews; expect 2-4 usable candidates from about 20 places.",
+    "reachability": "Good: listing publishes phone, website and often the doctor name in the title ('Dr X Skin Clinic'). Mobile vs landline can be told from the number.",
+    "cost_usd": 0.12,
+    "risk": "Google Maps scraping is a ToS grey area but the actor is official Apify (compass), 46k monthly users, reliable. Reviewer personal data must be turned off (scrapeReviewsPersonalData=false). Reviews are never to be quoted to the clinic.",
+    "verdict": "chosen",
+    "why": "Independent second signal on the same need, and it also yields the branch count and phone type needed to qualify Ad Library hits. Different tool output and different kind of evidence than source 1."
+   },
+   {
+    "source": "Practo / JustDial / Sulekha doctor and clinic directories (Apify Practo scrapers, about $0.001-0.005 per doctor)",
+    "category": "directories",
+    "signal_for_this_need": "Weak: only proves a clinic exists and its specialty. Practo is also a booking platform that already gives patients appointment slots, which can mean the clinic already has a desk or relies on the platform.",
+    "volume_in_geo": "Very high (thousands of doctors).",
+    "reachability": "Phone numbers hidden or routed through the portal; profile fees and clinic addresses only. Does not meet the 'business-published contact' rule.",
+    "cost_usd": 0.1,
+    "risk": "Platform ToS restricts scraping; Indian residential proxies recommended; community actors with few users.",
+    "verdict": "rejected",
+    "why": "Lists the right type of business but shows no sign of the need, and contacts are portal-routed."
+   },
+   {
+    "source": "Job posts: clinic receptionist / telecaller / front desk roles (Indeed, Naukri, Apna, WorkIndia) via free web search",
+    "category": "job posts",
+    "signal_for_this_need": "Medium: a doctor-owned clinic hiring a receptionist or telecaller to handle enquiries and appointments shows the owner feels the manual workload. But it means they are fixing it with a person, and most posts are by chains or hospitals.",
+    "volume_in_geo": "Low to medium; few independent clinics post online, many hiring is by word of mouth.",
+    "reachability": "Posts usually give an HR number or a portal form; the employer name is often masked.",
+    "cost_usd": 0,
+    "risk": "Low legally; heavy noise and anonymous employers; stale posts.",
+    "verdict": "rejected",
+    "why": "Free but low yield for independent clinics and the contact is often a portal or HR line. Kept as a fallback."
+   },
+   {
+    "source": "Instagram / Facebook business pages and Reels of clinics",
+    "category": "social platforms",
+    "signal_for_this_need": "Medium (shows active promotion) but this requires scraping profiles on Facebook and Instagram.",
+    "volume_in_geo": "High.",
+    "reachability": "Bio numbers are business-published.",
+    "cost_usd": 0.1,
+    "risk": "The brief forbids scraping personal profiles on Instagram, Facebook, X, and platforms block it.",
+    "verdict": "rejected",
+    "why": "Out of bounds for scraping under the rules; the Ad Library covers the paid-promotion part legitimately."
+   },
+   {
+    "source": "Statutory registers: Gujarat Medical Council, NMC registry, Gujarat clinical establishment registration, GST",
+    "category": "statutory registers",
+    "signal_for_this_need": "None: registers list doctors or entities, not behaviour.",
+    "volume_in_geo": "Complete but unfiltered (tens of thousands of doctors).",
+    "reachability": "Registers give names and registration numbers, rarely a public phone, and no clinic branch or ad information.",
+    "cost_usd": 0,
+    "risk": "Low, but heavy manual effort and no way to tell advertisers from non-advertisers.",
+    "verdict": "rejected",
+    "why": "Cannot show the need and gives no contact."
+   },
+   {
+    "source": "Industry association member lists (Indian Dental Association Gujarat, IAP, Gujarat physio association, IADVL branches)",
+    "category": "association lists",
+    "signal_for_this_need": "Weak: membership shows only that the person is a practising doctor.",
+    "volume_in_geo": "Medium; many lists are PDFs or members-only.",
+    "reachability": "Often list clinic address and mobile, published by the association not the business.",
+    "cost_usd": 0,
+    "risk": "Privacy concern with doctors' personal mobiles; many members-only.",
+    "verdict": "rejected",
+    "why": "No need signal and the contact is published by a third party."
+   },
+   {
+    "source": "Event and exhibitor lists (IDA Gujarat state conference, Aesthetic/hair conferences, Surat/Ahmedabad health expos)",
+    "category": "events",
+    "signal_for_this_need": "Weak: sponsors and exhibitors are suppliers and big brands; attending doctors are not listed.",
+    "volume_in_geo": "Low.",
+    "reachability": "Exhibitor company contacts, not clinic owners.",
+    "cost_usd": 0,
+    "risk": "Low.",
+    "verdict": "rejected",
+    "why": "Lists the wrong side (suppliers, chains) and not the clinic owners."
+   },
+   {
+    "source": "News and launch lists: clinic inaugurations, 'new branch' articles in Divya Bhaskar, Times of India city pages",
+    "category": "news and launches",
+    "signal_for_this_need": "Weak to medium: new clinics spend on ads and have no process yet, but a launch does not show a WhatsApp enquiry flow.",
+    "volume_in_geo": "Low; few launches per month and mostly chains or hospitals.",
+    "reachability": "Name and address of the doctor, often no phone.",
+    "cost_usd": 0,
+    "risk": "Press-release style copy, hard to verify.",
+    "verdict": "rejected",
+    "why": "Too few and no spend signal."
+   },
+   {
+    "source": "Reddit, Quora and local WhatsApp or Facebook doctor communities",
+    "category": "communities",
+    "signal_for_this_need": "Weak: general complaints, not tied to a specific clinic with contact.",
+    "volume_in_geo": "Very low for Gujarat clinics.",
+    "reachability": "Mostly anonymous.",
+    "cost_usd": 0,
+    "risk": "Login walls and personal data.",
+    "verdict": "rejected",
+    "why": "Anonymous and unreachable."
+   },
+   {
+    "source": "Google Play / App Store listings of clinic apps",
+    "category": "app stores",
+    "signal_for_this_need": "Very weak: very few independent clinics have apps; those that do already have a booking flow.",
+    "volume_in_geo": "Near zero.",
+    "reachability": "Developer contact only.",
+    "cost_usd": 0,
+    "risk": "Low.",
+    "verdict": "rejected",
+    "why": "Negligible volume and the buyer already has appointment tooling."
+   }
+  ],
+  "chosen": [
+   {
+    "id": "meta-ad-library-clinics",
+    "name": "Meta Ad Library: WhatsApp-opening ads of doctor-named clinics (30+ days running)",
+    "tool": "apify",
+    "channel_type": "ad library",
+    "how_to_run": "Apify actor curious_coder/facebook-ads-library-scraper (pay per event: $0.00075 per ad, $0.00005 start). Input: {\"urls\":[{\"url\":\"https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&q=hair%20transplant%20Ahmedabad&search_type=keyword_unordered&media_type=all\"},{\"url\":\"...q=dental%20implant%20Surat...\"},{\"url\":\"...q=dentist%20Rajkot...\"},{\"url\":\"...q=skin%20clinic%20Ahmedabad...\"},{\"url\":\"...q=dermatologist%20Surat...\"},{\"url\":\"...q=physiotherapy%20Gandhinagar...\"}],\"limitPerSource\":20,\"count\":120,\"scrapePageAds.activeStatus\":\"active\",\"scrapePageAds.sortBy\":\"impressions_desc\",\"scrapePageAds.countryCode\":\"IN\",\"scrapeAdDetails\":false}. Worst case 120 ads about $0.09 (a few extra ads are allowed past the limit, still under $0.13). Post-process the dataset for free: keep rows whose CTA type is WhatsApp (or link_url contains wa.me or api.whatsapp.com), whose ad start date is on or before 2026-09-29 (30+ days) and whose ad is still active; group by page id to get number of ads and distinct locations in ad text; drop pages with 3+ branches or 2+ cities, agency or chain names, hospitals. For the survivors (budget: free), use WebSearch/WebFetch on the clinic's own website or Maps listing text to confirm doctor name, branch count, city, and the business-published mobile (mobile not landline) with the URL where it was seen.",
+    "qualifying_signal": "Active ad with WhatsApp CTA by a page named after or run by a doctor in the four target cities, start date at least 30 days before 2026-10-29, 1-3 branches, not a chain or hospital or agency, and a mobile number published by the clinic itself (website, Maps listing or Facebook page) that plausibly reaches the doctor; owner_direct_contact 'probably' if the ad, Maps or page names the doctor and the number is a mobile, else 'unknown'.",
+    "fields_to_capture": "Page name, page id, Ad Library URL (ad archive id), ad start date, active status, CTA type, link_url/WhatsApp number, ad text snippet and language, specialty, city, number of branches, number of active ads, who the number belongs to as far as sources show, clinic website/Maps URL, published mobile with the URL where seen, owner_direct_contact (probably/unknown)",
+    "expected_yield": "About 120 ads leads to roughly 35-50 distinct pages; after WhatsApp CTA, 30+ days, geography and chain/agency filters expect 5-10 candidates, of which 3-6 get a verifiable doctor-direct-looking mobile.",
+    "est_cost_usd": 0.1
+   },
+   {
+    "id": "maps-unanswered-reviews",
+    "name": "Google Maps clinics with recent reviews about unanswered calls or WhatsApp",
+    "tool": "apify",
+    "channel_type": "maps and review sites",
+    "how_to_run": "Apify actor compass/crawler-google-places (pay per event: $0.003 per place, $0.002 per place for reviews/details add-on, $0.0005 per review). Two runs (one location per run), each with: {\"searchStringsArray\":[\"hair transplant clinic\",\"skin clinic\",\"dental implant clinic\"],\"locationQuery\":\"Surat, India\" (second run \"Rajkot, India\"; if budget remains Gandhinagar), \"maxCrawledPlacesPerSearch\":4,\"language\":\"en\",\"countryCode\":\"in\",\"skipClosedPlaces\":true,\"maxReviews\":4,\"reviewsSort\":\"newest\",\"reviewsStartDate\":\"2026-07-31\",\"reviewsFilterString\":\"not picking call, phone not answered, no response, no reply whatsapp, long waiting\",\"reviewsOrigin\":\"google\",\"scrapeReviewsPersonalData\":false,\"scrapeContacts\":false,\"maxQuestions\":0}. About 12 places per run, 24 places total: 24 x $0.005 = $0.12 plus at most about $0.02 for reviews; cap the run in Apify at $0.13 (max total charge setting) so it stops there. Keep places that have at least one review dated 2026-07-31 or later mentioning unanswered calls, no reply on WhatsApp or very slow response. Then apply the same chain, hospital and branch filters, using the listing's title, address and website. Never mention the review text anywhere in outreach; store only the date, a one-line paraphrase and the Maps URL.",
+    "qualifying_signal": "Independent doctor-named clinic (1-3 branches) in the four target cities with a Google review dated within the last 90 days (since 2026-07-31) that complains about calls or WhatsApp messages not being answered or long waits, plus a business-published mobile number on the listing or its own website.",
+    "fields_to_capture": "Place name, Maps URL, address and city, category, number of branches (from search by same brand name), phone as published and whether mobile or landline, website, doctor name as shown in title or website, review date and one-line paraphrase (no reviewer name), total review count and rating, whether an ad was also seen (cross-check with source 1), owner_direct_contact (probably/unknown)",
+    "expected_yield": "About 24 places gives 2-5 with a matching recent review; after filters 2-4 candidates, some overlapping with source 1 (overlap is a strong signal: paid enquiries and complaints about unanswered contact).",
+    "est_cost_usd": 0.13
+   }
+  ],
+  "if_low_yield": "If the Ad Library gives fewer than about 5 passing pages: (1) widen the keyword URLs without city words but with Gujarati/Hinglish terms (for example 'vaal transplant', 'daant ka ilaj', 'Dr' plus locality names such as Satellite, Vesu, Adajan, Kalawad Road, Sector 11) and add country=IN with more specialities (ortho, physiotherapy package, laser hair removal, IVF is out of scope), staying within the $0.13 cap by lowering limitPerSource; (2) sort by most_recent to find newer WhatsApp advertisers and lower the age rule to ads that started on or before 2026-10-15 only if the clinic also has other published signals, recording the real start date; (3) switch the second run to Maps place searches limited to localities (Vesu, Adajan, Satellite, Bopal, Kalawad Road) with placeMinimumStars=four to find high-value clinics, then check each clinic's page ads by name in the Ad Library at no cost via WebFetch of the Ad Library search URL if reachable, or one more small curious_coder run with the Facebook page URLs; (4) free fallback: WebSearch for receptionist/telecaller job posts from single clinics in the four cities (Indeed, Apna, Naukri, last 90 days) and cross-check the employer in the Ad Library. Do not fall back to Practo or Justdial lists because they show no need signal and hide the owner's number.\"]"
+ },
+ "plan_round2": {
+  "need_analysis": {
+   "summary": "Doctor-owned independent clinics (dentist, skin / hair / cosmetic, physio, ortho) that already pay Meta, and maybe Google, to generate enquiries, and that may not answer or follow up all of them (after hours, busy chairs, no-shows). The paying-for-enquiries part is observable in public; the failing-to-answer part is still unproven and must never be written as fact.",
+   "who_has_this_need": "Doctor-named clinics with 1-3 branches in Ahmedabad, Surat, Rajkot and Gandhinagar. They do high-value work (hair transplant, skin and laser, implants, ortho, physio packages) and spend ad money on it. The owner is the doctor and the ad names the doctor or the clinic. Not chains, not agency-run pages, not hospital or booking desks.",
+   "observable_signals": [
+    "An active Meta ad with a click-to-WhatsApp call to action, with a start date at least 30 days back (the clinic keeps paying for it)",
+    "Several different active WhatsApp ad variants on one page (a sign of real spend)",
+    "A Google Search sponsored result for 'dermatologist / dental implant / hair transplant / physiotherapy in <city>' pointing to a single doctor's clinic site (it pays per click for enquiries)",
+    "A WhatsApp or 'book on WhatsApp' button, or a mobile number, on the ad's landing page or the clinic's own site",
+    "The same clinic shows both a Meta WhatsApp ad and a Google sponsored result (strongest spend signal, cross-confirmed)",
+    "A Maps listing and Facebook page that name the doctor and show a mobile number (not a landline or desk)",
+    "Secondary and weak: a receptionist or telecaller vacancy posted by a doctor-owned clinic (enquiries handled by hand)"
+   ],
+   "where_signals_show": [
+    "Meta Ad Library (page name, start date, is_active, cta_type, link_url, page like count, page category)",
+    "Google Search results page for city + specialty queries (the paidResults block with advertiser, display URL and landing page)",
+    "The clinic's own website and landing page (WhatsApp widget, doctor name, branches, mobile number)",
+    "Google Maps listing (phone, category, branch count), used only to confirm and cross-match",
+    "Naukri / Indeed / Apna job posts (fallback only)"
+   ],
+   "disqualifiers": [
+    "Chains: 3+ branches or 2+ cities (DNCC, Advance Hair, Navadiya, Complete Care, Clove, Apollo, Sparsh)",
+    "Hospitals, multi-speciality hospitals, ayurved polyclinics, doctors listed only on a platform with no clinic of their own",
+    "Agency-run pages, aggregator or lead-gen portals (Practo, Lybrate, Justdial, Credihealth, Zoylo), software vendors and competitors",
+    "Ads younger than 30 days, which stay signal_only at best",
+    "Pages whose only route is a call centre, a desk or an auto-greeting, or an unverifiable landline",
+    "Anything already in the leads list or already collected in round 1"
+   ]
+  },
+  "considered": [
+   {
+    "source": "Meta Ad Library, keyword search with a delivery-window filter (actor jmlp/meta-ad-library-scraper)",
+    "category": "ad library",
+    "signal_for_this_need": "Strongest: shows the exact behaviour (paid click-to-WhatsApp ad), its start_date, is_active, cta_type and page like count, and this actor can pull a page's full ad history cheaply",
+    "volume_in_geo": "High for hair, skin, dental and physio in these four cities; round 1 got 5 pages but the maxItems cap cut off most queries",
+    "cost_usd": 0.12,
+    "reachability": "Page name (usually the doctor) goes to Maps and the clinic site for a mobile number. The ad link is a WhatsApp link with no number, so the number needs a second step.",
+    "risk": "Meta terms; Ad Library web pages return 403, so the scraper row is the evidence. Keyword match is on ad text, not geography, so a city filter must be applied afterwards.",
+    "verdict": "chosen",
+    "why": "It is the only source that shows the need signal itself. It is rerun with different queries and an in-query date filter (maxDate 2026-09-29 with activeStatus active returns only ads that started on or before 29 Sep and are still live, which is the 30-day test). Per-ad cost is $0.00015, so 600 ads cost about $0.09, against $0.005 per ad on the apify/facebook-ads-scraper actor. The cheap price is what lets all queries finish in one go this time."
+   },
+   {
+    "source": "Google Search sponsored results (SERP ads) for specialty + city queries (apify/google-search-scraper with paid-results extraction)",
+    "category": "search ads / paid results",
+    "signal_for_this_need": "Strong: a clinic that bids for 'dermatologist in Rajkot' pays per click for enquiries and its landing page usually has a WhatsApp button. It is a different channel from Meta, so a clinic seen in both is cross-confirmed.",
+    "volume_in_geo": "Medium: about 2-6 advertisers per query; roughly 14 queries should give 20-40 advertiser rows, of which perhaps a third are independent doctor clinics",
+    "cost_usd": 0.11,
+    "reachability": "Good: the advertiser's landing page or site usually shows the doctor name and a mobile or WhatsApp number, fetched free with WebFetch",
+    "risk": "Google terms for scraping; results vary by location and moment (the evidence date is the crawl date, so there is no duration); aggregators and agency pages dominate some queries and must be skipped",
+    "verdict": "chosen",
+    "why": "No free source shows 'this clinic is paying for enquiries today' except the Ad Library. Google ads add a second, independent spend signal and a landing page we can read for free. It is a different channel from round 1, which used only Meta and Maps reviews."
+   },
+   {
+    "source": "Google Maps place scraper on the ad-led clinics (cheap actor scraperlink/google-maps-scraper, $0.00045 per place)",
+    "category": "maps and directories",
+    "signal_for_this_need": "None by itself (it lists clinics, it does not show spend)",
+    "volume_in_geo": "Very high but undifferentiated",
+    "cost_usd": 0.02,
+    "reachability": "Good: the listing phone, category, branch count and website",
+    "risk": "Low; the cost is trivial with this actor, unlike compass/crawler-google-places which needs at least $0.50",
+    "verdict": "rejected",
+    "why": "Rejected as a finder, because a list of every clinic does not show the need. It is kept only as the verification step inside both chosen sources (listing phone, mobile or landline, branch count, doctor name), and it gives the cross-source match round 1 lacked."
+   },
+   {
+    "source": "Google Maps reviews about unanswered calls",
+    "category": "review sites",
+    "signal_for_this_need": "Weak: 0 'not picking calls' matches in 3,691 reviews in round 1, and the keyword filter matched the clinics' own replies",
+    "volume_in_geo": "Very low",
+    "cost_usd": 0.05,
+    "reachability": "Good via the Maps listing",
+    "risk": "Reviews must never be mentioned in outreach; keyword filters are noisy",
+    "verdict": "rejected",
+    "why": "Already tried in round 1 and it failed. Not repeated."
+   },
+   {
+    "source": "Naukri / Indeed job posts for receptionist, telecaller or patient coordinator at clinics (valig/naukri-jobs-scraper, $0.00036 per job)",
+    "category": "job posts",
+    "signal_for_this_need": "Weak and ambiguous: a clinic hiring a telecaller handles enquiries by hand, but it also shows the clinic already solved the need with a person",
+    "volume_in_geo": "Low for independent doctor clinics; most hits are chains (Berkowits, Kaya) or placement agencies. A web search for Surat clinic vacancies found only expired or other-city posts.",
+    "cost_usd": 0.03,
+    "reachability": "Poor: the recruiter contact is often hidden or a hiring agency, rarely the doctor",
+    "risk": "Low; it is public data",
+    "verdict": "rejected",
+    "why": "The signal is weaker than ad spend and the contact is not the owner. Kept only as the fallback if both chosen sources are thin."
+   },
+   {
+    "source": "Practo, Justdial, Lybrate, Sulekha clinic directories",
+    "category": "marketplaces and directories",
+    "signal_for_this_need": "Weak: lists doctors but not ad spend; Justdial and Practo return 403 and directory snippets conflict",
+    "volume_in_geo": "Very high",
+    "cost_usd": 0,
+    "reachability": "The listed numbers are portal-routed call numbers, not the doctor's",
+    "risk": "Terms of service; blocks and bot walls; portal numbers are not business-published",
+    "verdict": "rejected",
+    "why": "They list businesses of the right type but show no need signal, and the number reaches the portal, not the owner."
+   },
+   {
+    "source": "Professional association member lists (Gujarat IDA dental, IADVL Gujarat dermatology, Indian Physiotherapy Association chapters, GMC / Gujarat Dental Council registers)",
+    "category": "association and statutory registers",
+    "signal_for_this_need": "None: shows that a doctor exists, not that the clinic buys ads or loses enquiries",
+    "volume_in_geo": "Thousands of names, mostly PDF or login-gated",
+    "cost_usd": 0,
+    "reachability": "Often a clinic address and phone, but of mixed quality",
+    "risk": "Privacy: these are personal professional records, and many lists sit behind logins",
+    "verdict": "rejected",
+    "why": "Right profession but no signal, and too many names to test cheaply. It could only serve as a doctor-name check."
+   },
+   {
+    "source": "Clinic websites with a WhatsApp booking widget, found by WebSearch queries (for example 'book appointment on WhatsApp dermatologist Rajkot')",
+    "category": "web search / site content",
+    "signal_for_this_need": "Weak to medium: a WhatsApp button means the clinic already takes enquiries there, but it does not show paid traffic",
+    "volume_in_geo": "Unknown. WebSearch is US-only and weak on small Gujarat clinics, and round 1 could find no site for 3 of 5 ad-led clinics.",
+    "cost_usd": 0,
+    "reachability": "Good when a site exists: the doctor name and a mobile",
+    "risk": "Low, but low precision",
+    "verdict": "rejected",
+    "why": "It is free but gives no evidence of spend and poor recall. It stays as the free verification step (WebFetch on the clinic's own site)."
+   },
+   {
+    "source": "Google Ads Transparency Center",
+    "category": "ad library",
+    "signal_for_this_need": "Strong in principle: lists advertisers and creatives with dates",
+    "volume_in_geo": "Uncertain for small Indian advertisers; the page is script-rendered",
+    "cost_usd": 0.1,
+    "reachability": "Advertiser name only",
+    "risk": "No stable cheap scraper that fits the cap; it is a JavaScript app and we have no browser",
+    "verdict": "rejected",
+    "why": "Cannot be run reliably under the budget without a browser. The SERP ad block in the chosen Google source gives most of the same signal."
+   },
+   {
+    "source": "Clinic launch news and conference exhibitor lists (new clinic openings in Ahmedabad / Surat, hair transplant or dental expo exhibitors)",
+    "category": "news, launches and events",
+    "signal_for_this_need": "Weak: new clinics spend on ads, but a launch article shows no ads running",
+    "volume_in_geo": "A few per month, mostly chains and hospitals",
+    "cost_usd": 0,
+    "reachability": "Press-release contacts, not owners",
+    "risk": "Stale evidence and PR noise",
+    "verdict": "rejected",
+    "why": "Low volume and no proof of enquiry spend."
+   },
+   {
+    "source": "Clinic Instagram / Facebook business pages and posts",
+    "category": "social platforms",
+    "signal_for_this_need": "Medium (follower size, 'WhatsApp' buttons), but it is not a spend signal",
+    "volume_in_geo": "High",
+    "cost_usd": 0.1,
+    "reachability": "The page About section shows a phone",
+    "risk": "The rules forbid scraping personal profiles and logging in; fetching pages is unreliable without a browser",
+    "verdict": "rejected",
+    "why": "Not allowed to go deep and not reliable. The Ad Library already exposes the same Facebook page's name, like count and category."
+   }
+  ],
+  "chosen": [
+   {
+    "id": "meta-wa-ads-30d-v2",
+    "name": "Meta Ad Library: live WhatsApp ads started 30+ days ago, narrow city + specialty queries",
+    "channel_type": "ad library",
+    "tool": "apify",
+    "how_to_run": "Actor jmlp/meta-ad-library-scraper (BRONZE price $0.00015 per ad). Run it in TWO calls so no query is starved by a global cap.\nCall A input: {\"keywords\":[\"hair transplant Surat\",\"skin clinic Surat\",\"dermatologist Rajkot\",\"skin clinic Rajkot\"],\"searchType\":\"keyword_unordered\",\"country\":\"IN\",\"activeStatus\":\"active\",\"maxDate\":\"2026-09-29\",\"minDate\":\"2026-01-01\",\"maxAds\":300,\"maxConcurrency\":4,\"proxyConfiguration\":{\"useApifyProxy\":true,\"apifyProxyGroups\":[\"RESIDENTIAL\"]}}. Dates here mean 'was delivering in the window', so with activeStatus active this keeps only ads that started on or before 29 Sep and are still live. Check start_date on every row anyway.\nCall B input: same, but keywords [\"dental implant Ahmedabad\",\"dentist Gandhinagar\",\"physiotherapy Ahmedabad\",\"ortho clinic Ahmedabad\",\"hair transplant Ahmedabad\"], maxAds 300. Cost about $0.045 per call, so $0.09 for both.\nThen group by page_id. Keep a page only if: snapshot.cta_type contains WHATSAPP (WHATSAPP_MESSAGE) or link_url is wa.me / api.whatsapp.com; start_date at least 30 days before 2026-10-29 (record the oldest and the date as YYYY-MM-DD); page_like_count under about 60,000; page_categories is doctor / dentist / skin care / physiotherapist / medical and health; page_name or ad text names a doctor or one clinic; the city is Ahmedabad, Surat, Rajkot or Gandhinagar (from ad text, page name or the Maps listing). Drop names already in the leads list or in 'already collected' (Re Life, Vinayak Dental, ADIVA, Siddhi Skin, The Skin Lab, Rejuvene) and the chains named in round 1.\nTop 6-8 surviving pages: run the same actor again with {\"pageIDs\":[...],\"country\":\"IN\",\"activeStatus\":\"all\",\"maxAds\":120} (about $0.02) to date the OLDEST ad and count active WhatsApp variants. This is the step that can rescue The Skin Lab type of page whose first ad was under 30 days old but the page has run older ones.\nVerify the survivors with the Maps actor scraperlink/google-maps-scraper (input {\"query\":[\"<clinic name> <city>\"],\"num\":1,\"placeDetails\":true}, about $0.01 for 15 places): listing phone, mobile or landline, branch count, website. Read the clinic's own site free with WebFetch for the doctor name and the published number. The Ad Library page itself returns 403, so the scraper row is the evidence.",
+    "qualifying_signal": "Page has at least one active ad with a WhatsApp call to action whose start_date (or oldest ad on the page) is 30 or more days before 2026-10-29, the page is a doctor-named independent clinic with 1-3 branches in the four cities, and Maps or the site shows a mobile number. More than one active WhatsApp variant raises the rating. Mark owner_direct_contact 'probably' only if the ad, Maps listing or Facebook page names the doctor and the number is a mobile.",
+    "fields_to_capture": "clinic_name, doctor_name, city, specialty, branches (count and where seen), page_id, page_name, page_like_count, oldest_ad_start_date (YYYY-MM-DD), count of active WhatsApp ads, cta_type, link_url, ad text snippet, Maps listing URL and phone (mobile or landline), site URL and published number, who the number belongs to as far as the sources show, owner_direct_contact (probably / unknown)",
+    "est_cost_usd": 0.12,
+    "expected_yield": "About 5-9 usable pages out of roughly 600 ads (round 1 got 3 usable from 40 ads). The date filter cuts the 'under 30 days' noise, and the full-history step can recover some of the 6 pages dropped last time."
+   },
+   {
+    "id": "google-sponsored-clinics",
+    "name": "Google Search sponsored results for specialty + city queries (second spend signal, cross-checked with Meta)",
+    "channel_type": "search ads / paid results",
+    "tool": "apify",
+    "how_to_run": "Actor apify/google-search-scraper. Pricing: $0.0025 per page plus $0.005 for the paid-results add-on, so about $0.0075 per query; 14 queries cost about $0.105. Input: {\"queries\":\"dermatologist in Rajkot\\nskin clinic in Surat\\nhair transplant in Surat\\nhair transplant clinic Ahmedabad\\ndental implant clinic Ahmedabad\\ndental clinic in Gandhinagar\\nbest dentist in Rajkot\\nphysiotherapy clinic Ahmedabad\\northopaedic doctor Ahmedabad\\nskin specialist Gandhinagar\\nlaser hair removal Surat\\nacne treatment Rajkot\\nknee pain treatment Ahmedabad\\ndentist in Surat\",\"maxPagesPerQuery\":1,\"countryCode\":\"in\",\"languageCode\":\"en\",\"focusOnPaidAds\":true,\"saveHtmlToKeyValueStore\":false}. Do not turn on any other add-on. Cheaper fallback if the official actor returns no ads: santamaria-automations/google-search-scraper with {\"queries\":[...same list...],\"countryCode\":\"in\",\"languageCode\":\"en\",\"extractAds\":true,\"maxPagesPerQuery\":1}, about $0.003 per query.\nRead the paidResults of every row: advertiser title, display URL, landing URL and description. Drop aggregators and portals (Practo, Lybrate, Justdial, Credihealth, Apollo, Clove, Kaya, Berkowits, DNCC) and agency pages. For each remaining independent doctor clinic: (1) WebFetch the landing page or site, free, for the doctor name, number of branches, city, a WhatsApp button and a published mobile; (2) check whether the same clinic or doctor shows up in Source 1's page list, which makes it cross-confirmed; (3) if there is no number on the site, look it up with the cheap Maps actor, about $0.01 for 10 places.",
+    "qualifying_signal": "An independent clinic named after one doctor (1-3 branches, in one of the four cities) appears as a Google sponsored result for a service + city query on the crawl date, and its own landing page or Maps listing shows a mobile or WhatsApp number it published itself. A clinic that also has a live Meta WhatsApp ad is a top-priority candidate, because two paid channels are the best proof that it buys enquiries.",
+    "fields_to_capture": "clinic_name, doctor_name, city, specialty, query that triggered the ad, ad position, display URL, landing URL, ad text, crawl date (from the run), branches, published phone or WhatsApp and the URL where it was seen, who the number belongs to as far as the sources show, owner_direct_contact (probably / unknown), whether the Meta ad was also found (cross-confirmed yes / no)",
+    "est_cost_usd": 0.11,
+    "expected_yield": "About 3-6 usable clinics. Expect only around 15-35 advertiser rows across 14 queries, of which a third at most are independent doctor clinics. The main value is cross-confirming Meta leads and finding clinics whose ads are not in the keyword results of Source 1."
+   }
+  ],
+  "if_low_yield": "If fewer than about 5 usable candidates come out: (1) in the Meta source, change maxDate to 2026-10-09 and set the rule at 20+ days, marking those leads as signal_only. Then add Hindi and Gujarati keywords (for example 'ડેન્ટલ ક્લિનિક અમદાવાદ', 'हेयर ट्रांसप्लांट सूरत'), the words 'WhatsApp' and 'consultation' to each keyword, and more specialties (laser, acne, PRP, piles, IVF is out of scope); (2) take the clinics from Source 2 that have no Meta match and fetch their pages' ads with {\\\"pageIDs\\\":[names]} on jmlp (a few cents) to find a hidden WhatsApp ad; (3) in the Google source, repeat with mobile results and Hindi or Gujarati queries, and add an Ahmedabad area to the query (Satellite, Vastrapur, Bopal, Adajan, Vesu, Kalawad Road); (4) run the Naukri receptionist or telecaller search (valig/naukri-jobs-scraper, keywords 'clinic receptionist' and 'patient coordinator', locations Ahmedabad, Surat, Rajkot, Gandhinagar, jobAge 30 days, limit 100, about $0.04) and keep only doctor-owned clinics, as a weak signal; (5) use the Maps reviews actor only as a second check on named ad-led clinics, filtered by place name. Do not widen the geography to Vadodara or Mehsana.\""
+ },
+ "sources_used": [
+  "meta-ad-library-clinics",
+  "maps-unanswered-reviews",
+  "meta-wa-ads-30d-v2",
+  "google-sponsored-clinics"
+ ],
+ "run_reports": [
+  {
+   "source_id": "meta-ad-library-clinics",
+   "found": 5,
+   "report": {
+    "what_i_ran": "Two runs of Apify actor curious_coder/facebook-ads-library-scraper (active, country IN, impressions_desc). Run 1 (6 planned keyword URLs; actor stopped at 42 ads because of the maxItems 40 cap, so it covered only the hair transplant Ahmedabad, skin clinic Ahmedabad and dermatologist Surat queries). Run 2 (adapted once to cover the missing queries: dental implant Surat, dentist Rajkot, dental clinic Ahmedabad, physiotherapy Gandhinagar, physiotherapy Ahmedabad; returned 70 ads, dominated by Mission Health and City Dental Hospital Rajkot). Post-processed the 112 ads: kept WhatsApp CTA (or wa.me / api.whatsapp.com link), start date on or before 2026-09-29, active, 1-3 branches, Gujarat target cities. Then used WebSearch and WebFetch on clinic sites and directories to check identity, branches and published numbers.",
+    "apify_runs": [
+     {
+      "actor": "curious_coder/facebook-ads-library-scraper (run Mgl0Q2jr8iIvhGO1p)",
+      "items_returned": 42,
+      "est_cost_usd": 0.032
+     },
+     {
+      "actor": "curious_coder/facebook-ads-library-scraper (run bTNWQUAeHFmU5j5FC)",
+      "items_returned": 70,
+      "est_cost_usd": 0.053
+     }
+    ],
+    "est_cost_usd": 0.085,
+    "worked": "The actor ran fast and cheap and gave start dates, CTA type, page ids, ad text and often the clinic's own mobile number in the ad text. Re Life Clinic (Dr. Rikin Shah, Gota) is a clean fit: WhatsApp ad running since 2026-05-30, one location confirmed on the clinic's own site with a published WhatsApp mobile. theskinlab.in fetched fine and confirmed one location, the doctor and a WhatsApp mobile.",
+    "did_not_work": "Yield was far below the expected 5-10: only 1 strong candidate and 4 weak ones. Reasons: (1) maxItems 40 on the first run cut it short, so 3 of the 6 planned queries were never run in that call and had to be re-run in a second call with different dental and physio queries (no hair transplant Ahmedabad or implant Surat results beyond the first 42); the Gandhinagar physio query returned mostly non-Gujarat or irrelevant pages (Kolkata Race Knee Clinic, Bhubaneswar chiropractor, Tiruppur Apollo). (2) Most dental and physio ads found started under 30 days ago (Pramukh Dental 10-06, Anant Dental 10-17, Kids Dental Satellite 10-23, Dr. Parikh's Pristine Dental 10-25, Shree Hari Skin and Hair 10-04, Satguru Surat 10-12) so they failed the 30-day test; I did not return them. (3) Many ads use CTAs other than WhatsApp (Book now, Instagram profile, Call now, Message page): DNCC, Hairfree Hairgrow, Sparsh Skin and Hair (467k likes, 2 branches, no WhatsApp CTA), Jagani Skin and Hair, D'Tanique, Navadiya all dropped. (4) Chains dropped: Dr Nishita Sheth / DNCC (9 clinics), Advance Hair India (5 cities), Navadiya (5 branches), Complete Care physio (6 branches), Mission Health (10 branches), Advino Healthcare (home care, 6 cities), Clove Dental, Apollo. Avadhoot Ayurveda dropped (ayurved). Mokosh Bhopal and Race Knee (Kolkata OPD) out of geography. (5) The Ad Library page itself returned HTTP 403 to WebFetch, so I could not open any Ad Library URL; every signal is signal_from_data, not signal_opened. (6) WebSearch is weak on small Gujarat clinics: Justdial returns 403, directory snippets conflict, no business website found for Vinayak Dental, Siddhi Skin Clinic or Celebre Aesthetics, so published mobiles could be verified only for Re Life (shahrikin.com) and The Skin Lab (theskinlab.in). The ad scraper gave only the first ad per page row, with no WhatsApp number in link_url (api.whatsapp.com/send has no phone), so the WhatsApp number behind each CTA is unknown. Next round: raise maxItems so all planned queries run in one call, query more specific terms (hair transplant Surat, skin clinic Rajkot, Gandhinagar dentist, dental implant Ahmedabad), and sort by most_recent with a start-date filter, plus check each page's full ad history to date the oldest active ad."
+   }
+  },
+  {
+   "source_id": "maps-unanswered-reviews",
+   "found": 2,
+   "report": {
+    "what_i_ran": "Planned actor compass/crawler-google-places was refused twice: Apify's minimum 'max total charge' is $0.50 per run, above the $0.13 budget, so I could not run it (cost $0). Adapted once to memo23/google-maps-reviews-scraper (Actor start $0.005, $0.00045 per review row), searching 'hair transplant clinic', 'skin clinic', 'dental implant clinic' in Surat, Rajkot, Gandhinagar, Ahmedabad (up to 5 places per query, newest reviews only, since 2026-07-31, Google-origin reviews, reviewer personal data off), with the keyword filters 'call' (4 runs, one per city), 'pick' (1 run, all 4 cities, ~60 places) and 'respon' limited to 1-3 star reviews (1 run, all 4 cities). Plus 1 WebSearch each for hair-transplant clinics in Surat and Adiva branches, and WebFetch of clioncare.com, adivaclinic.com and therejuveneclinic.com.",
+    "worked": "The review-search actor works within budget and filters by date and keyword, returning only matching reviews with place details (phone, website, review count, exact timestamp). It found 1 clear unanswered-contact complaint (Clion Care) and 1 call/appointment-handling complaint (ADIVA). Three site fetches confirmed single address and published WhatsApp/mobile numbers for ADIVA and Rejuvene.",
+    "did_not_work": "1) compass/crawler-google-places cannot run under a $0.13 cap (minimum $0.50). 2) A keyword filter is a single word and also matches the clinic's own replies, so 'call' returned mostly noise (owner replies saying 'call us'); across all four cities only one complaint was really about calls. 3) The 'pick' filter ('not picking calls') found 0 matches in 3,691 reviews since 2026-07-31, so complaints of unanswered phones are rare in these cities for these three specialties; the premise of this source is weak. 4) DROPPED Clion Care (Ahmedabad hair transplant, 391 reviews): its 2026-09-15 1-star review is the strongest hit (patient sent photos on request for an assessment and got no further reply despite chasing), but its website shows Ahmedabad plus Vadodara and Surat clinics and nav pages for Anand, Mehsana and Rajkot, so it fails the 'no 2+ cities' rule. Also its website publishes no WhatsApp number and its web design credit points to an SEO agency (hireseopro.com). Maps phone 088662 40636, site phone +91 9327443271. If the planner relaxes the chain rule, this is the one to look at. 5) Skipped Trivedi Skin Care Hospital (Surat): only 'doctor always late' and 1-hour consultation wait complaints (2026-09-22, 2026-08-22), 3,664 reviews and 'Hospital' branding. Skipped Dentistium (Ahmedabad): 5 one-star reviews posted within hours around 2026-10-16 and the clinic says they are fake and is taking legal action. Skipped Rudraksha (ayurved), Radiant, SkinVita, Dr Ekta, Sakhiya (1800 toll-free number and multi-branch), Perfect Skin Care: complaints were about treatment, prices or doctor manner, not contact handling. 6) Practo/Ivories review (2026-10-25) is about a doctor being late, not unanswered contact. 7) Only 5 places per query and 5-8 recent reviews per place were checked, so the net is narrow; Gandhinagar returned few matches. 8) I did not cross-check any Meta ad for these clinics and did not open the Maps review URLs myself (text comes from scraper output). WebSearch for Surat hair transplant clinics returned only directories, nothing on unanswered calls.",
+    "est_cost_usd": 0.065,
+    "apify_runs": [
+     {
+      "actor": "compass/crawler-google-places (2 attempts, refused at start: min $0.50 cap)",
+      "items_returned": 0,
+      "est_cost_usd": 0
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (Surat, keyword call)",
+      "items_returned": 8,
+      "est_cost_usd": 0.009
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (Rajkot, keyword call)",
+      "items_returned": 18,
+      "est_cost_usd": 0.013
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (Gandhinagar, keyword call)",
+      "items_returned": 3,
+      "est_cost_usd": 0.007
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (Ahmedabad, keyword call)",
+      "items_returned": 12,
+      "est_cost_usd": 0.011
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (4 cities x 3 specialties, keyword pick)",
+      "items_returned": 0,
+      "est_cost_usd": 0.005
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (4 cities x 3 specialties, keyword respon, 1-3 stars)",
+      "items_returned": 15,
+      "est_cost_usd": 0.012
+     }
+    ]
+   }
+  },
+  {
+   "source_id": "meta-wa-ads-30d-v2",
+   "found": 10,
+   "report": {
+    "what_i_ran": "Two keyword sweeps of the Meta Ad Library actor jmlp/meta-ad-library-scraper (active ads, India, window 2026-01-01 to 2026-09-29): Call A (hair transplant Surat, skin clinic Surat, dermatologist Rajkot, skin clinic Rajkot) returned 65 ads; Call B (dental implant Ahmedabad, dentist Gandhinagar, physiotherapy Ahmedabad, ortho clinic Ahmedabad, hair transplant Ahmedabad) returned 83 ads. Grouped by page_id, kept pages with a WhatsApp CTA or api.whatsapp.com link and start_date at least 30 days before 2026-10-29. Then two page-ID history runs on 12 survivors (140 + 45 ads) to date the oldest ad and count WhatsApp variants. Then one Google Maps actor run (scraperlink/google-maps-scraper) and a handful of free WebSearch lookups for identity checks.",
+    "worked": "The Ad Library actor worked well and fast (13-23 s per run) and gives start_date as unix time, CTA type, link_url, page likes and the ad body text, which often includes the clinic address, doctor name and a mobile number. The ad body text was the best source for city, doctor and phone. Page-ID runs showed real depth of spend (Celebre, Satguru and Dr Priyansh Jain each have 30+ live WhatsApp ads). Pages found: 9 usable out of 148 keyword-search ads (about 6%).",
+    "did_not_work": "1) Google Maps actor scraperlink/google-maps-scraper: num must be >= 10, and the one run returned 5 unrelated clinics for the first query only, with null address, phone and website, and no result for the other 6 queries; it was useless for verification (about $0.004 wasted). So no listing phone, mobile-vs-landline or branch count was verified from Maps for any candidate. 2) The Ad Library keyword search gave no Gandhinagar, physiotherapy or ortho independent clinics with WhatsApp CTAs: physio and ortho results were chains (Complete Care, Mission Health) or irrelevant; the dentist Gandhinagar query returned nothing usable. 3) activeStatus 'all' page runs still marked every row is_active=true and were capped by the global maxAds (Celebre and Dr Priyansh Jain crowded out other pages; Dr Jeet got 1 row; Ramani 1 WhatsApp row), so WhatsApp variant counts are lower bounds and oldest dates may be too recent for crowded pages. 4) Many pages use BOOK_TRAVEL, SEE_DETAILS or LEARN_MORE CTAs with fb.me links instead of WhatsApp, so they were dropped as not showing a WhatsApp route (Aura Dental, Hairfree Hairgrow earlier ads, Athena, Avenues, Solface, Moradiya, Dr Patki). 5) WebSearch returned nothing for Dr. Dhamelia's clinic and nothing for Maninagar Dental Hospital by name; the Narayan Skin Clinic directory entry shows Dr Kacha as a BHMS general practitioner. I did not open the Ad Library pages (they return 403), so every signal is signal_from_data, not signal_opened. Dropped on purpose: DNCC / Dr Nishita (9 clinics), Advance Hair India (5 cities), Hairfree Hairgrow (Surat and Ahmedabad ads, 2 cities), Sparsh Skin & Hair (chain per brief, Instagram CTA), Complete Care (6 branches), Mission Health (chain, 51k likes, call CTA), Advino Healthcare (home care, Pune), Dr Haror's / Mokosh / Dezire (other cities), Dabhi's Dental and Vinayak Dental (already in leads or collected), Hair Transplant in Surat/Vapi (no clinic or doctor name), Ramani Skin & Hair (WhatsApp ad 2026-08-17 but no city anywhere in the data), Dr Jeet (page with 0 likes, no city, no clinic name). Next round: use the page body text to extract mobile numbers, and verify listing phones with WebFetch of the clinic's own site or a different Maps actor.",
+    "est_cost_usd": 0.056,
+    "apify_runs": [
+     {
+      "actor": "jmlp/meta-ad-library-scraper (Call A keyword sweep, run OlhiAeKZ9jpQFYJoM)",
+      "items_returned": 65,
+      "est_cost_usd": 0.0098
+     },
+     {
+      "actor": "jmlp/meta-ad-library-scraper (Call B keyword sweep, run vKBdZkgTAJn6uYoqK)",
+      "items_returned": 83,
+      "est_cost_usd": 0.0125
+     },
+     {
+      "actor": "jmlp/meta-ad-library-scraper (page-ID history run 1, run 4e6fTqv42W12A2eNK)",
+      "items_returned": 140,
+      "est_cost_usd": 0.021
+     },
+     {
+      "actor": "jmlp/meta-ad-library-scraper (page-ID history run 2, run jbfxWcqM3rFcDBG16)",
+      "items_returned": 45,
+      "est_cost_usd": 0.0068
+     },
+     {
+      "actor": "scraperlink/google-maps-scraper (run twltcGeSppTfQuvaF, junk results)",
+      "items_returned": 5,
+      "est_cost_usd": 0.0035
+     }
+    ]
+   }
+  },
+  {
+   "source_id": "google-sponsored-clinics",
+   "found": 0,
+   "report": {
+    "what_i_ran": "One run of the fallback actor santamaria-automations/google-search-scraper (run oHkHRLXtgUgp4b6Hp, dataset Xbp0H9bclRYz1Bb92) with the 14 planned queries (country in, language en, extractAds true, 1 page each, PAA and related searches off) and callOptions maxTotalChargeUsd 0.13. It finished OK and returned 14 SERP rows (scrapedAt 2026-10-29 04:10 to 04:15 UTC). I read the paidResults field of every row.",
+    "worked": "The actor ran cleanly and the organic results look sane (Practo, Justdial and independent doctor sites such as Rejuvene Clinic, Vivid Skin Care, Shah Skin, Dr. Patki). The run did not break or time out. That is the only thing that worked.",
+    "did_not_work": "The planned signal was not found: paidResults was an empty array for all 14 queries, so there are 0 sponsored advertisers and 0 candidates. Possible causes (unverified): Google served no ads to this scraper's proxy or desktop session, or ads for these local queries are not shown to non-logged-in datacenter or residential sessions. I cannot tell which from the data, so I do NOT conclude that these clinics run no Google ads. The primary actor apify/google-search-scraper could not be started: this tool refuses any run with a spend cap below $0.50 ('Maximum cost per run is less than the allowed minimum of $0.50'), and the source budget is $0.13, so I did not use it. I did not retry the fallback because the same actor, proxy and queries would most likely return the same empty ads, and I have no other cheap actor that is verified to return ads. WebSearch cannot show Google ads. I deliberately did not list organic results (SEO rankings, not ad spend) as candidates, because they show no need signal and would only add noise. No Maps lookup or WebFetch checks were done, since there were no sponsored clinics to verify. Cross-check with Meta (Source 1) therefore could not be done from this source. Lesson for the next round: this source gave nothing at about $0.04 to $0.10, and Google-ads detection through santamaria-automations looks unreliable for India local queries; do not rely on it. If it is retried, test one query with the official actor at a $0.50 cap on its own budget, or use a mobile layout (mobileResults true) once, before spending on 14 queries.",
+    "est_cost_usd": 0.043,
+    "apify_runs": [
+     {
+      "actor": "santamaria-automations/google-search-scraper",
+      "items_returned": 14,
+      "est_cost_usd": 0.043
+     }
+    ]
+   }
+  }
+ ],
+ "judged": {
+  "final_candidates": [
+   {
+    "rank": 1,
+    "business": "Re Life Clinic - Dr. Rikin M. Shah (Meta page 'Dr. Rikin Shah')",
+    "city": "Ahmedabad (Gota)",
+    "entity_type": "end_business",
+    "what_they_do": "Single-location diabetes / obesity clinic; ad promotes U-Lipolysis body contouring.",
+    "website": "https://www.shahrikin.com/",
+    "signal_observed": "Meta ad (archive id 2221277505363053) active, CTA WhatsApp message, start 2026-05-30 (about 152 days), page likes 3569. Own site shows one address only.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=2221277505363053",
+    "signal_date": "2026-05-30",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Doctor-owned single clinic that has paid for a WhatsApp-opening ad for 5 months, so paid enquiries arrive on WhatsApp. Whether any go unanswered is unproven and is what the first-touch question tests.",
+    "source_ids": [
+     "meta-ad-library-clinics"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "high",
+    "keep_reason": "Strongest combination: 30+ day ad, single branch confirmed on the clinic's own site, doctor named, published WhatsApp mobile on that site (+91 63598 08381). Ad data not opened by the collector (Ad Library gave 403), so not verified.",
+    "unknowns": "Phone link on the site points to 8866793437, which does not match the main number. owner_direct_contact: probably (doctor named, mobile), unproven. Specialty is diabetes/obesity with a cosmetic service, slightly off the core dentist/skin/physio list. A 'Relife Wellness Clinic' in Maninagar may be unrelated."
+   },
+   {
+    "rank": 2,
+    "business": "Dr. Dhamelia's Skin Laser & Hair Clinic",
+    "city": "Ahmedabad",
+    "entity_type": "end_business",
+    "what_they_do": "Skin, laser and hair clinic; ad offers hair transplant at Rs 44,999.",
+    "website": "",
+    "signal_observed": "Ad Library page 119520334474962 has 4 active WhatsApp ads; oldest start 2026-02-03 (about 268 days), another 2026-02-09, a new one 2026-10-21. Ad text gives mobile +91 70164 30087.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=119520334474962",
+    "signal_date": "2026-02-03",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Has paid for WhatsApp-opening ads for almost 9 months and keeps adding variants, so enquiries land on WhatsApp. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "Longest-running spend in the set, clinic named after the doctor, mobile number published by the clinic itself in its ad text.",
+    "unknowns": "Doctor's full name and registration not found (web search returned nothing). Branch count unknown. Number may be a counsellor's, not the doctor's. Ad Library page not opened (403). Identity not checked in a second place."
+   },
+   {
+    "rank": 3,
+    "business": "RQC Hair Transplant (Dr. Vivek Galani)",
+    "city": "Surat",
+    "entity_type": "end_business",
+    "what_they_do": "Hair transplant clinic led by Dr. Vivek Galani, Infinity Tower, Lal Darwaja Station Rd, Varachha; Rs 799 consultation offer.",
+    "website": "",
+    "signal_observed": "Ad Library page 380127752524951 (12,120 likes): 4 active WhatsApp ads, oldest start 2026-04-08 (about 204 days), others 2026-07-23 and 2026-08-22. Ad text names the doctor and one Surat address.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=380127752524951",
+    "signal_date": "2026-04-08",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Several simultaneous click-to-WhatsApp ads for 6+ months on a high-ticket service, so the WhatsApp number receives paid enquiries. Unanswered enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "high",
+    "keep_reason": "Very strong, long-running spend on a high-value service, doctor named, single address in the ad text.",
+    "unknowns": "No phone or WhatsApp number published in the ad; a third-party directory reportedly lists one (not seen). Branch count and Maps listing not verified. Reachability is the gap: the number must be found on the clinic's own listing. owner_direct_contact: unknown."
+   },
+   {
+    "rank": 4,
+    "business": "ADIVA Center for Skin and Hair (Dr. Harshit Ranpara)",
+    "city": "Rajkot",
+    "entity_type": "end_business",
+    "what_they_do": "Skin, hair and laser clinic with hair transplant, founder dermatologist Dr. Harshit Ranpara, 2,681 Google reviews, one listed address (Mediplex, Vidyanagar Main Rd).",
+    "website": "https://adivaclinic.com/",
+    "signal_observed": "Google review dated 2026-09-18 (1 star) says advance booking was impossible, calls were kept on hold and the day-of answer was 'fully booked'; the clinic's own reply admits unclear communication and unusually high appointment demand. Do not mention the review to the clinic.",
+    "signal_url": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2pWTlRtNDNiMUV5V0VsS1dWUjRaVzVWV25nM1FXYxAB!2m1!1s0x0:0x2707666ac6c2b762!3m1!1s2@1:CAIQACodChtycF9oOjVNTm43b1EyWElKWVR4ZW5VWng3QWc%7C%7C?hl=en-GB",
+    "signal_date": "2026-09-18",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Phone and appointment handling is visibly a bottleneck at a busy single-doctor-led clinic, the gap an automatic WhatsApp reply plus slot picking fills. It is a phone complaint, not a WhatsApp one.",
+    "source_ids": [
+     "maps-unanswered-reviews"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "Observed, clinic-acknowledged capacity problem, single address on its own site, published mobile numbers (Maps 096245 59193; site +91 8160728372 with wa.me link). Identity confirmed on Maps and on the clinic's website.",
+    "unknowns": "No Meta ad cross-check, so no ad start date or WhatsApp CTA seen. A directory mentions a Bhakti Nagar site. May be large enough to have a front-desk team already. Whether the number reaches the doctor: unknown. Review text read from scraper output, not opened."
+   },
+   {
+    "rank": 5,
+    "business": "Narayan Skin Clinic (Dr. Ketan Kacha)",
+    "city": "Rajkot",
+    "entity_type": "end_business",
+    "what_they_do": "Small clinic at Gayatri Nagar Main Road, Trishul Chowk; laser hair removal and skin treatments.",
+    "website": "",
+    "signal_observed": "Ad Library page 436774416185247 (72 likes): 1 active WhatsApp ad, start 2026-06-15 (about 136 days). Ad text names Dr. Ketan Kacha and mobile 98240 75921.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=436774416185247",
+    "signal_date": "2026-06-15",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Single doctor-owned clinic paying for a WhatsApp-opening ad for 4+ months. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "30+ day ad, doctor named, mobile published by the clinic, same doctor and address seen on a directory (drlogy).",
+    "unknowns": "Doctor is a BHMS general practitioner, so scale and budget are small (one ad, 72 likes). Not confirmed on Maps. owner_direct_contact: probably."
+   },
+   {
+    "rank": 6,
+    "business": "Shivam Skin Hair & Laser Clinic",
+    "city": "Surat (Nana Varachha)",
+    "entity_type": "end_business",
+    "what_they_do": "Skin, hair and laser clinic at Shyam Dham Chowk, Nana Varachha; Rs 799 face glow offer, claims 12+ years.",
+    "website": "",
+    "signal_observed": "Ad Library page 101194626197782 (88 likes): 6 active WhatsApp ads, oldest start 2026-08-06 (about 84 days), others 2026-08-08, 08-13, 09-16, 09-18. Ad text publishes +91 95373 88962 and +91 95373 88997.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782",
+    "signal_date": "2026-08-06",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Six WhatsApp-opening ads live for 12 weeks, so paid enquiries arrive on WhatsApp. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "Multiple concurrent ads for 12 weeks and two clinic-published mobiles.",
+    "unknowns": "No doctor named, so owner unknown. One ad also says Mota Varachha, a possible second branch. Not verified on Maps."
+   },
+   {
+    "rank": 7,
+    "business": "Ajaram Skin, Hair & Laser Clinic (Dr. Priya Padshala Korat)",
+    "city": "Surat",
+    "entity_type": "end_business",
+    "what_they_do": "Skin, hair and laser clinic (laser hair removal, HydraFacial, PRP) led by Dr. Priya Padshala Korat.",
+    "website": "",
+    "signal_observed": "Ad Library page 112897234730340 ('Ajaram clinic', 279 likes): 1 active WhatsApp ad, start 2026-08-06 (about 84 days). Ad text names the doctor and 'Call/WhatsApp: +91 87858 24449'.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=112897234730340",
+    "signal_date": "2026-08-06",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Doctor-named clinic paying for a WhatsApp-opening ad for 12 weeks. Small budget; missed-enquiry risk unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "low",
+    "keep_reason": "Doctor-owned by the look of the ad, mobile published by the clinic, ad over 30 days.",
+    "unknowns": "Doctor holds BHMS plus a cosmetology diploma, not a dermatologist. One ad only, so low spend. Branch count unknown. Not verified on Maps. owner_direct_contact: probably."
+   },
+   {
+    "rank": 8,
+    "business": "Naman Breast Clinic (Dr. Priyansh Jain)",
+    "city": "Surat",
+    "entity_type": "end_business",
+    "what_they_do": "Doctor-run oncoplastic breast surgery clinic (page 'Dr Priyansh Jain - Surgical Oncologist').",
+    "website": "",
+    "signal_observed": "Ad Library page 112718385259292 (1,591 likes): about 30 active WhatsApp ads with Gujarati copy telling patients to click the WhatsApp button for an appointment; oldest start 2026-06-05 (about 146 days), main batches 2026-07-06/07 and 2026-09-02/03.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=112718385259292",
+    "signal_date": "2026-06-05",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "The ads say appointments are booked through the WhatsApp button, with heavy spend for almost 5 months. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "Explicit WhatsApp-to-appointment route and heavy sustained spend; doctor named.",
+    "unknowns": "Specialty (cancer / breast surgery) is outside the brief's dentist / skin / physio list. May be a consulting room in a hospital set-up, not a standalone clinic. No phone published. Branch count unknown. owner_direct_contact: unknown."
+   },
+   {
+    "rank": 9,
+    "business": "Maninagar Dental Hospital and Implant Center",
+    "city": "Ahmedabad (Maninagar)",
+    "entity_type": "end_business",
+    "what_they_do": "Dental implant centre at Sidhpura Complex, opp. Vijay Sales, Krishna Baug, Maninagar (address from ad text).",
+    "website": "",
+    "signal_observed": "Ad Library page 102586777795490 (414 likes): 8 active ads linking to api.whatsapp.com/send, oldest start 2026-03-11 (about 232 days), others 2026-03-12, 07-09, 08-21, 08-22. CTA label is BOOK_TRAVEL but the body says to send a WhatsApp message to book.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=102586777795490",
+    "signal_date": "2026-03-11",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Eight live WhatsApp-opening implant ads over 7+ months, so paid enquiries land on WhatsApp. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "medium",
+    "keep_reason": "Long-running multi-ad spend on a high-ticket service.",
+    "unknowns": "No doctor named, no phone, no website, no listing found by name; identity unchecked in a second place. 'Hospital' in the name may mean a multi-doctor set-up. owner_direct_contact: unknown. Weakest on reachability."
+   },
+   {
+    "rank": 10,
+    "business": "Satguru Skin Hair Laser & Family Clinic",
+    "city": "Surat (Matawadi, L.H. Road)",
+    "entity_type": "end_business",
+    "what_they_do": "Skin, hair, laser and family clinic; PRP hair and alopecia focus.",
+    "website": "",
+    "signal_observed": "Ad Library page 106046842528847 (2,653 likes): about 35 active WhatsApp ads, oldest start 2026-09-22 (37 days), further batches 2026-10-04 to 10-10, 10-17 to 10-19, 10-26. Ad text publishes +91 81401 02505.",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=106046842528847",
+    "signal_date": "2026-09-22",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Fast-growing WhatsApp ad programme with weekly new batches. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "low",
+    "keep_reason": "Heavy recent spend and a clinic-published mobile; passes the 30-day test only just.",
+    "unknowns": "Another collector saw a 2026-10-12 start for this page, so the true first-ad date is unclear. 'Family clinic' may mean a multi-doctor set-up; no doctor named. owner_direct_contact: unknown."
+   },
+   {
+    "rank": 11,
+    "business": "The Skin Lab - Dr. Jayshree Savaliya Dhanani",
+    "city": "Surat",
+    "entity_type": "end_business",
+    "what_they_do": "Single-location skin, laser and hair transplant centre (Infinity Tower, near Railway Station) run by dermatologist Dr. Jayshree Savaliya Dhanani.",
+    "website": "https://www.theskinlab.in",
+    "signal_observed": "Ad Library page 112936250583407 (1,674 likes): three active WhatsApp ads, all started 2026-10-23 (6 days).",
+    "signal_url": "https://www.facebook.com/ads/library/?id=992401269827092",
+    "signal_date": "2026-10-23",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Currently pays for WhatsApp-opening ads. FAILS the 30-day test, so the duration of spend is not shown.",
+    "source_ids": [
+     "meta-ad-library-clinics"
+    ],
+    "multi_source": false,
+    "tier": "signal_only",
+    "confidence": "low",
+    "keep_reason": "Best identity of the group (own site confirms one location, the doctor and a WhatsApp link to mobile 7990221337, same number in the ad), but the ads are only 6 days old. Keep as a low-priority signal_only.",
+    "unknowns": "Whether the page advertised earlier is not shown. OPD Mon-Sat 10-1 and 4-7. owner_direct_contact: probably, unproven. Ad Library not opened (403)."
+   },
+   {
+    "rank": 12,
+    "business": "The Rejuvene Skin Clinic (Dr. K. B. Pandya, Dr. Hetav Pandya)",
+    "city": "Rajkot",
+    "entity_type": "end_business",
+    "what_they_do": "Dermatology and cosmetic skin clinic since 1998, 2,768 Google reviews, appears single-centre.",
+    "website": "http://therejuveneclinic.com/",
+    "signal_observed": "Two 1-star Google reviews: 2026-10-20 (long wait, charge for online consult) and 2026-10-11 (walk-ins refused in fully booked slots; the clinic says it is working with its front-desk team). Neither is about unanswered calls or WhatsApp.",
+    "signal_url": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT21OMU5XcGFia0pMVldFd2JuWTRNWEo2Wm5WNFVWRRAB!2m1!1s0x0:0xa5c3319917c4d41e!3m1!1s2@1:CAIQACodChtycF9oOmN1NWpabkJLVWEwbnY4MXJ6ZnV4UVE%7C%7C?hl=en-GB",
+    "signal_date": "2026-10-20",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Fully booked slots and a front desk under strain, but the clinic already publishes WhatsApp for appointments and the complaints are about waiting, not enquiries.",
+    "source_ids": [
+     "maps-unanswered-reviews"
+    ],
+    "multi_source": false,
+    "tier": "fit_only",
+    "confidence": "low",
+    "keep_reason": "Fits the profile (doctor-owned, established, WhatsApp +91 97372 39239 published) but the observed signal does not match the unanswered-enquiry need.",
+    "unknowns": "No Meta ad cross-check. Single centre not stated outright. Owner-direct number unknown."
+   },
+   {
+    "rank": 13,
+    "business": "Vinayak Dental Clinic and Implant Center",
+    "city": "Ahmedabad (Nikol)",
+    "entity_type": "end_business",
+    "what_they_do": "Single dental and implant clinic in Jivanvadi, Nikol; ad promotes implants.",
+    "website": "",
+    "signal_observed": "Ad Library page 115578041602579 (32 likes): active WhatsApp ad, start 2026-09-11 (48 days). Ad text gives the address and appointment number 9726219933 and ends 'Managed By @gjs531'.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=838009686004674",
+    "signal_date": "2026-09-11",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Pays for a WhatsApp-opening ad for 6+ weeks. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-ad-library-clinics"
+    ],
+    "multi_source": false,
+    "tier": "unverified",
+    "confidence": "low",
+    "keep_reason": "Real ad data and a published mobile, but the ad credits an outside manager, which suggests an agency-run page (a disqualifier), and no doctor is named.",
+    "unknowns": "Possibly agency-managed. A directory snippet links Dr. Ashish Bhimani to the clinic (not opened). Another collector noted it as possibly already collected in an earlier round. owner_direct_contact: unknown."
+   },
+   {
+    "rank": 14,
+    "business": "Siddhi Skin Clinic",
+    "city": "Ahmedabad (Prahladnagar per ad)",
+    "entity_type": "end_business",
+    "what_they_do": "Skin clinic offering hydra facial, carbon peel, Q-switch laser and laser hair reduction.",
+    "website": "",
+    "signal_observed": "Ad Library page 821603917694511 (68 likes): active WhatsApp ad, start 2026-07-21 (about 100 days). Ad text says Prahladnagar.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1721306872469263",
+    "signal_date": "2026-07-21",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Pays for a WhatsApp-opening ad for over 3 months. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-ad-library-clinics"
+    ],
+    "multi_source": false,
+    "tier": "unverified",
+    "confidence": "low",
+    "keep_reason": "Real ad data but identity does not hold: directory listings put a Siddhi Skin Clinic in Nehrunagar / Jodhpur Village (Dr. Krupa Karotara), which could not be tied to the Prahladnagar ad page. No published number.",
+    "unknowns": "Same clinic or not; doctor unconfirmed; no mobile; low-ticket services and a small page."
+   },
+   {
+    "rank": 15,
+    "business": "Nilkanth Skin Clinic",
+    "city": "Surat (Mota Varachha)",
+    "entity_type": "end_business",
+    "what_they_do": "Skin clinic; ad promotes Rs 2,499 lifetime laser hair removal.",
+    "website": "",
+    "signal_observed": "Ad Library page 349281068262935 (169 likes): 2 active WhatsApp ads, start 2026-09-11 and 2026-09-16 (about 48 days).",
+    "signal_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=349281068262935",
+    "signal_date": "2026-09-11",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Pays for WhatsApp-opening ads for 6+ weeks. Missed enquiries unproven.",
+    "source_ids": [
+     "meta-wa-ads-30d-v2"
+    ],
+    "multi_source": false,
+    "tier": "unverified",
+    "confidence": "low",
+    "keep_reason": "Ad exists, but no doctor, no number, no listing seen; may be a laser / beauty service rather than a doctor-owned clinic.",
+    "unknowns": "Owner unknown, no contact route, small budget, not verified on Maps."
+   }
+  ],
+  "dropped": [
+   {
+    "business": "Celebre Aesthetics India / Célèbre Aesthetics (Dr. Siddharth M. Sakhiya), Surat",
+    "reason": "Found by two collectors, but a separate 'Celebre Aesthetics Rajkot' page (3,101 likes, ad from 2026-10-24) points to 2+ cities or a franchise (chain rule), the Surat page is tiny (94 likes) with 35+ ad variants (possible agency-run), two founders and two Surat addresses are listed, and no business-published phone or site was found, so there is no human route to reach."
+   },
+   {
+    "business": "Clion Care (hair transplant), Ahmedabad",
+    "reason": "Its site shows Ahmedabad, Vadodara and Surat clinics with pages for Anand, Mehsana and Rajkot (2+ cities); no WhatsApp number published and an SEO agency credit. Strongest review hit, but fails the chain rule."
+   },
+   {
+    "business": "Trivedi Skin Care Hospital, Surat",
+    "reason": "Hospital branding, 3,664 reviews; the complaints are about a late doctor and consultation waits, not enquiry handling."
+   },
+   {
+    "business": "Dentistium, Ahmedabad",
+    "reason": "Burst of five 1-star reviews around 2026-10-16 that the clinic calls fake and is pursuing legally; not a usable signal."
+   },
+   {
+    "business": "Dr Nishita Sheth / DNCC",
+    "reason": "Chain with 9 clinics."
+   },
+   {
+    "business": "Advance Hair India",
+    "reason": "Chain across 5 cities."
+   },
+   {
+    "business": "Navadiya",
+    "reason": "Chain with 5 branches."
+   },
+   {
+    "business": "Complete Care physio",
+    "reason": "Chain with 6 branches."
+   },
+   {
+    "business": "Mission Health",
+    "reason": "Chain with about 10 branches and a call CTA."
+   },
+   {
+    "business": "Sparsh Skin and Hair",
+    "reason": "Chain (2 branches, 467k likes) and no WhatsApp CTA."
+   },
+   {
+    "business": "Hairfree Hairgrow",
+    "reason": "Ads in Surat and Ahmedabad (2 cities) and mostly non-WhatsApp CTAs."
+   },
+   {
+    "business": "Dabhi's Dental Clinic and Implant Center",
+    "reason": "Already in our leads list."
+   },
+   {
+    "business": "Avadhoot Ayurveda and Rudraksha",
+    "reason": "Ayurved clinics, which the campaign rejects."
+   },
+   {
+    "business": "Advino Healthcare",
+    "reason": "Home-care provider across 6 cities, not a doctor-owned clinic."
+   },
+   {
+    "business": "Pramukh Dental, Anant Dental, Kids Dental Satellite, Dr. Parikh's Pristine Dental, Shree Hari Skin and Hair",
+    "reason": "WhatsApp ads started 4 to 25 days ago, with no older ad seen and no other signal; below the 30-day test."
+   },
+   {
+    "business": "Ramani Skin & Hair and Dr Jeet",
+    "reason": "No city or clinic identity anywhere in the data (Dr Jeet's page has 0 likes), so cannot be placed in the geography."
+   },
+   {
+    "business": "Mokosh (Bhopal), Race Knee (Kolkata), Dr Haror's, Dezire",
+    "reason": "Outside the geography."
+   }
+  ],
+  "per_source": [
+   {
+    "source_id": "meta-ad-library-clinics",
+    "found": 5,
+    "usable": 2,
+    "note": "Re Life (strong) and The Skin Lab (6-day-old ads) are usable; Vinayak and Siddhi are unverified, Celebre dropped. Run 1 capped at 40 ads so 3 of 6 queries were missed. Ad Library pages returned 403, so no signal was opened."
+   },
+   {
+    "source_id": "maps-unanswered-reviews",
+    "found": 2,
+    "usable": 1,
+    "note": "ADIVA is usable; Rejuvene is fit_only. The unanswered-calls premise is weak: the 'not picking calls' filter found 0 of 3,691 reviews. compass crawler refused under the budget cap."
+   },
+   {
+    "source_id": "meta-wa-ads-30d-v2",
+    "found": 10,
+    "usable": 8,
+    "note": "Best source. 8 usable, 1 dropped (Celebre), 1 unverified (Nilkanth). Page-history runs gave real ad start dates and variant counts. Maps actor useless, so no phone or branch count verified. No Gandhinagar, physio or ortho independents found."
+   },
+   {
+    "source_id": "google-sponsored-clinics",
+    "found": 0,
+    "usable": 0,
+    "note": "paidResults empty for all 14 queries; the official actor needs a $0.50 cap, above the budget. No cross-check with Meta was possible."
+   }
+  ],
+  "cross_matches": [
+   "Celebre Aesthetics / Celebre Aesthetics India (Surat) - meta-ad-library-clinics + meta-wa-ads-30d-v2 - found twice but DROPPED (Rajkot sister page suggests 2+ cities, no published contact, possibly agency-run)"
+  ],
+  "usable_count": 11,
+  "tier_counts": {
+   "verified": 0,
+   "signal_only": 11,
+   "fit_only": 1,
+   "unverified": 3
+  },
+  "enough": true,
+  "replan_advice": "Enough by count (11 signal_only), but be honest about quality: 0 are verified, because no collector could open an Ad Library page (HTTP 403) and every signal is scraper data, not opened evidence. Only about 4 have a clinic-published mobile with the doctor clearly named (Re Life, Dr. Dhamelia, Narayan, Ajaram); RQC, Maninagar and Naman have strong ads but no number, and owner_direct_contact is 'unknown' or 'probably' almost everywhere. Next round: (1) run a cheap identity and contact pass on the top 8 using a working Maps source (scraperlink and the Google Places actor failed; try each clinic's own site, Facebook page About text or a different Maps actor) to get the business-published mobile, branch count and doctor name, and to cross-check the ad's 'Managed By' or agency credits; (2) the Meta Ad Library sweep via jmlp/meta-ad-library-scraper plus page-ID history was the only productive source, so reuse it with new terms: skin clinic Ahmedabad, dental implant Surat and Rajkot, hair transplant Rajkot and Gandhinagar, laser clinic, physiotherapy and ortho in Surat and Rajkot, and raise maxItems so no query is cut off; (3) drop google-sponsored-clinics (empty paidResults for all 14 queries) and review-keyword 'not picking calls' searches (0 hits in 3,691 reviews); (4) Gandhinagar, physio and ortho returned nothing usable from Meta, so widen to Surat and Rajkot dentists and skin clinics rather than forcing Gandhinagar; (5) note that Satguru's first-ad date differs between collectors (09-22 vs 10-12), so check its page history before using it."
+ },
+ "est_apify_spend_usd": 0.249,
+ "note": "Candidates are CLAIMS with evidence. Run lead-researcher on them before anything is added to a campaign."
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "type": "activity",
+    "key": "inbound-reply-zaid-20261026",
+    "created_at": "2026-10-26T04:38:00+00:00",
+    "data": {
+      "kind": "lead_reply",
+      "lead": "Zaid - white-label agency (inbound)",
+      "campaign": "Inbound and partners",
+      "source": "manual",
+      "at": "2026-10-26T04:38:00Z",
+      "text": "Zaid - white-label agency (inbound): wrote on WhatsApp that he has overseas CRM / AI chatbot queries and needs a white-label supplier; asked for our portfolio"
+    }
+  }
+]

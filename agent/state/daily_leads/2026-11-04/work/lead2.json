@@ -1,0 +1,27 @@
+{
+ "rank": 2,
+ "business": "Arbuda Car (Arbuda Car Accessories & Customization Studio)",
+ "city": "Gandhinagar",
+ "what_they_do": "Car accessories and customisation studio that also sells detailing, ceramic coating and PPF",
+ "website": "https://arbudaaccessories.netlify.app (free Netlify subdomain); declared domain arbudacar.com does not exist",
+ "website_status": "dead/non-existent own domain; only a free netlify.app copy is live",
+ "signal_observed": "The page's own schema.org markup names url https://arbudacar.com, but DNS returns NXDOMAIN for arbudacar.com (checked 2026-11-04 with nslookup/curl); the only working site is the free arbudaaccessories.netlify.app. 'Book Now' and 'Get a Quote' only scroll to a #contact anchor (no booking form confirmed). Footer shows Last Updated May 2025.",
+ "signal_url": "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar",
+ "signal_date": "2026-11-04 (date we checked); page says 'Last Updated: May 2025'",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "Studio wins customers by WhatsApp/Instagram but has no real domain and no booking form; a proper booking+proof page and Google profile upkeep fits.",
+ "contact_routes": "Phone/WhatsApp +91 70169 25846 (own page, https://arbudaaccessories.netlify.app/car-detailing-gandhinagar, wa.me/917016925846); Instagram arbuda_car_accessories (link on the page). Email krushbhc@gmail.com is on the page but email is not a route.",
+ "brand_franchise_flag": "single studio, no franchise claim; ACCESSORY-SHOP RISK: it calls itself a car accessories and customisation studio (exclusion list has 'accessory shops')",
+ "newest_review_date": "unknown",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "a-variant: 'the website address you use is a free netlify address; arbudacar.com does not open' (literally true) OR d: 'Book Now only jumps down the page, no booking form'",
+ "tier": "verified",
+ "multi_source": false,
+ "source_ids": [
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "medium",
+ "keep_reason": "Signal opened and independently reproducible (DNS). Identity cross-checked via wa.me number, schema.org phone and the Instagram link.",
+ "unknowns": "Whether arbudacar.com is printed on their Google listing; whether the researcher accepts an accessories+detailing studio; owner name."
+}

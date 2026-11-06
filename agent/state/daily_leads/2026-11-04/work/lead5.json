@@ -1,0 +1,28 @@
+{
+ "rank": 5,
+ "business": "Dignity Cares (Dignity Care, Garware Application Studio)",
+ "city": "Ghodasar, Ahmedabad",
+ "what_they_do": "Car wash, detailing, wrapping, Teflon coating; listed as Garware Application Studio",
+ "website": "none found (dignitycare.in is a Hostinger parked page but ownership NOT confirmed)",
+ "website_status": "none found",
+ "signal_observed": "Garware row has no business website; the only web presence found is a Justdial listing (4.2 from 4 reviews). Domain dignitycare.in shows 'Parked Domain name on Hostinger DNS system' on 2026-11-04 but I could not tie that domain to the studio.",
+ "signal_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+ "signal_date": "undated (checked 2026-11-04)",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "Film-certified applicator with almost no web presence.",
+ "contact_routes": "Phone 9925784929 (Garware row). Justdial listing name 'Dignity Cares', Empire Heights, Ghodasar (address differs from Garware row 'Tulsikunj, Prakash Nagar, Ghodasar').",
+ "brand_franchise_flag": "single outlet",
+ "newest_review_date": "unknown",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "c ONLY after confirming the Google listing has no website button",
+ "tier": "signal_only",
+ "multi_source": true,
+ "source_ids": [
+  "garware-llumar-registers",
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "low",
+ "keep_reason": "Phone from the manufacturer and a second listing match by name; no-website is a negative finding.",
+ "unknowns": "Address conflict between sources; website; whether this is mostly a car-wash business."
+}

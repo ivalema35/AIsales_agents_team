@@ -1,0 +1,38 @@
+NEXUS360 DEMO - SAMPLE FIRST-TOUCH MESSAGES (Sridhar -> Chhattisgarh builder)
+Drafts only. Nothing sent. No contact data collected in this task.
+Placeholders in {curly braces} are filled from a verified record on send day or by Sridhar.
+
+=== 1. WhatsApp 1:1, day 0 (45 words, English) ===
+Hi {first_name}, Sridhar here - I build Nexus360, an ERP and CRM for builders. I saw {project} in {city} on the Chhattisgarh RERA site. Quick question: do you track indents and stock for it in Excel or software today? (Reply STOP and I won't write again.)
+
+--- Hinglish (42 words) ---
+Namaste {first_name} ji, main Sridhar - Nexus360 banata hoon, builders ke liye ERP aur CRM. Chhattisgarh RERA site par {project} ({city}) dekha. Ek sawal: iske indent aur stock abhi Excel me track hote hain ya software me? (Band karna ho to STOP likhein.)
+
+--- Hindi, Devanagari (42 words) ---
+नमस्ते {first_name} जी, मैं श्रीधर - Nexus360 बनाता हूँ, बिल्डरों के लिए ERP और CRM। छत्तीसगढ़ RERA साइट पर {project} ({city}) देखा। एक सवाल: इसके इंडेंट और स्टॉक अभी Excel में ट्रैक होते हैं या सॉफ़्टवेयर में? (बंद करना हो तो STOP लिखें।)
+
+=== 2. Email, day 0 (88 words incl. signature) ===
+Subject: {project} ({city}): indents and site stock
+
+Hello {first_name},
+
+I'm Sridhar Patnaik, founder of Nexus360, an ERP and CRM for real-estate builders: BOQ, indents and purchase orders, stock, plus lead follow-ups, site visits and collections. It runs on 20+ projects with 200+ people; customers include Mahavir Group in Rajnandgaon.
+
+I found {project} in {city} on the Chhattisgarh RERA site ({registered_projects_count} listed under {promoter_name}). Do you track indents and site stock in Excel or in software today?
+
+One word is enough. If it's not relevant, reply STOP and I won't write again.
+
+Sridhar Patnaik | Nexus360 | {sridhar_phone}
+
+=== 3. WhatsApp follow-up, day 3, only if no reply / no STOP (44 words) ===
+Hi {first_name}, Sridhar (Nexus360) once more. If material requests for {project} still go from site to office by phone or WhatsApp, I can send a short walkthrough of indent to purchase order to goods receipt. Reply YES for the link. (STOP to opt out.)
+
+PLACEHOLDERS
+{first_name}  - named person from the builder's own site or the RERA promoter record; if none, use the company name and mark route_type = role inbox
+{project}     - project name exactly as on the RERA register, rechecked on send day
+{city}        - city/district of that project per the register
+{registered_projects_count} - projects listed under that promoter on the register, counted on send day (if 1, rewrite as "your project {project}")
+{promoter_name} - promoter name as spelled on the register
+{sridhar_phone} - Sridhar's own +91 number (he provides)
+{walkthrough_link} - Sridhar's 2-3 minute walkthrough (he provides; message 3 sends it only after a YES)
+SRIDHAR TO CONFIRM before use: "20+ projects", "200+ people" (his site says this; confirm still true), naming Mahavir Group (public on his site; confirm he wants it in outreach).

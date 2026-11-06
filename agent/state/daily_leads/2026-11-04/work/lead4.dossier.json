@@ -1,0 +1,64 @@
+{
+  "business": "MK29 Detailing (MK29 Car Detailing Studio / MK TwentyNine)",
+  "city": "Chharodi (Nirma University Road), Ahmedabad",
+  "identity_verified": true,
+  "verification_trail": [
+    "https://www.mk29detailing.com/ (WebFetch 2026-11-04): own site live; ceramic/graphene coating, PPF, polishing, interior; address Shop 01, Wertical Space, Nirma University Rd, Chharodi, Ahmedabad 382481; phone, email, social links; form 'Book Your Services Now'; no WhatsApp link, no prices/packages, no reviews widget",
+    "https://www.mk29detailing.com/contact: same phone/address; form fields name, phone, email, vehicle model, message; no WhatsApp, no hours, no owner name",
+    "https://www.mk29detailing.com/about: HTTP 522 on first and second try; second attempt returned text: owner/founder not named, no team list, only one address, footer credits website designer Fruxinfo Pvt. Ltd.",
+    "https://www.mk29detailing.com/services: no prices, no size-based packages, no WhatsApp button, 'Book Your Services Now' twice (target link not visible in text)",
+    "https://www.mk29detailing.com/gallery: HTTP 522 (not verified)",
+    "https://www.instagram.com/mk29detailing/ (public view): display name 'MK29 CAR DETAILING STUDIO', 107 followers, bio claims '200+ luxury cars restored', doorstep service mentioned, same phone number inside post images, latest dated post 2026-10-10",
+    "https://www.facebook.com/profile.php?id=61587725211936: only name 'MK TwentyNine' returned, nothing else verified",
+    "WebSearch for MK29 name and phone: no independent third-party hit (no Maps, Justdial, news). Google Maps fetch returned nothing usable."
+  ],
+  "official_website": "https://www.mk29detailing.com/",
+  "what_they_do": "Car detailing, ceramic and graphene coating, PPF, polishing, interior detailing, Ahmedabad (Chharodi). Site claims XPEL/3M/Aegis products and a warranty.",
+  "entity_type": "end_business",
+  "size_cues": "Single address, no branches mentioned. Small social footprint (Instagram 107 followers). Own claims: 300+ cars, 96% retention, 8+ years on site; Instagram bio says 200+ cars (claims inconsistent, own marketing, unverified). New-looking Facebook page id. Website built by an outside developer (Fruxinfo).",
+  "decision_maker": "not found (site lists Kishan Bhatiya as 'operations', Krish Patel and Milind Rao as detailing experts; no public page says who owns it)",
+  "contacts": [
+    {"kind": "phone", "value": "+91 84870 11029", "source_url": "https://www.mk29detailing.com/contact", "note": "Labelled 'Hotline' on the contact page; also in Instagram post images. Likely WhatsApp-capable (Indian mobile), NOT confirmed. Not confirmed to be the number on the Google Maps listing and not confirmed to reach the owner."},
+    {"kind": "email", "value": "info.mk29detailing@gmail.com", "source_url": "https://www.mk29detailing.com/contact", "note": "Decoded by the fetch tool from the Cloudflare-obfuscated address; shared inbox, email does not count as a way in"},
+    {"kind": "website", "value": "https://www.mk29detailing.com/", "source_url": "https://www.mk29detailing.com/", "note": "Live own site with enquiry form"},
+    {"kind": "instagram", "value": "https://www.instagram.com/mk29detailing/", "source_url": "https://www.mk29detailing.com/contact", "note": "Business account"},
+    {"kind": "facebook", "value": "https://www.facebook.com/profile.php?id=61587725211936", "source_url": "https://www.mk29detailing.com/contact", "note": "Business page"}
+  ],
+  "observed_facts": [
+    {"fact": "Own website is live with a 'Book Your Services Now' enquiry form (name, phone, email, vehicle model, message); no WhatsApp button or link anywhere in the text of home, contact or services pages", "source_url": "https://www.mk29detailing.com/contact", "date": "2026-11-04"},
+    {"fact": "Services page shows no prices and no packages by car size, and no reviews or testimonials widget", "source_url": "https://www.mk29detailing.com/services", "date": "2026-11-04"},
+    {"fact": "Instagram account has 107 followers; latest visible dated post 2026-10-10; phone number shown in post images", "source_url": "https://www.instagram.com/mk29detailing/", "date": "2026-10-10"},
+    {"fact": "Only one address (Chharodi, Ahmedabad) is published; no branch or franchise mention", "source_url": "https://www.mk29detailing.com/contact", "date": "2026-11-04"}
+  ],
+  "hypotheses": [
+    "A booking and proof page with packages by car size, before/after photos and a WhatsApp Book button would add what the site lacks (inference from missing elements, not from any observed lost enquiry)",
+    "The studio is young (small Instagram, new-looking Facebook page id, inconsistent car-count claims), so it may be under-budgeted but also hungry for visible proof",
+    "The Google Maps listing may be thin or absent, but this could not be checked"
+  ],
+  "need_evidence": "inferred",
+  "ability_to_pay": "Unknown. Paid for a custom-looking website built by an outside developer and claims premium products (XPEL/3M/Aegis), but the only independent footprint is tiny (107 Instagram followers). No ad activity checked, no Google rating or review count visible.",
+  "pay_signal": "weak",
+  "reachability": "business_contact",
+  "owner_direct_contact": "unknown",
+  "resistance": "Has a live site built by an outside web vendor (Fruxinfo) and an enquiry form; may see the website as 'done'. Owner is not identified. The phone is labelled hotline and may be answered by the operations person, not the decider.",
+  "grade": "C",
+  "reject_reason": "",
+  "case_for": "Real single-outlet Ahmedabad studio in the target geography with a published phone number and live site; the site visibly lacks size-based packages, proof/reviews and a WhatsApp button, which fits the booking-and-proof offer.",
+  "case_against": "No Google Maps data could be verified (phone, website button, reviews, owner replies all unknown), so none of the campaign's safe slots a/b/c/d is confirmed; the site already has a working enquiry form (slot d does not apply); owner not named and the number is a 'Hotline'; weak independent footprint (only own site and a 107-follower Instagram), claims inconsistent (300+ vs 200+ cars); pay signal weak; need only inferred.",
+  "best_angle": "None safe yet. Only after Maps is checked by a human or cheap tool: if the Google website button is missing/broken or the newest 3 reviews are unanswered, use that. From the site alone, the only literal truth is 'no WhatsApp button and no packages by car size on the site', which is not one of the campaign's allowed slots.",
+  "best_channel": "WhatsApp to the published +91 84870 11029 (likely WhatsApp-capable, unconfirmed) only if the owner confirms it reaches the decider; email is shared inbox only and does not count. Not ready.",
+  "gaps": [
+    "Google Maps listing (name, phone published there, website button target, rating, review count, newest review date, owner replies) not observable with the available tools",
+    "Gallery and About pages returned HTTP 522 on first try (about text obtained on retry; gallery not seen)",
+    "Owner/decision-maker unknown; whether the hotline number reaches him unknown",
+    "Ad Library status not checked",
+    "Only two business-owned sources (site, Instagram) plus a Facebook page with no readable detail; no independent third-party source"
+  ],
+  "phone_published": "+91 84870 11029 (own site contact page; Maps listing phone unverified)",
+  "website_status": "own site alive (enquiry form, no WhatsApp button, no packages, no reviews widget)",
+  "newest_review_date": "unknown (Maps not observable)",
+  "owner_replies_in_newest_3": "unknown",
+  "brand_franchise_flag": "single outlet, no franchise or brand mention found",
+  "safe_first_message_slot": "none confirmed (a/b/c unverifiable without Maps; d does not apply because a form exists)",
+  "ready_for_campaign": false
+}

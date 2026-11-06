@@ -1,0 +1,106 @@
+== 1. package
+sha256: 5b68453bec61d051102b9e346297932c8fb464b99e4e697068e9b0b74d5de082  (18760961 bytes)
+
+== 2. package check (slug/template names, files present)
+package OK: 4 pages
+
+== 3. live app.py: route + CAMPAIGN_PAGES present?
+backup: /root/iv_backups/campaign_pages_20261022_050303/app.py
+backup: /root/iv_backups/campaign_pages_20261022_050303/campaign_files_before.tgz
+CAMPAIGN_PAGES now has 14 entries (10 before)
+py_compile temp app.py OK
+jinja compile OK: lead_blj.html
+jinja compile OK: lead_namasya.html
+jinja compile OK: lead_shyamal.html
+jinja compile OK: lead_vistara.html
+
+== 4. apply to live
+CAMPAIGN_PAGES now has 14 entries (10 before)
+live app.py compiles
+
+== 5. graceful reload
+   PID                  STARTED CMD
+719245 Thu Oct 22 05:03:04 2026 /var/www/ivinfotech/venv/bin/python3 /var/www/ivinfotech/venv/bin/gu
+719246 Thu Oct 22 05:03:04 2026 /var/www/ivinfotech/venv/bin/python3 /var/www/ivinfotech/venv/bin/gu
+719247 Thu Oct 22 05:03:04 2026 /var/www/ivinfotech/venv/bin/python3 /var/www/ivinfotech/venv/bin/gu
+
+== 6. health checks (gunicorn direct)
+OK   200 /
+OK   200 /portfolio
+OK   200 /contact
+OK   200 /campaign/rh-7k3q9x
+OK   404 /campaign/does-not-exist
+OK   200 /campaign/shyamal-park-lane-k4m8vz
+X-Robots-Tag: noindex, nofollow, noarchive
+Cache-Control: no-cache
+  asset page.css -> 206 text/css; charset=utf-8 1024b
+  asset page.js -> 206 application/javascript; charset=utf-8 1024b
+  asset video.mp4 -> 206 video/mp4 1024b
+  asset poster.jpg -> 206 image/jpeg 1024b
+  asset e.gif -> 206 image/gif 43b
+  asset logo.png -> 206 image/png 1024b
+  asset email_banner.jpg -> 206 image/jpeg 1024b
+  asset fonts/inter.woff2 -> 206 application/octet-stream 1024b
+  asset fonts/space-grotesk.woff2 -> 206 application/octet-stream 1024b
+OK   200 /campaign/vistara-anahata-p7q2xc
+X-Robots-Tag: noindex, nofollow, noarchive
+Cache-Control: no-cache
+  asset page.css -> 206 text/css; charset=utf-8 1024b
+  asset page.js -> 206 application/javascript; charset=utf-8 1024b
+  asset video.mp4 -> 206 video/mp4 1024b
+  asset poster.jpg -> 206 image/jpeg 1024b
+  asset e.gif -> 206 image/gif 43b
+  asset logo.png -> 206 image/png 1024b
+  asset email_banner.jpg -> 206 image/jpeg 1024b
+  asset fonts/inter.woff2 -> 206 application/octet-stream 1024b
+  asset fonts/space-grotesk.woff2 -> 206 application/octet-stream 1024b
+OK   200 /campaign/blj-silver-square-t9d3wn
+X-Robots-Tag: noindex, nofollow, noarchive
+Cache-Control: no-cache
+  asset page.css -> 206 text/css; charset=utf-8 1024b
+  asset page.js -> 206 application/javascript; charset=utf-8 1024b
+  asset video.mp4 -> 206 video/mp4 1024b
+  asset poster.jpg -> 206 image/jpeg 1024b
+  asset e.gif -> 206 image/gif 43b
+  asset logo.png -> 206 image/png 1024b
+  asset email_banner.jpg -> 206 image/jpeg 1024b
+  asset fonts/inter.woff2 -> 206 application/octet-stream 1024b
+  asset fonts/space-grotesk.woff2 -> 206 application/octet-stream 1024b
+OK   200 /campaign/shree-namasya-r5h6jb
+X-Robots-Tag: noindex, nofollow, noarchive
+Cache-Control: no-cache
+  asset page.css -> 206 text/css; charset=utf-8 1024b
+  asset page.js -> 206 application/javascript; charset=utf-8 1024b
+  asset video.mp4 -> 206 video/mp4 1024b
+  asset poster.jpg -> 206 image/jpeg 1024b
+  asset e.gif -> 206 image/gif 43b
+  asset logo.png -> 206 image/png 1024b
+  asset email_banner.jpg -> 206 image/jpeg 1024b
+  asset fonts/inter.woff2 -> 206 application/octet-stream 1024b
+  asset fonts/space-grotesk.woff2 -> 206 application/octet-stream 1024b
+--- recent errors in service log:
+none
+
+== 7. public check (LiteSpeed -> HTTPS)
+200 type=text/html; charset=utf-8 https://www.ivinfotech.com/campaign/shyamal-park-lane-k4m8vz
+206 type=text/css; charset=utf-8 https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/page.css
+206 type=video/mp4 https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/video.mp4
+206 type=image/jpeg https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/email_banner.jpg
+206 type=image/png https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/logo.png
+200 type=text/html; charset=utf-8 https://www.ivinfotech.com/campaign/vistara-anahata-p7q2xc
+206 type=text/css; charset=utf-8 https://www.ivinfotech.com/assets/campaign/vistara-anahata-p7q2xc/page.css
+206 type=video/mp4 https://www.ivinfotech.com/assets/campaign/vistara-anahata-p7q2xc/video.mp4
+206 type=image/jpeg https://www.ivinfotech.com/assets/campaign/vistara-anahata-p7q2xc/email_banner.jpg
+206 type=image/png https://www.ivinfotech.com/assets/campaign/vistara-anahata-p7q2xc/logo.png
+200 type=text/html; charset=utf-8 https://www.ivinfotech.com/campaign/blj-silver-square-t9d3wn
+206 type=text/css; charset=utf-8 https://www.ivinfotech.com/assets/campaign/blj-silver-square-t9d3wn/page.css
+206 type=video/mp4 https://www.ivinfotech.com/assets/campaign/blj-silver-square-t9d3wn/video.mp4
+206 type=image/jpeg https://www.ivinfotech.com/assets/campaign/blj-silver-square-t9d3wn/email_banner.jpg
+206 type=image/png https://www.ivinfotech.com/assets/campaign/blj-silver-square-t9d3wn/logo.png
+200 type=text/html; charset=utf-8 https://www.ivinfotech.com/campaign/shree-namasya-r5h6jb
+206 type=text/css; charset=utf-8 https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/page.css
+206 type=video/mp4 https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/video.mp4
+206 type=image/jpeg https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/email_banner.jpg
+206 type=image/png https://www.ivinfotech.com/assets/campaign/shree-namasya-r5h6jb/logo.png
+
+DEPLOY OK. Backup of app.py: /root/iv_backups/campaign_pages_20261022_050303/app.py. Rollback by hand: cp /root/iv_backups/campaign_pages_20261022_050303/app.py /var/www/ivinfotech/app.py; kill -HUP $(systemctl show -p MainPID --value ivinfotech)

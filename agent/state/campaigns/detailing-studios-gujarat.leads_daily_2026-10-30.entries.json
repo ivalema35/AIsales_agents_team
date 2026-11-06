@@ -1,0 +1,435 @@
+[
+ {
+  "type": "lead",
+  "key": "detailing-coating-buddies",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Coating Buddies",
+   "city": "Ahmedabad (Odhav)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81548 97959",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe listing: 4.8 rating, 48 ratings, mobile 8154897959, no website or social field. Instagram handle coatingbuddies_vastral surfaced (not opened), hinting at a second location."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-incredible-car-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Incredible Car Detailing",
+   "city": "Ahmedabad (Shilaj / Bopal)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 75670 06633",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.9 rating, 36 ratings, mobile 7567006633, no website field; own-name web searches found no studio site."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-the-gunman-car",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "The Gunman Car",
+   "city": "Mehsana (Panchot Circle)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96625 51896",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.9 rating, 15 ratings, mobile 9662551896, Mon-Sat 10-6, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-motorx-car-care",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "MotorX Car Care",
+   "city": "Ahmedabad (Makarba)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 84908 90010",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.6 rating, 63 ratings, mobile 8490890010, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-shreeji-car-spa",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Shreeji Car Spa",
+   "city": "Ahmedabad (Satellite)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 73832 22244",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.7 rating, 116 ratings, mobile 7383222244, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-vampires-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Vampires Detailing",
+   "city": "Ahmedabad (Sola)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 93077 31406",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 5.0 rating, 14 ratings, mobile 9307731406, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-autoglow-car-washing-and-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "AutoGlow: Car Washing and Detailing",
+   "city": "Ahmedabad (Chandkheda)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 78179 51639",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 5.0 rating, 26 ratings, mobile 7817951639, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-swish-auto-care",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Swish Auto Care",
+   "city": "Vadodara (Saiyed Vasna)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81400 01190",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.6 rating, 53 ratings, mobile 8140001190, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-mp-car-spa-gota",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "MP Car Spa (Gota)",
+   "city": "Ahmedabad (Gota)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "hold",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "EN",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 92748 72753",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 5.0 rating, 28 ratings, mobile 9274872753, no website field. A separate MP CAR SPA listing exists in Mehsana, so it may be a two-outlet brand."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain. Possible 2-outlet brand.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-shakti-car-care",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Shakti Car Care",
+   "city": "Mehsana (Palodar, bypass)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96649 96657",
+     "source": "https://www.carchhe.com (third-party directory)",
+     "note": "Directory number, not the studio's own page; not tested for WhatsApp."
+    }
+   ],
+   "observed_facts": [
+    "carchhe: 4.7 rating, only 7 ratings, mobile 9664996657, no website field."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain.",
+   "verification": "unverified (directory listing only)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-janvi-car-wash-and-detailing-studio",
+  "tags": [
+   "detailing",
+   "daily-2026-10-30",
+   "unverified"
+  ],
+  "data": {
+   "name": "Janvi Car Wash and Detailing Studio",
+   "city": "Kadi",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "hold",
+   "contacted": false,
+   "researched": "2026-10-30 (daily lead run: a carchhe.com directory row only; no Google signal checked yet)",
+   "language": "GU",
+   "language_note": "Gujarati for Mehsana and Kadi, English elsewhere; Hindi if the owner replies in Hindi.",
+   "best_channel": "The owner's own WhatsApp 1:1 after a 30-second check of the Google Maps listing (website button?). Not the company template until the signal is verified.",
+   "best_angle": "Check the Google listing first; if there is no Website button, use slot c (see agent/state/detailing_wa/EXTRA_CANDIDATES_2026-10-30.txt).",
+   "contacts": [],
+   "observed_facts": [
+    "Justdial snippet (page returned 403, not opened): 4.5 stars from 28 reviews, WhatsApp option. No own site found by search."
+   ],
+   "hypotheses": [
+    "Fit by category only: a detailing studio with no website field in the directory. The real signals (Google website button, review replies) are not checked."
+   ],
+   "case_against": "Unverified: third-party directory data only; the studio may have a website or be closed or part of a chain. No phone number found.",
+   "verification": "unverified (directory listing only)"
+  }
+ }
+]

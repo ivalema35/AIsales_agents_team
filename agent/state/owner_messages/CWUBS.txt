@@ -1,0 +1,42 @@
+APPROVAL NEEDED [CWUBS]
+EMAIL
+To: shyamalpark501@gmail.com
+Lead label (typed by the agent, not checked): shyamal
+Subject: Automatic WhatsApp replies for Shyamal Park Lane enquiries
+Agent's reason (typed by the agent, not checked): Round 3 first-touch email: page, video and demo are live
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/email_banner.jpg
+  https://www.ivinfotech.com/campaign/shyamal-park-lane-k4m8vz
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shyamal%20Park%20Lane
+  https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/logo.png
+--- text ---
+[theme: corporate]
+
+Hello Shyamal Park Lane team,
+
+We are IV Infotech, a software company in Mehsana, Gujarat. We help real-estate developers make sure every WhatsApp enquiry can get a first reply in about a minute: the brochure goes out, three quick questions are asked, a site-visit time is offered, and your team sees every enquiry in one list. We saw a Diwali ad for Shyamal Park Lane with a Send WhatsApp message button, so we made a short video and a page for it.
+
+The video shows, in about 40 seconds, how a WhatsApp enquiry for Shyamal Park Lane can get an automatic first reply. The chats in it are examples.
+
+[image] https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/email_banner.jpg | https://www.ivinfotech.com/campaign/shyamal-park-lane-k4m8vz | Shyamal Park Lane - watch the video
+
+[button] Watch the video (about 40 seconds) | https://www.ivinfotech.com/campaign/shyamal-park-lane-k4m8vz
+
+We may also send this same note on WhatsApp, to the number published for Shyamal Park Lane, so open whichever is easier. If you would rather not get it, reply "stop" to this email and we will not send it.
+
+Want to see it answer on WhatsApp? Tap the button below. WhatsApp opens with a message ready, you press Send, and our automatic assistant replies with a short sample chat for Shyamal Park Lane from our own number. Nothing is connected to your number.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Shyamal%20Park%20Lane
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+IV Infotech is an independent company, not affiliated with Shyamal Group, WhatsApp or Meta.
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK CWUBS to approve, NO CWUBS to skip.
+Valid till 23 Oct 10:39 IST.

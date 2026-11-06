@@ -1,0 +1,28 @@
+APPROVAL NEEDED [KR2AC]
+WHATSAPP TEMPLATE (first touch)
+To: +919924426361
+Lead label (typed by the agent, not checked): Boss test (personal number, owner asked)
+Template: iv_en_realestate_demo_v1 (en)
+Header video: https://www.ivinfotech.com/assets/campaign/pride-aura-e6ph9g/video.mp4
+Agent's reason (typed by the agent, not checked): Owner: the boss wants to see the template and the demo himself. Same template/content the owner tested on his own number (XG72K). Not a lead.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/pride-aura-e6ph9g/video.mp4
+  https://www.ivinfotech.com/campaign/pride-aura-e6ph9g
+--- text ---
+Namaste Pride Group team,
+
+We are IV Infotech, Mehsana. We saw your ads for Pride Aura.
+
+When an enquiry arrives at night or in a busy hour and the reply comes late, some buyers may move on to the next developer.
+
+We made a short video for Pride Aura. In simple words it shows how every WhatsApp enquiry can get an automatic reply in about a minute, and how your team can save time and give buyers a quicker first reply.
+
+Watch the video, and if it looks useful, tap "Yes, send the demo" below.
+--- end of text ---
+Footer: Reply STOP to opt out
+Button [See details] opens: https://www.ivinfotech.com/campaign/pride-aura-e6ph9g
+Button [Yes, send the demo]
+Button [No, thanks]
+This code approves exactly the text above and nothing else.
+Reply OK KR2AC to approve, NO KR2AC to skip.
+Valid till 17 Oct 04:33 IST.

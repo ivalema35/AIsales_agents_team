@@ -1,0 +1,38 @@
+BLOCKERS:
+ - 3, 4a-c, 5 (chat avatar and list header) | Remove their S logo from the mock WhatsApp contact avatar and from the enquiry-list header. Use plain text "Shyamal Park Lane" with a neutral house icon. Keep their logo only in scene 1 and in the scene 2 ad card.
+ - 1 (independence line and ribbon) | Put the independence line on a dark navy plate, 28-30px, two balanced lines, with "AI voice" added, clear of the lit windows (no orphan "Group"). Delete the gold ribbon.
+ - 4a (brochure card) | Relabel the PDF card "Brochure or project details" with "PDF · example" underneath. Remove "Sent automatically".
+ - 4b (questions beat) | Make the questions beat its own visible card: three tappable-looking rows "3 or 4 BHK?", "Budget?", "Buying timeline?", each labelled Example. The beat exists in the build code but is only ~2.6 s. Lengthen it to at least 3 s. Re-grab the QA still at about 55% of scene 4 (t≈28 s). Check a frame at the midpoint of each beat (brochure, questions, visit times). Switch the caption per beat (see wording changes). Do not use the loan question; their SBI-loan offer is asterisked.
+ - 2-5 ("Concept by" pill) | Write the pill as text "Concept by IV Infotech". Show it large only in scenes 1 and 6. In scenes 2-5 drop it, or shrink it to a low-opacity corner mark at top-left, y about 100-140, above the heads.
+ - 5 and 6 (waving IV robot) | Give each robot instance a unique gradient id (ivg4, ivg5, ivg6), or fill the torso with flat #2F55F4. Re-render 4, 5 and 6. On the dark scene 6 background add a soft rim light so the head shows.
+ - 3 (night buyer) | Use a calm, neutral buyer (the repo's B3_night_neutral.jpg or B2_night_relieved.jpg) with a soft rim light. Keep the phone glow below the chin and off the face. Size the chat card to its content so it has no empty lower half.
+ - 1 (first 5 s) | Replace the ribbon with one headline: "A tap at night can become a visit time by morning." Keep the logo, "Shyamal Park Lane", and a smaller "An IV Infotech idea" pill (the voice says it). Make the headline bigger than the pill.
+ - 6 (CTA) | Order top to bottom: robot, "See it for Shyamal Park Lane", one line saying what the tap does, “Yes, send the demo”, then the down arrow last, pointing toward the bottom edge where WhatsApp's real button sits. Move the 28px disclaimer above the arrow, under the IV plate. Shrink the IV plate to about 65% and add the text "IV Infotech" under it. Keep "Voice is AI". Before using the "what the tap does" line, confirm it is exactly what the button triggers.
+ - 5 (hand-over) | Add a small chip on the top row or an arrow from it: "Your team takes over". Optionally turn the woman's gaze toward the list.
+ - WhatsApp message text (outside the video, fix before send, not before showing the owner) | Add a one-line opt-out to the message text, e.g. "Reply STOP to opt out". Send manually, one recipient, to a contact from their own public channels.
+
+POLISH:
+ - 2 (ad tap) | Move the finger to the right end of the button, below the "Send" label, with a ripple ring and no text covered. Move the card down 20-30px so it clears the man's hands. Show their logo once on the card, not twice.
+ - 4a-c | Size the card to its content. Let the thread build up instead of replacing each card. Make the robot smaller with a ground shadow, in the empty right-hand area, away from the hands.
+ - 3 | Show the time once, in the bubble. Drop it from the caption.
+ - 5 | Raise background contrast and saturation to match scenes 2-4. Match the woman's style to the flat man if it is cheap to do.
+ - All scenes | Captions on one line at about 32px with a softer fill and a thinner gold stroke. Colour-grade all backgrounds to one navy, teal and gold palette. Keep the 140-1080 safe band.
+ - Build check | timeline.json still lists 53.7 s. Confirm the final MP4 is about 40 s and a small file. Check that each scene's text is on screen for its whole voice line, and that scene 6's text stays up for the whole closing line.
+
+WORDING:
+ - Scene 1 independence line | OLD: A concept by IV Infotech · not affiliated with Shyamal Group | NEW: Independent concept by IV Infotech · AI voice / Not affiliated with Shyamal Group (two lines)
+ - Scene 1 ribbon | OLD: Your Diwali offer · first 5 bookings only | NEW: A tap at night can become a visit time by morning.
+ - Scene 2 ad card | OLD: Diwali offer · first 5 bookings (offer pill) and tag "ILLUSTRATION" | NEW: Remove the offer pill, keep "3 & 4 BHK · Bhayli". Tag becomes "EXAMPLE · ILLUSTRATION".
+ - 4a card | OLD: Project brochure / Sent automatically | NEW: Brochure or project details / PDF · example
+ - Scene 4 caption, beat 1 (brochure) | OLD: Example: automatic reply, about a minute | NEW: Example: first reply in about a minute
+ - Scene 4 caption, beat 2 (questions) | OLD: Example: automatic reply, about a minute | NEW: Example: three quick questions
+ - Scene 4 caption, beat 3 (visit times) | OLD: Example: automatic reply, about a minute | NEW: Example: visit times offered
+ - Scene 5 caption | OLD: Next morning: who asked, who picked a visit | NEW: Example: next morning, who asked, who picked a visit
+ - Scene 5 list header | OLD: All enquiries in one list | NEW: Enquiries in one list
+ - Scene 5 buyer C status | OLD: No slot yet | NEW: Asked
+ - Scene 3 caption | OLD: Example: 10:47 PM, a buyer asks for details | NEW: Example: a buyer asks for details (10:47 PM stays in the bubble only)
+ - "Concept by" pill | OLD: Concept by [glyph] Infotech | NEW: Concept by IV Infotech
+ - Scene 6 sub-line (new, under the title) | OLD: (none) | NEW: We send a sample chat here on WhatsApp. (confirm the tap does this; add "no call needed" only if true)
+ - Scene 6 IV plate | OLD: logo glyph only | NEW: logo plus the text "IV Infotech"
+
+VOICE: no change

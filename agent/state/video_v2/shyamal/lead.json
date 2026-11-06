@@ -1,0 +1,23 @@
+{
+  "name": "Shyamal Group",
+  "project": "Shyamal Park Lane",
+  "area": "Bhayli, Vadodara",
+  "ad_page": "Shyamal Park",
+  "offer": "Diwali offer · First 5 bookings",
+  "units": "3 & 4 BHK",
+  "brand": {
+    "navy": "#0e243a",
+    "navy2": "#173e62",
+    "gold": "#bda588",
+    "gold2": "#ac8d68"
+  },
+  "logo": "assets/shyamal_logo.png",
+  "stills": {
+    "1": "assets/stills/D2_diwali_skyline.jpg",
+    "2": "assets/stills/A3_diwali_evening.jpg",
+    "3": "assets/stills/B_night.jpg",
+    "4": "assets/stills/B2_night_relieved.jpg",
+    "5": "assets/stills/C2_morning_desk.jpg"
+  },
+  "chat_time": "10:47 PM"
+}

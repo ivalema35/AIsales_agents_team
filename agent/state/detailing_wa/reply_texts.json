@@ -1,0 +1,227 @@
+{
+  "_about": "Reply texts for the detailing template v1 (iv_detailing_video_hi_v1). Lead-facing texts are plain Devanagari Hindi (matches the template) with Gujarati and Roman variants for the likeliest typed replies. NOTHING here has been sent or deployed. Every text was linted: no price/free/instant/every/gets/guarantee/'your ads' (English, Hindi, Gujarati, Roman forms), no demo/sample wording, no time or call-back promise, no link/phone, no emoji, and the automatic texts pass sales_agent.check_reply. The Gujarati and Roman texts are NOT checked by a native speaker (unverified).",
+  "template": "iv_detailing_video_hi_v1",
+  "language": "hi",
+  "auto_reply_yes": "धन्यवाद! यह IV Infotech, मेहसाणा की तरफ़ से एक ऑटोमैटिक (AI) मैसेज है। हमारी टीम का एक व्यक्ति इसी चैट में आपको पूरी बात बताएगा। तब तक कोई सवाल हो तो यहीं लिख दीजिए। मैसेज नहीं चाहिए तो STOP लिख दीजिए।",
+  "auto_reply_yes_rules": [
+    "Sent ONCE per template send (a tap and a typed yes share it), never to a suppressed number, only inside the 24 h window, only when the owner has switched DETAILING TEST/ON from his own WhatsApp.",
+    "It says it is automatic (AI), names the company, promises a person in this chat, and carries STOP. It promises no time, no price, no free, no sample, no link, no phone number.",
+    "It must never contain 'demo' or 'send the demo' (that phrase starts the real-estate demo flow if DEMO is ON).",
+    "If the tap proves NOT to open the 24 h window on the owner's own number (error 131047), no free-form reply is possible at all; the only way left is another approved template, which counts as a second touch. Then do not build the instant reply."
+  ],
+  "auto_reply_yes_pause_window": "धन्यवाद! यह IV Infotech, मेहसाणा का ऑटोमैटिक (AI) मैसेज है। दिवाली की शुभकामनाएँ! मैसेज नहीं चाहिए तो STOP लिख दीजिए।",
+  "auto_reply_yes_pause_window_note": "Use this greeting-only text instead of auto_reply_yes from 6 Nov to 15 Nov (no cold sends / no promises during the Diwali pause), or switch DETAILING OFF before 6 Nov. Marketing messages can be delivered up to 30 days late, so a tap can arrive inside the pause.",
+  "media_reply": "आपका मैसेज मिल गया, पर यह ऑटोमैटिक (AI) चैट अभी सिर्फ़ लिखा हुआ पढ़ सकती है। कृपया 'हाँ' या अपना सवाल लिखकर भेज दीजिए; हमारी टीम का एक व्यक्ति इसी चैट में आपको मैसेज करेगा। मैसेज नहीं चाहिए तो STOP लिख दीजिए।",
+  "media_reply_note": "Optional (leave out to disable). Voice notes and images cannot be read; sent at most once per 6 h per number, together with a hand-off.",
+  "stop_ack": "ठीक है, धन्यवाद। अब हम आपको WhatsApp पर कोई मैसेज नहीं भेजेंगे। असुविधा के लिए क्षमा करें।",
+  "stop_ack_other_languages": {
+    "gu": "ઠીક છે, આભાર. હવે અમે તમને WhatsApp પર કોઈ મેસેજ નહીં મોકલીએ. અસુવિધા બદલ માફ કરશો.",
+    "hinglish": "Theek hai, dhanyavaad. Ab hum aapko WhatsApp par koi message nahi bhejenge. Asuvidha ke liye maaf kijiye.",
+    "en": "Done. We will not send you any more WhatsApp messages. Sorry for the trouble."
+  },
+  "stop_ack_note": "Send ONE confirmation in the language the lead used (a button tap = Hindi), AFTER the number is on the suppression list. No pitch, no question, no link.",
+  "not_now": "No reply (silence on purpose). A tap on 'अभी नहीं' (or typed abhi nahi / baad me / later / not now) is a SOFT no, not an opt-out: nothing is sent back, no hand-off, no owner alert, no suppression, no second template and no automatic follow-up. It is only logged (console: 'declined - not now' with the date, in the company-number template channel, apart from Gate 1). Any later contact is the owner's own decision.",
+  "not_now_policy_points": [
+    "It is a SOFT no, not an opt-out. Nothing is sent back: answering a decline is one more unasked message and invites Block/Report.",
+    "No hand-off card, no owner alert, no suppression (only a STOP suppresses).",
+    "Console: mark the studio 'declined - not now' with the date, in the company-number template channel (separate from the owner's Gate 1 count).",
+    "That number gets NO second template and NO automatic follow-up. Proposed rule: no second touch on any channel for 30 days; any later contact is the owner's own 1:1 decision after the 6-15 Nov pause, and only for a studio on his Gate-1 list.",
+    "Tell the owner, so the same studio is not also messaged from his personal number (one message per brand).",
+    "If the same person later TYPES something: a plain yes (haan / हाँ / ok) = the normal yes flow; 'later' = one short thanks (kit item later_typed), no pitch; any STOP word = suppress FIRST, then one confirmation.",
+    "Log it as its own channel, never in the Gate 1 personal-send counts."
+  ],
+  "decision_table": [
+    {
+      "lead_does": "taps 'हाँ, बताइए', or types haan / हाँ / हां / હા / ok / yes / demo / dikhao / bataiye (whole message, at most 4 words, no '?')",
+      "system_does": "hand-off card (priority high) + ONE instant fixed reply = auto_reply_yes, once per template send, only when DETAILING is TEST/ON and the 24 h window is open",
+      "who_answers_next": "a person, with kit item yes_typed (needs an OK code per reply; within 23h45m of the lead's last message)"
+    },
+    {
+      "lead_does": "taps 'अभी नहीं', or types abhi nahi / baad me / later / not now",
+      "system_does": "log only (soft no): no reply, no hand-off, no suppression, no second template",
+      "who_answers_next": "nobody"
+    },
+    {
+      "lead_does": "taps 'मैसेज बंद करें (STOP)', or types STOP / band karo / nahi chahiye / mat bhejo / બંધ કરો / no thanks / not interested",
+      "system_does": "suppress FIRST, then ONE confirmation (stop_ack in the lead's language); never contact again",
+      "who_answers_next": "nobody (until the responder is live, the operator runs suppress.py add by hand: the CRM auto-suppresses only the English words)"
+    },
+    {
+      "lead_does": "asks a question, price, call, references, or anything that is not a plain yes/no",
+      "system_does": "hand-off card, NO automatic text",
+      "who_answers_next": "a person, from the human_reply_kit"
+    },
+    {
+      "lead_does": "sends a voice note, image, document or location",
+      "system_does": "hand-off + media_reply once per 6 h per number (optional)",
+      "who_answers_next": "a person"
+    },
+    {
+      "lead_does": "anything, while DETAILING is OFF or the responder is not deployed",
+      "system_does": "the tap lands as plain inbound text; nobody is alerted while OWNER_QUIET exists",
+      "who_answers_next": "the attended session must poll `python agent/tools/crm.py inbound` and answer by hand"
+    }
+  ],
+  "human_reply_kit": [
+    {
+      "id": "yes_typed",
+      "situation": "Lead types haan / हाँ / हां / હા / ok / yes / demo / dikhao (instead of, or after, tapping the yes button). The instant automatic reply has probably gone out already: do NOT repeat it, and do NOT promise a sample or a demo. This is the first HUMAN message (hand-off priority high).",
+      "reply": "धन्यवाद! शुरू करने से पहले एक छोटा सवाल: आपके स्टूडियो की ज़्यादातर बुकिंग WhatsApp पर आती है या फ़ोन पर? बस एक शब्द में बता दीजिए।",
+      "reply_hinglish": "Shukriya! Shuru karne se pehle ek chhota sawal: aapke studio ki zyadatar booking WhatsApp par aati hai ya phone par? Bas ek shabd me bata dijiye.",
+      "reply_gu": "આભાર! શરૂ કરતાં પહેલાં એક નાનો સવાલ: તમારા સ્ટુડિયોનું મોટાભાગનું બુકિંગ WhatsApp પર આવે છે કે ફોન પર? એક શબ્દમાં જવાબ આપશો તો ચાલશે."
+    },
+    {
+      "id": "price",
+      "situation": "Asks the price / rate / 'kitna lagega' / 'free hai?' (hand-off, priority high). Never quote a figure, never say free; the owner decides price.",
+      "reply": "अच्छा सवाल है। यह आपके स्टूडियो की ज़रूरत पर निर्भर करता है, इसलिए चैट में अंदाज़े से कुछ नहीं बताएँगे। हमारी टीम का एक व्यक्ति आपकी बात समझकर साफ़ बताएगा। उसके लिए एक बात बता दीजिए: आपकी बुकिंग ज़्यादातर कहाँ से आती है - WhatsApp, फ़ोन या स्टूडियो में आकर?",
+      "reply_hinglish": "Achha sawal hai. Ye aapke studio ki zaroorat par depend karta hai, isliye chat me andaze se kuch nahi bolenge. Hamari team ka ek person aapki baat samajhkar saaf batayega. Uske liye ek baat bataiye: aapki booking zyadatar kahan se aati hai - WhatsApp, phone ya studio me aakar?",
+      "reply_gu": "સારો સવાલ. એ તમારા સ્ટુડિયોની જરૂર પ્રમાણે નક્કી થાય છે, એટલે ચેટમાં અંદાજથી કંઈ નહીં કહીએ. અમારી ટીમમાંથી એક વ્યક્તિ તમારી વાત સમજીને સ્પષ્ટ જણાવશે. એ માટે એક વાત કહો: તમારું બુકિંગ મોટાભાગે ક્યાંથી આવે છે - WhatsApp, ફોન કે સ્ટુડિયોમાં આવીને?"
+    },
+    {
+      "id": "what_is_this",
+      "situation": "Asks what exactly this is / 'ye kya hai' / 'kya karte ho' / 'kaise kaam karta hai'. Answer from the video only (ledger rows 5-13).",
+      "reply": "सीधे शब्दों में: (1) एक सिंपल पेज: पैकेज, पहले-बाद की फ़ोटो, Google रिव्यू और WhatsApp का बुक बटन, जिससे कार और पैकेज वाला मैसेज पहले से लिखा हुआ खुले। (2) Google प्रोफ़ाइल की देखभाल: फ़ोटो, पोस्ट और रिव्यू के जवाब के ड्राफ़्ट, जो आपकी OK के बाद ही जाते हैं। वेबसाइट नहीं, सिर्फ़ एक पेज; सेटअप हम करते हैं। इसमें कौन सा हिस्सा आपके काम का लगा?",
+      "reply_hinglish": "Seedhe shabdon me: (1) ek simple page: packages, before-after photos, Google reviews aur WhatsApp ka book button, jisse car aur package wala message pehle se likha hua khule. (2) Google profile ki dekhbhaal: photos, posts aur reviews ke jawab ke draft, jo aapke OK ke baad hi jaate hain. Website nahi, sirf ek page; setup hum karte hain. Isme kaun sa hissa aapke kaam ka laga?"
+    },
+    {
+      "id": "how_long",
+      "situation": "Asks how long it takes / 'kitne din' / 'kab tak'. No day, no date, no timeline (sales_kb never_say).",
+      "reply": "समय इस पर निर्भर करता है कि आपके स्टूडियो के लिए क्या-क्या चाहिए, इसलिए अभी कोई दिन या तारीख़ नहीं बता सकते। आपकी ज़रूरत सुनकर हमारी टीम का एक व्यक्ति साफ़ बताएगा। अभी आपके पास बुकिंग के लिए कोई पेज या वेबसाइट है?"
+    },
+    {
+      "id": "details_here",
+      "situation": "Says 'details WhatsApp par bhej do' / 'yahin bhejo' / 'brochure bhejiye'. No PDF, brochure or link exists: answer in text, two lines, one question.",
+      "reply": "ज़रूर, यहीं बताते हैं। छोटे में: एक सिंपल बुकिंग पेज (पैकेज, काम की फ़ोटो, Google रिव्यू, WhatsApp बुक बटन) और Google प्रोफ़ाइल की देखभाल। वीडियो इसी चैट में ऊपर है, एक बार देख लीजिए। कौन सी बात आपके काम की लगी?"
+    },
+    {
+      "id": "already_website",
+      "situation": "Says they already have a website / Instagram / Linktree. Respect it, complement and never replace; if there is no gap, close warmly.",
+      "reply": "अच्छी बात है। हम आपकी वेबसाइट की जगह लेने की बात नहीं कर रहे - हमारा काम एक सिंपल बुकिंग पेज (पैकेज, काम की फ़ोटो, Google रिव्यू, WhatsApp बुक बटन) और Google प्रोफ़ाइल की देखभाल है। आपकी वेबसाइट से अभी बुकिंग कैसे आती है - फ़ोन, WhatsApp या फ़ॉर्म? अगर सब ठीक चल रहा है तो बता दीजिए, हम यहीं रुक जाएँगे।"
+    },
+    {
+      "id": "call_request",
+      "situation": "Asks for a call / 'call karo' / 'phone par baat karte hain' (hand-off, priority high). Never type a phone number into the chat; promise no clock time.",
+      "reply": "ज़रूर। आपके लिए कौन सा समय ठीक रहेगा, यहीं बता दीजिए। हमारी टीम का एक व्यक्ति देखकर बताएगा कि उस समय बात हो पाएगी या नहीं।"
+    },
+    {
+      "id": "who_are_you",
+      "situation": "Asks who we are / 'mera number kahan se mila' / 'kya ye bot hai' / 'spam hai?' / 'kya ye video mere liye bana hai'. Be plain, apologise once, give the one-tap way out. A legal threat or a complaint: no kit reply, hand off to the owner.",
+      "reply": "यह IV Infotech, मेहसाणा की टीम का मैसेज है, माफ़ कीजिए अगर अचानक लगा। आपका नंबर Google पर आपकी लिस्टिंग में business नंबर के रूप में दिया हुआ था, वहीं से लिया। वीडियो एक सामान्य उदाहरण है, किसी एक स्टूडियो के लिए अलग से नहीं बना; इसमें AI आवाज़ और उदाहरण वाली स्क्रीन हैं। शुरुआती मैसेज ऑटोमैटिक थे; आगे आपसे हमारी टीम का एक व्यक्ति ही बात करेगा। मैसेज नहीं चाहिए तो STOP लिख दीजिए, हम दोबारा मैसेज नहीं करेंगे।",
+      "reply_hinglish": "Ye IV Infotech, Mehsana ki team ka message hai, maaf kijiye agar achanak laga. Aapka number Google par aapki listing me business number ke roop me diya hua tha, wahin se liya. Video ek general example hai, kisi ek studio ke liye alag se nahi bana; usme AI voice aur example screens hain. Shuruaati messages automatic the; aage aapse hamari team ka ek person hi baat karega. Message nahi chahiye to STOP likh dijiye, hum dobara message nahi karenge."
+    },
+    {
+      "id": "references",
+      "situation": "Asks 'which studios have you done this for?' / references / 'koi example?'. We have NO studio client yet (this is a test): never invent a name, a number or a result. Hand-off, priority high.",
+      "reply": "अच्छा सवाल है। इसका सही जवाब हमारी टीम का एक व्यक्ति यहीं देगा; हम अंदाज़े से कुछ नहीं बताएँगे।"
+    },
+    {
+      "id": "later_typed",
+      "situation": "Types (as text) 'baad me' / 'later' / 'abhi nahi' / 'not now'. One short thanks at most, no pitch, no follow-up question.",
+      "reply": "ठीक है, धन्यवाद। जब भी ज़रूरत लगे, इसी चैट में लिख दीजिएगा।"
+    },
+    {
+      "id": "stop",
+      "situation": "STOP in ANY form: the 'मैसेज बंद करें (STOP)' tap, STOP typed, 'band karo', 'nahi chahiye', 'mat bhejo', 'બંધ કરો', 'નથી જોઈતું', 'no thanks', 'not interested'. Run suppress.py add FIRST (the CRM auto-suppresses only the English words), then send ONE confirmation in the lead's language and never contact again. A 'बंद' inside a normal sentence ('office बंद है') is NOT a STOP: read before suppressing.",
+      "reply": "ठीक है, धन्यवाद। अब हम आपको WhatsApp पर कोई मैसेज नहीं भेजेंगे। असुविधा के लिए क्षमा करें।",
+      "reply_hinglish": "Theek hai, dhanyavaad. Ab hum aapko WhatsApp par koi message nahi bhejenge. Asuvidha ke liye maaf kijiye.",
+      "reply_gu": "ઠીક છે, આભાર. હવે અમે તમને WhatsApp પર કોઈ મેસેજ નહીં મોકલીએ. અસુવિધા બદલ માફ કરશો."
+    }
+  ],
+  "human_reply_rules": [
+    "Every human reply = one propose.py wa-reply (with --no-notify while OWNER_QUIET exists) + the owner's OK code, then wa.py reply --live --approval CODE (autonomy stage 1).",
+    "Free-form text is allowed only while the lead's last message is younger than 23h45m (wa.py refuses later); max 6 replies per lead per day, 30 per day.",
+    "Mirror the lead's language and script: Devanagari Hindi by default (it matches the template), Gujarati or Roman Hinglish if the lead writes that way. The Gujarati texts are NOT checked by a native speaker (unverified).",
+    "One question per message, 2-3 short lines. Sign nothing, or sign 'IV Infotech'; never the owner's personal name or number.",
+    "Never: a price, a rate, 'free', a sample or demo promise, a day/date/time or call-back time, a phone number, a link (no page exists yet), a claim of lost or extra bookings/leads/ranking, a studio client name, a claim to be human.",
+    "Hand-off (crm.py handoff) for: price, call, references, anything unclear, angry/complaint, voice notes. Priority high for yes, price, call, references."
+  ],
+  "responder_config": {
+    "_comment": "For the PROTOTYPE responder (agent/state/detailing_wa/proto_reply, NOT deployed). Replace its detailing_config.json 'templates' entry with this one: the key and the labels must equal the approved Meta spec to the code point (the prototype file still has the old key iv_hi_detailing_video_v1). stop_labels is informational: the STOP tap is recognised by its ASCII STOP / Devanagari 'बंद'. Before deploying: the responder must classify STOP by whole message or strong phrase and not by the bare substring 'बंद' (that would suppress a lead who writes 'office बंद है'), and its config validator should use the same Hindi/Gujarati banned-word lexicon as the lint.",
+    "version": 1,
+    "templates": {
+      "iv_detailing_video_hi_v1": {
+        "lang": "hi",
+        "yes_labels": [
+          "हाँ, बताइए"
+        ],
+        "notnow_labels": [
+          "अभी नहीं"
+        ],
+        "stop_labels": [
+          "मैसेज बंद करें (STOP)"
+        ],
+        "typed_yes": true,
+        "yes_words": [
+          "haan",
+          "ha",
+          "han",
+          "haa",
+          "hanji",
+          "ji",
+          "jee",
+          "yes",
+          "yeah",
+          "yep",
+          "ok",
+          "okay",
+          "sure",
+          "demo",
+          "bhejo",
+          "bhej",
+          "dikhao",
+          "send",
+          "please",
+          "pls",
+          "karo",
+          "kijiye",
+          "theek",
+          "thik",
+          "bilkul",
+          "bataiye",
+          "batao",
+          "bataiyega",
+          "हाँ",
+          "हां",
+          "हा",
+          "जी",
+          "ठीक",
+          "भेजो",
+          "दिखाओ",
+          "बताइए",
+          "बताओ",
+          "બતાવો",
+          "જણાવો",
+          "હા",
+          "જી",
+          "ભલે",
+          "ઓકે"
+        ],
+        "decline_words": [
+          "no",
+          "nope",
+          "nahi",
+          "nahin",
+          "na",
+          "not now",
+          "abhi nahi",
+          "abhi nahin",
+          "baad me",
+          "later",
+          "नहीं",
+          "नही",
+          "ना",
+          "अभी नहीं",
+          "ના",
+          "નાં",
+          "પછી",
+          "હમણાં નહીં"
+        ],
+        "texts": {
+          "yes_reply": "धन्यवाद! यह IV Infotech, मेहसाणा की तरफ़ से एक ऑटोमैटिक (AI) मैसेज है। हमारी टीम का एक व्यक्ति इसी चैट में आपको पूरी बात बताएगा। तब तक कोई सवाल हो तो यहीं लिख दीजिए। मैसेज नहीं चाहिए तो STOP लिख दीजिए।",
+          "stop_ack": "ठीक है, धन्यवाद। अब हम आपको WhatsApp पर कोई मैसेज नहीं भेजेंगे। असुविधा के लिए क्षमा करें।",
+          "media_reply": "आपका मैसेज मिल गया, पर यह ऑटोमैटिक (AI) चैट अभी सिर्फ़ लिखा हुआ पढ़ सकती है। कृपया 'हाँ' या अपना सवाल लिखकर भेज दीजिए; हमारी टीम का एक व्यक्ति इसी चैट में आपको मैसेज करेगा। मैसेज नहीं चाहिए तो STOP लिख दीजिए।"
+        }
+      }
+    }
+  }
+}

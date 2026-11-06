@@ -1,0 +1,76 @@
+{"id": 4, "kind": "text", "text": "Hello", "received_at": "2026-10-15T06:06:41Z", "seen": 1792044402.5936036, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5MEFCN0Q0MkI2MzlFMTU2RkRGM0UzNDZDRkU4QTYA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5MEFCN0Q0MkI2MzlFMTU2RkRGM0UzNDZDRkU4QTYA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5MEFCN0Q0MkI2MzlFMTU2RkRGM0UzNDZDRkU4QTYA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5MEFCN0Q0MkI2MzlFMTU2RkRGM0UzNDZDRkU4QTYA", "how": "answered"}
+{"id": 5, "kind": "text", "text": "1", "received_at": "2026-10-15T06:07:52Z", "seen": 1792044474.130229, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyQjREQTVENzYyQUNEODdERjQ3NTdENEYyNjY1OUMA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyQjREQTVENzYyQUNEODdERjQ3NTdENEYyNjY1OUMA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyQjREQTVENzYyQUNEODdERjQ3NTdENEYyNjY1OUMA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyQjREQTVENzYyQUNEODdERjQ3NTdENEYyNjY1OUMA", "how": "answered"}
+{"id": 6, "kind": "text", "text": "Web development ke liye koi leads he ??", "received_at": "2026-10-15T06:08:39Z", "seen": 1792044520.2272756, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxNjE3RUNBMTdFODBERTRBQkMxRDI5NzREQUE4MjcA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxNjE3RUNBMTdFODBERTRBQkMxRDI5NzREQUE4MjcA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxNjE3RUNBMTdFODBERTRBQkMxRDI5NzREQUE4MjcA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxNjE3RUNBMTdFODBERTRBQkMxRDI5NzREQUE4MjcA", "how": "answered"}
+{"id": 7, "kind": "text", "text": "Nai abhi mat dhudho", "received_at": "2026-10-15T06:09:59Z", "seen": 1792044600.3879068, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzNzA1NUIwQjUzMEVEODU0RUMwRUE0MUI0MzNBQTkA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzNzA1NUIwQjUzMEVEODU0RUMwRUE0MUI0MzNBQTkA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzNzA1NUIwQjUzMEVEODU0RUMwRUE0MUI0MzNBQTkA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzNzA1NUIwQjUzMEVEODU0RUMwRUE0MUI0MzNBQTkA", "how": "answered"}
+{"id": 8, "kind": "text", "text": "Hume kal whatsapp automation leads ke liye kie se video banaya tha wo mujhe bhejo", "received_at": "2026-10-15T06:14:10Z", "seen": 1792044851.5416622, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNBMUQ0ODIwNEQ1MzIwRTFFNUJDRjA0RjAzMEFBRkEA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNBMUQ0ODIwNEQ1MzIwRTFFNUJDRjA0RjAzMEFBRkEA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNBMUQ0ODIwNEQ1MzIwRTFFNUJDRjA0RjAzMEFBRkEA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNBMUQ0ODIwNEQ1MzIwRTFFNUJDRjA0RjAzMEFBRkEA", "how": "answered"}
+{"id": 9, "kind": "text", "text": "Riverview height ke liye jo landing page banaya tha wo link bhejo", "received_at": "2026-10-15T06:15:33Z", "seen": 1792044935.280253, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRjQ5RTZGNjgyRUVFRkIxRDJBOTE2OThBMDZBM0MA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRjQ5RTZGNjgyRUVFRkIxRDJBOTE2OThBMDZBM0MA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRjQ5RTZGNjgyRUVFRkIxRDJBOTE2OThBMDZBM0MA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRjQ5RTZGNjgyRUVFRkIxRDJBOTE2OThBMDZBM0MA", "how": "answered"}
+{"id": 10, "kind": "text", "text": "Haa 3 bar video aaya", "received_at": "2026-10-15T06:38:22Z", "seen": 1792046302.533176, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxOUEyNDNBOEVCQ0ExQTc0ODgyQzgyNzcyMTJGQkQA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxOUEyNDNBOEVCQ0ExQTc0ODgyQzgyNzcyMTJGQkQA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxOUEyNDNBOEVCQ0ExQTc0ODgyQzgyNzcyMTJGQkQA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxOUEyNDNBOEVCQ0ExQTc0ODgyQzgyNzcyMTJGQkQA", "how": "answered"}
+{"id": 11, "kind": "text", "text": "Hello", "received_at": "2026-10-15T06:46:21Z", "seen": 1792046783.0835152, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFMDlCNkJDRTg2NkFEQkFGNTQ3QTA2MEEyQzI1NkEA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFMDlCNkJDRTg2NkFEQkFGNTQ3QTA2MEEyQzI1NkEA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFMDlCNkJDRTg2NkFEQkFGNTQ3QTA2MEEyQzI1NkEA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFMDlCNkJDRTg2NkFEQkFGNTQ3QTA2MEEyQzI1NkEA", "how": "answered"}
+{"id": 12, "kind": "text", "text": "Heartbeats se bheje he", "received_at": "2026-10-15T06:47:45Z", "seen": 1792046865.6184473, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5NjY4MTgyNkIwQTFDODE5MDVENEYzQkY2RUYyQzQA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5NjY4MTgyNkIwQTFDODE5MDVENEYzQkY2RUYyQzQA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5NjY4MTgyNkIwQTFDODE5MDVENEYzQkY2RUYyQzQA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM5NjY4MTgyNkIwQTFDODE5MDVENEYzQkY2RUYyQzQA", "how": "answered"}
+{"id": 13, "kind": "text", "text": "Fastlane me reply kaha se ata he", "received_at": "2026-10-15T06:48:22Z", "seen": 1792046904.6610334, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM0RDZGRUNEREFBNjNDMUYyNjE2MTQzMzZFNzNEN0EA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM0RDZGRUNEREFBNjNDMUYyNjE2MTQzMzZFNzNEN0EA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM0RDZGRUNEREFBNjNDMUYyNjE2MTQzMzZFNzNEN0EA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM0RDZGRUNEREFBNjNDMUYyNjE2MTQzMzZFNzNEN0EA", "how": "answered"}
+{"id": 14, "kind": "text", "text": "But claude ki limit to khatam ho gayi he tum reply kese de rahe ho", "received_at": "2026-10-15T06:49:20Z", "seen": 1792046961.9386477, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERTc4QkE3N0ZBNDBBMjVCRTQ3NDgzRTZDRjBFM0IA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERTc4QkE3N0ZBNDBBMjVCRTQ3NDgzRTZDRjBFM0IA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERTc4QkE3N0ZBNDBBMjVCRTQ3NDgzRTZDRjBFM0IA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERTc4QkE3N0ZBNDBBMjVCRTQ3NDgzRTZDRjBFM0IA", "how": "answered"}
+{"id": 15, "kind": "image", "text": "[image] Ye kya he", "received_at": "2026-10-15T06:50:38Z", "seen": 1792047039.288853, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRDRBQzY4NjcxQUJGMDY4M0UwMjJBNUJBQ0ZEQTEA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRDRBQzY4NjcxQUJGMDY4M0UwMjJBNUJBQ0ZEQTEA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRDRBQzY4NjcxQUJGMDY4M0UwMjJBNUJBQ0ZEQTEA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMyRDRBQzY4NjcxQUJGMDY4M0UwMjJBNUJBQ0ZEQTEA", "how": "answered"}
+{"id": 16, "kind": "text", "text": "Crm dekh sakte ho aaj kitne leads aye he sales crm me", "received_at": "2026-10-15T06:51:22Z", "seen": 1792047084.8483677, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRTAyODk2QjNDRUExN0YxQUFEOUNFQTYyMUM1M0YA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRTAyODk2QjNDRUExN0YxQUFEOUNFQTYyMUM1M0YA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRTAyODk2QjNDRUExN0YxQUFEOUNFQTYyMUM1M0YA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRTAyODk2QjNDRUExN0YxQUFEOUNFQTYyMUM1M0YA", "how": "answered"}
+{"id": 17, "kind": "text", "text": "Astraautomate.tech check karo", "received_at": "2026-10-15T08:51:37Z", "seen": 1792054298.2692158, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxRTY0RjQ3M0E2RjZFODU1NENFMDhEMjMxMEQ4NkUA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxRTY0RjQ3M0E2RjZFODU1NENFMDhEMjMxMEQ4NkUA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxRTY0RjQ3M0E2RjZFODU1NENFMDhEMjMxMEQ4NkUA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMxRTY0RjQ3M0E2RjZFODU1NENFMDhEMjMxMEQ4NkUA", "how": "answered"}
+{"id": 18, "kind": "text", "text": "Sun claude heartbeats se puch uske pass vps ka access he", "received_at": "2026-10-15T09:09:45Z", "seen": 1792055386.7499077, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERDNCQjA3QUI4NTAyRjFDNTFCNzQxREIyNkRFQTIA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERDNCQjA3QUI4NTAyRjFDNTFCNzQxREIyNkRFQTIA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERDNCQjA3QUI4NTAyRjFDNTFCNzQxREIyNkRFQTIA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNERDNCQjA3QUI4NTAyRjFDNTFCNzQxREIyNkRFQTIA", "how": "answered"}
+{"id": 19, "kind": "text", "text": "Kya tum mobin connector use kar sakte ho", "received_at": "2026-10-15T09:19:03Z", "seen": 1792055945.3282902, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM4NjUzRDBBQzBEMzFBOTI0RkZGQkQzMjAwNjI0QUUA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM4NjUzRDBBQzBEMzFBOTI0RkZGQkQzMjAwNjI0QUUA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM4NjUzRDBBQzBEMzFBOTI0RkZGQkQzMjAwNjI0QUUA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM4NjUzRDBBQzBEMzFBOTI0RkZGQkQzMjAwNjI0QUUA", "how": "answered"}
+{"id": 20, "kind": "text", "text": "Mobbin connector ki bat kar raha hu sayad heartbeats ke pass access ho usse pucho", "received_at": "2026-10-15T09:20:15Z", "seen": 1792056015.1210392, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRUUxMjYzRTZENkE4RjlFQzREOTAzRTFBMEIzOEIA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRUUxMjYzRTZENkE4RjlFQzREOTAzRTFBMEIzOEIA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRUUxMjYzRTZENkE4RjlFQzREOTAzRTFBMEIzOEIA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUNFRUUxMjYzRTZENkE4RjlFQzREOTAzRTFBMEIzOEIA", "how": "answered"}
+{"id": 21, "kind": "text", "text": "Desktop operator ko bolo mobbin connector use kare", "received_at": "2026-10-15T10:24:49Z", "seen": 1792059891.9975, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM1NDE0NTg5MDU0Qjc2NkNDRDFGOUI1MjlBQjlFOEUA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM1NDE0NTg5MDU0Qjc2NkNDRDFGOUI1MjlBQjlFOEUA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM1NDE0NTg5MDU0Qjc2NkNDRDFGOUI1MjlBQjlFOEUA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUM1NDE0NTg5MDU0Qjc2NkNDRDFGOUI1MjlBQjlFOEUA", "how": "answered"}
+{"id": 22, "kind": "text", "text": "Ye choddo usse bolo vps par connect hokar sales ka db mese total leads count de", "received_at": "2026-10-15T10:25:56Z", "seen": 1792059958.375695, "ev": "recv", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzQkUwQzNERDREMzM1MDI3ODQ0NzZDNEFGQUVBMEQA"}
+{"ev": "try", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzQkUwQzNERDREMzM1MDI3ODQ0NzZDNEFGQUVBMEQA"}
+{"ev": "acked", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzQkUwQzNERDREMzM1MDI3ODQ0NzZDNEFGQUVBMEQA"}
+{"ev": "done", "wamid": "wamid.HBgMOTE5NTEwMjU0NDA1FQIAEhggQUMzQkUwQzNERDREMzM1MDI3ODQ0NzZDNEFGQUVBMEQA", "how": "answered"}

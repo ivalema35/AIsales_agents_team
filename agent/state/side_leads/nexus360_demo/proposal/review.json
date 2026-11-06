@@ -1,0 +1,145 @@
+{
+ "problems": [
+  {
+   "where": "proposal.pdf p1 (hero and 'What you get'), p3 'Route we would use' column, p6 'Not in the pilot', p2 step 3. Template: proposal_assets/proposal_template.html. Source: enrichment/enrichment.md section 3 table.",
+   "problem": "The headline promise (we find the real owner behind each builder and message them on WhatsApp) does not match our own evidence or the pilot scope. Our test found a verified direct owner WhatsApp number for 0 of 6, and a business-published number wired for WhatsApp for only 1 of 6 (Biltech). That 1-of-6 figure appears nowhere in the PDF. The p3 'route' column is landlines and role inboxes for Dee Vee, a sales line for Sendh, a named mailbox plus office line for the family firm, and phone or human-only for the last two. The pilot excludes email and calls and is WhatsApp-only, so those builders cannot be reached under the pilot as written. The only remaining WhatsApp target is the RERA-filed mobile, which is the kind of number Sridhar said does not reach the owner. Measure 1 (owner coverage 40%) can pass while almost nobody is reachable on WhatsApp. This is the first thing Sridhar will notice.",
+   "fix": "Retitle p1 (for example 'Researching the real owner of Chhattisgarh builders, then WhatsApp outreach where a business-published number exists'). Replace 'behind each builder' with 'where public evidence supports it'. Add the 1-of-6 WhatsApp-wired figure to p3. State plainly what happens to builders with no WhatsApp-capable published number (skipped, or handed to a human call outside the pilot). Add a measure 'builders with a WhatsApp-capable published number' beside owner coverage.",
+   "severity": "blocker"
+  },
+  {
+   "where": "proposal.pdf p5 Sources line, p8 'Positioning' bullet, p5 video frame 4 and storyboard ('Sridhar Patnaik, Founder, Nexus360'); dashboard/page_video files",
+   "problem": "The source line says '\"Founder\", \"20+ projects\" and \"200+ people\" are from your site'. I fetched nexus360.in on 20 Oct 2026. '20+ projects' and '200+ people' are there. 'Founder' is not, and the site names no individual (only GreyBoard Consulting). Our own file agent/state/side_leads/nexus360_sridhar_patnaik.md describes him as a solo developer / acting CTO. So the document attributes his job title to a source that does not say it, and prints it as the on-screen title in a video frame.",
+   "fix": "Say the title comes from our call notes, or drop it. Ask him to confirm his title in 'What we need from you'. Remove 'Founder' from the video frames and storyboard until he confirms. Keep '20+ projects, 200+ people' (site-sourced, 'Used across 20+ projects by 200+ people').",
+   "severity": "blocker"
+  },
+  {
+   "where": "proposal.pdf p3 table (prices.json display.show_owner_names = true); owner_notes decision 4; enrichment.md sections 5, 7, 11",
+   "problem": "By default p3 prints four named private individuals as real owners: Dinesh Kumar Patel, Manish Gupta, Shrawan Agrawal, Ayush Agrawal. Three issues. (a) The brief treats leaked personal names as something to hunt for, and the document can be forwarded. (b) Names for Biltech and Sendh come from Tofler, whose terms bar scraping and are non-commercial, so using it at scale needs a licence or API. (c) Biltech is labelled VERIFIED, but enrichment.md says the Biltech Estates to Biltech Engineers family link 'rests on shared address and name [INFERENCE]' and Manish Gupta is a common name. Dee Vee's VERIFIED rests on the company page plus aggregator lists that the enrichment note says conflict. It also hands Sridhar three fully enriched leads before he pays. Owner notes call the Biltech row a 'company' but it is a partnership firm.",
+   "fix": "Set show_owner_names to false for the version sent and rebuild. Show names only on the screen share if the owner decides to. Downgrade Biltech and Dee Vee to LIKELY, or add a second independent source. This changes the p1 KPI from '(2 verified, 2 likely)' to '4 likely'. Add the 95% interval 30% to 90% beside '4 of 6'.",
+   "severity": "blocker"
+  },
+  {
+   "where": "proposal/dashboard/dashboard.html, builders table ('Builders on the list'). Also dashboard_desktop.png and dashboard_mobile.png.",
+   "problem": "This is already known to the owner and I confirmed it by rendering. The table shows 15 real builder names with invented stages and owner confidence. Shri Balajee shows 'Likely / Real owner found' where our test found UNKNOWN. Dee Vee and Biltech show 'Message approved'. Silver Developers shows 'Verified'. None of these were researched or approved. Other stale text: 'Chhattisgarh has not been tested' (it has, 4 of 6); the phone mock shows a 0:38 video where the PDF says 17 s.",
+   "fix": "Do not send the file, and do not scroll to that section on the screen share. Or rebuild the table so every real row reads 'Researched / Unknown' and update the Chhattisgarh note and the 0:38 label. The PDF itself avoids the table.",
+   "severity": "blocker"
+  },
+  {
+   "where": "proposal.pdf p6 measure 3, 'Decision rule', 'The test is small'; prices.json pilot_gates",
+   "problem": "The pass/fail logic is self-serving and internally inconsistent. (1) The rule recommends the Rs 45,000 monthly run when measure 3 is 'pass or inconclusive', so a pilot with zero replies can still end in a recommendation to buy. (2) 'Delivered' in measure 3 counts all delivered messages, while the text says only about 5 to 20 messages reach an owner-level number. At 60% delivery on 100 sends there are about 60 delivered, so 'inconclusive' (fewer than 30 delivered) almost cannot co-occur with measure 2 passing. (3) 2 genuine replies from 5 to 20 owner-level messages needs a 10% to 40% reply rate, far above the 0 of 9 we measured and the 1% to 3% vendor claims. (4) Our own campaign delivered about 3 of 7, under the 60% bar, so measure 2 will probably miss. The pilot is likely to end 'inconclusive' or 'change something' on its main question.",
+   "fix": "Owner to decide. Either restore the strict gate ('0 genuine replies means offer research-only or stop') or define 'delivered' as 'delivered to owner-level numbers'. Say on p6 in one line that this pilot mainly tests coverage, delivery and hand-off, not reply rate. Consider 100 to 150 builders for a real reply-rate read.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p4 figures (pipeline strip and lead card); html_view_mobile.png; proposal.html at 390 px",
+   "problem": "Text inside the dashboard figures prints at about 4 to 5 pt. I measured the figure scale (0.557 and 0.511) against the source sizes (10.5 to 13 px), against 7.8 to 8.4 pt body text, so the figures are unreadable on a phone. Sridhar will probably open the PDF in WhatsApp. The HTML 'mobile' view is not responsive: it scales each A4 page to 382 px wide, so body text is about 5 px. Body and table text overall is dense (7.2 to 8.4 pt, tags 6.9 pt).",
+   "fix": "Re-capture fig_pipeline and fig_lead at a layout where the smallest text lands at 6.5 pt or more (fewer columns, drop the mono sub-labels). Or split the p4 figures. Offer the screen share as the phone-friendly route, or add a real @media (max-width: 860px) reflow instead of scaling.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p1 lead, p2 step 5 and 'What the AI never does', p4 'What happens on a reply'; dashboard.html hand-off section",
+   "problem": "'The AI never talks to an owner' is stronger than the design. The first message and the follow-up are sent automatically (p2 labels them AUTOMATED), and the dashboard itself says 'It sends the first message and a follow-up'. Sridhar's objection was owners talking to a bot. Two gaps. Button taps (Excel / Software) are handed over in dashboard.html but not mentioned in the PDF. Replies that arrive on Sridhar's own number via the page's 'Book a demo on WhatsApp' button are invisible to our dashboard, so they are not counted in measure 3 or 5 and cannot stop the follow-up. The forward-only rule is not built (today a first inbound reply reaches our AI sales agent first, per the campaign diagnosis).",
+   "fix": "Reword to: 'No AI conversation with an owner: two fixed, approved messages go out; every reply goes to you.' State that button taps count as replies and are handed over. Define how replies on his own number are logged (he tells us, or the page click is logged) and how the follow-up is suppressed. Build the forward-only rule before Day 0, and say so to the owner.",
+   "severity": "important"
+  },
+  {
+   "where": "Pricing basis: unit_costs.md section 5 vs enrichment.md section 6 vs employee/comparison.md; proposal p7 and p8",
+   "problem": "The price rests on 4.5 minutes of human time per builder (3 min dossier QA plus 1.5 min message review). The enrichment workstream says human registry lookup and review is 5 to 10 minutes per builder before message review, and Tofler-style director lookups are manual-only. At 9 minutes per builder the monthly run costs about Rs 46,000 to serve at Rs 1,000 an hour, which is zero margin on Rs 45,000. Three different research-time figures sit in the package: 15 to 40 min (enrichment), 30 to 45 min (cost) and 45 to 90 min (the employee comparator that gives Rs 15,700 to 31,500 per 100). A licensed company-registry source is unpriced. The pilot still covers cost (51.9 hours at Rs 1,000 an hour is about Rs 57,900 against Rs 75,000).",
+   "fix": "Owner to confirm hours and margin before quoting Rs 45,000. Align the research-time assumption across p8 and the cost model. If 0.25 to 0.67 hours per builder is right, the employee row on p8 becomes about Rs 5,200 to 14,000 per 100 and the 'Not cheaper on research alone' line is more strongly true. Add a licensed or manual registry-lookup line to the cost model or to 'Not included'.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p7 'Terms' (alternative bullet), p8 break-even paragraph, p1 price card; prices.json monthly.show_alternative",
+   "problem": "The pricing story is incoherent in one place. p8 says the monthly run is about 1.2 times one employee and 'not cheaper on cost alone'. The shared-risk alternative (Rs 30,000 plus Rs 3,000 per demo) is buried as a bullet and costs about Rs 30,000 to 33,000 a month at 0 to 1 demos, which is below Rs 36,900. Option C (Rs 18,500 research-only, 50 builders) answers Sridhar's first concern (the real owner's contact) with no Meta risk but is listed last, while the Rs 75,000 pilot leads. Cost-to-serve is Rs 13,600 to 21,400 a month at Rs 375 an hour, so there is room to lower the fee.",
+   "fix": "Owner decision: lead with A or with C then A. Promote the shared-risk option to a proper column or paragraph on p7, or remove it. Keep the 1.2-times line honest for whichever monthly structure leads. State a credit decision (does any of the Rs 75,000 count toward month 1) before sending.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p1 third KPI ('Meta limits messages to people who have not opted in'), p8, p9 Limits ('9 builders contacted and has no replies')",
+   "problem": "Two over-reaches. (a) The KPI states a cause as FACT. The diagnosis shows 3 failures: Meta 131049 twice (a per-recipient marketing cap) and 131026 once. That is not shown to be an opt-in rule. (b) 'No replies' is stronger than the diagnosis: Parshwanath's reply 16 minutes after delivery 'may be a person or a delayed tool', Swagat's was a stock greeting, and 2 false reply rows are queued for deletion. The honest wording is 'no confirmed genuine reply'.",
+   "fix": "Change to '2 of 7 arrived on time; 3 were refused by Meta (a per-recipient marketing limit)'. Change to '9 contacted, no confirmed genuine reply'.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p3 'Everything on this page is real', p2 callout, 'Plan on about half to two-thirds'",
+   "problem": "The 4-of-6 sample is skewed upward for the stated target (small and medium). Two of six are large groups (Dee Vee, a 3,000-plus-person contractor, and Sendh, a 124-acre township) where owners are easy to name. Among the four small or medium (Biltech, R.K., Balajee, Dulani) the owner was named for 2 of 4. The 95% interval 30% to 90% is in the source note but not in the PDF. The p2 callout 'Our test agrees' is selective: in 3 of 6 the RERA authorised person was the promoter or MD himself (the filed email, not the person, was someone else's).",
+   "fix": "Add 'two of six are large groups; for small and medium builders 2 of 4' and the interval to p3. Soften the p2 callout to 'the filed contact is often an officer or someone else's mailbox'. Consider noting that for individual promoters the RERA mobile may be the owner's own.",
+   "severity": "important"
+  },
+  {
+   "where": "proposal.pdf p7 'Pilot: 100 to 240 messages sent'; template tokens pilot_msgs_low/high",
+   "problem": "The scope says up to 2 messages per builder plus a retry if delivery fails, which is about 100 to 150 messages. 240 comes from the cost model's 50 x 1.6 numbers x 3 touches, which the proposal does not offer. The Rs 310 high end therefore uses an undeclared third touch (harmless to the Rs 500 cap, but unexplained). Hand-off alert templates also cost a little and are not mentioned.",
+   "fix": "Show the assumption ('up to 1.6 numbers per builder') or lower the high end to match the 2-touch scope. Mention alert-template cost under the cap.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf p9 'DPDP Act 2023' bullet",
+   "problem": "'Data made public by the person or by a legal register is outside the Act' is stated as settled. Director names taken from aggregator listings (Tofler) or a company's own site are not clearly 'made public by the data principal' or 'by a person obliged by law to publish it'. The enrichment note itself says only 'plausibly falls inside it [INFERENCE]'. The sentence is hedged only by the heading 'not legal advice'.",
+   "fix": "Use 'may fall outside' and keep 'ask your own counsel'. The dates (rules notified Nov 2025, most duties about May 2027) and section 3(c)(ii) check out.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf p8 employee cost row and sources line",
+   "problem": "The employee figure is an assumption with gaps in both directions. Fixed pay of Rs 25,000 is above Indeed's common Rs 23,300 a month (Rs 2.78 lakh a year) and well above PayScale's Rs 14,600, which slightly favours us. PF Rs 1,600 assumes basic is 50% of pay (about 13% of Rs 12,500), which is the low end. Travel and conveyance for a field role across Raipur, Bhilai and Rajnandgaon, gratuity, bonus and paid leave are not modelled (the source note says roughly 2% to 5% more). The 3.0-month ramp is the Bridge Group figure for SDRs in mostly North American firms (labelled 'mostly US data').",
+   "fix": "Add 'excludes travel, gratuity, leave' to the p8 row, or add a conveyance line. Keep 'replace with your own figures'.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf p6 timeline and pilot window; p9 Gantt",
+   "problem": "Follow-ups go out on Days 10 to 13 and the report call is Day 14, so a second-touch reply has 1 to 4 days to arrive. Part of the pilot's reply measure is therefore cut off by design.",
+   "fix": "State the reply cut-off, or run the report on Day 17 to 18.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf headings (section badges 2 to 10) vs the 'Your questions' page index on p1",
+   "problem": "The green badge numbers are section numbers, not page numbers, and diverge from p5 on (p5 shows 3, p6 shows 4, p7 shows 5, p8 shows 6 and 7, p9 shows 8, 9 and 10). The p1 index refers to pages ('p. 7' for the estimate), but the page's badge says 5. There is no section 1.",
+   "fix": "Remove the badges, or number them as page numbers.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf layout, pages 1, 4, 5, 7",
+   "problem": "Visual defects. p1: 'Wh at we have already checked' header sits tight under the cards while there is a large gap above 'Labels'; '17-' / 'second' hyphen split; orphan last line in the hero paragraph. p4: large empty area in the right column under 'You agree the final wording'; figure caption collides with body text. p5: the two phone screenshots are cropped mid-card with no device frame, so they look truncated; yellow and red 'SAMPLE' styling clashes with the navy and green palette; the four video stills are about 3 to 4 pt, decorative only. p6: 'before Day / 0.' widow. p7: the left 'WhatsApp fees' card has about 25% empty space because it is stretched to match 'Terms'. p3: 'researched by hand-checked sources' is awkward.",
+   "fix": "Equalise card contents, clip the phones with a rounded device bottom, and fix the line breaks (use non-breaking hyphen and space). None is a blocker.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf p4 and p6 labelling; tag semantics",
+   "problem": "Labelling inconsistencies. '5 to 20 messages reach an owner-level number' is tagged ESTIMATE ('calculated from stated facts') but the source line calls it 'our assumption'. 'About 7 days to first send', '10 to 25 a day', '1 to 2 hours per 50 builders for per-builder video' and '15-minute weekly review' carry no label. The sample pipeline strip shows 2 genuine replies from 72 builders (and 4 replies from 40 sent) beside a very small 'SAMPLE COUNTS' tag and a 'Not a forecast' note at 5 pt, which can anchor expectations well above the 0-of-9 we measured. The sample uses a 72-builder first batch while the pilot is 50.",
+   "fix": "Tag the 5-to-20 figure ASSUMPTION and label the others. Make 'SAMPLE, invented numbers' prominent on the strip, or grey out the counts. Use 50 in the sample strip.",
+   "severity": "minor"
+  },
+  {
+   "where": "owner_notes.md",
+   "problem": "Accurate on prices, files and the 12 decisions, but it omits the items found here: (a) the WhatsApp-reachability gap (1 of 6 wired, routes are mostly landline or email); (b) the Tofler terms and licence issue; (c) the Biltech link being inferred and the Dee Vee lists conflicting; (d) 'Founder' is not on nexus360.in; (e) the figure-text size and non-responsive HTML; (f) the stale dashboard lines ('Chhattisgarh has not been tested', 0:38); (g) the hours-per-builder conflict that thins the monthly margin; (h) button-tap and own-number replies. Decision 4 calls Biltech a 'company' (it is a partnership firm). The message is 75 words as stated. No phone, email or staff name appears; the file is marked 'do not forward'.",
+   "fix": "Add a short 'Found in review' list with the blockers above. Fix 'three companies'.",
+   "severity": "minor"
+  },
+  {
+   "where": "whatsapp_message.txt",
+   "problem": "Text is clean: 75 words, one question, signed 'IV Infotech', no staff name, no overclaim, no price. It says 'sample dashboard and page' which is accurate for the PDF. The video exists only as a storyboard, which the offered screen share does not misstate. Minor: Sridhar asked for a number and the message does not give it, so he has to open the PDF. 'All prices are proposals and can change' is fine. If the owner sends from his personal WhatsApp, the 'IV Infotech' sign-off is correct per the brief.",
+   "fix": "Optional: add one line with the headline ('pilot Rs 75,000 + GST, fixed; page 1'). Send after the blockers are fixed so the PDF matches.",
+   "severity": "minor"
+  },
+  {
+   "where": "proposal.pdf overall (pages 6 to 9) and the document as a package",
+   "problem": "No contact line, signatory block or acceptance line (only 'IV Infotech, Mehsana, Gujarat'). Data-export and exit terms are not written (owner note says 'agree before Day 0'). Pool numbers differ slightly from my recount: the PDF says 424 and 798, my recount of the saved list with the script's rules gave 419 and 786 (about 1% to 2%, so immaterial). '150 new builders a month' is not new: the pool counts registrations of any age, and about 4 qualify per month.",
+   "fix": "Add a one-line contact route and an 'approved by / date' line. Say 'unworked builders' instead of 'new'. Keep the pool wording 'about'.",
+   "severity": "minor"
+  }
+ ],
+ "verified": [
+  "Rendered all 9 PDF pages (Chromium PDF viewer, 1240 x 1754) plus html_view_desktop.png and html_view_mobile.png, proposal.html at 390 px, dashboard.html (top, builders table, bottom), builder_page_mobile_firstscreen.png and video_storyboard_desktop.png, and looked at each; page 9 also checked against page_9.png.",
+  "Price table arithmetic holds. 50 x 1,500 = 75,000; GST 13,500 gives 88,500. 150 x 300 = 45,000; GST 8,100 gives 53,100. 50 x 370 = 18,500; with GST 21,830. 35,000 with GST is 41,300 (150 x 233 = 34,950, rounded). Employee components 25,000 + 1,600 + 5,000 + 2,700 + 2,600 = 36,900. Ratios 1.22 (shown 1.2) and 2.03 months (shown 2.0). 45,000 + 36,900 = 81,900. Skip-the-pilot set-up 41 h x 1,000 x 1.3 = 53,300 (about 53,000). 14 days from 20 Oct is 3 Nov.",
+  "WhatsApp fee range: 0.8631 x 1.18 = 1.0185 (shown 1.02); provider 1.09 x 1.18 = 1.286 (shown 1.29). Pilot low 100 x 0.30 x 1.02 = 31 (shown 30); high 240 x 1.29 = 310. The Rs 0.8631 India marketing rate was confirmed on the Free Press Journal page, dated 30 Sep 2026 and citing Meta's India rate card, and on several provider blogs. Meta's own INR rate card was not opened by me, so it stays secondary, as the proposal says.",
+  "RERA funnel counts match cg_rera_demo_summary.txt exactly (2,173; 1,317; 1,127; 146; 135; 131; 82; 80; 72) and each removed figure on p3 is correct. I re-ran the script's rules on the saved list: 74 promoters before the customer name-match, and the two removals (Vardhman Realty and Mahavir Infracon, both Rajnandgaon) give 56 Raipur, 9 Durg, 7 Rajnandgaon. About 4 new builders a month = 74 over 18 months. Pool recount 419 and 786 against the PDF's 424 and 798 (within about 2%).",
+  "Nexus360 facts re-checked against nexus360.in (fetched 20 Oct 2026): '20+ projects by 200+ people' and Mahavir Group, Rajnandgaon are on the site; the indent pre-approval checks (stock at project, unused stock at other sites, material on order, similar recent indents, BOQ overruns), the PO price checks (last price paid, 6-month range, lowest), inward reconciled against the PO, and booking by WhatsApp match the page 5 wording. No price is published ('Ask for pricing'), and the proposal quotes none of his. 'Founder' and 'Sridhar' do not appear on the site (see blocker).",
+  "Campaign claims match agent/docs/CAMPAIGN1_DIAGNOSIS_2026-10-20.md: 0 replies from 9; 7 cold templates with 2 on time, 1 about 4 hours late, 3 failed (131049 twice, 131026 once), 1 silent for 3 days; page, video, email and template scores 4.6, 4.4, 4.1 and 3.5 are not quoted in the proposal. The 21% one-sided bound for 0 of 13 is correct (20.6%). The corrections 92+ staff hours, Rs 23,000+ overhead and the 14-day sprint come from the Sridhar side file.",
+  "Salary and statutory sources: EPF wage ceiling Rs 25,000 effective 17 Sep 2026 confirmed by several news and tax sites; PF Rs 1,600 is about 13% of Rs 12,500 and is the low end. Indeed Raipur common pay Rs 2.78 lakh (page says about 2.8) and PayScale Rs 1.76 lakh seen; Bridge Group 2025 ramp 3.0 months confirmed (SDRs, 351 companies, 78% North America). Madhya Pradesh robots.txt returns 'Disallow: /' (with Allow lines for /assets, /files, /images). CG RERA robots.txt returns 404.",
+  "Leak scan of the PDF text, proposal.html, template, dashboard, page and video HTML, owner_notes.md and whatsapp_message.txt: no phone number, email address, staff name (Hardik, Vaghela, Sohil and others), Reddit or 'AstraAutomate' anywhere. The 4-digit examples in the invented lead card (4821, 0917) match no real record. PDF metadata has no author (Title only, Chromium and Skia). Only 'Guarantee' appears, in the 'cannot do' list. 'ROI' and 'savings' appear only in disclaimers and in the correction line. Other states and Madhya Pradesh are mentioned only as 'not automated / not included'. The sign-off is 'IV Infotech' only.",
+  "Enrichment records match the PDF: 4 of 6 named (2 verified, 2 likely), 1 owner-level contact (Biltech), 2 officer-type (Dee Vee, Sendh), 2 individual promoters with another party's email, 1 unknown (Balajee); contact types and routes on p3 follow enrichment.md section 5. Filed project costs and the 'two large groups' note are correct.",
+  "The 'pool 3 to 5 months' arithmetic holds (424 / 150 = 2.8; 798 / 150 = 5.3; slightly under 3 if the pilot's 50 are deducted). Dashboard pipeline percentages (64%, 91%, 95%, 55%, 55%, 58%) all match the sample counts. The break-even paragraph is correct arithmetic and honestly says the system is not cheaper on cost alone.",
+  "MP statements: 'not automated' and 'could ask MP RERA' are consistent with the Sridhar file and robots.txt; the proposal does not promise MP anywhere. The timeline Day 0 to Day 14, the Day 6 approval gate and the 'nothing sent before approval' line are consistent across p6 and p9."
+ ],
+ "visual_verdict": "The PDF looks professional on desktop and in print, roughly 7.5 out of 10. It has a restrained navy, green and amber palette, a consistent header and footer, clear hierarchy (large title, lead paragraph, cards, tables), well-built tables on pages 3, 6, 7 and 8, a clean bar funnel on p3, a clean 5-step flow on p2 and a clean Gantt on p9. Fact, Estimate, Assumption and Opinion tags make the honesty visible, and the amber 'what we do not promise' box is well placed. Weaknesses: density. Body and table text is 7.2 to 8.4 pt and every page is full, so it is a 10-minute read rather than a skim. The dashboard figures on p4 print at about 4 to 5 pt and the video stills are decorative only. p4 is the busiest page. p5's phone screenshots are cropped mid-card and the red and yellow placeholder styling clashes with the palette. p7 and p1 have uneven card fills and spacing. Mobile is the weak spot: the A4 PDF will need pinch-zoom on a phone, and the HTML 'mobile' view just shrinks the pages to about 5 px text, so it is not responsive. The standalone dashboard.html is visually the best asset (clear REAL and SAMPLE labelling, strong hand-off section) but its builders table is a content risk. The builder page and storyboard are fine for a screen share, though the yellow [placeholder] chips and red SAMPLE banner look unfinished next to the proposal.",
+ "ready_to_send": "yes after these fixes: (1) reword the p1 headline and add the WhatsApp-reachability gap so the promise matches the p3 test and the pilot scope; (2) remove or re-source 'Founder' (not on nexus360.in) in the PDF and the video frame; (3) set show_owner_names to false and downgrade Biltech and Dee Vee from VERIFIED, then rebuild; (4) do not send or screen-share dashboard.html's builder table as it stands. Then the owner decides the pass/fail rule, the monthly structure (45,000 versus the shared-risk option) and the hours basis behind the price. The WhatsApp message and owner notes are otherwise sendable. Nothing has been sent by me."
+}

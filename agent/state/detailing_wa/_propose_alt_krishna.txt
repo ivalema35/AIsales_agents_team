@@ -1,0 +1,35 @@
+== propose [wa-template]
+   WHATSAPP TEMPLATE (first touch) to +91 ******3493
+   action hash: fe57125f1312c54d...
+APPROVAL CODE: 9X6WA   (expires 2026-10-30T17:53:24Z)
+-------- MESSAGE FOR THE OWNER (show in the chat exactly as printed) --------
+APPROVAL NEEDED [9X6WA]
+WHATSAPP TEMPLATE (first touch)
+To: +919925553493
+Lead label (typed by the agent, not checked): Krishna Auto Coating (2nd number)
+Template: iv_detailing_video_hi_v1 (hi)
+Header video: https://www.ivinfotech.com/assets/campaign/det-studios-v1-k7q3x9/detailing_hi_v1.mp4
+Agent's reason (typed by the agent, not checked): First-touch of the approved detailing template to Krishna Auto Coating (slot c), company number, one lead only; send-day check done by the operator.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/det-studios-v1-k7q3x9/detailing_hi_v1.mp4
+--- text ---
+नमस्ते Krishna Auto Coating टीम, हम IV Infotech, मेहसाणा से हैं।
+
+ऑनलाइन आपका स्टूडियो देखते हुए हमें एक छोटी-सी बात नज़र आई: आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा।
+
+हम एक सिंपल पेज बनाते हैं: पैकेज, पहले-बाद की फ़ोटो और WhatsApp पर बुकिंग का बटन। साथ में Google प्रोफ़ाइल की देखभाल करते हैं, और सेटअप हम ही करते हैं। ऊपर का वीडियो (करीब एक मिनट, कैप्शन के साथ, AI आवाज़ में) यही दिखाता है।
+
+जानना चाहें तो नीचे "हाँ, बताइए" दबा दीजिए; हमारी टीम का कोई व्यक्ति इसी चैट में बताएगा।
+--- end of text ---
+Footer: मैसेज बंद करने के लिए STOP लिखें
+Button [हाँ, बताइए]
+Button [अभी नहीं]
+Button [मैसेज बंद करें (STOP)]
+This code approves exactly the text above and nothing else.
+Reply OK 9X6WA to approve, NO 9X6WA to skip.
+Valid till 30 Oct 23:23 IST.
+-------- end of message --------
+(the same text is saved in agent/state/owner_messages/9X6WA.txt - the owner can open it to compare)
+OWNER NOT MESSAGED (--no-notify). Show the message above to the owner in the chat, word for word. He approves by sending  OK 9X6WA  from his own WhatsApp to the business number (costs him nothing; the CRM does not reply).
+Next: when he says it is done, run the same send command with  --live --approval 9X6WA
+      (check the state any time with: python agent/tools/crm.py approval 9X6WA)

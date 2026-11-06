@@ -1,0 +1,36 @@
+APPROVAL NEEDED [UHJG5]
+EMAIL
+To: office@nbdeveloper.co.in
+Lead label (typed by the agent, not checked): NB Developer
+Subject: A short video for NB Legacy Tower
+Agent's reason (typed by the agent, not checked): Wave 1 first-touch email for NB Legacy Tower: page + video + demo link. Owner asked to send to all leads.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/nb-legacy-tower-x4vyv9/email_banner.jpg
+  https://www.ivinfotech.com/campaign/nb-legacy-tower-x4vyv9
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20NB%20Legacy%20Tower
+  https://www.ivinfotech.com/assets/campaign/nb-legacy-tower-x4vyv9/logo.png
+--- text ---
+[theme: luxury]
+
+Hello NB Developer team,
+
+We are IV Infotech, Mehsana. We saw your ads for NB Legacy Tower, so we made a short video and a page for it.
+
+A premium address deserves a prompt first reply. Here is how every NB Legacy Tower enquiry can get one, with your team able to join the chat.
+
+[image] https://www.ivinfotech.com/assets/campaign/nb-legacy-tower-x4vyv9/email_banner.jpg | https://www.ivinfotech.com/campaign/nb-legacy-tower-x4vyv9 | NB Legacy Tower - watch the video
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/nb-legacy-tower-x4vyv9
+
+Want to see it working? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for NB Legacy Tower from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20NB%20Legacy%20Tower
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK UHJG5 to approve, NO UHJG5 to skip.
+Valid till 17 Oct 04:24 IST.

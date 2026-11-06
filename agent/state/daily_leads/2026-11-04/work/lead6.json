@@ -1,0 +1,27 @@
+{
+ "rank": 6,
+ "business": "Detailing Spot",
+ "city": "Nizampura (Chhani Jakat Naka), Vadodara",
+ "what_they_do": "Car detailing, PPF and ceramic coating shop",
+ "website": "none found",
+ "website_status": "none found",
+ "signal_observed": "Directory listings (Magicpin 5.0 from 63 reviews; Wheree) show no website or Instagram link and two searches found no official site.",
+ "signal_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+ "signal_date": "undated (checked 2026-11-04)",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "Strong ratings but no own web presence found.",
+ "contact_routes": "Phone +91 95877 11010 (Magicpin listing; same number on Wheree listing).",
+ "brand_franchise_flag": "single outlet",
+ "newest_review_date": "unknown",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "c ONLY after confirming on Google",
+ "tier": "signal_only",
+ "multi_source": true,
+ "source_ids": [
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "low",
+ "keep_reason": "Phone appears in two directories; absence of site is a negative finding.",
+ "unknowns": "Whether the phone is the owner; Google listing; Vadodara is in the second-wave geo."
+}

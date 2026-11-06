@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "built_on": "2026-10-20",
+    "purpose": "6 sample enriched builder records for the Nexus360 proposal. Phones show last 4 digits only, emails show domain only. Source narrative: enrichment.md",
+    "confidence_labels": {
+      "VERIFIED": "name and role confirmed by the business's own page or an official register, plus a second independent source",
+      "LIKELY": "one good source, or two weak ones that agree; role partly inferred",
+      "UNKNOWN": "no usable evidence"
+    },
+    "sample_note": "n=6, chosen for variety from the top 20 of the Chhattisgarh RERA list; indicative only"
+  },
+  "records": [
+    {
+      "builder_id": "E1",
+      "register_name": "Dee Vee Projects Limited",
+      "project": "31 Marina by Deevee",
+      "district": "Raipur",
+      "register_refs": ["PCGRERA010926002151"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjY1Ng==",
+      "promoter_type": "Company",
+      "size_signal": {"filed_project_cost_rs_crore": 1225.8, "note": "own site claims 3000+ team, 13 states, Rs 1000+ crore turnover"},
+      "register_contact": {"authorised_name": "Manas K M Agrawal", "phone_last4": "9000", "email_domain": "dvplindia.in", "email_class": "personal-style"},
+      "rera_contact_role": {"value": "officer", "basis": "name not on either director list found"},
+      "owner_candidates": [
+        {"name": "Dinesh Kumar Patel", "role": "Promoter and Whole-Time Director (signs Director's Desk message)", "basis": "company's own page; director listing", "evidence_url": "https://dvplindia.in/", "as_of": "2026-10-20"},
+        {"name": "Nanji Bhai Patel", "role": "Founder (1989, M/S Patel Enterprises)", "basis": "company's own page; director listing", "evidence_url": "https://dvplindia.in/", "as_of": "2026-10-20"}
+      ],
+      "owner_confidence": "VERIFIED",
+      "published_contacts": [
+        {"channel": "phone", "value_masked": "landline ending 2580", "class": "office landline", "published_by": "business", "page_url": "https://dvplindia.in/", "whatsapp_wired": "unknown"},
+        {"channel": "phone", "value_masked": "landline ending 5431", "class": "office landline", "published_by": "business", "page_url": "https://dvplindia.in/", "whatsapp_wired": "unknown"},
+        {"channel": "email", "value_masked": "***@dvplindia.in", "class": "role inbox", "published_by": "business", "page_url": "https://dvplindia.in/", "mx_ok": true}
+      ],
+      "route_to_owner": "via company line",
+      "notes": "Aggregator director lists conflict; only the company page is used for the owner label. Corporate procurement setup likely.",
+      "minutes_spent": 7
+    },
+    {
+      "builder_id": "E2",
+      "register_name": "Sendh Integrated Project Private Limited",
+      "project": "Sendh Lake City Phases I-III",
+      "district": "Raipur",
+      "register_refs": ["PCGRERA310726002129", "PCGRERA190826002141", "PCGRERA250826002144"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjYyMg==",
+      "promoter_type": "Company",
+      "size_signal": {"filed_project_cost_rs_crore": 88.8, "note": "Phase III only; project site states a 124-acre township; company incorporated 2025 with paid-up capital Rs 1 lakh"},
+      "register_contact": {"authorised_name": "Rupesh Meghani", "phone_last4": "1100", "email_domain": "praindia.in", "email_class": "role (project-named)"},
+      "rera_contact_role": {"value": "officer", "basis": "not on the director list"},
+      "owner_candidates": [
+        {"name": "Shrawan Agrawal", "role": "Director", "basis": "registry-derived listing updated 2026-10-07", "evidence_url": "https://www.tofler.in/sendh-integrated-project-private-limited/company/U68100CT2025PTC017676", "as_of": "2026-10-20"},
+        {"name": "Ayush Agrawal", "role": "Director; also director of PRA India Pvt Ltd and PRA highway companies", "basis": "registry-derived listings", "evidence_url": "https://tofler.in/ayush-agrawal/director/03601777", "as_of": "2026-10-20"}
+      ],
+      "owner_confidence": "LIKELY",
+      "published_contacts": [
+        {"channel": "phone", "value_masked": "sales line ending 2000", "class": "enquiry line", "published_by": "business", "page_url": "https://sendhlakecity.com/", "whatsapp_wired": "no link found"}
+      ],
+      "route_to_owner": "via company line",
+      "notes": "Part of a larger group; the real buyer may be a project head. Meta Ad Library keyword search returned only authority ads.",
+      "minutes_spent": 3
+    },
+    {
+      "builder_id": "E3",
+      "register_name": "Biltech Estates",
+      "project": "Surya Ananya Phase II",
+      "district": "Durg (Bhilai)",
+      "register_refs": ["PCGRERA170926002154"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjYwMA==",
+      "promoter_type": "Partnership Firm",
+      "size_signal": {"filed_project_cost_rs_crore": 3.9, "note": "group company Biltech Engineers Pvt Ltd; established Bhilai developer"},
+      "register_contact": {"authorised_name": "Manish Gupta", "phone_last4": "2031", "email_domain": "biltechestates.com", "email_class": "role"},
+      "rera_contact_role": {"value": "owner", "basis": "authorised name equals Managing Director of the group company in the registry-derived listing"},
+      "owner_candidates": [
+        {"name": "Manish Gupta", "role": "Managing Director, Biltech Engineers Pvt Ltd", "basis": "RERA authorised name + registry-derived listing dated 2026-08-03", "evidence_url": "https://www.tofler.in/biltech-engineers-private-limited/company/U74210CT1984PTC002406", "as_of": "2026-10-20"}
+      ],
+      "owner_confidence": "VERIFIED",
+      "published_contacts": [
+        {"channel": "whatsapp+phone", "value_masked": "number ending 9775 (project site 'Headquarters'; WhatsApp widget wired to it)", "class": "enquiry line", "published_by": "business", "page_url": "https://suryaananya.com/", "whatsapp_wired": "yes"},
+        {"channel": "phone", "value_masked": "landline ending 0200", "class": "office landline", "published_by": "business", "page_url": "https://biltech.co.in/", "whatsapp_wired": "unknown"},
+        {"channel": "phone", "value_masked": "mobile ending 0830", "class": "enquiry line", "published_by": "business", "page_url": "https://biltech.co.in/", "whatsapp_wired": "unknown"},
+        {"channel": "email", "value_masked": "***@biltech.co.in", "class": "role inbox", "published_by": "business", "page_url": "https://biltech.co.in/", "mx_ok": true}
+      ],
+      "route_to_owner": "via company line (RERA mobile ending 2031 probably his or his office's - inference)",
+      "notes": "Firm's own partner list not seen; link between Biltech Estates and Biltech Engineers rests on shared address and name. Group site About/Contact pages contain unrelated injected text; not used as evidence.",
+      "minutes_spent": 2.5
+    },
+    {
+      "builder_id": "E4",
+      "register_name": "R.K. Group, Dongargarh (promoters: Arun Kumaar Bhaiya, Pavan Bhaiya, Ganga Structure LLP)",
+      "project": "R.K. Greens-A, R.K. Greens-P, R.K. Sharanam",
+      "district": "Rajnandgaon",
+      "register_refs": ["PCGRERA071026002164", "PCGRERA011026002162", "PCGRERA050625001939", "PCGRERA190925001969"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjY2OA==",
+      "promoter_type": "Individual (x2) and LLP",
+      "size_signal": {"filed_project_cost_rs_crore": 0.2, "note": "Greens-A only; site says 13+ years in business"},
+      "register_contact": {"authorised_name": "Arun Kumar Bhaiya (Greens-A); Shreyas Bhaiya (LLP rows)", "phone_last4": "1101", "email_domain": "gmail.com", "email_class": "consultant-style (name resembles an accounting practice)"},
+      "rera_contact_role": {"value": "promoter himself; filed email looks like an adviser's", "basis": "inference from the mailbox name"},
+      "owner_candidates": [
+        {"name": "Shreyas Bhaiya", "role": "Authorised person of Ganga Structure LLP; name on the website's business mailbox", "basis": "register rows + website RERA numbers match", "evidence_url": "https://www.bhaiyas.com/project.html", "as_of": "2026-10-20"},
+        {"name": "Arun Kumaar Bhaiya", "role": "Individual promoter, Greens-A", "basis": "register", "evidence_url": "https://rera.cgstate.gov.in/Approved_project_List.aspx", "as_of": "2026-10-20"},
+        {"name": "Pavan Bhaiya", "role": "Individual promoter, Greens-P", "basis": "register", "evidence_url": "https://rera.cgstate.gov.in/Approved_project_List.aspx", "as_of": "2026-10-20"}
+      ],
+      "owner_confidence": "LIKELY",
+      "published_contacts": [
+        {"channel": "email", "value_masked": "***@bhaiyas.com", "class": "named-person inbox", "published_by": "business", "page_url": "https://www.bhaiyas.com/", "mx_ok": "not checked"},
+        {"channel": "phone", "value_masked": "number ending 6768", "class": "office line", "published_by": "business", "page_url": "https://www.bhaiyas.com/", "whatsapp_wired": "no link found"}
+      ],
+      "route_to_owner": "direct (named mailbox) or via office line",
+      "notes": "One business appears under three promoter names; without group resolution it counts as three leads. LLP partner list not found.",
+      "minutes_spent": 1.5
+    },
+    {
+      "builder_id": "E5",
+      "register_name": "Shri Balajee Real Infrabuild Private Limited",
+      "project": "Rivera",
+      "district": "Raipur (Naya Raipur)",
+      "register_refs": ["PCGRERA071026002163"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjY3MA==",
+      "promoter_type": "Company",
+      "size_signal": {"filed_project_cost_rs_crore": 49.0, "note": "99 units; new company, no website"},
+      "register_contact": {"authorised_name": "Rishi Agrawal", "phone_last4": "7000", "email_domain": "gmail.com", "email_class": "name unlike the authorised person"},
+      "rera_contact_role": {"value": "unknown", "basis": "no other source"},
+      "owner_candidates": [],
+      "owner_confidence": "UNKNOWN",
+      "published_contacts": [],
+      "route_to_owner": "none",
+      "notes": "Registered address is c/o Sri Tirumala Realbuild (Raipur); one aggregator reports an LLP of that name but its page could not be opened, so the link is unverified. No registry listing found for the company.",
+      "minutes_spent": 1.5
+    },
+    {
+      "builder_id": "E6",
+      "register_name": "Ravi Dulani",
+      "project": "Samruddhi",
+      "district": "Rajnandgaon",
+      "register_refs": ["PCGRERA210926002156"],
+      "register_detail_url": "https://rera.cgstate.gov.in/Promoter_Reg_Only_View_Application_new.aspx?MyID=MjYzNw==",
+      "promoter_type": "Individual",
+      "size_signal": {"filed_project_cost_rs_crore": 0.9, "note": "no website, no ads found"},
+      "register_contact": {"authorised_name": "Ravi Dulani", "phone_last4": "1887", "email_domain": "gmail.com", "email_class": "in the name of a different builder firm"},
+      "rera_contact_role": {"value": "promoter himself; filed email belongs to another firm or person", "basis": "inference from the mailbox name"},
+      "owner_candidates": [],
+      "owner_confidence": "UNKNOWN",
+      "published_contacts": [],
+      "route_to_owner": "none",
+      "notes": "The register is the only public source for this builder.",
+      "minutes_spent": 2
+    }
+  ]
+}

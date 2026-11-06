@@ -1,0 +1,27 @@
+{
+ "rank": 4,
+ "business": "MK29 Detailing",
+ "city": "Chharodi (Nirma University Road), Ahmedabad",
+ "what_they_do": "Car detailing, ceramic coating, PPF, interior",
+ "website": "https://www.mk29detailing.com (live)",
+ "website_status": "own site alive",
+ "signal_observed": "Site is live with a contact form ('Book Your Services Now'), but services have no packages by car size, no Google-reviews widget visible, and the gallery content could not be confirmed; no WhatsApp number published on the site.",
+ "signal_url": "https://www.mk29detailing.com/",
+ "signal_date": "2026-11-04 (checked)",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "A site with a generic enquiry form but no size-based packages and no review proof; a booking+proof page with WhatsApp Book button would add what is missing.",
+ "contact_routes": "Phone +91 84870 11029 (own site https://www.mk29detailing.com/). Team names Kishan Bhatiya (operations), Krish Patel, Milind Rao shown; owner not identified.",
+ "brand_franchise_flag": "single outlet",
+ "newest_review_date": "unknown",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "other: 'site has a form but no packages by car size and no WhatsApp button' (only what the site text showed; verify before use)",
+ "tier": "signal_only",
+ "multi_source": false,
+ "source_ids": [
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "low-medium",
+ "keep_reason": "Real site checked via text extraction only (not full HTML); weaker than the verified two.",
+ "unknowns": "Whether the gallery has before/after photos; Google profile; owner."
+}

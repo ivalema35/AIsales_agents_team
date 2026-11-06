@@ -1,0 +1,205 @@
+<!doctype html><html><head><meta charset="utf-8"><title>story</title>
+<style>
+@font-face{font-family:"Inter";src:url("assets/fonts/inter.woff2") format("woff2");font-weight:100 900}
+@font-face{font-family:"SG";src:url("assets/fonts/space-grotesk.woff2") format("woff2");font-weight:300 700}
+:root{--navy:#0e243a;--navy2:#173e62;--gold:#bda588;--gold2:#ac8d68;--wa:#25D366;--wag:#075E54}
+*{box-sizing:border-box}
+html,body{margin:0;background:#06121e;width:720px;height:1280px;overflow:hidden;font-family:"Inter","Segoe UI",Arial,sans-serif;color:#10222f}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;background:var(--navy)}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.bg{position:absolute;inset:-30px;background-size:cover;background-position:center top;will-change:transform}
+.shade{position:absolute;inset:0}
+.lg-ic{width:56px;height:56px;overflow:hidden;border-radius:12px;position:relative;flex:none;background:var(--navy)}
+.lg-ic img{position:absolute;width:78px;height:auto;left:-10.5px;top:-4.4px}
+.chip{position:absolute;left:0;right:0;top:64px;display:flex;justify-content:center;pointer-events:none}
+.chip>div{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.94);border-radius:40px;padding:14px 28px;font:600 30px "SG","Inter",sans-serif;color:var(--navy);box-shadow:0 8px 28px rgba(0,0,0,.22)}
+.chip.dark>div{background:rgba(14,36,58,.9);color:#fff}
+.tag{position:absolute;top:18px;right:20px;background:var(--gold);color:var(--navy);font:700 17px "Inter",sans-serif;letter-spacing:.08em;padding:6px 14px;border-radius:20px}
+.brandbug{position:absolute;left:40px;top:64px;display:flex;align-items:center;gap:14px}
+.iv-mark{position:absolute;bottom:34px;left:0;right:0;display:flex;justify-content:center;opacity:.9}
+.iv-mark img{height:46px;background:#fff;border-radius:12px;padding:5px 12px}
+/* card family */
+.card{position:absolute;background:#fff;border-radius:34px;box-shadow:0 22px 60px rgba(8,20,32,.38);overflow:hidden}
+/* scene 1 */
+#s1{background:radial-gradient(circle at 50% 36%,#1c4a73 0%,var(--navy2) 38%,var(--navy) 100%)}
+#s1 .logo{position:absolute;left:0;right:0;top:150px;display:flex;justify-content:center}
+#s1 .logo img{width:430px;height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.45))}
+#s1 .t1{position:absolute;left:0;right:0;top:760px;text-align:center;font:600 62px "SG",sans-serif;color:var(--gold);letter-spacing:.01em}
+#s1 .t2{position:absolute;left:0;right:0;top:846px;text-align:center;font:500 32px "Inter",sans-serif;color:#cdd8e2}
+#s1 .pill{position:absolute;left:0;right:0;top:940px;display:flex;justify-content:center}
+#s1 .pill div{background:linear-gradient(90deg,var(--gold2),var(--gold));color:var(--navy);font:700 33px "SG",sans-serif;padding:20px 44px;border-radius:60px;box-shadow:0 12px 34px rgba(0,0,0,.35)}
+.sp{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#ffe9b8 0%,var(--gold) 55%,rgba(189,165,136,0) 100%)}
+/* scene 2 ad card */
+#s2 .ad{left:56px;top:650px;width:608px;height:540px}
+.ad .hd{display:flex;align-items:center;gap:14px;padding:18px 22px}
+.ad .hd b{font:700 26px "Inter",sans-serif;display:block;line-height:1.15}.ad .hd small{font:500 19px "Inter",sans-serif;color:#6b7a88}
+.ad .cr{height:236px;background:linear-gradient(135deg,var(--navy2),var(--navy));position:relative;display:flex;align-items:center;gap:26px;padding:0 30px}
+.ad .cr img{height:190px;width:auto}
+.ad .cr .tx b{display:block;font:700 40px "SG",sans-serif;color:var(--gold);line-height:1.08}
+.ad .cr .tx span{display:inline-block;margin-top:14px;background:var(--gold);color:var(--navy);font:700 21px "Inter",sans-serif;padding:7px 16px;border-radius:30px}
+.ad .ln{padding:16px 24px 6px;font:600 25px "Inter",sans-serif}
+.ad .ln small{display:block;font:500 21px "Inter",sans-serif;color:#6b7a88;margin-top:4px}
+.ad .cta{margin:12px 24px 0;height:76px;border-radius:20px;background:var(--wa);display:flex;align-items:center;justify-content:center;gap:14px;color:#fff;font:700 29px "Inter",sans-serif;position:relative}
+.ripple{position:absolute;border-radius:50%;border:5px solid rgba(255,255,255,.9);opacity:0;pointer-events:none}
+.note{position:absolute;left:0;right:0;text-align:center;font:500 18px "Inter",sans-serif;color:rgba(255,255,255,.8)}
+/* phone */
+.phone{position:absolute;left:96px;top:680px;width:528px;height:720px;background:#10161b;border-radius:62px 62px 0 0;padding:14px 14px 0;box-shadow:0 -10px 60px rgba(0,0,0,.45)}
+.screen{height:100%;border-radius:50px 50px 0 0;background:#ECE5DD;overflow:hidden;position:relative}
+.wh{height:96px;background:var(--wag);position:relative;z-index:3;display:flex;align-items:center;gap:16px;padding:0 22px;color:#fff}
+.wh b{font:700 27px "Inter",sans-serif;display:block;line-height:1.1}.wh small{font:500 18px "Inter",sans-serif;opacity:.85}
+.chat{padding:16px 16px;display:flex;flex-direction:column;gap:12px}
+.bub{max-width:390px;border-radius:18px;padding:12px 16px;font:500 23px/1.28 "Inter",sans-serif;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.bub.out{align-self:flex-end;background:#DCF8C6;border-top-right-radius:4px}
+.bub.in{align-self:flex-start;background:#fff;border-top-left-radius:4px}
+.bub small{display:block;text-align:right;font:500 15px "Inter",sans-serif;color:#7b8a93;margin-top:4px}
+.pdf{display:flex;align-items:center;gap:14px;background:#F2F5F7;border-radius:12px;padding:12px 14px;margin-top:10px}
+.pdf i{display:block;width:44px;height:52px;border-radius:8px;background:#E5484D;color:#fff;font:800 15px/52px "Inter",sans-serif;text-align:center;font-style:normal}
+.pdf b{font:600 21px "Inter",sans-serif;display:block}.pdf span{font:500 16px "Inter",sans-serif;color:#6b7a88}
+.qs{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.qs span{border:2px solid #18a05a;color:#127a46;background:#fff;border-radius:30px;padding:8px 16px;font:600 20px "Inter",sans-serif}
+#s4 .ivhelper{position:absolute;left:478px;top:466px;width:190px}
+/* scene 5 list */
+#s5 .lst{left:56px;top:690px;width:608px;height:446px}
+.lst .hd{display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:2px solid #eef2f5}
+.lst .hd b{font:700 28px "Inter",sans-serif;display:block;line-height:1.15}.lst .hd small{font:500 20px "Inter",sans-serif;color:#6b7a88}
+.row{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:2px solid #f1f4f6}
+.row .av{width:58px;height:58px;border-radius:50%;background:var(--navy2);color:#fff;font:700 26px/58px "Inter",sans-serif;text-align:center;flex:none}
+.row .mid{flex:1}.row .mid b{font:700 25px "Inter",sans-serif;display:block}.row .mid span{font:500 20px "Inter",sans-serif;color:#6b7a88}
+.row .st{font:700 20px "Inter",sans-serif;padding:7px 16px;border-radius:30px;text-align:center;line-height:1.2}
+.st.hot{background:#FDE7E7;color:#B42318}.st.new{background:#E4EEFF;color:#1D4ED8}
+.row .vs{display:block;font:500 17px "Inter",sans-serif;color:#6b7a88;margin-top:4px}
+/* scene 6 */
+#s6{background:radial-gradient(circle at 50% 30%,#1c4a73 0%,var(--navy2) 40%,var(--navy) 100%)}
+#s6 .ivlogo{position:absolute;left:0;right:0;top:210px;display:flex;justify-content:center}
+#s6 .ivlogo div{background:#fff;border-radius:34px;padding:28px 54px;box-shadow:0 22px 60px rgba(0,0,0,.4)}
+#s6 .ivlogo img{height:112px;display:block}
+#s6 h1{position:absolute;left:60px;right:60px;top:470px;margin:0;text-align:center;font:600 62px/1.12 "SG",sans-serif;color:#fff}
+#s6 h1 em{font-style:normal;color:var(--gold)}
+#s6 .btn{position:absolute;left:0;right:0;top:850px;display:flex;justify-content:center}
+#s6 .btn div{display:flex;align-items:center;gap:16px;border:4px solid var(--gold);color:#fff;border-radius:60px;padding:22px 46px;font:700 38px "Inter",sans-serif;background:rgba(255,255,255,.06)}
+#s6 .arrow{position:absolute;left:0;right:0;top:1000px;text-align:center;font:500 26px "Inter",sans-serif;color:#cdd8e2}
+#s6 .foot{position:absolute;left:50px;right:50px;bottom:40px;text-align:center;font:500 18px/1.4 "Inter",sans-serif;color:rgba(255,255,255,.62)}
+</style></head><body><div id="stage">
+
+<div class="scene" id="s1" data-start="0.0" data-end="8.36">
+  <div class="sparks"></div>
+  <div class="logo" data-in="0.1" data-dur="0.9" data-fx="pop"><img src="assets/shyamal_logo.png" alt=""></div>
+  <div class="t1" data-in="0.9" data-dur="0.7">Shyamal Park Lane</div>
+  <div class="t2" data-in="1.2" data-dur="0.7">Bhayli, Vadodara</div>
+  <div class="pill" data-inf="0.55" data-dur="0.7" data-fx="pop"><div>Diwali offer · First 5 bookings</div></div>
+</div>
+
+<div class="scene" id="s2" data-start="8.36" data-end="15.18" data-kb0="1.0" data-kb1="1.07">
+  <div class="bg" style="background-image:url('assets/stills/A_diwali_evening.jpg')"></div>
+  <div class="chip" data-in="0.3" data-dur="0.5"><div>Your Diwali ad</div></div>
+  <div class="brandbug" data-in="0.2" data-dur="0.5"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div></div>
+  <div class="card ad" data-in="0.6" data-dur="0.8">
+    <div class="hd"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div><div><b>Shyamal Park</b><small>Sponsored</small></div></div>
+    <div class="cr"><img src="assets/shyamal_logo.png" alt=""><div class="tx"><b>Shyamal Park Lane</b><span>Diwali offer · First 5 bookings</span></div></div>
+    <div class="ln">3 & 4 BHK · Bhayli, Vadodara<small>Ready possession</small></div>
+    <div class="cta" id="ctabtn"><svg viewBox="0 0 24 24" width="34" height="34"><path fill="#fff" d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3 2.9 1.2 2.9.8 3.4.8.5 0 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg> Send WhatsApp message</div>
+    <div class="ripple" id="rip"></div>
+  </div>
+  <div class="note" style="top:1204px" data-in="0.9" data-dur="0.5">Illustration of your ad</div>
+</div>
+
+<div class="scene" id="s3" data-start="15.18" data-end="21.71" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('assets/stills/B_night.jpg')"></div>
+  <div class="chip dark" data-in="0.3" data-dur="0.5"><div><svg viewBox="0 0 24 24" width="30" height="30"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" fill="#F4D58D"/></svg> 10:47 PM · night</div></div>
+  <div class="brandbug" data-in="0.2" data-dur="0.5"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div></div>
+  <div class="phone" data-in="0.2" data-dur="0.8"><div class="screen"><span class="tag">EXAMPLE</span>
+    <div class="wh"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div><div><b>Shyamal Park Lane</b><small>online</small></div></div>
+    <div class="chat"><div class="bub out" data-inf="0.2" data-dur="0.5" data-fx="left">Hi, I want details of Shyamal Park Lane<small>10:47 PM ✓✓</small></div></div>
+  </div></div>
+</div>
+
+<div class="scene" id="s4" data-start="21.71" data-end="30.94" data-kb0="1.05" data-kb1="1.1">
+  <div class="bg" style="background-image:url('assets/stills/B_night.jpg')"></div>
+  <div class="chip dark"><div>Reply in about a minute</div></div>
+  <div class="brandbug"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div></div>
+  <div class="phone"><div class="screen"><span class="tag">EXAMPLE</span>
+    <div class="wh"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div><div><b>Shyamal Park Lane</b><small>online</small></div></div>
+    <div class="chat">
+      <div class="bub out">Hi, I want details of Shyamal Park Lane<small>10:47 PM ✓✓</small></div>
+      <div class="bub in" data-inf="0.28" data-dur="0.5">Hello! Thank you for your interest in Shyamal Park Lane.
+        <div class="pdf"><i>PDF</i><div><b>Brochure</b><span>Sent automatically</span></div></div></div>
+      <div class="bub in" data-inf="0.56" data-dur="0.5">Three quick questions:
+        <div class="qs"><span>Budget?</span><span>3 & 4 BHK?</span><span>Visit time?</span></div></div>
+      <div class="bub in" data-inf="0.80" data-dur="0.5">Pick a site visit time:
+        <div class="qs"><span>Sat 11:00 AM</span><span>Sat 4:00 PM</span></div></div>
+    </div></div></div>
+  <div class="ivhelper" data-in="0.3" data-dur="0.6" data-fx="pop"><svg viewBox="0 0 220 260" width="190" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ivg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F55F4"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><line x1="100" y1="30" x2="100" y2="58" stroke="#2F55F4" stroke-width="6"/><circle cx="100" cy="26" r="11" fill="#FFB020"/><rect x="22" y="56" width="156" height="150" rx="56" fill="url(#ivg)"/><rect x="44" y="84" width="112" height="76" rx="30" fill="#0B1020"/><g class="eyes"><path d="M70 120 q10 -14 20 0 M110 120 q10 -14 20 0" stroke="#22D3EE" stroke-width="7" fill="none" stroke-linecap="round"/></g><path d="M82 142 q18 16 36 0" stroke="#22D3EE" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="12" y="130" width="22" height="64" rx="11" fill="#2F55F4"/><g transform="rotate(-35 178 150)"><rect x="168" y="96" width="22" height="64" rx="11" fill="#2F55F4"/><circle cx="179" cy="94" r="14" fill="#7FA0FF"/></g><circle cx="100" cy="186" r="15" fill="#fff"/><text x="100" y="192" text-anchor="middle" font-size="16" font-weight="900" fill="#2F55F4" font-family="Segoe UI,Arial,sans-serif">iv</text><rect x="56" y="204" width="34" height="30" rx="12" fill="#2F55F4"/><rect x="110" y="204" width="34" height="30" rx="12" fill="#2F55F4"/></svg></div>
+</div>
+
+<div class="scene" id="s5" data-start="30.94" data-end="38.82" data-kb0="1.0" data-kb1="1.06">
+  <div class="bg" style="background-image:url('assets/stills/C_morning_team.jpg')"></div>
+  <div class="chip" data-in="0.3" data-dur="0.5"><div><svg viewBox="0 0 24 24" width="30" height="30"><circle cx="12" cy="12" r="5" fill="#FFB020"/><g stroke="#FFB020" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></g></svg> Morning · hot buyers first</div></div>
+  <div class="brandbug" data-in="0.2" data-dur="0.5"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div></div>
+  <div class="card lst" data-in="0.5" data-dur="0.8"><span class="tag">EXAMPLE</span>
+    <div class="hd"><div class="lg-ic"><img src="assets/shyamal_logo.png" alt=""></div><div><b>Shyamal Park Lane</b><small>All enquiries in one list</small></div></div>
+    <div class="row" data-inf="0.22" data-dur="0.5"><div class="av">1</div><div class="mid"><b>Sample buyer 1</b><span>From Diwali ad · 3 BHK</span></div><div style="text-align:right"><div class="st hot">Hot</div><span class="vs">Visit Sat 11:00 AM</span></div></div>
+    <div class="row" data-inf="0.46" data-dur="0.5"><div class="av">2</div><div class="mid"><b>Sample buyer 2</b><span>From Diwali ad · 4 BHK</span></div><div style="text-align:right"><div class="st hot">Hot</div><span class="vs">Visit Sat 4:00 PM</span></div></div>
+    <div class="row" data-inf="0.70" data-dur="0.5"><div class="av">3</div><div class="mid"><b>Sample buyer 3</b><span>From Diwali ad · 3 BHK</span></div><div style="text-align:right"><div class="st new">New</div><span class="vs">No slot yet</span></div></div>
+  </div>
+</div>
+
+<div class="scene" id="s6" data-start="38.82" data-end="51.27">
+  <div class="ivlogo" data-in="0.2" data-dur="0.7" data-fx="pop"><div><img src="assets/iv-infotech-logo.png" alt="IV Infotech"></div></div>
+  <h1 data-in="0.9" data-dur="0.7">See it for<br><em>Shyamal Park Lane</em></h1>
+  <div class="btn" data-inf="0.62" data-dur="0.6" data-fx="pop"><div>Yes, send the demo</div></div>
+  <div class="arrow" data-inf="0.74" data-dur="0.5">in the button below this video ↓</div>
+  <div class="foot">Independent concept. Not affiliated with Shyamal Group, WhatsApp or Meta. AI voice-over.</div>
+</div>
+
+</div>
+<script>
+const TL = {"total": 51.27, "scenes": [{"id": 1, "start": 0.0, "end": 8.36, "voice_at": 0.5, "voice_dur": 6.56}, {"id": 2, "start": 8.36, "end": 15.18, "voice_at": 8.81, "voice_dur": 5.37}, {"id": 3, "start": 15.18, "end": 21.71, "voice_at": 15.63, "voice_dur": 5.18}, {"id": 4, "start": 21.71, "end": 30.94, "voice_at": 22.16, "voice_dur": 7.48}, {"id": 5, "start": 30.94, "end": 38.82, "voice_at": 31.39, "voice_dur": 6.43}, {"id": 6, "start": 38.82, "end": 51.27, "voice_at": 39.27, "voice_dur": 9.6}]};
+const sc = {}; TL.scenes.forEach(s => sc[s.id] = s);
+const XF = 0.4;
+function ease(x){x=Math.max(0,Math.min(1,x));return 1-Math.pow(1-x,3)}
+// twinkling gold sparks (scene 1)
+const sparks = document.querySelector('#s1 .sparks');
+for(let i=0;i<22;i++){const d=document.createElement('div');d.className='sp';sparks.appendChild(d)}
+function sparkles(local){
+  document.querySelectorAll('#s1 .sp').forEach((d,i)=>{
+    const sx=(i*97)%700+10, sy=(i*181)%1200+30, ph=i*1.7;
+    d.style.left=(sx+Math.sin(local*0.7+ph)*14)+'px';
+    d.style.top=(sy-local*14*(0.4+(i%5)*0.15)+1200)%1240+'px';
+    const o=0.25+0.55*Math.abs(Math.sin(local*1.6+ph)); d.style.opacity=o; d.style.transform='scale('+(0.6+0.9*((i%4)/3))+')';
+  });
+}
+function setT(t){
+  const ids=[1,2,3,4,5,6];
+  ids.forEach(id=>{
+    const s=sc[id], el=document.getElementById('s'+id);
+    const start=s.start-(id===1?0:XF);
+    const vis=t>=start && t<s.end;
+    el.style.display=vis?'block':'none';
+    if(!vis) return;
+    el.style.opacity = id===1 ? 1 : Math.min(1,(t-start)/XF);
+    const local=t-s.start;
+    const bg=el.querySelector('.bg');
+    if(bg){const k0=+(el.dataset.kb0||1), k1=+(el.dataset.kb1||1.05); const k=Math.max(0,Math.min(1,(t-start)/(s.end-start))); bg.style.transform='scale('+(k0+(k1-k0)*k)+')'}
+    el.querySelectorAll('[data-in],[data-inf]').forEach(n=>{
+      const a=(n.dataset.inf!==undefined)?((s.voice_at-s.start)+(+n.dataset.inf)*s.voice_dur):+n.dataset.in, d=+(n.dataset.dur||0.5), fx=n.dataset.fx||'up';
+      const p=ease((local-a)/d);
+      n.style.opacity=p;
+      if(fx==='up') n.style.transform='translateY('+((1-p)*28)+'px)';
+      else if(fx==='pop') n.style.transform='scale('+(0.86+0.14*p)+')';
+      else if(fx==='left') n.style.transform='translateX('+((1-p)*-36)+'px)';
+    });
+    if(id===1) sparkles(local);
+    if(id===2){
+      const rip=document.getElementById('rip'), btn=document.getElementById('ctabtn');
+      const a=(s.voice_at-s.start)+0.78*s.voice_dur, p=(local-a)/0.8;
+      const r=btn.getBoundingClientRect(), card=btn.parentElement.getBoundingClientRect();
+      if(p>0&&p<1){rip.style.opacity=1-p; const sz=40+p*150; rip.style.width=sz+'px'; rip.style.height=sz+'px'; rip.style.left=(r.left-card.left+r.width*0.78-sz/2)+'px'; rip.style.top=(r.top-card.top+r.height/2-sz/2)+'px'}
+      else rip.style.opacity=0;
+      btn.style.transform=(local>a&&local<a+0.25)?'scale(0.97)':'scale(1)';
+    }
+    if(id===4){const ch=el.querySelector('.chat'); ch.style.transform='translateY('+(-112*ease((local-((s.voice_at-s.start)+0.82*s.voice_dur))/0.55))+'px)'; const h=el.querySelector('.ivhelper'); const f=Math.sin(local*2.2)*10; const p=ease((local-0.3)/0.6); h.style.transform='translateY('+(f+(1-p)*24)+'px) scale('+(0.86+0.14*p)+')'}
+  });
+}
+window.setT=setT;
+document.fonts.ready.then(()=>{setT(0);window.READY=true});
+</script></body></html>

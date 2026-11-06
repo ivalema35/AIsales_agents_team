@@ -1,0 +1,220 @@
+[
+ {
+  "type": "lead",
+  "key": "clinic-web-dabhi-s-dental-clinic-implant-center-vas",
+  "data": {
+   "name": "Dabhi's Dental Clinic and Implant Center (Dr. Ketan Dabhi), Vastrapur, Ahmedabad",
+   "city": "Ahmedabad (Vastrapur)",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call to the clinic number it published in its own ad (+91 88664 41058), asking for Dr. Dabhi, at an off-peak time. Send a WhatsApp message only after they agree to it (opt-in), not as a cold template. No email is published. Do not contact through the ad's WhatsApp CTA or Messenger while posing as a patient.",
+   "best_angle": "Open with one checkable fact. 'The website on your Google profile (dabhidentalclinic.com) does not open and the profile shows no phone number. We can repair the profile and set up a simple site with a WhatsApp appointment button that answers instantly.' Do not claim lost patients or say anything about their reply speed.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 88664 41058 (8866441058)",
+     "source": "https://www.facebook.com/ads/library/?id=1749515289427907",
+     "note": "Published by the business itself in its Meta ad text next to Dr. Ketan Dabhi's name, and repeated on the Eka Care profile https://www.eka.care/doctor/dr-ketan-dabhi-dentist. Indian mobile format, so likely WhatsApp-capable (the ads' CTA button opens WhatsApp), not confirmed. Not shown on the Google Maps listing. Unknown whether it is the doctor's or the front desk's."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/100092213160803/",
+     "source": "https://www.facebook.com/ads/library/?id=1749515289427907",
+     "note": "Business page 'Dabhi's Dental Clinc and Implant Center', the advertiser of the two active ads. About 299 likes. Messenger exists but should not be used for cold outreach."
+    },
+    {
+     "kind": "maps",
+     "value": "https://www.google.com/maps/search/?api=1&query=DABHI'S%20DENTAL%20CLINIC%20AND%20IMPLANT%20CENTER&query_place_id=ChIJGWUFMoqFXjkRHN3CsDT2TG4",
+     "source": "https://www.google.com/maps/search/?api=1&query=DABHI'S%20DENTAL%20CLINIC%20AND%20IMPLANT%20CENTER&query_place_id=ChIJGWUFMoqFXjkRHN3CsDT2TG4",
+     "note": "Google Business listing: no phone, website link dead, address 1st floor Shilalekh Complex, Vastrapur. No email found anywhere; none guessed."
+    }
+   ],
+   "observed_facts": [
+    "The website on the clinic's Google Maps listing (http://www.dabhidentalclinic.com/) does not resolve: DNS NXDOMAIN, fetch ENOTFOUND, and the domain is not registered in the .com registry (RDAP 404). Same result for 6 obvious variants. (2026-10-26, http://www.dabhidentalclinic.com/)",
+    "The Google Maps listing shows no phone number (phone field empty). It does show 4.9 stars from 151 reviews (148 five-star), 144 photos, and an owner-written service description, so the profile is owner-managed but incomplete. (2026-10-26, https://www.google.com/maps/search/?api=1&query=DABHI'S%20DENTAL%20CLINIC%20AND%20IMPLANT%20CENTER&query_place_id=ChIJGWUFMoqFXjkRHN3CsDT2TG4)",
+    "The clinic's Facebook page runs 2 Meta ads flagged active on Facebook and Instagram. Their CTA is 'Contact us' with link api.whatsapp.com/send, and the text gives the doctor's name and phone 8866441058. The scraper shows start date 2026-08-12 for both, but also an odd end date of 2026-08-13 despite isActive=true, so run length and spend are unclear. (2026-08-12, https://www.facebook.com/ads/library/?id=1749515289427907)",
+    "The finder's specific ads (ID 1705409390918879, claimed starts 2026-09-11 and 2026-10-09) could not be reproduced. The Ad Library page view for this advertiser returned only the 2 ads above (hiddenAds=0). The advertiser and its WhatsApp-CTA ad activity are confirmed; the finder's dates and IDs are not. (2026-10-26, https://www.facebook.com/ads/library/?id=1705409390918879)",
+    "Eka Care profile: Dr. Ketan Dabhi, BDS 2018 (Goenka Research Institute of Dental Science, Gandhinagar), about 6 years of experience, Gujarat Dental Council registration 2020. Clinic lists implants, RCT, aligners, veneers, paediatric dentistry. Accepts UPI/card/cash. Phone +91 88664 41058. No other doctors named. (2026-10-26, https://www.eka.care/doctor/dr-ketan-dabhi-dentist)",
+    "Single location in Vastrapur, Ahmedabad. No branches, franchise or agency footprint found. (2026-10-26, https://www.google.com/maps/search/?api=1&query=DABHI'S%20DENTAL%20CLINIC%20AND%20IMPLANT%20CENTER&query_place_id=ChIJGWUFMoqFXjkRHN3CsDT2TG4)"
+   ],
+   "hypotheses": [
+    "Patients who tap 'Website' on the Google listing hit an error page and cannot call from the listing (no phone), so some searchers are probably lost or pushed to WhatsApp. Plausible but not measured.",
+    "WhatsApp enquiries from the ads are probably answered by hand by the doctor or front desk, with little or no after-hours instant reply. No evidence either way; this is the core of the automation pitch and is only inferred.",
+    "The domain was probably let lapse, or a site never went live. An earlier web vendor might have existed, but there is no evidence of one now.",
+    "The ads look like simple boosted video posts run in-house (name, phone, 'Contact us'), not an agency campaign. That points to a small budget, and the owner is likely hands-on.",
+    "The clinic probably opened around 2022, going by the Eka Care work history, which is dated and may be stale. Dr. Dabhi is probably the sole owner-doctor."
+   ],
+   "case_for": "The observed gap is exactly what we sell: the Google listing points to an unregistered domain, has no phone, and the owner is paying to send patients to WhatsApp. The named owner is reachable on a business-published number, and it is a single independent clinic in the right city, with no vendor to displace and good review volume.",
+   "case_against": "Pay evidence is thin: no spend figure, unclear ad run length, minimal ad creative, and the finder's ad IDs and dates were not reproduced. The WhatsApp reply pain is inferred, not seen. The clinic already gets strong reviews and patient flow without a site, so the owner may not rate a website as urgent. A solo young practice may be price-sensitive. There is no email, and the one number may be the front desk's. Cold WhatsApp templates did poorly in our campaign 1 (0 of 3 replies). | Skeptic: The need is mostly inferred and the pay signal is small. The clinic already had a website (live in Dec 2024, with an appointment form and a WhatsApp button) and let the domain expire. Since then it has kept getting patients through 148 five-star reviews, regular Google posts, an Instagram page, an Eka Care booking page and two cheap boosted video ads of unknown spend that lead with 'lowest price'. Slow WhatsApp replies and lost patients are not observed anywhere. The doctor's first answer is likely 'we had a site, it did not help'. The finder's September and October ad dates do not exist in the Ad Library, so the 'growing ad spend' story is gone.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "clinic-web-sure-align-orthodontix-n-dentistry",
+  "data": {
+   "name": "Sure Align Orthodontix n Dentistry (Dr Ajay Kubavat and Dr Yamini Kubavat)",
+   "city": "Ahmedabad (Ambawadi, 701 JP 12th Business Hub)",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Email to surealignorthodontixndentistry@gmail.com (published on the clinic's own site, capture dated 2026-01-23), addressed to Dr. Ajay Kubavat, with a short phone follow-up to +91 63588 22642 during clinic hours (Mon-Fri 10:30-19:00). Use WhatsApp only as the reply route from the email, such as a click-to-WhatsApp link, and do not send a cold WhatsApp first.",
+   "best_angle": "Lead with the specific, checkable thing: surealign.in, the website listed on the AAO locator, currently shows a Coming Soon page and the Google profile has no website link. Then offer a fast clean site plus an instant WhatsApp enquiry and booking button that answers outside clinic hours, framed around overseas NRI patients in other time zones. Do not say they have no website or never had one.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 63588 22642",
+     "source": "https://www.google.com/maps?cid=1778402791588468703",
+     "note": "Clinic main line on its Google Maps listing (scraped 2026-10-26). The same number is on the clinic's own site capture dated 2026-01-23. Indian mobile format, so likely WhatsApp-capable. Open Mon-Fri 10:30-19:00 and Sat 10:30-13:00."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "https://wa.me/916358822642",
+     "source": "https://web.archive.org/web/20260123073201/https://surealign.in/",
+     "note": "The clinic's own site linked this as 'Message us on WhatsApp' as of 2026-01-23. That site is down now, so it is likely still active but not re-confirmed."
+    },
+    {
+     "kind": "email",
+     "value": "surealignorthodontixndentistry@gmail.com",
+     "source": "https://web.archive.org/web/20260123073201/https://surealign.in/",
+     "note": "Contact email published by the clinic on its own site capture dated 2026-01-23. Not on the live site now. A Gmail address suggests the owner or reception reads it directly."
+    },
+    {
+     "kind": "email",
+     "value": "hello@surealign.in",
+     "source": "http://www.surealign.in",
+     "note": "Appears only on the live placeholder page and looks like a builder default. Not verified as monitored. Low confidence; do not rely on it."
+    },
+    {
+     "kind": "website",
+     "value": "http://www.surealign.in",
+     "source": "https://aaoinfo.org/locator/dr-ajay-kantilal-kubavat",
+     "note": "Listed as the clinic website on the AAO locator. Live page is a Coming Soon placeholder today."
+    },
+    {
+     "kind": "maps",
+     "value": "https://www.google.com/maps?cid=1778402791588468703",
+     "source": "https://www.google.com/maps?cid=1778402791588468703",
+     "note": "Google Maps listing. 331 reviews, no website field."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/surealignorthodontixndentistry/",
+     "source": "https://web.archive.org/web/20260123073201/https://surealign.in/",
+     "note": "Link published on the clinic's own site capture dated 2026-01-23. Not opened. The Facebook page link is on the same capture."
+    }
+   ],
+   "observed_facts": [
+    "Live surealign.in serves only a generic 'Surealign - Coming Soon' placeholder with a '404' heading and hello@surealign.in. Nothing about the clinic is on it. (2026-10-26, http://www.surealign.in)",
+    "The Google Maps listing has no website field and a single phone number. It is claimed, has an owner description, hours, 13 photos, payment and accessibility attributes, and says appointments are required or recommended. (2026-10-26, https://www.google.com/maps?cid=1778402791588468703)",
+    "The listing shows 331 reviews (330 five-star, 1 two-star). The newest review is dated 2026-10-21. None of the 10 newest reviews has an owner reply, and 5 of those 10 are star-only with no text. (2026-10-21, https://www.google.com/maps?cid=1778402791588468703)",
+    "Finder's claim 'domain never built' is WRONG. The clinic had a full working site on surealign.in as late as the 2026-01-23 capture (copyright 2025), built with GoDaddy Airo. It had a WhatsApp message link, a contact form, a bookings page, an NRI dental-tourism page and teledentistry. An earlier WordPress site with 'Book An Appointment' and a WhatsApp link is captured in 2021-2022. (2026-01-23, https://web.archive.org/web/20260123073201/https://surealign.in/)",
+    "The AAO locator lists Dr. Ajay Kantilal Kubavat at Sure Align Orthodontix 'n' Dentistry with website surealign.in. Phone and email are not published there. (2026-10-26, https://aaoinfo.org/locator/dr-ajay-kantilal-kubavat)",
+    "The clinic's own Jan 2026 site markets to NRI patients from the USA, UK, Australia and Africa, offers teledentistry, and gives its address as 701, 7th Floor, JP 12th Business Hub, Ambawadi. (2026-01-23, https://web.archive.org/web/20260123073201/https://surealign.in/)",
+    "Maps hours are Mon-Fri 10:30-19:00, Sat 10:30-13:00, Sun closed. (2026-10-26, https://www.google.com/maps?cid=1778402791588468703)"
+   ],
+   "hypotheses": [
+    "The placeholder is probably a GoDaddy Airo reset, lapse or rebuild-in-progress, since the old site and the placeholder use the same builder. The owner may republish a site themselves at any time, so a 'you have no website' need could disappear. The date of the change is unknown; the last live capture is 2026-01-23.",
+    "Overseas NRI enquiries (USA, UK, Australia, Africa) probably arrive outside clinic hours (weekday evenings, Saturday afternoon, all Sunday). An instant automatic WhatsApp reply and booking flow could capture them. This is inferred; no evidence of missed enquiries was found.",
+    "Five of the 10 newest reviews are star-only and the owner replies to none. This hints at a review-collection push and maybe an existing marketing helper. This is a weak inference.",
+    "Because the Maps profile has no website link, patients who find the clinic on Google never reach any site, even when one is live. This is a real gap in the profile but not proof of lost patients.",
+    "The Google profile is already fairly complete (hours, description, photos, attributes), so the 'complete Google profile' part of the offer is thin. The profile gaps are the website link and review replies."
+   ],
+   "case_for": "Real, verified single-location clinic with three independent sources (Maps, AAO, its own archived site). Two named doctor-owners and a published clinic line plus Gmail. Strong ability to pay. The live domain is a dead placeholder today, the Maps listing has no website link, and the profile has no review replies. They market to NRI patients across time zones, which fits an auto-replying WhatsApp enquiry flow. The clinic is clearly busy and reviewed recently (2026-10-21).",
+   "case_against": "The finder's story is wrong: the site was live with a WhatsApp link and bookings page until at least Jan 2026, so this is a lapse or rebuild, not an untouched domain, and the owner can fix it alone on the same builder. There is no direct evidence of lost enquiries, and a 5.0 rating with 331 reviews shows patients already find them. The Google profile is mostly complete. The WhatsApp automation need is inferred. The direct email is a Gmail address taken from an archive, not a live page. Possible existing marketing helper. Not an A because the observed gap is likely temporary and self-fixable. | Skeptic: The only gap actually observed, the dead website, is most likely temporary and self-fixable. The clinic built and ran two sites itself, and its domain still sits in a GoDaddy account it pays for, so republishing may take one click and the pitch could land after the problem is gone. Everything else the offer rests on is inference: lost patients, an auto-WhatsApp need, and ability to pay (no ad spend, staff count or funding seen). A 5.0 rating across 331 reviews (not re-verified by me) says patients already find the clinic without a site. The owner is also a university professor and head of department, so time-poor and probably a DIY or helper-supported digital operator.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "clinic-web-s-m-wellness",
+  "data": {
+   "name": "S M Wellness (S M Wellness Cosmetic Clinic, \"SM Wellness by Dr. Jay Bhatt\")",
+   "city": "Ahmedabad (Vastrapur)",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "A short call by a person to the published clinic line (+91 81408 40841), asking for Dr. Jay Bhatt or whoever manages marketing. Second choice: one human-written WhatsApp message to the website's published WhatsApp number that names IV Infotech and the specific broken link, with an easy opt-out. This is not a verified opt-in route, so no templated blast. Email is not usable because the only published address is on the parked domain.",
+   "best_angle": "Lead with the observed breakage: 'Your site's Make an Appointment and Contact buttons, and your Instagram bio link, go to smwellness.in, which is now a parked page, and /contact-us/ returns a 404. Patients from your ads who tap them hit a dead end. We can fix it fast and add an instant WhatsApp/Instagram reply with your offer and appointment slots for the DM leads your ads create.' Do not say they have no website, and do not quote prices.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81408 40841",
+     "source": "https://smwellnessclinic.com/",
+     "note": "Main clinic line. Published in the Google listing, site, Instagram and all three ads. Likely WhatsApp-capable (ads say 'Call/WhatsApp') but not confirmed."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 93277 69784",
+     "source": "https://www.facebook.com/ads/library/?id=1972327757485603",
+     "note": "Second mobile, published only in the ad copy and an Instagram promo post. Ads label it 'Call/WhatsApp', so likely WhatsApp, not confirmed."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "https://wa.me/919558774769",
+     "source": "https://smwellnessclinic.com/",
+     "note": "Website 'Whatsapp' link (+91 95587 74769). The site's top-bar tel: link also uses this number while displaying 8140840841, so it may be a different person's or the owner's number."
+    },
+    {
+     "kind": "email",
+     "value": "info@smwellness.in",
+     "source": "https://smwellnessclinic.com/",
+     "note": "DO NOT USE. Published on the homepage, but smwellness.in is parked and no MX record was returned, so mail probably bounces."
+    },
+    {
+     "kind": "website",
+     "value": "https://smwellnessclinic.com/",
+     "source": "https://www.google.com/maps/search/?api=1&query=S%20M%20Wellness%20Clinic&query_place_id=ChIJybntRPKFXjkRkca60OH35_U",
+     "note": "Live homepage only. Linked from the Google Maps listing."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/sm__wellness/",
+     "source": "https://www.instagram.com/sm__wellness/",
+     "note": "Main channel for ads and DMs. Bio links to the parked smwellness.in."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/smwlns/",
+     "source": "https://www.facebook.com/ads/library/?id=1604694901107226",
+     "note": "Business page, 1,414 likes per ad library data. Not scraped."
+    },
+    {
+     "kind": "maps",
+     "value": "https://www.google.com/maps/search/?api=1&query=S%20M%20Wellness%20Clinic&query_place_id=ChIJybntRPKFXjkRkca60OH35_U",
+     "source": "https://www.google.com/maps/search/?api=1&query=S%20M%20Wellness%20Clinic&query_place_id=ChIJybntRPKFXjkRkca60OH35_U",
+     "note": "Google Business Profile, placeId ChIJybntRPKFXjkRkca60OH35_U."
+    }
+   ],
+   "observed_facts": [
+    "Three Meta ads from page 'S M Wellness' are active, Instagram-only, all with the 'Send message' (Instagram DM) CTA. They started 2026-10-22 (laser hair removal Rs 39,999 / free glow package for first 20 females), 2026-10-22 (Diwali IV glutathione from Rs 2,999) and 2026-10-23 (hair regrowth, 20% off, 'DM us HAIR NOW'). Ad copy also lists 'Call/WhatsApp' numbers. The library showed nothing older, so the visible ad history is about 4 days. (2026-10-22, https://www.facebook.com/ads/library/?id=1604694901107226)",
+    "Google Business Profile exists and looks complete: 4.6 stars, 218 reviews (177 five-star, 13 one-star), 53 photos, categories, hours, description and phone. Its website field is https://smwellnessclinic.com/, not Instagram. The finder's 'no own site' claim is therefore wrong. (2026-10-26, https://www.google.com/maps/search/?api=1&query=S%20M%20Wellness%20Clinic&query_place_id=ChIJybntRPKFXjkRkca60OH35_U)",
+    "On smwellnessclinic.com only the homepage loads. /contact-us/, /about-us/ and the service pages (e.g. /laser-hair-removal-ahmedabad/, /gallery/) return HTTP 404 'This Page Does Not Exist'. Checked with three different clients within about five minutes. (2026-10-26, https://smwellnessclinic.com/contact-us/)",
+    "Every 'MAKE AN APPOINTMENT', 'Contact Us Now', 'About Us', 'Services', 'Gallery' and 'Learn More' link on the homepage points to the old domain smwellness.in. That domain serves a parking-service script (tenant label 'openprovider-expired') on parklogictestns1.com nameservers, with a Let's Encrypt cert issued 2026-10-19 and no MX record found. (2026-10-26, https://smwellness.in/?page_id=919)",
+    "The Instagram bio website field still shows smwellness.in, the parked domain, so bio-link clicks do not reach the clinic. (2026-10-26, https://www.instagram.com/sm__wellness/)",
+    "The homepage publishes a WhatsApp link (wa.me/919558774769), tel links and an email on the parked domain. It has no booking form or chat widget in its HTML. The footer credit reads 'Design and Development by Explode Solution'. (2026-10-26, https://smwellnessclinic.com/)",
+    "The clinic's own site claims 10 years of service and 20,000+ families. Practo and KiViHealth independently list the same single address. No other branch was found. (2026-10-26, https://smwellnessclinic.com/)"
+   ],
+   "hypotheses": [
+    "Inference: the old domain smwellness.in lapsed around mid-October 2026 and the site was moved to smwellnessclinic.com, which would explain the dead links and 404s. The owner may not know yet, or a fix may be in progress.",
+    "Inference: with ads that send people only to an Instagram DM, plus calls and WhatsApp, leads probably wait for a human reply, especially in the evening. I did not observe any reply delay, and I did not contact them.",
+    "Inference: an automatic WhatsApp or Instagram reply with the offer and appointment slots, plus a repaired site with a working appointment path, would fit. Their need for this is unproven.",
+    "Inference: 'Explode Solution' is probably the original site builder. It is unverified, and it may still be engaged or may have lost the account.",
+    "Inference: the number 9558774769 on the site's WhatsApp link may belong to the owner or a staff member, since it is not the number shown beside it."
+   ],
+   "case_for": "A real, active, single-location clinic at premium price points with 218 reviews and three fresh paid campaigns. A concrete, checkable problem exists today: the appointment and contact buttons point to a lapsed domain, the inner pages 404, and the Instagram bio link is dead. Leads from the ads go to Instagram DMs and phone/WhatsApp, which fits an auto-reply. It is an independent doctor-led clinic in Ahmedabad, inside our geography, and the published phone and WhatsApp give a direct route.",
+   "case_against": "The finder's headline claim is false. They do have a site and a complete Google profile, so the offer is a repair plus automation, not a new website. The auto-reply need is only inferred, and the ads are four days old. The breakage may be a fresh migration glitch that gets fixed before we call. The owner is not confirmed, and the only email is dead. An earlier web vendor may still be involved. Our cold WhatsApp templates have had poor results so far, which leaves the phone as the realistic channel. | Skeptic: The observed fault is a trivial, fast-expiring one. Every inner page 404s because WordPress pretty permalinks are broken, and 'Make an Appointment' goes to a parked domain. A webmaster could fix both in minutes, and the clinic may already have done so by the time anyone calls. What is left is only an inferred need for an auto-reply on Instagram DMs. They already have a site, a complete 218-review Google profile, a WhatsApp link, active ads and a KiViHealth booking page. The owner is unconfirmed and the ad age and spend are unknown. A cold pitch that opens with 'your site is broken' may earn a thank-you rather than a sale.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ }
+]

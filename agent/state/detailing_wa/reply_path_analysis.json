@@ -1,0 +1,297 @@
+{
+ "today_behavior": [
+  {
+   "event": "(a) Lead taps the YES quick-reply (Hindi label such as 'हाँ, बताइए', or an English 'Yes ...') on a template sent by agent/tools/wa.py",
+   "what_happens": "The tap arrives as type 'button' (or 'interactive') and runs inbound.py -> _handle_quick_reply -> record_inbound. The CRM's own YES path (HOT_LEAD, record_interest_response) is NEVER used: map_quick_reply_to_interest returns None for a Hindi label (it only reads a-z words) and 'YES' for an English 'Yes...', but _find_outreach_for_tap finds no OutreachLog row for a template the agent tool sent, returns (None, None), and the label is stored as an unknown-sender row in agent_inbound_feed (text = label, lead_id NULL, intent NULL). Then demo_responder returns silently (no 'send the demo' phrase, no open session). What sales_agent does depends on sales_agent_mode. PROBE (29 Oct, real Flask app, throw-away DB, provider and LLM stubbed): agent OFF or TEST-without-numbers = nothing sent, no hand-off, no owner alert; the only signal is the feed row, which wakes the operator lane (a human-approved reply comes later). Agent ON = the tap is queued for the OpenAI agent whose system prompt is the REAL-ESTATE persona (the LLM was called; my stub answered [NO_REPLY], yet the owner still got an info alert titled 'NEW REPLY - <the observation sentence> wrote to us' because _label() prefers payload.project = 2nd body parameter). What a real model would write is unverified. The live values of demo_mode and sales_agent_mode are unverified and the notes conflict (agent/memory.md line 400, 27 Oct: both ON; 29 Oct journal: agent TEST with no test numbers; CONTEXT.md: demo OFF).",
+   "evidence": "backend/api/inbound.py:200-205, 215-239 (230 returns (None, None)), 242-264; backend/services/whatsapp_message.py:114-134 (122-124); backend/services/inbound_service.py:48-81, 85-141; backend/services/demo_responder.py:97, 689-708; backend/services/sales_agent.py:1003-1031, 1193-1195, 1198-1260, 627-631, 1384-1400; agent/tools/heartbeat_check.py:117-123; probe scripts and outputs: C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\claude\\C--Users-Administrator-Desktop-wire-soldering\\dec5451d-390d-44dc-a02c-fbc50c6d4a7c\\scratchpad\\probe_today.py and probe_today_out.txt"
+  },
+  {
+   "event": "(b) Lead taps NOT NOW ('अभी नहीं' or 'Not now')",
+   "what_happens": "Identical path to (a): stored as a feed row, no reply, no hand-off, no suppression (the CRM opt-out list is English-only and 'Not now' is not on it). Agent ON: queued for the real-estate AI (probe: LLM called; a real model may reply or call set_lead_stage not_now; unverified). Note a tapped English 'No, thanks' (with the comma) is mapped to NO but is also NOT suppressed by record_inbound, because is_optout needs 'no thanks' with a plain space (probe: is_optout('No, thanks') = False); only the demo responder (inside a demo) or the AI agent suppress it.",
+   "evidence": "backend/api/inbound.py:242-264; backend/cognition/hard_classifiers.py:18-30, 83-85; backend/services/whatsapp_message.py:108-134; backend/services/demo_responder.py:102-105; probe_today_out.txt and probe_texts.py in the same scratchpad folder"
+  },
+  {
+   "event": "(c) Lead TYPES haan / demo / ok / yes (and the video's own CTA is 'write haan in this chat')",
+   "what_happens": "Typed text goes record_inbound -> unknown-sender feed row (the detailing leads are not CRM leads). demo_responder answers ONLY the phrase 'send (me) (the) demo' or an already-open session, so haan/demo/ok/yes get nothing (tests pin hello/price = no demo). Probe: agent OFF/TEST = silence; agent ON = LLM called with the real-estate prompt (its KB rule 'lead wants to go ahead' hands off and says a personalised agent demo is free, which contradicts the detailing 'no free' rule; real-model output unverified). DANGER confirmed by the probe: typing 'send demo' (also 'send me demo') from a detailing lead starts the REAL-ESTATE demo ('Hello, this is IV Infotech ... Question 1 of 3: what budget') with project 'your project' whenever demo_mode is on, in all three agent states.",
+   "evidence": "backend/api/inbound.py:207-212; backend/services/demo_responder.py:97 (_TRIGGER_RE), 202-206, 689-727 (705-706 returns when no session and no trigger); backend/tests/test_demo_responder.py:308-312; backend/services/sales_agent.py:627-648 (631 'what is free', 639 rule 6), 1003-1049; probe_today_out.txt"
+  },
+  {
+   "event": "(d) Lead types STOP / 'band karo' / 'बंद करो' / 'nahi chahiye'",
+   "what_happens": "Plain 'STOP' (and 'not interested', 'no thanks' with a plain space) is suppressed by record_inbound for any sender, silently, intent STOP (probe). 'band karo', 'बंद करो', 'nahi chahiye', 'mat bhejo' are NOT in the CRM opt-out list: with the AI agent OFF or TEST they are stored and NOT suppressed (probe: suppressed=0), so the number could be messaged again. With the AI agent ON they are caught by sales_agent._is_stop: number suppressed, one fixed ENGLISH confirmation sent to the lead, and an owner info alert 'LEAD OPTED OUT'. The demo responder's wider Hindi/Gujarati list (_HARD_STOP_RE) runs only inside or right after a demo session. This is a pre-existing gap that campaign 1 shares.",
+   "evidence": "backend/services/inbound_service.py:64-67, 145-148; backend/cognition/hard_classifiers.py:18-30; backend/services/sales_agent.py:754-777, 1212-1226; backend/services/demo_responder.py:102-105, 714-715; backend/tests/test_sales_agent.py:309-328; probe_today_out.txt"
+  },
+  {
+   "event": "(e) Lead asks a price question ('kitna charge karoge?', 'price?')",
+   "what_happens": "Feed row only. No automatic reply from the demo. Agent OFF/TEST: silence. Agent ON: queued for the AI (probe: LLM called); its rules say never quote a price, hand off to a human and tell the lead a colleague will confirm (rule 6 plus KB entry pricing-no-quote); real-model output unverified. Under the CRM's AI classifier path (only for CRM leads, not applicable here) looks_pricing_or_legal would force a human.",
+   "evidence": "backend/services/sales_agent.py:627-648, 1198-1260; backend/services/sales_kb.json (pricing-no-quote); backend/cognition/hard_classifiers.py:104-116; probe_today_out.txt"
+  },
+  {
+   "event": "(f) Lead sends a voice note (or image / document)",
+   "what_happens": "describe_message turns it into the placeholder '[voice note]' (the CRM never downloads the audio); record_inbound runs the STOP check on the caption only (none) and stores a feed row. Agent OFF/TEST: nothing else. Agent ON: sales_agent sends the fixed ENGLISH FIXED_REPLIES['media'] text ('I can only read text messages ... please type'), writes a hand-off and sends the owner a 'NEEDS YOU - sent media' alert (probe: 1 hand-off, 2 messages). Nobody can listen to the voice note with the current tools (BSP console access unverified).",
+   "evidence": "backend/services/whatsapp_message.py:67-69; backend/services/inbound_service.py:120-141; backend/services/sales_agent.py:105-109, 1241-1249; backend/tests/test_sales_agent.py:338-344; probe_today_out.txt"
+  },
+  {
+   "event": "(g) The OWNER taps the button on his own test send of the template",
+   "what_happens": "Owner messages never reach the lead code: inbound.py:75-82 sends them to owner_channel.handle_owner_message, which stores '[button] <label>' in owner_inbox (outcome 'stored', processed_at NULL), then demo_responder._owner_message only reacts if the label matches 'send the demo' (845-858). For a detailing label nothing is sent and the row stays unprocessed, so the WhatsApp fast lane will treat the tap as chat (its reply is swallowed under OWNER_QUIET). Probe confirmed: 0 messages sent, row unprocessed, in both agent states.",
+   "evidence": "backend/api/inbound.py:75-82; backend/services/owner_channel.py:176-212; backend/services/demo_responder.py:769-776, 817-863; backend/tests/test_demo_responder.py:707-710; probe_today_out.txt (OWNER PATH)"
+  },
+  {
+   "event": "Delivery / read / failed callbacks for agent-sent templates",
+   "what_happens": "Handled generically and correctly for ANY agent template: _handle_one_status finds no OutreachLog, calls wa_tracking.record_agent_message_status, which matches the wamid to the template_sent activity and stores wa_delivered / wa_read / wa_failed events (with Meta's error code, e.g. 131049). Nothing to change for detailing; the '3 consecutive non-deliveries = cold templates OFF' rule can read these events.",
+   "evidence": "backend/api/inbound.py:97-98, 134-152; backend/services/wa_tracking.py:21, 46-70; backend/tests/test_wa_tracking.py"
+  },
+  {
+   "event": "How taps and replies reach the console (agent/engagement/engagement_sync.py) for a detailing lead",
+   "what_happens": "They do NOT. The cron builds 'Since we messaged them' cards only for leads whose console entry has a /campaign/<slug> page_url AND whose slug exists in backend/services/demo_projects.json (slug_info_from_console + the intersection in main). Detailing leads have no page (D3: no URL button) and are not in demo_projects.json, so their taps never become console cards, activity lines or Replies KPI counts (verified by reading the code; the live console data is unverified). Today the only signals are agent_inbound_feed (crm.py inbound) and the operator-lane wake-up.",
+   "evidence": "agent/engagement/engagement_sync.py:413, 461-472, 639-655, 838-840; agent/tools/heartbeat_check.py:16, 117-123"
+  },
+  {
+   "event": "Hand-offs and owner alerts available today",
+   "what_happens": "agent_service.create_handoff writes agent_handoffs + a CRM to-do card. demo_responder._alert_owner WhatsApps the owner only inside his own 24 h window (free). sales_agent.alert_owner does the same but falls back to the UTILITY template iv_lead_alert_v1 when his window is closed (costs credit, which the owner disliked). The owner window = 24 h from his last message to the CRM (owner_last_seen). Nothing creates a hand-off for a detailing tap today (probe: handoffs = 0 unless the AI agent sees a voice note).",
+   "evidence": "backend/services/agent_service.py:257-262, 297-329; backend/services/demo_responder.py:396-405, 426-438; backend/services/sales_agent.py:418-451"
+  },
+  {
+   "event": "Template recognition and personalisation today (what code reads template_sent)",
+   "what_happens": "Only two readers: demo_responder._project_from_template_message (context id -> wamid -> payload.project -> demo_projects.json; used when a demo starts) and sales_agent.lead_context (decodes the recipient number from the wamid with _phone_from_wamid). wa.py logs payload {wamid, project, template} where project = the 2nd body parameter. With the baseline template ({{1}} studio, {{2}} observation) payload.project is the observation sentence, not a studio name. Offline check: 11 of 11 real wamids in agent/state/events.jsonl decode to a number whose last 4 digits equal the logged recipient, and all use only the characters the sanitiser allows.",
+   "evidence": "agent/tools/wa.py:129-139, 483-485; backend/services/demo_responder.py:743-762; backend/services/sales_agent.py:295-304, 315-342; agent/state/events.jsonl (kind wa_template_sent, counted only, no digits printed)"
+  },
+  {
+   "event": "Regression baseline",
+   "what_happens": "The whole backend suite is green today: 425 tests collected and passed (venv python, temp DB, network blocked, run read-only with -p no:cacheprovider and no bytecode; no file was written in the repo). Key files are UNTRACKED or uncommitted in git (demo_responder, owner_channel, sales_agent, sales_kb.json, wa_tracking, tests; inbound.py modified), so local = deployed source is an assumption (unverified); the anchored deploy patches fail loudly if the server differs.",
+   "evidence": "cd backend; venv\\Scripts\\python.exe -m pytest tests -q -p no:cacheprovider; git status on branch agent-operator"
+  }
+ ],
+ "design": {
+  "summary": "Add ONE small separate module, backend/services/detailing_responder.py plus detailing_config.json, beside demo_responder.py and sales_agent.py (same pattern as sales_agent: it borrows demo_responder's low-level helpers). A new hook in api/inbound.py runs after the normal storing and STOP handling and BEFORE the demo and AI hooks. It CLAIMS a lead message only if it belongs to a detailing template: the tapped message's context id resolves to a template_sent record whose template name is a detailing template, or (no usable context id) the sender's number is the recipient decoded from the wamid of a recent detailing send. A claimed message never reaches demo_responder or sales_agent, whatever demo_mode or sales_agent_mode say; every other message returns False after read-only lookups, so campaign 1 is byte-for-byte unchanged. For a claimed message: STOP words suppress always (+ one confirmation); a tap on the yes label or a typed plain yes (haan/ji/ok/demo) creates a hand-off and, only when the owner has switched the new flag detailing_mode on from his own WhatsApp, sends ONE fixed Hindi reply per template send (no AI, says it is automatic, no time/price/free promised); not-now is only logged; everything else (price, questions, 'send me the demo', voice notes) becomes a hand-off with no automatic text. No schema change, no .env change, no change to wa.py or the templates. A working prototype exists (NOT in the repo): C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\claude\\C--Users-Administrator-Desktop-wire-soldering\\dec5451d-390d-44dc-a02c-fbc50c6d4a7c\\scratchpad\\proto\\ (module 583 lines incl. comments, 92 tests, 27 of 27 mutants caught, whole suite 507 green on a patched scratch copy of the current backend, plus 10 unchanged agent-tool e2e tests).",
+  "trigger_rules": [
+   "CLAIM by context: msg.context.id equals the wamid of a template_sent record (agent_activity, last 60 days) whose payload.template is listed in detailing_config.json OR contains the word 'detailing'. If the context id points to any OTHER template (campaign 1) the message is NOT claimed. Recognition is read-only (no write before a message is claimed).",
+   "CLAIM by number: no usable context id (typed text, a reply-swipe on our own auto-reply, or a BSP that drops it) AND the sender's number equals the 91xxxxxxxxxx decoded from the wamid of a detailing template_sent in the last 60 days AND no real-estate demo session is already open for that number. A last-4-digits match is deliberately NOT used (a collision could swallow a campaign-1 lead's 'send the demo').",
+   "YES = a tap whose NFC-normalised label is in the template's yes_labels, OR (typed_yes on) a whole message of at most 4 words made only of configured yes words (haan, ha, haa, ji, yes, ok, okay, demo, send, bhejo, dikhao, Devanagari and Gujarati forms such as हाँ, हां, जी, હા, જી) with no '?' and no digit.",
+   "NOT NOW = a tap on notnow_labels or a whole-message decline word (nahi, abhi nahi, no, later): event only; no reply, no hand-off, no suppression.",
+   "STOP = demo_responder._is_hard_stop (CRM list + Hindi, Gujarati, Hinglish: band karo, बंद करो, nahi chahiye, mat bhejo, no thanks, not interested) on the label, the typed text or a media caption: suppress ALWAYS, whatever the mode, and cancel the open hand-off.",
+   "OTHER = unknown label, any other text (price, questions, 'send me the demo for my studio please', 'ok thanks'), 'haan?' / 'demo?' with a question mark: hand-off at normal priority, no automatic text. MEDIA (voice note, image, document, location): hand-off, plus the optional media_reply once per 6 h.",
+   "The automatic reply goes out only if ALL hold: not paused (STOP ALL); detailing_mode on (or test and the number is in DEMO_TEST_NUMBERS); WhatsApp credentials present; number not suppressed; the lead's message is younger than 23 h; the template send is younger than 7 days; no wa.py reply was logged for this lead since the send; caps not reached; the per-send marker was acquired; the config is valid.",
+   "It never sends a first message: it only answers a message that just arrived, inside the 24 h window. The words 'send the demo' are never sent and a label containing them (or any STOP phrase) makes the config invalid."
+  ],
+  "flow_steps": [
+   "1. Webhook -> api/inbound.py stores the message exactly as today (agent_inbound_feed row; record_inbound suppresses a plain STOP). The new hook comes after this and before the demo and AI hooks.",
+   "2. detailing_responder.maybe_handle_lead_message(db, msg, sender, kind, body, trusted): untrusted request -> False. Read-only recognition (context id, else number). Not a detailing message -> return False with nothing written.",
+   "3. Claimed: the function returns True even if it later crashes (inbound.py returns, the demo and AI hooks are skipped); errors are logged and swallowed, the webhook still answers 200.",
+   "4. Write the marker 'det:<inbound wamid>' into demo_seen (PRIMARY KEY). Already there = a webhook retry -> stop.",
+   "5. Classify with the template's config entry: ignore (reaction, sticker, emoji, another business's auto-reply) | stop | yes | notnow | media | other.",
+   "6. Write one detailing_inbound agent_activity event (class, via, mode, template, masked phone).",
+   "7. stop -> demo_responder._suppress, cancel open hand-offs, send ONE confirmation (marker 'detstop:<phone>') only if automatic replies are allowed; end.",
+   "8. Suppressed number (not a STOP) -> event detailing_blocked, end. notnow -> end.",
+   "9. yes / other / media -> hand-off FIRST (agent_service.create_handoff, or append to the open hand-off of the last 24 h; priority high for yes), skipped for lead_ref 'Owner test' / 'Boss test' sends. The brief carries template name, send time, the lead's cleaned words (links and long digit runs removed) and the observation line.",
+   "10. Automatic reply (yes -> yes_reply, media -> media_reply) if every condition of the reply rule holds: acquire marker 'detsend:<template wamid>' (once per template send, tap and typed share it) or 'detmedia:<phone>:<6 h bucket>' BEFORE sending; send through demo_responder._send_text; write detailing_auto_reply or detailing_reply_failed; never retried.",
+   "11. Owner alert: a free-form WhatsApp to the owner only inside his own 24 h window (cap 20/day, none while paused) with lead name, what happened, 'Automatic reply: sent / not sent (reason)', 'reply by hand before HH:MM IST' and the wa.me link. Outside his window the hand-off card and the operator lane are the signal (no credit spent).",
+   "12. A person (closer draft + owner OK code, wa.py reply at autonomy stage 1) answers from the company number inside the 24 h window; the instant fixed reply only buys time.",
+   "13. Owner path (api/inbound.py owner branch -> detailing_responder.after_owner_message): DETAILING ON/OFF/TEST/STATUS set or report the flag; DETAILING RUN and the owner's own tap on a detailing test send show him the exact lead text plus 'Test run finished' in ANY mode, with no hand-off, no suppression, and his inbox row marked processed so the fast lane does not treat it as chat."
+  ],
+  "texts_needed": [
+   {
+    "key": "yes_reply (config, per template; LEAD-facing)",
+    "purpose": "The one instant answer to a yes tap or typed plain yes.",
+    "constraints": "Same language as the template (Hindi, Devanagari). <= 400 chars (aim 170-250). Must say it is an automatic/AI reply from 'IV Infotech, Mehsana' (company, never the owner's or boss's name or number), say a person from the team will message on THIS chat during working hours (no clock time, no day, no 'soon/jaldi/aaj/kal'), carry the English word STOP as the opt-out. No price, 'free', 'instant', 'every', 'gets', 'guarantee', 'your ads', no link, no phone, no email, no emoji (max 1), no 'send the demo', nothing about their studio or their words. Must pass sales_agent.check_reply and the banned-word and AI+STOP rules at load. DRAFT that passes today's validator (owner must read and correct it): धन्यवाद! यह IV Infotech, Mehsana का automatic (AI) जवाब है। हमारी टीम से एक व्यक्ति इसी चैट में working hours के दौरान आपको message करेगा। मैसेज नहीं चाहिए तो STOP लिखिए।"
+   },
+   {
+    "key": "stop_ack (config; LEAD-facing)",
+    "purpose": "ONE confirmation after a STOP (the number is suppressed first).",
+    "constraints": "<= 160 chars, no pitch, no question, no link, states no more WhatsApp messages. DRAFT: ठीक है। अब हम आपको कोई WhatsApp message नहीं भेजेंगे। असुविधा के लिए क्षमा करें।"
+   },
+   {
+    "key": "media_reply (config, optional; LEAD-facing)",
+    "purpose": "Voice note / image / document cannot be read by the CRM and cannot be listened to with current tools: ask them to type. Leave empty to disable.",
+    "constraints": "Same rules as yes_reply, plus say the chat only reads text. Sent at most once per 6 h per number. DRAFT: आपका message मिल गया, पर यह automatic (AI) चैट अभी सिर्फ text पढ़ सकती है। कृपया 'haan' या अपना सवाल type कर दीजिए; हमारी टीम का व्यक्ति इसी चैट में working hours के दौरान message करेगा। रोकने के लिए STOP लिखिए।"
+   },
+   {
+    "key": "template button labels + footer (belongs to the Meta template spec; the reply path depends on them)",
+    "purpose": "yes_labels / notnow_labels in the config must equal the approved buttons character for character; the footer carries the opt-out wa.py requires.",
+    "constraints": "Exactly two QUICK_REPLY buttons, each <= 25 characters (examples: 'हाँ, बताइए' / 'अभी नहीं'). Neither may contain 'send the demo', 'stop', 'no thanks', 'not interested' or any hard-stop phrase (else the number is suppressed or the real-estate demo could start). Footer contains the English word STOP (wa.py validate_spec). Template NAME must contain the word 'detailing' (e.g. iv_hi_detailing_video_v1) so the claim works even before the config lists it. No URL button, no phone button in v1."
+   },
+   {
+    "key": "yes_words / decline_words (config vocab, per template)",
+    "purpose": "What counts as a typed plain yes ('haan', 'demo' ...) or a typed decline.",
+    "constraints": "Lower-case single tokens in Latin, Devanagari and Gujarati (list both हाँ and हां; they differ after normalisation). Whole-message match only, max 4 words, no '?' and no digits. Owner should proofread the Gujarati and Hindi entries."
+   },
+   {
+    "key": "owner alerts and test notes (code constants, English; OWNER-facing)",
+    "purpose": "alert_yes, alert_other, owner_done, status line.",
+    "constraints": "English only (product text rule), no lead phone in logs beyond the wa.me link to the owner, lead words cleaned (no links, no long digit runs), <= 900 chars, always states whether the automatic reply was sent and the 24 h reply deadline in IST."
+   }
+  ],
+  "safety_rails": [
+   "OFF by default: a missing agent_flags row means off. Only the owner's own verified WhatsApp message can write detailing_mode (whole-message regex, owner_channel chain: verified webhook + owner number); no API route can set it (api/agent.py exposes only GET /flags -> paused).",
+   "STOP ALL (paused flag) stops every automatic send and every owner alert; hand-off rows are still written.",
+   "Only a webhook request that passed the secret check is trusted; an untrusted request returns False and writes nothing.",
+   "Claim isolation: a claimed message is never passed to demo_responder or sales_agent, in any flag combination (probe_after.py: demo ON + agent ON + detailing OFF/ON, agent OFF + detailing ON). Non-detailing messages: False after read-only lookups.",
+   "Idempotent by construction: UNIQUE marker per inbound wamid (det:<wamid>), per template send (detsend:<template wamid>, shared by tap and typed yes), per STOP (detstop:<phone>) and per media window; markers are written BEFORE sending (at most once for the lead, at least once for the human signal because the hand-off is written first).",
+   "Suppression: checked before any answer; a STOP suppresses first, then gets one confirmation; a suppressed number is never answered or handed off again.",
+   "Caps: 1 automatic reply per template send, 2 per number per 24 h, 30 per day overall, 20 owner alerts per day, 1 media reply per 6 h; lead message must be younger than 23 h, template send younger than 7 days for an automatic reply (60 days for the claim).",
+   "No automatic reply once a person has replied (wa.py logs a reply_sent activity for the lead).",
+   "The lead's own words are never echoed back; the brand name is not echoed either; only validated config texts are ever sent.",
+   "Config validation at load (sales_agent.check_reply on every text, banned campaign words, AI/automatic + STOP present, labels <= 25 chars and not a demo trigger or stop phrase). A bad config = claim and hand-off only, nothing sent, DETAILING STATUS says CONFIG PROBLEM.",
+   "A test-send label ('Owner test' / 'Boss test') gets the reply but no hand-off or alert.",
+   "A provider failure never retries; the hand-off already exists and the alert says 'FAILED, reply by hand'.",
+   "Any exception is logged and swallowed; a recognised message stays claimed.",
+   "Python 3.9 compatible; no new table; no .env or config.py change."
+  ],
+  "owner_switch": "Owner only, from his own WhatsApp number, whole-message commands parsed in services/owner_channel.apply_owner_command exactly like DEMO and AGENT (the only place allowed to call agent_service.set_flag): DETAILING TEST (automatic replies only for numbers in DEMO_TEST_NUMBERS), DETAILING ON (every detailing lead), DETAILING OFF (no automatic replies; claim, STOP handling and hand-offs stay), DETAILING STATUS (mode, counts of detailing sends logged / lead messages / automatic replies in 24 h, 'number lookup works on x of the last y sends', PAUSED / credentials / CONFIG PROBLEM notes), DETAILING RUN [template] (shows him the exact lead text on his own phone, any mode). Flag key = NEW agent_flags key 'detailing_mode' (audit trail updated_by = owner:<wamid>). Reused: the agent_flags table and set_flag, the verified-owner chain, the paused flag (STOP ALL / RESUME) as kill switch, DEMO_TEST_NUMBERS for TEST. Deliberately NOT reused: demo_mode (per agent/memory.md it has been ON since 20 Oct, so the detailing reply would go live the moment the code is deployed, and DEMO OFF would also kill campaign-1 demos) and sales_agent_mode (the AI persona). The main session and the agent cannot switch it on: no code path exists besides the owner's message.",
+  "data_changes": [
+   "NO schema change and NO migration: reuses agent_flags (new key detailing_mode, created only by the owner's command), demo_seen (UNIQUE wamid markers with prefixes det:, detsend:, detstop:, detmedia:), agent_activity (new kinds detailing_inbound, detailing_auto_reply, detailing_reply_failed, detailing_blocked, detailing_alert), agent_handoffs + todo_items (via create_handoff, lead_ref detailing:<sha1 of number>), suppression_list (existing suppress path).",
+   "NEW file backend/services/detailing_config.json: {version, templates: {<template name>: {lang, yes_labels[], notnow_labels[], typed_yes, yes_words[], decline_words[], texts: {yes_reply, stop_ack, media_reply}}}}; re-read when the file changes, so text/label updates need no restart; generated from the Meta template spec by a small script so labels cannot drift.",
+   "NO change to .env or config.py (CONFIG_PATH is a module constant like sales_agent.KB_PATH; test mode reuses DEMO_TEST_NUMBERS).",
+   "NO change to agent/tools/wa.py, propose.py, the templates, demo_responder.py, sales_agent.py, sales_kb.json, wa_tracking.py or engagement_sync.py. Delivery/read/failed events for detailing templates are already stored by wa_tracking.",
+   "Operational rule (data the module depends on): every detailing send must pass --lead '<Brand>' (it becomes lead_ref, the hand-off name) and the template name must contain 'detailing'."
+  ]
+ },
+ "change_list": [
+  {
+   "file": "backend/services/detailing_responder.py (NEW)",
+   "change": "The module: load/validate config (mtime cache), recognise (origin by context wamid, origin by number via wamid decode), classify, claim wrapper maybe_handle_lead_message(db, msg, sender, kind, body, trusted) -> bool, hand-off (dedup per number per 24 h), window-only owner alert, markers in demo_seen, caps, status_text, after_owner_message (commands + owner's own tap). Borrows demo_responder helpers _norm, _apos, _is_hard_stop, _only_noise, _typed_text, _send_text, _credentials_ok, _suppress, _suppressed, _mask, _test_numbers, _active_session, IST, is_trigger (the same borrowing sales_agent.py already does). Python 3.9 syntax only. Prototype: C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\claude\\C--Users-Administrator-Desktop-wire-soldering\\dec5451d-390d-44dc-a02c-fbc50c6d4a7c\\scratchpad\\proto\\backend\\services\\detailing_responder.py",
+   "tests": "backend/tests/test_detailing_responder.py"
+  },
+  {
+   "file": "backend/services/detailing_config.json (NEW)",
+   "change": "Per-template labels, vocab and the three lead-facing texts (see texts_needed). Built from agent/state/outreach/detailing_template_v1_spec.json (button texts) + a texts file by agent/pages/build_detailing_config.py so labels equal the spec. Prototype file with the draft texts is in the same proto folder.",
+   "tests": "test_the_shipped_config_is_valid_and_every_text_passes_the_reply_validator, test_a_bad_text_makes_the_config_invalid..., test_a_label_that_would_start_the_demo_or_count_as_stop_invalidates_the_config; plus a spec-vs-config comparison test (skipped while the spec does not exist)"
+  },
+  {
+   "file": "backend/api/inbound.py (EDIT, 4 anchored changes, 6 added lines)",
+   "change": "(1) import detailing_responder on the existing 'from services import ...' line; (2) in the owner branch, after sales_agent.after_owner_message(...) (line 82) add detailing_responder.after_owner_message(db, msg, outcome); (3) button/interactive branch: before the demo hook (line 203) insert 'if detailing_responder.maybe_handle_lead_message(...): return'; (4) typed branch: same guard before line 211. Anchor gotcha: the typed-branch anchor must include the preceding 'keep_unknown_sender=trusted)' line, because the 4-space demo line is a substring of the 8-space one (the sales-agent patch used the same trick).",
+   "tests": "Whole suite incl. test_demo_responder.py and test_sales_agent.py unchanged; new: test_demo_and_agent_on_never_see_a_detailing_lead, test_a_campaign_1_template_tap_still_starts_the_real_estate_demo_with_the_project_name, test_a_stranger_and_a_campaign_1_lead_are_not_claimed_and_nothing_is_written, test_a_stranger_typing_send_the_demo_still_gets_the_demo, test_the_ai_agent_still_answers_a_non_detailing_lead, test_a_reply_to_a_campaign_1_template_by_a_detailing_number_is_not_claimed, test_a_demo_that_is_already_running_is_allowed_to_finish"
+  },
+  {
+   "file": "backend/services/owner_channel.py (EDIT, 2 anchored changes)",
+   "change": "Add _DETAILING_MODE_RE (^\\s*detailing\\s+(on|off|test|status)\\s*[.!]*\\s*$) and _DETAILING_RUN_RE next to _AGENT_RUN_RE (line 121); in apply_owner_command, after the 'agent-run' return (line 171), add the block that calls agent_service.set_flag(db, 'detailing_mode', word, 'owner:' + wamid) and returns 'detailing-<word>' / 'detailing-run'. Update the docstring list of outcomes.",
+   "tests": "test_a_stranger_cannot_switch_it_on_only_the_owner_can, test_owner_switch_must_be_the_whole_message_and_status_changes_nothing, test_the_demo_and_agent_switches_do_not_turn_it_on, plus the existing approval/pause tests in test_agent_api.py unchanged"
+  },
+  {
+   "file": "backend/tests/test_detailing_responder.py (NEW)",
+   "change": "Same style as test_demo_responder.py (sent fixture replaces demo_responder._post, fresh message timestamps because the 23 h rule reads msg.timestamp). Groups: switching and modes; tap yes/not-now/unknown label; typed yes (13 words) and typed non-yes (11 texts); STOP in 8 forms (suppress always, one confirmation); voice notes; reactions/emoji; window, template age, human-replied, caps, provider failure, crash; campaign-1 isolation; config validity; borrowed helper names; owner alert, owner tap, DETAILING RUN/STATUS. Prototype: 92 cases, all pass.",
+   "tests": "self"
+  },
+  {
+   "file": "backend/tests/mutate_detailing.py (NEW)",
+   "change": "Mutation check modelled on mutate_demo.py. Prototype: 27 mutants (claim guards removed, markers removed, STOP ALL/mode/test list ignored, STOP not suppressing, window/age/caps ignored, any-word yes, '?' allowed, unknown label = yes, campaign-1 context claimed, owner test hands off ...), all CAUGHT after one extra test case was added for the '?' rule.",
+   "tests": "python tests\\mutate_detailing.py must print survivors: none"
+  },
+  {
+   "file": "agent/deploy/crm_detailing_patch.py (NEW)",
+   "change": "Exact-string anchored, idempotent patch of api/inbound.py and owner_channel.py, copied from the crm_demo_patch.py / crm_sales_agent_patch.py pattern (marker 'detailing_responder' / '_DETAILING_MODE_RE', ANCHOR MISMATCH exits with nothing changed). Prototype applied cleanly to the current local files and a second run printed 'already patched'.",
+   "tests": "temp-copy dry run twice; altered-anchor negative test; ast.parse(feature_version=(3,9)); full suite on the patched copy"
+  },
+  {
+   "file": "agent/deploy/vps_crm_detailing.sh (NEW)",
+   "change": "Modelled on vps_crm_demo.sh / vps_crm_sales_agent.sh: FILES='api/inbound.py services/owner_channel.py', NEW='services/detailing_responder.py services/detailing_config.json', HAD_NEW logic for re-deploys, backup (DB + files + .env) to /root/backups/sales_crm_detailing_<ts>, patch on a TEMP copy first + py_compile, apply, import check, load_config()['valid'] check, NO migrate step, restart bos-api only, health (agent health ok, POST without ?k -> 403, wrong verify token -> 403, verified empty batch -> 200, journal grep), automatic rollback. Use numeric 'stat -c %u:%g' for chown (a uid without a name printed UNKNOWN in vps_demo_projects_update.sh).",
+   "tests": "VPS_DRY=1 run; real run only after the owner says 'deploy it'"
+  },
+  {
+   "file": "agent/deploy/vps_detailing_config_update.sh (NEW)",
+   "change": "Config-only update with no restart (pattern of vps_demo_projects_update.sh): validate JSON + run the same validator, keep every live template, backup, atomic replace, re-read check, health, rollback copy.",
+   "tests": "run against a bad config (must refuse) and a good one"
+  },
+  {
+   "file": "agent/deploy/vps_detailing_probe.sh (NEW, read-only)",
+   "change": "Prints agent_flags (detailing_mode, demo_mode, sales_agent_mode, paused), whether DEMO_TEST_NUMBERS is set, counts of detailing_* events and open detailing hand-offs, sha256 of api/inbound.py, services/owner_channel.py, demo_responder.py, sales_agent.py (to compare with local), config validity and 'wamid decode works on x of y'. Resolves the conflicting flag notes before go-live.",
+   "tests": "run once before and once after the deploy"
+  },
+  {
+   "file": "agent/pages/build_detailing_config.py (NEW)",
+   "change": "Reads the template spec JSON (buttons, name, language) + a texts file, refuses a spec whose name lacks 'detailing' or whose labels trigger the demo/STOP rules, writes backend/services/detailing_config.json. Same idea as build_demo_config.py.",
+   "tests": "unit test with a fixture spec"
+  },
+  {
+   "file": "agent/docs/CAMPAIGN_PLAYBOOK.md, agent/memory.md (DOCS)",
+   "change": "New section 12i 'Detailing reply path' (what it does, commands, deploy, owner canary, the rule '--lead brand + name contains detailing'), journal line and decision entry, note that engagement_sync does not show detailing leads. Optionally mention the DETAILING commands in agent/fastlane/briefing.md so the lanes know they are consumed by the CRM.",
+   "tests": "n/a"
+  },
+  {
+   "file": "NOT CHANGED (on purpose)",
+   "change": "backend/services/demo_responder.py, sales_agent.py, sales_kb.json, wa_tracking.py, whatsapp_message.py, inbound_service.py, database/*, config.py, jobs/*, agent/tools/wa.py, propose.py, agent/engagement/engagement_sync.py, the campaign-1 templates.",
+   "tests": "the 425 existing tests must stay green"
+  },
+  {
+   "file": "PROTOTYPE EVIDENCE FILES (scratchpad, not in the repo)",
+   "change": "proto\\crm_detailing_patch.py, proto\\mutate_detailing.py, proto\\backend\\tests\\test_detailing_responder.py, proto\\backend\\services\\detailing_config.json, and the probes probe_today.py / probe_today_out.txt (before) and probe_after.py / probe_after_out.txt (after), probe_texts.py (text and label matcher checks) under C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\claude\\C--Users-Administrator-Desktop-wire-soldering\\dec5451d-390d-44dc-a02c-fbc50c6d4a7c\\scratchpad\\",
+   "tests": "python -I probe_after.py (throw-away DB, network blocked)"
+  }
+ ],
+ "test_plan": [
+  "Regression gate (already measured, read-only): cd backend; venv\\Scripts\\python.exe -m pytest tests -q -p no:cacheprovider => 425 passed today. After the change all 425 must still pass (prototype on a patched scratch copy: 507 passed, the 10 agent-tool e2e tests excluded there only because the scratch copy has no agent/ folder).",
+  "New unit/integration tests in backend/tests/test_detailing_responder.py (prototype: 92 cases): off by default and owner-only switching (whole message, stranger ignored, DEMO ON / AGENT ON do not enable it, STOP ALL, test mode list, untrusted request, missing credentials); tap yes/not-now/unknown label/interactive kind; double tap, webhook retry, tap+typed share one reply; typed yes words and 11 non-yes texts incl. 'haan?' 'demo?' 'ok?'; STOP in 8 forms incl. Hindi and Gujarati; suppressed number silent; voice note; reaction/sticker/emoji; message older than 23 h; template older than 7 days / 60 days; person already replied; per-number and global caps; provider failure never retried; crash inside the responder keeps the message claimed and the webhook 200; owner alert only inside his window; owner's own tap and DETAILING RUN in OFF mode.",
+  "Isolation tests that protect campaign 1: a real-estate template tap still starts the demo with the project name; a stranger's 'send the demo' still starts it; the AI still answers a non-detailing number; non-detailing messages write nothing (no demo_seen, no activity); the context id decides when a number holds both template kinds; an already-open demo may finish; a detailing label equal to 'Yes, send the demo' never starts the demo.",
+  "Mutation check: python backend\\tests\\mutate_detailing.py (prototype 27 mutants, all caught, one needed an extra '?' test).",
+  "Replay probe before/after (probe_today.py vs probe_after.py): rows for non-detailing numbers must be identical; rows for a detailing number must show: no DemoSession, no SalesAgentMessage, no LLM call in every flag combination, 1 reply + 1 hand-off only when detailing is ON, STOP/band karo/बंद करो suppressed in every mode.",
+  "Patch tests: run crm_detailing_patch.py twice on a temp copy of the pre-change local inbound.py/owner_channel.py (second run says 'already patched'); change one anchor character and expect ANCHOR MISMATCH with files untouched; ast.parse(feature_version=(3,9)) and py_compile on the server's python3.",
+  "Content lint (unit test + load-time + update script): every lead-facing text passes sales_agent.check_reply, contains AI/automatic and STOP, no banned campaign words (price, free, instant, every, gets, guarantee, 'your ads', Hindi equivalents), <= 400 chars; labels <= 25 chars, not is_trigger, not _is_hard_stop; config labels equal the Meta spec's buttons; template name contains 'detailing'.",
+  "Pin the 15 borrowed private helpers of demo_responder (prototype test) so a rename fails in CI, not in production.",
+  "Failure injection: provider down, config missing or invalid, STOP ALL during a flow, duplicate wamid, two simultaneous workers (SessionLocal x2) acquiring the same marker.",
+  "Human reviews per playbook section 10: 3-lens review (safety, correctness, conversation/language) of the diff and the texts; the OWNER reads the exact lead-facing Hindi text pasted verbatim before 'deploy it'.",
+  "Owner canary on the real BSP (after deploy, before ON): see deploy plan step 7; also read the stored raw tap JSON once (owner_inbox.raw_json, read-only) to confirm button.text and context.id on a live tap (unverified until then)."
+ ],
+ "deploy_plan": [
+  "0. Preconditions: nothing is deployed, sent or created without the owner's explicit 'deploy it'. Write the code locally on branch agent-operator, but FIRST commit the currently untracked deployed sources (backend/services demo_responder, owner_channel, sales_agent, sales_kb.json, wa_tracking, tests, agent/deploy) as a baseline so a diff and a rollback exist (needs his OK for a commit).",
+  "1. Read-only preflight on the VPS: bash agent/deploy/vps_run.sh agent/deploy/vps_detailing_probe.sh -> flag values (detailing_mode unset, demo_mode, sales_agent_mode, paused), DEMO_TEST_NUMBERS set or not, sha256 of live inbound.py / owner_channel.py / demo_responder.py / sales_agent.py vs local. This settles the conflicting notes about the live modes and the 'local = deployed' assumption.",
+  "2. Build and test locally: module, config, tests, patch, scripts; full suite green (>= 425 existing + the new tests), mutation check with no survivor, patch twice on a temp copy, Python 3.9 syntax check, probe replay diff.",
+  "3. Content freeze: the Meta template spec is final (name contains 'detailing', two quick replies, footer with STOP) -> build_detailing_config.py -> detailing_config.json; 3-lens review; paste the exact Hindi texts to the owner verbatim; he says 'deploy it'. Template creation and approval follow their own gate (propose.py wa-create --no-notify, owner replies OK <CODE>, wa.py create --live --approval <CODE>) and are not part of this deploy; deploy the module BEFORE the first template send to a real lead.",
+  "4. Package: tar --force-local -czf agent/state/crm_detailing_pkg.tgz -C backend services/detailing_responder.py services/detailing_config.json",
+  "5. Deploy at a quiet hour (bos-api restarts for about 5 s; Meta retries, markers make retries harmless): bash agent/deploy/vps_run.sh agent/deploy/vps_crm_detailing.sh agent/state/crm_detailing_pkg.tgz agent/deploy/crm_detailing_patch.py. The script backs up (DB, 2 files, .env), tries the patch on a TEMP copy and compiles, applies, import-checks, validates the config, restarts bos-api only, runs the health checks and greps the journal, and rolls back by itself on any failure. The module ships OFF (no flag row).",
+  "6. Post-deploy, read-only: vps_detailing_probe.sh again (flag unset, config valid, importable, zero detailing events); the owner sends DEMO STATUS and AGENT STATUS (answers unchanged) and does one DEMO RUN on his phone to prove campaign 1 still works.",
+  "7. Owner canary: main session sends the approved detailing template to the owner's OWN number through the normal gate (propose.py wa-template --no-notify --lead 'Owner test', OK <CODE>, wa.py send-template --live --approval <CODE>). Owner taps yes -> sees the exact fixed text plus 'Test run finished' even in OFF mode; taps not-now -> nothing; sends DETAILING RUN and DETAILING STATUS. Read owner_inbox.raw_json once (read-only) to confirm the live tap JSON, and check that 'number lookup works on x of y' in STATUS is full. If a second test phone exists, add it to DEMO_TEST_NUMBERS, send DETAILING TEST and try a typed 'haan'.",
+  "8. Go live only by the owner: DETAILING ON from his own WhatsApp, then DETAILING STATUS. First real lead one at a time as the campaign rules say (wait about 60 s and read the delivery event; 3 non-deliveries in a row = cold templates OFF; never retry the same number the same day). After each send compare DETAILING STATUS 'detailing sends logged' with the local agent/state/events.jsonl count (crm_log_activity is best-effort). Review events and hand-offs after day 1.",
+  "9. Text or label changes later: edit the spec/texts -> build_detailing_config.py -> bash agent/deploy/vps_run.sh agent/deploy/vps_detailing_config_update.sh backend/services/detailing_config.json (validated, backed up, no restart), only after the owner approved the exact new text.",
+  "ROLLBACK, fastest first: L0 (seconds, no deploy) owner sends DETAILING OFF (no automatic replies; claim, STOP handling and hand-offs stay) or STOP ALL (everything silent) then RESUME. L1 config: cp -p /root/backups/detailing_config_<ts>.json back (no restart). L2 code: automatic during the deploy; by hand: cd /home/sales.ivinfotech.com/aisales/backend && tar -xzf /root/backups/sales_crm_detailing_<ts>/code_before.tgz && cp -p env.backup .env && rm -f services/detailing_responder.py services/detailing_config.json && systemctl restart bos-api. L3 data: nothing to undo (no schema change; flag row, demo_seen markers and activity rows are harmless; DB backup is in the same folder)."
+ ],
+ "risks": [
+  "Live flag state is unverified and contradictory (demo_mode and sales_agent_mode ON per agent/memory.md line 400 of 27 Oct; 'agent TEST with no test numbers' in the 29 Oct journal; CONTEXT.md says demo OFF). The design does not depend on either (claim isolation, probe_after.py), but read both once before go-live (vps_detailing_probe.sh, or the owner sends DEMO STATUS / AGENT STATUS).",
+  "The JSON of a live quick-reply tap from waba.fortius.in.net has never been captured in the repo (campaign 1 had 0 lead taps; the owner's earlier tap only proved a label reaches the owner path). Code and tests assume Meta's documented shape (type=button, button.text/payload = label, context.id = template wamid; agent/docs/research_raw_2026-10-14.json). If the shape differs the fail-safe is hand-off only (unknown label) or unclaimed = today's behaviour; the owner canary plus a read of owner_inbox.raw_json settles it.",
+  "Label drift: the config labels must equal the approved button text exactly, else a real yes becomes 'other' (hand-off, no instant reply) while everyone believes the auto reply works. Mitigated by building the config from the spec, a spec-vs-config test and DETAILING RUN / the owner canary.",
+  "Pre-existing STOP gap that also affects campaign 1 and is NOT fixed here: for a sender who is not a CRM lead, record_inbound uses only the English opt-out list, so 'band karo', 'बंद करो', 'nahi chahiye' and a tapped 'No, thanks' (comma) are not suppressed unless the AI agent is ON (probe). The new module closes it only for detailing numbers. Needs an owner decision for a separate, small fix to the shared classifier (it would touch campaign 1 behaviour, so it was left alone).",
+  "Delivery risk dominates everything: a cold MARKETING template reached only 2 of 7 numbers in campaign 1 (Meta 131049). If the template is not delivered nobody can tap; this module changes nothing about that. Keep one lead at a time and the 3-non-deliveries rule; delivery events are already stored by wa_tracking.",
+  "Local source vs server: demo_responder, owner_channel, sales_agent, tests are untracked in git and inbound.py is modified-uncommitted, so the server copy may differ (unverified). The anchored patch fails loudly and changes nothing, and the temp-copy trial runs first; do the hash preflight and commit a baseline.",
+  "Owner awareness under OWNER-QUIET: the WhatsApp alert goes out only inside his own 24 h window; otherwise the signals are the CRM to-do card and the operator lane (new feed row) and for_owner.md. The human reply has a hard 24 h deadline and needs an OK code (wa.py:548-556 autonomy stage 1). An email leg through services.outreach.email_service.send_internal_email needs RESEND_API_KEY on the VPS CRM (unverified) and is not in v1; the UTILITY template fallback costs credit and is deliberately not used.",
+  "Voice notes (likely from studio owners) cannot be listened to with current tools: the CRM stores only '[voice note]' and no media download exists. The optional media_reply asks them to type; whether the BSP console lets a person play it is unverified.",
+  "Typed-yes false positives (an 'ok' that is not a yes): the text is harmless, and the module limits it (whole message, <= 4 words, no '?', one reply per template send, no reply after a person answered, 7-day template age). A studio that answers from a DIFFERENT number is an unknown sender again (today's behaviour) because only the original chat carries the context id and the wamid number.",
+  "Console blind spot: engagement_sync.py builds cards only for leads with a /campaign/<slug> page and an entry in demo_projects.json, so detailing taps and replies never reach the console cards or Replies KPI. v1 relies on the hand-off card, the owner note and crm.py inbound; a console feed for detailing is a follow-up. Also run crm.py inbound --phone before any second template touch: a 'not now' tap does not stop wa.py's duplicate guard or the 2-touch rule.",
+  "wa.py logs payload.project = the 2nd body parameter. With {{2}} = the observation sentence, code that treats project as identity (sales_agent._label/lead_context, engagement_sync matching) shows the sentence instead of the studio (seen in the probe alert title). The new module uses lead_ref, so EVERY detailing send must pass --lead '<Brand>'; without it the hand-off shows 'unnamed'.",
+  "crm_log_activity is best-effort (wa.py:654-663): if the CRM was unreachable at send time the template_sent row is missing and the tap is not recognised (falls back to today's behaviour). DETAILING STATUS prints 'detailing sends logged in 24 h' so it can be compared with agent/state/events.jsonl.",
+  "Plain import in inbound.py: a syntax or import error in the new module stops bos-api. The deploy script's py_compile on a temp copy, import check, config check and automatic rollback are the guard; the file is Python 3.9 clean (ast feature_version check).",
+  "The lead-facing Hindi is a brand and compliance surface and my drafts are unreviewed: the owner must read them; validation catches money, time promises, 'free', numbers, links but not tone or grammar.",
+  "Gate 1 integrity: company-number automatic and human replies are a separate channel from the owner's 46 personal 1:1 sends; the detailing_* events allow separate counting, but whether a human reply to a lead who answered counts in the pre-registered Gate 1 is unverified and should be confirmed by the owner. No cold sends 6-15 Nov (Diwali about 8 Nov).",
+  "Deploy restarts the webhook for about 5 s; Meta retries and the wamid markers make a retry harmless, but avoid lead-activity hours. Owner running DEMO RUN (30-minute owner session) while testing a detailing tap: the open owner demo session consumes his button taps first (demo_responder.py:859); finish or DEMO STOP first.",
+  "Overlap edge: a number holding both a real-estate and a detailing template: taps follow the context id; typed text follows the detailing record. Accepted (practically impossible) and pinned by tests."
+ ],
+ "alternatives_considered": [
+  {
+   "option": "A1. Extend demo_responder.py (add 'detailing' as another project type or flow)",
+   "verdict": "REJECT, but reuse its helpers by import",
+   "why": "demo_responder.py is an 866-line real-estate state machine (budget / BHK / visit slot) pinned by about 100 tests, and its mode flag demo_mode is shared with campaign 1 and, per agent/memory.md, already ON: a detailing reply hung on it would go live the moment the code is deployed, and DEMO OFF/TEST (the only brake) would also switch off campaign-1 demos. Its entry point returns early unless the phrase 'send the demo' or an open session exists (demo_responder.py:705-706), so a plain yes tap needs new branches in the most sensitive function of the live webhook, and the playbook (section 10) requires a full 3-lens re-review for anything that changes what a lead can receive. It also cannot stop the AI persona from answering detailing leads. The separate module borrows its send/suppress/mask/hand-off helpers exactly as sales_agent.py already does (sales_agent.py:60, 173, 349, 356, 590, 802)."
+  },
+  {
+   "option": "A2. New small module detailing_responder.py + config + 3 hook lines + one owner command (this design)",
+   "verdict": "RECOMMENDED",
+   "why": "Smallest change that meets every constraint: claim isolation makes the real-estate demo and the AI persona unreachable for detailing leads in every flag combination, campaign-1 messages return False after read-only lookups, its own flag keeps it OFF until the owner switches it, no schema change, easy rollback (DETAILING OFF / STOP ALL / restore 2 files). A prototype already passes 92 new tests, 27 of 27 mutants and the whole backend suite (507 on a patched scratch copy) and its before/after probe shows the intended behaviour."
+  },
+  {
+   "option": "A3. Human-only with drafts (no code; what happens today)",
+   "verdict": "KEEP as the interim fallback and as the permanent path for every free-text message, but NOT sufficient alone",
+   "why": "Today a tap lands as a feed row, heartbeat_check wakes the operator lane (heartbeat_check.py:117-123), the closer drafts, the owner replies OK <CODE> and the desktop operator runs wa.py reply (stage 1 needs a code, wa.py:548-556). That is safe but takes minutes to hours and a lead who followed the video's CTA ('write haan') gets silence. It also leaves the leak open: with the AI agent ON a detailing lead gets the real-estate persona, and typing 'send demo' starts the real-estate demo (probe). So at minimum the claim hook is needed; the instant text is the cheap part on top."
+  },
+  {
+   "option": "A4. Let the AI sales agent answer with a new detailing knowledge base",
+   "verdict": "REJECT for v1 (revisit after Gate 1 if replies justify it)",
+   "why": "sales_agent.py loads exactly one KB file (KB_PATH, sales_agent.py:96, 216-230) and hard-codes a real-estate persona in SYSTEM_PROMPT (627-648) and tools that promise a free personalised demo (631, 471-475), which contradicts the detailing rules (no free, no price, no guarantee). Swapping the KB would change what campaign-1 leads receive; choosing KB, prompt and tools per template means rewriting a 1,475-line module and its 100+ tests, writing and getting owner approval for a new KB (12 of the 55 current entries are still pending_owner), OpenAI cost and hallucination risk, and free-text replies to cold small-business owners about price and offer are exactly what the first-client rules keep with a human."
+  },
+  {
+   "option": "A5. Meta/BSP-side automation (welcome message, ice breakers, away message on the WhatsApp number)",
+   "verdict": "REJECT (unverified that the BSP exposes it)",
+   "why": "It applies to the whole WABA number, so campaign 1 would be affected, it cannot tell which template was tapped, cannot hand off or suppress, and nothing in the repo shows waba.fortius.in.net supports it."
+  },
+  {
+   "option": "A6. Answer the yes tap with an interactive mini-flow (buttons and questions like the demo)",
+   "verdict": "REJECT for v1",
+   "why": "More branches, session state, caps and copy to approve; the detailing offer has nothing to qualify yet (price and sample are the owner's decision), and it would recreate the real-estate demo's complexity inside a first-client test. One fixed acknowledgement plus a human is the smallest safe step; buttons in the reply can be added later as a config entry once the owner knows what to ask."
+  }
+ ]
+}

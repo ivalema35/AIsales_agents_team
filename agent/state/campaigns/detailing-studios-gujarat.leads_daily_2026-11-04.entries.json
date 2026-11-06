@@ -1,0 +1,332 @@
+[
+ {
+  "type": "lead",
+  "key": "detailing-detailing-culture",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Detailing Culture",
+   "city": "Ahmedabad (Bodakdev)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Slot c (the Google listing shows no website button), verified 2026-11-04. Number = the wa.me / phone on the studio's own site (the Maps listing has no phone). Small, new studio (9 reviews).",
+   "contacts": [
+    {
+     "kind": "whatsapp",
+     "value": "+91 91063 26281",
+     "source": "https://detailingculture.in/contact",
+     "note": "wa.me link and phone on the studio's own site; Indian mobile, likely WhatsApp-capable; who answers (owner vs front desk/team) unknown"
+    },
+    {
+     "kind": "phone",
+     "value": "+91 91063 26281",
+     "source": "https://detailingculture.in/",
+     "note": "same number as above"
+    },
+    {
+     "kind": "phone",
+     "value": "9825033072",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "published by Garware (third party) for this studio, not by the studio itself; different number from the site; unknown whose it is"
+    },
+    {
+     "kind": "email",
+     "value": "detailingculture@gmail.com",
+     "source": "https://detailingculture.in/contact",
+     "note": "published on own contact page; not a way in for this campaign (WhatsApp is the channel)"
+    },
+    {
+     "kind": "website",
+     "value": "https://detailingculture.in",
+     "source": "https://detailingculture.in/",
+     "note": "own site, live"
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/detailing_culture1/",
+     "source": "https://www.instagram.com/detailing_culture1/",
+     "note": "business profile"
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/p/Detailing-Culture-61592006451171/",
+     "source": "https://detailingculture.in/",
+     "note": "linked from own site"
+    },
+    {
+     "kind": "maps",
+     "value": "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "resolves to a Google Maps place 'DETAILING CULTURE'; phone and website button on the listing could not be read"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps listing DETAILING CULTURE (Bodakdev): 5.0 stars, 9 reviews; the listing shows \"Add website\" and \"Add place's phone number\", i.e. no website button and no phone on Google (read 2026-11-04). The studio's own site detailingculture.in has a booking form and a wa.me link.",
+    "Own site /gallery/photos says no project photos have been added yet [https://detailingculture.in/gallery/photos, 2026-11-04 (date opened; page shows no date)]",
+    "Own site /gallery/videos says no project videos have been added yet [https://detailingculture.in/gallery/videos, 2026-11-04 (date opened; page shows no date)]",
+    "Site has a working-looking booking form (name, phone, vehicle, category, service, date, time) but no prices and no packages by car size; only Marine PPF has two tiers [https://detailingculture.in/booking, 2026-11-04]",
+    "No testimonials or Google-review block on the home page [https://detailingculture.in/, 2026-11-04]",
+    "Garware lists the studio as a Garware Application Studio at the same address [https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad, 2026-11-04]",
+    "Instagram profile has 426 followers and about 12 visible posts [https://www.instagram.com/detailing_culture1/, 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C: real studio, but owner reach unproven and no direct sign of lost enquiries.",
+   "verification": "Maps listing read 2026-11-04 (no website, no phone on the listing); own-site contact read the same day."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-auto-clinic",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Auto Clinic",
+   "city": "Ahmedabad (Iscon / Bellagio Road)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Slot a-instagram: the Google listing website button opens the studio Instagram profile (seen 2026-11-04). Owner replies to reviews, so do not use the review slot.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95864 61141",
+     "source": "Google Maps listing \"Auto Clinic\" (read 2026-11-04)",
+     "note": "The listing's own Maps number; WhatsApp not confirmed; unknown whether owner or front desk."
+    },
+    {
+     "kind": "phone",
+     "value": "9909956565",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "Published by/for the business on the Llumar dealer row and repeated on localeye.in directory. Indian mobile: likely WhatsApp-capable, NOT confirmed. NOT seen on the Google Maps listing (Maps not reachable from here), so 'phone published on "
+    },
+    {
+     "kind": "phone",
+     "value": "9909956565",
+     "source": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing",
+     "note": "Second independent directory source for the same number."
+    },
+    {
+     "kind": "email",
+     "value": "v*********050@gmail.com",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "Personal-style Gmail on a supplier locator; NOT a sales route, email does not count for this campaign."
+    },
+    {
+     "kind": "instagram",
+     "value": "@autoclinic_ahmedabad",
+     "source": "https://www.instagram.com/autoclinic_ahmedabad/",
+     "note": "Business page; no phone or link in bio. Do not DM (cold)."
+    },
+    {
+     "kind": "website",
+     "value": "none found",
+     "source": "https://www.grasi.in/locate-llumar-dealer",
+     "note": "No website on locator row, localeye, or Instagram bio; no site surfaced in searches."
+    }
+   ],
+   "observed_facts": [
+    "Google Maps listing \"Auto Clinic\" (Bellagio Road, Ahmedabad): 4.6 stars, 444 reviews; the website button opens https://www.instagram.com/autoclinic_ahmedabad/ (no real site); the owner replies to reviews (seen 2026-11-04).",
+    "Llumar India dealer locator lists Auto Clinic, Ahmedabad, with phone and Instagram handle and no website field. [https://www.grasi.in/locate-llumar-dealer, page footer 2025; checked 2026-11-04]",
+    "Same phone number appears in an independent directory entry (localeye) with no website. [https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing, checked 2026-11-04]",
+    "Instagram page AUTOCLINIC states since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4.5k followers; bio has no website link. [https://www.instagram.com/autoclinic_ahmedabad/, checked 2026-11-04]",
+    "Two different street descriptions for the studio (Bellagio Road near Iscon Flyover, beside Maruti 360, 380053 vs Ambli Road, beside Rajwadi Tea Stall, 380058) - same Iscon area, can be the same place described differently, but unreconciled. [https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing, checked 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C before the Maps check; owner reach still unproven (the Maps number differs from the Llumar-locator number).",
+   "verification": "Maps listing read 2026-11-04 (rating, website button, phone, owner replies). Identity: Llumar dealer locator + Instagram + Maps."
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-mk29-detailing",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "MK29 Detailing",
+   "city": "Ahmedabad (Chharodi)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Live site + enquiry form; Maps listing not checked yet. No slot verified.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 84870 11029",
+     "source": "https://www.mk29detailing.com/contact",
+     "note": "Labelled 'Hotline' on the contact page; also in Instagram post images. Likely WhatsApp-capable (Indian mobile), NOT confirmed. Not confirmed to be the number on the Google Maps listing and not confirmed to reach the owner."
+    },
+    {
+     "kind": "email",
+     "value": "info.mk29detailing@gmail.com",
+     "source": "https://www.mk29detailing.com/contact",
+     "note": "Decoded by the fetch tool from the Cloudflare-obfuscated address; shared inbox, email does not count as a way in"
+    },
+    {
+     "kind": "website",
+     "value": "https://www.mk29detailing.com/",
+     "source": "https://www.mk29detailing.com/",
+     "note": "Live own site with enquiry form"
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/mk29detailing/",
+     "source": "https://www.mk29detailing.com/contact",
+     "note": "Business account"
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/profile.php?id=61587725211936",
+     "source": "https://www.mk29detailing.com/contact",
+     "note": "Business page"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps panel did not load in the browser on 2026-11-04 (spinner); website button and reviews NOT checked.",
+    "Own website is live with a 'Book Your Services Now' enquiry form (name, phone, email, vehicle model, message); no WhatsApp button or link anywhere in the text of home, contact or services pages [https://www.mk29detailing.com/contact, 2026-11-04]",
+    "Services page shows no prices and no packages by car size, and no reviews or testimonials widget [https://www.mk29detailing.com/services, 2026-11-04]",
+    "Instagram account has 107 followers; latest visible dated post 2026-10-10; phone number shown in post images [https://www.instagram.com/mk29detailing/, 2026-10-10]",
+    "Only one address (Chharodi, Ahmedabad) is published; no branch or franchise mention [https://www.mk29detailing.com/contact, 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C: real studio, but owner reach unproven and no direct sign of lost enquiries.",
+   "verification": "unverified (web + directory research, Maps not checked)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-dignity-cares",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Dignity Cares",
+   "city": "Ahmedabad (Ghodasar)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Domain parked / ownership unconfirmed. No slot verified.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "9925784929",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "Published by the manufacturer (Garware) in its applicator register, not confirmed as the number on the studio's own Google Maps listing; unknown whether it reaches the owner or a front desk"
+    },
+    {
+     "kind": "maps",
+     "value": "Google Maps place 'Empire Heights', Ghodasar",
+     "source": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+     "note": "Resolves to the building, not clearly to a business profile; the studio's own Maps profile (phone, website button, reviews) was not reachable"
+    },
+    {
+     "kind": "maps",
+     "value": "Justdial listing Dignity Cares, Ghodasar",
+     "source": "https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services",
+     "note": "Page blocked (403); only seen via search snippet; no contact read from it"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps search \"Dignity Cares Garware Ghodasar Ahmedabad\" returned only a partial match for the area, no listing of this studio (read 2026-11-04). Ownership and listing unconfirmed.",
+    "Garware lists Dignity Care as a Garware Application Studio in Ghodasar with phone 9925784929 and no website [https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad, checked 2026-11-04 (page undated)]",
+    "Justdial lists Dignity Cares at Empire Heights, Ghodasar for car wash, detailing, wrapping and teflon coating, 4.2 stars from 4 reviews; no website in the snippet [https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services, checked 2026-11-04 via search snippet]",
+    "dignitycare.in resolves to a Hostinger parked-domain page with no owner named [https://dignitycare.in, 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C: real studio, but owner reach unproven and no direct sign of lost enquiries.",
+   "verification": "unverified (web + directory research, Maps not checked)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "detailing-detailing-spot",
+  "tags": [
+   "detailing",
+   "daily-2026-11-04"
+  ],
+  "data": {
+   "name": "Detailing Spot",
+   "city": "Vadodara (Nizampura)",
+   "product": "Booking + proof page, Google profile clean-up and monthly upkeep, WhatsApp booking set-up",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "campaign_key": "detailing-studios-gujarat-2026-10",
+   "grade": "C",
+   "status": "researched",
+   "contacted": false,
+   "researched": "2026-11-04 (daily lead run + Maps check for Auto Clinic)",
+   "language": "EN",
+   "language_note": "English in Ahmedabad; Gujarati or Hindi if the owner replies in it.",
+   "best_channel": "Template iv_detailing_video_hi_v1 only after a verified slot and the owner's OK code; otherwise the owner's own 1:1.",
+   "best_angle": "Directory-only contacts; second-wave city. No slot verified.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95877 11010",
+     "source": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+     "note": "Indian mobile, likely WhatsApp-capable (not confirmed). Same number in the Wheree snippet. Published by directories, NOT confirmed as published by the business itself, and not confirmed to reach the owner. Magicpin listing is unclaimed."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "magicpin 'Enquire now' WhatsApp link points to a different number",
+     "source": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+     "note": "Do not use"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps panel did not load in the browser on 2026-11-04 (spinner); website button and reviews NOT checked.",
+    "Magicpin lists the shop at Shop no. 2-3, Sanwaliya Enclave, Chhani Jakat Naka Circle, Chistiya Nagar, Vadodara 390024, 4.7 rating from 63 ratings, phone +91 95877 11010 [https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489, undated (fetched 2026-11-04)]",
+    "The Magicpin listing shows no website and no business Instagram, and has an unclaimed 'Claim listing' link [https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489, 2026-11-04]",
+    "Wheree (search snippet only) lists same address and phone, hours 07:00-11:00, PPF, ceramic and graphene coating; reviews summarised as positive [https://detailing-spot-car-detailing.wheree.com/, undated]",
+    "No official website found by three web searches [web search 2026-11-04, 2026-11-04]"
+   ],
+   "hypotheses": [
+    "Need is inferred, not observed."
+   ],
+   "case_against": "Skeptic graded C: real studio, but owner reach unproven and no direct sign of lost enquiries.",
+   "verification": "unverified (web + directory research, Maps not checked)"
+  }
+ }
+]

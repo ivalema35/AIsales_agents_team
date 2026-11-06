@@ -1,0 +1,42 @@
+APPROVAL NEEDED [KSDWM]
+EMAIL
+To: hardikv682@gmail.com
+Lead label (typed by the agent, not checked): Owner test: Great Spaces
+Subject: [Test] Great Spaces Aaroham: automatic WhatsApp replies
+Agent's reason (typed by the agent, not checked): owner test of the email reply path: he replies to this mail and we check that the poller records it
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/great-spaces-aaroham-bdjo4z/email_banner.jpg
+  https://www.ivinfotech.com/campaign/great-spaces-aaroham-bdjo4z
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Great%20Spaces%20Aaroham
+  https://www.ivinfotech.com/assets/campaign/great-spaces-aaroham-bdjo4z/logo.png
+--- text ---
+[theme: luxury]
+
+THIS IS A TEST COPY of the email that went to Great Spaces today, sent only to the owner's own address. Please press Reply and write a line so we can test the reply path.
+
+Hello Great Spaces team,
+
+We are IV Infotech, Mehsana. We build automatic WhatsApp replies for real-estate teams. We saw the Great Spaces Aaroham ads for the new villa community in Bhayli, which invite buyers to enquire and tap Book Now.
+
+We made a video of under 40 seconds for Great Spaces Aaroham. It shows how a buyer who messages you on WhatsApp can get an automatic reply in about a minute, with the brochure, three quick questions and a site-visit slot.
+
+[image] https://www.ivinfotech.com/assets/campaign/great-spaces-aaroham-bdjo4z/email_banner.jpg | https://www.ivinfotech.com/campaign/great-spaces-aaroham-bdjo4z | Great Spaces Aaroham - watch the video
+
+[button] Watch the video (under 40 seconds) | https://www.ivinfotech.com/campaign/great-spaces-aaroham-bdjo4z
+
+Later today we will also send this same note on WhatsApp, to the number published for Great Spaces, so open whichever is easier. If you would rather not get it, reply "stop" to this email and we will not send it.
+
+Want to see it answer on WhatsApp? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for Great Spaces Aaroham from our own number. Nothing is connected to your number.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Great%20Spaces%20Aaroham
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK KSDWM to approve, NO KSDWM to skip.
+Valid till 20 Oct 03:19 IST.

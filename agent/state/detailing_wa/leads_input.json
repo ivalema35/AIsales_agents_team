@@ -1,0 +1,131 @@
+{
+ "messages": [
+  {
+   "key": "detailing-krishna-auto-coating",
+   "brand_short": "Krishna Auto Coating",
+   "full_name": "Krishna Auto Coating",
+   "city": "Mehsana",
+   "grade": "B",
+   "pack_language": "GU",
+   "slot_code": "c",
+   "slot_en_literal": "your Google listing has no website button",
+   "evidence": "Listing exists in Mehsana (Nagalpur, Highway), phone matches, not closed (Maps data via Apify place-ID scrape 28 Oct 2026; WebFetch of Maps returns an empty page). No website; WhatsApp booking link present; 4.8 stars, 231 reviews. Newest 3 reviews: 24 Oct answered, 22 Oct and 12 Oct not, so 'last 3 have no reply' would be false. Ad 1161029812924965 confirmed: page krishna_auto_coating (1,533 likes), started 28 Oct, Call now, copy 'Slot book 9327366780' = the Maps number. Sister listing: Krishna Xtreme.",
+   "verification": "verified",
+   "priority_note": "Live Meta ad seen (Call now, started 28 Oct); same brand as Krishna Xtreme: message ONE number once."
+  },
+  {
+   "key": "detailing-detailing-xpert-gandhinagar",
+   "brand_short": "Detailing Xpert",
+   "full_name": "Detailing Xpert - Gandhinagar",
+   "city": "Gandhinagar",
+   "grade": "B",
+   "pack_language": "GU",
+   "slot_code": "b",
+   "slot_en_literal": "your newest Google reviews have no reply from the owner (4 unanswered)",
+   "evidence": "Listing exists (Sargasan, Gandhinagar), phone matches, no website, 4.9 stars, 42 reviews, newest review 13 Aug 2026; newest 4 reviews unanswered (first reply is on the 5th). Two click-to-WhatsApp ads confirmed on page Detailing Xpert Gandhinagar (143 likes): 4719268468302036 (started 27 Oct, Gujarati Diwali copy) and 1148404271495151 (started 26 Oct, general ceramic-coating copy, not Diwali; shows end date 27 Oct though flagged active). The name is generic: other listings in Ahmedabad (Thaltej), Gandhidham, Jaipur, Delhi; no brand site found, so no chain proof, but owner-run is unconfirmed.",
+   "verification": "verified",
+   "priority_note": "Two live click-to-WhatsApp ads seen (26-28 Oct); do not mention the ads."
+  },
+  {
+   "key": "detailing-the-walker-s-detailing-studio",
+   "brand_short": "The Walker's Detailing Studio",
+   "full_name": "The Walker's Detailing Studio",
+   "city": "Ahmedabad",
+   "grade": "B",
+   "pack_language": "en",
+   "slot_code": "a-signin",
+   "slot_en_literal": "the website button on your Google listing opens a Google sign-in page, not a website",
+   "evidence": "Listing exists (Nava Naroda/Nikol, Ahmedabad), phone matches, 4.9 stars, 152 reviews. The Maps website link (sites.google.com/view/thewalkersdetailingstudio/home) returns a 302 to accounts.google.com sign-in for a logged-out visitor (curl and WebFetch, 28 Oct 2026): problem confirmed. Owner replied to all 5 newest reviews, so the reviews slot is false. NEW: an active click-to-WhatsApp ad 1603165798491463 (page TheWalkersDetailingStudioNikol, 19 likes, started 7 Oct) carries the Maps phone and a price list, so it spends now; do not mention ads or prices.",
+   "verification": "verified",
+   "priority_note": "Meta ad seen; do not mention it or the prices in it."
+  },
+  {
+   "key": "detailing-dnx-car-detailing-studio",
+   "brand_short": "DNX Car Detailing Studio",
+   "full_name": "DNX Car Detailing Studio",
+   "city": "Ahmedabad",
+   "grade": "B",
+   "pack_language": "en",
+   "slot_code": "d",
+   "slot_en_literal": "your site has a Book Now button but no booking form",
+   "evidence": "Listing exists (Nikol, Ahmedabad), phone matches, 4.9 stars, 45 reviews. dnxdetailing.in loads with call, WhatsApp and email links; the 'Book Now' menu item scrolls to a contact section and the HTML has no form; no analytics or ad-pixel tags in the served HTML (script-injected tags would not show). Owner replied to all 5 newest within hours in templated wording (my inference: tool-generated, so skip the reviews slot). NEW: ad status is known: 2 active click-to-WhatsApp ads (2305410660226804 started 21 Oct; 1109601145333091 started 27 Oct; page 21 likes; Maps phone in copy).",
+   "verification": "verified",
+   "priority_note": "Meta ad seen (page private in the Ad Library)."
+  },
+  {
+   "key": "detailing-motors-inn-car-detailing-studio",
+   "brand_short": "Motors Inn",
+   "full_name": "Motors Inn - Car Detailing Studio",
+   "city": "Ahmedabad",
+   "grade": "B",
+   "pack_language": "en",
+   "slot_code": "b",
+   "slot_en_literal": "your newest Google reviews have no reply from the owner (5 unanswered)",
+   "evidence": "Listing exists (Nikol, Ahmedabad), phone matches, 5.0 stars, 30 reviews, newest 22 Oct; newest 5 unanswered. motorsinn.in loads; it has a booking form whose script appears to build a pre-filled WhatsApp message or email draft (inferred from page code; no server endpoint found); no tel: link; no analytics tags. NEW: it pays for promotion: ad 3005976076418366 from a 45k-like food page (started 27 Oct) carries Motors Inn's phone and Nikol address; a PPF ad 2104098513561267 from page 'Motors Inn' (38 likes, started 6 Oct) is a name-only match.",
+   "verification": "verified",
+   "priority_note": "Meta ad seen."
+  },
+  {
+   "key": "detailing-dwarkesh-car-detailing-studio",
+   "brand_short": "Dwarkesh Car Detailing Studio",
+   "full_name": "Dwarkesh Car Detailing Studio",
+   "city": "Ahmedabad",
+   "grade": "C",
+   "pack_language": "en",
+   "slot_code": "c",
+   "slot_en_literal": "your Google listing has no website button",
+   "evidence": "Listing exists (Nikol, Ahmedabad), phone matches, no website, 5.0 stars, 131 reviews, newest 24 Oct 2026. Of the newest 3 only the 23 Oct one is answered (1 of 3); 4 of the newest 5 are unanswered. No active ad found for the exact name.",
+   "verification": "verified",
+   "priority_note": "No active ad found (exact-name search)."
+  },
+  {
+   "key": "detailing-rrr-detailing",
+   "brand_short": "RRR Detailing",
+   "full_name": "RRR Detailing",
+   "city": "Gandhinagar",
+   "grade": "C",
+   "pack_language": "GU",
+   "slot_code": "a-instagram",
+   "slot_en_literal": "the website button on your Google listing opens an Instagram profile, not a website",
+   "evidence": "Listing exists (Sargasan, Gandhinagar), phone matches. Maps website is instagram.com/rrr__detailing, a public profile (1,704 followers); the logged-out bio shows services and a Maps link only, no WhatsApp or site link. 4.9 stars, 101 reviews, newest 10 Oct 2026; owner replied to 2 of the newest 3 (4 of 5). No active ad found.",
+   "verification": "verified",
+   "priority_note": "No active ad found; owner answers most reviews, so do not use slot b."
+  },
+  {
+   "key": "detailing-carx-care-the-detailing-studio-and-service-station",
+   "brand_short": "Carx Care",
+   "full_name": "Carx Care The Detailing Studio and Service Station (Raysan)",
+   "city": "Gandhinagar",
+   "grade": "C",
+   "pack_language": "GU",
+   "slot_code": "b",
+   "slot_en_literal": "your newest Google reviews have no reply from the owner (5 unanswered)",
+   "evidence": "Listing exists (Raysan, Gandhinagar), phone matches, no website, 4.8 stars, 105 reviews, newest 12 Sep 2026; newest 5 reviews unanswered. No active ad found. A partial India-wide Maps name search found only this Gujarat outlet plus an unrelated 4-review 'Carx care' in Varanasi: no chain evidence, but not exhaustive.",
+   "verification": "verified",
+   "priority_note": "No active ad found; possible multi-outlet brand (not confirmed)."
+  },
+  {
+   "key": "detailing-arihant-car-detailing-studio",
+   "brand_short": "Arihant Car Detailing Studio",
+   "full_name": "Arihant Car Detailing Studio",
+   "city": "Mehsana",
+   "grade": "C",
+   "pack_language": "GU",
+   "slot_code": "c",
+   "slot_en_literal": "your Google listing has no website button",
+   "evidence": "Listing exists (Highway Road, Mehsana), phone matches, Maps category 'Car accessories store', no website, 5.0 stars, 140 reviews, not marked closed. Newest 5 reviews all unanswered. But the newest review is 11 May 2026 and the one before it is 13 Aug 2025: only 1 review in the last 12 months, so it may be dormant; trading is unconfirmed. No active ad found for the exact name.",
+   "verification": "partly",
+   "priority_note": "LOWEST priority: only 1 review in the last 12 months, trading unconfirmed."
+  }
+ ],
+ "excluded": [
+  {
+   "name": "Krishna Xtreme Car Detailing Studio, Mehsana",
+   "why": "same brand as Krishna Auto Coating: one message to ONE number"
+  },
+  {
+   "name": "Exotic Car Detailing Studio",
+   "why": "multi-outlet brand, held back"
+  }
+ ]
+}

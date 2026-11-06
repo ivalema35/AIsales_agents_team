@@ -1,0 +1,85 @@
+{
+  "_comment": "Wave 1 landing pages (English). slug = public unlisted address: https://www.ivinfotech.com/campaign/<slug> (same route as the pilot page; built by build_site_pages.py and deployed with agent/deploy/vps_site_pages.sh). build_pages.py alone makes the standalone copy (console /p/<slug>, not used for hosting). Edit the texts here, then rebuild. The flags are OWNER DECISIONS, change them here only.",
+  "wa_number": "15559597730",
+  "email": "info@ivinfotech.com",
+  "demo_free": true,
+  "demo_what": "WhatsApp opens with a ready message. Press Send, and we reply with a short sample of this chat for {PROJECT}, from our own number. Nothing is connected to your number or your ads. We keep your number and message only to send the demo. A call happens only if you ask for one.",
+  "leads": [
+    {
+      "key": "pride",
+      "slug": "pride-aura-e6ph9g",
+      "brand": "Pride Group",
+      "project": "Pride Aura",
+      "city": "Rajkot",
+      "tone": "volume",
+      "bhk1": "3 BHK",
+      "bhk2": "4 BHK",
+      "hook": "Many of the Pride Aura ads we saw have a Send WhatsApp message button. Here is how each message can get an automatic reply in about a minute.",
+      "email_greeting": "Hello Pride Aura team,",
+      "email_source": "We found this address in the public records for Pride Aura. This is a sales note from a software company, not about any filing or registration.",
+      "email_opening": "We are IV Infotech, Mehsana. We found this address in the public records for Pride Aura. This is a sales note from a software company, not about any filing or registration.\n\nWe saw ads for Pride Aura, so we made a short video and a page for it.",
+      "video": "renders/pride_aura_en_v3.mp4"
+    },
+    {
+      "key": "brij",
+      "slug": "brij-sandalwood-5mbzd3",
+      "brand": "Brij Group",
+      "project": "BRIJ Sandalwood",
+      "city": "Gandhinagar",
+      "tone": "corporate",
+      "bhk1": "3 BHK",
+      "bhk2": "4 BHK",
+      "hook": "Your Sandalwood ads open a WhatsApp chat. Here is how that chat can answer first, every time, even at night.",
+      "video": "renders/brij_sandalwood_en_v3.mp4"
+    },
+    {
+      "key": "nb",
+      "slug": "nb-legacy-tower-x4vyv9",
+      "brand": "NB Developer",
+      "project": "NB Legacy Tower",
+      "city": "Ahmedabad",
+      "tone": "luxury",
+      "bhk1": "4 BHK",
+      "bhk2": "5 BHK",
+      "hook": "A premium address deserves a prompt first reply. Here is how every NB Legacy Tower enquiry can get one, with your team able to join the chat.",
+      "video": "renders/nb_legacy_tower_en_v3.mp4",
+      "budget": [
+        "Up to 4.5 crore",
+        "4.5 to 6 crore",
+        "Above 6 crore"
+      ]
+    },
+    {
+      "key": "elenza",
+      "slug": "elenza-gardens-vyqa09",
+      "brand": "Elenza Group",
+      "project": "Elenza Gardens",
+      "city": "Ahmedabad",
+      "tone": "launch",
+      "bhk1": "2 BHK",
+      "bhk2": "Shop",
+      "hook": "Your Elenza Gardens ads invite buyers to visit the site. Here is how a buyer can pick the visit time right in the chat.",
+      "video": "renders/elenza_gardens_en_v3.mp4"
+    },
+    {
+      "key": "rivanta",
+      "slug": "rivanta-heritage-ttmbo7",
+      "brand": "Rivanta Group",
+      "project": "Rivanta Heritage",
+      "city": "Surat",
+      "tone": "volume",
+      "bhk1": "2 BHK",
+      "bhk2": "Other size",
+      "hook": "The Rivanta Heritage ads we saw offer several ways to enquire: a form, a chat button, a WhatsApp message button and phone numbers. Here is how a WhatsApp enquiry can get an automatic reply in about a minute.",
+      "email_opening": "We are IV Infotech, Mehsana. We found this address on the contact page of rivantagroup.com. We saw ads for Rivanta Heritage that print the same phone number as that page, so we made a short video and a page for it.",
+      "poster_at": 33,
+      "email_source": "We found this address on the contact page of rivantagroup.com.",
+      "email_saw": "We saw ads for Rivanta Heritage that print the same phone number as that page",
+      "budget": ["Up to 40 lakh", "40 to 70 lakh", "Above 70 lakh"],
+      "video": "renders/rivanta_heritage_en_v3.mp4"
+    }
+  ],
+  "cost_answer": "The demo is free. If you want to go ahead, we give the full price in writing before you pay anything. WhatsApp's own message charges are separate and we show them to you.",
+  "_flags_note": "OWNER DECISIONS (confirm before the first send): demo_free, demo_what (what 'Yes, send the demo' really sends and how fast), cost_answer. wa_number = the BUSINESS WhatsApp (API) number the demo reply comes from. 9924426361 is the boss's PERSONAL number: never use it (the build refuses it).",
+  "demo_what_mail": "Your email app opens with a ready message. Press Send, and we reply with a short sample of this chat for {PROJECT}. Nothing is connected to your number or your ads. We keep your email and message only to send the demo. A call happens only if you ask for one."
+}

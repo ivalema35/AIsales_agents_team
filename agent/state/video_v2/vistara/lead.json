@@ -1,0 +1,56 @@
+{
+  "name": "Vistara Group",
+  "project": "Anahata Florenza",
+  "area": "Ankhol, Vadodara",
+  "ad_page": "Anahata Florenza",
+  "units": "Villas",
+  "sub_line": "Villas \u00b7 Ankhol, Vadodara",
+  "s1_area": "",
+  "scene2_caption": "Two of your Anahata Florenza ads: Send WhatsApp message",
+  "questions": [
+    "Villa size?",
+    "Budget?",
+    "Buying timeline?"
+  ],
+  "buyers": [
+    "Villa",
+    "Villa",
+    "Villa"
+  ],
+  "brand": {
+    "navy": "#14203a",
+    "navy2": "#1d2d5c",
+    "gold": "#EA5C35",
+    "gold2": "#235BDD",
+    "tint": "#ffd3bf",
+    "sub": "#ff9a70",
+    "tagtext": "#ffffff"
+  },
+  "logo": "assets/logo_white.png",
+  "logo_s1": {
+    "w": 340
+  },
+  "logo_ad_h": 112,
+  "key": "vistara",
+  "chat_time": "10:47 PM",
+  "stills": {
+    "1": "assets/stills/E_plain_skyline.jpg",
+    "2": "assets/stills/F_evening_home.jpg",
+    "3": "assets/stills/B_night.jpg",
+    "4": "assets/stills/B2_night_relieved.jpg",
+    "5": "assets/stills/C2_morning_desk.jpg"
+  },
+  "sparks": false,
+  "fx": {
+    "tap": 0.87,
+    "b2": 0.44,
+    "b3": 0.69,
+    "r1": 0.3,
+    "r2": 0.52,
+    "r3": 0.66,
+    "hand": 0.85,
+    "cta1": 0.4,
+    "cta2": 0.74,
+    "arr": 0.8
+  }
+}

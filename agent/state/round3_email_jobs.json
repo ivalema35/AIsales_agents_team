@@ -1,0 +1,62 @@
+[
+ {
+  "code": "CWUBS",
+  "label": "email shyamal",
+  "group": "email",
+  "cmd": [
+   "C:/ivtools/venv/Scripts/python.exe",
+   "agent/tools/send_email.py",
+   "--to",
+   "shyamalpark501@gmail.com",
+   "--subject",
+   "Automatic WhatsApp replies for Shyamal Park Lane enquiries",
+   "--body-file",
+   "agent\\state\\drafts\\campaign3_v3\\email_shyamal.txt",
+   "--lead",
+   "shyamal",
+   "--live",
+   "--approval",
+   "CWUBS"
+  ]
+ },
+ {
+  "code": "6ADA4",
+  "label": "email vistara",
+  "group": "email",
+  "cmd": [
+   "C:/ivtools/venv/Scripts/python.exe",
+   "agent/tools/send_email.py",
+   "--to",
+   "marketing@vistararealty.com",
+   "--subject",
+   "Automatic WhatsApp replies for Anahata Florenza enquiries",
+   "--body-file",
+   "agent\\state\\drafts\\campaign3_v3\\email_vistara.txt",
+   "--lead",
+   "vistara",
+   "--live",
+   "--approval",
+   "6ADA4"
+  ]
+ },
+ {
+  "code": "3MZXZ",
+  "label": "email namasya",
+  "group": "email",
+  "cmd": [
+   "C:/ivtools/venv/Scripts/python.exe",
+   "agent/tools/send_email.py",
+   "--to",
+   "info@shreenamasya.com",
+   "--subject",
+   "Automatic WhatsApp replies for Shree Namasya enquiries",
+   "--body-file",
+   "agent\\state\\drafts\\campaign3_v3\\email_namasya.txt",
+   "--lead",
+   "namasya",
+   "--live",
+   "--approval",
+   "3MZXZ"
+  ]
+ }
+]

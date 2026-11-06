@@ -1,0 +1,653 @@
+{
+  "summary": "Round 2: four independent reviewers re-judge the revised Shyamal v2 lead video (8 stills + script) after the round-1 fixes; one synthesis with remaining blockers. Read-only.",
+  "agentCount": 5,
+  "logs": [
+    "Round 2 reviews: visual=6 (not ready), claims=7 (not ready), lead=6 (not ready), persuasion=5 (not ready)"
+  ],
+  "result": {
+    "reviews": [
+      {
+        "key": "visual",
+        "score_out_of_10": 6,
+        "verdict": "Round 2 is cleaner and safer than round 1, and the compliance fixes are visibly in place. It is still not at the NotebookLM level the owner asked for. It reads as a branded ad template with illustrated backgrounds, not a calm explainer. There are two real rendering or sequence faults: the waving robot in scenes 5 and 6 has lost its blue body, and the 4b \"three questions\" still shows visit times, the same as 4c. There are also collisions between the \"Concept by IV Infotech\" pill and the characters' heads, and the amount of text is still well above \"very little\". The reference is calm, with a big character, simple diagram nodes and one small caption. Ours stacks a logo pill, a caption pill, a UI card and a tag chip on almost every frame. I would fix the blockers and important items below and re-render before this goes to a real builder.",
+        "round1_fixes_verified": "In place and visible: (1) The EXAMPLE tag and \"Example chat\" header are on every mock chat (3, 4a-c, 5), and the ad card in scene 2 carries an ILLUSTRATION chip. (2) The lead-logo corner bug is gone, replaced by a small \"Concept by IV Infotech\" pill on frames 2-5. (3) Scene 1 carries \"A concept by IV Infotech · not affiliated with Shyamal Group\". (4) The scene 6 disclaimer is larger, around 28px, and includes \"Voice is AI\" and the WhatsApp/Meta non-affiliation. (5) There is one caption pill per scene, and the content sits inside about y 140..1080. (6) The night scene is hypothetical (\"Example: 10:47 PM\"), with no \"online\". (7) Scene 2 says \"One of your Diwali ads\", with no \"Ready possession\", no duplicate offer pill, a generic chat icon and a finger tap. (8) Scene 5 has no 3D tower, uses \"Example buyer A/B/C\", and shows \"Visit picked\"/\"Asked\" with no \"Hot\". (9) Scene 6 is plain text with a down arrow and a smaller IV plate.\n\nNot fully working or new problems:\n- The 4b \"questions\" beat is not visible; it shows visit times, same as 4c.\n- The waving IV robot in 5 and 6 is broken.\n- The \"Concept by\" pill still collides with heads in 3, 4 and 5.\n- The caption does not change across the three beats of scene 4.\n- The scene 6 arrow points at the disclaimer, not at the WhatsApp button.\n- \"Takes over\" has no visual in scene 5.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "4b (auto_reply_questions) vs 4c",
+            "problem": "Frame 4b is supposed to show the three quick qualifying questions, but it shows 'Visit time / Sat 11:00 AM / Sat 4:00 PM / Example times', the same card as 4c. The only difference is a 1px camera drift (the files differ by hash but look identical). Either the still was captured at the wrong time or the questions beat is missing from the video. The voice says 'ask three quick questions' over a screen that never shows them. The card also never shows both sides of a conversation.",
+            "fix": "Check the scene-4 timeline. Render the questions beat as its own card, for example three short tappable rows such as '3 or 4 BHK?', 'Budget range?' and 'When to move?', each labelled Example. Confirm the beat order brochure, then questions, then visit times by grabbing a frame at each cue. If the questions beat does exist, the QA still capture is at the wrong timestamp, so re-grab it."
+          },
+          {
+            "severity": "blocker",
+            "scene": "5 and 6 (waving IV robot)",
+            "problem": "The waving robot has lost its blue head shell and body, probably from a chroma-key or matte pass that removed blue. Only a dark face plate remains, with a disconnected antenna stalk, a floating arm, floating feet and a floating 'iv' badge. It looks like a rendering bug. In scene 6 the dark face plate is almost invisible on the dark navy background, so the closing frame has a broken mascot. It also does not match the complete blue robot in 4a-c.",
+            "fix": "Re-export the waving robot as a transparent PNG with the full blue body, head and limbs, and do not key on blue. Place it on a lighter patch or add a soft rim light or glow in scene 6. Check it against both the warm morning background and the dark CTA background."
+          },
+          {
+            "severity": "important",
+            "scene": "3, 4a-c, 5 (the 'Concept by IV Infotech' pill)",
+            "problem": "The pill sits at about y150-200, x35-368, which is exactly where the characters' heads are. In scene 3 it overlaps the man's forehead and hair. In 4 it clips the top-left of his hair, and in 5 it touches the hair bun. It reads as a sticker slapped on the art. It is also on 7 of 8 frames, which is repetitive branding when the owner asked for neat and minimal.",
+            "fix": "Show it large only on scene 1 and scene 6. On scenes 2-5 either drop it or shrink it to a small low-opacity corner mark in the far top-left at about y100-140, above the safe zone. Alternatively, shift the characters down or recompose so heads clear y 210. Keep the non-affiliation line on scenes 1 and 6."
+          },
+          {
+            "severity": "important",
+            "scene": "3 night message",
+            "problem": "The man's face is washed out and ghost-like, with a pale green translucent light cone from the phone across his face. The eyes are barely visible and only the mouth line reads. This is the first appearance of the buyer after scene 2, so it looks uncanny and cheap next to the clean face in scene 2. The chat card also has a large empty lower half (y~830-920) and the 10:47 PM time appears twice.",
+            "fix": "Regenerate or relight the night still so the face has eyes and a soft rim light. Keep the phone glow below the chin and do not paint it over the face. Shrink the card to fit its content, or add an 'Automatic reply coming...' placeholder instead of dead space. Keep the time in the bubble only, and drop it from the caption if the voice already says it."
+          },
+          {
+            "severity": "important",
+            "scene": "1 brand open",
+            "problem": "There are six text elements on the brand opener: logo, a 'shyamal' wordmark, project name, 'Bhayli, Vadodara', a gold ribbon with 'Your Diwali offer · first 5 bookings only', the 'An IV Infotech idea' pill, and a two-line disclaimer. The gold ribbon is the most template-like element in the video. The disclaimer (about 22px) sits over busy lit building windows and wraps to an orphan word 'Group', so it is hard to read on a phone. There is no character, so the opener does not match the illustrated NotebookLM feel.",
+            "fix": "Keep only the logo, 'Shyamal Park Lane' and 'An IV Infotech idea'. Drop the ribbon, or reduce it to a small text line, since the offer is already on the ad card in scene 2. Rewrite the disclaimer to one line: 'Independent concept by IV Infotech · not affiliated with Shyamal'. Put it on a dark scrim, not over the building windows. Add a small illustrated character or the robot to match the rest of the video."
+          },
+          {
+            "severity": "important",
+            "scene": "6 CTA",
+            "problem": "The arrow points at the disclaimer text. In WhatsApp the real 'Yes, send the demo' button sits below the video bubble, so the arrow should point down and off the frame, toward the bottom edge. The bottom 200px (y 1080-1280) is empty while three lines of disclaimer sit between the arrow and the edge. The IV logo plate is the brightest, largest block and outweighs 'Shyamal Park Lane' and the CTA. There are also five stacked text blocks, which is too much for a final frame, and the robot is nearly invisible (see the robot blocker).",
+            "fix": "Reorder to robot, then 'Want this for Shyamal Park Lane?', then '“Yes, send the demo”', with the arrow last and nearest the bottom edge pointing to the button. Move the disclaimer above the arrow or to the very top under the IV plate. Reduce the IV plate to about 60-70% of its size. Cut 'Tap the button below:' because the arrow already says it."
+          },
+          {
+            "severity": "important",
+            "scene": "2 ad tap",
+            "problem": "The finger-tap icon sits on top of the word 'Send' in the button, covering the 'S', and its fingertip hangs below the button edge. This is the one frame where the action must be clear. The ad card top (y557) touches the man's hands and phone, which crowds the focal point. The card is dense, with the sponsor name, an ILLUSTRATION chip, the logo shown twice, a title, an offer pill, the specs line and the button. For 'very little text' it is a lot, and the card logo and the ad title both repeat the scene-1 brand.",
+            "fix": "Put the finger at the button's right end or below it, with a small ripple ring and no text covered. Shift the card down by about 20-30px, or the character up, so the hands clear. Remove the small header logo or the big banner logo, and drop the specs line, or keep only one of 'Diwali offer' and '3 & 4 BHK'. Use the same label word ('Example') across scenes instead of mixing ILLUSTRATION and EXAMPLE."
+          },
+          {
+            "severity": "important",
+            "scene": "4a-c caption and card design",
+            "problem": "The caption is the same on all three beats ('Example: automatic reply, about a minute'), so nothing on screen labels 'brochure / questions / visit times'. The card height is fixed, so each beat has big dead space at the top or bottom of the card (4a and 4c especially). Each beat replaces the previous one, so the thread never builds up. The robot is a pasted sticker on the couch, with its arm touching the man's hand in 4a, and feet hovering over the card edge.",
+            "fix": "Change the caption per beat in the same pill, or switch it to a short label like '1 Brochure · 2 Questions · 3 Visit times' with the current step highlighted. Auto-size the card to its content. Stack the messages so the thread builds up instead of replacing the previous card. Ground the robot with a small shadow, or scale it down and move it into the empty right-hand area away from the hands."
+          },
+          {
+            "severity": "nice",
+            "scene": "5 morning list",
+            "problem": "The voice says 'then takes over', but nothing on screen shows a hand-over; there is only a list. The scene looks washed out and low contrast compared with 2-4, and the woman is rendered in a softer, more painterly style than the flat man. 'No slot yet' under buyer C is a mild negative cue, though it is a buyer state and not the team failing.",
+            "fix": "Add a small 'Call' or 'Your team takes over' chip, or a tiny arrow from the top row. Raise contrast and saturation on the background to match scenes 2-4. Change 'No slot yet' to 'Asked' only, or to 'Reply pending', to stay neutral."
+          },
+          {
+            "severity": "nice",
+            "scene": "All scenes (consistency and polish)",
+            "problem": "The caption pills are a heavy navy block with a gold stroke at 36px. At two lines they take about 125px of height, and they are the same in every scene, which makes the video feel templated. Compared with the reference, which uses small, light captions on a calm diagram, the hierarchy here is busier. The characters (flat vector man, painterly woman, three different background paint styles) are not fully consistent. The bottom 200px is mostly empty, which is safe for WhatsApp but leaves the composition top-heavy.",
+            "fix": "Reduce captions to one line at about 32px with a softer fill and a thinner stroke. Unify the illustration style, or at least color-grade all backgrounds to one palette (navy, teal and gold). Use the lower area for the caption so the top is not crowded."
+          }
+        ],
+        "what_works": [
+          "The compliance work from round 1 shows up clearly. EXAMPLE tags, 'Example chat', ILLUSTRATION on the ad, the non-affiliation line in scenes 1 and 6, 'Voice is AI', and a hypothetical night scene are all visible and legible, and none of the unverified claims (slow replies, no CRM, brochure existing, 'Hot' leads) is shown as fact.",
+          "Scene 1 uses the lead's navy and gold plus the gradient S logo as published, in a Diwali-dusk setting, which gives the brand-first start the owner asked for. The logo and project name are clear and large.",
+          "Scene 2 is the best frame. It has a warm, rich Diwali room, a clear character with a phone, a recognisable ad card with a green WhatsApp button, a tap cue and a readable caption. The facts shown are the verified ones.",
+          "The scene 5 list is simple and easy to read, with clear status chips (Visit picked / Asked), generic 'Example buyer A/B/C' names and no invented numbers. It makes the 'who asked, who picked a visit' point in one glance.",
+          "The caption and chat-card text is large enough for muted phone playback, and the essential content sits within y 140-1080, so it should clear WhatsApp's play button and duration overlay.",
+          "The color story (navy, gold, teal) and the IV robot as a recurring mascot are a good base for a consistent look once the robot rendering is fixed."
+        ],
+        "ready_to_show_the_owner": false
+      },
+      {
+        "key": "claims",
+        "score_out_of_10": 7,
+        "verdict": "Claims-wise this is much safer than round 1: every spoken claim traces to a verified fact, no \"free\" or \"instant\" appears, nothing says they are slow or lack an auto-reply, and scene 6 discloses AI voice and non-affiliation clearly. It is not ready to show yet, for five reasons. (1) The \"questions\" still (4b) shows the visit-time beat, so that beat is unverified. (2) Their logo is used as the avatar of a mock WhatsApp profile and CRM header, which implies they use it. (3) \"Project brochure\" is shown as sent under their name, but a brochure is unverified. (4) The scene 1 independence line is small and sits on a busy background. (5) The IV robot has no body in scenes 5 and 6, so the closing frame looks broken. All five are quick fixes.",
+        "round1_fixes_verified": "Visibly in place: (a) EXAMPLE tag and \"Example chat\" header on every mock chat (frames 3, 4a, 4b, 4c); the enquiry list (frame 5) carries an EXAMPLE tag and the ad card an ILLUSTRATION tag. (b) The lead-logo corner is gone from scenes 2 to 5, replaced by \"Concept by IV Infotech\". (c) Scene 1 now has \"A concept by IV Infotech · not affiliated with Shyamal Group\", but only at 24px weight 500 with no backing plate. (d) The scene 6 disclaimer is 28px and legible. (e) One 36px caption pill per scene, all inside y 140..1080 (the bottom edge of the pill is at about 1075). (f) The night scene is hypothetical (\"Example: 10:47 PM, a buyer asks for details\") with no \"online\". (g) Scene 2 reads \"One of your Diwali ads: Send WhatsApp message\", with no \"Ready possession\", no duplicate offer pill, a generic chat icon and a finger tap. (h) Scene 5 uses \"Example buyer A/B/C\" with \"Visit picked\" and \"Asked\"; \"Hot\" and \"From Diwali ad\" are gone. (i) Scene 6 is plain text with a down arrow, a smaller IV logo plate, and the robot waving. (j) Characters stay in the upper 40% of the frame. Not fully verified: scene 4 staging. 4a (brochure) and 4c (visit times) are right, but 4b is meant to show the questions and shows the visit-time beat. It looks identical to 4c. The \"Three quick questions\" beat does exist in story_v2.html (Budget? / 3 or 4 BHK? / Buying timeline?), so this is probably a capture-time miss, but no QA frame confirms the beat renders.",
+        "problems": [
+          {
+            "severity": "important",
+            "scene": "4b (auto_reply_questions)",
+            "problem": "The still named \"questions\" shows the Visit time beat (\"Visit time / Sat 11:00 AM / Sat 4:00 PM / Example times\"), the same as 4c. No QA frame shows the \"Three quick questions\" beat the voice describes (\"ask three quick questions\"), so I cannot sign it off. The source text (Budget? / 3 or 4 BHK? / Buying timeline?) is harmless.",
+            "fix": "Re-capture 4b at about 55% of scene 4 (the questions beat window is 0.42 to 0.72 of the scene). Confirm the beat is visible, still sits under the EXAMPLE tag and the \"Example chat\" header, and does not overlap the brochure or visit-time beats."
+          },
+          {
+            "severity": "important",
+            "scene": "3, 4a, 4b, 4c, 5 (mock chat and list)",
+            "problem": "The lead's registered logo (S tile) is used as the avatar of the mock WhatsApp contact (\"Shyamal Park Lane / Example chat\") and as the header of the mock enquiry list (\"Shyamal Park Lane / All enquiries in one list\"). That shows their mark as the sender of an automatic reply and as owner of a dashboard they do not have. This goes beyond \"as published by them\" and implies they already use or endorse it. The EXAMPLE tag reduces the risk but does not remove it. The logo file itself is their own site asset, unmodified, with the wordmark and ® as published, so provenance is fine.",
+            "fix": "Show their full logo only in scene 1 and in the mock ad card (where it really appears in their ad). In the chat and list headers use the plain text \"Shyamal Park Lane\" with a neutral house or building icon, keeping \"Example chat\" and the EXAMPLE tag."
+          },
+          {
+            "severity": "important",
+            "scene": "4a (brochure) and voice line 4",
+            "problem": "On screen: \"Project brochure / Sent automatically\" with a PDF icon, shown in a chat under their name. Voice: \"An automatic reply can send a brochure\". A published project brochure is NOT verified, so this shows a document they may not have.",
+            "fix": "On screen: \"Brochure or project details\" with \"PDF · example\" underneath. Voice: \"An automatic reply can send project details or a brochure, ask three quick questions, and offer visit times.\""
+          },
+          {
+            "severity": "important",
+            "scene": "1 (brand open)",
+            "problem": "The key independence line, \"A concept by IV Infotech · not affiliated with Shyamal Group\", is 24px, weight 500, and has no backing plate. It sits over the lit windows of the skyline, so \"Shyamal Group,\" has low contrast, and \"Group\" wraps alone onto a second line. This is the only compliance text in the first 30 seconds, and a muted autoplay viewer will barely see it. It also does not mention the AI voice.",
+            "fix": "Put it on a navy plate at 28 to 30px in two balanced lines: \"Independent concept by IV Infotech. AI voice.\" / \"Not affiliated with Shyamal Group.\" Keep it clear of the building lights."
+          },
+          {
+            "severity": "important",
+            "scene": "5 and 6 (IV robot)",
+            "problem": "In scenes 5 and 6 the robot has no blue body: only the dark face, an arm, the \"iv\" badge and two feet float in space. In scene 4 it is correct. Likely cause: all three robots reuse the SVG gradient id \"ivg\", the first definition sits inside scene 4's SVG, and scene 4 is display:none when scenes 5 and 6 show, so the gradient fill fails. This is a visible defect in the closing CTA frame.",
+            "fix": "Give each robot a unique gradient id (ivg4, ivg5, ivg6) or use a flat fill colour #2F55F4 on the body rect. Re-render the scene 5 and 6 stills."
+          },
+          {
+            "severity": "important",
+            "scene": "5 (morning list) and voice line 5",
+            "problem": "Voice: \"By morning, your team sees who asked and who picked a visit, then takes over.\" This states a fact about their team as if it were their reality. The caption \"Next morning: who asked, who picked a visit\" is the only caption without the \"Example:\" prefix, and the card header \"All enquiries in one list\" overstates (\"All\").",
+            "fix": "Voice: \"By morning, your team can see who asked and who picked a visit, then take over.\" Caption: \"Example: next morning, who asked, who picked a visit\". Card header: \"Enquiries in one list\"."
+          },
+          {
+            "severity": "important",
+            "scene": "Message text and opt-in (outside the frames, but the video depends on it)",
+            "problem": "The video asks the recipient to tap \"Yes, send the demo\". WhatsApp's business messaging policy expects opt-in for marketing templates, and nothing in the video or the text I saw gives an opt-out. The video cannot cover this. The 28px scene 6 line covers AI voice and non-affiliation, not opt-out or contact basis.",
+            "fix": "Put a one-line opt-out in the WhatsApp message text, for example \"Reply STOP to opt out\". Send only to a business contact obtained from their own public channels. Keep the single-recipient, manual-send plan, and use the template only as a one-to-one business message."
+          },
+          {
+            "severity": "nice",
+            "scene": "4 (voice line 4 and caption)",
+            "problem": "\"...in about a minute\" attaches to the whole sequence (brochure, three questions, visit times), but the questions and visit times depend on the buyer replying. Read literally, it overpromises. The caption \"Example: automatic reply, about a minute\" repeats it on all three beats.",
+            "fix": "Voice: \"...and offer visit times. The first reply can arrive in about a minute.\" Caption: \"Example: first reply in about a minute\"."
+          },
+          {
+            "severity": "nice",
+            "scene": "1 and 2 (offer text)",
+            "problem": "Scene 1 ribbon: \"Your Diwali offer · first 5 bookings only\", and the mock ad: \"Diwali offer · first 5 bookings\". The verified copy is \"first 5 bookings only\" in a \"Diwali ad\"; \"Diwali offer\" is our paraphrase. Repeating their scarcity claim as a headline ribbon makes scene 1 look like their own creative, and it goes stale if the ad changes before the recipient watches.",
+            "fix": "Scene 1 ribbon: \"Your Diwali campaign\". Mock ad line: \"Diwali · 3 & 4 BHK · Bhayli\". If you keep the scarcity claim, copy it exactly as \"first 5 bookings only\"."
+          },
+          {
+            "severity": "nice",
+            "scene": "Whole video (AI voice disclosure)",
+            "problem": "AI voice is disclosed only in text at the very end (\"Voice is AI.\") and presumably in the WhatsApp text. A listener hears about 40 seconds of AI voice before any disclosure.",
+            "fix": "Add \"AI voice\" to the scene 1 line (see the scene 1 fix). Optionally end the voice with \"This voice is AI.\""
+          },
+          {
+            "severity": "nice",
+            "scene": "3 (night message)",
+            "problem": "The buyer looks tense and the chat shows one outgoing message with nothing below it. It reads slightly as \"waiting, unanswered\". It stays within \"never show the lead's team failing\" because nothing blames them and it is labelled Example. The \"Concept by\" pill also covers the buyer's hair and forehead.",
+            "fix": "Use a calm, neutral expression for the buyer, or show a \"typing…\" indicator. Move the pill so it does not cover the head: nudge the still down 40px or shift the pill to the top right."
+          },
+          {
+            "severity": "nice",
+            "scene": "2 to 5 (\"Concept by\" pill)",
+            "problem": "The pill reads \"Concept by [IV glyph] Infotech\". The glyph looks like a V, so a viewer can read it as \"V Infotech\". Our name must read \"IV Infotech\".",
+            "fix": "Write \"Concept by IV Infotech\" in text next to a small logo, or use the logo version that carries the letters IV."
+          },
+          {
+            "severity": "nice",
+            "scene": "2 (ad tap)",
+            "problem": "The label says ILLUSTRATION while everything else says EXAMPLE. The finger icon covers the \"S\" of \"Send\" in the button.",
+            "fix": "Label it \"EXAMPLE · ILLUSTRATION\", or \"Illustration of your ad\". Move the finger to the right edge of the button."
+          },
+          {
+            "severity": "nice",
+            "scene": "Timeline and duration",
+            "problem": "timeline.json and story_v2.html still list the old schedule: total 53.71 s, scene 6 at 12.6 s, and voice durations that sum to about 41 s. The brief says about 40 s total and a roughly 35 s voice, so captions may drift from the new voice if the timeline is stale.",
+            "fix": "Confirm the final MP4 duration and size, and that each scene's start matches the new voice cut points. Check that scene 6's text is on screen for the whole closing voice line."
+          }
+        ],
+        "what_works": [
+          "Every spoken claim traces to a verified fact: voice 2 is accurate (one of the three versions has the button), voice 3 is hypothetical (\"Say it is...\"), and voice 6 matches the button text exactly. Nothing says they reply slowly, lack a CRM, or have no auto-reply.",
+          "The ad card uses only verified content: \"Shyamal Park\" (the Ad Library advertiser name), \"3 & 4 BHK\", and \"first 5 bookings\". It leaves out Rs 51 lakh*, 100% SBI loan*, ready possession and fully furnished.",
+          "Labelling is consistent: ILLUSTRATION and EXAMPLE tags, \"Example chat\", \"Example buyer A/B/C\", \"Example times\", and the \"Automatic reply\" tag tell the viewer the reply is automated.",
+          "Scene 6 is the strongest compliance frame: \"Independent concept by IV Infotech. Voice is AI. Not affiliated with Shyamal Group, WhatsApp or Meta.\" at 28px, readable, with no \"free\" or \"instant\" anywhere.",
+          "The lead logo is their own site asset, unmodified, with the wordmark and ® as they publish it, and appears in scene 1 and the mock ad card.",
+          "The scene 5 list no longer implies hot leads or a lead source, so it asserts nothing about their funnel.",
+          "Layout is clean: one caption pill per scene, the character kept in the upper 40% of the frame, and the pills and disclaimers inside the 140 to 1080 safe band."
+        ],
+        "ready_to_show_the_owner": false
+      },
+      {
+        "key": "lead",
+        "score_out_of_10": 6,
+        "verdict": "AS THE SHYAMAL DIRECTOR, second by second (intended ~40 s; I assume the first frame is the thumbnail and the rest plays muted).\n\n0-5 s, scene 1. I stop. It is my own S logo, my project name, my Diwali ribbon, Bhayli, a Diwali night skyline. It is clearly about me, and that is the strongest thing in the video. But I get nothing about the gain. \"An IV Infotech idea\" is vague, and a tiny line under it says not affiliated with Shyamal Group. So a vendor has used my registered logo and my offer. I am curious and mildly wary. Nothing yet says WhatsApp, enquiries or replies. A director with ten pitches in his inbox can swipe away here.\n\n5-10 s, scene 2. A smiling buyer on a Diwali sofa and a mock of my ad with a green Send WhatsApp message button. Caption: \"One of your Diwali ads\". I get it quickly and it is about my ad. It shows they looked at my ads, which is flattering, with a hint of being watched. The ILLUSTRATION tag keeps it honest. The finger tap is so small I miss it.\n\n10-15 s, scene 3. Dark night, buyer on the phone, chat bubble \"Hi, I want details of Shyamal Park Lane\", 10:47 PM, tagged EXAMPLE. Clear and plausible. The worried, flat face and the dark room carry a quiet \"nobody answers your buyers at night\" dig. It is hypothetical and labelled, so I do not feel insulted, but my team may.\n\n15-26 s, scene 4. The cute IV robot appears, the buyer smiles. I see a brochure PDF \"Sent automatically\" at 10:48 PM, then visit slots Sat 11:00 AM / Sat 4:00 PM. This is the clearest part: an automatic first reply with a brochure and visit times, and 10:47 to 10:48 shows \"about a minute\" without an invented number. In the stills I never see the three questions. The 4b frame shows the visit-times card. The caption stays the same for all three beats and feels dead. My objections start here and nothing answers them. Is this on my WhatsApp number? Do I need new software? Is the brochure mine?\n\n26-33 s, scene 5. Bright morning, a woman at a laptop, a clean list with Example buyer A, B and C and chips \"Visit picked\" and \"Asked\". The list is easy to read, and the times match the slots offered earlier. But \"your team takes over\" is never shown, and I cannot tell where this list lives. The robot is visibly broken: head, arm and feet float apart with no body.\n\n33-40 s, scene 6. \"See it for Shyamal Park Lane. Tap the button below: Yes, send the demo\", an arrow, and a 28 px line saying independent concept, voice is AI, not affiliated with Shyamal Group, WhatsApp or Meta. I trust the honesty. The ask is clear as an action, but \"it\" and \"the demo\" are undefined for a muted viewer, and nobody says what happens after I tap (a call from a salesperson? a message on my number?). The robot is still disassembled in the CTA, the last thing I see.\n\nNothing feels fake or pushy. The labelling is good, no price or \"free\" is mentioned, and my team is never shown failing. The video's problems are a missing gain at the start, an undefined offer at the end, a visible robot bug, and length.\n\nPROBABILITY I tap \"Yes, send the demo\": about 10 percent (range 7-14). It is a low-effort quick-reply button, and the personalization, my own logo and ad, earns attention. But a family-run builder getting many vendor pitches mostly weighs trust in an unknown sender and fear of a sales call, and 40 s is long for a cold pitch. I would expect 14-18 percent after the changes below.\n\nTHE 3 CHANGES THAT WOULD RAISE IT MOST\n1. State the gain in the first 5 seconds. Replace the ribbon that repeats my own offer with one outcome line, for example \"Your ad enquiries can get a WhatsApp reply in about a minute\". Keep \"An IV Infotech idea\" smaller. Make the independence line larger and unbroken.\n2. Make the ask concrete and low-risk in scene 6. Say what \"it\" is (\"See this reply made for Shyamal Park Lane\") and what the tap does (\"Tap below. We send a sample chat here on WhatsApp\"). Add a no-call or no-obligation line only if that is true.\n3. Cut to about 25-30 s and spend the saved time answering \"do I need new software and does my team still handle it\". Merge scenes 2 and 3 (tap, then the message arrives), shorten the transitions, and add a visible hand-over beat in scene 5. Before sending, fix the robot bug and re-capture frame 4b.\n\nREADY? No. The robot bug and the unverified three-questions beat must be fixed first.",
+        "round1_fixes_verified": "Mostly visible, with exceptions.\n- EXAMPLE tag and \"Example chat\" header: present in scenes 3, 4a-4c and 5 (scene 5 has the tag plus \"All enquiries in one list\"). Scene 2 uses an ILLUSTRATION tag. Verified.\n- Lead logo corner bug replaced by a small \"Concept by IV Infotech\" mark: present on scenes 2-5. Side effects: the pill overlaps or touches the character's head in scene 3 and scene 5, and the mark reads as \"V Infotech\" because the logo glyph looks like a V.\n- Scene 1 sender plus non-affiliation line: present, but small, orphans the word \"Group\" on its own line, and sits over busy lit windows. The \"An IV Infotech idea\" pill is far more prominent than the disclaimer.\n- Scene 6 disclaimer enlarged to 28 px: verified, three clear lines that are readable and carry the AI-voice disclosure.\n- One caption pill per scene at 36 px, content inside y 140..1080: verified, pills end around y 1075 and cards around y 920. Scene 4 repeats the identical caption across all three beats.\n- Night scene hypothetical, no \"online\": verified (\"Example: 10:47 PM, a buyer asks for details\"). The worried face still implies a dig.\n- Scene 2 fixes: \"One of your Diwali ads\", no \"Ready possession\", no duplicate offer pill, generic chat icon and a finger tap are all present. The finger is tiny, cream on green, clipped by the card edge and easy to miss.\n- Scene 4 staged beat by beat: the brochure (4a) and visit times (4c) are visible and labelled Example. Frame 4b is meant to show the three questions but shows the visit-times card. The build code does define a \"Three quick questions\" beat (Budget? / 3 or 4 BHK? / Buying timeline?) running about 2.6 s. The still was probably captured about 0.2 s after that beat ended, so this is likely a capture miss, but it is UNVERIFIED and needs a re-capture at about t=28 s.\n- Scene 5: no 3D tower, rows are Example buyer A/B/C with Visit picked / Asked, no \"Hot\", no \"From Diwali ad\". Verified.\n- Scene 6: plain-text CTA, down arrow and smaller IV logo plate are in place. The waving IV robot renders broken, with no body.\n- New stills with characters in the upper 40%: verified.\n- Cut to about 40 s: cannot be verified from stills. The timeline.json next to them totals 53.7 s and the stills were sampled at t up to 50.5 s, so confirm the final mp4 length and file size.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "5 and 6 (waving IV robot)",
+            "problem": "The robot renders with no body. The head, antenna, arms, feet and the \"iv\" badge float apart with nothing joining them. It reads as a glitch on the payoff frame and the final CTA frame. The cause is visible in the code: agent/pilot/video/story_build.py iv() fills the torso with url(#ivg), and every inline copy of the SVG reuses the same gradient id \"ivg\". When the first copy sits in a hidden scene, the other copies lose the gradient and the torso paints transparent. The scene 4 robot still renders because its copy resolves.",
+            "fix": "Give each robot instance a unique gradient id (counter in the f-string), or use a solid fill such as #2F55F4 for the torso. Re-render scenes 4, 5 and 6 and check that the torso is visible in all three."
+          },
+          {
+            "severity": "important",
+            "scene": "4b (three questions beat)",
+            "problem": "The frame named 4b_auto_reply_questions shows the Visit time card (it differs from 4c only by a pixel), so the three quick questions never appear in any frame. The voice says \"ask three quick questions\", and the muted viewer needs to see them. The beat exists in build_story_v2.py (Budget? / 3 or 4 BHK? / Buying timeline?) but runs only about 2.6 s, and the QA still at t=29.5 landed just after it ended.",
+            "fix": "Re-capture at about t=28 s and confirm the questions beat renders. Give it at least 3 s, since it is the core of the pitch. Show it as three tappable-looking chips."
+          },
+          {
+            "severity": "important",
+            "scene": "1 (brand open)",
+            "problem": "The first 5 s say who it is about but not why. There is no WhatsApp, no enquiries, no gain. The ribbon \"Your Diwali offer · first 5 bookings only\" repeats my own offer back to me, and the largest copy is \"An IV Infotech idea\", which is vague. A busy director learns that a vendor used his logo before learning what is on offer.",
+            "fix": "Replace the ribbon with one outcome line, for example \"Your ad enquiries can get a WhatsApp reply in about a minute\". Make the \"IV Infotech idea\" pill smaller than the outcome line."
+          },
+          {
+            "severity": "important",
+            "scene": "6 (CTA)",
+            "problem": "For a muted viewer \"See it for Shyamal Park Lane\" never defines \"it\", and \"the demo\" is never explained. Nothing says what happens after the tap (a call, a message on my number, a sample chat). That uncertainty about a sales call is the main brake on tapping. The robot is also broken here, and the IV logo plate reads as \"V Infotech\" with no written IV.",
+            "fix": "Write \"See this reply made for Shyamal Park Lane\" and \"Tap below. We send a sample chat here on WhatsApp\". Add \"no call needed\" only if that is true. Add the text \"IV Infotech\" under the logo plate."
+          },
+          {
+            "severity": "important",
+            "scene": "5 (morning list)",
+            "problem": "The voice says \"your team ... takes over\", but nothing shows a hand-over. The list sits on an unnamed screen, so the director's first objections go unanswered: is this on my own WhatsApp number, do I need new software, who replies after the first message. The caption \"who asked, who picked a visit\" only covers the list.",
+            "fix": "Add a final beat: tap Example buyer A, the chat opens, and a tag reads \"Your team takes over\". Show that it is the same WhatsApp chat as before, but only if that is true of the product."
+          },
+          {
+            "severity": "important",
+            "scene": "4a-4c (caption)",
+            "problem": "The caption \"Example: automatic reply, about a minute\" is identical across all three beats, about 10 s. In a muted autoplay a static caption over changing cards feels dead. The three promises (brochure, questions, visit times) live only in the voice and in small card headings.",
+            "fix": "Change the caption per beat: \"Brochure sent\", \"Three quick questions\", \"Visit times offered\". Keep \"about a minute\" on the last beat or in the timestamps."
+          },
+          {
+            "severity": "important",
+            "scene": "3 and 5 (Concept by pill vs characters)",
+            "problem": "The \"Concept by IV Infotech\" pill at y 150-200 covers part of the man's hair and forehead in scene 3 and touches the woman's hair bun in scene 5. Scene 3 also has a washed-out, flat, frowning face under a green phone-glow overlay that looks less polished than scene 2. The pill reads \"Concept by V Infotech\" because the logo glyph looks like a V.",
+            "fix": "Shift the character art down about 60 px, or move the pill into the empty top strip (y 60-110). Use the repo's B3_night_neutral.jpg or B2_night_relieved.jpg for a less worried face. Add \"IV\" as text in the pill."
+          },
+          {
+            "severity": "nice",
+            "scene": "1 (disclaimer)",
+            "problem": "\"A concept by IV Infotech · not affiliated with Shyamal Group\" is small, wraps with \"Group\" alone on line two, and sits over busy lit windows. It is much smaller than the \"An IV Infotech idea\" pill. The registered-trademark logo is used in a cold pitch, so this line matters most for a legal-minded owner.",
+            "fix": "Raise it to at least 26 px, put it on a dark plate, and rebalance the wrap into two even lines."
+          },
+          {
+            "severity": "nice",
+            "scene": "2 (finger tap)",
+            "problem": "The tap finger is small, cream coloured on a green button, clipped by the card's bottom edge and covering the word \"Send\". Over 5 s it is easy to miss, which weakens the \"a buyer taps it\" beat.",
+            "fix": "Use a larger finger with a dark outline, an expanding ripple on the button, and a short press animation."
+          },
+          {
+            "severity": "nice",
+            "scene": "3 (mood)",
+            "problem": "A dark room, a worried frown and \"10:47 PM\" together imply that buyers get ignored at night. It is hypothetical and labelled Example, but a family-run team may read it as a dig.",
+            "fix": "Use a neutral or curious expression and keep the Example caption. Optionally make it a bright evening scene with the buyer relaxed."
+          },
+          {
+            "severity": "nice",
+            "scene": "Whole video (length)",
+            "problem": "About 40 s is long for a cold WhatsApp pitch to a busy director, who is likely to stop around second 15. Scenes 2 and 3 are separate but tell one idea (tap, then message). The timeline.json beside the stills totals 53.7 s, so the final length is unconfirmed.",
+            "fix": "Merge scenes 2 and 3 and trim transitions to reach 25-30 s. Confirm the final mp4 duration and that it stays a small file."
+          }
+        ],
+        "what_works": [
+          "Scene 1 is the strongest asset. The lead's own S logo, project name, Bhayli and Diwali mood make the thumbnail unmistakably about this builder, which earns the stop-scroll.",
+          "The warm illustrated characters and the dark-to-bright shift from night scenes to the morning scene tell the story with very little text. It feels human and much closer to the owner's wish than the grey node-diagram reference, which is more technical.",
+          "Trust and compliance are visibly handled: EXAMPLE and ILLUSTRATION tags, \"Example chat\", \"Example times\", \"Example buyer A/B/C\", a 28 px independence line, AI-voice disclosure, no price, no \"free\", no \"instant\", no invented numbers, and the lead's team is never shown failing.",
+          "Continuity is neat: the visit slots offered in scene 4 (Sat 11:00 AM, Sat 4:00 PM) are the ones picked in scene 5's list, and the 10:47 PM to 10:48 PM timestamps show \"about a minute\" without a made-up figure.",
+          "Scene 5's list is clean and instantly readable: three rows, plain status chips, no jargon and no \"Hot\" label.",
+          "One large 36 px caption pill per scene with all essential content inside y 140..1080 is readable in a muted autoplay. The CTA quotes the exact button label and uses a down arrow."
+        ],
+        "ready_to_show_the_owner": false
+      },
+      {
+        "key": "persuasion",
+        "score_out_of_10": 5,
+        "verdict": "Not ready. It is now a compliant, tidy video, but it does not yet beat the Nexus360 reference, and two new visible defects have appeared. Compliance is about 8/10: the round-1 labelling fixes are visibly in place. Craft is about 6/10. Strategy is about 4/10.\n\nThe reference works because the first frame is a person in pain and the next frames build a diagram of the lead's own plan, one node per spoken phrase. Ours opens on a static logo card that promises nothing: 'For Shyamal Park Lane. An IV Infotech idea.' The viewer must wait about 9 seconds to learn that the topic is the Send WhatsApp message button on their own ad. The best researched fact (one of three live ad versions has that button) is reduced to 'One of your Diwali ads'.\n\nThe single outcome the video should land is: a tap at night can become a visit time by morning. The captions never say it. They are labels ('Example: automatic reply, about a minute' repeats three times), and the 'about a minute' caption reads as if the reply itself takes a minute.\n\nTwo frames are visibly broken:\n- Frame 4b shows the visit-times card, not the three questions. It is identical to 4c.\n- The waving robot in 5 and 6 has lost its blue head shell and body.\n\nSuggested beat sheet, still about 40 s, claims unchanged:\n- 0-3 s: their logo shrinks to the corner while three ad cards appear ('3 Diwali ads, live since 16 Oct'). One card glows green with Send WhatsApp message. Headline: 'A tap at night can become a visit time by morning.'\n- 3-8 s: finger taps, chat opens, buyer message 10:47 PM.\n- 8-22 s: one cumulative chat in three beats: brochure, three chips (3 or 4 BHK / budget / loan), visit times. A 5-dot progress strip at the top of the screen follows the voice. A clock runs 10:47 to 10:48.\n- 22-30 s: morning list, then a visible hand-over to the woman.\n- 30-40 s: CTA that says what the demo is, with a fake button the arrow points at.",
+        "round1_fixes_verified": "Mostly yes, with two partial fixes and one new regression.\n\nVerified in the frames:\n- The EXAMPLE chip and the 'Example chat' header are on every mock chat (frames 3, 4a, 4b, 4c). The ad card carries an ILLUSTRATION chip and the list card an EXAMPLE chip.\n- The lead-logo corner bug is gone from the illustrated scenes. A small 'Concept by IV Infotech' pill replaces it in frames 2 to 5.\n- Scene 1 carries the sender and non-affiliation line: 'A concept by IV Infotech · not affiliated with Shyamal Group'.\n- The scene 6 disclaimer is large and readable, three lines, including 'Voice is AI'.\n- One caption pill per scene, with essential content between y 140 and 1080.\n- The night scene is hypothetical ('Example: 10:47 PM, a buyer asks for details'), with no 'online'.\n- Scene 2 says 'One of your Diwali ads'. It drops 'Ready possession' and the duplicate offer pill, uses a generic chat icon and shows a finger tap.\n- Scene 5 has no 3D tower. Rows are Example buyer A/B/C with 'Visit picked' and 'Asked', and there is no 'Hot' or 'From Diwali ad'.\n- Scene 6 is plain text with a down arrow and a smaller IV plate.\n\nNot fully working:\n- Scene 4 staging. 4a and 4c are distinct, but 4b is not the questions beat. It shows the visit-times card, the same as 4c.\n- The IV robot waving in scene 6 is visibly broken: no blue shell or body.\n- The 'Concept by' pill sits on the characters' heads in frames 3, 4a-4c and 5.\n- The scene 1 independence line is present but small, wraps with an orphan 'Group' and sits on busy skyline lights.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "scene": "4b (three questions beat)",
+            "problem": "The frame labelled 'questions' shows 'Visit time / Sat 11:00 AM / Sat 4:00 PM / Example times'. This is the same content as 4c, with only a 1px shift. The three quick questions never appear, yet the voice says 'ask three quick questions' at exactly this moment. Either the stills were pulled at the wrong timestamp or the beat is missing from the render. If it is missing, the muted viewer never learns that qualification happens, which is half of the product pitch.",
+            "fix": "Render a distinct 4b. Show three tappable chips in the chat, numbered 1/2/3, using the lead's own facts: '3 BHK or 4 BHK?', 'Budget range?', 'Need loan help?' (their ad mentions SBI loan). Re-pull the stills from the actual mp4 at each beat's midpoint and diff them before approving. Change the caption per beat instead of repeating one: 4a 'Brochure', 4b 'Three quick questions', 4c 'Visit times'."
+          },
+          {
+            "severity": "blocker",
+            "scene": "5 and 6 (IV robot)",
+            "problem": "In 4a to 4c the robot is a complete blue character. In 5 and 6 the waving pose has lost its blue head shell and torso. A dark face screen, two arms, an 'iv' badge and two feet float separately. It looks like a failed background mask on the final frame the viewer sees, and it undermines the 'neat and clean' brief.",
+            "fix": "Re-export the waving robot with its full body, or reuse the 4a robot and rotate one arm in the compositor. Check it on both the light scene-5 background and the dark scene-6 background, because the blue shell was probably keyed out. Also restyle the robot flat to match the flat-vector people. It is glossy and gradient-heavy and looks pasted onto the painterly rooms."
+          },
+          {
+            "severity": "blocker",
+            "scene": "1 (first 3 seconds, hook)",
+            "problem": "The open is a static title card: big logo, 'Shyamal Park Lane', 'Bhayli, Vadodara', an offer ribbon, an 'An IV Infotech idea' pill and a disclaimer. That is 6 text items for a brief of 'very little text'. The spoken line ('For Shyamal Park Lane. An I V Infotech idea.') is identity only and names no outcome, so the viewer does not know what the idea is. The reference opens on a stressed person, so you feel the stake in 1 second. Seeing their own logo in the thumbnail is a fair curiosity trigger. After that, nothing is promised for about 9 seconds, until scene 2 shows the button. The ribbon also just parrots their own ad copy ('first 5 bookings only'), which is repeated again in scene 2.",
+            "fix": "Keep their logo for the first 1.5 s only, then shrink it to a corner. Show three small ad cards labelled '3 Diwali ads, live since 16 Oct' (verified fact, checkable in the Ad Library). One card glows green with 'Send WhatsApp message'. The other two stay neutral and unlabelled, so nobody reads this as 'your forms fail'. Put the outcome headline on screen: 'A tap at night can become a visit time by morning.' Voice line 1 becomes: 'Your Diwali ad for Shyamal Park Lane has three versions. One has a Send WhatsApp message button. What happens after the tap?' Move 'An IV Infotech idea' to the final scene. Drop the ribbon and the pill from frame 1."
+          },
+          {
+            "severity": "important",
+            "scene": "Whole video (single outcome and story spine)",
+            "problem": "The outcome is never stated in the builder's terms. Captions are noun labels ('Example: automatic reply, about a minute' appears three times). In 4a the 'about a minute' caption reads as if the reply takes a minute, which sounds slow. The best payoff, 'buyers who picked a visit are waiting in a list in the morning', is only a neutral sub-caption in scene 5. A muted WhatsApp viewer gets a series of screens, not one idea.",
+            "fix": "Use one sentence as the spine. Say it in frame 1, repeat it as the scene 5 caption, and recap it on the CTA: 'A tap at night. A visit time by morning.' Keep 'can' in the voice. Replace the words 'about a minute' with a visible clock chip counting 10:47 PM to 10:48 PM (the chat timestamps already exist). Drop the redundant 'Example:' caption prefix, since the EXAMPLE chip is on every card, and use the freed words for the beat names."
+          },
+          {
+            "severity": "important",
+            "scene": "Missing diagram (vs the reference's node diagram)",
+            "problem": "The reference's best asset is a diagram of the lead's own plan that builds one node per spoken phrase, so the viewer sees the whole mechanism by the end. Ours has no equivalent. The mechanism exists only in the voice, and the chat card is wiped between beats.",
+            "fix": "Add a 5-dot progress strip in the top safe area of scenes 3 to 5 (y 140-230): Tap > Brochure > Questions > Visit time > Morning list. The active dot lights up in time with the voice. Use their navy and gold. Make the chat cumulative: the buyer's 10:47 message stays at the top and each beat adds to the same thread, scrolling up. This is the buildable way to beat the reference without adding text."
+          },
+          {
+            "severity": "important",
+            "scene": "3 (night message)",
+            "problem": "This is the weakest scene. The buyer is a washed-out, ghostly face under a green translucent light cone, with a flat expression and no motion. The chat card is half empty, with a blank band under the message. There is no stake and nothing animates for about 5 seconds. The 'Concept by' pill sits across his hair and forehead.",
+            "fix": "Cut the scene to about 3 s and merge it into the tap. After the finger taps the ad button, the chat opens with the 10:47 PM message typing in. Fix his face contrast: remove the cone overlay or use a warm phone glow on the lower face only. Move the night mood to a moon and clock chip. Do not show an unanswered or 'waiting' state, since the rules forbid showing the team failing. Spend the saved seconds on the 4b questions beat and the scene 5 hand-over."
+          },
+          {
+            "severity": "important",
+            "scene": "5 (morning list)",
+            "problem": "The voice ends with 'then takes over', but nothing on screen shows a hand-over. The woman looks at the camera, not the list. The card covers her laptop, so it is unclear that she is reading it. The robot is broken (see the blocker above).",
+            "fix": "Add one visible hand-over action. The robot passes a card or arrow to the woman, and a chip appears on row A: 'Your team: call before Sat 11:00 AM'. Turn her gaze toward the card or laptop. Make the caption carry the payoff: 'By morning: who asked, who picked a visit'. Keep the Example A/B/C rows exactly as they are, because they are clean and compliant."
+          },
+          {
+            "severity": "important",
+            "scene": "6 (CTA)",
+            "problem": "'Yes, send the demo' never says what the demo is, so the viewer is asked to commit to the unknown. The down arrow points at the legal disclaimer, because the real button sits below the video in WhatsApp, outside the frame. The scene is text-only, with a broken robot. The IV logo plate is still the largest object on the screen.",
+            "fix": "Add one concrete line: 'We will reply here with a sample chat for Shyamal Park Lane.' Do not use 'free' or 'instant'. Draw a fake WhatsApp-style quick-reply pill labelled 'Yes, send the demo' with the finger tap on it, and point the arrow at that pill. Move the disclaimer to a separate dark band at y ~1000-1060 so it is not read as the arrow's target. Shrink the IV plate again, and recap the outcome line from frame 1."
+          },
+          {
+            "severity": "important",
+            "scene": "2 (ad tap)",
+            "problem": "This is the best personalization moment, but under-used. The verified fact that one of three live ad versions has the Send WhatsApp message button is reduced to 'One of your Diwali ads'. The caption is a fragment: 'One of your Diwali ads: Send WhatsApp message', and it never says that a buyer taps it. The finger lands on the 'Send' label and hides it. The man smiles at the camera instead of looking at the phone, and the ad card floats over his torso, so the link between him and the ad is unclear. The scene has 9 text items.",
+            "fix": "Merge it with the new hook. Put the ad card inside his phone, or show it on the phone screen over his shoulder. Move the finger to the right end of the button. Caption: 'A buyer taps Send WhatsApp message.' Cut the text on the card to the logo, 'Shyamal Park Lane' and the button. Drop 'Sponsored', the offer pill and the BHK line, but keep the ILLUSTRATION chip. Do not reproduce the asterisk offers (Rs 51 lakh*, 100% SBI loan*)."
+          },
+          {
+            "severity": "important",
+            "scene": "Persistent 'Concept by IV Infotech' pill (scenes 2-5)",
+            "problem": "The pill sits at y 150-200, which is the characters' head zone. It overlaps hair or forehead in scene 3, the hair in 4a-4c and the bun in scene 5. IV Infotech is also named in the pill, the 'idea' pill, the footer line and the CTA plate, so the brand is stacked while the lead's content is thin.",
+            "fix": "Move the pill to the top-right at y ~130-170, smaller (22-24px). Heads are left-centre in every scene, and the top right is free in 3, 4 and 5. In scene 2 it only touches the garland, so shift it left there. Keep the independence wording in scenes 1 and 6 only, and do not repeat it in every scene's caption zone."
+          },
+          {
+            "severity": "nice",
+            "scene": "1 (disclaimer legibility)",
+            "problem": "'A concept by IV Infotech · not affiliated with Shyamal Group' is about 22px, white over lit skyline windows, and wraps with an orphan word 'Group'. It is the main independence line at the start, so it needs to be clean.",
+            "fix": "Use two balanced lines on a translucent dark bar: 'Independent concept by IV Infotech.' / 'Not affiliated with Shyamal Group.' at ~26px. Add 'AI voice' here as well, so the voice is disclosed from the first second. The WhatsApp message text already repeats it."
+          },
+          {
+            "severity": "nice",
+            "scene": "4a (PDF 'Project brochure')",
+            "problem": "A published project brochure is NOT verified. The mock implies they have one. It is labelled Example, so it is safe, but a builder with no brochure may read it as a gap.",
+            "fix": "Label the PDF 'Project details (PDF)' on screen, while the voice can still say 'brochure'. This keeps the scene true whatever they actually have."
+          },
+          {
+            "severity": "nice",
+            "scene": "Style consistency",
+            "problem": "The video mixes painterly AI backgrounds, flat-vector people, a glossy gradient robot and white UI cards. The characters are stills with a slow zoom. The reference is one coherent dark flat language. Ours reads as polished but assembled, which is why reviewers land at 5 to 6 and not higher.",
+            "fix": "Pick one language. Keep the painterly rooms, but give the people and the robot the same flat outline and shading. Add micro-motion on the beats: the phone glow pulses, the robot nods when a message sends, the dots in the progress strip fill. Use their navy and gold for the cards and strip so the video feels like their site."
+          }
+        ],
+        "what_works": [
+          "The round-1 compliance fixes are visibly in place: EXAMPLE and ILLUSTRATION chips, 'Example chat' headers, the hypothetical night, no 'Hot', no 'Ready possession', the independence line in scene 1 and 'Voice is AI' in scene 6. Compliance reads as about 8/10.",
+          "The lead's own S logo, 'shyamal' wordmark, navy and gold palette and Diwali lights give instant recognition in the first frame. As a WhatsApp thumbnail it will get a builder to press play.",
+          "Scene 2 uses a verified, checkable fact (one of their ad versions has the Send WhatsApp message button). It is the one moment that proves we really looked at them, even though it is under-used.",
+          "The night-to-morning arc (10:47 PM to 'next morning') is a good story spine. Scene 5's Example buyer A/B/C rows with 'Visit picked' and 'Asked' are clean, readable and compliant.",
+          "The layout is disciplined. Characters sit in the upper area, cards and one 36px caption pill in the lower band, and essential content stays inside y 140-1080, so the frames read cleanly on a phone.",
+          "The wording stays within the soft-claim rules: 'can', 'about a minute', no 'free', no 'instant', no invented numbers, and the lead's team is never shown failing."
+        ],
+        "ready_to_show_the_owner": false
+      }
+    ],
+    "synthesis": {
+      "overall": "NOT ready for the owner. Round-1 compliance fixes are in (EXAMPLE tags, hypothetical night, no \"Hot\", no \"free\", no \"instant\", 28px closing disclaimer). Still wrong: (1) honesty: their S logo is used as the sender avatar and dashboard header, the brochure is shown as theirs, the scene 1 independence line is unreadable, and \"Concept by\" reads \"V Infotech\"; (2) two visible build faults: the waving robot has no body in scenes 5 and 6 (cause: duplicate SVG gradient id \"ivg\", so the torso paints transparent), and the 4b still shows visit times instead of the three questions; (3) persona: no gain stated in the first 5 s, and the CTA does not say what the tap does. Voice track stays as recorded. Not adopted because each would force a new voice track: rewriting voice line 1, merging scenes 2+3, the three-ad-card hook, and cutting length to 25-30 s. Two optional tweaks the claims review proposed (\"can see ... take over\", \"send project details or a brochure\") are not needed, since the story is framed \"Say it is...\" and every card is labelled Example.",
+      "ready_to_show_the_owner": false,
+      "remaining_blockers": [
+        {
+          "scene": "3, 4a-c, 5 (chat avatar and list header)",
+          "change": "Remove their S logo from the mock WhatsApp contact avatar and from the enquiry-list header. Use plain text \"Shyamal Park Lane\" with a neutral house icon. Keep their logo only in scene 1 and in the scene 2 ad card.",
+          "why": "Shows their registered mark as the sender of an automatic reply and as owner of a dashboard they do not have. It implies they already use or endorse it."
+        },
+        {
+          "scene": "1 (independence line and ribbon)",
+          "change": "Put the independence line on a dark navy plate, 28-30px, two balanced lines, with \"AI voice\" added, clear of the lit windows (no orphan \"Group\"). Delete the gold ribbon.",
+          "why": "This is the only compliance text in the first 30 s, and at 24px over busy windows a muted viewer cannot read it. The ribbon paraphrases their \"first 5 bookings\" claim and repeats their own ad."
+        },
+        {
+          "scene": "4a (brochure card)",
+          "change": "Relabel the PDF card \"Brochure or project details\" with \"PDF · example\" underneath. Remove \"Sent automatically\".",
+          "why": "A published brochure is not verified. The card shows a document under their name that they may not have."
+        },
+        {
+          "scene": "4b (questions beat)",
+          "change": "Make the questions beat its own visible card: three tappable-looking rows \"3 or 4 BHK?\", \"Budget?\", \"Buying timeline?\", each labelled Example. The beat exists in the build code but is only ~2.6 s. Lengthen it to at least 3 s. Re-grab the QA still at about 55% of scene 4 (t≈28 s). Check a frame at the midpoint of each beat (brochure, questions, visit times). Switch the caption per beat (see wording changes). Do not use the loan question; their SBI-loan offer is asterisked.",
+          "why": "The voice says \"ask three quick questions\" over a screen that shows visit times. The beat cannot be signed off, and the muted viewer never sees the qualification step."
+        },
+        {
+          "scene": "2-5 (\"Concept by\" pill)",
+          "change": "Write the pill as text \"Concept by IV Infotech\". Show it large only in scenes 1 and 6. In scenes 2-5 drop it, or shrink it to a low-opacity corner mark at top-left, y about 100-140, above the heads.",
+          "why": "The glyph reads \"V Infotech\", so our name is wrong. The pill also sits on the characters' hair and forehead in 3, 4 and 5."
+        },
+        {
+          "scene": "5 and 6 (waving IV robot)",
+          "change": "Give each robot instance a unique gradient id (ivg4, ivg5, ivg6), or fill the torso with flat #2F55F4. Re-render 4, 5 and 6. On the dark scene 6 background add a soft rim light so the head shows.",
+          "why": "Scenes 5 and 6 show a floating face, arm, badge and feet with no body. That is the last frame the owner sees."
+        },
+        {
+          "scene": "3 (night buyer)",
+          "change": "Use a calm, neutral buyer (the repo's B3_night_neutral.jpg or B2_night_relieved.jpg) with a soft rim light. Keep the phone glow below the chin and off the face. Size the chat card to its content so it has no empty lower half.",
+          "why": "A ghostly, frowning face over an empty chat reads as \"waiting, unanswered\". That is a dig at their team and looks cheap beside scene 2."
+        },
+        {
+          "scene": "1 (first 5 s)",
+          "change": "Replace the ribbon with one headline: \"A tap at night can become a visit time by morning.\" Keep the logo, \"Shyamal Park Lane\", and a smaller \"An IV Infotech idea\" pill (the voice says it). Make the headline bigger than the pill.",
+          "why": "The opener says who it is about but not what is on offer. A busy director sees his own logo used by a vendor and gets no gain."
+        },
+        {
+          "scene": "6 (CTA)",
+          "change": "Order top to bottom: robot, \"See it for Shyamal Park Lane\", one line saying what the tap does, “Yes, send the demo”, then the down arrow last, pointing toward the bottom edge where WhatsApp's real button sits. Move the 28px disclaimer above the arrow, under the IV plate. Shrink the IV plate to about 65% and add the text \"IV Infotech\" under it. Keep \"Voice is AI\". Before using the \"what the tap does\" line, confirm it is exactly what the button triggers.",
+          "why": "\"The demo\" is undefined, and the fear of a sales call is the main brake on tapping. The arrow now points at the disclaimer, not at the button."
+        },
+        {
+          "scene": "5 (hand-over)",
+          "change": "Add a small chip on the top row or an arrow from it: \"Your team takes over\". Optionally turn the woman's gaze toward the list.",
+          "why": "The voice says \"then takes over\" but nothing on screen shows it, so the first objection (who replies after the first message) goes unanswered."
+        },
+        {
+          "scene": "WhatsApp message text (outside the video, fix before send, not before showing the owner)",
+          "change": "Add a one-line opt-out to the message text, e.g. \"Reply STOP to opt out\". Send manually, one recipient, to a contact from their own public channels.",
+          "why": "The video asks for a tap on a marketing quick-reply and the 28px line covers AI voice and non-affiliation, not opt-out."
+        }
+      ],
+      "polish": [
+        {
+          "scene": "2 (ad tap)",
+          "change": "Move the finger to the right end of the button, below the \"Send\" label, with a ripple ring and no text covered. Move the card down 20-30px so it clears the man's hands. Show their logo once on the card, not twice."
+        },
+        {
+          "scene": "4a-c",
+          "change": "Size the card to its content. Let the thread build up instead of replacing each card. Make the robot smaller with a ground shadow, in the empty right-hand area, away from the hands."
+        },
+        {
+          "scene": "3",
+          "change": "Show the time once, in the bubble. Drop it from the caption."
+        },
+        {
+          "scene": "5",
+          "change": "Raise background contrast and saturation to match scenes 2-4. Match the woman's style to the flat man if it is cheap to do."
+        },
+        {
+          "scene": "All scenes",
+          "change": "Captions on one line at about 32px with a softer fill and a thinner gold stroke. Colour-grade all backgrounds to one navy, teal and gold palette. Keep the 140-1080 safe band."
+        },
+        {
+          "scene": "Build check",
+          "change": "timeline.json still lists 53.7 s. Confirm the final MP4 is about 40 s and a small file. Check that each scene's text is on screen for its whole voice line, and that scene 6's text stays up for the whole closing line."
+        }
+      ],
+      "wording_changes": [
+        {
+          "where": "Scene 1 independence line",
+          "old": "A concept by IV Infotech · not affiliated with Shyamal Group",
+          "new": "Independent concept by IV Infotech · AI voice / Not affiliated with Shyamal Group (two lines)"
+        },
+        {
+          "where": "Scene 1 ribbon",
+          "old": "Your Diwali offer · first 5 bookings only",
+          "new": "A tap at night can become a visit time by morning."
+        },
+        {
+          "where": "Scene 2 ad card",
+          "old": "Diwali offer · first 5 bookings (offer pill) and tag \"ILLUSTRATION\"",
+          "new": "Remove the offer pill, keep \"3 & 4 BHK · Bhayli\". Tag becomes \"EXAMPLE · ILLUSTRATION\"."
+        },
+        {
+          "where": "4a card",
+          "old": "Project brochure / Sent automatically",
+          "new": "Brochure or project details / PDF · example"
+        },
+        {
+          "where": "Scene 4 caption, beat 1 (brochure)",
+          "old": "Example: automatic reply, about a minute",
+          "new": "Example: first reply in about a minute"
+        },
+        {
+          "where": "Scene 4 caption, beat 2 (questions)",
+          "old": "Example: automatic reply, about a minute",
+          "new": "Example: three quick questions"
+        },
+        {
+          "where": "Scene 4 caption, beat 3 (visit times)",
+          "old": "Example: automatic reply, about a minute",
+          "new": "Example: visit times offered"
+        },
+        {
+          "where": "Scene 5 caption",
+          "old": "Next morning: who asked, who picked a visit",
+          "new": "Example: next morning, who asked, who picked a visit"
+        },
+        {
+          "where": "Scene 5 list header",
+          "old": "All enquiries in one list",
+          "new": "Enquiries in one list"
+        },
+        {
+          "where": "Scene 5 buyer C status",
+          "old": "No slot yet",
+          "new": "Asked"
+        },
+        {
+          "where": "Scene 3 caption",
+          "old": "Example: 10:47 PM, a buyer asks for details",
+          "new": "Example: a buyer asks for details (10:47 PM stays in the bubble only)"
+        },
+        {
+          "where": "\"Concept by\" pill",
+          "old": "Concept by [glyph] Infotech",
+          "new": "Concept by IV Infotech"
+        },
+        {
+          "where": "Scene 6 sub-line (new, under the title)",
+          "old": "(none)",
+          "new": "We send a sample chat here on WhatsApp. (confirm the tap does this; add \"no call needed\" only if true)"
+        },
+        {
+          "where": "Scene 6 IV plate",
+          "old": "logo glyph only",
+          "new": "logo plus the text \"IV Infotech\""
+        }
+      ],
+      "voice_script_changes": "no change",
+      "estimated_tap_probability": "About 10% now (range 7-14%), about 14-18% once the fixes above land. This is one reviewer's rough estimate for a cold pitch to a family-run builder."
+    }
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Review"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Synthesize"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "review2:visual",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "a020ca1ee5ad6320c",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792575488947,
+      "queuedAt": 1792575488856,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Round 2 is cleaner and safer than round 1, and the complian…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~40 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a \"Yes, send the demo\" quick-reply button and a page button, and its text repeats an independence / AI-voice line. Product pi…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575590428,
+      "tokens": 79063,
+      "toolCalls": 12,
+      "durationMs": 101480,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"Round 2 is cleaner and safer than round 1, and the compliance fixes are visibly in place. It is still not at the NotebookLM level the owner asked for. It reads as a branded ad template with illustrated backgrounds, not a calm explainer. There are two real rendering or sequence faults: the waving robot in scenes 5 and 6 has lost its blue body, and the 4b \\\"three ques…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "review2:claims",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "a5d09ba4f56cb6056",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792575488947,
+      "queuedAt": 1792575488856,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Claims-wise this is much safer than round 1: every spoken c…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~40 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a \"Yes, send the demo\" quick-reply button and a page button, and its text repeats an independence / AI-voice line. Product pi…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575708818,
+      "tokens": 102269,
+      "toolCalls": 17,
+      "durationMs": 216158,
+      "resultPreview": "{\"score_out_of_10\":7,\"verdict\":\"Claims-wise this is much safer than round 1: every spoken claim traces to a verified fact, no \\\"free\\\" or \\\"instant\\\" appears, nothing says they are slow or lack an auto-reply, and scene 6 discloses AI voice and non-affiliation clearly. It is not ready to show yet, for five reasons. (1) The \\\"questions\\\" still (4b) shows the visit-time beat, so that beat is unverifi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "review2:lead",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "aa2b7eeecae4609f6",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792575488947,
+      "queuedAt": 1792575488857,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "AS THE SHYAMAL DIRECTOR, second by second (intended ~40 s; …",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~40 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a \"Yes, send the demo\" quick-reply button and a page button, and its text repeats an independence / AI-voice line. Product pi…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575720353,
+      "tokens": 97166,
+      "toolCalls": 21,
+      "durationMs": 227692,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"AS THE SHYAMAL DIRECTOR, second by second (intended ~40 s; I assume the first frame is the thumbnail and the rest plays muted).\\n\\n0-5 s, scene 1. I stop. It is my own S logo, my project name, my Diwali ribbon, Bhayli, a Diwali night skyline. It is clearly about me, and that is the strongest thing in the video. But I get nothing about the gain. \\\"An IV Infotech idea…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "review2:persuasion",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "af4ae51bfe184f489",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792575488947,
+      "queuedAt": 1792575488857,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Not ready. It is now a compliant, tidy video, but it does n…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send this ~40 second vertical video (720x1280) as the header of a WhatsApp message to ONE real-estate builder: Shyamal Group (Vadodara), about its project Shyamal Park Lane in Bhayli. The WhatsApp message also has a \"Yes, send the demo\" quick-reply button and a page button, and its text repeats an independence / AI-voice line. Product pi…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575691142,
+      "tokens": 83488,
+      "toolCalls": 12,
+      "durationMs": 198479,
+      "resultPreview": "{\"score_out_of_10\":5,\"verdict\":\"Not ready. It is now a compliant, tidy video, but it does not yet beat the Nexus360 reference, and two new visible defects have appeared. Compliance is about 8/10: the round-1 labelling fixes are visibly in place. Craft is about 6/10. Strategy is about 4/10.\\n\\nThe reference works because the first frame is a person in pain and the next frames build a diagram of the…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "synthesize2",
+      "phaseIndex": 2,
+      "phaseTitle": "Synthesize",
+      "agentId": "a4090ed2094307d69",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792575722748,
+      "queuedAt": 1792575722693,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "NOT ready for the owner. Round-1 compliance fixes are in (E…",
+      "promptPreview": "Merge four round-2 reviews of a lead video into ONE short list. Campaign honesty rules come first, then the lead persona, then polish. Only list what is still wrong; list nothing that round 1 already fixed. Say plainly whether the video can be shown to the owner now. If the voice script must change AGAIN, say so loudly and give the exact replacement line(s), because the owner may already be record…",
+      "promptFramed": true,
+      "lastProgressAt": 1792575834963,
+      "tokens": 79418,
+      "toolCalls": 1,
+      "durationMs": 112214,
+      "resultPreview": "{\"overall\":\"NOT ready for the owner. Round-1 compliance fixes are in (EXAMPLE tags, hypothetical night, no \\\"Hot\\\", no \\\"free\\\", no \\\"instant\\\", 28px closing disclaimer). Still wrong: (1) honesty: their S logo is used as the sender avatar and dashboard header, the brochure is shown as theirs, the scene 1 independence line is unreadable, and \\\"Concept by\\\" reads \\\"V Infotech\\\"; (2) two visible buil…"
+    }
+  ],
+  "totalTokens": 441404,
+  "totalToolCalls": 63
+}

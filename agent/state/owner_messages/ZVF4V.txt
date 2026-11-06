@@ -1,0 +1,20 @@
+APPROVAL NEEDED [ZVF4V]
+CREATE WHATSAPP TEMPLATE (submit to Meta)
+To: the WhatsApp Business account
+Lead label (typed by the agent, not checked): Internal: owner alerts
+Template name: iv_lead_alert_v1
+Language: en   Category: UTILITY
+Header: none
+Agent's reason (typed by the agent, not checked): template for the sales agent's alerts to the owner when his 24 h window is closed (UTILITY, internal, no links, no buttons)
+--- text ---
+IV Infotech sales agent update: {{1}}
+
+Details: {{2}}
+
+Please open the chat to reply.
+--- end of text ---
+Body examples: a lead needs you | Project: Sample Heights. They wrote: can someone call me tomorrow. Agent replied: our team will message you. Chat: wa.me/919800000000
+Other fields in the spec: {"purpose": "owner_alert"}
+This code approves exactly the text above and nothing else.
+Reply OK ZVF4V to approve, NO ZVF4V to skip.
+Valid till 20 Oct 04:28 IST.

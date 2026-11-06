@@ -1,0 +1,28 @@
+{
+ "rank": 1,
+ "business": "Detailing Culture",
+ "city": "Bodakdev (SG Highway), Ahmedabad",
+ "what_they_do": "Single-outlet car care, PPF/ceramic/graphene, marine PPF; listed as Garware Application Studio",
+ "website": "https://detailingculture.in (own site, live)",
+ "website_status": "own site alive, no proof content",
+ "signal_observed": "Own site is live with a /booking form (name, phone, vehicle, date, time -> /api/bookings), but /gallery/photos says 'No project photos have been added yet' and /gallery/videos says 'No project videos have been added yet'; no Google-reviews widget; no packages by car size (only marine PPF tiers). Opened 2026-11-04.",
+ "signal_url": "https://detailingculture.in/gallery/photos",
+ "signal_date": "2026-11-04 (date we opened it; the source shows no date)",
+ "signal_date_kind": "scrape_date_only",
+ "why_need": "A booking page exists but there is no before/after proof and no review proof; exactly the 'proof page' half of the offer. Not a loss claim.",
+ "contact_routes": "Phone 9825033072 listed by Garware (https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad); phone/WhatsApp +91 91063 26281 on own site (https://detailingculture.in/ , wa.me/919106326281). Instagram detailing_culture1, Facebook page. Business-published only.",
+ "brand_franchise_flag": "single outlet, no franchise claim",
+ "newest_review_date": "unknown (Google not readable)",
+ "owner_replies_in_newest_3": "unknown",
+ "ad_status": "unknown",
+ "safe_first_message_slot": "other: 'site has a booking form but its photo and video galleries are empty' (not a/b/c/d; a/b not provable). Use only the literally true gallery sentence.",
+ "tier": "verified",
+ "multi_source": true,
+ "source_ids": [
+  "garware-llumar-registers",
+  "web-instagram-direct-sites"
+ ],
+ "confidence": "high on the signal, medium on reachability (two different phone numbers)",
+ "keep_reason": "Signal opened by me, identity matched in 2 places (Garware row address == site address). Site looks new (2026) so the owner is investing and the gallery gap is easy to fix.",
+ "unknowns": "Owner name not shown; which number reaches the owner (Garware 9825033072 vs site 9106326281); Google profile state; may already be building the gallery."
+}

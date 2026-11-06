@@ -1,0 +1,1600 @@
+{
+ "V3": {
+  "lens": "V3",
+  "summary": "Only one Gujarat line verifiably pays for software: the ERP refund (65%, cap Rs 1 lakh; manufacturing MSMEs; GST-registered provider; claim within a year of installation). Official 2022 documents I opened show the ICT refund (65%, cap Rs 5 lakh) covers hardware and cloud-access equipment only, excludes software, and excludes service and trading firms. The 2026 scheme (1 Jun 2026 to 31 May 2031) is known only from press of 9 Oct 2026; the official GR was not found, so 2026 scope for software, service firms and the 85% resident-workforce rule is unconfirmed. No refund line exists for websites, apps, e-commerce or marketing; central Digital MSME could not be shown as live. The refund is paid after the owner pays; the full 65% applies only to bills up to about Rs 1.54 lakh. One Ahmedabad consultancy found, no fees, no ERP uptake data.",
+  "findings": [
+   {
+    "topic": "Gujarat ICT assistance (Aatmanirbhar Gujarat MSME scheme, GR 5 Oct 2022) - official guideline text",
+    "kind": "official_rule",
+    "detail": "I opened the official draft guideline. It pays 65% of capital expenditure on ICT facilities, maximum Rs 5 lakh in total over the scheme period (up to three applications; operative 5 Oct 2022 to 4 Oct 2027). Covered: equipment for cloud access and networking such as switches, routers, backup devices, servers and computers. The text states that the capital cost does not include the software part of the ICT system, so custom software, ERP licences and websites are NOT paid by this line. Service and trading activities are not eligible. Hardware supplier must be an OEM, authorised distributor or dealer with GST registration; spend must fall within one year before installation; apply on the IFP portal plus hard copy at the District Industries Centre within one year of installation; MSME or DPIIT registration needed. File is labelled Draft; server date 5 May 2023.",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ICT%20Guideline.pdf",
+    "date": "GR 5 Oct 2022; file dated 5 May 2023; opened 28 Oct 2026",
+    "strength": "strong",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Gujarat ICT claim checklist and application form (2022 scheme)",
+    "kind": "official_rule",
+    "detail": "Official checklist (server date 22 Aug 2023) is titled for the MSME manufacturing sector. It asks for Udyam/IEM/LOI certificate, constitution, a CA certificate on fixed capital investment, a CA-certified expenditure statement, undertaking on other state or central aid, bills, a highlighted bank statement, PAN, GST, last balance sheet or ITR, last electricity bill, GPCB consent if applicable, and a project report on ICT/cloud with benefit analysis. The form (same server date) asks for hardware suppliers and the cloud provider, and the signatory confirms the enterprise has manufacturing activity and accepts recovery of the money if any condition is broken. Shows the paperwork load on a small unit (two CA documents plus a hard copy). Application form: https://msmec.gujarat.gov.in/uploads/pdf/uCIIumrSsli7H9jpsZxXdPb1du1k49sw.pdf",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/pdf/xsmVJtvbWSPhLp9EzH9iTJA-Hm9-2t2i.pdf",
+    "date": "server date 22 Aug 2023; opened 28 Oct 2026",
+    "strength": "strong",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Gujarat MSME Commissionerate scheme page (which refund lines have live forms)",
+    "kind": "official_rule",
+    "detail": "Official page, shown as updated 6 Oct 2026, still presents the 2022 scheme (GR 5 Oct 2022) and hosts forms and checklists for ERP, ICT, quality certification, ZED, patent, technology acquisition, energy and water savings, SME Exchange, power connection, rent, solar interest subsidy, EPF reimbursement, SGST and capital/interest subsidy. There is no item for websites, e-commerce, digital marketing, mobile apps or exhibitions. Applications route through the Investor Facilitation Portal. The 2026 policy is linked from the menu but not covered on the page. Read through a page-reading tool, not by eye.",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=76",
+    "date": "page updated 6 Oct 2026; opened 28 Oct 2026",
+    "strength": "strong",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Gujarat ERP assistance (2022 scheme) - carried from phase 1, not re-opened by me",
+    "kind": "official_rule",
+    "detail": "Phase-1 verifier extracted and read the Draft ERP Guideline: 65% of ERP capital cost, maximum Rs 1 lakh over up to three applications; manufacturing MSMEs only (service and trading excluded) with Udyam or DPIIT registration; ERP should cover production, inventory, sales, purchase, accounting and HR; provider must be an independent software publisher or authorised provider with GST registration; SaaS subscriptions and new modules or users count, hardware does not; apply on IFP plus hard copy within one year of installation; operative to 4 Oct 2027. I confirmed the ERP form and checklist are live on the forms page and that the sibling ICT guideline has the same structure (65%, GST-registered supplier, manufacturing only, one-year filing window).",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf",
+    "date": "GR 5 Oct 2022; phase-1 read 28 Oct 2026",
+    "strength": "strong",
+    "effect_on_candidate": "strengthens"
+   },
+   {
+    "topic": "Gujarat Industrial Policy 2026 MSME assistance scheme - ERP and ICT lines (press only)",
+    "kind": "news",
+    "detail": "DeshGujarat and The Secretariat (both 9 Oct 2026, one government announcement) list ERP at 65% of capital cost, cap Rs 1 lakh, and ICT / Industry 4.0 at 65% of eligible ICT capital expenditure, cap Rs 5 lakh. Period 1 Jun 2026 to 31 May 2031; payments made from 1 Jan 2026 can be considered; components can be combined up to an overall 45% (Category A taluka) or 35% (Category B) of eligible fixed capital investment. Neither article gives a GR number, portal, Udyam rule, or says whether software, cloud or websites fall under ICT or whether service and trading firms qualify; The Secretariat calls manufacturing central. Cloud, other software, website, digital marketing and e-commerce are not mentioned. The official 2026 GR was not found (ic.gujarat.gov.in returned HTTP 500).",
+    "source_url": "https://deshgujarat.com/2026/10/09/gujarat-announces-comprehensive-msme-assistance-scheme-under-industrial-policy-2026/",
+    "date": "9 Oct 2026",
+    "strength": "medium",
+    "effect_on_candidate": "strengthens"
+   },
+   {
+    "topic": "Gujarat Industrial Policy 2026 - AI subscription aid",
+    "kind": "news",
+    "detail": "Press says up to 80% of AI subscription fees, capped at Rs 1 lakh a year for three years, for micro enterprises and artisans in thrust sectors (sports equipment, toys, footwear, robots, drones). The Secretariat notes the wording is ambiguous on whether micro enterprises in general qualify or only those in thrust sectors. No official text found; unknown whether a vendor-built automation counts as a subscription. If all micro units qualified it would be a lever for AI automation; on the phase-1 reading it is a tiny segment. Watch item only.",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes",
+    "date": "9 Oct 2026",
+    "strength": "medium",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Gujarat Industrial Policy 2026 - 85% Gujarat-resident workforce condition",
+    "kind": "news",
+    "detail": "Both press articles state that enterprises receiving assistance must keep at least 85% of the total workforce and 60% of managerial and supervisory staff as Gujarat residents, presented as a scheme-wide condition with no ERP exemption mentioned. The 2022 ERP and ICT guideline texts read by me and phase 1 contain no such condition. Whether it applies to the ERP line is unknown and could exclude units with migrant labour.",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes",
+    "date": "9 Oct 2026",
+    "strength": "medium",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Gujarat Industrial Policy 2026 - quality certification, ZED, technology acquisition and other non-software lines",
+    "kind": "news",
+    "detail": "Quality certification (national and international): 50% of fees and needed testing equipment, cap Rs 10 lakh. ZED (state top-up): up to 50% of the charge left after central aid, cap Rs 50,000 (The Secretariat). Technology acquisition from recognised institutions: 65%, cap Rs 50 lakh (Rs 1 crore in thrust sectors). Patent registration 75%, cap Rs 25 lakh. Capital subsidy up to 35% (Category A) or 25% (B) of eligible fixed capital investment; interest subsidy 7% on term loans for five years. None of these pays for software, websites or marketing; they matter only as conversation openers with manufacturers.",
+    "source_url": "https://deshgujarat.com/2026/10/09/gujarat-announces-comprehensive-msme-assistance-scheme-under-industrial-policy-2026/",
+    "date": "9 Oct 2026",
+    "strength": "medium",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Older Gujarat MSME ERP and ICT lines (Industrial Policy 2020 era)",
+    "kind": "news",
+    "detail": "Invest India's blog on the 2020 policy lists ERP at 65% of cost, cap Rs 1 lakh, and ICT implementation at 65%, cap Rs 5 lakh, under special benefits; it does not define ICT, does not say whether software counts or whether only manufacturers qualify, and gives no dates for the lines. Other marketing aid in that policy is exhibition stall rent (75% up to Rs 2 lakh domestic); no website, e-commerce or digital-marketing line. Implication: the ERP refund has been on offer since 2020, so it is not a new trigger, and I found nobody marketing it. Secondary sources date the 2020 scheme 7 Aug 2020 to 6 Aug 2025 (not verified).",
+    "source_url": "https://www.investindia.gov.in/team-india-blogs/understanding-gujarat-industrial-policy-2020-part-34-subsidies-and-incentives",
+    "date": "1 Oct 2020",
+    "strength": "medium",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Gujarat quality certification assistance (2022 scheme, ISO consultancy-fee line)",
+    "kind": "official_rule",
+    "detail": "Search-result summary of the Industries Commissionerate page: 50% of certification fees, with ISO consulting fees covered at 50% up to Rs 50,000, overall cap Rs 10 lakh, manufacturing MSMEs only, apply within one year of certification, statutory certifications and renewals excluded. Page not opened by me. Pattern confirms the manufacturing-only design across lines; not a software line.",
+    "source_url": "https://ic.gujarat.gov.in/assistance-for-quality-certification.aspx",
+    "date": "undated page; summary seen 28 Oct 2026",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Gujarat capital and interest subsidy guideline (2022 scheme) - service sector excluded",
+    "kind": "official_rule",
+    "detail": "Search-result summary of the Draft Capital and Interest Subsidy Guideline says service-sector enterprises are not eligible for capital subsidy; operative 5 Oct 2022 to 4 Oct 2027. Page not opened by me. Consistent with the ICT guideline I did open, where service and trading are explicitly excluded.",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20Capital%20and%20Interest%20Subsidy%20Guideline.pdf",
+    "date": "file dated 2023; summary seen 28 Oct 2026",
+    "strength": "weak",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Digital MSME scheme (central; ICT, cloud and accounting-software support)",
+    "kind": "price_page",
+    "detail": "NSIC's official Digital Services page lists ERP, accounting, compliance software, cloud (SaaS and PaaS), AI, e-commerce and hardware offered to MSMEs, but mentions no subsidy or reimbursement: MSMEs pay the full price through the MSMEmart portal and NSIC adds a 6% aggregator charge; the only provider listed is Dun & Bradstreet. Page says last updated 6 May 2024 while the footer shows 27 Oct 2026. Secondary sites say Digital MSME once reimbursed up to about Rs 1 lakh and was folded into MSME Champions with NSIC as implementing agency from Nov 2023; I could not confirm it is live, so it should not be used as a selling lever.",
+    "source_url": "https://nsic.co.in/Schemes/DigitalServices",
+    "date": "page note 6 May 2024; footer 27 Oct 2026",
+    "strength": "medium",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "MSME TEAM initiative under RAMP (central; ONDC onboarding)",
+    "kind": "news",
+    "detail": "IBEF (12 Aug 2025): the Ministry of MSME will help micro and small enterprises join ONDC through onboarding, digital cataloguing, account management, logistics and packaging help, plus training; target 5 lakh MSEs, 2.5 lakh of them women-owned, tier-II and tier-III cities first. No rupee amounts and no statement that the MSE receives money. A separate Procurement and Marketing Support scheme subsidises MSME Global Mart onboarding (no figures). So the central e-commerce help found is free onboarding support, not a refund for buying a store or website, and it competes with a paid set-up for tiny sellers.",
+    "source_url": "https://www.ibef.org/news/micro-small-and-medium-enterprises-msme-ministry-empowers-micro-and-small-enterprises-mses-with-digital-and-e-commerce-support-under-raising-and-accelerating-msme-performance-ramp",
+    "date": "12 Aug 2025",
+    "strength": "medium",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "ZED certification (central MSME Sustainable ZED scheme)",
+    "kind": "statistic",
+    "detail": "Current-affairs summary of a PIB item (5 Aug 2026): as of 31 Jul 2026, 9,83,003 MSMEs registered and 7,03,585 certified; revised ZED 2.0 framework from 18 Sep 2024; 100% subsidy for women-owned MSMEs since 11 Nov 2023. Rates differ by source (80/60/50% by size in older summaries; up to 75% capped at Rs 50,000 in a KNN Aug 2026 summary). A certification subsidy, not for software; useful only as proof that central refund schemes can reach large numbers. Pages not opened.",
+    "source_url": "https://superkalam.com/current-affairs/05-08-2026/msme-sustainable-zed-certification-strengthening-quality-sustainability-and-women-led-enterprises-faa1e76e-56cd-44a8-90e8-9469d0c53b68",
+    "date": "5 Aug 2026 (data as of 31 Jul 2026)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Central MSME technology-upgrade programme (Budget 2026-27 coverage) and CLCSS",
+    "kind": "news",
+    "detail": "A Mint-sourced pre-Budget report carried by Outlook Business says the MSME ministry was considering a Rs 2,000 crore technology upgrade programme with a 20% capital subsidy for energy-efficient machinery, automation and smart manufacturing for MSMEs with turnover under Rs 50 crore. Described as under discussion; I found no approval and no official notice. It is machinery-focused, not software. The old CLCSS was not checked in this run.",
+    "source_url": "https://www.outlookbusiness.com/industry/india-msme-tech-upgrade-carbon-tariffs-budget",
+    "date": "2026, pre-Budget (exact date not shown)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "SSIP 2.0 / i-Hub seed support and iCreate Pro-Fund Gateway (startup schemes)",
+    "kind": "directory",
+    "detail": "Aggregator listings (Aug 2026): Startup Srujan seed support of about Rs 2.5-10 lakh for student-linked early-stage innovators, and iCreate Pro-Fund Gateway prototype funding up to Rs 30 lakh. These fund the startup itself, not a rebate on buying third-party software, and the SSIP route is tied to students; sources disagree on amounts and I could not open the official i-Hub or iCreate pages. Could let a startup pay for an MVP build, but it is a niche outside owner-led local businesses.",
+    "source_url": "https://startupgrantsindia.com/student-start-up-and-innovation-policy-ssip-20-35",
+    "date": "Aug 2026 listings",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Subsidy-filing consultancy in Ahmedabad (governmentsubsidy.co)",
+    "kind": "directory",
+    "detail": "A business page lists the Atma Nirbhar Gujarat Scheme for Assistance to MSMEs among its services next to other Gujarat incentive schemes, with an Ahmedabad (Prahladnagar) address; the page I read is a scheme explainer for the large-industry line, copyright 2024, comment stamp 4 Nov 2024. No fee is shown. So claim-help is sold by at least one firm, but there is no price, volume or client evidence, and no CA or consultant fee for ERP or ICT claims was found.",
+    "source_url": "https://governmentsubsidy.co/ova_sev/atma-nirbhar-gujarat-scheme-for-assistance-to-large-industry-and-thrust-sector/",
+    "date": "4 Nov 2024",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "ISO certification sellers use the state refund as a selling hook (Ahmedabad listing)",
+    "kind": "directory",
+    "detail": "Search summary of a commercial ISO-certification page for Ahmedabad (RegisterKaro) says the Industries and Mines Department gives a 50% reimbursement on certification costs; no consultant price was given. Shows the subsidy-as-hook pattern is used for certification, while no ERP vendor using the ERP refund was found in English or Gujarati searches (search tool is US-centred). Page not opened.",
+    "source_url": "https://www.registerkaro.in/iso-certification-in-ahmedabad",
+    "date": "undated; summary seen 28 Oct 2026",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Complaint signal: GCCI meeting on access to state incentives (16 Oct 2026)",
+    "kind": "public_complaint",
+    "detail": "The Gujarat Chamber of Commerce and Industry met the Industrial Extension Bureau on 16 Oct 2026 to raise practical problems with the new policy, including whether service-sector businesses qualify for industrial incentives, whether NBFC-financed units get capital and power subsidies, whether solar spend counts toward the 50% expansion threshold, and whether exhibition and market-development aid continues. The report mentions no payment delays or claims backlog. It shows eligibility under the 2026 policy, including for service firms, was still being asked about a week ago.",
+    "source_url": "https://indiashippingnews.com/?p=98865",
+    "date": "17 Oct 2026 (meeting 16 Oct 2026)",
+    "strength": "medium",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Payment-delay precedent: Surat textile power subsidy (Gujarat Textile Policy 2019)",
+    "kind": "public_complaint",
+    "detail": "Apparel Resources (5 Jan 2024): more than 3,800 Surat entrepreneurs whose applications were approved by the District Industries Centre and the District Collector were still waiting for the power subsidy (Rs 3 per unit LT, Rs 2 per unit HT) when the policy deadline of 31 Dec 2023 passed; the Southern Gujarat Chamber wrote to the state to clear the files; no government response reported. Different scheme, department and year, so it is a risk precedent for refund-after-payment hooks, not evidence about the MSME ERP line. No ERP-line complaint was found.",
+    "source_url": "https://apparelresources.com/business-news/manufacturing/surat-textile-sector-awaiting-power-subsidy/",
+    "date": "5 Jan 2024",
+    "strength": "medium",
+    "effect_on_candidate": "weakens"
+   },
+   {
+    "topic": "Uptake: Aatmanirbhar Gujarat 2022 scheme overall (carried from phase 1, not re-opened)",
+    "kind": "statistic",
+    "detail": "Phase-1 verifier read a report of 17 May 2025 (headline: Gujarat disburses Rs 7,864 crore to MSMEs in five years) saying the 2022 scheme paid about Rs 245 crore on more than 2,400 claims. ERP and ICT shares and processing times are not stated. My arithmetic: about Rs 10 lakh per claim on average, so the total is dominated by large capital and interest claims, not Rs 1 lakh ERP claims. My searches for ERP- or ICT-line claim counts (including assembly replies) found nothing.",
+    "source_url": "https://investmentguruindia.com/newsdetail/gujarat-disburses-rs-7-864-crore-to-msmes-in-five-years-tops-in-zed-certification128344",
+    "date": "17 May 2025",
+    "strength": "medium",
+    "effect_on_candidate": "strengthens"
+   },
+   {
+    "topic": "Pool proxy: Gujarat MSME registrations",
+    "kind": "statistic",
+    "detail": "Search summary of an IANS item says a Rajya Sabha reply reported 37,56,390 new MSME registrations in Gujarat in the five years from July 2020 and 8,779 closures. All activity types and sizes are mixed; no manufacturing split found, so the eligible ERP segment is NOT sized. Page not opened.",
+    "source_url": "https://ianslive.in/gujarat-sees-over-37-lakh-new-msme-registrations-in-last-5-years-union-minister--20250722112247",
+    "date": "22 Jul 2025",
+    "strength": "weak",
+    "effect_on_candidate": "neutral"
+   },
+   {
+    "topic": "Viksit Gujarat Industrial Policy 2026 - launch and sector focus",
+    "kind": "news",
+    "detail": "Search summaries of Elets and other outlets: launched 15 Jun 2026, effective 1 Jun 2026 for five years, incentives of 15-50% scaled by investment, jobs, technology and location, with a Choose Your Incentive model. Priority sectors named include green energy, auto, semiconductors, capital equipment, textiles, chemicals, agro and food, pharma and recycling; IT and services do not appear in the lists seen, which fits an industrial, manufacturing-led design. Pages not opened.",
+    "source_url": "https://egov.eletsonline.com/2026/06/gujarat-launches-industrial-policy-2026-targets-10-lakh-crore-in-investments/",
+    "date": "15 Jun 2026",
+    "strength": "weak",
+    "effect_on_candidate": "weakens"
+   }
+  ],
+  "open_questions_answered": [
+   {
+    "question": "Can we sell with 'the state refunds a large part of the cost' as the money lever, and for which segments: manufacturing only, or also service and trading firms?",
+    "answer": "Yes for one segment only: Gujarat manufacturing MSMEs buying an ERP. Refund = 65% of the ERP cost, hard cap Rs 1 lakh, so the full 65% applies only up to a bill of about Rs 1.54 lakh; effective discount is about 33% at Rs 3 lakh and 20% at Rs 5 lakh (my arithmetic). Service and trading firms are explicitly excluded in the 2022 ICT guideline I opened and, per the phase-1 extraction, in the ERP guideline. For the 2026 scheme no official text was found and GCCI was still asking on 16 Oct 2026 whether service-sector firms qualify. Treat as manufacturing-only until the department says otherwise. It cannot be used for clinics, coaching, real estate, retail or traders.",
+    "confidence": "medium",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ICT%20Guideline.pdf"
+   },
+   {
+    "question": "Does custom software, a website or a mobile app qualify for any refund?",
+    "answer": "ICT line: no for software (the guideline excludes the software part; it pays networking, server, computer and cloud-access equipment) and nothing names websites or apps. ERP line: software cost, installation, annual service fee and SaaS subscription count, hardware does not (phase-1 extraction); it does not say 'custom', it asks for an independent software publisher or authorised provider with GST registration and says the ERP should cover production, inventory, sales, purchase, accounting and HR. IV Infotech's GST status is unconfirmed. Websites, apps, e-commerce and digital marketing: no line on the MSME Commissionerate forms page (6 Oct 2026) or in the 2026 press summaries.",
+    "confidence": "medium",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=76"
+   },
+   {
+    "question": "What are the claim steps, documents and processing time?",
+    "answer": "Refund after payment: the owner pays 100% first. Apply online on the IFP portal and file a hard copy at the District Industries Centre within one year of installation. Documents (ICT checklist; ERP checklist per phase 1 is similar plus a supplier installation certificate and module description): Udyam/IEM/LOI, constitution, CA certificate on fixed capital investment, CA-certified expenditure statement, undertaking on other government aid, bills, highlighted bank statement, PAN, GST, last balance sheet or ITR, electricity bill, project report. No claim-to-payment time is published in anything I read, and I found no measured time for the ERP line.",
+    "confidence": "high",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/pdf/xsmVJtvbWSPhLp9EzH9iTJA-Hm9-2t2i.pdf"
+   },
+   {
+    "question": "Is there evidence of uptake or disbursement for these lines?",
+    "answer": "Whole scheme only: about Rs 245 crore on 2,400+ claims under the 2022 scheme (report of 17 May 2025, carried from phase 1). No ERP- or ICT-line claim counts, amounts or delays found; an assembly-reply search returned nothing. The ERP/ICT lines have existed since the 2020 policy (Invest India, 1 Oct 2020) yet I found no vendor marketing them, which is either white space or low demand and cannot be told apart from desk research.",
+    "confidence": "low",
+    "source_url": "https://investmentguruindia.com/newsdetail/gujarat-disburses-rs-7-864-crore-to-msmes-in-five-years-tops-in-zed-certification128344"
+   },
+   {
+    "question": "Who markets the schemes or files claims for a fee, and at what price?",
+    "answer": "One Ahmedabad consultancy (governmentsubsidy.co) lists the Atma Nirbhar Gujarat MSME scheme among its services; no fee published. No CA or consultant price for ERP/ICT claims found. ISO-certification sellers in Ahmedabad use the 50% state reimbursement as a hook (search summary). No ERP vendor using the ERP refund as a hook was found in English or Gujarati searches; the search tool is US-centred and I did not recheck the Meta Ad Library.",
+    "confidence": "low",
+    "source_url": "https://governmentsubsidy.co/ova_sev/atma-nirbhar-gujarat-scheme-for-assistance-to-large-industry-and-thrust-sector/"
+   },
+   {
+    "question": "Are there complaints about the schemes?",
+    "answer": "None specific to the ERP or ICT line. Related: GCCI met the Industrial Extension Bureau on 16 Oct 2026 about practical problems in accessing incentives (service-sector eligibility, NBFC-financed units, solar threshold, market-development aid) - eligibility questions, not payment delays. A payment-delay precedent exists in another Gujarat scheme: more than 3,800 approved Surat textile units were still unpaid on the power subsidy when the Textile Policy 2019 deadline passed (Apparel Resources, 5 Jan 2024).",
+    "confidence": "medium",
+    "source_url": "https://indiashippingnews.com/?p=98865"
+   },
+   {
+    "question": "Which rulebook governs a new ERP invoice, and does the 85% Gujarat-resident workforce rule apply to the ERP line?",
+    "answer": "Unresolved. The official 2026 GR was not found (ic.gujarat.gov.in returned HTTP 500; the MSME Commissionerate page updated 6 Oct 2026 still shows only the 2022 scheme). Press of 9 Oct 2026 says payments from 1 Jan 2026 count and states the 85% workforce and 60% managerial residency condition for assisted enterprises generally; the 2022 ERP and ICT texts have no such condition. Needs a written answer from the department.",
+    "confidence": "low",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes"
+   },
+   {
+    "question": "Is any central scheme live that refunds software, ERP, websites or digital marketing?",
+    "answer": "Not verified as live. Digital MSME (reported cap about Rs 1 lakh) is not shown as a subsidy on NSIC's official Digital Services page: MSMEs pay the full price plus a 6% aggregator charge. RAMP TEAM gives free ONDC onboarding and cataloguing help (target 5 lakh MSEs, IBEF 12 Aug 2025) with no money to the MSE. ZED is a certification subsidy. A Rs 2,000 crore technology-upgrade programme (20% capital subsidy on machinery and automation) was reported as under consideration before Budget 2026-27 and is unconfirmed. CLCSS and PM Vishwakarma-type schemes were not checked.",
+    "confidence": "medium",
+    "source_url": "https://nsic.co.in/Schemes/DigitalServices"
+   },
+   {
+    "question": "Is there any refund for retailers, e-commerce set-up or digital marketing in Gujarat?",
+    "answer": "None found. The Gujarat MSME forms page (6 Oct 2026) has no e-commerce, website, digital-marketing or exhibition item; the 2020 policy summary had exhibition stall-rent aid only; the 2026 press mentions none, and on 16 Oct 2026 GCCI asked whether market-development aid will continue. Trading firms are excluded from the ICT line in the 2022 text. The only central e-commerce help found is free onboarding (TEAM).",
+    "confidence": "medium",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=76"
+   },
+   {
+    "question": "Do startup schemes (iCreate, SSIP) work as a money lever for our services?",
+    "answer": "Not as a buyer rebate. Aggregator listings (Aug 2026) show seed support of about Rs 2.5-10 lakh (SSIP/i-Hub, student-linked) and iCreate prototype funding up to Rs 30 lakh. These fund the startup, which could in principle pay for an MVP, but the segment is student-led startups, not owner-led local businesses, and official pages were not opened.",
+    "confidence": "low",
+    "source_url": "https://startupgrantsindia.com/student-start-up-and-innovation-policy-ssip-20-35"
+   },
+   {
+    "question": "Could the AI-subscription aid subsidise our AI automation offer?",
+    "answer": "Only if the line is read broadly and a vendor-built automation counts as a subscription, neither of which is shown. Press (9 Oct 2026) says up to 80% of AI subscription fees, cap Rs 1 lakh a year for three years, for micro enterprises and artisans in thrust sectors (sports equipment, toys, footwear, robots, drones); press wording is ambiguous on whether all micro units qualify. No official text. Watch item.",
+    "confidence": "low",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes"
+   },
+   {
+    "question": "Can lines be stacked, and can the refund be claimed in stages for a small first step?",
+    "answer": "2026 press: components can be combined up to an overall cap of 45% (Category A taluka) or 35% (Category B) of eligible fixed capital investment (50%/45% in thrust sectors); in the 2022 text state plus central aid cannot exceed actual spend. Since ICT excludes software, ERP is the only software-paying line, so there is nothing to stack for us. The ICT text allows up to three applications within its Rs 5 lakh cap and phase 1 reads the same for ERP within Rs 1 lakh; whether staged module delivery counts as 'an ERP' is untested. A Rs 25,000-50,000 first step would refund only about Rs 16,000-32,500 (my arithmetic) even if accepted.",
+    "confidence": "low",
+    "source_url": "https://deshgujarat.com/2026/10/09/gujarat-announces-comprehensive-msme-assistance-scheme-under-industrial-policy-2026/"
+   },
+   {
+    "question": "How big is the eligible segment?",
+    "answer": "Not sized from a source. Proxy only: 37,56,390 new MSME registrations in Gujarat in five years from July 2020, all activity types and sizes (Rajya Sabha reply via IANS, 22 Jul 2025, search summary). No manufacturing split found; the beachhead (wire, cable-harness, electrical and electronic units with 15-100 staff) is a small slice and remains unsized.",
+    "confidence": "low",
+    "source_url": "https://ianslive.in/gujarat-sees-over-37-lakh-new-msme-registrations-in-last-5-years-union-minister--20250722112247"
+   }
+  ],
+  "verdict_for_candidate": {
+   "direction": "unchanged",
+   "reason": "The ERP refund is real and still live (forms page updated 6 Oct 2026; 2026 press repeats the same 65% / Rs 1 lakh), so N2's core money lever stands at the strength phase 1 gave it. But the 'stack' idea fails: the ICT line excludes software, no line refunds websites, apps, e-commerce or marketing, and service and trading firms are excluded in the 2022 rules, so the lever cannot be sold to clinics, coaching, real estate or retail. The lever is also narrow: the refund is capped at Rs 1 lakh, paid only after the owner pays and files CA-certified papers, and has existed since 2020 without any marketer found. Its 2026 scope is unconfirmed: GCCI was still asking eligibility questions on 16 Oct 2026, and a Gujarat textile subsidy sat unpaid for 3,800+ approved units at its Dec 2023 deadline. Net: no score change. Cheapest decisive check: a written answer from the MSME Commissionerate on 2026 ICT software cover, service/trading eligibility, and custom-ERP and module rules.",
+   "recommended_scores": {
+    "pain_evidence": 1,
+    "paid_today": 3,
+    "urgency_now": 3,
+    "reachability_owner_on_whatsapp": 4,
+    "pool_size": 4,
+    "our_fit_and_speed": 4,
+    "competition_gap": 3
+   }
+  },
+  "did_not_work": "ic.gujarat.gov.in home page returned HTTP 500, so I could not look for the official Industrial Policy 2026 MSME GR or new guideline files. The 28-page 2022 GR PDF on msmec.gujarat.gov.in is an image-only scan (no text layer) and could not be read; the 2022 scheme terms come from the draft guideline PDFs and forms instead. KNN India page on the 2026 scheme timed out. myScheme pages returned only a JavaScript shell or footer text. I did not re-open the Draft ERP Guideline; ERP rule details are carried from the phase-1 verifier's text extraction. Items marked weak or 'search summary' (ZED figures, Budget 2026-27 coverage, SSIP/iCreate, RegisterKaro, IANS pool figure, Investment Guru uptake figure, Capital/Interest guideline, quality-certification page, Elets) were not opened by me. No consultant or CA fee for ERP/ICT claims, no ERP- or ICT-line uptake or processing-time data, and no official status for Digital MSME or CLCSS were found; the Gujarati-language search returned only an English summary and WebSearch is US-centred, so local-language consultant and vendor content is under-sampled. Not researched: Gujarat IT/ITeS and Textile Policy 2024, PMFME, PM SVANidhi, Export Promotion Mission, tourism incentives, and the Covid-era 'Atmanirbhar Gujarat Sahay' loan scheme (not confirmed as a separate live scheme). About 46 tool calls used.",
+  "est_cost_usd": 0.03
+ },
+ "V2": {
+  "lens": "V2",
+  "summary": "The official 2026 GR (25 Sep 2026, para 8.1) confirms the ERP refund (65%, cap Rs 1 lakh) to 31 May 2031 for manufacturing, processing and job-work MSMEs of all sizes, with no empanelment rule on the pages I read. Against N2: the claim window is now 6 months after installation (2022 draft: 12); the ERP is described as production, inventory, sales, purchase, accounting and HR, while our demo has purchase and stock done, production partial, and sales, accounting, HR and login missing; the 2026 guideline and forms are not yet published (online forms date from 2023). I found no ERP uptake figure, delay complaint, marketer of the refund, Gujarat price quote or owner voice. The pool cannot be sized from public data; 28 sample units are listed. Verdict: weaker than phase 1; run the written gate first.",
+  "findings": [
+   {
+    "topic": "2026 GR confirms the ERP refund line (para 8.1)",
+    "detail": "Govt of Gujarat, Industries and Mines Dept, GR IMD/WRT/e-file/9/2026/2630/CH dated 25 Sep 2026 (Viksit Gujarat Industrial Policy 2026, scheme for assistance to MSMEs; in force 1 Jun 2026 to 31 May 2031). Para 8.1: aid of 65% of the capital cost of installing an ERP, capped at Rs 1,00,000 over the scheme period. Capital cost means installation, software and annual service cost; hardware excluded; SaaS annual subscription counts. Sanctioning authority in the para 23.2 table is the MSME Commissioner. The PDF is a 32-page scan, so I read it from page images (pages 1-8 and 16-30) and paraphrase it here.",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf",
+    "date": "2026-09-25",
+    "strength": "strong",
+    "effect_on_candidate": "strengthens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "Who qualifies under the 2026 GR",
+    "detail": "Para 8 opens by saying the manufacturing sector is eligible. Para 1.1 defines an enterprise as a legal entity (company, firm incl. LLP, society, trust, co-operative or proprietorship) engaged in manufacturing, production, processing or job work, so job-work units are inside. Para 1.2 sizes MSMEs by plant-and-machinery investment: micro up to Rs 2.5 crore, small up to Rs 25 crore, medium up to Rs 125 crore, so a 15-100 staff unit qualifies on size. Service and trading are excluded in the 2022 ERP guideline and repeated in 2026 paras 15.4 and 17.2.",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf",
+    "date": "2026-09-25",
+    "strength": "strong",
+    "effect_on_candidate": "strengthens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "Six-month claim window and module list in the 2026 clause",
+    "detail": "Para 8.1(d): the application must be filed within six months of the ERP installation date (the 2022 draft allowed one year). Para 8.1(a) describes an ERP system with server and software covering production, inventory control, sales, purchase, accounting and HR 'etc.', and the lead-in says 'Next generation ERP related to day to day operations of unit'. 'Next generation' is not defined and nothing says every module is compulsory or only an example.",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf",
+    "date": "2026-09-25",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "2026 GR leaves supplier and process rules to later guidelines",
+    "detail": "On the pages read, the 2026 ERP clause has no supplier condition (no GST, publisher or empanelment wording), no new-module or three-application wording and no processing time. Para 22.5 lets the MSME Commissioner issue separate implementation guidelines. Para 22.4 makes any breach recoverable with 18% yearly interest. Para 20 says a unit drawing another state-scheme incentive must opt for one (my reading: a unit that already took the Rs 1 lakh under the 2022 scheme may have no fresh headroom). The msmec page for the 2026 policy lists only the GR, no ERP form or guideline.",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=131",
+    "date": "2026-10-28",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "2022 draft ERP guideline: definition, modules, supplier",
+    "detail": "Draft guideline under GR MIS-102022-1271(1)-I(CH) of 5 Oct 2022, operative to 4 Oct 2027 (file labelled Draft, in a 2023 folder). ERP means a fully integrated system on a single database, application and user interface. It 'should' cover production, inventory control, sales, purchase, accounting and HR; installation is verified for network linkage with server and software. The supplier must be an independent software publisher or authorised software provider with GST registration. MSME registration (Ministry of MSME or DPIIT) and manufacturing activity are needed; service and trading are out. No empanelment or approved-vendor list is mentioned.",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf",
+    "date": "2022-10-05",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "2022 draft allows added modules and staged claims",
+    "detail": "Same guideline: spend on a new module, an added module or new users in an existing ERP is eligible, renewals are not; up to three applications with a combined cap of Rs 1,00,000; payments up to one year before installation count; apply online on the IFP portal plus hard copy within one year. The official form asks for the 'ERP system/module' supplier and features of the module installed. So staged delivery is plausible, but the first install must still be an ERP system, and nothing says a one-module first release qualifies (my reading, untested).",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf",
+    "date": "2022-10-05",
+    "strength": "strong",
+    "effect_on_candidate": "strengthens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "Claim paperwork (20-item checklist) and stale forms",
+    "detail": "The MSME Commissionerate page hosts the ERP application form and a 20-item checklist: Udyam/IEM/LOI certificate, CA certificate on fixed capital investment, CA-certified expenditure statement, bill, highlighted bank statement, supplier installation certificate, ERP module description, GPCB consent if applicable, shareholding pattern, PAN, cancelled cheque, GST registration, CA-certified balance sheet, latest electricity bill, board resolution. Both PDFs carry a Last-Modified header of 22 Aug 2023 and cite the 2022 GR, so they are old-scheme forms; I found no 2026 ERP form. The owner pays in full first and needs a CA.",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=76",
+    "date": "2026-10-28",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "No processing time; late-filing and clawback rules",
+    "detail": "Neither document gives a number of days for sanction or payment. The 2026 GR (paras 21.4 and 21.6) only says applications are to be disposed of within the 'prescribed time limit'. Para 21.2 allows late filing up to two years with a proportionate cut, but it sits in the eligibility-certificate section, so I cannot say it covers ERP claims. Breach allows recovery with 18% interest (para 22.4). No practitioner report on ERP-claim speed was found.",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf",
+    "date": "2026-09-25",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "85% Gujarat-resident workforce condition not found in the ERP line",
+    "detail": "I found no residency condition in the ERP clause (para 8.1), in the general conditions (paras 20-22) or in the 2022 draft ERP guideline. The 9 Oct 2026 press (opened by the phase-1 verifier, not re-opened by me) states an 85% workforce and 60% managerial-staff residency condition for beneficiaries generally. GR pages 9-15 (capital and interest subsidy, eligibility certificates) and 31-32 were not read, so a scheme-wide clause there is not ruled out.",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes",
+    "date": "2026-10-09",
+    "strength": "medium",
+    "effect_on_candidate": "neutral",
+    "kind": "news"
+   },
+   {
+    "topic": "Other lines in the same GR: ICT and AI subscription",
+    "detail": "Para 10: 65% of capital spend on ICT equipment, networking and hardware for cloud, Industry 4.0 or AI-related technology, cap Rs 5 lakh, claim within six months of installation, sanctioned by the district GM-DIC. Whether software or an automation build counts is not stated. Para 19.7 (AI subscription, 80% up to Rs 1 lakh a year for 3 years) is limited to micro enterprises and artisans in thrust sectors (sports goods, toys, footwear, robots, drones, others notified), so wire and harness units are outside it.",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf",
+    "date": "2026-09-25",
+    "strength": "medium",
+    "effect_on_candidate": "neutral",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "ERP-line uptake and delay data not found",
+    "detail": "Three targeted searches by this lens found no ERP claim count, assembly reply, RTI or delay complaint. Only whole-scheme data: the 2022 scheme paid about Rs 245 crore on more than 2,400 claims per a 17 May 2025 report (read by the phase-1 verifier, not re-opened here); the ERP share is unknown.",
+    "source_url": "https://investmentguruindia.com/newsdetail/gujarat-disburses-rs-7-864-crore-to-msmes-in-five-years-tops-in-zed-certification128344",
+    "date": "2025-05-17",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "The refund is an old hook and nobody was found selling it",
+    "detail": "The same 65% ERP line (cap Rs 1 lakh, hardware excluded) is described in the Gujarat MSME Incentive Policy 2020 text hosted by ICAI's western regional council (search snippet, not opened), in the 2022 scheme and now the 2026 GR, so it has existed about six years. Six English and Gujarati searches by this lens returned only official pages, aggregators (myscheme.gov.in, youthpower.in, publicservicesmap.in) and 2026 press. No ERP vendor, Tally, Zoho or Odoo partner, CA or consultant page selling the refund was found. That can mean unused white space or weak pull; the evidence cannot say which.",
+    "source_url": "https://old.wirc-icai.org/images/material/MSME-INCENTIVE-POLICY-2020-GUJ-JJ.pdf",
+    "date": "2020 file; searched 2026-10-28",
+    "strength": "weak",
+    "effect_on_candidate": "weakens",
+    "kind": "other"
+   },
+   {
+    "topic": "ERP price and project-length benchmarks (India-wide vendor blogs)",
+    "detail": "No Gujarat micro or small unit quote was found. Vendor blogs (search summaries, pages not opened, undated) give: basic web ERP for small shops Rs 50,000-2 lakh; medium manufacturers Rs 2-10 lakh; cloud ERP Rs 5-25 lakh plus subscription; Odoo or ERPNext builds Rs 3-20 lakh; one guide Rs 60,000-20 lakh overall; ERPNext for small firms 6-12 weeks, mid-market 2-4 months. My arithmetic: the refund hits its Rs 1 lakh cap at about Rs 1.54 lakh of eligible spend, so a Rs 1.5 lakh build nets about Rs 52,500 after refund, while a Rs 3 lakh build still costs Rs 2 lakh net.",
+    "source_url": "https://www.sagesoftware.co.in/erp/how-much-does-erp-cost/",
+    "date": "undated; searched 2026-10-28",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "price_page"
+   },
+   {
+    "topic": "Vendor case: MySolar, Ahmedabad (Odoo by Softhealer)",
+    "detail": "Vendor case study (search snippet, page not opened, undated): an Ahmedabad solar balance-of-system maker ran Zoho Books plus separate systems; the vendor says manual processes caused stock mismatches, over-procurement and production delays, and headlines a 30% efficiency gain. A vendor claim, not an owner interview; no mention of the state refund seen.",
+    "source_url": "https://softhealer.com/blog/erp-case-study-19/how-odoo-erp-implementation-in-solar-manufacturing-improves-operational-efficiency-by-30-14853",
+    "date": "undated; searched 2026-10-28",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "vendor_case_study"
+   },
+   {
+    "topic": "Vendor case: Florex Green Pipes, Rajkot (Odoo)",
+    "detail": "Vendor case study (snippet only, undated): a Rajkot PVC pipe maker moved from Excel-based work, where stock was not tracked in a structured system, to Odoo in a stated 4-month project; headline 25% less manual work. It gives one Gujarat project-length data point and a pain description, both written by the vendor.",
+    "source_url": "https://softhealer.com/blog/erp-case-study-19/how-florex-green-pipes-reduced-manual-work-by-25-using-odoo-erp-14854",
+    "date": "undated; searched 2026-10-28",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "vendor_case_study"
+   },
+   {
+    "topic": "Job post: Purchase Executive, Vatva GIDC",
+    "detail": "R.K. Automation Solution (electrical automation) advertised a Purchase Executive in Vatva GIDC, Ahmedabad, at Rs 22,000-30,000 a month, covering RFQs, comparison sheets, inventory coordination and material planning; walk-in window 4-18 Aug 2026 (search summary; page not opened). One post only. Searches for store, planning or purchase roles in Kadi, Kalol, Chhatral, Naroda and Rajkot found no current posts.",
+    "source_url": "https://www.apna.co/job/ahmedabad/purchase-executive-electrical-automation-333318971",
+    "date": "2026-08-04",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "job_post"
+   },
+   {
+    "topic": "No new India MSME ERP-adoption or failure survey found",
+    "detail": "A search for 2026 surveys on ERP adoption, stock mismatch, late deliveries or costing errors in small Indian factories found none. Results were a 2024 study of 36 South Indian SMEs reporting fewer operational problems after ERP, a 2010 survey of 130 SMEs in one city, and a market forecast (India ERP market about US$1.24 billion in 2026, 16.08% yearly growth, summary of a Mordor report). All are small, old, regional or commercial. The vendor survey and the CII-ISB 21% figure from phase 1 were not re-checked here.",
+    "source_url": "https://archives.christuniversity.in/items/show/17918",
+    "date": "2024",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "Udyam and GIDC counts are all-sector and cannot size the beachhead",
+    "detail": "Gujarat added 37,56,390 MSME registrations between 1 Jul 2020 and 15 Jul 2025, with 8,779 closures (Rajya Sabha reply reported by IANS on 22 Jul 2025; snippet only). An undated article puts total registrations at 4,21,026 for Ahmedabad and 1,95,316 for Rajkot (low reliability). GIDC has 248 sanctioned estates, 182 functional, with no per-estate unit counts. No NIC-code, district or staff-band count was found.",
+    "source_url": "https://ianslive.in/gujarat-sees-over-37-lakh-new-msme-registrations-in-last-5-years-union-minister--20250722112247",
+    "date": "2025-07-22",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "Maps sample: reach signals",
+    "detail": "32 Google Maps listings from 8 searches (top 4 each) across the four clusters on 28 Oct 2026: 24 show a mobile-format number and 23 a website; 4 look like trading or non-manufacturing and were dropped. Of the 28 kept, 20 show a mobile-format number, 20 a website, 2 only a landline and 6 no number. Three of the 32 numbers share a 9512 prefix and may be forwarding lines (my inference, untested). Owner status and WhatsApp reach are untested; top-ranked listings favour firms with reviews and a web presence.",
+    "source_url": "https://console.apify.com/storage/datasets/l9lbGaoT0iankAKpx",
+    "date": "2026-10-28",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "directory"
+   },
+   {
+    "topic": "Our demo against the guideline's module list",
+    "detail": "Project tracker read 28 Oct 2026. Done: 14 masters; procurement (PO, GRN, inward QC, purchase invoice per GRN, purchase return); inventory (ledger, transfer, adjustment, valuation, opening stock, alerts). Partial: production (order, release, material issue; output, batch, scrap, routing and variance pending). Not started: login and multi-tenancy, finished-goods QC, sales with e-way bill and e-invoice (customer master only), accounting vouchers, GST reporting, expenses and fixed assets, dashboards and approvals, import and opening-balance migration. HR is not in the phase plan at all. Against the six areas: 2 done, 1 partial, 3 missing.",
+    "source_url": "file:///C:/Users/Administrator/Desktop/wire_soldering/tracker.md",
+    "date": "2026-10-28",
+    "strength": "strong",
+    "effect_on_candidate": "weakens",
+    "kind": "other"
+   }
+  ],
+  "open_questions_answered": [
+   {
+    "question": "Who qualifies for the ERP refund (manufacturing only, Udyam, micro, small, medium)?",
+    "answer": "Manufacturing, processing and job-work enterprises only; service and trading are excluded. All three size classes qualify (2026: plant-and-machinery investment up to Rs 2.5, 25 and 125 crore). A Udyam, IEM or LOI registration is needed (checklist). Job work is inside the 2026 definition.",
+    "confidence": "high",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf"
+   },
+   {
+    "question": "Does the 85% Gujarat-resident workforce condition apply to the ERP line?",
+    "answer": "Not found in the ERP clause, the GR's general conditions (paras 20-22) or the 2022 draft guideline. The 9 Oct 2026 press states it for beneficiaries generally. GR pages 9-15 and 31-32 were not read, so it is unresolved; ask the Commissionerate.",
+    "confidence": "low",
+    "source_url": "https://thesecretariat.in/article/gujarat-rolls-out-policy-to-support-msmes"
+   },
+   {
+    "question": "What is the exact definition of an ERP and are accounting and HR mandatory or only examples?",
+    "answer": "2022 draft: a fully integrated system on one database, application and user interface that should cover production, inventory control, sales, purchase, accounting and HR etc. The 2026 GR repeats the list and adds 'next generation' ERP for day-to-day operations. Neither says every module is compulsory and neither says they are only examples; no official clarification was found.",
+    "confidence": "medium",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf"
+   },
+   {
+    "question": "Does module-by-module delivery count?",
+    "answer": "Unclear. The 2022 draft accepts new modules, added modules and new users in an existing ERP, with up to three applications to Rs 1 lakh, and the form says 'ERP system/module'. But the first install must be an ERP system whose server and software linkage is verified, so a one-module first release is at risk. Needs a written answer.",
+    "confidence": "low",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf"
+   },
+   {
+    "question": "What are the supplier conditions (GST, publisher or authorised provider, empanelment)?",
+    "answer": "2022 draft: independent software publisher or authorised software provider with GST registration, plus a supplier installation certificate. The 2026 GR is silent on the pages read. No empanelment list or approved-vendor list was found in either document or in searches.",
+    "confidence": "medium",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf"
+   },
+   {
+    "question": "What are the claim steps and documents?",
+    "answer": "2022 route: online on the IFP portal plus hard copy at the MSME Commissioner's office. 2026 GR: apply within 6 months of installation; sanction by the MSME Commissioner. The 20-item checklist needs CA certificates, a bank-paid bill, the supplier installation certificate, a module description and Udyam. The 2026 form is not yet published.",
+    "confidence": "medium",
+    "source_url": "https://msmec.gujarat.gov.in/posts?id=76"
+   },
+   {
+    "question": "What is the processing time from claim to payment?",
+    "answer": "Neither document gives a number of days, and no practitioner report was found.",
+    "confidence": "high",
+    "source_url": "https://msmec.gujarat.gov.in/uploads/governmentresolutions/VGIPAssistancetoMSME.pdf"
+   },
+   {
+    "question": "Are there disbursement or uptake figures for the ERP line, or complaints about delays?",
+    "answer": "None found. Whole 2022 scheme: about Rs 245 crore on 2,400+ claims (17 May 2025 report, read by the phase-1 verifier). ERP share unknown.",
+    "confidence": "low",
+    "source_url": "https://investmentguruindia.com/newsdetail/gujarat-disburses-rs-7-864-crore-to-msmes-in-five-years-tops-in-zed-certification128344"
+   },
+   {
+    "question": "What must a small custom-ERP builder like IV Infotech have to be a valid supplier?",
+    "answer": "On the documents read: a GST registration and GST invoices; to be the publisher of the software (own code) or an authorised provider of it; a signed installation certificate listing modules and installation date; a live install with server and software linkage an officer can verify; a bank-paid invoice the customer's CA can certify; and in practice the six module areas or a written OK for staged delivery. Not required on the documents: empanelment, turnover, years in business or certification. IV Infotech's GST status is unconfirmed (not in the files searched; ivinfotech.com could not be fetched).",
+    "confidence": "medium",
+    "source_url": "https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ERP%20Guideline.pdf"
+   },
+   {
+    "question": "Who markets or uses the refund?",
+    "answer": "No vendor, partner, CA or consultant selling it and no Gujarat unit that claimed it was found. Gujarat manufacturers do run ERP (vendor cases: MySolar Ahmedabad, Florex Rajkot, Husaingadh), but none of the snippets seen mentions the refund.",
+    "confidence": "low"
+   },
+   {
+    "question": "What ERP prices and project lengths are quoted to Gujarat micro and small units?",
+    "answer": "No Gujarat quote found. India-wide vendor blogs: Rs 50,000-2 lakh basic, Rs 2-10 lakh medium manufacturing, 6-12 weeks to 4 months; one Rajkot Odoo case study says 4 months.",
+    "confidence": "low",
+    "source_url": "https://www.sagesoftware.co.in/erp/how-much-does-erp-cost/"
+   },
+   {
+    "question": "What would a credible first release need?",
+    "answer": "Login and roles; sales with GST invoice (e-way bill later); accounting-lite (ledgers, receipts, payments, GST summary, Tally export); HR-lite (employee master, attendance, leave, payroll sheet); production output, scrap and costing; one database and one screen set; an installation-certificate template; deployment on a server at or for the unit. My estimate: 8-12 weeks of full-time build on top of today's purchase and stock core.",
+    "confidence": "low"
+   },
+   {
+    "question": "What should the written gate ask the MSME Commissionerate?",
+    "answer": "(1) Which rulebook and form apply to an ERP installed now, and is a 2026 guideline due. (2) Is a custom ERP from a GST-registered firm that owns the code accepted. (3) Are accounting and HR compulsory; does a staged install qualify and does each stage restart the 6-month clock. (4) Does the 85% resident-workforce rule apply to ERP. (5) Time from complete claim to payment, ERP claims paid so far, common rejections. (6) Does the ICT line (Rs 5 lakh) cover software or automation.",
+    "confidence": "medium"
+   },
+   {
+    "question": "Is the beachhead pool large enough?",
+    "answer": "Not sizable from public data. My estimate is about 500-2,500 units across the four clusters (low confidence). 28 named sample units are listed.",
+    "confidence": "low"
+   }
+  ],
+  "pool": {
+   "definition": "Owner-run manufacturing and job-work units with about 15-100 staff in wire, cable and harness, electrical and electronic assembly, and small engineering and job work, in Mehsana-Kadi-Kalol-Chhatral, Ahmedabad (Naroda, Vatva, Odhav, Changodar), Rajkot and Gandhinagar; must hold Udyam and be manufacturing or job work, not trading or service.",
+   "count_found": "No public count by NIC code, district or staff band was found. All-sector context: Gujarat added 37,56,390 MSME registrations from 1 Jul 2020 to 15 Jul 2025 (IANS 22 Jul 2025, snippet); undated district totals Ahmedabad 4,21,026 and Rajkot 1,95,316 (low reliability); GIDC 248 sanctioned estates, 182 functional. My estimate, low confidence: about 500-2,500 beachhead units across the four clusters. Sample: 28 named listings kept from 32 Maps results.",
+   "method": "Google Maps through Apify (compass/crawler-google-places), 8 searches with the top 4 results each, 28 Oct 2026, cost under USD 0.3; 4 trading or non-manufacturing listings dropped. Estimate chain (my assumptions, shares not sourced): about 7-8 lakh Udyam registrations in the four districts (Mehsana and Gandhinagar guessed) x about 20% manufacturing x about 3-5% with 15+ staff x about 15-25% in the beachhead subsectors = roughly 600-2,000, widened to 500-2,500. Maps returns top-ranked, well-reviewed firms only; staff size, ownership and WhatsApp reach are untested, and owner-run labels are inferred from names and listing shape. Changodar and Naroda gave no listings.",
+   "sample": [
+    {
+     "name": "Dhruv Electronics",
+     "city": "GIDC Chhatral",
+     "contact_type": "Maps: mobile-format number + website; looks owner-run (2 reviews, single site)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJK61q6L0lXDkRQztsiGHYwrY"
+    },
+    {
+     "name": "Schilthorn Precision Engineering Pvt. Ltd.",
+     "city": "Kalol (Chadasna)",
+     "contact_type": "Maps: mobile-format number + website; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJ____D4wkXDkRRoeycJQjsmk"
+    },
+    {
+     "name": "Innovision Systems And Devices (P) Ltd",
+     "city": "Chhatral",
+     "contact_type": "Maps: website only, no number on listing; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJzwsflYckXDkRS9iH_i5B5Cg"
+    },
+    {
+     "name": "Precision Mass Products Pvt Ltd",
+     "city": "GIDC Chhatral",
+     "contact_type": "Maps: landline + website; Pvt Ltd; category says equipment supplier, check it manufactures",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJ4abqnvMkXDkR3uVbfwpv9tM"
+    },
+    {
+     "name": "Jainson Cables India Pvt. Ltd.",
+     "city": "Kadi (Chandarda), Mehsana",
+     "contact_type": "Maps: mobile-format number + website; looks corporate, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJC7aKi5k8XDkR5gBZm51MumQ"
+    },
+    {
+     "name": "Mynax Cables Private Limited",
+     "city": "Indrad, Kadi",
+     "contact_type": "Maps: landline with Bengaluru code + website; looks corporate",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJtU9OmpcjXDkRhEc-1eShT6c"
+    },
+    {
+     "name": "Orbit Wires India Limited",
+     "city": "Rajpur (Kadi)",
+     "contact_type": "Maps: mobile-format number + website; Limited company, looks corporate",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJ6QewUzI7XDkR_R1Vh3qKTz0"
+    },
+    {
+     "name": "Johnsoncab Electricals Limited",
+     "city": "Linch, Mehsana",
+     "contact_type": "Maps: 9512-series mobile-format number (may be a forwarding line, my inference) + website; Limited company, looks corporate",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0d1IRvNBXDkR075ZAQHWTVI"
+    },
+    {
+     "name": "Celestix Industries India Pvt. Ltd.",
+     "city": "Giramtha, Ahmedabad",
+     "contact_type": "Maps: mobile-format number + website; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJrVZlKACPXjkRI0tAISIFClo"
+    },
+    {
+     "name": "Jetex Cable Industries",
+     "city": "Odhav, Ahmedabad",
+     "contact_type": "Maps: no number or website on listing; looks owner-run (57 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJq6oZggGHXjkRvudZOaSJaWU"
+    },
+    {
+     "name": "Jainson Wires Pvt. Ltd. / Kimson India",
+     "city": "Sabarmati, Ahmedabad",
+     "contact_type": "Maps: mobile-format number + website; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJdX1WR5ODXjkRVgiO0rA8d1A"
+    },
+    {
+     "name": "Amtex Power Industries",
+     "city": "Odhav, Ahmedabad",
+     "contact_type": "Maps: website only, no number on listing; looks owner-run (75 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJq6qqeqaHXjkRhyrvqZvCV7A"
+    },
+    {
+     "name": "Adarsh Cables",
+     "city": "Kathwada (Odhav), Ahmedabad",
+     "contact_type": "Maps: mobile-format number + website; looks owner-run",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJuVS-ygmHXjkR4AogbbFTt8M"
+    },
+    {
+     "name": "Hiramani Cable Industries",
+     "city": "Kathwada (Odhav), Ahmedabad",
+     "contact_type": "Maps: mobile-format number only; looks owner-run (4 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJWy3qPaeHXjkRIJ1IsEaCbew"
+    },
+    {
+     "name": "Kailash Cord Cable",
+     "city": "Odhav, Ahmedabad",
+     "contact_type": "Maps: mobile-format number + template website; looks owner-run (1 review)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJxSRT9_yHXjkRg6fCOGRspCI"
+    },
+    {
+     "name": "Creative Engineering (CNC job work)",
+     "city": "Vatva GIDC, Ahmedabad",
+     "contact_type": "Maps: mobile-format number only; looks owner-run job-work unit (1 review)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJX6_4sPyJXjkR7B84DSNO7U4"
+    },
+    {
+     "name": "Alka Engineering (CNC, VMC, wire-cut job work)",
+     "city": "Vatva GIDC, Ahmedabad",
+     "contact_type": "Maps: mobile-format number only; looks owner-run job-work unit",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJnW5PYgCHXjkRsJ-qiIrPFLA"
+    },
+    {
+     "name": "Satyam Engineering Works",
+     "city": "Vatva GIDC, Ahmedabad",
+     "contact_type": "Maps: no number or website on listing; looks owner-run (57 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJGwuV98mJXjkR5ALHPRuBUbo"
+    },
+    {
+     "name": "Varun Engineering Works",
+     "city": "Vatva (Pushkar-2), Ahmedabad",
+     "contact_type": "Maps: mobile-format number + website; looks owner-run",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJ7065oYSJXjkRPJWFBAN2DlI"
+    },
+    {
+     "name": "Synchro Electricals Pvt. Ltd.",
+     "city": "Ravki (Lodhika), Rajkot",
+     "contact_type": "Maps: mobile-format number + website; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJUS6QvA41WDkRUQj7bpl_xGE"
+    },
+    {
+     "name": "Electro Control Systems India Pvt. Ltd.",
+     "city": "Aji Industrial Estate, Rajkot",
+     "contact_type": "Maps: 9512-series mobile-format number (may be a forwarding line, my inference) + website; Pvt Ltd, size unknown",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJJSsphfK1WTkRZp78iMfSHs8"
+    },
+    {
+     "name": "Spirit Engineering (CNC job work)",
+     "city": "Vavdi, Rajkot",
+     "contact_type": "Maps: mobile-format number only; looks owner-run",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJR6emLLrLWTkRqckX6f3s3Jc"
+    },
+    {
+     "name": "VMC-CNC Job Works (Bhagyashree Industries)",
+     "city": "Atika, Rajkot",
+     "contact_type": "Maps: no number or website on listing; looks owner-run",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJnQfAd2XLWTkRwFOsrZeIV3g"
+    },
+    {
+     "name": "Umang Engineering Works",
+     "city": "Madhapar, Rajkot",
+     "contact_type": "Maps: no number or website on listing; looks owner-run",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJHyxQgGLJWTkRgP6DtzEBFvw"
+    },
+    {
+     "name": "Metro Electronics",
+     "city": "GIDC Electronic Estate, Gandhinagar",
+     "contact_type": "Maps: mobile-format number + website; size unknown (125 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJAw2qRQosXDkRgYPUSYkDPtU"
+    },
+    {
+     "name": "A7 Circuit (PCB maker)",
+     "city": "GIDC Electronic Estate, Gandhinagar",
+     "contact_type": "Maps: mobile-format number + website; size unknown (150 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJSfmVZXvkCCcReni0K2wDN7s"
+    },
+    {
+     "name": "Ocean Electro Assemble Service",
+     "city": "GIDC Electronic Estate, Gandhinagar",
+     "contact_type": "Maps: mobile-format number + website; looks owner-run (17 reviews)",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJV46_P_ErXDkR7KYni1NglVM"
+    },
+    {
+     "name": "Reeyaa Circuit and Electronics (OPC) Pvt. Ltd.",
+     "city": "GIDC Electronic Estate, Gandhinagar",
+     "contact_type": "Maps: mobile-format number + website; One Person Company, so owner-run by form",
+     "source_url": "https://www.google.com/maps/place/?q=place_id:ChIJUdcVRi8rXDkRHnGBzxBX274"
+    }
+   ]
+  },
+  "verdict_for_candidate": {
+   "direction": "weaker",
+   "reason": "Weaker than phase 1 (22 of 35 down to about 18.5), not broken. Confirmed by the official 2026 GR: the ERP line is live to 31 May 2031, covers manufacturing, processing and job-work MSMEs of all three sizes, and shows no empanelment condition on the pages read. Weakened by: (1) the claim window is cut to 6 months after installation (2022 draft: 12); (2) the ERP is described as production, inventory, sales, purchase, accounting and HR, and our demo has 2 of 6 done, production partial, and sales, accounting, HR and login missing, so a first release may not count as an ERP; (3) the 2026 implementation guideline and forms are not published (the MSME Commissioner may issue them, GR para 22.5; the ERP forms online are 2023 files), so supplier rules rest on a 2022 draft needing a GST-registered publisher or authorised provider, and IV Infotech's GST status is unconfirmed; (4) the Rs 1 lakh cap means a Rs 3 lakh build still nets Rs 2 lakh; (5) still no owner voice, no uptake data, nobody found selling the refund in six years, and pain rests on vendor case studies. Next step: a free written gate to the MSME Commissionerate with the six questions in the Q&A list, plus a GST check. N2 stays a candidate only if staged delivery and a custom-built supplier are confirmed in writing; then build login, sales invoice, accounting-lite with Tally export, HR-lite and production output before any factory visit.",
+   "recommended_scores": {
+    "pain_evidence": 1.5,
+    "paid_today": 3,
+    "urgency_now": 2.5,
+    "reachability_owner_on_whatsapp": 3.5,
+    "pool_size": 3,
+    "our_fit_and_speed": 2.5,
+    "competition_gap": 2.5
+   }
+  },
+  "did_not_work": "The 2026 GR PDF is a 32-page scan with no text layer (WebFetch returned binary). I rendered pages to images with PyMuPDF and read them by eye, so wording is paraphrased and must be checked against the PDF before legal reliance. Read: pages 1-8 and 16-30. Not read: pages 9-15 (capital and interest subsidy, eligibility certificates) and 31-32, so a scheme-wide 85% residency clause is not ruled out. The 2022 main GR and the 38-page general guideline were not read; the ERP guideline is labelled Draft. No 2026 ERP guideline or form exists on the msmec pages I opened; the ERP form and checklist are 2023 files. Nothing found despite targeted searches in English and Gujarati: ERP-line uptake, assembly reply or RTI, claim-delay complaints, any vendor, CA or consultant marketing the refund, Gujarat ERP price quotes, NIC-code or district Udyam counts, and store, planning or purchase job posts in Kadi, Kalol, Chhatral, Naroda and Rajkot. WebSearch is US-centred and returns summaries: the Udyam, GIDC, price, vendor-case and Vatva job-post items were not opened by me. The Maps sample is top-ranked listings only (no Changodar or Naroda results); staff size, ownership and WhatsApp reach are untested and owner-run labels are inferred from names and listing shape. No association directories or IndiaMART pages were opened (budget). ivinfotech.com could not be fetched (connection refused), so IV Infotech's GST registration is unchecked. The B-Square survey and the CII-ISB 21% figure from phase 1 were not re-opened. No owner voice exists and nobody was contacted. About 49 tool calls used, slightly over the 45 budget.",
+  "est_cost_usd": 0.2
+ },
+ "V1": {
+  "lens": "V1",
+  "summary": "N1 gets slightly weaker, not broken. In 466 of the newest Google reviews of 22 Gujarat solar installers, none clearly complained about a stuck net meter or missing subsidy; the 24 low-star reviews (5%) were mostly about silence after the sale, installation delay and workmanship. Official pressure is real (MNRE 60-day advice, 66 vendors switched off, complaint SOP), but I could not count the Gujarat vendor pool (the portal is script-driven), found no Gujarat job post with portal-chasing duties, and the scheme still ends 31 March 2027 with no notified extension. QuickEstimate and RichAutomate already cover stage tracking and customer messages cheaply. Their public pages show no 30/45/60-day ageing alerts, 8/15-day complaint timers, Gujarati messages or done-for-you list loading, so a thin gap exists. Keep N1 only as a cheap one-week test.",
+  "findings": [
+   {
+    "topic": "Gujarat Google Maps reviews: what customers complain about (classification)",
+    "detail": "Apify Google Maps run on 28 Oct 2026: 24 rooftop-solar listings (4 each for Mehsana, Gandhinagar, Ahmedabad, Surat, Vadodara, Rajkot); 22 returned reviews: 466 newest reviews (344 with text; 403 dated 2025-26). 24 reviews (5.2%) are 3 stars or lower; 12 of 22 installers have at least one. I hand-read all 24. Counts are non-exclusive. Delay or pending net meter / DISCOM inspection: 0 clear, 1 ambiguous. Subsidy not received: 0. No response or no status update: 5 reviews (1.1% of 466; 1.5% of text reviews) at 5 installers (23%); 2025-26 only: 4 reviews at 4 installers (18%). Installation delay after payment: 3 reviews at 3 installers (14%). After-sales or service complaint: 7 reviews (5 explicit, 2 vague) at 5 installers. Other low-star (workmanship, wrong equipment, rude staff, price, one-line insults): 8. No text: 5. Praise: 7 reviews at 6 installers thank the installer for subsidy or net-metering help, all positive; 51 reviews (11%) use communication or guidance words (keyword match, over-counts).",
+    "source_url": "https://console.apify.com/storage/datasets/qAHGDloLIh9xDairF",
+    "date": "2026-10-28 (reviews dated 2017 to 2026-10-28)",
+    "strength": "medium",
+    "effect_on_candidate": "weakens",
+    "kind": "review_analysis"
+   },
+   {
+    "topic": "The Maps sample is biased toward big, well-rated firms",
+    "detail": "94.8% of the 466 reviews are 4 or 5 stars. Several sampled firms have 500-1,500 reviews (ANK 1,484; Vedanta 1,114; Surya Solar 705; Som Energy 607; Solar Ace 540; Radiant 496), so they are probably larger than owner-run firms under 30 staff (Solar Ace shows 32 staff on a job-board profile). Two listings (Greenpeak Energy, SS Solar System) returned no reviews and three returned only 5. The sample is Google's own ranking of 'rooftop solar installer <city>', not a random draw, and solicited 5-star reviews are common. A stuck customer may also complain to the DISCOM or nowhere, so zero net-meter complaints is weak evidence of low pain, not proof.",
+    "source_url": "https://console.apify.com/storage/datasets/qAHGDloLIh9xDairF",
+    "date": "2026-10-28",
+    "strength": "medium",
+    "effect_on_candidate": "neutral",
+    "kind": "review_analysis"
+   },
+   {
+    "topic": "Review example: service callback never came (Som Energy Systems, Vadodara)",
+    "detail": "1-star review, 17 Sep 2026: the customer asked for service, was promised a call back, then calls went unanswered. The firm replied publicly and cited Tata Power's service policy. Theme: no response / after-sales, not application status.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Som%20Energy%20Systems&query_place_id=ChIJf0rc6-fOXzkRejK1Nbv5g6w",
+    "date": "2026-09-17",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example: no service after installation (ANK Solar Energy, Surat, Gujarati)",
+    "detail": "1-star review in Gujarati, 27 Oct 2026: the customer says the firm talked up service while selling, then gave no service or proper answers after installation, and warns others off. Theme: after-sales and no response.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=ANK%20Solar%20Energy&query_place_id=ChIJy4W61LJP4DsRFwWym9cntc4",
+    "date": "2026-10-27",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example: loan EMI running while system is not signed off (ANK Solar Energy, Surat, Hindi)",
+    "detail": "1-star review in Hindi, 27 Oct 2026: the customer calls the team irresponsible and the service bogus. He says he pays the solar-loan EMI and the electricity bill, the earthing was left unfinished, and electricity-board staff visited twice and left. He asks who is responsible. This is the closest review to a stuck inspection or commissioning, but it is ambiguous (workmanship may be the cause) and the only one of its kind among 466.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=ANK%20Solar%20Energy&query_place_id=ChIJy4W61LJP4DsRFwWym9cntc4",
+    "date": "2026-10-27",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example: five-month project delay (Anany Urja, Surat)",
+    "detail": "1-star review, 20 Jun 2026: the customer says the project was delayed by five months, and also complains about structure quality and engineer behaviour. Theme: installation delay.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Anany%20Urja&query_place_id=ChIJXRrw0YpF4DsRWoS4yXygvOI",
+    "date": "2026-06-20",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review examples: unfinished installation and no reply (Radiant Solar Solutions, Rajkot)",
+    "detail": "Two 1-star reviews. 14 Sep 2026 (Gujarati): no service or answer after installation, system off for two months. 3 Sep 2026 (English): installation not complete even after a month, no after-sales service, rude behaviour. Themes: installation delay, no response.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Radiant%20solar%20solutions&query_place_id=ChIJQbXZIDvLWTkR7wkOAtG1jTo",
+    "date": "2026-09-14",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example: no paperwork and no replies two months after install (Heliosnatural Renewtech, Gandhinagar)",
+    "detail": "2-star review, 19 Jun 2026: two months after the plant was installed the customer still had no receipt or contract details despite calling several times, and the firm stopped picking up calls or replying to messages. Theme: no status, no response. A status message would fit this complaint.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Heliosnatural%20Renewtech%20Limited&query_place_id=ChIJKWsGgBUqXDkRJ1ayixhbhcM",
+    "date": "2026-06-19",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example: delay after payment (Solar Ace Energy, Ahmedabad)",
+    "detail": "1-star one-line review, 23 Oct 2026: bad experience after payment, installation delayed. No detail on net meter or subsidy.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Solar%20Ace%20Energy&query_place_id=ChIJPQhAqyqDXjkRB2-mIxlrwvE",
+    "date": "2026-10-23",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Review example (praise): subsidy and net-metering steps explained (Ample Solar, Gandhinagar)",
+    "detail": "5-star review, 3 Aug 2026: the team was professional, finished on time and explained the whole process clearly, including the subsidy and net-metering steps. Shows customers notice and reward process communication, and that some installers already do it without a tool.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Ample%20Solar&query_place_id=ChIJq6qqqvcrXDkRe5Bi4IPA_HQ",
+    "date": "2026-08-03",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "review_analysis"
+   },
+   {
+    "topic": "Review example (praise): support until the subsidy arrives (Surya Solar And Waters, Ahmedabad)",
+    "detail": "5-star review, 27 Apr 2026: clear pricing, good materials and service until the subsidy was received. A second 5-star review (3 May 2026) praises help from planning to getting the government subsidy.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Surya%20Solar%20And%20Waters&query_place_id=ChIJC6nbWwqFXjkR87l8b7CWxeU",
+    "date": "2026-04-27",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "review_analysis"
+   },
+   {
+    "topic": "Review example (praise): subsidy received in 45 days (Heliosnatural Renewtech, Gandhinagar)",
+    "detail": "5-star review, 29 Apr 2025: fast installation and honest guidance; the customer says the subsidy arrived within 45 days thanks to a smooth online portal. A Gujarat data point against 'subsidy is always stuck'.",
+    "source_url": "https://www.google.com/maps/search/?api=1&query=Heliosnatural%20Renewtech%20Limited&query_place_id=ChIJKWsGgBUqXDkRJ1ayixhbhcM",
+    "date": "2025-04-29",
+    "strength": "weak",
+    "effect_on_candidate": "weakens",
+    "kind": "review_analysis"
+   },
+   {
+    "topic": "Public complaint on X: another state, none found for Gujarat",
+    "detail": "A public X post (Nov 2025) from an Odisha applicant lays out dates: panels installed 14 Oct 2025, new meter 17 Oct, and more than a month later still no installation status update and no subsidy. It shows the stuck-with-no-status complaint exists on the portal side, but it is one post, from Odisha, not about an installer. No equivalent Gujarat post turned up in X, Reddit or Gujarati searches.",
+    "source_url": "https://x.com/shantiswarup4u/status/1990726659985829897",
+    "date": "2025-11 (post refers to events 12 Sep to 29 Oct 2025)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "public_complaint"
+   },
+   {
+    "topic": "Gujarat regulator considered waiving the formal net-metering agreement for residential PM Surya Ghar users",
+    "detail": "SolarQuarter reported a GERC hearing on a Gujarat DISCOM petition to exempt residential PM Surya Ghar consumers from signing a formal net-metering agreement. I saw this only in a search summary and found no outcome. It shows Gujarat DISCOMs were trying to remove a paperwork step, which may reduce the stuck-application problem.",
+    "source_url": "https://solarquarter.com/2025/09/30/gerc-considers-exemption-from-net-metering-agreements-for-rooftop-solar-under-pm-surya-ghar-scheme-in-gujarat",
+    "date": "2025-09-30",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "news"
+   },
+   {
+    "topic": "Gujarat scale and the application pipeline (arithmetic added)",
+    "detail": "IANS 4 Jun 2026 (opened twice in phase 1): May 2026 campaign month had 3,06,230 applications, 35,311 installations, 42,554 DISCOM inspections and 210 new vendors; cumulative over 10.66 lakh applications and 6.81 lakh installations. My arithmetic: 3.85 lakh applications (36%) are not yet installed, an upper bound for the live backlog because it includes drop-outs. In May alone applications were 8.7 times installations. A big pipeline exists, but the source does not say how much of it is stuck.",
+    "source_url": "https://ianslive.in/gujarat-wins-five-national-awards-for-top-performance-under-pm-surya-ghar-scheme--20260604225416",
+    "date": "2026-06-04",
+    "strength": "medium",
+    "effect_on_candidate": "strengthens",
+    "kind": "statistic"
+   },
+   {
+    "topic": "Gujarat monthly installation run-rate (my estimate)",
+    "detail": "My estimate: about 21,800 Gujarat installations a month. Method: (6.81 lakh at end May 2026, IANS, minus 281,769 on 21 Nov 2024, a Lok Sabha figure that I saw only in a search summary of a newsonair report) divided by 18.3 months. May 2026 was a campaign month at 35,311. At 21,800 to 35,300 a month, roughly 110,000 to 180,000 more Gujarat installations fall before 31 Mar 2027 (5.1 months left). The Nov 2024 baseline was not opened.",
+    "source_url": "https://www.newsonair.gov.in/gujarat-leads-in-rooftop-solar-system-installations-under-pm-surya-ghar-muft-bijli-yojana-shripad-naik",
+    "date": "2024-11-28",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "Official scheme end date: 31 March 2027",
+    "detail": "Cabinet approved PM Surya Ghar on 29 Feb 2024 (outlay Rs 75,021 crore, implementation to FY 2026-27). MNRE operational guidelines of June 2024 state implementation continues until 31 Mar 2027. Seen through search summaries of powerline.net.in and indianinfrastructure.com (both 21 Jun 2024), not opened. Consistent with the phase-1 finding that the 27 Aug 2026 article says under nine months remained. About 5 months of the busy period are left.",
+    "source_url": "https://powerline.net.in/2024/06/21/mnre-releases-operational-guidelines-for-pm-surya-ghar-yojana/",
+    "date": "2024-06-21",
+    "strength": "medium",
+    "effect_on_candidate": "weakens",
+    "kind": "official_rule"
+   },
+   {
+    "topic": "Extension and successor scheme: talk only, nothing notified",
+    "detail": "An installer-blog roundup found no official extension or successor notification as of 14 Oct 2026. An EQ report (cited by an installer blog as 5 Sep 2026; not opened) says the Centre is weighing a 3-4 month extension and consulting on a successor. 'PM Surya Ghar 2.0' is an unofficial label. Installer blogs are already marketing a last-date rush (17 Oct 2026). What happens to unfinished applications after March 2027 was not found.",
+    "source_url": "https://www.suryassolar.com/blog/2026-10-17-pm-surya-ghar-last-date-2027-scheme-ending",
+    "date": "2026-10-17",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "other"
+   },
+   {
+    "topic": "Gujarat vendor count: no official figure; sources conflict",
+    "detail": "No official Gujarat vendor count obtained. Phase-1 found 'over 1,100' Gujarat solar vendors (GUVNL MD, 14 Feb 2025, whole ecosystem) and 210 new Gujarat scheme vendors in May 2026 alone (IANS). A vendor blog (updated 14 Jul 2026) says about 70,000-75,000 EPCs are registered nationally (attributed to MNRE) and about 25,000-30,000 are active, with Gujarat holding 22-25% of active EPCs (unsourced). My arithmetic on those unsourced numbers gives about 5,500-7,500 active Gujarat EPCs, which conflicts with the 1,100 figure. Another vendor post cites 26,000+ empanelled vendors nationally in Mar 2026. Definitions (registered, empanelled, active) differ.",
+    "source_url": "https://quickestimate.co/blog/pm-surya-ghar-trends",
+    "date": "2026-07-14",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "The 66 deactivated vendors: no public name list or state breakdown found",
+    "detail": "SolarQuarter (27 Aug 2026), Mercom, Energetica, Indian PSU and PowerPeak coverage surfaced no names, states or any Gujarat firm. MNRE notice dated 24 Aug 2026: deactivated vendors cannot take new applications and disappear from the consumer vendor-selection page, keep portal access to finish existing work, and get 30 days to cut backlog. The trigger was applications stuck at 'Agreement Uploaded' above installation capacity. The 60-day advice applies to all vendors and is advisory; no built-in portal alert was confirmed. The complaint SOP says names of deactivated vendors will be shown on the national portal, which I could not read, so whether a Gujarat firm is included is unknown.",
+    "source_url": "https://solarquarter.com/2026/08/27/mnre-deactivates-66-pm-surya-ghar-vendors-over-rooftop-solar-application-backlog/",
+    "date": "2026-08-27",
+    "strength": "medium",
+    "effect_on_candidate": "neutral",
+    "kind": "news"
+   },
+   {
+    "topic": "QuickEstimate CRM: stage tracking and pricing already on sale",
+    "detail": "Page read 28 Oct 2026 (undated vendor page). Seven stages including a DISCOM net-metering stage (application, feasibility, meter) and a PM Surya Ghar subsidy-application stage, WhatsApp follow-up reminders and WhatsApp proposal sending. Plans: Free Rs 0 (1 user, 10 proposals a month, watermark); Pro Rs 6,999 per user per year with a 3-user minimum (at least about Rs 20,997 a year, my arithmetic) including WhatsApp Business; Enterprise for 25+ users. A vendor price claim, not an observed purchase.",
+    "source_url": "https://quickestimate.co/crm",
+    "date": "undated (read 2026-10-28)",
+    "strength": "medium",
+    "effect_on_candidate": "weakens",
+    "kind": "price_page"
+   },
+   {
+    "topic": "QuickEstimate CRM: what the page does not show",
+    "detail": "The same page does not mention ageing alerts at 30, 45 or 60 days, complaint timers, customer-facing status-update messages, Gujarati or Hindi support, or any data-import tool or done-for-you onboarding. It says moving historical leads from a spreadsheet takes longer and is best done after new leads are running. Absence from a public page is not proof the product lacks it.",
+    "source_url": "https://quickestimate.co/crm",
+    "date": "undated (read 2026-10-28)",
+    "strength": "medium",
+    "effect_on_candidate": "strengthens",
+    "kind": "price_page"
+   },
+   {
+    "topic": "RichAutomate: customer-facing DISCOM and PM Surya Ghar status messages, zero setup",
+    "detail": "Vendor blog dated 5 Aug 2026. WhatsApp API platform for solar EPCs that pushes DISCOM net-metering stages (application submitted, feasibility cleared, meter scheduled, meter installed) and PM Surya Ghar stages (registered, feasibility approved, installed, inspection done, subsidy released) into the customer thread, with document checklists and reminders. Rs 0 platform fee, Rs 0 setup, Rs 0 monthly minimum; Rs 0.10 per message plus Meta fee (Client Pay) or Rs 1.50 marketing / Rs 0.50 utility per conversation (SaaS Pay); 14-day trial. Free done-for-you migration is offered to customers switching providers. No Gujarati or Hindi, no ageing alerts, no complaint timers, no installer-pain statistics on the page. It says the automation never files the claim.",
+    "source_url": "https://richautomate.in/blog/whatsapp-solar-rooftop-epc-installers-india-2026",
+    "date": "2026-08-05",
+    "strength": "medium",
+    "effect_on_candidate": "weakens",
+    "kind": "price_page"
+   },
+   {
+    "topic": "SunbaseData: evidence inconsistent, treat as unverified",
+    "detail": "A search snippet describes a SunbaseData post with a 12-stage PM Surya Ghar pipeline, but the fetched blog text had no India or PM Surya Ghar content, no ageing alerts or complaint timers, no WhatsApp status messaging, and quoted plans from US$59 per user per month. The two readings conflict, so I do not rely on SunbaseData either way.",
+    "source_url": "https://www.sunbasedata.com/blog/best-solar-crm-for-indian-epcs-in-2026-features-that-actually-matter",
+    "date": "undated (read 2026-10-28)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "price_page"
+   },
+   {
+    "topic": "DISCOM approval times and installer cost illustration (vendor estimates)",
+    "detail": "QuickEstimate Gujarat page (updated 14 Jul 2026) gives uncited average approval times: DGVCL 45-75 days, UGVCL 30-60, MGVCL 45-90, PGVCL 30-75, overall 30-90 days to active net metering. Its trends page says PGVCL/UGVCL feasibility averaged 11 days in Q1 and 9 days in Q2 2026 (vendor's own review). Gujarat installer blogs (Heaven Green Energy, search summary) give end-to-end timelines of 45-75 days. The page also illustrates a 12-person Surat EPC spending Rs 80,000 a month on four field reps at Rs 20,000 and Rs 35,000 on marketing, labelled illustrative. No Gujarat vendor counts or tracking practice on the page.",
+    "source_url": "https://quickestimate.co/blog/solar-installer-business-gujarat",
+    "date": "2026-07-14",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "statistic"
+   },
+   {
+    "topic": "Job posts: liaison roles exist, but no Gujarat post with portal-chasing duties or pay verified",
+    "detail": "Opened three Weekday pages. Solar Ace (Ahmedabad HQ, 32 staff per the page) lists a Liaisoning Executive Solar EPC in Pune with no duties or pay. Shubham Solar Solution lists an Executive Liaison with no city, duties or pay. Bushnell Technik's Solar Liaison Executive is in Aligarh, Uttar Pradesh with no duties (a search summary saying Ahmedabad and UGVCL was wrong). A Hyderabad liaison role mentioning PM Surya Ghar subsidy documentation and Rs 13,000-25,000 a month appears only in a search snippet, not opened. Phase 1 also has a Surat service-coordinator post at Rs 17,000-25,000 (inverter service, not application chasing).",
+    "source_url": "https://jobs.weekday.works/liaisoning-executive-solar-epc-at-solar-ace-energy-pvt-ltd-wkdy4qswjk",
+    "date": "undated (read 2026-10-28)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "job_post"
+   },
+   {
+    "topic": "Free-to-join installer lead marketplace and free vendor registration",
+    "detail": "SolarCalculators.in guide dated 5 Jun 2026 (a lead-generation site, vendor claims): vendor registration on the portal is free; needs GST, business registration, electrical contractor licence, PAN, bank proof and at least one commissioned project; verification 7-21 working days; subsidy typically 30-90 days after commissioning, with Gujarat and Rajasthan called faster states. The site invites installers to join its lead marketplace free. Free lead and registration routes lower what installers expect to pay for tools, and fast Gujarat disbursal would reduce pain.",
+    "source_url": "https://solarcalculators.in/blog/pm-surya-ghar-vendor-registration.html",
+    "date": "2026-06-05",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "directory"
+   },
+   {
+    "topic": "How installers handle the portal today: indirect hints only",
+    "detail": "No direct evidence of Excel or WhatsApp-group practice, or of CSC operator or outsourced data-entry prices. Indirect: a Uttar Pradesh / Uttarakhand installer FAQ advertises handling the portal end to end including subsidy tracking (undated); an Andhra Pradesh installer blog admits some installers fail to update installation progress on the portal (undated); blogs say the consumer portal shows milestone statuses and sends an application reference by SMS. So customers can already see some status, and installers sell portal handling as part of the service.",
+    "source_url": "https://pmsuryayojna.com/faq",
+    "date": "undated (read 2026-10-28)",
+    "strength": "weak",
+    "effect_on_candidate": "neutral",
+    "kind": "other"
+   },
+   {
+    "topic": "No tool with 60-day ageing alerts or backlog tracking found",
+    "detail": "A search for dashboards, alerts or export tools for PM Surya Ghar pending applications or the 60-day advice returned only news on the 66-vendor action; none of the five outlets mention a tool. Together with the missing features on the QuickEstimate and RichAutomate pages, the specific 30/45/60-day and 8/15-day timers look unserved in public view. This is absence of evidence from a limited search.",
+    "source_url": "https://www.energetica-india.net/news/mnre-advises-pm-surya-ghar-vendors-to-clear-applications-within-60-days",
+    "date": "2026-08",
+    "strength": "weak",
+    "effect_on_candidate": "strengthens",
+    "kind": "other"
+   }
+  ],
+  "open_questions_answered": [
+   {
+    "question": "(1) Do Gujarat households complain that installers do not update them, or that the net meter, inspection or subsidy is stuck?",
+    "answer": "Barely, and not about net meter or subsidy. Of 466 recent reviews of 22 installers, 0 clearly complained about a pending net meter, inspection or missing subsidy (1 ambiguous Hindi review mentions electricity-board staff visiting twice). 5 reviews at 5 installers (4 in 2025-26) say calls or messages went unanswered; 3 reviews at 3 installers cite installation delay after payment; 7 reviews at 5 installers cite poor after-sales service. 7 reviews at 6 installers thank the installer for subsidy or net-metering help, all positive, one saying subsidy came in 45 days. The sample is biased toward large, highly rated firms, so micro-installers are under-represented.",
+    "confidence": "medium",
+    "source_url": "https://console.apify.com/storage/datasets/qAHGDloLIh9xDairF"
+   },
+   {
+    "question": "Review shares and installers affected",
+    "answer": "3 stars or lower: 24 of 466 reviews (5.2%; 20 of 403 in 2025-26 = 5.0%); 12 of 22 installers have at least one. No response or no update: 1.1% of reviews, 5 installers (23%). Installation delay: 0.6%, 3 installers (14%). After-sales or service: 1.5%, 5 installers (23%). Net-meter or inspection delay: 0%. Subsidy not received: 0%. Praise using communication or guidance words: about 11% (keyword match, over-counts).",
+    "confidence": "medium",
+    "source_url": "https://console.apify.com/storage/datasets/qAHGDloLIh9xDairF"
+   },
+   {
+    "question": "Public complaint threads (X, Reddit, YouTube, news) about PM Surya Ghar delays in Gujarat",
+    "answer": "None found for Gujarat. One public X post is from Odisha (subsidy and status stuck for over a month). Reddit could not be reached (search tool blocks it; an Apify query returned installer blogs). YouTube comments and Facebook groups were not tried. A Gujarati-language search returned only US pages. The only complaint articles known are national 2024 Mercom pieces from phase 1 (paywalled, not re-opened).",
+    "confidence": "low",
+    "source_url": "https://x.com/shantiswarup4u/status/1990726659985829897"
+   },
+   {
+    "question": "(2) How many Gujarat vendors are on the PM Surya Ghar portal, by DISCOM or district?",
+    "answer": "Not obtained. The official portal returned a blank script shell (HTTP 200, no content) and I used no logins or sign-ups. Bounds from other sources: over 1,100 Gujarat solar vendors (GUVNL MD, Feb 2025, whole ecosystem); 210 new scheme vendors in May 2026 alone (IANS); a vendor blog implies about 5,500-7,500 active Gujarat EPCs (my arithmetic on unsourced numbers, conflicts with the first). No split by UGVCL or district exists in anything I could open. My estimate for planning: low thousands, unverified, until someone reads the portal list in a normal browser.",
+    "confidence": "low",
+    "source_url": "https://quickestimate.co/blog/pm-surya-ghar-trends"
+   },
+   {
+    "question": "What share of vendors look owner-run and small, and are they reachable?",
+    "answer": "Cannot be determined from Maps or the portal. In the 24-firm sample, 6 have 450+ reviews and one (Solar Ace) shows 32 staff, so many are probably above the owner-run size. A vendor claims only about 40% of registered EPCs nationally are active (unsourced). Reach: 22 of 24 Maps listings publish a mobile-format number, 1 a landline, 1 none; whether the number reaches the owner's WhatsApp is untested.",
+    "confidence": "low",
+    "source_url": "https://console.apify.com/storage/datasets/qAHGDloLIh9xDairF"
+   },
+   {
+    "question": "Was any Gujarat vendor among the 66 deactivated in August 2026 or later, and are those lists public?",
+    "answer": "Unknown. No outlet I surfaced printed the 66 names or their states. The complaint SOP says names of deactivated vendors will be displayed on the national portal, so a public list probably exists there but I could not read it. No vendor deactivated under the complaint SOP was found either.",
+    "confidence": "medium",
+    "source_url": "https://solarquarter.com/2026/08/27/mnre-deactivates-66-pm-surya-ghar-vendors-over-rooftop-solar-application-backlog/"
+   },
+   {
+    "question": "(3) Which gap features exist in solar CRMs and WhatsApp tools for Indian EPCs: 30/45/60-day ageing alerts, 8/15-day complaint timers, Gujarati customer status messages, done-for-you loading of the installer's own list?",
+    "answer": "On public pages: ageing alerts at 30/45/60 days: none seen (QuickEstimate, RichAutomate, SunbaseData). Complaint timers at 8/15 days: none seen. Customer-facing stage messages: RichAutomate yes (English page, DISCOM and PM Surya Ghar stages); QuickEstimate sends proposals and follow-up reminders but no status messages shown. Gujarati or Hindi: not mentioned anywhere. Done-for-you list loading: QuickEstimate offers none (says spreadsheet import takes longer); RichAutomate offers free migration only to customers switching providers. So the gap is real on paper but small in feature terms, and a rival could add it in weeks.",
+    "confidence": "medium",
+    "source_url": "https://quickestimate.co/crm"
+   },
+   {
+    "question": "What could a done-for-you service add beyond those tools?",
+    "answer": "My inference: (a) load the installer's own pending list and keep it current, since no page offers this; (b) an 'Agreement Uploaded over 60 days' count that matches the exact metric MNRE used on 27 Aug 2026, plus 8/15-day clocks for any consumer complaint matching the 22 Jun 2026 SOP; (c) Gujarati customer status messages and a weekly human-checked 'who to call today' list. Risks: stage data still has to be typed in or exported from the portal (export ability not checked), and WhatsApp status messaging alone is a commodity at Rs 0 setup.",
+    "confidence": "low",
+    "source_url": "https://richautomate.in/blog/whatsapp-solar-rooftop-epc-installers-india-2026"
+   },
+   {
+    "question": "(4) How do installers track applications today, and what does that cost?",
+    "answer": "Not observed. No Excel, WhatsApp-group or CSC-operator evidence, and no price for outsourced portal data entry, was found. Hints: the consumer portal shows milestone statuses (blog claim); installers advertise handling the portal and subsidy tracking for the customer; one vendor illustrates a 12-person Surat EPC paying four field reps Rs 20,000 each a month (vendor-authored illustration, not a survey).",
+    "confidence": "low",
+    "source_url": "https://quickestimate.co/blog/solar-installer-business-gujarat"
+   },
+   {
+    "question": "(5) Scheme end date, extension, Gujarat run-rate, and demand after March 2027",
+    "answer": "End date is 31 Mar 2027 (MNRE guidelines, Cabinet approval Feb 2024). No extension or successor notified as of mid-Oct 2026; a 3-4 month extension and a successor are reported as under consideration (EQ report, not opened). Gujarat run-rate: my estimate about 21,800 installations a month over the last 18 months, 35,311 in the May 2026 campaign month, implying roughly 110,000-180,000 more installs before the deadline. After March 2027: not found; my expectation is a drop in new central-subsidy applications and a tail of unfinished applications, with no evidence either way on a Gujarat state top-up.",
+    "confidence": "medium",
+    "source_url": "https://powerline.net.in/2024/06/21/mnre-releases-operational-guidelines-for-pm-surya-ghar-yojana/"
+   },
+   {
+    "question": "(6) Do small installers pay for tools, staff or lead services?",
+    "answer": "Prices exist but purchases were not observed: QuickEstimate Free and Pro Rs 6,999 per user per year (3-user minimum); SurgePV Rs 500-1,500 per user per month (phase-1 vendor claim); RichAutomate per-message fees; lead marketplaces advertise free joining; vendor registration is free. Staff: liaison roles exist (Solar Ace, a 32-person Ahmedabad firm, advertises one in Pune; Surat service coordinator Rs 17,000-25,000 from phase 1; Hyderabad liaison Rs 13,000-25,000 from a search snippet). No Gujarat post with application-chasing duties and pay was verified, and no installer was seen buying a status tool.",
+    "confidence": "low",
+    "source_url": "https://quickestimate.co/crm"
+   },
+   {
+    "question": "Public job posts for solar liaison, documentation or portal-coordinator roles in Gujarat",
+    "answer": "None verified with duties and pay. The three pages opened carry no duties or pay (Solar Ace in Pune, Shubham Solar Solution with no city, Bushnell Technik in Aligarh Uttar Pradesh). Indeed, Naukri, WorkIndia and Apna were not queried directly. A Surat liaison post with 'Rs 25k+' appeared in a search snippet only (page was a 404 in phase 1).",
+    "confidence": "low",
+    "source_url": "https://jobs.weekday.works/liaisoning-executive-solar-epc-at-solar-ace-energy-pvt-ltd-wkdy4qswjk"
+   }
+  ],
+  "pool": {
+   "definition": "Gujarat rooftop-solar installers and small EPC firms that could be registered PM Surya Ghar vendors. The sample is Google Maps listings of solar installers in Mehsana, Gandhinagar, Ahmedabad, Vadodara, Surat and Rajkot (top 4 per city). Not confirmed as portal-registered; owner-run status and staff size are unknown for most.",
+   "count_found": "Official Gujarat vendor count: not obtained (portal list unreachable). Bounds: over 1,100 Gujarat solar vendors (GUVNL MD, 14 Feb 2025, whole ecosystem); 210 new scheme vendors registered in Gujarat in May 2026 alone (IANS, 4 Jun 2026); a vendor blog (14 Jul 2026, unsourced) says Gujarat holds 22-25% of 25,000-30,000 active EPCs nationally (my arithmetic 5,500-7,500, conflicts with the first figure). Sample actually collected: 24 named firms, 8 in Mehsana and Gandhinagar, 4 in Ahmedabad (UGVCL area).",
+   "method": "Apify Google Maps scraper (compass/crawler-google-places), six searches of the form 'rooftop solar installer <city> Gujarat', 4 places per search, run 28 Oct 2026. Phone numbers and websites are the business-published ones on the Maps listing. Official PM Surya Ghar vendor page returned no content, so portal membership was not checked. No firm was contacted.",
+   "sample": [
+    {
+     "name": "Dwarkesh Solar Power",
+     "city": "Mehsana",
+     "contact_type": "business mobile +91 63575 86357 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=DWARKESH%20SOLAR%20POWER&query_place_id=ChIJsSzoAgBDXDkRt_0MEJum9C0"
+    },
+    {
+     "name": "Greenpeak Energy Private Limited",
+     "city": "Mehsana",
+     "contact_type": "business mobile +91 94297 36915 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=GREENPEAK%20ENERGY%20PRIVATE%20LIMITED&query_place_id=ChIJfa3X8RpDXDkR6Ro65w2_FdA"
+    },
+    {
+     "name": "Momai Solar",
+     "city": "Palodar, Mehsana",
+     "contact_type": "business mobile +91 90547 20220; website momaisolar.com (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Momai%20Solar&query_place_id=ChIJjWWA1sYopCAR9n1ZntHUvUA"
+    },
+    {
+     "name": "Sunspot Solar",
+     "city": "Mehsana",
+     "contact_type": "business mobile +91 94264 20492; IndiaMART page (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Sunspot%20Solar&query_place_id=ChIJtcYegH9BXDkRcEE3yN2liy8"
+    },
+    {
+     "name": "ASV Energy Solutions",
+     "city": "Koba, Gandhinagar",
+     "contact_type": "business mobile +91 96626 63069 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=ASV%20Energy%20Solutions&query_place_id=ChIJRaYvnlWBXjkRoMLutLhYLtU"
+    },
+    {
+     "name": "Topsun Energy Limited",
+     "city": "Gandhinagar (GIDC Sector 25)",
+     "contact_type": "business mobile +91 99789 55226 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Topsun%20Energy%20Limited&query_place_id=ChIJ9Z9Q1PUrXDkRJBnkdaG7Uas"
+    },
+    {
+     "name": "Heliosnatural Renewtech Limited",
+     "city": "Gandhinagar",
+     "contact_type": "no phone on listing; website heliosnatural.com",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Heliosnatural%20Renewtech%20Limited&query_place_id=ChIJKWsGgBUqXDkRJ1ayixhbhcM"
+    },
+    {
+     "name": "Ample Solar Private Limited",
+     "city": "Raysan, Gandhinagar",
+     "contact_type": "business mobile +91 99098 46118 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Ample%20Solar&query_place_id=ChIJq6qqqvcrXDkRe5Bi4IPA_HQ"
+    },
+    {
+     "name": "Taiyo Solar System",
+     "city": "Ahmedabad",
+     "contact_type": "business mobile +91 98253 24580 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Taiyo%20Solar%20System&query_place_id=ChIJa-JmV3yEXjkRRoA82R1Ceyk"
+    },
+    {
+     "name": "Surya Solar And Waters",
+     "city": "Ahmedabad",
+     "contact_type": "business mobile +91 95120 53054 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Surya%20Solar%20And%20Waters&query_place_id=ChIJC6nbWwqFXjkR87l8b7CWxeU"
+    },
+    {
+     "name": "Solar Ace Energy",
+     "city": "Ahmedabad",
+     "contact_type": "business mobile +91 95867 22221 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Solar%20Ace%20Energy&query_place_id=ChIJPQhAqyqDXjkRB2-mIxlrwvE"
+    },
+    {
+     "name": "Ahmedabad Solar - Tata Solar Dealer",
+     "city": "Ahmedabad",
+     "contact_type": "business mobile +91 95123 65652 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Ahmedabad%20Solar&query_place_id=ChIJ4SXsi6qIXjkRJylSOOpPeZY"
+    },
+    {
+     "name": "Vedanta Solar",
+     "city": "Vadodara",
+     "contact_type": "business mobile +91 76987 40708 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Vedanta%20Solar&query_place_id=ChIJj9gUAnDFXzkRavURqiO_ns0"
+    },
+    {
+     "name": "ROOFTOP (Solar rooftop near me)",
+     "city": "Vadodara",
+     "contact_type": "business mobile +91 91731 01112 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=ROOFTOP&query_place_id=ChIJJVjTngfHXzkRVwQhaSSiZ9U"
+    },
+    {
+     "name": "Som Energy Systems",
+     "city": "Vadodara",
+     "contact_type": "business mobile +91 63520 10650 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Som%20Energy%20Systems&query_place_id=ChIJf0rc6-fOXzkRejK1Nbv5g6w"
+    },
+    {
+     "name": "EWC Solar Pvt. Ltd.",
+     "city": "Vadodara",
+     "contact_type": "business mobile +91 99980 05977 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=EWC%20Solar%20Pvt.%20Ltd.&query_place_id=ChIJe6-8r9PNXzkRzxsh7YLJl9I"
+    },
+    {
+     "name": "ANK Solar Energy",
+     "city": "Surat",
+     "contact_type": "business mobile +91 98799 48140 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=ANK%20Solar%20Energy&query_place_id=ChIJy4W61LJP4DsRFwWym9cntc4"
+    },
+    {
+     "name": "Anany Urja Pvt Ltd",
+     "city": "Surat",
+     "contact_type": "business mobile +91 88664 42477 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Anany%20Urja&query_place_id=ChIJXRrw0YpF4DsRWoS4yXygvOI"
+    },
+    {
+     "name": "Navi Energy",
+     "city": "Surat",
+     "contact_type": "business mobile +91 99794 35742 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Navi%20Energy&query_place_id=ChIJD-A0KotF4DsRtxEY93ZeYJs"
+    },
+    {
+     "name": "24R Energy - Solar and Lights",
+     "city": "Surat",
+     "contact_type": "business mobile +91 98988 81269 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=24R%20Energy&query_place_id=ChIJ0RuVYDBP4DsRDNA1Dl9syEg"
+    },
+    {
+     "name": "Solskin Energy LLP",
+     "city": "Rajkot",
+     "contact_type": "business mobile +91 81289 88878 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Solskin%20Energy%20LLP&query_place_id=ChIJyTc3OQDLWTkRe4wQ5sCG5gk"
+    },
+    {
+     "name": "SS Solar System",
+     "city": "Rajkot",
+     "contact_type": "business landline +91 281 244 9146 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=SS%20Solar%20System&query_place_id=ChIJ_QwggiPLWTkRCg-8ULNVp4g"
+    },
+    {
+     "name": "Evolution Solar rooftop and water-heater",
+     "city": "Rajkot",
+     "contact_type": "business mobile +91 97732 96801 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=EVOLUTION%20Solar&query_place_id=ChIJE_J8vVnLWTkR1KcFkNSdkNA"
+    },
+    {
+     "name": "Radiant Solar Solutions",
+     "city": "Rajkot",
+     "contact_type": "business mobile +91 97272 72803 (Maps listing)",
+     "source_url": "https://www.google.com/maps/search/?api=1&query=Radiant%20solar%20solutions&query_place_id=ChIJQbXZIDvLWTkR7wkOAtG1jTo"
+    }
+   ]
+  },
+  "verdict_for_candidate": {
+   "direction": "weaker",
+   "reason": "Confirms: the pressure is official and current (complaint SOP 22 Jun 2026, 66 vendors switched off, 60-day advice to all vendors), Gujarat volume is huge with a large application pipeline, and the public pages of the two closest tools show no 30/45/60-day ageing alerts, 8/15-day complaint timers, Gujarati status messages or done-for-you list loading. Refutes or fails to support: no clear net-meter or subsidy complaint in 466 Gujarat reviews (5% low-star, mostly silence after sale, installation delay, workmanship); no Gujarat job post with portal-chasing duties verified; the vendor pool is uncounted (1,100+ to a claimed 5,500+); stage tracking and customer WhatsApp messages are already sold at Rs 0 to Rs 6,999 per user per year or per message; the scheme ends 31 Mar 2027 with no notified extension. The gap is a few features a rival can add in weeks, so N1 rests on owners paying for done-for-you service, which nobody has tested. Keep it only as the cheap one-week test, led by a free 'applications over 60 days' report, and read the portal vendor list in a normal browser first.",
+   "recommended_scores": {
+    "pain_evidence": 1.5,
+    "paid_today": 2.5,
+    "urgency_now": 3.5,
+    "reachability_owner_on_whatsapp": 4,
+    "pool_size": 3,
+    "our_fit_and_speed": 4,
+    "competition_gap": 2.5
+   }
+  },
+  "did_not_work": "Official PM Surya Ghar portal: Apify web-fetch of pmsuryaghar.gov.in took 162 s and returned HTTP 200 with empty content (script-driven app), so no vendor list, no Gujarat or UGVCL count, no deactivated-vendor names; no logins or sign-ups attempted. GEDA / solarrooftop.gujarat.gov.in roster: searches surfaced no public list. Reddit: the search tool blocks reddit.com and an Apify web-browser query returned installer blogs, not threads, so no Reddit data; YouTube comments and Facebook groups not tried. Gujarati-language news search returned only US pages. SunbaseData blog: fetched text had no India content, inconsistent with a search snippet; unverified. Job boards: Indeed, Naukri, WorkIndia and Apna not queried directly; the three Weekday pages opened carry no duties or pay, and Bushnell Technik is in Aligarh, Uttar Pradesh, not Ahmedabad as a search summary claimed; a Surat climatechangejobs post was a 404 in phase 1. Not found: installers' Excel or WhatsApp practice, CSC or outsourced portal data-entry prices. End-date and extension evidence comes from search summaries (PIB, MNRE pages and the EQ report not opened); the 21 Nov 2024 Gujarat baseline (281,769) is also from a search summary. Maps sample: top-ranked, mostly large, highly rated firms; newest 25 reviews each; all 24 low-star reviews hand-read but 4-5 star reviews only keyword-scanned; some Gujarati and Hindi text auto-translated; reviewer names excluded by design. About 51 tool calls used against a budget of about 45; Apify spend roughly US$0.40 (my estimate from per-event prices).",
+  "est_cost_usd": 0.4
+ },
+ "V4": {
+  "lens": "V4",
+  "summary": "Coverage sweep A, about 49 tool calls. Nothing in these four sectors beats N1 or N2 (22 of 35). No sector gave an owner-voice complaint, a public Gujarat back-office job post, or an owner buying software for the problem; the evidence is regulatory and enforcement news plus vendor pages. Two candidates have real but weak-fit evidence. (1) Gujarat plastic-waste recyclers registered on the CPCB EPR portal: best-dated chain (MoEFCC notice 28 Aug 2026; CPCB direction of 26 Jun 2026 to states; NGT order of 27 Mar 2026) and a counted pool (662 in Gujarat, reported 7 Jul 2026), but no recycler voice and no software spend; about 21 of 35 on the phase-1 rubric (my estimate, unvalidated). (2) Gujarat fertiliser, pesticide and seed dealers under PoS-versus-stock inspections: good official 2026 numbers but cheap software already exists (about Rs 9,500); about 19 of 35 (my estimate). Auto belts are only an N2 beachhead question (OEM ESG-data pressure is real, but a common platform is planned for end FY27 and Tier 2/3 come later). Construction and RERA gave nothing for Gujarat. If the owner wants a third hypothesis beside N1/N2: 8-10 personal WhatsApp conversations with recyclers after 1 Nov (PWP return date is 31 Oct 2026).",
+  "candidates": [
+   {
+    "niche": "Owner-run Gujarat plastic-waste recyclers registered as Plastic Waste Processors (PWPs) on the CPCB EPR portal: audit-ready input, output and invoice records behind their EPR certificates",
+    "geography": "Gujarat (662 PWPs per CPCB count reported 7 Jul 2026); clusters not verified",
+    "problem": "Certificates are the recycler's revenue lever and can only be generated up to registered capacity and against GST-validated sale invoices. CPCB audits processors (the 2024 fake-certificate case involved two Gujarat firms among four) and in June 2026 told states to act against non-compliant ones. In owner terms: every tonne in and out must tally with weighbridge slips, purchase papers and invoices, or credits stop and compensation or cancellation can follow. How they keep records today is inferred, not observed.",
+    "why_now": "MoEFCC notice of 28 Aug 2026 set 31 Oct 2026 for PWP FY2025-26 returns (31 Dec 2026 for producers, importers, brand owners); CPCB told states on 26 Jun 2026 to act against non-compliant PWPs; NGT order of 27 Mar 2026 made Gujarat among nine states to file a reply; PWM Amendment Rules of 31 Mar 2026 changed certificates and audits (secondary sources). The 31 Oct date is 3 days away, so approach after it.",
+    "who_decides": "Proprietor or managing partner; the CA or EPR consultant who files portal returns is an influencer (inferred).",
+    "current_spend": "Software spend: not observed. Consultants list EPR filing at Rs 9,999 plus Rs 4,999 yearly return per stream (vendor snippet). Money in the system: DTE says one recycled tonne = one certificate at CPCB rates of Rs 870 to 2,500 per tonne; 178.48 lakh tonnes of credits went to producers since inception, about Rs 2,677 crore at Rs 1,500/t (my arithmetic).",
+    "cost_of_problem": "Recycler-specific penalty amounts not found. Stakes: right to generate certificates plus compensation. My estimate: a unit doing 3,000 t a year (assumed) at Rs 1,500/t holds about Rs 45 lakh a year of certificate value.",
+    "our_services_that_fit": "Custom ERP/inventory module (weighbridge slip import, lot-wise input, output and yield, stock vs registered capacity, GST invoice check, CPCB bulk-upload sheet); AI document processing of slips and invoices; WhatsApp reminders. Reuses the wire-soldering ERP purchase, GRN, production, stock and billing flows (my inference). A reply bot does not fit.",
+    "entry_offer_idea": "Free one-page audit-readiness check on the owner's last quarter (tonnes in and out, yield, invoices vs certificates vs registered capacity); paid 7-10 day setup of an in/out/stock register with a CPCB upload sheet. Owner sets the price. No legal assurances; skip units that want to hide capacity breaches.",
+    "sales_cycle_hint": "My estimate: 2-4 weeks to a paid check if the owner shares real records; 2-3 months for a module. Nothing found on how recyclers buy software.",
+    "size_hint": "662 Gujarat PWPs (applied vs registered not stated) of 3,079 registered nationally; owner-run share unknown. Adjacent: 741 producers and 109 brand owners in Gujarat.",
+    "evidence": [
+     {
+      "claim": "MoEFCC notice of 28 Aug 2026 (No. 12/64/2023-HSM Part 1, citing a CPCB letter of 10 Aug 2026) extends FY2025-26 annual returns to 31 Oct 2026 for PWPs and 31 Dec 2026 for producers, importers and brand owners.",
+      "source_url": "https://teamleaseregtech.com/updates/article/59143/moefcc-issued-extension-in-timeline-for-filing-of-annual-returns-of-pwps-and-pibos/",
+      "date": "2026-08-31 (notice dated 2026-08-28)",
+      "kind": "official_rule",
+      "strength": "medium",
+      "note": "Opened. Regtech vendor summary; primary notice not opened; page says nothing on penalties."
+     },
+     {
+      "claim": "As of 25 Jun 2026: 4,153 PWPs applied and 3,079 registered nationally; Gujarat listed with 741 producers, 2,420 importers, 109 brand owners and 662 PWPs; Gujarat among nine states or UTs that filed replies to the NGT order of 27 Mar 2026.",
+      "source_url": "https://www.downtoearth.org.in/environment/daily-court-digest-major-environment-orders-july-6-2026",
+      "date": "2026-07-07 (digest of 2026-07-06)",
+      "kind": "news",
+      "strength": "strong",
+      "note": "Opened. Does not say if 662 is applied or registered, or what Gujarat's reply said."
+     },
+     {
+      "claim": "CPCB audit (not public) suggests PWPs generated certificates beyond registered capacity; CPCB directed states on 26 Jun to act against non-compliant PWPs; PWPs must upload GST invoices as sale proof; one tonne = one certificate at CPCB rates Rs 870 / 1,500 / 2,500 per tonne; producer shortfall compensation Rs 5,000 per tonne.",
+      "source_url": "https://www.downtoearth.org.in/waste/plastic-regime-needs-transparency",
+      "date": "2026-09-01",
+      "kind": "news",
+      "strength": "strong",
+      "note": "Opened. Opinion column; no recycler or association quoted; no count of audited recyclers."
+     },
+     {
+      "claim": "CPCB directed all PIBOs and PWPs to upload GST e-invoice details of plastic packaging and plastic waste sales and purchases to the central EPR portal, which issues certificates from actual sales figures.",
+      "source_url": "https://lexplosion.in/cpcb-issues-notification-regarding-the-provision-of-gst-invoices-of-transactions-related-to-plastic-packaging-by-producers-importers-brand-owners-pibos-and-plastic-waste-processors-pwps",
+      "date": "2022-12-29",
+      "kind": "official_rule",
+      "strength": "medium",
+      "note": "Opened. Older secondary page; notification date and deadline not stated."
+     },
+     {
+      "claim": "A CPCB compliance report to the NGT (OA 993 of 2024) is summarised in search results as listing revised show-cause notices to PIBOs dated 11 Mar 2026, directions dated 25 Jun 2026 to 15 states or UTs on 134 more audited PWPs (compensation, revocation), and earlier 2023 directions to the Gujarat, Maharashtra and Karnataka boards.",
+      "source_url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/COMPLIANCE REPORT BY CPCB IN OA NO. 993 of 2024 News Item titled PACKAGEWhere has the plastic wastedisappeared appearing in TheTImes of India dated 30-07-2024.pdf",
+      "date": "2026-06-25 (per search summary)",
+      "kind": "other",
+      "strength": "weak",
+      "note": "NOT opened (certificate error). Figures from a search-engine summary; unverified."
+     },
+     {
+      "claim": "NGT took notice of about 6 lakh fake EPR certificates found when CPCB audited four recyclers in Gujarat, Maharashtra and Karnataka; two of the four were in Gujarat.",
+      "source_url": "https://www.scconline.com/blog/post/2024/07/31/ngt-issues-notice-cpcb-moefcc-recovery-of-6-lakh-fake-epr-certificates-from-plastic-recycling-companies/",
+      "date": "2024-07-31",
+      "kind": "news",
+      "strength": "medium",
+      "note": "Not opened; search summary. Older."
+     },
+     {
+      "claim": "Consultant list prices for EPR work: Rs 9,999 professional fee per stream, Rs 4,999 annual return add-on, Rs 7,999 state plastic-waste authorisation.",
+      "source_url": "https://www.incorpx.io/epr-registration-in-chennai",
+      "date": "undated (2026 listing per search)",
+      "kind": "price_page",
+      "strength": "weak",
+      "note": "Vendor claim from a snippet; not opened; PWP-specific pricing not confirmed."
+     }
+    ],
+    "counter_evidence": "No recycler or association complaint found; no software spend; no public Gujarat job post found. The enforcement targets fraud (certificates beyond capacity), so exposed units may avoid transparency while honest ones may feel safe. A UPSC-prep summary says the 2026 amendment defers some EPR penalties (unverified). Generic waste ERPs and ERPNext waste apps exist, consultants file returns cheaply, and the CPCB portal has free bulk upload. CSE says about 80 percent of plastic scrap sourcing is informal (The Week, 15 Oct 2025, snippet), so purchase proofs are hard for any tool. The pool includes tiny units (a 10-staff recycler in a directory). NGT report and primary notice not opened.",
+    "reachability": "Recycler names, addresses and staff size are on trade directories (enfplastic.com entries updated Nov 2025 and Jan 2026); the CPCB EPR portal lists registered PWPs (contact fields not checked). Owner on WhatsApp is untested.",
+    "confidence": "low"
+   },
+   {
+    "niche": "Owner-run licensed fertiliser, pesticide and seed dealers (agro centres) in Gujarat that sell subsidised fertiliser through PoS devices and face PoS-versus-physical-stock inspections",
+    "geography": "Gujarat state-wide, rural talukas",
+    "problem": "On an inspector's visit the dealer's PoS sales, physical stock, purchase invoices and records must agree; in 2026 so far about one in five inspected firms got a notice and 54 licences were suspended immediately. Inferred, not observed: dealers keep stock in billing software, registers or memory and reconcile by hand. Many actions cite hoarding, overpricing or tagging, which software does not fix.",
+    "why_now": "Gujarat Agriculture Minister announced zero tolerance on 10 Jun 2026 (85 vigilance teams, 3,526 inspections, 752 notices, 54 suspensions); on 5 Aug 2026 investigation officers were placed in every district to check dealer PoS records against physical stock, with a daily state control room. Rabi urea demand in the coming months is my inference, not sourced.",
+    "who_decides": "The dealer-proprietor; a family member runs the counter and an outside accountant may handle GST (inferred).",
+    "current_spend": "Agro-dealer software package listed at Rs 9,500 per piece (Elinje Technosoft via IndiaMART, undated; one-time or yearly unclear); BUSY and MyBillBook publish fertilizer-shop pages (prices not found). No spend on compliance services found.",
+    "cost_of_problem": "A suspension shuts the shop for its length at season peak (my inference; length not found). 2026 so far: 54 suspensions among 3,526 inspected (1.5 percent) and 752 notices (21 percent); 2025: 246 suspended or cancelled among 6,380 inspected (3.9 percent) (my arithmetic).",
+    "our_services_that_fit": "Stock, batch and expiry register with billing, farmer credit ledger, PoS-vs-stock reconciliation sheet, WhatsApp reminders (light custom CRM/ERP or app). Moderate fit; the price ceiling is the issue.",
+    "entry_offer_idea": "Free inspection-readiness check from the dealer's stock export; small paid setup plus a flat monthly fee below a part-time accountant; owner sets the price.",
+    "sales_cycle_hint": "My estimate: days to two weeks, low ticket, seasonal.",
+    "size_hint": "At least 4,674 fertiliser dealerships and manufacturing units were inspected in H1 2026 (opened); total dealer count not found.",
+    "evidence": [
+     {
+      "claim": "Gujarat 2026 so far: 85 teams inspected 3,526 seed, fertiliser and pesticide firms; 752 notices; 54 licences suspended (42 fertiliser, 6 seed, 6 pesticide); 2025: 6,380 inspected, 246 suspended or cancelled; officials verify PoS machines, stock, records and invoices.",
+      "source_url": "https://www.socialnews.xyz/2026/06/10/farmers-interests-paramount-says-gujarat-minister/",
+      "date": "2026-06-10",
+      "kind": "news",
+      "strength": "strong",
+      "note": "Opened. IANS wire reproduced on a secondary site."
+     },
+     {
+      "claim": "Investigation officers appointed in all Gujarat districts to check dealer PoS records against physical stock and inspect top urea sellers; state control room monitors daily; strictest action for stock discrepancies, overpricing or tagging.",
+      "source_url": "https://www.newkerala.com/news/a/investigation-officers-appointed-curb-subsidised-fertiliser-black-marketing-653.htm",
+      "date": "2026-08-05",
+      "kind": "news",
+      "strength": "strong",
+      "note": "Opened. No counts, no mention of suspensions."
+     },
+     {
+      "claim": "Nashik (Maharashtra) suspended 17 and then 13 agro-centre licences for gaps between e-POS and physical stock, 112 suspended since 1 Apr 2026.",
+      "source_url": "https://www.freepressjournal.in/pune/nashik-agriculture-department-suspends-13-agri-input-dealer-licences-over-kharif-rule-violations",
+      "date": "2026 (exact date not confirmed)",
+      "kind": "news",
+      "strength": "weak",
+      "note": "Not opened; search summary; other state."
+     },
+     {
+      "claim": "Agro-dealer billing and stock software for seed, pesticide and fertilizer shops is listed at Rs 9,500 per piece.",
+      "source_url": "https://m.indiamart.com/elinjetechnosoft/software.html",
+      "date": "undated",
+      "kind": "price_page",
+      "strength": "weak",
+      "note": "Vendor listing from a snippet; not opened; one-time or yearly unclear."
+     }
+    ],
+    "counter_evidence": "Cheap billing tools already track stock, batch and expiry (Rs 9,500 listing; BUSY and MyBillBook pages), so the price ceiling sits near Rs 10,000, like clinics and coaching. PoS is a government system dealers cannot change. No dealer complaint or association statement found; inspection numbers are the only pain evidence. No public Gujarat job post found. Dealer pool not counted.",
+    "reachability": "Shops appear on Justdial, IndiaMART and Google Maps (not checked for this segment); owner on WhatsApp untested; no dealers' association found.",
+    "confidence": "low"
+   }
+  ],
+  "sector_notes": [
+   {
+    "sector": "1a. Agro: agri-input dealers (fertiliser, pesticide, seed)",
+    "verdict": "candidate",
+    "finding": "Second candidate. Official Gujarat enforcement numbers (10 Jun and 5 Aug 2026, both opened) but cheap software exists and no dealer complaint was found. Nashik shows the same e-POS-vs-stock suspensions (snippet only)."
+   },
+   {
+    "sector": "1b. Agro: cotton ginning",
+    "verdict": "weak",
+    "finding": "Kasturi Cotton Bharat traceability is voluntary, not a Gujarat mandate (explainer, search summary: https://anantamias.com/current-affairs/kasturi-cotton-gains-as-traceability-in-textiles-turns-crucial/). Apparel Resources (date unconfirmed, snippet: https://apparelresources.com/business-news/trade/cotton-prices-drop-3-year-low) quotes a Gujarat Chamber official: about 800 ginning units, about 450 fully operating, losses. That is distress, not a software trigger. No job posts found."
+   },
+   {
+    "sector": "1c. Agro: spices (Unjha), oil mills, cold storage (Deesa), dairy-cooperative suppliers",
+    "verdict": "nothing_found",
+    "finding": "Spices Board made ethylene oxide testing compulsory for export spices after 2024 (older, summaries) but nothing Unjha-specific or any 2026 rule for small units was found. Deesa: about 72 cold storages per an undated association statement and a recurring potato price and storage squeeze (https://www.indianpotato.com/potato-farming-challenges-in-deesa-region-of-gujarat-in-current-year), no 2026 data. Oil mills: only 2013-era and procurement-scam items. Dairy suppliers: nothing relevant. No rule, job, complaint or spend evidence."
+   },
+   {
+    "sector": "2a. Packaging: EPR for plastic recyclers (PWPs)",
+    "verdict": "candidate",
+    "finding": "First candidate: see candidate 1. Strongest dated enforcement chain of the sweep and a counted Gujarat pool (662), but no owner voice, no software spend and no hiring evidence."
+   },
+   {
+    "sector": "2b. Packaging and printing: plastic packaging producers (EPR), BIS QCO, Legal Metrology, FSSAI, printing presses",
+    "verdict": "weak",
+    "finding": "Gujarat has 741 registered producers (DTE, 7 Jul 2026); their FY2025-26 return is due 31 Dec 2026; shortfall compensation is Rs 5,000/t against certificate rates of Rs 870 to 2,500/t (DTE, 1 Sep 2026). Consultants sell the filing at about Rs 15,000 per stream (vendor snippet), so it is a bought service with no software gap seen. BIS: 14 QCOs on polymers and chemicals were withdrawn in Nov 2025 (https://www.corpseed.com/news/govt-withdraws-14-bis-qcos-to-ease-import-pressure-for-msmes, snippet), removing a forced-spend trigger. Legal Metrology: one search, no 2026 amendment found. FSSAI packaging rules and printing presses: not examined, no evidence."
+   },
+   {
+    "sector": "3. Auto-component and OEM-vendor belts (Sanand, Halol, Rajkot, Ahmedabad)",
+    "verdict": "weak",
+    "finding": "Autocar Pro, 20 Aug 2026 (opened, https://www.autocarpro.in/news/exclusive-cii-greencos-common-auto-esg-platform-to-go-live-by-fy27-end-134202): OEMs ask suppliers for ESG and embedded-emissions data in different formats; CII GreenCo targets a common platform by end FY27; Tier 2/3 is a later ambition; no Gujarat mention; a CII executive says suppliers lack people and knowledge. Business Today, 30 Jul 2026 (snippet): Maruti Hansalpur Plant D started, so vendor volume grows. Not found: any Gujarat vendor complaint, public job post, ERP-adoption statistic (ACMA search failed), IATF consulting price. Treat as an N2 beachhead question; no new pain evidence."
+   },
+   {
+    "sector": "4. Construction contractors, building-material dealers, RERA-linked work",
+    "verdict": "nothing_found",
+    "finding": "GujRERA: no 2026 Gujarat quarterly-update penalty notice found (Karnataka's Rs 25,000 per late update from 1 Apr 2026 and UP are other states; GujRERA's 2021 amnesty expired). Contractors: no Gujarat pending-bills story; Maharashtra claims over Rs 86,000 crore (The Week, 5 Sep 2026) is not Gujarat. Tender-alert services start near Rs 2,999 a year (Capterra listing, snippet), a low ceiling. Building-material dealers: only a D&B directory count of 17,771 profiles (not verified as active) and no association complaints. RERA agents and engineers not examined."
+   }
+  ],
+  "did_not_work": "About 49 tool calls (slightly over the 45 guide). WebSearch is US-centred and its domain filter rejected major Indian outlets (TOI, ET, Indian Express, Financial Express, BusinessLine, Divya Bhaskar), losing 2 calls; a Gujarati query on contractor dues returned only other states. Could not open: the NGT-hosted CPCB compliance report (TLS certificate error), the Rajya Sabha reply PDF (redirected to a generic page), the primary MoEFCC notice, the PWM Amendment Rules 2026 gazette text. Cited from search summaries only and marked weak or unverified: IncorpX, SCC Online, Business Today, Apparel Resources, Free Press Journal, D&B, Capterra, Corpseed, Elinje. The Apify rag-web-browser ran once (EPR query); its three pages were irrelevant (US EPR, a blog, a LinkedIn post). No public Gujarat job posts were found for any sector (generic Rajkot and Ahmedabad listings only), so hiring-spend evidence is missing everywhere; no owner or association complaint in the owner's own voice was found for any sector. Thin or not examined: oil mills, dairy suppliers, printing presses, FSSAI, Legal Metrology (one search), RERA agents, building-material dealers. Sample is small and biased toward English news and vendor pages.",
+  "est_cost_usd": 0.01
+ },
+ "V5": {
+  "lens": "V5",
+  "summary": "Coverage sweep of the six sectors phase 1 skipped. Bottom line: nothing here beats N1 or N2 (22 of 35). Real and visible: salaried manual back-office spend in Gujarat (156 Indeed postings pulled 28 Oct 2026, a capped sample; my count by title: 9 plain billing roles at Rs 9,000-33,000 a month, 11 dispatch, 10 logistics roles up to Rs 60,000, about 20 e-commerce roles, 9 collection roles at non-lender firms averaging about Rs 24,000), plus a few dated rules (e-way bill changes from 1 Aug 2026; RBI TReDS Directions from 23 Jun 2026; CPSE TReDS mandate from 30 Jun 2026). Missing in every sector: a Gujarat owner complaint, a deadline that forces these owners to buy, and a gap that cheap tools do not already fill (AIM Transport from Rs 12,000 a year, Tally and Vyapar reminders, salon software at Rs 800-1,200 a month). Two low-confidence candidates: C2 Gujarat credit-selling firms that already pay a collector (my rubric estimate about 16 of 35) and C1 Gujarat transport and logistics back office, LR-POD-freight billing (about 15 of 35); both are my estimates, not phase-1 scoring. Cross-findings for the ranker: (1) the state ICT refund (65%, max Rs 5 lakh) excludes software and service or trading units (Draft ICT guideline, GR 5 Oct 2022, to 4 Oct 2027) and phase 1 read the ERP line as manufacturing-only, so these sectors have no N2-style subsidy hook; (2) TReDS does not fix Surat trader credit (buyers are companies and CPSEs; neither article mentions small traders) and gives IV nothing to sell; (3) for the N3 gate: HP Telecom India in Surat posted a Rs 25,000-30,000 credit-control job for dealer dues on 24 Oct 2026, the first observed Surat spend on dealer collections, but telecom, not textile, and the Tally and Vyapar counter-evidence stands; (4) for N1: Oct 2026 Gujarat renewable-energy postings (AVI Renewable billing with POD checks, B Safal collections) show back-office hiring spend, but none mentions DISCOM or PM Surya Ghar chasing.",
+  "candidates": [
+   {
+    "niche": "Owner-run Gujarat B2B sellers on credit (distributors, real-estate developers, energy EPC firms) that already pay a salaried collections or credit-control executive",
+    "geography": "Gujarat (postings read: Surat and Ahmedabad; other locations not checked)",
+    "problem": "Dealers, distributors and customers pay after the agreed credit period, so a salaried person phones them, tracks promises to pay and reports outstanding balances every day. Inferred from the duties in the postings (for example daily meetings with sales on outstanding balances, tracking payment commitments); no owner was found saying it hurts.",
+    "why_now": "Weak. Working-capital squeeze in distribution (AICPDF, 9 Jun 2026: 3.5-5% margins no longer cover staff, interest and technology costs) and the Oct-Nov Diwali settlement season. No rule or deadline forces a purchase.",
+    "who_decides": "Owner or finance head. The HP Telecom post has the collector working daily with the sales and accounts teams, so the owner or a finance head signs off the hire.",
+    "current_spend": "About Rs 24,000 a month per collector (my calculation: mean of the midpoints of 9 postings from 8 non-lender firms; range Rs 12,000-45,000). Software today is Tally or Excel plus the collector (not observed, inferred).",
+    "cost_of_problem": "Not measured. The collector salary is the floor of what an owner already pays to chase dues; no posting states overdue amounts or account counts.",
+    "our_services_that_fit": "AI automation (WhatsApp and voice follow-up cadence, promise-to-pay tracking), custom CRM (outstanding board by dealer for the daily sales-and-accounts review), Tally or ERP export integration.",
+    "evidence": [
+     {
+      "claim": "HP Telecom India Pvt Ltd (Surat) is hiring a Senior Executive - Credit Control and Payment Collection at Rs 25,000-30,000 a month to chase dealers and distributors on credit terms of 6, 7 or 15 days, with daily meetings with sales on outstanding balances.",
+      "source_url": "https://in.indeed.com/m/viewjob?jk=855f1402dad1f86b",
+      "date": "2026-10-24",
+      "kind": "job_post",
+      "strength": "medium",
+      "note": "Opened via Apify Indeed scrape 28 Oct 2026, description read. Telecom and electronics distribution, not textile; firm size unknown."
+     },
+     {
+      "claim": "B Safal Renewable Energy (Ahmedabad) is hiring a Collection Officer at Rs 20,000-45,000 a month to follow up pending payments, track payment commitments, keep outstanding records and send collection reports; banking or NBFC collection experience preferred.",
+      "source_url": "https://in.indeed.com/m/viewjob?jk=d9457c5d1ae1f0d0",
+      "date": "2026-10-16",
+      "kind": "job_post",
+      "strength": "medium",
+      "note": "Description read. Shows a renewable-energy firm paying to chase client dues."
+     },
+     {
+      "claim": "Two Gujarat real-estate developers post collection roles: Nestoria Buildcon Recovery Executive Rs 25,000-30,000 (19 Oct) and Rashmi Engicon Sales and Collection Executive Rs 15,000-25,000 (12 Oct) plus Tele Collection Executive Rs 15,000-20,000 (7 Oct).",
+      "source_url": "https://in.indeed.com/m/viewjob?jk=2ab77c300028cf77",
+      "date": "2026-10-19",
+      "kind": "job_post",
+      "strength": "weak",
+      "note": "Titles and pay only, descriptions not read. Rashmi: https://in.indeed.com/m/viewjob?jk=509a116695f6dedd and https://in.indeed.com/m/viewjob?jk=4bc607b05e08fd36. Real estate is the Campaign 1 vertical."
+     },
+     {
+      "claim": "AICPDF, which says it represents over 4.5 lakh distributors in 25 states, said on 9 Jun 2026 that 3.5-5% margins no longer cover fuel, staff wages, warehouse rent, interest on working capital, compliance and technology spending, and warned of protests in August 2026 if FMCG firms did not act by 30 Jul 2026.",
+      "source_url": "https://www.outlookbusiness.com/news/fmcg-distributors-association-warns-of-protests-over-margins",
+      "date": "2026-06-09",
+      "kind": "public_complaint",
+      "strength": "medium",
+      "note": "Opened. National trade body, a margin dispute with FMCG companies and not about customers paying late; no Gujarat figure; protest outcome not reported."
+     }
+    ],
+    "counter_evidence": "(1) Free or cheap reminder tools exist: phase 1 opened Tally's guide (22 May 2026: bill-wise ageing, bulk reminders, WhatsApp Business API sending; WhatsApp add-on about Rs 1,300 a year plus GST) and Vyapar's free reminders; I did not re-open them. Under owner rule 5 a reminder-only offer is weak. (2) A collector also visits, negotiates and sells; software replaces little of that, and the Campaign 1 telecaller anchor is Rs 10-12K. (3) Phase 1 found Surat textile non-payment driven by out-of-state fly-by-night buyers, fraud and buyer leverage, not missing reminders. (4) Only 2 of 9 non-lender descriptions were read; none states overdue amounts; HP Telecom's 6-15 day credit terms look unlike textile's 90-180 days. (5) AICPDF is a national margin dispute. (6) A posting shows a hire, not a loss; no Gujarat owner voice. (7) Overlaps held candidate N3. On the phase-1 rubric I estimate about 16 of 35 (my estimate: pain 1, paid 3, urgency 2, reach 3, pool 3, fit 3, gap 1). It does not beat N1 or N2.",
+    "reachability": "Employer names are public in the postings, and a fresh collector post marks a firm that feels the problem enough to hire now. Business-published numbers via directories or Maps are untested; whether a listed number reaches the owner or a sales desk is unknown. No contact details from the postings were used.",
+    "confidence": "low",
+    "entry_offer_idea": "Free: an ageing and promise-to-pay sheet built from the owner's own outstanding export (Tally or Excel). Paid first step (owner sets price): a 2-week reminder-and-promise board for one dealer group. Research anchors only: collector Rs 12-45K a month, Tally WhatsApp add-on Rs 1,300 a year.",
+    "size_hint": "Unknown. 9 non-lender postings in a capped sample of 156 cannot size the pool.",
+    "sales_cycle_hint": "My estimate: 1-3 weeks from first reply if the owner shares an outstanding list; unproven, nobody has been spoken to."
+   },
+   {
+    "niche": "Owner-run Gujarat transport and logistics service firms (transport companies, booking agents, small 3PL; about 5-50 staff) that run LR, POD and freight billing by hand",
+    "geography": "Gujarat (hiring examples from Rajkot and Ahmedabad; also Surat and Vadodara postings in the sample)",
+    "problem": "A consignment needs an LR, a valid e-way bill, a signed POD brought back from the driver or consignee, and then a freight bill that the consignor pays only against the POD. Clerks match PODs to LRs and bills across registers, Excel, Tally and WhatsApp photos, so bills go out late and pending PODs hide unpaid freight. Inferred from job duties and vendor feature lists; no transporter was found saying this.",
+    "why_now": "Weak. E-way bill changes (Ship-to GSTIN, closure after delivery by transporter or driver via mobile number) take effect 1 Aug 2026 per Taxscan (30 Jun 2026), and a GSTAT order reported 19 Oct 2026 shows an expired e-way bill on a Gujarat-UP trip drew a Rs 1.57 lakh penalty (cancelled). Neither forces a small transporter to buy software.",
+    "who_decides": "Owner or partner of the transport firm. Larger firms delegate to a booking manager (Vraj Logistics posts one at Rs 50,000-60,000).",
+    "current_spend": "Salaried coordination staff at Rs 15,000-60,000 a month per role in the 10 logistics-titled postings (Oct 2026), plus off-the-shelf transport software from about Rs 12,000 a year (AIM Transport vendor page, undated).",
+    "cost_of_problem": "Not measured. The only rupee figure is one cancelled e-way bill penalty of Rs 1,57,516 (GSTAT, 19 Oct 2026); clerical cost equals the salaries above.",
+    "our_services_that_fit": "Custom ERP or TMS (LR, trips, freight bills, ledgers), AI document processing (POD photo to LR match), WhatsApp POD capture from drivers, e-way bill API integration.",
+    "evidence": [
+     {
+      "claim": "E-way bill changes effective 1 Aug 2026: Ship-to GSTIN in bill-to/ship-to cases, URP entry for unregistered consignees, closure after delivery by supplier, recipient, transporter, driver or authorised person via mobile-number access; ERP, GSP and API users must update. The article mentions no penalty.",
+      "source_url": "https://www.taxscan.in/top-stories/new-changes-in-gst-e-way-bill-from-aug-1-2026-what-indian-businesses-need-to-know-1448377",
+      "date": "2026-06-30",
+      "kind": "news",
+      "strength": "medium",
+      "note": "Opened, partly paywalled. A Gujarati-language search summary says an earlier 15 Jun 2026 date was extended after industry representations; the GSTN advisory itself was not opened."
+     },
+     {
+      "claim": "AVI Renewable Energy (Ahmedabad head office) is hiring a billing executive at up to Rs 21,500 a month whose duties include tracking and verifying PODs from field and supply-chain teams and chasing pending PODs before invoicing in Tally.",
+      "source_url": "http://in.indeed.com/job/billing-executive-1ac89058e36f71d9",
+      "date": "2026-10-13",
+      "kind": "job_post",
+      "strength": "medium",
+      "note": "Description read. A renewable-energy firm, not a transporter; shows POD-to-invoice matching is salaried manual work in Gujarat."
+     },
+     {
+      "claim": "Vraj Logistics (Rajkot) is hiring a Booking Manager for transport booking, vehicle placement, freight rates and transporter management at Rs 50,000-60,000 a month, 10-15 years' experience.",
+      "source_url": "https://in.indeed.com/m/viewjob?jk=127c79da73d824fb",
+      "date": "2026-10-27",
+      "kind": "job_post",
+      "strength": "medium",
+      "note": "Description read. An operations and relationship role, not clerical."
+     },
+     {
+      "claim": "Other Gujarat logistics back-office postings in the sample: Humaniquee back office executive - logistics Rs 20,000-35,000 (20 Oct), Pratham Transsolutions transport executive Rs 15,000-22,000 (17 Oct), Praship Carrier two coordinator roles Rs 30,000-40,900 (24 Oct).",
+      "source_url": "http://in.indeed.com/job/back-office-executive-logistics-ced0ad5f0dcdc7db",
+      "date": "2026-10-20",
+      "kind": "job_post",
+      "strength": "weak",
+      "note": "Titles and pay only, descriptions not read. Pratham: https://in.indeed.com/m/viewjob?jk=3c9f3e5044a0fa9a ; Praship: https://in.indeed.com/m/viewjob?jk=991cc02e6c604e7e"
+     },
+     {
+      "claim": "GSTAT Lucknow Bench (Om Fuels) set aside a Rs 1,57,516 penalty after an e-way bill lapsed mid-journey from Gujarat to Uttar Pradesh; the tribunal found no evidence of tax evasion.",
+      "source_url": "https://www.taxscan.in/gst/expired-e-way-bills-wrong-vehicle-numbers-route-diversions-know-what-recent-gstat-orders-say-on-gst-penalties-pdf-download",
+      "date": "2026-10-19",
+      "kind": "news",
+      "strength": "weak",
+      "note": "Single case, order paywalled, penalty cancelled; the article does not say whether the vehicle was detained."
+     },
+     {
+      "claim": "AIM Transport (SRD Softech) is listed from Rs 12,000 per year and covers GR tracking, billing, POD with shortage, damage and detention, ledgers, GST and e-way bill integration.",
+      "source_url": "https://www.techjockey.com/detail/aim-transport",
+      "date": "undated (page title carries 2026; opened 2026-10-28)",
+      "kind": "price_page",
+      "strength": "medium",
+      "note": "Vendor listing; the price is shown inconsistently on the page (Rs 12,000 vs 15,000, plus a Rs 4,000 card). Shows money already spent on tools and the price ceiling."
+     }
+    ],
+    "counter_evidence": "(1) Cheap, mature software already covers the layer: AIM Transport lists GR, billing, POD and e-way bill integration from about Rs 12,000 a year; a search summary also listed Gujarat-based transport-software vendors (Rajkot, Vallabh Vidyanagar) at Rs 37,000-50,000 (not opened). (2) No transporter or Gujarat association complaint about POD, freight payment or e-way bills was found in 3 searches (one in Gujarati); POD-linked payment-delay material came only from foreign or old sources. (3) The e-way bill change is a data-field and API update that software vendors absorb, its start date slipped, and the one penalty case was cancelled; nothing forces a purchase. (4) Service firms are excluded from the state ICT refund (Draft ICT Guideline, GR 5 Oct 2022, https://ic.gujarat.gov.in/documents/commondoc/2023/Draft%20ICT%20Guideline.pdf) and phase 1 reads the ERP refund as manufacturing-only, so there is no subsidy hook. (5) None of the Gujarat postings has POD in its title; AVI Renewable is not a transporter; the Rs 50,000 booking manager is relationship work software does not replace. (6) No owner voice anywhere. On the phase-1 rubric I estimate about 15 of 35 (my estimate: pain 1, paid 3, urgency 1, reach 3, pool 3, fit 3, gap 1). It does not beat N1 or N2.",
+    "reachability": "Hiring firms are named in public posts (Vraj Logistics, Pratham Transsolutions, Humaniquee, Praship Carrier), which also marks a firm paying for back-office help now. Business-published numbers in IndiaMART, Justdial and Maps listings are untested; whether a number reaches the owner or a booking desk is unknown. That transport owners use WhatsApp heavily is my assumption, not evidence.",
+    "confidence": "low",
+    "entry_offer_idea": "Free: a one-page 'POD pending and unbilled freight' sheet built from the owner's own LR list. Paid first step (owner sets price): a 2-week WhatsApp POD-capture and LR-matching pilot on one branch or one large consignor. Research anchors only: software Rs 12,000 a year, coordinator Rs 15-35K a month.",
+    "size_hint": "No Gujarat count of small transport firms found; unknown.",
+    "sales_cycle_hint": "My estimate: 2-4 weeks from first reply to a paid pilot; unproven, no transporter has been spoken to."
+   }
+  ],
+  "sector_notes": [
+   {
+    "sector": "(1) Wholesale distributors and stockists (FMCG, pharma, hardware, electricals)",
+    "finding": "No new dated rule: the e-invoicing threshold is still Rs 5 crore since 1 Aug 2023 and a Rs 2 crore cut is only a proposal (compliance-blog search summaries, June 2026, not official, not opened); the state ICT refund excludes software and trading units (Draft ICT guideline, GR 5 Oct 2022). Jobs: Gujarat dealers and makers hire billing and dispatch staff (Kataria Automobiles billing Rs 18,000-25,000, 15 Oct 2026; Kumar Automobiles dispatch Rs 20,000-35,000, 26 Oct 2026) and HP Telecom (Surat) hired a dealer-dues credit controller at Rs 25,000-30,000 (24 Oct 2026). Complaint: AICPDF (9 Jun 2026, https://www.outlookbusiness.com/news/fmcg-distributors-association-warns-of-protests-over-margins) says 3.5-5% margins no longer cover staff, interest and technology costs and warned of August protests; national, outcome not reported, no Gujarat voice. Tools: billing and salesman-order products (Vyapar, MyBillBook, SalesOn, Tally-at-cloud) appeared as vendor pages in a search and were not opened; SalesOn claims a 1-day set-up (vendor claim); the only WhatsApp-orders-to-billing story is a vendor-written Delhi anecdote. Pharma stockist rules and Gujarat associations were not searched. Weak: pain is generic, tools are cheap, nothing is forced.",
+    "verdict": "weak"
+   },
+   {
+    "sector": "(2) Transporters and logistics operators (e-way bill, FASTag, ULIP, LR and POD, freight billing and collection)",
+    "finding": "Candidate C1 at low confidence. Rule: e-way bill changes from 1 Aug 2026 (Taxscan, 30 Jun 2026); a Gujarati-language search summary says an earlier 15 Jun 2026 date was extended; a GSTAT order reported 19 Oct 2026 cancelled a Rs 1,57,516 penalty on a Gujarat-UP trip. Jobs: 10 transport or logistics-titled postings in the sample at Rs 15,000-60,000 a month, none with POD in the title; AVI Renewable's billing post shows POD checks are manual work. Spend: AIM Transport from Rs 12,000 a year (vendor, undated). Complaints: none from Gujarat found in 3 searches (one in Gujarati); POD-linked payment-delay evidence only from foreign or old sources. FASTag and ULIP were not searched. Cheap local software already covers LR, POD, billing and e-way bill integration, and service firms get no state software refund.",
+    "verdict": "candidate"
+   },
+   {
+    "sector": "(3) Retail showrooms and D2C or marketplace sellers (auto, electronics, furniture, garments)",
+    "finding": "Jobs: about 20 e-commerce-titled postings in Gujarat (Oct 2026, Rs 9,700-50,000 a month; one asks for Amazon, Flipkart, Meesho and Shopify skills) and dealer back-office hires (Kataria Automobiles billing, Kumar Automobiles dispatch). Spend: Meesho account-management listings from Rs 2,999 a month on IndiaMART (search summary, undated, not opened), so the outsourcing price ceiling looks low. Complaints: an Ahmedabad seller's legal notice to Meesho over return claims (Inc42, date not shown, not opened) and vendor blogs putting fashion RTO at 20-40% (vendor claims). No dated rule found, and no showroom-specific search beyond job titles. Fails the standard: only one dated kind of evidence (job posts).",
+    "verdict": "weak"
+   },
+   {
+    "sector": "(4) Appointment and service businesses (salons, spas, gyms, driving schools, diagnostic labs, retail pharmacies, tour operators, event planners)",
+    "finding": "Only salons, spas and gyms (one price search) and driving schools (one rules search) were examined; labs, pharmacies, tour operators and event planners got no dedicated search, so 'nothing found' there means not examined. Salon software listings run from about Rs 13 per user per month (JHD e-Salon, Capterra) to Rs 799-1,199 a month (SalonBoost, Salon360, Invoay), and a vendor blog says Fresha is free for solo stylists (search summaries, vendor claims, not opened). Driving schools: MoRTH accredited-centre rules date from 1 Jul 2021 (simulator, test track) with a June 2024 amendment per a secondary blog; no Gujarat, software or 2026 rule found. One tour-operator sales posting (Elite Era Holidays, Rs 15,000-40,000). No Gujarat owner complaint. The price ceiling is roughly ten times below the Rs 10-12K telecaller anchor.",
+    "verdict": "weak"
+   },
+   {
+    "sector": "(5) Hiring, attendance, payroll and collection-executive roles across Gujarat SMEs",
+    "finding": "Method: Indeed India via Apify, 28 Oct 2026, location Gujarat, last 30 days, 9 keyword searches capped at 20 each = 156 unique postings, all with a Gujarat location; counts are floors, not market totals (Apna, Quikr, LinkedIn and job-group posts not run). My count by title: 23 collection, recovery, credit-control or receivables roles (8 lenders or collection agencies, 9 from non-lender firms, 6 unclear or offshore); 9 plain billing executives (Rs 9,000-33,000); 11 dispatch roles; 10 logistics roles; about 20 HR-titled roles and only 1 payroll executive (Globe Ecologistics, Rs 15,000-25,000), so payroll and attendance sit inside general HR hires. Non-lender collectors: HP Telecom (Surat), B Safal Renewable Energy (Ahmedabad), Nestoria Buildcon, Rashmi Engicon (2 postings), VISAMAN GLOBAL SALES, evo innovative Surfaces, SHC Projects, Earth Travel; pay Rs 12,000-45,000, mean of midpoints about Rs 24,000; only HP Telecom and B Safal descriptions were read, the rest is my reading of titles and employer names. Visible spend that feeds C2, but spend is not pain.",
+    "verdict": "candidate"
+   },
+   {
+    "sector": "(6) Working-capital angles (TReDS invoice discounting, bank and NBFC receivables finance)",
+    "finding": "RBI's TReDS Directions 2026 took effect 23 Jun 2026 (TaxGuru, 25 Jun 2026, https://taxguru.in/rbi/rbis-treds-master-direction-2026-means-msmes-working-capital.html): platform-level due diligence on MSME sellers removed, platform net worth Rs 25 crore (existing operators by 31 Mar 2028), insurance premium not chargeable to the seller; companies and PSUs are the expected buyers. All CPSEs must route MSME invoice settlements through TReDS from 30 Jun 2026, and the company-buyer threshold was cut from Rs 500 crore to Rs 250 crore in Nov 2024 (Angel One, 10 Jul 2026, https://www.angelone.in/news/market-updates/government-mandates-treds-for-msme-invoice-settlement-by-cpses). Neither article mentions small traders or textile, so Surat trader-to-trader credit is not covered (my inference: most Surat trading firms are far below the turnover threshold). The platforms (RXIL, M1xchange, Invoicemart, C2treds, DTX, named in a search summary) handle onboarding themselves, so in my judgement IV has no service to sell. Bank and NBFC receivables finance was not searched. The money-flow link to the Surat credit pain is weak.",
+    "verdict": "weak"
+   }
+  ],
+  "did_not_work": "Reddit search through Apify (5 queries, about 120 posts) returned mostly unrelated posts; no first-person Indian transporter, distributor or wholesaler complaint was found, only two builder posts (a distribution CRM, a POS app), so I dropped it. WebSearch is US-centred: 3 searches for Gujarat transporter association demands (one in Gujarati) found nothing from 2026, and no Gujarat distributor complaint turned up beyond the national AICPDF statement. The Indeed sample is Indeed only and capped at 20 per keyword; Apna, Quikr, LinkedIn and job-group posts were not run; the POD executive keyword returned no POD-titled Gujarat role; only 10 of 156 descriptions were read (Vraj, AVI, Techsol, Qlocar, Buck4India, Tropical Solar, B Safal, HP Telecom, MSPIRE, Watchdog), employer type for the rest is my judgement from names, and Indeed posting dates may be refresh dates. Seen only as search summaries and not opened, so not cited as verified: Meesho account-management listings, the Inc42 Meesho seller notice, salon and spa software listings, Gujarat transport-software vendors in Rajkot and Vallabh Vidyanagar, SalesOn, Vyapar and MyBillBook pages, e-invoicing threshold blogs, driving-school rule coverage, the SuperProcure e-way bill blog. The GSTN e-way bill advisory itself was not opened (the 1 Aug 2026 date rests on Taxscan). The 2026 scheme text for ICT eligibility was not found; the ICT guideline I read is the 2022 draft. Not searched at all: bank and NBFC receivables finance, pharma stockist rules, FASTag, ULIP, diagnostic labs, retail pharmacies, tour operators, event planners, and showroom-specific (auto, electronics, furniture) pain. No sector has first-person Gujarat owner voice; reachability and decider are untested. About 44 tool calls used.",
+  "est_cost_usd": 0.4
+ }
+}

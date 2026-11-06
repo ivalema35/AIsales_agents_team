@@ -1,0 +1,372 @@
+{
+ "vistara": {
+  "title": "Vistara Realty | Real Estate Developers in Gujarat",
+  "imgs": [
+   {
+    "src": "https://vistararealty.com/Assets/Vistara_Logo_white.png",
+    "w": 206,
+    "h": 147,
+    "alt": "",
+    "cls": "block",
+    "inHeader": true
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Vistara_Logo.png",
+    "w": 891,
+    "h": 653,
+    "alt": "",
+    "cls": "hidden",
+    "inHeader": true
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245225_69748a29f1c8c.jpeg",
+    "w": 1321,
+    "h": 738,
+    "alt": "Anahata Florenza",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245366_69748ab62928d.jpeg",
+    "w": 1024,
+    "h": 682,
+    "alt": "Kalrav Farms 2 @Chikoowadi",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245484_69748b2c4ec37.png",
+    "w": 1254,
+    "h": 1254,
+    "alt": "Sculpture AI",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/savli-ip.jpeg",
+    "w": 1024,
+    "h": 571,
+    "alt": "VIP Savli",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245560_69748b7825d1a.png",
+    "w": 2424,
+    "h": 1728,
+    "alt": "VIP Waghodiya",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245484_69748b2c4ec37.png",
+    "w": 1254,
+    "h": 1254,
+    "alt": "Sculpture AI",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245366_69748ab62928d.jpeg",
+    "w": 1024,
+    "h": 682,
+    "alt": "Kalrav Farms 2 @Chikoowadi",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245225_69748a29f1c8c.jpeg",
+    "w": 1321,
+    "h": 738,
+    "alt": "Anahata Florenza",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/savli-ip.jpeg",
+    "w": 1024,
+    "h": 571,
+    "alt": "VIP Savli",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245560_69748b7825d1a.png",
+    "w": 2424,
+    "h": 1728,
+    "alt": "VIP Waghodiya",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/storage/launches/1769245484_69748b2c4ec37.png",
+    "w": 1254,
+    "h": 1254,
+    "alt": "Sculpture AI",
+    "cls": "w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/card:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Kalrav-2/kalrav-farm.png",
+    "w": 1251,
+    "h": 848,
+    "alt": "Industrial real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Kalrav-2/kalrav-2.jpeg",
+    "w": 1024,
+    "h": 682,
+    "alt": "Residential real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Anahata-Florenza/anahata-home.jpeg",
+    "w": 1321,
+    "h": 738,
+    "alt": "Commercial real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Properties/savli-ip.jpeg",
+    "w": 1024,
+    "h": 571,
+    "alt": "Industrial real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Properties/Oran-New.jpeg",
+    "w": 1171,
+    "h": 720,
+    "alt": "Residential real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Properties/kaip.jpeg",
+    "w": 1024,
+    "h": 578,
+    "alt": "Commercial real estate project by Vistara Realty",
+    "cls": "w-full h-full object-cover transition duration-500 group-hover:scale-110",
+    "inHeader": false
+   },
+   {
+    "src": "https://vistararealty.com/Assets/Vistara_Logo.png",
+    "w": 891,
+    "h": 653,
+    "alt": "Vistara Realty Logo",
+    "cls": "h-10 object-contain",
+    "inHeader": false
+   }
+  ]
+ },
+ "namasya": {
+  "title": "Shree Namasya Residency",
+  "imgs": [
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/shree-namasya-logo.svg",
+    "w": 135,
+    "h": 77,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-235",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/shree-namasya-logo.svg",
+    "w": 135,
+    "h": 77,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-235",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/shree-namasya-logo-black.svg",
+    "w": 135,
+    "h": 77,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-191",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/shree-namasya-logo-black.svg",
+    "w": 135,
+    "h": 77,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-191",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/quality.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "quality",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/commitment.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "commitment",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/customer-focus.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "customer-focus",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Team-Work.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Team Work",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/creativity.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "creativity",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Timely-delivery.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Timely delivery",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/quality.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "quality",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/commitment.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "commitment",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/customer-focus.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "customer-focus",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Team-Work.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Team Work",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/creativity.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "creativity",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Timely-delivery.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Timely delivery",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/quality.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "quality",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/commitment.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "commitment",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/customer-focus.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "customer-focus",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Team-Work.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Team Work",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/creativity.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "creativity",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/Timely-delivery.svg",
+    "w": 100,
+    "h": 100,
+    "alt": "Timely delivery",
+    "cls": "swiper-slide-image",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/quote.svg",
+    "w": 54,
+    "h": 54,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-680",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/ma_shrnam_02-300x273.jpg",
+    "w": 300,
+    "h": 273,
+    "alt": "Picture of Arjun Mehta",
+    "cls": "",
+    "inHeader": false
+   },
+   {
+    "src": "https://shreenamasya.com/wp-content/uploads/2025/09/quote.svg",
+    "w": 54,
+    "h": 54,
+    "alt": "",
+    "cls": "attachment-full size-full wp-image-680",
+    "inHeader": false
+   }
+  ]
+ }
+}

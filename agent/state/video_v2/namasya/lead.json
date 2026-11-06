@@ -1,0 +1,55 @@
+{
+  "name": "Shree Namasya",
+  "project": "Shree Namasya",
+  "area": "Atladra-Padra Road, Vadodara",
+  "ad_page": "Shree Namasya",
+  "units": "3 BHK homes",
+  "sub_line": "3 BHK homes \u00b7 sample house ready",
+  "scene2_caption": "Four of your Shree Namasya ads: Send WhatsApp message",
+  "questions": [
+    "Preferred size?",
+    "Budget?",
+    "Buying timeline?"
+  ],
+  "buyers": [
+    "3 BHK",
+    "3 BHK",
+    "3 BHK"
+  ],
+  "brand": {
+    "navy": "#14181f",
+    "navy2": "#262d39",
+    "gold": "#C8814F",
+    "gold2": "#a96a3d",
+    "tint": "#f2cba6",
+    "sub": "#e9a56f",
+    "tagtext": "#14181f"
+  },
+  "logo": "assets/logo.svg",
+  "logo_s1": {
+    "w": 400
+  },
+  "logo_ad_h": 96,
+  "key": "namasya",
+  "chat_time": "10:47 PM",
+  "stills": {
+    "1": "assets/stills/E_plain_skyline.jpg",
+    "2": "assets/stills/F_evening_home.jpg",
+    "3": "assets/stills/B_night.jpg",
+    "4": "assets/stills/B2_night_relieved.jpg",
+    "5": "assets/stills/C2_morning_desk.jpg"
+  },
+  "sparks": false,
+  "fx": {
+    "tap": 0.9,
+    "b2": 0.44,
+    "b3": 0.66,
+    "r1": 0.3,
+    "r2": 0.52,
+    "r3": 0.66,
+    "hand": 0.83,
+    "cta1": 0.4,
+    "cta2": 0.76,
+    "arr": 0.82
+  }
+}

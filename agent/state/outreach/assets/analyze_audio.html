@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>audio analysis</title></head>
+<body><pre id="out">working...</pre>
+<script>
+// One-off analysis of the narrator MP3: length, loudness, and the silent gaps that separate the 5 scenes.
+async function analyse(url) {
+  const buf = await (await fetch(url)).arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const audio = await ctx.decodeAudioData(buf);
+  const ch = audio.getChannelData(0), sr = audio.sampleRate, win = Math.round(sr * 0.01);
+  const db = [];
+  let peak = 0, sumSq = 0;
+  for (let i = 0; i < ch.length; i++) { const a = Math.abs(ch[i]); if (a > peak) peak = a; sumSq += ch[i] * ch[i]; }
+  for (let i = 0; i + win <= ch.length; i += win) {
+    let s = 0; for (let j = 0; j < win; j++) s += ch[i + j] * ch[i + j];
+    db.push(10 * Math.log10(s / win + 1e-12));
+  }
+  const thr = -48, minGap = 0.45, gaps = [];
+  let start = null;
+  for (let k = 0; k < db.length; k++) {
+    const t = k * 0.01;
+    if (db[k] < thr) { if (start === null) start = t; }
+    else if (start !== null) { if (t - start >= minGap) gaps.push([+start.toFixed(2), +t.toFixed(2), +(t - start).toFixed(2)]); start = null; }
+  }
+  if (start !== null) gaps.push([+start.toFixed(2), +(db.length * 0.01).toFixed(2), 0, 'end']);
+  // first and last sound
+  const first = db.findIndex(x => x > thr) * 0.01, last = (db.length - 1 - [...db].reverse().findIndex(x => x > thr)) * 0.01;
+  return { duration: +audio.duration.toFixed(2), sampleRate: sr, channels: audio.numberOfChannels, peak_dbfs: +(20 * Math.log10(peak)).toFixed(1),
+           rms_dbfs: +(10 * Math.log10(sumSq / ch.length)).toFixed(1), first_sound: +first.toFixed(2), last_sound: +last.toFixed(2), gaps };
+}
+analyse('master_voice_en_v1.mp3').then(r => { window.RESULT = r; document.getElementById('out').textContent = JSON.stringify(r, null, 1); })
+  .catch(e => { window.RESULT = { error: String(e) }; document.getElementById('out').textContent = 'ERROR ' + e; });
+</script></body></html>

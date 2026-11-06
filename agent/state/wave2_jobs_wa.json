@@ -1,0 +1,54 @@
+[
+ {
+  "code": "9BNDD",
+  "label": "WhatsApp Great Spaces",
+  "group": "wa",
+  "cmd": [
+   "python",
+   "agent/tools/campaign_send.py",
+   "send",
+   "greatspaces",
+   "--approval",
+   "9BNDD"
+  ]
+ },
+ {
+  "code": "7A45D",
+  "label": "WhatsApp Swagat Developers",
+  "group": "wa",
+  "cmd": [
+   "python",
+   "agent/tools/campaign_send.py",
+   "send",
+   "swagat",
+   "--approval",
+   "7A45D"
+  ]
+ },
+ {
+  "code": "U95HA",
+  "label": "WhatsApp Parshwanath",
+  "group": "wa",
+  "cmd": [
+   "python",
+   "agent/tools/campaign_send.py",
+   "send",
+   "parshwanath",
+   "--approval",
+   "U95HA"
+  ]
+ },
+ {
+  "code": "UY4VY",
+  "label": "WhatsApp Space Age Consultants",
+  "group": "wa",
+  "cmd": [
+   "python",
+   "agent/tools/campaign_send.py",
+   "send",
+   "spaceage",
+   "--approval",
+   "UY4VY"
+  ]
+ }
+]

@@ -1,0 +1,25 @@
+{
+  "name": "iv_detailing_video_hi_v1",
+  "language": "hi",
+  "category": "MARKETING",
+  "header": {
+    "format": "VIDEO",
+    "file": "../outreach/assets/SAMPLE_detailing_hi_v1.mp4"
+  },
+  "body": "नमस्ते {{1}} टीम 🙏\n\nहम IV Infotech, मेहसाणा से हैं। आपका स्टूडियो ऑनलाइन देखते हुए हमें एक बात नज़र आई: {{2}}।\n\nऊपर एक छोटा वीडियो है (कैप्शन के साथ, लगभग एक मिनट का)। इसमें दिखाया है कि एक सिंपल पेज पर आपका काम और Google रिव्यू कैसे दिख सकते हैं, और WhatsApp से बुकिंग कैसे आसान हो सकती है।\n\nअगर आपको यह काम का लगे, तो नीचे \"हाँ, बताइए\" दबाइए। हमारी टीम का कोई सदस्य इसी चैट में आपको मैसेज करेगा।",
+  "body_examples": [
+    "Shine Point Detailing",
+    "आपकी Google लिस्टिंग में वेबसाइट का बटन नहीं दिख रहा"
+  ],
+  "footer": "बंद करने के लिए STOP लिखें",
+  "buttons": [
+    {
+      "type": "QUICK_REPLY",
+      "text": "हाँ, बताइए"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "अभी नहीं"
+    }
+  ]
+}

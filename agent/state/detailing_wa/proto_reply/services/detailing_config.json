@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "_comment": "PROTOTYPE config. Template names listed here get their own labels, words and texts; ANY template whose name contains 'detailing' is claimed even if it is not listed (then no automatic text, hand-off only). Labels must match the Meta template spec exactly (button text <= 25 characters).",
+  "templates": {
+    "iv_hi_detailing_video_v1": {
+      "lang": "hi",
+      "yes_labels": ["हाँ, बताइए"],
+      "notnow_labels": ["अभी नहीं"],
+      "typed_yes": true,
+      "yes_words": ["haan", "ha", "han", "haa", "hanji", "ji", "jee", "yes", "yeah", "yep", "ok", "okay", "sure", "demo", "bhejo", "bhej", "dikhao", "send", "please", "pls", "karo", "kijiye", "theek", "thik", "bilkul",
+                    "हाँ", "हां", "हा", "जी", "ठीक", "भेजो", "दिखाओ", "હા", "જી", "ભલે", "ઓકે"],
+      "decline_words": ["no", "nope", "nahi", "nahin", "na", "not now", "abhi nahi", "abhi nahin", "baad me", "later", "नहीं", "नही", "ना", "अभी नहीं", "ના", "નાં"],
+      "texts": {
+        "yes_reply": "धन्यवाद! यह IV Infotech, Mehsana का automatic (AI) जवाब है। हमारी टीम से एक व्यक्ति इसी चैट में working hours के दौरान आपको message करेगा। मैसेज नहीं चाहिए तो STOP लिखिए।",
+        "stop_ack": "ठीक है। अब हम आपको कोई WhatsApp message नहीं भेजेंगे। असुविधा के लिए क्षमा करें।",
+        "media_reply": "आपका message मिल गया, पर यह automatic (AI) चैट अभी सिर्फ text पढ़ सकती है। कृपया 'haan' या अपना सवाल type कर दीजिए; हमारी टीम का व्यक्ति इसी चैट में working hours के दौरान message करेगा। रोकने के लिए STOP लिखिए।"
+      }
+    }
+  }
+}

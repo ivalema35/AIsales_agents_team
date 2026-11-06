@@ -1,0 +1,83 @@
+[
+ {
+  "match": "Shyamal Group",
+  "name": "Shyamal Group - Shyamal Park Lane",
+  "slug": "shyamal-park-lane-vadodara",
+  "summary": "Family-run Vadodara developer (promoter firm Shree Ganesh Infra Homes) with its own website, a RERA number on its Park Lane page and 13 projects listed on that site. It is running a Diwali ad for Shyamal Park Lane in Bhayli (3 and 4 BHK), and the need for an automatic WhatsApp first reply is inferred from that ad and its site, not observed as slow replies.",
+  "why_hungry": [
+   "21 Oct 2026: Meta Ad Library shows 3 active versions of one Diwali ad for Shyamal Park Lane, all started 16 Oct 2026, with a first 5 bookings offer.",
+   "21 Oct 2026: one of the three versions has a Send WhatsApp message button, the other two use a Get quote form, and the ad copy lists three call numbers.",
+   "21 Oct 2026: their website has no WhatsApp link, chat widget or CRM trace, only a contact form and phone lines; whether any auto-reply exists was not tested."
+  ],
+  "next_step": "A person at IV Infotech sends one short email under their own name to shyamalpark501@gmail.com, addressed to Chirag and Amitkumar Tilva (shown as Founder & Director on their own About page), offering to show a sample WhatsApp first reply, and nothing is sent until the owner approves it, with no cold WhatsApp and no website form.",
+  "language": "en",
+  "tags": [
+   "vadodara",
+   "bhayli",
+   "diwali-ad",
+   "click-to-whatsapp",
+   "rera-developer",
+   "email-first"
+  ]
+ },
+ {
+  "match": "Vistara Group",
+  "name": "Vistara Group - Anahata Florenza",
+  "slug": "vistara-anahata-florenza",
+  "summary": "Developer with its own website and a published WhatsApp number, selling the Anahata Florenza villas in Ankhol, Vadodara and Kalrav Farms plots, and hiring a sales executive in Vadodara. The need for an automatic WhatsApp first reply is inferred from its WhatsApp-button ads and callback-only website chatbot, not observed as slow replies.",
+  "why_hungry": [
+   "21 Oct 2026: Meta Ad Library shows 8 active Anahata Florenza ads (oldest from 18 Jun 2026) and 9 active Kalrav Farms ads (7 started 10 to 16 Oct).",
+   "21 Oct 2026: two Anahata Florenza ads running since 18 Jun have a Send WhatsApp message button, while the website chatbot only takes name and phone and promises a callback.",
+   "21 Oct 2026: a LinkedIn job for a Real Estate Sales Executive in Vadodara was shown as posted 4 days earlier (about 17 Oct)."
+  ],
+  "next_step": "A person at IV Infotech sends one short email under their own name to marketing@vistararealty.com, addressed to the Vistara team with no individual named and asking to be passed to the owner, offering a sample WhatsApp first reply for the Anahata Florenza chats, and nothing is sent until the owner approves it, with no cold WhatsApp, enquiry form or ad number used.",
+  "language": "en",
+  "tags": [
+   "vadodara",
+   "villas",
+   "click-to-whatsapp",
+   "sales-hiring",
+   "own-website",
+   "email-first"
+  ]
+ },
+ {
+  "match": "BLJ Infra",
+  "name": "BLJ Infra LLP - Silver Square",
+  "slug": "blj-infra-silver-square",
+  "summary": "Rajkot LLP with 11 listed partners selling Silver Square (141 flats and 30 shops on a third-party RERA mirror). Three live ads started 12 Oct 2026, two with a Send WhatsApp message button; the need for an automatic first reply is inferred from that, not observed as slow replies.",
+  "why_hungry": [
+   "21 Oct 2026: Meta Ad Library shows 3 live Silver Square ads, all started 12 Oct 2026, two with a Send WhatsApp message button.",
+   "21 Oct 2026: BLJ has no website; enquiries go to WhatsApp or the call number printed in its own Gujarati ad.",
+   "21 Oct 2026: 141 flats and 30 shops on the Aurum RERA mirror (third-party), so there is real inventory to sell."
+  ],
+  "next_step": "Warm lead kept at the owner's request (score 5, below the hungry threshold). One short human-sent plain message to the sales number printed in its own ad, asking to be passed to the partner who handles sales. Nothing is sent without the owner's OK; the unmasked promoter contact on the official GujRERA page is still to be checked.",
+  "language": "gu",
+  "tags": [
+   "rajkot",
+   "click-to-whatsapp",
+   "kept-at-owner-request",
+   "warm"
+  ]
+ },
+ {
+  "match": "Shree Namasya",
+  "name": "Shree Namasya - Shree Namasya Residency",
+  "slug": "shree-namasya-vadodara",
+  "summary": "Vadodara developer (promoter firm Shree Namasya Enterprise, 97 units on a third-party RERA mirror) at Atladra-Padra Road. Six live ads on its own page, four with a Send WhatsApp message button; a partner brokerage (Sunfin Realty) also sells it by phone. The need is inferred, not observed.",
+  "why_hungry": [
+   "21 Oct 2026: Meta Ad Library shows 6 live ads on the Shree Namasya page (28 Sep, 8 Oct, 17 Oct); four have a Send WhatsApp message button.",
+   "21 Oct 2026: shreenamasya.com has only click-to-call and forms, no chat widget or CRM trace; whether an auto-reply exists was not tested.",
+   "21 Oct 2026: the partner brokerage Sunfin Realty answers calls on its own lines, so a 'we handle it ourselves' reply is likely."
+  ],
+  "next_step": "Warm lead kept at the owner's request (score 5). One short email to info@shreenamasya.com addressed to the Shree Namasya team, not a named person; nothing is sent without the owner's OK. The broker angle (Sunfin Realty) is a possible second route.",
+  "language": "",
+  "tags": [
+   "vadodara",
+   "click-to-whatsapp",
+   "kept-at-owner-request",
+   "warm",
+   "broker-partner"
+  ]
+ }
+]

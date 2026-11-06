@@ -1,0 +1,36 @@
+APPROVAL NEEDED [9SA3V]
+EMAIL
+To: sales@elenza.group
+Lead label (typed by the agent, not checked): Elenza Group
+Subject: A short video for Elenza Gardens
+Agent's reason (typed by the agent, not checked): Wave 1 first-touch email for Elenza Gardens: page + video + demo link. Owner asked to send to all leads.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/elenza-gardens-vyqa09/email_banner.jpg
+  https://www.ivinfotech.com/campaign/elenza-gardens-vyqa09
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Elenza%20Gardens
+  https://www.ivinfotech.com/assets/campaign/elenza-gardens-vyqa09/logo.png
+--- text ---
+[theme: launch]
+
+Hello Elenza Group team,
+
+We are IV Infotech, Mehsana. We saw your ads for Elenza Gardens, so we made a short video and a page for it.
+
+Your Elenza Gardens ads invite buyers to visit the site. Here is how a buyer can pick the visit time right in the chat.
+
+[image] https://www.ivinfotech.com/assets/campaign/elenza-gardens-vyqa09/email_banner.jpg | https://www.ivinfotech.com/campaign/elenza-gardens-vyqa09 | Elenza Gardens - watch the video
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/elenza-gardens-vyqa09
+
+Want to see it working? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for Elenza Gardens from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Elenza%20Gardens
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK 9SA3V to approve, NO 9SA3V to skip.
+Valid till 17 Oct 04:24 IST.

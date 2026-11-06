@@ -1,0 +1,37 @@
+APPROVAL NEEDED [NQG8Z]
+EMAIL
+To: rudraenterprise1170@gmail.com
+Lead label (typed by the agent, not checked): Rivanta Group
+Subject: A short video for Rivanta Heritage
+Reply-To: info@ivinfotech.com
+Agent's reason (typed by the agent, not checked): Wave 2 first-touch email for Rivanta Heritage (English page + video; the address is the mailto published on rivantagroup.com). Owner asked for it.
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/rivanta-heritage-ttmbo7/email_banner.jpg
+  https://www.ivinfotech.com/campaign/rivanta-heritage-ttmbo7
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Rivanta%20Heritage
+  https://www.ivinfotech.com/assets/campaign/rivanta-heritage-ttmbo7/logo.png
+--- text ---
+[theme: volume]
+
+Hello Rivanta Group team,
+
+We are IV Infotech, Mehsana. We found this address on the contact page of rivantagroup.com. We saw ads for Rivanta Heritage that print the same phone number as that page, so we made a short video and a page for it.
+
+The Rivanta Heritage ads we saw offer several ways to enquire: a form, a chat button, a WhatsApp message button and phone numbers. Here is how a WhatsApp enquiry can get an automatic reply in about a minute.
+
+[image] https://www.ivinfotech.com/assets/campaign/rivanta-heritage-ttmbo7/email_banner.jpg | https://www.ivinfotech.com/campaign/rivanta-heritage-ttmbo7 | Rivanta Heritage - watch the video
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/rivanta-heritage-ttmbo7
+
+Want to see it working? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for Rivanta Heritage from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Rivanta%20Heritage
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK NQG8Z to approve, NO NQG8Z to skip.
+Valid till 19 Oct 21:30 IST.

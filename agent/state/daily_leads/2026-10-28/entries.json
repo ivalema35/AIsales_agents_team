@@ -1,0 +1,194 @@
+[
+ {
+  "type": "lead",
+  "key": "clinic-web-m-k-hi-tech-dental-clinic-mehsana",
+  "data": {
+   "name": "M.K. Hi Tech Dental Clinic, Mehsana (Dr. Anand Patel / Dr. Asmita Patel per Facebook)",
+   "city": "Mehsana",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "WhatsApp (or a call if WhatsApp is not found) to +91 95585 56006, the only number the business publishes (Google Maps listing and, per snippet, its Facebook page). At a two-doctor clinic it is probably answered by a doctor-owner or someone who passes it on; ask for Dr. Anand Patel or Dr. Asmita Patel by name. Send a human message, not a cold template. Do not use any Justdial-routed number.",
+   "best_angle": "Open with the dead link as a fact, short: when someone taps Website on the Google profile for M.K. Hi Tech Dental Clinic it shows an error (mkdental.clinic.net.in); with 73 five-star reviews you are being found, and we can fix the website link and add a WhatsApp appointment button that answers automatically. Offer a one-page preview, no price in the first message.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95585 56006",
+     "source": "https://www.google.com/maps/search/?api=1&query=M.K.%20Hi%20tech%20DENTAL%20CLINIC%2C%20MEHSANA&query_place_id=ChIJw-QETi5DXDkRs233-yS--eU",
+     "note": "Indian mobile, likely WhatsApp (not confirmed). Same number on Google Maps and, per search snippet, on the Facebook page. Not confirmed who answers it."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/mkhitechdentalclinic/",
+     "source": "https://www.facebook.com/mkhitechdentalclinic/",
+     "note": "Business page (not a personal profile). A snippet says it also lists an email, but the address could not be read, so I did not record one."
+    },
+    {
+     "kind": "maps",
+     "value": "https://www.google.com/maps/place/?q=place_id:ChIJw-QETi5DXDkRs233-yS--eU",
+     "source": "https://www.google.com/maps/place/?q=place_id:ChIJw-QETi5DXDkRs233-yS--eU",
+     "note": "Google Business Profile, 73 reviews, 5.0"
+    }
+   ],
+   "observed_facts": [
+    "Google Maps listing exists for M.K. Hi tech DENTAL CLINIC, MEHSANA: 5.0 stars, 73 reviews (all 5-star), 25 images returned, not temporarily or permanently closed, categories Dental clinic / Hospital / Teeth whitening service. (2026-10-28, https://www.google.com/maps/place/?q=place_id:ChIJw-QETi5DXDkRs233-yS--eU)",
+    "The website field on the Maps listing is http://mkdental.clinic.net.in/ and the domain does not resolve (DNS ENOTFOUND), so patients who tap Website on Google get an error. (2026-10-28, http://mkdental.clinic.net.in/)",
+    "The Maps listing publishes the phone +91 95585 56006 and an owner description: 'highly skilled yet polite dentists', 'highly equipped with latest technologies'. Opening hours were not returned by the scrape. (2026-10-28, https://www.google.com/maps/search/?api=1&query=M.K.%20Hi%20tech%20DENTAL%20CLINIC%2C%20MEHSANA&query_place_id=ChIJw-QETi5DXDkRs233-yS--eU)",
+    "Facebook page 'MK Hi-Tech Dental Clinic Mehsana' exists. A search snippet says it names Dr. Anand Patel and Dr. Asmita Patel, the same Royal House address and the same phone, with about 150 followers. Snippet only, page text was not readable. (2026-10-28, https://www.facebook.com/mkhitechdentalclinic/)",
+    "Justdial listing (snippet only): 4.9 rating, 69 reviews, 67 photos, '13 years in healthcare'. (2026-10-28, https://www.justdial.com/Mehsana/MK-Hi-Tech-Dental-Clinic-Dena-Bank-R-O-Nagalpur/9999P2762-2762-141101123833-C9D9_BZDET)",
+    "Medindia directory (snippet only) lists Asmita Patel as director, with an older or different Modhera Road address. (2026-10-28, https://www.medindia.net/directories/hospitals/mk-dental-clinic-mehsana-gujarat-14124.htm)"
+   ],
+   "hypotheses": [
+    "The .clinic.net.in subdomain looks like a cheap template or directory-style site that has lapsed. Inferred from the domain pattern, not verified.",
+    "Demand is real and the clinic probably loses some searchers who tap the dead website link, but 73 and 69 reviews show patients still find them via Maps and Justdial, so the loss is not measured.",
+    "The two named doctors probably own the clinic; ownership comes from a Facebook snippet and a Medindia director listing only.",
+    "+91 95585 56006 is probably answered by a doctor or the clinic's own staff, but a receptionist may screen calls.",
+    "The clinic may already use Justdial or Practo for bookings.",
+    "They likely have little appetite for a big spend (typical Tier-2 dental clinic budget, not evidence)."
+   ],
+   "case_for": "The need is observed: the website on the Google profile is dead, the one link patients tap, while the clinic has 73 five-star reviews (real demand). It is an independent Mehsana clinic with named doctors, a published mobile number that is probably WhatsApp and probably reaches a doctor-owner, about 13 years of operation, and it is not in our duplicate list. Our offer (site, completed Google profile, WhatsApp appointment button) fits directly.",
+   "case_against": "Pay signal is weak: no fee list, staff count or branches, and only about 150 Facebook followers. Reach is a single mobile number; I could not confirm who answers it or that it is on WhatsApp. Doctor names and the 13-year figure rest on search snippets (Facebook, Justdial, Medindia pages were blocked or unreadable). Patients clearly arrive without a site (73 five-star reviews), so the owner may feel little urgency. The Medindia address differs from the other sources. | Skeptic: The listing is real only as far as one Maps scrape plus a Facebook page title. The owner and doctor names, the 13-year history, the review counts on other sites and the WhatsApp status are all unreproduced snippets. The clinic already collects 73 five-star reviews without a working site, so the dead link may cost little and the owner may see no urgency or budget. Pay evidence is absent, so this is a thin B on a single observed signal, the dead domain.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-28"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "clinic-web-goradwala-smile-centre-an-advance-dental",
+  "data": {
+   "name": "Goradwala Smile Centre - An Advance Dental Clinic (Dr Saurabh Patel), Mehsana",
+   "city": "Mehsana",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "WhatsApp, a short human message to 9925099230 (published by the clinic on its own Wix page, an Indian mobile that is likely WhatsApp, unconfirmed). It is the only number the clinic itself publishes and it plausibly reaches the doctor; use the same number for a follow-up voice note or call. Do not use 02762-250150 (landline, likely front desk). 8866877298 is a third-party listing number and should only be a fallback. Do not use email: none is published.",
+   "best_angle": "Show the doctor a concrete before/after of his own presence: his 2022 Wix page has no way to book or message, so a patient who finds him on Google has to phone during clinic hours. Offer a quick free preview of a proper page with a WhatsApp appointment button and the Google profile cleaned up (consistent hours and number), using his reviews as proof.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "9925099230",
+     "source": "https://sharpedge99.wixsite.com/website-1",
+     "note": "Indian mobile, likely WhatsApp (not confirmed). Published on the clinic's own Wix page as the only contact, with a 'Get in Touch' button. Possibly outdated: the page is from 2022 and directories show other numbers."
+    },
+    {
+     "kind": "phone",
+     "value": "8866877298",
+     "source": "https://www.mehsanaonline.in/guide/doctors-in-mehsana",
+     "note": "Indian mobile, likely WhatsApp (not confirmed). Seen only in a search-result snippet from the mehsanaonline.in directory (page returned 403), so it is third-party and not seen first-hand. Unknown whether the doctor or the front desk answers."
+    },
+    {
+     "kind": "phone",
+     "value": "02762-250150",
+     "source": "https://www.mehsanaonline.in/guide/doctors-in-mehsana",
+     "note": "Landline, same snippet source. Likely front desk, so not a route to the decider."
+    },
+    {
+     "kind": "website",
+     "value": "https://sharpedge99.wixsite.com/website-1",
+     "source": "https://sharpedge99.wixsite.com/website-1",
+     "note": "Clinic's Wix page (form-less, phone link only)"
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/people/Goradwala-Smile-Centre-An-Advance-Dental-Clinic/100063841482312/",
+     "source": "https://www.facebook.com/people/Goradwala-Smile-Centre-An-Advance-Dental-Clinic/100063841482312/",
+     "note": "Business page, not read in detail"
+    },
+    {
+     "kind": "maps",
+     "value": "Google Maps listing (name + Shiv Complex, Radhanpur Cross Road, Mehsana)",
+     "source": "https://sharpedge99.wixsite.com/website-1",
+     "note": "The Wix page links to it. I did not open it."
+    }
+   ],
+   "observed_facts": [
+    "The clinic's website is a free Wix subdomain (sharpedge99.wixsite.com/website-1), one page. It has 4 services, hours, address and a phone link, with no booking form, WhatsApp button or email, and shows a Wix ad banner. (2026-10-28 (fetched), https://sharpedge99.wixsite.com/website-1)",
+    "The footer reads '2022 by Goradwala Smile Centre... created with Wix.com'. The site appears not to have been updated since 2022. (2022 (footer), https://sharpedge99.wixsite.com/website-1)",
+    "The Wix page lists hours Mon-Sat 8am-8pm. Lybrate lists 10am-1pm and 4-7pm, so the public information is inconsistent. (2026-10-28 (fetched), https://www.lybrate.com/mehsana/clinic/goradwala-smile-centre-an-advance-dental-clinic-radhanpur-cross-road)",
+    "Lybrate lists the clinic with 1 doctor, Dr Saurabh Patel, about 14 years experience, fee Rs 300, rating 4.3, and no website and no phone number shown. (2026-10-28 (fetched), https://www.lybrate.com/mehsana/clinic/goradwala-smile-centre-an-advance-dental-clinic-radhanpur-cross-road)",
+    "Directories show different phone numbers (9925099230 on the Wix page; 8866877298 and 02762-250150 per a mehsanaonline snippet). No single canonical contact is published. (2026-10-28 (search snippet), https://www.mehsanaonline.in/guide/doctors-in-mehsana)",
+    "The clinic is in a 1st-floor unit (FF-1&2) of a commercial complex on Radhanpur Cross Road, Mehsana. (2026-10-28 (fetched), https://sharpedge99.wixsite.com/website-1)"
+   ],
+   "hypotheses": [
+    "The Wix page is likely a stale DIY site from 2022, so Google searchers see a weak web presence compared with the clinic's reputation (inferred).",
+    "Patients probably have no way to enquire or book except by phone. A WhatsApp appointment button would add a channel (inferred).",
+    "The finder's '157 reviews, 5.0' on Google Maps was not verified by me. If true, demand is strong and the owner has reason to value more enquiries. Lybrate's 4.3 does not contradict it.",
+    "The Wix number 9925099230 probably reaches the doctor or the clinic mobile, but it could be the front desk. Unknown.",
+    "The doctor may not care about a website if his patient flow is already full; many referrals come by word of mouth (inferred)."
+   ],
+   "case_for": "Weakness observed first-hand: a free-subdomain Wix page last dated 2022 with no booking or WhatsApp, and no email. A solo doctor-owner is the decider. A business-published mobile (9925099230) is likely WhatsApp, and he sits in the geography the campaign targets. He is not a chain or agency and is not on the duplicates list. Services (braces, crowns, implants) have a good ticket size.",
+   "case_against": "The pay signal is weak: free Wix plan, Rs 300 fee, no sign of digital spend. I could not verify the 157-review claim (Lybrate shows 4.3). The Wix site is the only own-site evidence and it is stale, so numbers and hours may be outdated; third-party sources conflict on phone numbers and hours. The 9925099230 number is not confirmed as the doctor's own line. No named contact route beyond a phone number. Facebook and Maps were not read in detail. | Skeptic: The pay signal is unproven and the need is only a feature gap, not demonstrated lost business. The clinic already has a working Wix page, a Lybrate listing with booking/call buttons, and a Facebook page, and he chose a free Wix plan for a Rs 300 consultation practice. The 157-review, 5.0 figure that makes demand look strong could not be verified (Lybrate shows 4.3). Reach is a single unverified mobile number that could be a front desk. This sits at the low end of B and could drop to C if Google Maps shows few reviews or the number is dead.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-28"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "clinic-web-uma-dental-clinic-implant-center",
+  "data": {
+   "name": "Uma Dental Clinic & Implant Center",
+   "city": "Mehsana",
+   "product": "A professional website, a complete Google Business Profile and a WhatsApp enquiry / appointment button that is answered automatically",
+   "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "WhatsApp (human, voice note first) to +91 89800 12380, likely WhatsApp. It is the number Dr. Brijesh Patel himself published on his KiViHealth doctor profile for both of his clinics, so it plausibly reaches him or his chairside staff. Send between 1 and 4 pm or after 8 pm. Do not use email; none was found. +91 99250 29462 (Mappls only) is a fallback.",
+   "best_angle": "A short WhatsApp message in the doctor's own name, not mentioning Google reviews as a problem: his 220 reviews and implant work are strong, but patients who search 'implant dentist Mehsana' and tap the website see nothing of his own, and WhatsApp enquiries are not answered while he is chairside. Offer to send a free one-page sample of his clinic site and an automatic reply with an appointment button.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 89800 12380",
+     "source": "https://kivihealth.com/iam/brijesh.patel.3236",
+     "note": "Clinic number. It is on the owner Dr. Brijesh Patel's own KiViHealth profile for both of his locations, and it is the same as the 089800 12380 on Latrexa. Likely WhatsApp (Indian mobile, not confirmed)."
+    },
+    {
+     "kind": "phone",
+     "value": "089800 12380",
+     "source": "https://latrexa.com/hospital/uma-dental-clinic-implant-center-best-dentist-dental-clinic-dental-surgeon-implantologist-implant-center-in-mehsana",
+     "note": "Same number as above, on the Latrexa directory."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 99250 29462",
+     "source": "https://www.mappls.com/place-uma+dental+clinic-safal+complex-modhera+char+rasta-f8-mahesana+gidc-mehsana-mahesana-gujarat-384002-6mgo04@zdata=MjMuNTkzMzg0KzcyLjM3ODM1NysxNys2bWdvMDQrKw==ed",
+     "note": "Second number, on the Mappls listing only. Unclear who answers it."
+    },
+    {
+     "kind": "facebook",
+     "value": "Uma Dental Clinic & Implant center (business page)",
+     "source": "https://www.facebook.com/people/Uma-Dental-Clinic-Implant-center/61557997864577/",
+     "note": "Business page; I could not read its contents."
+    },
+    {
+     "kind": "maps",
+     "value": "Google Maps listing, place_id ChIJxztnrCpCXDkRaypnXhQciI8",
+     "source": "https://www.google.com/maps/place/?q=place_id:ChIJxztnrCpCXDkRaypnXhQciI8",
+     "note": "The finder says it shows a mobile phone; I could not see it myself."
+    }
+   ],
+   "observed_facts": [
+    "Clinic exists at F-8 Safal Complex, Modhera Char Rasta, Mahesana GIDC, Mehsana 384002, with phone 089800 12380. The directory lists no website. (2026 (page footer), https://latrexa.com/hospital/uma-dental-clinic-implant-center-best-dentist-dental-clinic-dental-surgeon-implantologist-implant-center-in-mehsana)",
+    "Dr. Brijesh Patel (BDS 2009, reg. A-4922) is listed as owner of Uma Dental Clinic since Sept 2011, with a second location in Dhinoj. Both locations use phone +91-8980012380, timings are 9-1 and 4-8, and the profile shows 5.0 from 14+ reviews on KiViHealth. (fetched 2026-10-28, https://kivihealth.com/iam/brijesh.patel.3236)",
+    "The Mappls entry for Uma Dental Clinic shows a different phone, +91 99250 29462, no website and no reviews. (fetched 2026-10-28, https://www.mappls.com/place-uma+dental+clinic-safal+complex-modhera+char+rasta-f8-mahesana+gidc-mehsana-mahesana-gujarat-384002-6mgo04@zdata=MjMuNTkzMzg0KzcyLjM3ODM1NysxNys2bWdvMDQrKw==ed)",
+    "Another directory copy of the listing shows the same address and phone, again with no website. (2025-05-04, https://dentalimplantprice.in/uma-dental-clinic-implant-center-best-dentist-dental-clinic-dental-surgeon-implantologist-implant-center-in-mehsana-f8-safal-complex-char-rasta-opp-simandhar-jain-derasar-opp-new-bus-stand/)",
+    "Repeated web searches (with name, street, phone and doctor) returned no own website for this clinic, only directories and a Facebook business page. (2026-10-28, https://latrexa.com/hospital/uma-dental-clinic-implant-center-best-dentist-dental-clinic-dental-surgeon-implantologist-implant-center-in-mehsana)"
+   ],
+   "hypotheses": [
+    "The Google profile is probably active (220 reviews and 63 photos per the finder, unverified), so the Google Business Profile part of our offer is probably not a gap; the website and WhatsApp booking are the gaps.",
+    "Implants are a high-ticket treatment, and the owner has run the clinic since 2011 and opened a second location, which suggests he can afford a small website and automation package.",
+    "He already has a KiViHealth profile with an appointment widget, so he may feel online booking is covered (inferred).",
+    "The 5.0 rating and steady reviews suggest the practice is busy and he may feel no urgency.",
+    "89800 12380 is probably a mobile that the owner answers, since he published it on his own doctor profile (inferred, not confirmed)."
+   ],
+   "case_for": "Real, verified, independent, owner-run implant clinic with 15 years of operation and a second branch. No own website appears in the Latrexa, Mappls and dentalimplantprice listings or in repeated web searches. The owner published a single mobile number, +91 89800 12380, on his own doctor profile. The finder reports 220 reviews, which suggests a lot of footfall and patient demand to capture.",
+   "case_against": "I could not re-open the Google Maps listing, so the 220 reviews and the empty website field are the finder's claim, not something I checked. The absence of a site is therefore based on directories and searches rather than Maps itself. If the Maps profile is strong, our Google Business Profile selling point is weak. A KiViHealth profile with booking already exists, which may feel like enough. Pay ability is inferred, not shown (no staff list or price signals), and the clinic is busy enough that it may not feel the need. | Skeptic: The 220-review, strong-Google-profile claim could not be verified by anyone. If it is true, the clinic is already found on Google and may feel well served, and the KiVi online booking page reduces the booking pain further. The pay signal is purely inferred. The case for a website rests on directory pages showing no site, since Maps was never read.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-28"
+  }
+ }
+]

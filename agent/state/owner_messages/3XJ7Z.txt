@@ -1,0 +1,36 @@
+APPROVAL NEEDED [3XJ7Z]
+EMAIL
+To: hardikv682@gmail.com
+Lead label (typed by the agent, not checked): Owner test (own email)
+Subject: [Test] A short video for BRIJ Sandalwood
+Agent's reason (typed by the agent, not checked): Owner asked for a test of the designed email on his own address before it goes to any lead
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/brij-sandalwood-5mbzd3/email_banner.jpg
+  https://www.ivinfotech.com/campaign/brij-sandalwood-5mbzd3
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20BRIJ%20Sandalwood
+  https://www.ivinfotech.com/assets/campaign/brij-sandalwood-5mbzd3/logo.png
+--- text ---
+[theme: corporate]
+
+Hello Brij Group team,
+
+We are IV Infotech, Mehsana. We saw your ads for BRIJ Sandalwood, so we made a short video and a page for it.
+
+Your Sandalwood ads open a WhatsApp chat. Here is how that chat can answer first, every time, even at night.
+
+[image] https://www.ivinfotech.com/assets/campaign/brij-sandalwood-5mbzd3/email_banner.jpg | https://www.ivinfotech.com/campaign/brij-sandalwood-5mbzd3 | BRIJ Sandalwood - watch the video
+
+[button] Watch the video | https://www.ivinfotech.com/campaign/brij-sandalwood-5mbzd3
+
+Want to see it working? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for BRIJ Sandalwood from our own number. Nothing is connected to your number or your ads.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20BRIJ%20Sandalwood
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK 3XJ7Z to approve, NO 3XJ7Z to skip.
+Valid till 17 Oct 04:16 IST.

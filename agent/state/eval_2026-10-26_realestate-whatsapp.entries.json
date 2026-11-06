@@ -1,0 +1,175 @@
+[
+ {
+  "type": "lead",
+  "key": "ai-auto-re-vacanza-developers-projects-vacanza-city",
+  "data": {
+   "name": "Vacanza Developers (Surat) - projects Vacanza City, Vacanza Atlas, Vacanza Shopping Street, Vacanza Homes / Harrod's",
+   "city": "Surat",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "A human phone call to the sales number printed in their own ad (+91 90999 73209), asking for the owner or sales head and for an email address. It is the only business-published route found. Do not use a cold WhatsApp template (0/3 in Campaign 1), and do not message through the ad button or the Page, since that would pose as a buyer. Before calling, someone should open vacanzadevelopers.com in a normal browser to find an email, form or owner name and to check for an existing chatbot.",
+   "best_angle": "Ask, do not assert. Open with their live Vacanza City 2 BHK and Atlas ads ('Send WhatsApp message' button, Rs 4 lakh booking offer): 'Someone taps your button at 11 pm. Does anyone reply before morning?' Then offer a first reply in about a minute with the brochure, 3 quick questions and a site-visit slot, and one list for the sales team across all four projects. Do not claim they reply slowly.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 90999 73209",
+     "source": "https://www.facebook.com/ads/library/?id=2433420887396586",
+     "note": "Printed by the business in the body of its Vacanza Atlas ad (start date 2026-10-16) as the enquiry and site-visit number. The finder reported the same number in ad 1594782351731890, which I could not open. Indian mobile, so likely WhatsApp-capable (not confirmed). Unknown whether it is the owner's line, a sales desk or an agency's."
+    },
+    {
+     "kind": "website",
+     "value": "https://vacanzadevelopers.com",
+     "source": "https://www.instagram.com/vacanzadevelopers/",
+     "note": "Official site per the Instagram bio. Not readable by my tools (client-rendered). Contact and enquiry pages unchecked, so an email or form may exist there."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/vacanzadevelopers/",
+     "source": "https://www.facebook.com/vacanzadevelopers/",
+     "note": "Business Page, 4,101 followers. Do not message it as a prospect."
+    },
+    {
+     "kind": "instagram",
+     "value": "https://www.instagram.com/vacanzadevelopers/",
+     "source": "https://www.instagram.com/vacanzadevelopers/",
+     "note": "Business account, 3,345 followers, links to the site."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.commonfloor.com/vacanza-developers/builder/9aswqf",
+     "source": "https://www.commonfloor.com/vacanza-developers/builder/9aswqf",
+     "note": "Third-party builder listing with the Vesu office address only. It has no builder phone or email, and the contactus@commonfloor.com address belongs to the portal, not the builder."
+    }
+   ],
+   "observed_facts": [
+    "Page 'Vacanza Developers' had 6 active Meta ads in my sample (limit 6, so the real count may be higher). Start dates run from 2026-10-16 to 2026-10-23. The ad IDs are 2433420887396586, 2888274911535780, 2671300023268401, 1766533534650500, 2103795657243686 and 1683522276522217. (2026-10-26, https://www.facebook.com/ads/library/?id=2433420887396586)",
+    "5 of the 6 ads have CTA WHATSAPP_MESSAGE ('Send WhatsApp message'). The sixth has CTA 'Book now' with link api.whatsapp.com/send. All 6 list WhatsApp among the publisher platforms, alongside Facebook, Instagram and, for one ad, Audience Network. (2026-10-20, https://www.facebook.com/ads/library/?id=2888274911535780)",
+    "The ads cover three product lines: a 2 BHK booking offer at Vacanza City (Rs 4 lakh to book, 'No EMI till possession', 150 Feet VIP Road, Althan-Bamroli), commercial and clinic spaces at Vacanza Shopping Street, and offices and showrooms at Vacanza Atlas (510-1700 sq ft, Vesu Canal Road). Formats are video, image and dynamic-creative. (2026-10-21, https://www.facebook.com/ads/library/?id=2671300023268401)",
+    "The ad copy closes with a call or enquiry ask: 'Aaj hi call karein aur site visit/bookings ki details jaaniye', 'Aaj hi enquiry karein', 'Enquire Now for Details & Site Visit' with +91 90999 73209. The 2 BHK ad (started 2026-10-21) says '5 Days Left', so that offer ended around 2026-10-26. (2026-10-21, https://www.facebook.com/ads/library/?id=1766533534650500)",
+    "Facebook Page: 4,101 followers, 1,397 talking about this, 134 were here, category Construction Company, Surat. (2026-10-26, https://www.facebook.com/vacanzadevelopers/)",
+    "Instagram @vacanzadevelopers has 3,345 followers and lists the website vacanzadevelopers.com. (2026-10-26, https://www.instagram.com/vacanzadevelopers/)",
+    "CommonFloor lists the builder with an office at Vacanza Harrod's, Vesu, Surat 395007 (1 ongoing project). The page names no founders and gives no year established. (2026-10-26, https://www.commonfloor.com/vacanza-developers/builder/9aswqf)",
+    "Three of the 6 ads show an end date of 2026-10-24 or 2026-10-25 while still flagged active. Meta typically shows the last delivery date for active ads, but it is unresolved whether these are still running on 2026-10-26. (2026-10-25, https://www.facebook.com/ads/library/?id=1766533534650500)"
+   ],
+   "hypotheses": [
+    "INFERENCE: Click-to-WhatsApp enquiries from several simultaneous ads probably arrive in the evening and at night. A time-boxed offer ('5 Days Left') makes reply speed matter more. Nothing observed shows how fast they actually reply.",
+    "INFERENCE: The ad copy pushes 'call' and 'site visit' and prints a phone number next to a WhatsApp button, so first replies are probably handled by people. This is not observed, and an auto-greeting or a WhatsApp Business API system may already exist.",
+    "INFERENCE: With four product lines, WhatsApp enquiries probably land with no shared list for the sales team. The evidence is only that the ads run several lines under one Page.",
+    "INFERENCE: The mix of dynamic-creative ads, several lines and a dated promotion suggests an in-house marketer or an ad agency runs the campaigns. An agency could hold the WhatsApp setup and be the real gatekeeper.",
+    "INFERENCE: The ad burst coincides with the festival season (Diwali is about 8 Nov 2026) and may be a seasonal push, not a year-round stream. The finder's 'continuous' is not shown by my data, which covers only about 10 days."
+   ],
+   "case_for": "Real, verified local developer (Facebook Page, Instagram and CommonFloor all agree). It actively buys Meta ads, and at least 6 were live in the same week, mostly with a WhatsApp button that sends enquiries to WhatsApp. The ad copy pushes site visits and booking enquiries, and a dated offer makes reply speed matter. Nothing in the data points to a duplicate, a chain or a competitor, and a sales number is published in its own ad.",
+   "case_against": "The need is only inferred: a WhatsApp CTA is standard for Indian real-estate ads and does not show slow replies. I could not open the finder's ad, check the site, find an owner or email, or confirm the number is a sales desk and not an agency's. The ad stream may be a festival-season burst, and an agency or an existing auto-reply may already cover the need. This sits at the weak edge of B and drops to C if the number turns out to be an agency line or the site shows a working chatbot or WhatsApp Business API setup. | Skeptic: The need is still only inferred. The only hard evidence is that the ads and the site route enquiries to WhatsApp, which almost every Indian developer does. Nothing shows slow replies or lost buyers. This is also a bigger, more organised company than the dossier assumed: 17 projects, an investor-backed SPV model, an in-house Sales and Business Development team and a Customer Relationship team. It likely already runs a CRM and an ad agency, so a first-reply bot may add little or the agency may be the gatekeeper. The 6-vs-10 ad count and 'continuous' spend could not be reproduced, and the burst may be a Diwali-season push. That is why it is not an A.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "ai-auto-re-shafalya-infra-ahmedabad",
+  "data": {
+   "name": "Shafalya Infra LLP (Shafalya Group), Ahmedabad",
+   "city": "Ahmedabad (HQ Bodakdev); new project Vellure registered under Gandhinagar / AUDA",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Email to sales@shafalyainfra.com (the Vellure sales address, published by the business; contact@shafalyainfra.com as backup), then a phone call to +91 95745 87989 asking for the person who handles Vellure sales to find the owner/sales head. Do not send a cold WhatsApp template to 7874000293; that line is their enquiry line, so use only an opt-in route.",
+   "best_angle": "Vellure launch timing: before the Vellure ads start, every enquiry on the WhatsApp/phone/form gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and the sales team gets one list. Offer a short walk-through of the flow, with no claims about their current response time (we have not measured it).",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "sales@shafalyainfra.com",
+     "source": "https://shafalyainfra.com/vellure",
+     "note": "Sales email in the Vellure section; also shown on the Veritas page (https://shafalyainfra.com/veritas). Best published email for a launch-related approach."
+    },
+    {
+     "kind": "email",
+     "value": "contact@shafalyainfra.com",
+     "source": "https://shafalyainfra.com/contact/",
+     "note": "General company email in the footer of every page."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95745 87989",
+     "source": "https://shafalyainfra.com/contact/",
+     "note": "Main office phone (tel: link on the site); same number on the Google Maps listing."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95745 80994",
+     "source": "https://shafalyainfra.com/vellure",
+     "note": "Listed in the Vellure section as the project contact. Likely mobile, likely WhatsApp-capable (not confirmed)."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "7874000293",
+     "source": "https://shafalyainfra.com/",
+     "note": "Floating WhatsApp button (api.whatsapp.com link, prefilled text 'Hi'). The business publishes it as its WhatsApp line. Do not send a cold template to it; use only an opt-in/click-to-chat style route."
+    },
+    {
+     "kind": "email",
+     "value": "accounts@shafalyainfra.com",
+     "source": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32054",
+     "note": "Promoter email in the RERA register. An accounts mailbox, not a sales route."
+    },
+    {
+     "kind": "phone",
+     "value": "9898036661",
+     "source": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32054",
+     "note": "Promoter mobile in the RERA register. May be a partner's or staff member's personal number; low-priority, use only for a polite call if other routes fail."
+    },
+    {
+     "kind": "form",
+     "value": "Inquire Now popup / brochure form (project dropdown plus consent boxes)",
+     "source": "https://shafalyainfra.com/contact/",
+     "note": "Public enquiry form; not to be submitted by us. Dropdown does not yet list Vellure."
+    },
+    {
+     "kind": "website",
+     "value": "https://shafalyainfra.com/",
+     "source": "https://shafalyainfra.com/",
+     "note": "Official site (built by The Vital Media per footer)."
+    },
+    {
+     "kind": "maps",
+     "value": "Google Maps place 'Shafalya House' (place id ChIJzVbEqxObXjkR89E4kiPfUvA)",
+     "source": "https://www.google.com/maps/search/?api=1&query=Shafalya%20House&query_place_id=ChIJzVbEqxObXjkR89E4kiPfUvA",
+     "note": "Real estate developer, 4.8 from 126 reviews, phone +91 95745 87989."
+    },
+    {
+     "kind": "facebook",
+     "value": "https://www.facebook.com/ShafalyaGroup",
+     "source": "https://shafalyainfra.com/",
+     "note": "Business page linked from the site footer; not scraped. Instagram (instagram.com/shafalyagroup) and YouTube (@shafalyagroup) are linked there too."
+    }
+   ],
+   "observed_facts": [
+    "GujRERA register shows project VELLURE (Residential/Group Housing), promoter SHAFALYA INFRA LLP, application submitted 2026-08-17, approved 2026-10-19; registration number references Gandhinagar and Ahmedabad Urban Development Authority. (2026-10-19, https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32054)",
+    "A Vellure page exists on the company site with its own phone (95745 80994) and sales@ email and an Inquire Now popup, but Vellure is not listed on the Residences page, the Upcoming Projects page, or in the enquiry-form project dropdown, so it looks pre-launch on the public site. (2026-10-26, https://shafalyainfra.com/vellure)",
+    "Every page carries a floating WhatsApp link to 7874000293 with prefilled text 'Hi', plus a phone number and an Inquire Now popup; the visible text shows no chatbot or live chat. (2026-10-26, https://shafalyainfra.com/)",
+    "The enquiry form's consent covers SMS, RCS, email, WhatsApp and other electronic communications from Shafalya; the Terms page was last updated 25 September 2026. (2026-09-25, https://shafalyainfra.com/terms-conditions/)",
+    "Google Maps listing 'Shafalya House': Real estate developer, 4.8 stars from 126 reviews (112 five-star, 2 one-star), phone +91 95745 87989, website shafalyainfra.com, open. (2026-10-26, https://www.google.com/maps/search/?api=1&query=Shafalya%20House&query_place_id=ChIJzVbEqxObXjkR89E4kiPfUvA)",
+    "The one recent 1-star Google review (2026-08-19) complains about in-person sales staff pushing other units; it does not mention slow replies, unanswered WhatsApp or missed calls. No owner replies were visible on the 5 newest reviews pulled. (2026-08-19, https://www.google.com/maps/search/?api=1&query=Shafalya%20House&query_place_id=ChIJzVbEqxObXjkR89E4kiPfUvA)",
+    "Company self-reports 3.7 million sq ft delivered, 1000+ families and 500+ entrepreneurs served, 'more than a decade' in Ahmedabad; site lists 4 ongoing and 4 completed residential, 3 commercial and 1 upcoming project. (2026-10-26, https://shafalyainfra.com/about-us/)",
+    "Veritas page shows a construction update last dated 05-10-2025 and a brochure that is downloaded only after filling a form. (2025-10-05, https://shafalyainfra.com/veritas)",
+    "Contact, About, Terms and Career pages name no owner, director or sales head; site footer credits The Vital Media for design and development. (2026-10-26, https://shafalyainfra.com/contact/)"
+   ],
+   "hypotheses": [
+    "The need is inferred, not observed: a single human-answered WhatsApp number with prefilled 'Hi', phone and a form is how many Ahmedabad developers lose evening/night enquiries, and a new launch (Vellure) plus four ongoing projects will raise enquiry volume. No source I opened shows slow replies or missed enquiries at Shafalya.",
+    "Timing: RERA approval on 2026-10-19 and a Vellure page that is not yet linked from the nav or the enquiry dropdown suggest the public launch and ad push have not started, so a first-reply flow would be easiest to install before it.",
+    "The updated consent text (SMS, RCS, WhatsApp) on 25 Sep 2026 may mean they already run, or are setting up, an automated messaging or CRM vendor via their web agency or a DLT/RCS provider. If so, the need may already be covered. Not verified.",
+    "The finder's Google Ads tag (AW-11182738882) could mean paid campaigns, but a tag only shows an ads account/conversion tracking, not current spend; I could not view page source to confirm it.",
+    "Vellure may be a large Gandhinagar-district project (finder says 16,531 sq m) but I could not confirm the size from the RERA page text I could fetch."
+   ],
+   "case_for": "Real, verified (own site + GujRERA register + Google Maps), mid-size local Ahmedabad developer, not a chain or agency, not in the duplicate list. Fresh trigger: Vellure RERA approval 2026-10-19 with launch marketing apparently not started. Enquiries run through a single WhatsApp number, phone and a form, and the consent text already covers WhatsApp follow-up, so a first-reply flow fits the way they work. Pay capacity is credible.",
+   "case_against": "The need is only inferred; none of the sources I opened shows slow replies or lost enquiries (the one bad review is about in-person sales behaviour). No named decision-maker and only generic inboxes and phones, so this is not an A. The Google Ads tag and the Vellure size are unverified and I could not read the page source. Vellure location is unclear (site says Ahmedabad, RERA says Gandhinagar/AUDA). They may already use a CRM/RCS/WhatsApp vendor, and the sales team may be well staffed for a launch. | Skeptic: The need is entirely hypothetical, and Shafalya already runs a full multi-channel enquiry funnel: a dedicated WhatsApp line, a main phone, a Vellure-specific sales phone and email, and a form whose consent text (updated 25 Sep 2026) already covers WhatsApp and RCS follow-up. That looks like a managed sales and marketing set-up, possibly with a vendor or CRM we cannot see. Nothing observed shows slow replies: none of 40 reviews mentions them, and the one bad review is about in-person sales behaviour. The only trigger is a RERA registration on 2026-10-19, which shows a legal filing, not ad spend or enquiry volume. The Google Ads tag, the 16,531 sq m size and the Gandhinagar location are all unverified, no decision-maker is named, and a cold approach lands on a shared inbox or reception.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-26"
+  }
+ }
+]

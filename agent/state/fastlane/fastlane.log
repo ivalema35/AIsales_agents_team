@@ -1,0 +1,181 @@
+2026-10-15T05:50:50+00:00 fastlane 1 starting (pid 9960)
+2026-10-15T05:50:50+00:00 cannot start claude (Claude Code program not found on this PC); retry in 5s
+2026-10-15T05:50:55+00:00 cannot start claude (Claude Code program not found on this PC); retry in 10s
+2026-10-15T05:51:05+00:00 cannot start claude (Claude Code program not found on this PC); retry in 20s
+2026-10-15T05:51:25+00:00 cannot start claude (Claude Code program not found on this PC); retry in 40s
+2026-10-15T05:52:05+00:00 cannot start claude (Claude Code program not found on this PC); retry in 80s
+2026-10-15T05:53:25+00:00 cannot start claude (Claude Code program not found on this PC); retry in 120s
+2026-10-15T05:55:25+00:00 cannot start claude (Claude Code program not found on this PC); retry in 120s
+2026-10-15T05:57:25+00:00 cannot start claude (Claude Code program not found on this PC); retry in 120s
+2026-10-15T05:59:25+00:00 cannot start claude (Claude Code program not found on this PC); retry in 120s
+2026-10-15T05:59:31+00:00 STOP file found: shutting down
+2026-10-15T05:59:31+00:00 fastlane stopped
+2026-10-15T05:59:34+00:00 fastlane 1 starting (pid 12024)
+2026-10-15T05:59:34+00:00 claude started pid=884 session=79a28010
+2026-10-15T05:59:38+00:00 claude reports usage limit reached
+2026-10-15T05:59:39+00:00 sent alert ok=True via=whatsapp chars=86 latency=None
+2026-10-15T05:59:40+00:00 claude startup turn ok (3563 ms, 49843 tokens)
+2026-10-15T06:06:23+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:06:29+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:06:42+00:00 new owner message #4 kind=text (5 chars)
+2026-10-15T06:06:46+00:00 claude reports usage limit reached
+2026-10-15T06:06:46+00:00 turn done: 1 msg, 0 tool calls, 3.9s, 1 model turns, 30042 tokens, cost $0.095 (session total)
+2026-10-15T06:06:48+00:00 sent reply ok=True via=whatsapp chars=275 latency=7.3
+2026-10-15T06:07:54+00:00 new owner message #5 kind=text (1 chars)
+2026-10-15T06:07:59+00:00 turn done: 1 msg, 0 tool calls, 5.2s, 1 model turns, 30221 tokens, cost $0.106 (session total)
+2026-10-15T06:08:01+00:00 sent reply ok=True via=whatsapp chars=671 latency=9.9
+2026-10-15T06:08:40+00:00 new owner message #6 kind=text (39 chars)
+2026-10-15T06:08:52+00:00 turn done: 1 msg, 1 tool calls, 11.3s, 2 model turns, 61683 tokens, cost $0.128 (session total)
+2026-10-15T06:08:52+00:00 sent ack ok=True via=whatsapp chars=45 latency=None
+2026-10-15T06:08:53+00:00 sent reply ok=True via=whatsapp chars=728 latency=14.4
+2026-10-15T06:10:00+00:00 new owner message #7 kind=text (19 chars)
+2026-10-15T06:10:08+00:00 turn done: 1 msg, 2 tool calls, 8.0s, 3 model turns, 95016 tokens, cost $0.155 (session total)
+2026-10-15T06:10:10+00:00 sent reply ok=True via=whatsapp chars=246 latency=11.5
+2026-10-15T06:12:41+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:12:47+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:14:11+00:00 new owner message #8 kind=text (81 chars)
+2026-10-15T06:14:22+00:00 turn done: 1 msg, 3 tool calls, 10.9s, 4 model turns, 97482 tokens, cost $0.185 (session total)
+2026-10-15T06:14:23+00:00 sent ack ok=True via=whatsapp chars=45 latency=None
+2026-10-15T06:14:24+00:00 sent reply ok=True via=whatsapp chars=669 latency=14.5
+2026-10-15T06:15:35+00:00 new owner message #9 kind=text (65 chars)
+2026-10-15T06:15:39+00:00 turn done: 1 msg, 0 tool calls, 3.8s, 1 model turns, 33265 tokens, cost $0.195 (session total)
+2026-10-15T06:15:40+00:00 sent reply ok=True via=whatsapp chars=383 latency=7.8
+2026-10-15T06:26:55+00:00 STOP file found: shutting down
+2026-10-15T06:26:55+00:00 claude session ended: daemon stopping
+2026-10-15T06:26:55+00:00 fastlane stopped
+2026-10-15T06:26:58+00:00 fastlane 1 starting (pid 8608)
+2026-10-15T06:26:58+00:00 claude started pid=3172 session=aa8765a7
+2026-10-15T06:27:05+00:00 claude startup turn ok (5134 ms, 52832 tokens)
+2026-10-15T06:27:05+00:00 sent alert ok=True via=whatsapp chars=139 latency=None
+2026-10-15T06:29:24+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:29:30+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:32:03+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:32:09+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:36:38+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:36:45+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:38:22+00:00 new owner message #10 kind=text (20 chars)
+2026-10-15T06:38:32+00:00 turn done: 1 msg, 1 tool calls, 10.1s, 2 model turns, 64329 tokens, cost $0.115 (session total)
+2026-10-15T06:38:34+00:00 sent reply ok=True via=whatsapp chars=626 latency=12.2
+2026-10-15T06:39:15+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:39:21+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:45:28+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T06:45:34+00:00 CRM reachable again after 1 failed polls
+2026-10-15T06:46:23+00:00 new owner message #11 kind=text (5 chars)
+2026-10-15T06:46:27+00:00 turn done: 1 msg, 0 tool calls, 4.5s, 1 model turns, 32666 tokens, cost $0.125 (session total)
+2026-10-15T06:46:29+00:00 sent reply ok=True via=whatsapp chars=273 latency=8.3
+2026-10-15T06:47:23+00:00 STOP file found: shutting down
+2026-10-15T06:47:23+00:00 claude session ended: daemon stopping
+2026-10-15T06:47:23+00:00 fastlane stopped
+2026-10-15T06:47:27+00:00 fastlane 1 starting (pid 7408)
+2026-10-15T06:47:27+00:00 claude started pid=13952 session=ef92668a
+2026-10-15T06:47:32+00:00 sent alert ok=True via=whatsapp chars=139 latency=None
+2026-10-15T06:47:33+00:00 claude startup turn ok (4483 ms, 33815 tokens)
+2026-10-15T06:47:45+00:00 new owner message #12 kind=text (22 chars)
+2026-10-15T06:47:50+00:00 turn done: 1 msg, 0 tool calls, 4.9s, 1 model turns, 33865 tokens, cost $0.124 (session total)
+2026-10-15T06:47:52+00:00 sent reply ok=True via=whatsapp chars=578 latency=7.4
+2026-10-15T06:48:24+00:00 new owner message #13 kind=text (32 chars)
+2026-10-15T06:48:29+00:00 turn done: 1 msg, 0 tool calls, 4.7s, 1 model turns, 34201 tokens, cost $0.136 (session total)
+2026-10-15T06:48:31+00:00 sent reply ok=True via=whatsapp chars=684 latency=9.1
+2026-10-15T06:49:21+00:00 new owner message #14 kind=text (66 chars)
+2026-10-15T06:49:29+00:00 turn done: 1 msg, 0 tool calls, 7.3s, 1 model turns, 34602 tokens, cost $0.150 (session total)
+2026-10-15T06:49:31+00:00 sent reply ok=True via=whatsapp chars=859 latency=11.0
+2026-10-15T06:50:39+00:00 new owner message #15 kind=image (17 chars)
+2026-10-15T06:50:42+00:00 turn done: 1 msg, 0 tool calls, 3.3s, 1 model turns, 35208 tokens, cost $0.161 (session total)
+2026-10-15T06:51:11+00:00 sent reply ok=True via=whatsapp chars=253 latency=33.3
+2026-10-15T06:51:24+00:00 new owner message #16 kind=text (53 chars)
+2026-10-15T06:51:36+00:00 turn done: 1 msg, 2 tool calls, 11.6s, 3 model turns, 35704 tokens, cost $0.189 (session total)
+2026-10-15T06:51:38+00:00 sent reply ok=True via=whatsapp chars=656 latency=16.2
+2026-10-15T07:25:47+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T07:25:53+00:00 CRM reachable again after 1 failed polls
+2026-10-15T08:05:52+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T08:05:57+00:00 CRM reachable again after 1 failed polls
+2026-10-15T08:06:09+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T08:06:34+00:00 CRM reachable again after 2 failed polls
+2026-10-15T08:15:40+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T08:15:46+00:00 CRM reachable again after 1 failed polls
+2026-10-15T08:51:38+00:00 new owner message #17 kind=text (29 chars)
+2026-10-15T08:51:57+00:00 turn done: 1 msg, 1 tool calls, 19.2s, 2 model turns, 36902 tokens, cost $0.351 (session total)
+2026-10-15T08:51:57+00:00 sent ack ok=True via=whatsapp chars=45 latency=None
+2026-10-15T08:51:59+00:00 sent reply ok=True via=whatsapp chars=870 latency=22.4
+2026-10-15T08:59:35+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T08:59:41+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:01:50+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:01:55+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:06:09+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:06:15+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:09:46+00:00 new owner message #18 kind=text (56 chars)
+2026-10-15T09:10:00+00:00 turn done: 1 msg, 2 tool calls, 13.0s, 3 model turns, 38269 tokens, cost $0.386 (session total)
+2026-10-15T09:10:02+00:00 sent reply ok=True via=whatsapp chars=575 latency=17.3
+2026-10-15T09:19:05+00:00 new owner message #19 kind=text (40 chars)
+2026-10-15T09:19:10+00:00 turn done: 1 msg, 0 tool calls, 5.2s, 1 model turns, 39402 tokens, cost $0.401 (session total)
+2026-10-15T09:19:12+00:00 sent reply ok=True via=whatsapp chars=501 latency=9.3
+2026-10-15T09:19:30+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:19:37+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:20:15+00:00 new owner message #20 kind=text (81 chars)
+2026-10-15T09:20:22+00:00 turn done: 1 msg, 1 tool calls, 6.8s, 2 model turns, 40148 tokens, cost $0.425 (session total)
+2026-10-15T09:20:23+00:00 sent reply ok=True via=whatsapp chars=469 latency=8.6
+2026-10-15T09:23:16+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:23:21+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:27:51+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:27:57+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:29:02+00:00 STOP file found: shutting down
+2026-10-15T09:29:02+00:00 claude session ended: daemon stopping
+2026-10-15T09:29:02+00:00 fastlane stopped
+2026-10-15T09:29:05+00:00 fastlane 1 starting (pid 4668)
+2026-10-15T09:29:05+00:00 claude started pid=13652 session=d342810e
+2026-10-15T09:29:10+00:00 sent alert ok=True via=whatsapp chars=139 latency=None
+2026-10-15T09:29:11+00:00 claude startup turn ok (4287 ms, 38241 tokens)
+2026-10-15T09:39:31+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:39:36+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:44:13+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:44:19+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:52:25+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:52:32+00:00 CRM reachable again after 1 failed polls
+2026-10-15T09:57:23+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T09:57:28+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:03:09+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T10:03:15+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:21:33+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T10:21:40+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:24:52+00:00 new owner message #21 kind=text (50 chars)
+2026-10-15T10:25:03+00:00 turn done: 1 msg, 2 tool calls, 11.0s, 3 model turns, 39914 tokens, cost $0.170 (session total)
+2026-10-15T10:25:05+00:00 sent reply ok=True via=whatsapp chars=420 latency=16.6
+2026-10-15T10:25:58+00:00 new owner message #22 kind=text (79 chars)
+2026-10-15T10:26:06+00:00 turn done: 1 msg, 1 tool calls, 7.5s, 2 model turns, 40644 tokens, cost $0.194 (session total)
+2026-10-15T10:26:08+00:00 sent reply ok=True via=whatsapp chars=354 latency=12.1
+2026-10-15T10:29:50+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T10:29:56+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:30:53+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T10:31:00+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:31:36+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T10:31:42+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:33:07+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T10:33:13+00:00 CRM reachable again after 1 failed polls
+2026-10-15T10:46:21+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T10:46:27+00:00 CRM reachable again after 1 failed polls
+2026-10-15T11:14:08+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T11:14:15+00:00 CRM reachable again after 1 failed polls
+2026-10-15T11:27:50+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T11:27:56+00:00 CRM reachable again after 1 failed polls
+2026-10-15T11:50:30+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T11:50:36+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:03:57+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T12:04:02+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:04:14+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T12:04:21+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:18:41+00:00 poll failed (1x): CrmError: CRM unreachable: <urlopen error _ssl.c:989: The handshake operation timed out>
+2026-10-15T12:19:06+00:00 CRM reachable again after 2 failed polls
+2026-10-15T12:21:56+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:22:03+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:22:51+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:22:56+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:23:14+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:23:21+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:24:31+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:24:37+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:26:47+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:26:54+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:27:16+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:27:23+00:00 CRM reachable again after 1 failed polls
+2026-10-15T12:27:44+00:00 poll failed (1x): CrmError: CRM unreachable: The read operation timed out
+2026-10-15T12:27:50+00:00 CRM reachable again after 1 failed polls

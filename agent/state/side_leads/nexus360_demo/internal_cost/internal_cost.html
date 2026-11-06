@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>INTERNAL cost breakdown: Nexus360</title>
+<style>
+@font-face { font-family: "Inter"; src: url("assets/inter.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Space Grotesk"; src: url("assets/space-grotesk.woff2") format("woff2"); font-weight: 300 700; }
+:root { --ink:#14213D; --muted:#4B5563; --line:#D3D9E2; --soft:#F2F5F3; --accent:#0F5132; --amber:#7A4E00; --amber-soft:#FBF0D4; --amber-line:#E2C474; --red:#8A1C1C; --display:"Space Grotesk","Inter",Arial,sans-serif; --text:"Inter","Segoe UI",Arial,sans-serif; }
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; background: #E4E8EE; color: var(--ink); font: 400 8.2pt/1.33 var(--text); }
+.sheet { width: 210mm; height: 297mm; background: #fff; margin: 0 auto; padding: 8mm 12mm 8mm; position: relative; overflow: hidden; }
+.run { display: flex; justify-content: space-between; align-items: center; border-bottom: .3mm solid var(--line); padding-bottom: 2mm; margin-bottom: 3mm; }
+.run img { height: 8mm; } .run span { font: 600 8pt var(--text); color: var(--red); text-align: right; }
+h1 { font: 700 15pt/1.15 var(--display); margin: 0 0 1.5mm; }
+h2 { font: 600 9.6pt var(--display); margin: 2.4mm 0 1mm; }
+p { margin: 0 0 1.6mm; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1mm; }
+th, td { text-align: left; vertical-align: top; padding: .8mm 2mm .8mm 0; border-bottom: .25mm solid var(--line); font-size: 7.9pt; }
+th { font: 600 7.2pt var(--text); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); border-bottom: .35mm solid var(--ink); }
+td.n, th.n { text-align: right; white-space: nowrap; }
+tr.tot td { font-weight: 700; background: var(--soft); }
+.neg { color: var(--red); font-weight: 700; } .pos { color: var(--accent); font-weight: 700; }
+.box { background: var(--amber-soft); border: .3mm solid var(--amber-line); border-radius: 1.6mm; padding: 2mm 3mm; margin: 2mm 0; }
+.small { font-size: 7.8pt; color: var(--muted); }
+ul { margin: 0; padding-left: 4mm; } li { margin-bottom: .8mm; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.tag { display: inline-block; font: 600 6.4pt/1 var(--text); text-transform: uppercase; padding: .5mm 1mm; border: .2mm solid currentColor; border-radius: .6mm; color: var(--amber); background: var(--amber-soft); }
+</style></head><body>
+<section class="sheet">
+  <div class="run"><img src="assets/iv-infotech-logo.png" alt=""><span>INTERNAL: for the owner and sir. NOT for Sridhar. 20 Oct 2026</span></div>
+  <h1>Nexus360: what it costs US, and what we quoted</h1>
+  <p class="small">Source: our cost model (unit_costs.md, cost_model.py), the measured test on 6 CG builders, campaign 1 results. BSP rate Rs 1.5 per marketing message (owner). <span class="tag">Assumption</span> = our guess, no measured data.</p>
+
+  <h2>1. Cost of ONE lead worked (our side, rupees)</h2>
+  <table><thead><tr><th>Item</th><th class="n">Low</th><th class="n">Base</th><th class="n">High</th><th>Basis</th></tr></thead><tbody>
+    <tr><td>AI research (API-equivalent)</td><td class="n">24</td><td class="n">76</td><td class="n">279</td><td>200k / 300k / 500k tokens per builder</td></tr>
+    <tr><td>Human review, 4.5 min</td><td class="n">37</td><td class="n">75</td><td class="n">112</td><td>at Rs 500 / 1,000 / 1,500 an hour <span class="tag">Assumption</span></td></tr>
+    <tr><td>WhatsApp, 2 messages x Rs 1.5</td><td class="n">3</td><td class="n">3</td><td class="n">3</td><td>only if delivered; failed = not billed (confirm with BSP)</td></tr>
+    <tr><td>Video render + page</td><td class="n">2</td><td class="n">2</td><td class="n">2</td><td>local PC, scripts; page on our VPS</td></tr>
+    <tr class="tot"><td>Total per lead</td><td class="n">66</td><td class="n">156</td><td class="n">396</td><td></td></tr>
+  </tbody></table>
+  <p><b>The real cost driver is delivery.</b> Research is paid for every lead, but only some can be messaged. Per DELIVERED lead (base Rs 156): at 60% delivered = Rs 260, at 45% = Rs 347, at 30% (our 2 of 7) = Rs 520. Per builder reachable on WhatsApp: only 1 of 6 tested had a WhatsApp-wired published number, so about Rs 940 (n=6, indicative only).</p>
+
+  <h2>2. Pilot, 50 builders: our cost against the Rs 45,000 quoted (scope trimmed to save hours)</h2>
+  <table><thead><tr><th>Line</th><th class="n">Amount</th><th>Note</th></tr></thead><tbody>
+    <tr><td>Cash: research 50 x 76 = 3,780; voice 540; report AI 180; number/domain 1,000; hosting 500</td><td class="n">Rs 6,000</td><td>WhatsApp (Rs 45 to 225) is passed through, not in cost</td></tr>
+    <tr><td>One-time set-up hours, trimmed</td><td class="n">28 h</td><td>video+page 10 (reuse template, one short master video), dashboard 3 (weekly export instead of a live view), hand-off 4 (alert-only, no AI replies), number+templates 4, fetch+enrich 4, QA 3. Before trimming: 41 h</td></tr>
+    <tr><td>Running hours (review, daily check, 2 syncs, report)</td><td class="n">10 h</td><td>was 10.9 h</td></tr>
+    <tr class="tot"><td>Total hours</td><td class="n">38 h</td><td></td></tr>
+  </tbody></table>
+  <table><thead><tr><th>If our time is valued at</th><th class="n">Our cost</th><th class="n">Result at Rs 45,000</th></tr></thead><tbody>
+    <tr><td>Rs 500 an hour</td><td class="n">Rs 25,000</td><td class="n pos">+Rs 20,000 (44% margin)</td></tr>
+    <tr><td>Rs 1,000 an hour</td><td class="n">Rs 44,000</td><td class="n pos">+Rs 1,000 (no loss)</td></tr>
+    <tr><td>Rs 1,500 an hour</td><td class="n">Rs 63,000</td><td class="n neg">-Rs 18,000</td></tr>
+  </tbody></table>
+  <p class="small">No loss up to about Rs 1,000 an hour. The cash we really spend is only about Rs 6,000; the rest is our own time. Most of the set-up is reusable for the next client. The trimmed hours are our estimate <span class="tag">Assumption</span>.</p>
+
+  <h2>3. Monthly run, up to 100 builders: our cost against Rs 30,000</h2>
+  <table><thead><tr><th>Line</th><th class="n">Amount</th></tr></thead><tbody>
+    <tr><td>Cash: research 100 x 76 = 7,600; voice 540; report AI 300; number/BSP 1,000; hosting 500</td><td class="n">Rs 9,940</td></tr>
+    <tr><td>Hours: 100 x 4.5 min = 7.5 h + replies 3.7 h + syncs 3 h + upkeep 3 h</td><td class="n">17.2 h</td></tr>
+    <tr><td>Cost at Rs 500 / 1,000 / 1,500 an hour</td><td class="n">Rs 18,540 / 27,140 / 35,740</td></tr>
+    <tr class="tot"><td>Result at Rs 30,000</td><td class="n"><span class="pos">+11,460</span> / <span class="pos">+2,860</span> / <span class="neg">-5,740</span></td></tr>
+  </tbody></table>
+
+  <div class="cols">
+    <div>
+      <h2>4. Claude plan (USD 100) and the page + video</h2>
+      <ul>
+        <li><b>Yes, it uses the limit, but only once.</b> Designing the Nexus360 page, video script and QA is about 1.5 to 3M tokens one time (API-equivalent about Rs 200 to 400). <span class="tag">Assumption</span></li>
+        <li><b>Each lead's page and video use no AI tokens:</b> they are made by scripts (build_site_pages.py, render_master.py). Render is local (40 s to 5 min).</li>
+        <li><b>Hosting on our VPS costs no tokens;</b> only the deploy session does (about 20 to 50k tokens). The server is already paid.</li>
+        <li><b>Research is the big one:</b> 300k tokens x 100 builders = 30M tokens a month, too much for a plan with opaque limits (we hit the limit today). Client work should run on pay-per-use API (Rs 76 a builder).</li>
+      </ul>
+    </div>
+    <div>
+      <h2>5. What we quoted Sridhar</h2>
+      <ul>
+        <li>Pilot <b>from Rs 45,000</b> (50 builders, 2 messages each, master video, page, hand-off, read-only view, Day-17 report); monthly <b>from Rs 30,000</b> (up to 100 builders).</li>
+        <li>WhatsApp at actual cost, estimated Rs 50 to 230, cap Rs 500.</li>
+        <li>Comparison with one sales employee (about Rs 36,900 all-in) and the value he gets. <b>No per-lead cost shown.</b></li>
+        <li>Extras (more builders, languages, states, CRM, email) are priced only after his answers.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box"><b>Open before we really start:</b> BSP's real plan fee and GST on the Rs 1.5; a +91 number (availability and cost unknown); Meta quality rating of our line; the forward-only reply rule and the read-only dashboard view are promised but NOT built; the 4.5 min per builder is unmeasured (a manual lookup can take 5 to 10); the real-owner hit rate rests on 6 builders.</div>
+</section>
+</body></html>

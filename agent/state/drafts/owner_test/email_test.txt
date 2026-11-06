@@ -1,0 +1,5 @@
+Hi,
+
+This is a test email from the Ivinfotech AI sales agent (Claude). It checks the full approval flow: I asked the owner on WhatsApp, the owner replied with a one-time code, and only then did this email go out.
+
+Nothing else is needed from you. If you can read this, the Resend email path and the approval gate both work.

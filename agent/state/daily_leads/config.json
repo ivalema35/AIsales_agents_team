@@ -1,0 +1,61 @@
+{
+ "_about": "Daily lead task ka config. Har din campaigns[next_index % len] chalta hai, phir next_index +1. 29 Oct 2026 se sirf detailing-studios chalta hai; baaki purane campaigns `paused_campaigns` me hain (delete nahi hue). Owner is file ko badal sakta hai. 4 Nov 2026 (owner): every run must deliver 10-15 NEW researched leads (min_yield 10, target 15); primary source for local-business campaigns = the Google Maps list method (see docs/DAILY_LEADS_TASK.md).",
+ "settings": {
+  "target": 15,
+  "max_sources": 3,
+  "research_top": 15,
+  "apify_cap_usd": 0.1,
+  "min_yield": 10
+ },
+ "next_index": 5,
+ "campaigns": [
+  {
+   "key": "detailing-studios",
+   "name": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "offer": "A one-page booking and proof page (packages by car size, before and after photos, Google reviews, a WhatsApp Book button), a Google profile clean-up with monthly upkeep, and a weekly list of enquiries that are not booked yet. About Rs 15-25k setup and about Rs 5k a month; the owner decides the price and it is never written in a message.",
+   "need": "Owner-run detailing, coating and PPF studios win customers on Google, Instagram and WhatsApp. The gap must be something we can SEE from outside, literally true today: no working own website; the website button on the Google listing opens a sign-in page, a Linktree or an Instagram profile; the newest 3 Google reviews have no owner reply; a Book Now button with no booking form. Some studios already pay for Meta ads that lead to WhatsApp or a call (a spend signal). Lost bookings are NOT observed: never claim a loss.",
+   "buyer": "The studio owner (decides alone), reachable on the mobile number the studio itself publishes on its Google Maps listing",
+   "geo": "Mehsana, Kadi, Visnagar, Patan, Palanpur, Gandhinagar and Ahmedabad first; then Surat, Rajkot, Vadodara, Anand, Nadiad",
+   "exclude_types": "franchises and multi-outlet brands (for example CarzSpa, 3M Car Care, Exotic Car Detailing Studio), car dealerships and showrooms, hotels, plain car-wash points with no detailing, accessory shops, studios already verified",
+   "notes": "Pack and rules: agent/docs/FIRST_CLIENT_PACK_DETAILING_2026-10-28.md. Record for every lead: the phone published on Maps, the website status (none / Instagram only / Linktree / own site alive / dead or parked / sign-in wall), the newest review date and how many of the newest 3 reviews the owner answered, ad status (exact-name Ad Library search only if cheap), brand or franchise flag, and the one safe first-message slot (a website button opens a broken, sign-in, Linktree or Instagram page; b newest 3 reviews unanswered; c no website button; d Book Now without a form). A website is NOT the pitch; sell the booking and proof page plus profile upkeep. One message per brand. APIFY BUDGET: the owner allows about US$4-5 a month in total; follow step 2b of the runbook (ledger agent/state/apify_budget.json), use free tools first, never pull Maps reviews unless needed. Already verified, do NOT repeat: Krishna Auto Coating, Krishna Xtreme, Detailing Xpert, The Walker's Detailing Studio, DNX Car Detailing Studio, Motors Inn, Dwarkesh Car Detailing Studio, RRR Detailing, Carx Care (Raysan), Arihant Car Detailing Studio; held back as a multi-outlet brand: Exotic Car Detailing Studio; franchise: CarzSpa Mehsana. | 4 Nov 2026: PRIMARY SOURCE = Google Maps list method in the built-in browser (docs/DAILY_LEADS_TASK.md, section Maps-list method); split the geography into many area queries; deliver at least 10, aim for 15 new leads a day; save them with agent/tools/maps_leads_to_entries.py."
+  }
+ ],
+ "paused_campaigns": [
+  {
+   "key": "ai-auto-re",
+   "name": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "offer": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "need": "Real-estate developers and brokers pay for enquiries that arrive on WhatsApp or by phone and lose buyers because nobody replies fast, especially in the evening and at night",
+   "buyer": "Small and mid-size local developers and project brokers (owner or sales head decides)",
+   "geo": "Ahmedabad, Gandhinagar, Surat, Vadodara, Rajkot and other Gujarat towns"
+  },
+  {
+   "key": "clinic-web",
+   "name": "WhatsApp patient desk for doctor-owned clinics (Gujarat)",
+   "offer": "A lean WhatsApp patient desk: an automatic reply to every enquiry (also when the clinic is closed or busy), the patient picks an appointment slot, ONE reminder 24 hours before with confirm or reschedule, and one simple list for the clinic. Recall and review requests only later, as paid add-ons. The first-touch angle is a question (who answers the clinic's WhatsApp number when the clinic is closed?), never a claim about lost patients.",
+   "need": "Doctor-owned clinics (dentist, skin / cosmetic / hair, physio) that already pay Meta for click-to-WhatsApp ads, so they pay for enquiries. UNPROVEN and still to be tested: that they fail to answer some of those enquiries (after hours, busy chairs) or lose patients to no-shows. Never write it as a fact about the clinic.",
+   "buyer": "The doctor-owner of an independent clinic (not a receptionist, not a chain)",
+   "geo": "Ahmedabad, Surat, Rajkot, Gandhinagar (on 28 Oct 2026 Mehsana had 0 independent clinics with WhatsApp ads; Vadodara is thin)",
+   "exclude_types": "hospital chains, multi-speciality hospitals, doctors listed only on a platform with no clinic of their own, ayurved polyclinics",
+   "notes": "Research verdict 28 Oct 2026 (agent/docs/CLINIC_DEMAND_RESEARCH_2026-10-28.md): INCONCLUSIVE, only a cheap test is approved, nothing is built yet. BEST LEADS = doctor-named clinics with 1-3 branches whose WhatsApp-opening Meta ad has been running 30+ days (Ad Library through the Apify actor curious_coder/facebook-ads-library-scraper; record the ad's start date), doing high-value work (hair, skin / cosmetic, implants, ortho, physio packages). Skip chains (3+ branches or 2+ cities), agency-run pages, hospital or booking desks. Also useful: clinics with public reviews about unanswered calls or long waits (never mention the reviews anywhere). A WEBSITE is NOT the pitch (owner: patients in India do not choose a clinic from its website). Never email. owner_direct_contact: a doctor-direct number cannot be proven from public data, so 'probably' is enough when the ad, the Maps listing or the Facebook page names the doctor and the number is a mobile (not a landline, desk or auto-greeting); say 'unknown' otherwise. The first reply confirms it. Record for every lead: ad start date, specialty, number of branches, who the number belongs to as far as the sources show."
+  },
+  {
+   "key": "inst-mgmt",
+   "name": "Institute management software for coaching classes and tuition institutes (Gujarat)",
+   "offer": "One system for admissions, batches, attendance, fee reminders on WhatsApp and parent updates for every branch, instead of registers, WhatsApp groups and Excel",
+   "need": "Coaching classes and tuition institutes with several batches or branches manage admissions, fees and attendance by hand (registers, Excel, WhatsApp groups) and lose time and fees",
+   "buyer": "Owner or director of a multi-batch or multi-branch coaching class or academy",
+   "geo": "Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar, Mehsana"
+  },
+  {
+   "key": "mfg-erp",
+   "name": "Custom ERP for small and mid-size manufacturers (Gujarat)",
+   "offer": "Custom ERP: orders, inventory, production planning, purchase and dispatch in one system, replacing Excel sheets and stand-alone Tally",
+   "need": "Small and mid-size manufacturers run orders, stock, production and dispatch on Excel and phone calls, with errors and delays, and are growing out of it",
+   "buyer": "Owner or operations head of a manufacturing unit with about 20 to 200 staff",
+   "geo": "Rajkot, Morbi, Ahmedabad (Naroda, Vatva, Odhav, Sanand), Vadodara, Surat",
+   "exclude_types": "traders and shops that do not manufacture; very large listed companies",
+   "notes": "Earlier runs: IPO-filing companies were downgraded (growth, not pain); Morbi gave zero leads; need evidence is rare, so a job post or filing that names a manual process is the best signal."
+  }
+ ]
+}

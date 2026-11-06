@@ -1,0 +1,36 @@
+[
+  {
+    "type": "lead",
+    "key": "inbound-zaid-white-label-agency-2026-10",
+    "data": {
+      "name": "Zaid - white-label agency (inbound)",
+      "city": "India (number +91 6354 995 806)",
+      "product": "AI automation",
+      "campaign": "Inbound and partners",
+      "grade": "B",
+      "status": "replied",
+      "contacted": true,
+      "best_channel": "WhatsApp",
+      "best_angle": "White-label delivery partner: we build CRMs and AI chatbots / agents under his brand; start with one small paid pilot.",
+      "contacts": [
+        {"kind": "whatsapp", "value": "+91 63549 95806", "source": "He wrote to the AstraAutomate WhatsApp number himself (first message Sat 24 Oct 00:23 IST)", "note": "Inbound. Name given: Zaid."}
+      ],
+      "observed_facts": [
+        "Sat 24 Oct 00:23 IST: he wrote 'Am I talking with Astra automate?' (he found AstraAutomate on the web).",
+        "Mon 26 Oct 10:08 IST: he says he has 'global queries' from the USA, UK, Canada and Germany for CRM and automation services, wants a reliable white-label supplier for AI chatbot services and full CRM builds with after-sales support, and asks to see our portfolio."
+      ],
+      "hypotheses": [
+        "He is probably an agency or reseller, not an end client: the overseas demand he describes is unverified.",
+        "Fits AstraAutomate service #04 (white-label AI and automation for agencies).",
+        "Risks: price pressure, slow or unclear payment, free demo requests, no named company yet."
+      ],
+      "case_for": "Inbound (he came to us), asked for a portfolio, wants an ongoing supplier (recurring work), matches our white-label offer.",
+      "case_against": "No company name, website or proof of the foreign queries yet; resellers push prices down; slow to reply earlier (about 2 days between messages).",
+      "next_step": "Reply with the portfolio link and 5 qualifying questions (company, website, how many queries a month, typical budget, how the white-label model and payment would work). No free demos; start with one small paid pilot, 50% advance, NDA.",
+      "history": [
+        {"date": "2026-10-24", "text": "He wrote first on the AstraAutomate WhatsApp number; the owner answered."},
+        {"date": "2026-10-26", "text": "He explained the white-label need and asked for the portfolio (not answered yet)."}
+      ]
+    }
+  }
+]

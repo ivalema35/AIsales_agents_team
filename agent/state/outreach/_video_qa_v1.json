@@ -1,0 +1,164 @@
+[
+ {
+  "lens": "visual",
+  "verdict": "Not ready to send yet: the overlapped, garbled subtitle at about 28.5 s, the tiny Example tags and chat text, and the untagged filler calendar frame look unfinished on a phone, though the rest is clean, readable and on brief.",
+  "findings": [
+   {
+    "severity": "high",
+    "where": "Scene 4, about 28.3-28.6 s (f_28.50.png). A similar clash is visible at 26.5 s (f_26.50.png).",
+    "issue": "Two subtitle chunks are on screen at the same position at once. 'three and seven and your people' is overprinted by 'join whenever the buyer wants.', which reads as 'tjoine and seven and your people'. It is a visible glitch on the line that explains 'your people join anytime'. The same crossfade pattern appears at 26.5 s, where the fading 'Hot buyers move to the top' sits about 13 px above the fading-in 'POLITE REMINDERS GO OUT'.",
+    "fix": "Do not let subtitle chunks overlap. Fade the old chunk fully out before the new one fades in, or swap chunks with a hard cut or a very short fade. Stagger the board captions the same way so only one caption line is visible at a time."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 1 phones (f_08.00, f_09.00), scene 2 phone (f_11.50, f_13.50), board (f_26.50, f_28.50)",
+    "issue": "Text inside the mock phones and cards is too small for a phone screen. In the two-phone comparison, the chat bubbles ('Hi, I want details of Pride Aura', 'Hello! Thank you for your interest...') are about 8-9 px tall in a 432 px frame, timestamps are about 6 px, and the 'EXAMPLE' tags are about 7 px and straddle the phone bezel. That works out to roughly 7-8 pt on a real phone, so the Example tag the brief requires is effectively unreadable. The 'New enquiry from an ad' bubbles are about 10 px. The reminder chips and 'POLITE REMINDERS GO OUT' are about 10-11 px, and 'YOUR SALES TEAM JOINED THE CHAT' is about 10 px, on a feature the narration stresses.",
+    "fix": "Enlarge the Example tag to at least 12-14 px and move it clear of the bezel, for example as a chip above the phone. In scene 1, make the phones bigger (stack them or show fewer elements) so bubble text is at least 12-13 px. Raise the reminder chips and captions to at least 13 px and hold them a little longer."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 5 opening, about 30.5-33 s (f_31.50.png)",
+    "issue": "The first beat of the CTA scene looks unfinished and mismatched. A small 'Site visits' calendar floats at upper centre with about 130 px empty above and about 200 px empty below. Its 'Pride Aura' blocks are about 8 px, and the Thursday block is mid-animation and smaller than Mon and Wed. It has no 'EXAMPLE' tag, although the board and chats are tagged, and it shows invented booked visits. It also does not illustrate the spoken 'Want to see it for your project?' or the headline 'Free demo for Pride Aura'.",
+    "fix": "Add an EXAMPLE tag and enlarge and centre the calendar, or drop it and bring the Yes-button phone in at the start of the scene. Make sure the visual matches the line being spoken."
+   },
+   {
+    "severity": "medium",
+    "where": "f_00.80, f_02.60, then every frame; f_37.30 (final)",
+    "issue": "Brand name legibility and consistency. The wordmark reads 'IV Infotech' while the subtitle in the same frame (f_02.60) reads 'I V Infotech', and the brief spells it 'Ivinfotech'. After about 3.5 s the brand appears only in a 13 px grey footer. On the cream scenes that footer is about 4.0:1 contrast, and it sits at about 96% of frame height, where WhatsApp's player controls and seek bar overlay the video. The final frame has no logo or sign-off, so a viewer who reaches the CTA sees no brand.",
+    "fix": "Use one spelling on screen and put the phonetic 'I V' only in the audio. Move the footer up into the safe area at about 12% from the bottom and raise its size and contrast. Add a clear logo lockup on the last scene."
+   },
+   {
+    "severity": "low",
+    "where": "Scene 4 subtitles (f_22.00 'board,', f_24.50 'one,')",
+    "issue": "Subtitle wrapping leaves single-word orphans on a second line ('board,' and 'one,'). Chunks also break mid-phrase ('reminders on day one,' / 'three and seven'). Because box text is centred, one-line and two-line chunks sit at different heights (about y 643 versus 631/657), so the text jumps between chunks.",
+    "fix": "Cut chunks to about 28 characters or fewer, or use balanced wrapping so two-line chunks split evenly. Break at phrase boundaries, such as 'on one board' / 'hot buyers first' / 'reminders on day one, three and seven'."
+   },
+   {
+    "severity": "low",
+    "where": "Scene 1 comparison, about 8-9.25 s (f_08.00, f_09.00)",
+    "issue": "The captions under the two phones are cramped and misaligned. 'Replied within a minute' wraps with 'minute' orphaned on its own line, and that line ends about 5 px above the subtitle box. The left caption ('Waiting until / morning') and the right caption sit about 14 px apart vertically because the moon and ring icons differ in size.",
+    "fix": "Give both captions the same icon slot height and baseline. Shorten the right caption to 'Replied in a minute' or widen its column. Move the whole phone block up about 20 px so it clears the subtitle box."
+   },
+   {
+    "severity": "low",
+    "where": "Scene 5 CTA, 33-37.5 s (f_33.80, f_35.50, f_37.30)",
+    "issue": "The fake 'Yes, send the demo' button is large and floats mid-screen about 120 px below its message bubble, whereas real WhatsApp buttons attach directly under the bubble. It looks tappable but is only a picture, and nothing points the viewer to the real button under the video. Below it, an amber 'Free · No obligation' chip and 'or reply YES' repeat the headline ('No obligation') and the subtitle ('free with no obligation'), which crowds the end frame.",
+    "fix": "Attach the button visually to the bubble. Add a short cue such as 'Tap the button below', with a small arrow pointing down at the real one. Drop one of the three 'free / no obligation' repeats."
+   },
+   {
+    "severity": "low",
+    "where": "Cut at about 9.3 s (f_09.00 vs f_08.00), scene headlines, f_05.00 and f_22.00",
+    "issue": "Style consistency. There is a hard cut from the dark starfield scene to a cream scene, a bright flash for a viewer watching at night. The subtitle box is nearly invisible on dark and solid navy on cream. Headline size varies from about 22 px (scene 5, shrunk by the personalised 'Pride Aura' text) to about 29 px (scenes 2 and 4), so a longer project name will shrink it further or wrap. There is also dead space in scene 1 (y 510-620 under the three buyer figures) and in the lower third of the board card at 22 s.",
+    "fix": "Add a short dark-to-cream transition, and use one subtitle box style throughout. Use a fixed headline size with a width check for long project names. Fill or tighten the empty areas by scaling content up."
+   }
+  ]
+ },
+ {
+  "lens": "claims",
+  "verdict": "Not ready to send to a real developer yet: no prices, no statistics and no RERA words appear, but the opening split-phone scene pins a slow reply on the viewer's own number, and the \"forms\" and \"free\" claims rest on decisions the owner has not confirmed.",
+  "findings": [
+   {
+    "severity": "high",
+    "where": "Scene 1, about 7-9.25 s (f_08.00.png, f_09.00.png; also f_06.60.png), over the narration \"A buyer messages your ad at night\"",
+    "issue": "The left phone is headed \"Pride Aura / your enquiry number\". It shows the buyer's message left unanswered, with the labels \"Reply next morning\" and \"Waiting until morning\". Next to \"your ad\" in the narration, this tells the developer that his own number goes unanswered until morning. That breaks the hard rule \"never imply the viewer's own replies are slow\". The script notes (master_video_script_en_v1.md, memory.md section Y) say the cold-chat and blame phones were removed for exactly this reason, but the neutral label still points at the viewer.",
+    "fix": "Drop the left phone, or make it generic: header \"Enquiry number\" (no \"your\"), label \"Late at night\", no \"Waiting until morning\" caption. Change the narration to something like \"Buyers often message late at night. A reply within a minute keeps them.\" Keep the right phone as the only one tied to Pride Aura."
+   },
+   {
+    "severity": "high",
+    "where": "Scene 2, about 9.6-14.15 s (f_11.50.png, f_13.50.png): the \"Form / lead form\" card, \"New enquiry from a form\", and narration \"all your ads and forms\"",
+    "issue": "The video states as fact that lead forms get the automatic WhatsApp reply. memory.md section Y and the script file both list this as an unresolved owner item: \"whether Ivinfotech can connect ad forms ... confirm; if not, delete 'and forms'\". \"All your ads\" is also absolute. Only WhatsApp-button ads are shown; portal, Google and print leads are not covered. The on-screen headline says \"all your ads\" only, while the narration adds \"and forms\", so the two do not match.",
+    "fix": "Confirm the form integration before sending, otherwise remove the form card and \"and forms\". Soften the claim to \"your WhatsApp ads\" or \"your ads and forms that lead to WhatsApp\". Make the headline match the narration."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 5, about 30.5-37.5 s (f_33.80.png, f_35.50.png, f_37.30.png) and the headline \"Free demo for Pride Aura\"",
+    "issue": "The narration says \"Tap Yes, send the demo. It is free, with no obligation.\" The word \"it\" is ambiguous and can be heard as the whole service being free. The subtitles at 35.5 s and 37.3 s and the chip \"Free · No obligation\" also leave out \"demo\". The headline does say \"Free demo\". Both open owner decisions, whether the demo is free and what \"Yes, send the demo\" actually sends, are still undecided in memory.md. The video promises a free demo \"for Pride Aura\" without saying what it is.",
+    "fix": "Say \"The demo is free, with no obligation.\" Change the chip to \"Free demo · No obligation\". Get the owner's yes on free and on what the demo contains before sending."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 1, 0-9.25 s (f_05.00.png, f_08.00.png), narration vs headline \"Same enquiry. Reply in a minute.\"",
+    "issue": "The point does not land clearly in the first 8 s. The narration never says the reply is automatic or says what Ivinfotech does. \"A reply within a minute keeps him\" is a general truth that a human team could act on, and \"Reply in a minute\" reads as if people reply. The word \"automatically\" appears only once, as small text on the chat at about 13.5 s (f_13.50.png). A skeptical owner could say the video hides that the reply comes from software. The first 4 s are greeting and logo, and \"Same enquiry\" makes no sense until the split phones show up at about 7-8 s.",
+    "fix": "Name the service in the first 8 s, in the headline and the voice: \"An automatic WhatsApp reply, in about a minute.\" Put the headline up by about 3 s. Say \"automatic\" in the narration."
+   },
+   {
+    "severity": "medium",
+    "where": "Scenes 1 and 2: headline \"Reply in a minute\", label \"Replied within a minute\" (f_08.00.png, f_09.00.png), tag \"Replied automatically / within a minute\" (f_13.50.png), narration \"within a minute\"",
+    "issue": "A hard time promise is repeated four times with no qualifier. The service brief says \"about a minute\". Delivery depends on WhatsApp, the ad and the number, and a form lead needs an approved template. If it takes two minutes, the owner can call the video dishonest.",
+    "fix": "Use \"in about a minute\" in the narration, headline and tags, or \"within minutes\" if that is safer."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 4, 20-30.15 s (f_22.00.png, f_24.50.png, f_26.50.png, f_28.50.png), narration \"your team sees every enquiry on one board, hot buyers first, with reminders on day one, three and seven\"",
+    "issue": "The narration and the screen disagree. The narration attaches the reminders to what the team sees, so it can be heard as reminders for the team. That implies the team forgets to follow up, which breaks the no-accusation rule. The screen says \"POLITE REMINDERS GO OUT\", meaning messages to the buyer. The \"Hot\" logic also looks inverted. Kunal and Dhruv are \"Hot\" with only a morning or evening preference, while Meera and Anita are \"New\" even though they already have a site visit slot (Sat 11:00 AM, Sun 4:00 PM). An owner will ask how \"hot\" is decided. The headline \"Your team joins anytime\" also differs from \"whenever the buyer wants\".",
+    "fix": "Narrate \"polite reminders also go to the buyer on day one, three and seven\". Make the buyers with a visit slot the \"Hot\" ones, or drop the Hot/New labels. Align the headline with the voice."
+   },
+   {
+    "severity": "medium",
+    "where": "Scene 4, about 26-27 s (f_26.50.png)",
+    "issue": "The subtitle box shows two caption chunks drawn on top of each other (garbled text such as \"tjoine and seven and your people\"). It happens exactly on the line \"and your people join whenever the buyer wants\". This is outside the claims lens, but it makes the video look sloppy and the line unreadable in a muted WhatsApp view.",
+    "fix": "Fix the caption timing so the previous chunk is hidden before the next one starts. Re-check the frames between 25.5 s and 27.5 s."
+   },
+   {
+    "severity": "low",
+    "where": "Scene 1 ad card at about 5-6.6 s (f_05.00.png, f_06.60.png); Scene 5 \"Site visits\" calendar at about 30.5-33 s (f_31.50.png)",
+    "issue": "The chats and the board carry an \"Example\" tag, but two other mock visuals do not. One is a Pride Aura-branded ad card with a \"Send WhatsApp message\" button. The other is a calendar with Pride Aura blocks on Mon, Wed and Thu. The calendar can be read as real scheduled visits for the developer's project, and nothing in the narration at that moment refers to it. The chat details (3/4 BHK chips, \"Pride Aura brochure\") are project facts the video has not verified, so they depend on the Example tag. The tag is also very small, about 7 px high in a 768 px frame.",
+    "fix": "Tag every mock visual \"Example\", the ad card and the calendar included, or remove the calendar. Make the tag larger and keep it on screen whenever mock data is visible."
+   }
+  ]
+ },
+ {
+  "lens": "muted",
+  "verdict": "Not ready to send as is: the story order and the free/no-obligation CTA are sound, but with sound off a busy owner is not told in plain words what the service is until about 20 s, and the ONE change that would most raise Yes taps is to replace the 0-4.5 s Namaste and logo visuals with a single plain on-screen offer line (\"Automatic WhatsApp reply to every Pride Aura enquiry, within a minute, on your own number, with a site visit slot\") while keeping the Namaste audio and shrinking the logo to a corner tag.",
+  "findings": [
+   {
+    "severity": "high",
+    "where": "0-9 s: f_00.80, f_02.60, f_05.00, f_06.60, f_08.00; first on-screen 'automatically' only at f_13.50",
+    "issue": "The offer does not land in the first 8 s with sound off. 0-4.5 s is a big 'Namaste' (which just repeats the subtitle) and then a logo slide with 'Made for Pride Aura', so there is no offer on screen. At 5.0-6.6 s the headline 'Same enquiry. Reply in a minute.' is cryptic: it never says who replies, never says automatically, and 'same enquiry' only makes sense once the two phones appear at 8.0 s. The actual reply (the brochure) only arrives at about 8.7-9.0 s, and the right phone is still empty at 8.0 s. The word 'automatically' first appears at about 13 s as tiny grey text in a chat bubble. The video never says in words what the thing is: the narration's 'It works with...' and 'It sends...' have no named subject. Until about 20 s an owner could think this is a call-centre or a reminder to reply faster.",
+    "fix": "Keep the Namaste audio, but during it show the offer line in large text: 'Automatic WhatsApp reply to every Pride Aura enquiry, within a minute, on your own number'. Shrink the logo to a corner tag, and drop the duplicate big 'Namaste' headline. Change the 5 s headline to 'Every enquiry gets a reply in a minute. Automatically.' so the reply (brochure) appears on screen by about 6 s, not 9 s."
+   },
+   {
+    "severity": "high",
+    "where": "8.0-9.6 s: f_08.00, f_09.00 (headline imperative at f_05.00)",
+    "issue": "The visuals imply the viewer's own replies are slow, which breaks the brief's hard rule. The left phone is labelled 'Reply next morning' and 'Waiting until morning' with a moon icon, and its chat header reads 'Pride Aura / your enquiry number'. That is the owner's own number sitting unanswered overnight. The headline 'Reply in a minute.' also reads as an order to the owner.",
+    "fix": "Remove 'your enquiry number' from the left phone. Either drop the left phone and show one phone with a timer counting up to the automatic reply, or relabel the pair by feature ('Without auto-reply' / 'With auto-reply'), never by who the owner is. Rewrite the headline in the passive: 'Every enquiry gets a reply in a minute.'"
+   },
+   {
+    "severity": "medium",
+    "where": "~28.5 s: f_28.50.png",
+    "issue": "The subtitle is garbled in this frame. Two subtitle lines are drawn on top of each other ('three and seven and your people' and 'join whenever the buyer wants'), so the text is illegible. It happens at the moment the human-takeover idea is spoken, and a sound-off viewer loses that sentence. A sampled frame caught it, so the overlap is long enough to see and is probably not a one-frame blink.",
+    "fix": "Make subtitle chunk changes a hard cut, or fully fade the old chunk out before the new one fades in. Re-render and re-check the frame around 28-29 s."
+   },
+   {
+    "severity": "medium",
+    "where": "20-37.5 s as a whole; f_31.50.png",
+    "issue": "Only features are shown, and the benefit (more site visits, less team time spent chasing) is never stated in words. The only picture of the outcome is the 'Site visits' calendar at 30.5-33 s, and it fails in three ways. It sits under the headline 'Free demo for Pride Aura', which is unrelated. It is shown while the narration asks 'Want to see it for your project?', so the link between the calendar and the question is lost. It has no 'Example' tag, so three filled Pride Aura visits (Mon, Wed, Thu) look like real visits for the owner's project.",
+    "fix": "Add a plain benefit line on the calendar, such as 'Site visits land on your calendar. Your team stops chasing.' Add the 'Example' tag to the calendar. Avoid any promise of a number or a lift."
+   },
+   {
+    "severity": "medium",
+    "where": "24.5-28.5 s: f_24.50, f_26.50",
+    "issue": "The 20-30 s board scene is too dense and too small. Four ideas (one board, hot buyers first, Day 1/3/7 reminders, human joins) are packed into one card in 10 s, and the headline names only two of them. The orange 'Hot buyers move to the top' and the grey 'POLITE REMINDERS GO OUT' share the same small spot and cross-fade into each other, with both visible at once at 24.5 s. The Day chips are tiny and Day 7 is faint. 'Hot' is never explained. It is not clear that the reminders go to the buyers rather than to the team.",
+    "fix": "Split the scene into two clear beats: board with hot-first, then reminders and human join. Give each its own large caption. Use plain wording such as 'Reminders go to the buyer on day 1, 3 and 7'. Let one caption fully clear before the next appears."
+   },
+   {
+    "severity": "medium",
+    "where": "33.8-37.3 s: f_33.80, f_35.50, f_37.30",
+    "issue": "The CTA is clear and safe ('Free - No obligation', 'or reply YES'), but it has two weak spots. The narration says 'Tap Yes, send the demo', yet the only button on screen is a picture inside a phone mock inside the video, so an owner may tap the video and nothing happens. The video never says where the real button is. It also never says what the 'demo' is or what happens next (a sample chat on this WhatsApp thread, or a sales call). A busy owner may fear a salesperson phone call or visit.",
+    "fix": "Add an arrow or text 'Tap the Yes button below this video' (only if the button really sits under it). Add one line saying what the owner receives and that no call is needed, but only if that is true, for example 'We send a sample chat for Pride Aura here, in this chat'."
+   },
+   {
+    "severity": "low",
+    "where": "22.0-26.5 s: f_22.00, f_24.50",
+    "issue": "The board logic looks backwards to a property developer. Meera and Anita, who already picked a site visit slot (Sat 11:00 AM, Sun 4:00 PM), are tagged 'New' and ranked below Kunal and Dhruv, who are tagged 'Hot' and show only 'Evening' or 'Morning'. The right-hand column mixes confirmed slots with time-of-day preferences and has no legend. 'Hot buyers first' therefore reads as arbitrary.",
+    "fix": "Show a slot-confirmed buyer as 'Hot / Visit set' at the top. Use one consistent format in the right-hand column."
+   },
+   {
+    "severity": "low",
+    "where": "0.8-2.6 s: f_00.80, f_02.60",
+    "issue": "The first frame is only a big 'Namaste' on a dark starfield, so the WhatsApp preview or thumbnail says nothing about the offer. The subtitle spells the brand 'I V Infotech' (the text-to-speech spelling) while the footer and logo say 'IV Infotech', so a sound-off reader sees a typo.",
+    "fix": "Use the offer line as the first frame (see finding 1). Keep the phonetic 'I V' spelling in the audio script only. Show 'IV Infotech' in the subtitle."
+   }
+  ]
+ }
+]

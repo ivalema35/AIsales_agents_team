@@ -1,0 +1,57 @@
+{
+  "name": "BLJ Infra LLP",
+  "project": "Silver Square",
+  "area": "Near 150 Ft Ring Road, Rajkot",
+  "ad_page": "BLJ Infra LLP",
+  "units": "3 BHK flats",
+  "sub_line": "3 BHK flats \u00b7 sample flat ready",
+  "scene2_caption": "Two of your Silver Square ads: Send WhatsApp message",
+  "questions": [
+    "Preferred size?",
+    "Budget?",
+    "Buying timeline?"
+  ],
+  "buyers": [
+    "3 BHK",
+    "3 BHK",
+    "3 BHK"
+  ],
+  "brand": {
+    "navy": "#14203a",
+    "navy2": "#1d2e4d",
+    "gold": "#128C7E",
+    "gold2": "#bda588",
+    "tint": "#e7d3b4",
+    "sub": "#f0dcc0",
+    "tagtext": "#ffffff"
+  },
+  "logo": "assets/logo.jpg",
+  "logo_s1": {
+    "w": 200,
+    "radius": 34
+  },
+  "logo_ad_h": 100,
+  "logo_ad_radius": 20,
+  "key": "blj",
+  "chat_time": "10:47 PM",
+  "stills": {
+    "1": "assets/stills/E_plain_skyline.jpg",
+    "2": "assets/stills/F_evening_home.jpg",
+    "3": "assets/stills/B_night.jpg",
+    "4": "assets/stills/B2_night_relieved.jpg",
+    "5": "assets/stills/C2_morning_desk.jpg"
+  },
+  "sparks": false,
+  "fx": {
+    "tap": 0.9,
+    "b2": 0.45,
+    "b3": 0.68,
+    "r1": 0.3,
+    "r2": 0.52,
+    "r3": 0.66,
+    "hand": 0.84,
+    "cta1": 0.3,
+    "cta2": 0.66,
+    "arr": 0.74
+  }
+}

@@ -1,0 +1,522 @@
+{
+ "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+ "need": "Real-estate developers and brokers pay for enquiries that arrive on WhatsApp or by phone and lose buyers because nobody replies fast, especially in the evening and at night",
+ "plan_round1": {
+  "need_analysis": {
+   "summary": "Gujarat real-estate developers and project brokers spend money (mainly Meta/Google ads and portal listings) to generate buyer enquiries that land on WhatsApp and phone. Replies are slow or absent outside office hours, so paid enquiries go cold. The need is a fast first reply (brochure, 3 qualifying questions, site-visit slot) plus one lead list for the sales team.",
+   "who_has_this_need": "Small and mid-size local developers and project brokers in Ahmedabad, Gandhinagar, Surat, Vadodara, Rajkot and other Gujarat towns with 1-5 live projects, a small sales team and a paid lead-generation habit. Owner or sales head decides.",
+   "observable_signals": [
+    "Active Meta (Facebook/Instagram) ads with a WhatsApp or Call/Send-message call-to-action or a wa.me link, started in the last 90 days (pays for enquiries and sends them to WhatsApp)",
+    "Several simultaneous ads for the same project, which means ongoing paid enquiry flow",
+    "Google Maps reviews in the last 90 days complaining that nobody replied, did not pick up calls or did not call back (direct evidence of slow first response)",
+    "A new project launch or fresh RERA registration (enquiries peak at launch)",
+    "Job posts for pre-sales / telecaller / CRM executive (manual enquiry handling)",
+    "Sponsored Google search results for 'flats in <city>' (paid enquiry generation)"
+   ],
+   "where_signals_show": [
+    "Meta Ad Library (public, no login)",
+    "Google Maps place pages and their reviews",
+    "GujRERA project register (gujrera.gujarat.gov.in)",
+    "Naukri / Indeed / LinkedIn jobs (company job posts)",
+    "Google Search sponsored results",
+    "99acres / MagicBricks / Housing / Squareyards new-launch pages",
+    "CREDAI Gujarat / property-expo exhibitor lists"
+   ],
+   "disqualifiers": [
+    "National or listed developers (Godrej, L&T, Arvind SmartSpaces, Tata, Lodha, Adani Realty, Shapoorji, etc.)",
+    "Developers with an obvious in-house digital/CRM team or their own chatbot",
+    "Marketing agencies, lead-gen portals, CRM or WhatsApp software vendors, freelancers",
+    "Outside Gujarat",
+    "Ads or reviews older than ~90 days",
+    "Brokers/channel partners that only repost other developers' projects with no own business identity",
+    "Anything on the ALREADY IN OUR LEADS list or an alias of it"
+   ]
+  },
+  "considered": [
+   {
+    "source": "Meta Ad Library (public ad archive) via Apify",
+    "category": "ad library",
+    "signal_for_this_need": "Very strong: an active ad with a WhatsApp/message CTA or wa.me link proves the business pays for enquiries and routes them to WhatsApp. Start date gives dated evidence.",
+    "volume_in_geo": "High: hundreds of active real-estate ads for Gujarat cities at any time, maybe 50-100 distinct small advertisers.",
+    "reachability": "Good: ad linkUrl often lands on the developer's own site or wa.me number; page name lets us find the official site and contact page.",
+    "cost_usd": 0.11,
+    "risk": "Low legal risk (public archive, no login). Scraper reliability moderate (browser-based actor). Many results are national brands or brokers, so filtering is needed.",
+    "verdict": "chosen",
+    "why": "Shows the need signal itself (paid enquiries into WhatsApp) with a date and URL, and is cheap per ad."
+   },
+   {
+    "source": "Google Maps reviews (newest, keyword-filtered for no reply / not picking calls) via Apify compass/crawler-google-places",
+    "category": "review sites / maps",
+    "signal_for_this_need": "Strong and direct: public customer complaints in the last 90 days about no response or no callback prove slow first response. Rarer than ads.",
+    "volume_in_geo": "Medium: maybe 10-20% of mid-size developers have such a review in 90 days.",
+    "reachability": "Good: Maps listing carries the business's own phone and website.",
+    "cost_usd": 0.13,
+    "risk": "Reviews are about a business, but reviewer personal data must be switched off. Actor is mature and reliable.",
+    "verdict": "chosen",
+    "why": "Evidence is a customer-visible symptom of the exact problem, and the listing gives the published phone and site. Different signal family from the ads source."
+   },
+   {
+    "source": "Google Maps place listings only (developers by category and city)",
+    "category": "maps and directories",
+    "signal_for_this_need": "Weak: shows only that a developer exists, not that it has the problem.",
+    "volume_in_geo": "Very high (thousands).",
+    "reachability": "Excellent (phone, website).",
+    "cost_usd": 0.1,
+    "risk": "Low.",
+    "verdict": "rejected",
+    "why": "Lists the right type of business but carries no need signal; it is the usual India stack. We use Maps only where the review text shows the signal."
+   },
+   {
+    "source": "GujRERA project register (gujrera.gujarat.gov.in)",
+    "category": "statutory register",
+    "signal_for_this_need": "Medium: a fresh registration marks a launch, when enquiries peak; no proof of slow replies.",
+    "volume_in_geo": "High (thousands of projects).",
+    "reachability": "Register entries show promoter contact details, which would be business-published.",
+    "cost_usd": 0,
+    "risk": "Portal is a JavaScript app; a plain fetch returned only the page title, so it cannot be read with the available web tool and no cheap Apify actor was found. Reliability low.",
+    "verdict": "rejected",
+    "why": "Free and legitimate but not machine-readable with our tools, and the signal is only 'new project'. Keep as manual fallback."
+   },
+   {
+    "source": "99acres / MagicBricks / Housing new-launch and builder pages (Apify scrapers $0.002-0.0035 per listing)",
+    "category": "marketplaces / portals",
+    "signal_for_this_need": "Medium: a recent listing shows active selling and portal spend, but not response speed. Many portal listers are brokers or large builders.",
+    "volume_in_geo": "High.",
+    "reachability": "Portals hide phone numbers behind lead forms; builder websites need a second lookup.",
+    "cost_usd": 0.1,
+    "risk": "Terms of service restrict scraping; anti-bot blocks are common; contacts are not business-published on the portal.",
+    "verdict": "rejected",
+    "why": "Lists businesses of the right type, hides contacts, and does not show the need. Ads source is stronger."
+   },
+   {
+    "source": "Job posts (Naukri / Indeed / LinkedIn Jobs) for pre-sales, telecaller or CRM executive at Gujarat developers",
+    "category": "job posts",
+    "signal_for_this_need": "Medium: shows manual enquiry handling and a sales-support headcount problem; companies hiring telecallers are potential buyers of automation.",
+    "volume_in_geo": "Low-medium for small developers; many posts come from placement agencies.",
+    "reachability": "Company name is visible, contact must be found on the company's own site.",
+    "cost_usd": 0.1,
+    "risk": "Job boards forbid scraping; LinkedIn is off limits; Apify job actors are often blocked.",
+    "verdict": "rejected",
+    "why": "Weaker proof and many agency-posted vacancies. Use free WebSearch queries only as a fallback."
+   },
+   {
+    "source": "Google Search sponsored results for 'flats in Ahmedabad / Surat / Vadodara / Rajkot' (Apify Google Search scraper)",
+    "category": "search ads",
+    "signal_for_this_need": "Strong for paid enquiry flow, but the advertisers are dominated by portals and large developers.",
+    "volume_in_geo": "Low: 3-4 ad slots per query.",
+    "reachability": "Landing page is the developer's own site.",
+    "cost_usd": 0.05,
+    "risk": "Result sets are personalised and small; scrapers need proxies.",
+    "verdict": "rejected",
+    "why": "Too few advertisers per query and mostly portals or big builders. Meta ads show more distinct small advertisers."
+   },
+   {
+    "source": "News and launch lists (Housiey, Squareyards, DeshGujarat, business press)",
+    "category": "news and launches",
+    "signal_for_this_need": "Medium: dated launch evidence, but coverage skews to big developers and the blogs are undated.",
+    "volume_in_geo": "Medium.",
+    "reachability": "Developer sites found separately.",
+    "cost_usd": 0,
+    "risk": "Low risk, but one test web search returned mostly undated pages and big names (Godrej, Arvind).",
+    "verdict": "rejected",
+    "why": "Free but mostly large listed developers and weak dating. Kept as fallback for finding official sites."
+   },
+   {
+    "source": "CREDAI Gujarat / CREDAI Ahmedabad member list and property expo exhibitor lists",
+    "category": "association member lists / event exhibitor lists",
+    "signal_for_this_need": "Weak to medium: exhibitors are marketing-active, but exhibiting is not proof of lost enquiries.",
+    "volume_in_geo": "Medium (a few hundred members).",
+    "reachability": "Member pages often list the developer's own phone and site.",
+    "cost_usd": 0,
+    "risk": "Membership lists include many large builders; pages may be dated or not published as text.",
+    "verdict": "rejected",
+    "why": "Free but no need signal; use only as a fallback source of small developers to check on the ad library."
+   },
+   {
+    "source": "Instagram / Facebook page posts of developers",
+    "category": "communities / social",
+    "signal_for_this_need": "Medium (posting frequency, comments asking for price or details that stay unanswered).",
+    "volume_in_geo": "High.",
+    "reachability": "Page about section may have contacts.",
+    "cost_usd": 0.1,
+    "risk": "High: instruction forbids scraping personal profiles and logins; page scraping is borderline and unreliable.",
+    "verdict": "rejected",
+    "why": "Policy and reliability risk; the Ad Library gives the page-level signal without scraping social profiles."
+   }
+  ],
+  "chosen": [
+   {
+    "id": "meta-ads-whatsapp",
+    "name": "Meta Ad Library: active Gujarat real-estate ads with WhatsApp/message CTA",
+    "channel_type": "ad library",
+    "tool": "apify",
+    "how_to_run": "Actor: automation-lab/facebook-ads-library (pay per event: $0.005 start + $0.0005 per ad at Bronze tier). Input: {\"searchQueries\":[\"flats in Ahmedabad\",\"2 BHK 3 BHK Gandhinagar\",\"flats Surat new project\",\"Vadodara Rajkot flats site visit\"],\"country\":\"IN\",\"activeStatus\":\"active\",\"mediaType\":\"all\",\"onlyAdsNewerThan\":\"60 days\",\"maxAds\":50}. That is 4 searches x 50 ads = 200 ads = about $0.105. Fallback actor if it fails: igolaizola/facebook-ad-library-scraper with query, country IN, activeStatus active, minDate 2026-08-27, maxItems 50 per query. After the run: keep rows where ctaType/ctaText contains WHATSAPP or MESSAGE (or linkUrl contains wa.me / api.whatsapp.com) and startDate is on or after 2026-07-29 and the ad text or link names a Gujarat city or locality. Group by pageId/pageName and count active ads. Reject national and listed developers, portals, agencies and anything on the already-in-leads list. For each remaining page, find the official site with a free WebSearch of the page name plus city, and take the phone/email only from the developer's own site or its Maps listing.",
+    "qualifying_signal": "A page that is not a national chain, not a portal and not an agency, running at least one ad that is active now, started within the last ~90 days, and uses a WhatsApp or send-message CTA or wa.me link, advertising a project in a Gujarat town. Two or more simultaneous ads for the same project make it stronger.",
+    "fields_to_capture": "pageName, pageId, pageUrl, adLibraryUrl, adArchiveId, startDate, isActive, ctaType, ctaText, linkUrl, bodyText excerpt, count of active ads, city/project named, official website and business-published phone/email with the URL where seen, pageLikeCount",
+    "est_cost_usd": 0.11,
+    "expected_yield": "4-6 usable candidates (about 15-30 distinct Gujarat advertisers in 200 ads, most rejected as big names, portals or brokers)"
+   },
+   {
+    "id": "maps-slow-reply-reviews",
+    "name": "Google Maps: developers with recent reviews about no reply / calls not answered",
+    "channel_type": "review site / maps",
+    "tool": "apify",
+    "how_to_run": "Actor: compass/crawler-google-places. Input: {\"searchStringsArray\":[\"real estate developer\",\"builders and developers\",\"apartment builder\"],\"locationQuery\":\"Ahmedabad, Gujarat, India\",\"countryCode\":\"in\",\"language\":\"en\",\"maxCrawledPlacesPerSearch\":6,\"skipClosedPlaces\":true,\"maxReviews\":4,\"reviewsSort\":\"newest\",\"reviewsStartDate\":\"2026-07-29\",\"reviewsOrigin\":\"google\",\"reviewsFilterString\":\"reply response respond call phone whatsapp callback\",\"scrapeReviewsPersonalData\":false}. That is 18 places at about $0.003 + $0.002 detail each ($0.09) plus at most 72 reviews at $0.0005 ($0.036), about $0.126 worst case. Then repeat for Surat, Vadodara, Rajkot only if budget remains (use maxCrawledPlacesPerSearch 4 and one search term). Read each returned review text and keep the place only if a review dated within 90 days says the developer or its sales team did not reply, did not pick up, never called back, or answered after days. The place's own website and phone come from the Maps listing (business-published). Reject national chains and anything on the already-in-leads list.",
+    "qualifying_signal": "A Gujarat developer or project broker (not a chain) whose Maps listing has at least one review dated within the last 90 days complaining about no response, unanswered calls or WhatsApp, or a missed callback after an enquiry.",
+    "fields_to_capture": "title, placeId, Maps url, address and city, phone, website (from listing), categoryName, totalScore and reviewsCount, matching review text excerpt, review publishedAtDate and review url (no reviewer name or ID), owner response present or not",
+    "est_cost_usd": 0.13,
+    "expected_yield": "2-4 usable candidates per Ahmedabad run; this is the lower-volume but higher-quality source"
+   }
+  ],
+  "if_low_yield": "If total candidates are below about 5: (1) rerun the Ad Library with other keywords (Gandhinagar plots, Surat Vesu/Adajan, Vadodara Vasna, Rajkot 150 Ft Ring Road, 'new launch Gujarat', 'RERA registered', 'site visit', Gujarati terms like 'ફ્લેટ', 'બંગલો'), a 90-day window and the page-level mode (pageUrls) for the small developers already seen, within the remaining budget; (2) run the Maps review scrape for Surat, Vadodara and Rajkot with one search term each and a lower place limit; (3) free web fallbacks: WebSearch for site:naukri.com or Indeed job posts 'pre sales executive / telecaller' real estate Ahmedabad Surat Vadodara Rajkot within 60 days, and CREDAI Gujarat or property-expo exhibitor lists to pick small developers whose Ad Library page can then be checked at no cost; (4) try GujRERA through its project search by hand for projects registered in the last 90 days, then look up each promoter's own site, if a way to read it appears."
+ },
+ "plan_round2": null,
+ "sources_used": [
+  "meta-ads-whatsapp",
+  "maps-slow-reply-reviews"
+ ],
+ "run_reports": [
+  {
+   "source_id": "meta-ads-whatsapp",
+   "found": 12,
+   "report": {
+    "what_i_ran": "Two runs of automation-lab/facebook-ads-library, country IN, active ads only, newer than 60 days. Run 1 (KIIxaNVRLjQdBJjMt): 4 planned queries (flats in Ahmedabad; 2 BHK 3 BHK Gandhinagar; flats Surat new project; Vadodara Rajkot flats site visit), maxAds 40 each, returned 87 ads. Run 2 (IABB5iajLjjr9vlfv): 3 queries (flats in Vadodara; flats in Rajkot; ready possession Gujarat 2 BHK), maxAds 30, returned 88 ads. I filtered for WHATSAPP_MESSAGE / MESSAGE_PAGE CTA or an api.whatsapp.com link, start date on or after 2026-07-29, a Gujarat city in the text, then removed the already-in-leads names and national/portal pages. I then did 9 free WebSearch lookups to sanity-check identity (RERA records on aurumproptech.in) and look for official sites.",
+    "worked": "The actor ran cleanly and fast, and gave real ad start dates, CTA types, page IDs, like counts and the full ad text with phone numbers. Vadodara and Rajkot queries gave many small local developers with WhatsApp CTAs; Gandhinagar and Ahmedabad queries gave more portals and Instagram/GET_QUOTE ads. RERA aggregator pages (aurumproptech.in) confirmed project existence for Shreem Avdhesh, Class One Evoq, Vincy Tower, and Kishan Antilia.",
+    "did_not_work": "1) I did not open any Ad Library page (built-in browser not available and the page is JavaScript-rendered), so every candidate is signal_from_data, not signal_opened. 2) The actor's 'maxAds' is per query but run 2 returned 88 ads for 3 queries, so it can return more than the cap, and its run summary said 30 items while the dataset held 88; budget was still within limit. 3) Many ads show ctaType GET_QUOTE / BOOK_TRAVEL / SIGN_UP / GET_OFFER with linkUrl fb.me (e.g. Swagat, Bansari, Dev Group, Rudraksh, Anant Parmeshwar, Sangini, Panchshil, Mivaan, Siddhi Group, many Rajkot property pages); I could not tell whether these open Messenger or a lead form, so I did not count them as WhatsApp or message ads. 4) Several pages have no CTA data at all (Teraiya Group, Vision Ventilla2). 5) Web searches did not find official sites for almost any of these small developers; the Shivanta site fetch failed with an expired certificate. Contacts here are therefore phones printed in the businesses' own ads, not from a website. 6) Dropped on purpose: Agami Realty (Boisar, Maharashtra), Brij Group, Lotus Lifestyle, Trinetra Group, BLJ Infra, Nyalkaran, Shyamal Park, Swagat, Rivanta (already in leads); Housing.com, 99acres, Magicbricks, Housivity, Address Box (portals); A-one space real estate (WhatsApp ads active but started 2026-05-19, older than 90 days); Aakar Infra (started 2026-01-22); Icon Group Rajkot (2026-07-25, before cutoff); HM Patel (Mehsana, a personal profile, likely an individual); Unique Infraspace (commercial space, not a project launch); Dream Land Rajkot (1 like, unverifiable); Material Studio and Trinity Dental (not real estate). 7) Several candidates may be brokers or marketing pages rather than developers (Sunfin Realty, Quick Build Con, Anthems Corporation, Kishan Antilia); the entity_type is set to unclear for those.",
+    "est_cost_usd": 0.0975,
+    "apify_runs": [
+     {
+      "actor": "automation-lab/facebook-ads-library (run KIIxaNVRLjQdBJjMt)",
+      "items_returned": 87,
+      "est_cost_usd": 0.0485
+     },
+     {
+      "actor": "automation-lab/facebook-ads-library (run IABB5iajLjjr9vlfv)",
+      "items_returned": 88,
+      "est_cost_usd": 0.049
+     }
+    ]
+   }
+  },
+  {
+   "source_id": "maps-slow-reply-reviews",
+   "found": 0,
+   "report": {
+    "what_i_ran": "1) compass/crawler-google-places as planned: refused at start (minimum max-charge per run is $0.50, above the $0.13 cap), nothing run. 2) Adapted with beatanalytics/google-maps-reviews-scraper (Ahmedabad 'real estate developer', 6 places, 5 newest reviews each, since 2026-07-29): 4 places (Jalaram Real Estate, HN Safal House, Swati Procon, Prarambh Buildcon), 19 reviews. 3) memo23/google-maps-reviews-scraper with review keyword filters and date >= 2026-07-29: 'call' on builders/developers Ahmedabad (8 places) gave 1 review; 'respon' over Surat, Vadodara, Rajkot, Ahmedabad (6 places each) gave 2 reviews; 'reply' over Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar (6 places each) scanned 650 reviews and 0 matched. Search terms were 'real estate developer', 'builders and developers' and 'builders'.",
+    "worked": "The two replacement actors run cheaply and return real Maps data (place, phone, website, review date, review URL). The memo23 keyword and date filters work, so this source can be re-run for other terms. Cost cap held.",
+    "did_not_work": "No candidates. The planned compass actor cannot be run under a $0.13 cap. Across the three runs, no review dated within 90 days complained that a developer did not reply, did not pick up or never called back. The 19 reviews from the beatanalytics run were praise, or post-possession complaints (HN Safal: water seepage and no after-sale help, a big established firm). The 3 reviews the keyword runs returned did not qualify: Sun Builders Group (2026-10-10) is about a facility-management firm not responding to emergencies, a post-sale issue, and Maruti Land Developers (Vadodara, a land advisor and consultant, not a developer) got a positive review that mentions 'timely response'. Keyword filters are literal word matches, so reviews that complain in other words ('nobody answers', 'switched off', Gujarati or Hindi text) can be missed. The small sample (about 6 places per city, only the first few reviews) is the other limit. Reviews complaining about slow first response are rare for developers; most negative reviews are about delivery, possession and maintenance, not enquiry handling. The 'reply' run's 650 reviews were scanned across a small sample of places. This source is unlikely to yield leads at this budget and I would deprioritise it.",
+    "est_cost_usd": 0.04,
+    "apify_runs": [
+     {
+      "actor": "compass/crawler-google-places (rejected: min charge $0.50 > cap)",
+      "items_returned": 0,
+      "est_cost_usd": 0
+     },
+     {
+      "actor": "beatanalytics/google-maps-reviews-scraper",
+      "items_returned": 4,
+      "est_cost_usd": 0.01
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (builders and developers Ahmedabad, keyword 'call')",
+      "items_returned": 0,
+      "est_cost_usd": 0.01
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (4 city queries, keyword 'respon')",
+      "items_returned": 2,
+      "est_cost_usd": 0.01
+     },
+     {
+      "actor": "memo23/google-maps-reviews-scraper (5 city queries, keyword 'reply')",
+      "items_returned": 0,
+      "est_cost_usd": 0.01
+     }
+    ]
+   }
+  }
+ ],
+ "judged": {
+  "final_candidates": [
+   {
+    "rank": 1,
+    "business": "Classone Group (Class One Infra, project Classone Evoq)",
+    "city": "Rajkot (Raiya Hills, Sopan Luxuria Road)",
+    "entity_type": "end_business",
+    "what_they_do": "Developer of 4 BHK luxury flats (Classone Evoq, 56 units, sample flat ready)",
+    "signal_observed": "Two active Meta ads, both started 2026-10-13, with a WhatsApp message CTA and 'Chat with us' headline; phone printed in the ad. RERA aggregator shows project approved 18 Jul 2025, promoter Class One Infra.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1141357448479865",
+    "signal_date": "2026-10-13",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Young single-project firm paying for WhatsApp-click ads on a high-ticket (about Rs 80-85 lakh) project; each unanswered night-time enquiry is costly.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Fresh (14 days), two simultaneous WhatsApp-CTA ads, project existence cross-checked on a RERA aggregator, phone published by the business itself, plausible ability to pay.",
+    "unknowns": "Ad Library page not opened by the collector (scraper data only); tiny page (71 likes) so budget may be modest; no website; decision-maker unknown."
+   },
+   {
+    "rank": 2,
+    "business": "Shreem Group (project Shreem Avdhesh; RERA developer Shree Avdhesh Developers)",
+    "city": "Ahmedabad (Odhav / Varjal, S.P. Ring Road)",
+    "entity_type": "end_business",
+    "what_they_do": "Residential developer; 2 and 3 BHK apartments from Rs 41.51 lakh",
+    "signal_observed": "Two active Meta ads with WhatsApp message CTA and 'Chat with us' headline for the same project, started 2026-10-14 and 2026-10-16, festival offer, phone +91 96248 42535 printed in ad.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=2045598407088530",
+    "signal_date": "2026-10-14 (second ad 2026-10-16)",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Festival-window paid ads route buyers to WhatsApp while a phone number is the follow-up channel, so evening WhatsApp enquiries likely wait for a human.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Two simultaneous dated WhatsApp-CTA ads, project registrations seen on RERA aggregator (approved 2023, completion Dec 2027), phone published by the business, Ahmedabad.",
+    "unknowns": "Ad Library page not opened; no official website; whether the WhatsApp number is a business API or personal number is unknown; owner unknown; email cut off in ad text."
+   },
+   {
+    "rank": 3,
+    "business": "Shivanta Group (project Shivanta Krushnam)",
+    "city": "Vadodara (New Manjalpur)",
+    "entity_type": "end_business",
+    "what_they_do": "Developer; 3 BHK homes and shops, 191 apartments",
+    "signal_observed": "Active Meta ad started 2026-10-09 with WhatsApp message CTA and headline 'Book Your Site Visit!'; names www.shivantagroup.com and two phone numbers (+91 92270 31144, 8141133114).",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1383953363769565",
+    "signal_date": "2026-10-09",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Large 191-unit project driving site-visit bookings through WhatsApp ads plus a website, so enquiries depend on sales staff availability.",
+    "website": "www.shivantagroup.com (named in ad; fetch failed with expired certificate, not verified)",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Dated WhatsApp-CTA ad, own website and two phones published, large project suggests ability to pay, Shivanta name appears on several Vadodara RERA records.",
+    "unknowns": "Website not verified (expired certificate); RERA promoter for Krushnam not confirmed; Shivanta name appears under different promoters on RERA so group size unclear; one ad only; may have in-house team."
+   },
+   {
+    "rank": 4,
+    "business": "Shree Siddhivinayak Realities (project Vincy Tower)",
+    "city": "Rajkot (Railnagar Main Road, near Madhapar Circle)",
+    "entity_type": "end_business",
+    "what_they_do": "Developer of mixed-use Vincy Tower: 2 and 3 BHK flats and shops, nearing possession",
+    "signal_observed": "Active Meta ad started 2026-10-21 with WhatsApp message CTA; three phone numbers (+91 9687516666, 9925913232, 9607579396) printed in ad. RERA aggregator shows project approved 10 Mar 2025, promoter Shree Siddhivinayak Reality (partnership).",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1075919292110933",
+    "signal_date": "2026-10-21",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Selling last units through WhatsApp-CTA ads with three phone numbers, which indicates manual multi-person enquiry handling.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Most recent ad (6 days old), identity cross-checked on RERA aggregator, three own phone numbers published.",
+    "unknowns": "Single ad; budget unknown; no website; Ad Library page not opened."
+   },
+   {
+    "rank": 5,
+    "business": "Sunfin Realty",
+    "city": "Vadodara (Gotri-Sevasi and Manjalpur)",
+    "entity_type": "unclear",
+    "what_they_do": "Sells ready-possession 3 BHK flats in Gotri-Sevasi and premium 3 BHK in Manjalpur; unclear if developer or sales/marketing firm",
+    "signal_observed": "Three active Meta ads with WhatsApp message CTA: two started 2026-09-15, one 2026-09-23; 'Schedule your site visit today', phone +91 70461 16777.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1426039099499383",
+    "signal_date": "2026-09-15 (latest ad 2026-09-23)",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Several simultaneous WhatsApp-CTA ads for two projects means steady paid enquiry flow with site visit booking as the stated goal.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Strongest paid-spend pattern (three ads, two projects, 4.9k likes); a project broker also fits the target profile. Ads are 34-42 days old, inside the 90-day window.",
+    "unknowns": "Developer vs broker not confirmed; no RERA match found; no website; Ad Library page not opened. Ads are older than the others, so may no longer be active."
+   },
+   {
+    "rank": 6,
+    "business": "Kishan Antilia (RERA promoter Ambica Inc)",
+    "city": "Vadodara (Bhayli Canal Road)",
+    "entity_type": "unclear",
+    "what_they_do": "4 BHK lifestyle apartments on Bhayli Canal Road",
+    "signal_observed": "Active Meta ad started 2026-09-26 with WhatsApp message CTA, 'DM or call for details', phones 84696 18000 and 84697 18000.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1400703488886438",
+    "signal_date": "2026-09-26",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "High-ticket 4 BHK project sold through ads that route to WhatsApp, DM or phone, so replies depend on whoever picks up.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Dated WhatsApp-CTA ad, RERA entry exists (Ambica Inc, end date 2029), own phones published.",
+    "unknowns": "Developer identity conflicts across portals (Ambica Inc, Ambica Infracon, Krishna Developers); may be a larger group; decision-maker unclear; single ad."
+   },
+   {
+    "rank": 7,
+    "business": "Quick Build Con - Property (project Sunrise Pride)",
+    "city": "Rajkot (Smart City, near 150 Ft Ring Road)",
+    "entity_type": "unclear",
+    "what_they_do": "Advertises Sunrise Pride 3 BHK flats, Smart City, Rajkot",
+    "signal_observed": "Active Meta ad started 2026-10-17 with WhatsApp message CTA; phone 95377 00080 printed in ad; page has 7,051 likes.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1771809674088478",
+    "signal_date": "2026-10-17",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Active WhatsApp-CTA ad on a well-followed page for a 3 BHK project, single number to call.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Recent dated signal, large page, phone published; a broker or builder-contractor would still fit the target.",
+    "unknowns": "Page name says 'Property' so may be a contractor/broker for another builder; no identity check beyond the ad; no website; no RERA check."
+   },
+   {
+    "rank": 8,
+    "business": "Radhekrishna Group (project Radhekrishna Landmark; Matangi Infracon)",
+    "city": "Vadodara (Ratanpur, Main Dabhoi Road)",
+    "entity_type": "end_business",
+    "what_they_do": "Developer of 2 BHK flats from Rs 24.99 lakh and shops",
+    "signal_observed": "Active Meta ad started 2026-10-15 with WhatsApp message CTA; two phones (972 612 5777, 972 636 5777) and email Radhekrishnalandmark77@gmail.com printed in ad.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1899575691419873",
+    "signal_date": "2026-10-15",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Affordable-segment project generating many enquiries handled by phone and a Gmail address.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Dated WhatsApp-CTA ad with the most contact routes (phones and email, all from the business's own ad); kept at low rank because ability to pay looks weak.",
+    "unknowns": "Brand-new page with 2 likes, very small operation; business not verified beyond the ad; ability to pay doubtful."
+   },
+   {
+    "rank": 9,
+    "business": "Vatsalya Hilltop (project by Shree Sainath Group)",
+    "city": "Vadodara (Tarsali)",
+    "entity_type": "end_business",
+    "what_they_do": "Pre-launch 1 BHK flats from Rs 18.99 lakh and shops",
+    "signal_observed": "Active Meta ad started 2026-09-12 with WhatsApp message CTA, pre-launch offer; phones 99980 70521 and 99980 23521; names Shree Sainath Group.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1099889232410071",
+    "signal_date": "2026-09-12",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Pre-launch campaign where launch-window enquiries matter most, routed to WhatsApp and phone.",
+    "website": "",
+    "tier": "signal_only",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Real dated signal and phones published, but kept at the bottom of usable because the page is tiny and the developer is unverified.",
+    "unknowns": "Shree Sainath Group not verified; 24 page likes; low-ticket project so ability to pay doubtful; ad is 45 days old and may be inactive."
+   },
+   {
+    "rank": 10,
+    "business": "Reseed Infra Group (project Shubh Imperia)",
+    "city": "Vadodara (Makarpura)",
+    "entity_type": "end_business",
+    "what_they_do": "Developer of 2 and 3 BHK flats and shops at Shubh Imperia",
+    "signal_observed": "Active Meta ad started 2026-09-14 with WhatsApp message CTA; phone +91 81608 53083.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1115143230990009",
+    "signal_date": "2026-09-14",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Paid ad pushes enquiries to WhatsApp for site visits with one phone number answering everything.",
+    "website": "",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Ad signal exists but the collector found no record of the developer or project anywhere beyond its Facebook page; kept as unverified, not counted.",
+    "unknowns": "Developer existence not verifiable outside Facebook; single ad; budget unknown."
+   },
+   {
+    "rank": 11,
+    "business": "Sunrise Group (Sunrise Villas)",
+    "city": "Ahmedabad (Singarva, near Ring Road)",
+    "entity_type": "unclear",
+    "what_they_do": "225 sq yd bungalows (Sunrise Villas)",
+    "signal_observed": "Two active Meta ads with WhatsApp message CTA started 2026-09-22 and 2026-09-24; no phone or email in ads.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=1398427475083725",
+    "signal_date": "2026-09-22 (second ad 2026-09-24)",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Small new advertiser sending villa buyers straight to WhatsApp.",
+    "website": "",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Signal exists but no contact route, no identity check, 34 page likes; could be a plot seller or broker. Kept as unverified, not counted.",
+    "unknowns": "No phone, email or site; no RERA check; entity type unknown."
+   },
+   {
+    "rank": 12,
+    "business": "Anthems Corporation (project Anthems Arica)",
+    "city": "Surat (Mota Varachha)",
+    "entity_type": "unclear",
+    "what_they_do": "Markets premium 2 BHK flats at Anthems Arica",
+    "signal_observed": "Active Meta ad started 2026-10-19 with SEE_DETAILS CTA linking to api.whatsapp.com/send; Gujarati text, phone +91 99788 80652.",
+    "signal_url": "https://www.facebook.com/ads/library/?id=3221363401384187",
+    "signal_date": "2026-10-19",
+    "signal_date_kind": "dated_by_source",
+    "why_need": "Active ad leading to WhatsApp for a Surat 2 BHK launch with manual phone follow-up.",
+    "website": "",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "meta-ads-whatsapp"
+    ],
+    "keep_reason": "Signal exists but the RERA record for Arica names a different promoter (R.R. Developers) and the page category is 'Home Design', so it may be a marketing partner or agency; kept as unverified, not counted.",
+    "unknowns": "Identity mismatch with RERA promoter; may be an agency or channel seller, which would be a disqualifier."
+   }
+  ],
+  "dropped": [],
+  "per_source": [
+   {
+    "source_id": "meta-ads-whatsapp",
+    "found": 12,
+    "usable": 9,
+    "note": "Produced all candidates: dated WhatsApp-CTA ads from late Sep to Oct 21, 2026, with business-published phones. All are scraper data; no Ad Library page was opened, so none reaches verified. 3 of 12 are unverified (identity or contact doubts)."
+   },
+   {
+    "source_id": "maps-slow-reply-reviews",
+    "found": 0,
+    "usable": 0,
+    "note": "No candidates. The planned actor was refused (minimum charge above the cap); replacement actors scanned about 650 reviews and found no in-window slow-reply complaint about a developer. Literal keyword matching and a small sample limit it."
+   }
+  ],
+  "usable_count": 9,
+  "tier_counts": {
+   "verified": 0,
+   "signal_only": 9,
+   "fit_only": 0,
+   "unverified": 3
+  },
+  "enough": true,
+  "cross_matches": [],
+  "replan_advice": "Count is sufficient (9 usable, all signal_only, none verified), but it rests on a single source and no cross-matches. Before outreach, have someone open the top 5 Ad Library pages to confirm the ad is still active and check the RERA promoter and a second identity source (this would lift them to verified). To add depth, add GujRERA new registrations (last 90 days), pre-sales/telecaller job posts from Gujarat developers, and sponsored Google results for 'flats in <city>'. These can cross-match against the Meta ad names. Drop or rework the Maps slow-reply review source: it gave 0 leads, the planned actor exceeds the budget cap, and slow-reply complaints about developers are rare. If used, add Gujarati and Hindi complaint terms ('phone nathi uthavta', 'call back nahi') and more places. Also treat the 'fb.me' GET_QUOTE ads the collector skipped as unresolved: check whether they open Messenger, since those developers may qualify."
+ },
+ "est_apify_spend_usd": 0.138,
+ "note": "Candidates are CLAIMS with evidence. Run lead-researcher on them before anything is added to a campaign."
+}

@@ -1,0 +1,209 @@
+{
+ "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+ "researched": 2,
+ "grade_counts": {
+  "reject": 2
+ },
+ "ready_count": 0,
+ "leads": [
+  {
+   "business": "Kesari Custom - The Car Detailing Studio (listed as \"Kesari custom\")",
+   "first_grade": "reject",
+   "skeptic_grade": null,
+   "final_grade": "reject",
+   "challenged": false,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "weak",
+   "strongest_objection": "",
+   "review_flag": "",
+   "reason_not_ready": "unverifiable: only one public source (the Grexa auto-generated site, which mirrors the Google listing) could be opened. The Google Maps listing did not load, and searches found no directory, social, news or register page for the business. The two-independent-source rule is not met. Re-open as grade C or B if someone with a normal browser can load the Google Maps listing, see that the phone matches and check the owner replies.",
+   "dossier": {
+    "business": "Kesari Custom - The Car Detailing Studio (listed as \"Kesari custom\")",
+    "city": "Ahmedabad (Tragad, Mansarovar Rd, near Hillook Hotel, behind Zudio, 382470)",
+    "official_website": "https://kesari-custom.grexa.site/ (free Grexa auto-generated site on a grexa.site subdomain, no own domain)",
+    "identity_verified": false,
+    "verification_trail": [
+     "https://kesari-custom.grexa.site/ : opened. Shows name, address, phone +91 9274582116, hours 8am-8pm daily, services (washing, polishing, ceramic coating, PPF, wrap), 4.8 stars from 52+ Google reviews, 'Built by Grexa' footer, Enquire buttons, no booking form, no WhatsApp or social links, no owner or staff names.",
+     "https://kesari-custom.grexa.site/contact : opened. Phone, hours and address only. No form, no WhatsApp, no email, no social links.",
+     "https://kesari-custom.grexa.site/about : opened. Generic text, no owner, no founding year (only the 2026 copyright), no team. Lists 10 dated Google reviews (5 Apr to 11 Jul 2026), no owner replies shown (the template may simply not show replies).",
+     "https://kesari-custom.grexa.site/products-services : opened. Services listed, no prices, Enquire button only. Where Enquire leads could not be seen from the text I got.",
+     "Google Maps place link from the site (place_id ChIJ6U3YtSuDXjkRWeFN36yAX0E), via WebFetch: returned only the heading 'Google Maps', no listing content. Could not confirm the Google listing, its phone, its website button or its owner replies. The place_id in the site's links suggests a Google listing exists, but I did not see it.",
+     "WebSearch, 4 queries (name + Tragad, name + phone number, name + Justdial/Instagram/Facebook, exact 'Kesari custom' Tragad Ahmedabad): the only hit is the same grexa.site page. The search engine's cached copy of it shows older details (category 'Auto Restoration Service', hours 10am-10pm, '7+ users' rating), so the site content changes with the Google listing. No Justdial, Instagram, Facebook, directory or news mention found.",
+     "A Google search page fetch returned an error page. Apify not used, because the budget for this month is used up."
+    ],
+    "entity_type": "end_business",
+    "what_they_do": "Appears to be a single-location car detailing, washing, polishing, ceramic coating and PPF studio in Tragad, Ahmedabad. Everything known comes from one auto-generated website that mirrors its Google Business Profile.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 9274582116",
+      "source_url": "https://kesari-custom.grexa.site/contact",
+      "note": "Published as a tel: link on the free Grexa site, which is built from the business's Google listing. Likely WhatsApp (Indian mobile), not confirmed. Not confirmed to reach the owner."
+     },
+     {
+      "kind": "maps",
+      "value": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJ6U3YtSuDXjkRWeFN36yAX0E",
+      "source_url": "https://kesari-custom.grexa.site/",
+      "note": "Google Maps link on the site. I could not open the listing content."
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "The own site is a free Grexa template on kesari-custom.grexa.site, with no own domain and a 'Built by Grexa' footer.",
+      "source_url": "https://kesari-custom.grexa.site/",
+      "date": "2026-10-30"
+     },
+     {
+      "fact": "Service and product entries have only an 'Enquire' button, no prices. The Contact page has phone, hours and address only: no booking form, no WhatsApp link, no email, no social links.",
+      "source_url": "https://kesari-custom.grexa.site/contact",
+      "date": "2026-10-30"
+     },
+     {
+      "fact": "The site claims 4.8 stars from 52+ Google reviews. The 10 reviews shown are dated 5 Apr to 11 Jul 2026, and none shows an owner reply on the site. This does not prove the Google listing has no replies.",
+      "source_url": "https://kesari-custom.grexa.site/about",
+      "date": "2026-07-11"
+     },
+     {
+      "fact": "The site shows hours 8am-8pm Mon-Sun and the address Mansarovar Rd near Hillook Hotel, Tragad, behind Zudio, Ahmedabad 382470. The search engine's cached copy of the same site shows other hours (10am-10pm) and '7+' ratings, so the data is auto-synced and moves.",
+      "source_url": "https://kesari-custom.grexa.site/",
+      "date": "2026-10-30"
+     },
+     {
+      "fact": "No site or social profile found shows any owner or staff name, founding year, branches or project count.",
+      "source_url": "https://kesari-custom.grexa.site/about",
+      "date": "2026-10-30"
+     }
+    ],
+    "hypotheses": [
+     "The Grexa site is generated from the Google Business Profile, so it is not an independent second source. The business probably exists, but I could not confirm it from a second independent page.",
+     "Likely a small owner-run studio, since a free auto-site and 52+ reviews suggest little marketing spend. Not shown by any source.",
+     "The 4.8 rating from 52+ reviews suggests real demand. It is a weak ability-to-pay signal on its own.",
+     "The listing's website button probably points to the Grexa site, which would mean the Google profile has no real own site. Not verified, because the listing did not load.",
+     "A booking and proof page plus profile upkeep would fill a real gap here, but the gap is a free template with Enquire buttons, not a missing site."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "grade": "reject",
+    "reject_reason": "unverifiable: only one public source (the Grexa auto-generated site, which mirrors the Google listing) could be opened. The Google Maps listing did not load, and searches found no directory, social, news or register page for the business. The two-independent-source rule is not met. Re-open as grade C or B if someone with a normal browser can load the Google Maps listing, see that the phone matches and check the owner replies.",
+    "case_for": "Single-location owner-run studio, premium services (ceramic, PPF, wrap) that sell on trust and photos. Good rating (4.8, 52+ reviews). The site shows only a free template with Enquire buttons and no booking path, no WhatsApp button and no own domain. A published mobile number is present. It is not in the existing lead list.",
+    "case_against": "Identity rests on one auto-generated page, with no second independent source, so it is unverifiable under the rule. No owner name, no social profile, no sign of Meta ads or other spend, so the pay signal is weak. The 'no owner reply' claim is not confirmed, because the site template may not show replies and the Google listing did not load. It is unknown who answers +91 9274582116. Some site details change between snapshots (hours, ratings), so the data is not stable. The finder's claim that the state is permanent is not supported: Grexa sites sync from the Google listing and can change.",
+    "decision_maker": "not found",
+    "size_cues": "Single address, no branches, staff, years or project counts published. 52+ Google reviews (site claim). Small.",
+    "ability_to_pay": "Weak and unproven. A 4.8 rating from 52+ reviews and premium PPF and coating services imply steady business, but no ad spend, no own domain and no team signals were found.",
+    "resistance": "Low to moderate. The studio uses a free Grexa site, so it may see no need to pay for another page, and Grexa may bundle review or profile tools. Whether the owner answers the published number, or someone else does, is unknown.",
+    "best_angle": "Not applicable while rejected. If re-opened: after checking the Google listing, offer to turn the Enquire-only free site into a booking and proof page with package prices by car size, before and after photos and a WhatsApp Book button. Do not claim lost bookings or missing owner replies unless seen on the listing.",
+    "best_channel": "Do not contact yet. If re-opened: a human WhatsApp message or call to +91 9274582116, the only business-published number (source: the Contact page). Not confirmed to reach the owner.",
+    "gaps": [
+     "Google Maps listing not readable: could not confirm the name, phone match, website button target, category, review count or owner replies.",
+     "No second independent source (Justdial, Instagram, Facebook, directory, register) found.",
+     "Owner or decision-maker name unknown, and unknown whether the published phone reaches them.",
+     "No evidence of ad spend or other pay signal.",
+     "Where the Enquire buttons lead on the site was not visible from the page text.",
+     "Hours and rating differ between the live site and the cached search snippet, so freshness is unclear."
+    ]
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "Quartz Detailing Studio",
+   "first_grade": "reject",
+   "skeptic_grade": null,
+   "final_grade": "reject",
+   "challenged": false,
+   "downgraded_by_skeptic": false,
+   "ready_for_campaign": false,
+   "need_evidence": "inferred",
+   "pay_signal": "none",
+   "strongest_objection": "",
+   "review_flag": "",
+   "reason_not_ready": "unverifiable. Only one source (the dead own domain, seen via a search snippet) plus an unopened Instagram result shows the business exists. No map listing, register entry or directory page could be reproduced. The location also conflicts (Surat Vesu vs Chikhli), and the phone numbers come from a defunct site, so the business may be stale, moved or closed.",
+   "dossier": {
+    "business": "Quartz Detailing Studio",
+    "city": "Surat (Vesu Main Road per old site); Instagram bio reportedly says Chikhli",
+    "identity_verified": false,
+    "verification_trail": [
+     "WebFetch http://www.quartzdetailingstudio.in/ -> ENOTFOUND (domain does not load today, 2026-10-30)",
+     "WebFetch https://dns.google/resolve?name=quartzdetailingstudio.in&type=A -> Status 3 (NXDOMAIN), only the .in registry SOA returned, so the domain is not registered or has lapsed (2026-10-30)",
+     "WebSearch 'Quartz Detailing Studio Surat Vesu' -> no listing found; only CarzSpa and TotalEnergies Quartz Auto Services (an unrelated oil/servicing outlet)",
+     "WebSearch '\"Quartz Detailing Studio\" Surat' (extended) -> surfaced the old site http://www.quartzdetailingstudio.in/ (cached snippet: address G-39,40 Exult Shoppers, Vesu Main Road, Surat 395007; phones 9825461781 and 98541654116 [one digit too many] plus structured data 9854165416; email qds0019@gmail.com) and an Instagram result (@quartz_detailing_studio) whose snippet puts the studio in Chikhli, Gujarat. Instagram not opened (rule: no Instagram scraping)",
+     "WebFetch web.archive.org snapshot -> blocked by the tool; archive.org/wait URL -> 404; the 2024-08-06 snapshot the finder cited could not be re-checked",
+     "WebSearch Chikhli / Exult Shoppers / phone number queries -> no independent page mentions the business",
+     "WebSearch Surat directories (Justdial/Sulekha/Carchhe) for a 4.8 rating -> nothing found; the finder's '4.8 from 16 reviews' directory could not be reproduced"
+    ],
+    "entity_type": "unclear",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 9825461781",
+      "note": "Seen in a search snippet of the now-dead official site; likely WhatsApp but unconfirmed; site is gone so the number may be stale",
+      "source_url": "http://www.quartzdetailingstudio.in/"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 9854165416",
+      "note": "From the same site's structured data; the other form shown (98541654116) has an extra digit; unconfirmed",
+      "source_url": "http://www.quartzdetailingstudio.in/"
+     },
+     {
+      "kind": "email",
+      "value": "qds0019@gmail.com",
+      "note": "From the same snippet; email does not count as a way in",
+      "source_url": "http://www.quartzdetailingstudio.in/"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "quartzdetailingstudio.in does not resolve: Google DNS returns NXDOMAIN and WebFetch gets ENOTFOUND.",
+      "source_url": "https://dns.google/resolve?name=quartzdetailingstudio.in&type=A",
+      "date": "2026-10-30"
+     },
+     {
+      "fact": "A search index still holds the old site with address G-39,40 Exult Shoppers, Vesu Main Road, Surat 395007 and the services wash, detailing, polishing, headlight restoration, ceramic coating (snippet only; page not reproducible).",
+      "source_url": "http://www.quartzdetailingstudio.in/",
+      "date": "2026-10-30 (index snippet, undated page)"
+     },
+     {
+      "fact": "An Instagram profile @quartz_detailing_studio exists, and its snippet places the business in Chikhli, Gujarat (car and bike detailing, PPF, insurance), which conflicts with the Surat Vesu address. Seen as a search result only, not opened.",
+      "source_url": "https://www.instagram.com/quartz_detailing_studio/",
+      "date": "2026-10-30"
+     }
+    ],
+    "hypotheses": [
+     "The business may have moved from Vesu (Surat) to Chikhli, or may have two sites, or may have closed; only the dead domain and one social profile point to it.",
+     "The Google Maps website button may still point at the dead domain, but this was NOT observed (Maps could not be viewed)."
+    ],
+    "need_evidence": "inferred",
+    "pay_signal": "none",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "grade": "reject",
+    "reject_reason": "unverifiable. Only one source (the dead own domain, seen via a search snippet) plus an unopened Instagram result shows the business exists. No map listing, register entry or directory page could be reproduced. The location also conflicts (Surat Vesu vs Chikhli), and the phone numbers come from a defunct site, so the business may be stale, moved or closed.",
+    "case_for": "The own domain is dead today (NXDOMAIN, observed), which fits the 'no working own website' slot. The old site published two mobile numbers that may reach an owner-run studio. Surat is in a secondary geography and it offers ceramic coating and PPF.",
+    "case_against": "Existence is not independently verified. The location conflicts (Vesu vs Chikhli). The numbers are unconfirmed and one is malformed. There is no ownership information, no pay signal, no Google listing evidence, and the finder's directory evidence could not be reproduced. The dead domain alone does not show a need, because the studio may have stopped trading or moved to Instagram only.",
+    "official_website": "quartzdetailingstudio.in (dead: NXDOMAIN on 2026-10-30)",
+    "what_they_do": "Per the cached snippet, car washing, detailing, polishing, headlight restoration and ceramic coating; the Instagram snippet also mentions bike detailing, PPF and insurance help.",
+    "decision_maker": "not found",
+    "size_cues": "None found. No branches, staff count or years published in anything verifiable.",
+    "ability_to_pay": "Unknown. No ads, premium brand tie-ups or other spend signal seen.",
+    "resistance": "Unknown. Likely low formal resistance for a small studio, but the business may be inactive. Instagram is its only visible channel.",
+    "best_angle": "Not applicable (rejected). If someone re-verifies on Google Maps that the listing is live and its website button opens the dead domain, the angle would be: 'your Google website link opens an error page; a one-page booking and proof page with a WhatsApp Book button fixes it'.",
+    "best_channel": "None until the business is verified. If re-verified, a human WhatsApp or voice note to +91 9825461781 (published as the studio's contact on its old site), which is unconfirmed as the owner's number.",
+    "gaps": [
+     "Google Maps listing could not be viewed (existence, address, website button target, review replies)",
+     "Instagram profile not opened because of the no-Instagram-scraping rule; Chikhli vs Vesu conflict unresolved",
+     "Internet Archive was blocked or returned 404, so the 2024-08-06 snapshot could not be re-checked",
+     "Finder's 'Surat directory 4.8 stars from 16 reviews' could not be reproduced",
+     "Phone numbers unconfirmed and one is malformed; owner name unknown"
+    ]
+   },
+   "challenge": null,
+   "console_entry": null
+  }
+ ],
+ "note": "console_entry is only filled for leads that pass every check; the owner reviews them before a push."
+}

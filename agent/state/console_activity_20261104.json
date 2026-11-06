@@ -1,0 +1,197 @@
+[
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-auto-clinic",
+  "created_at": "2026-11-04T05:26:47+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Auto Clinic",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T05:26:47Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Auto Clinic: delivered 7 s later; read 05:37"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-culture",
+  "created_at": "2026-11-04T05:38:10+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Detailing Culture",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T05:38:10Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Detailing Culture: FAILED, Meta 131049 (per-recipient marketing limit)"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-gujju-car-spa",
+  "created_at": "2026-11-04T06:49:05+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Gujju Car Spa",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:49:05Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Gujju Car Spa: delivered 8 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-devils-9-cars-spa",
+  "created_at": "2026-11-04T06:49:40+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Devils'9 Cars Spa",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:49:40Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Devils'9 Cars Spa: delivered 5 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-dk-car-spa-gandhinagar",
+  "created_at": "2026-11-04T06:50:02+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "DK Car Spa",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:50:02Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to DK Car Spa: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-mr-autotech",
+  "created_at": "2026-11-04T06:50:24+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Mr AutoTech",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:50:24Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Mr AutoTech: delivered late (about 4 min)"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-rub-n-shine-car-studio",
+  "created_at": "2026-11-04T06:50:46+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Rub N Shine",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:50:46Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Rub N Shine: FAILED, Meta 131026 (number is not on WhatsApp)"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-venus-car-studio",
+  "created_at": "2026-11-04T06:51:08+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Venus Car Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:51:08Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Venus Car Studio: delivered 8 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-a-cars-studio",
+  "created_at": "2026-11-04T06:51:48+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "A+ Cars Detailing",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:51:48Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to A+ Cars Detailing: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-jb-the-car-studio",
+  "created_at": "2026-11-04T06:53:22+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "JB The Car Detailing Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:53:22Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to JB The Car Detailing Studio: FAILED, Meta 131049 (per-recipient marketing limit)"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-vb-the-car-hub",
+  "created_at": "2026-11-04T06:53:45+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "VB The Car Detailing Hub",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:53:45Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to VB The Car Detailing Hub: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-next-level-auto-studio",
+  "created_at": "2026-11-04T06:54:12+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Next Level Auto Detailing Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:54:12Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Next Level Auto Detailing Studio: delivered 8 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-the-dom-s-car-studio",
+  "created_at": "2026-11-04T06:55:34+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "The Dom's Car Detailing Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:55:34Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to The Dom's Car Detailing Studio: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-autobro-studio",
+  "created_at": "2026-11-04T06:55:54+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "AUTOBRO Detailing Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:55:54Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to AUTOBRO Detailing Studio: delivered 7 s later"
+  }
+ },
+ {
+  "type": "activity",
+  "key": "tpl-detailing-20261104-gleam-car-studio",
+  "created_at": "2026-11-04T06:56:12+00:00",
+  "data": {
+   "kind": "whatsapp_sent",
+   "lead": "Gleam Car Detailing Studio",
+   "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "source": "company-number template",
+   "at": "2026-11-04T06:56:12Z",
+   "text": "WhatsApp template iv_detailing_video_hi_v1 (Hindi message with the explainer video) to Gleam Car Detailing Studio: FAILED (error code not read)"
+  }
+ }
+]

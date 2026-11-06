@@ -1,0 +1,1669 @@
+{
+  "summary": "Triage 443 Meta ads for fresh click-to-WhatsApp Gujarat builders, plus hiring and new-RERA scouts for stacked signals. Read-only, contacts nobody.",
+  "agentCount": 3,
+  "logs": [
+    "Pool: 45 candidates; stacked (2+ signals): "
+  ],
+  "result": {
+    "triage": {
+      "advertisers": [
+        {
+          "page_name": "Matangi Realty",
+          "page_id": "122106275864002520",
+          "city": "Rajkot",
+          "project": "2 BHK near Ayodhya Chowk (670 sq ft; banquet hall, gym, cricket box, volleyball pitch)",
+          "wa_ads_seen": 6,
+          "newest_wa_ad": "2026-10-19",
+          "oldest_wa_ad": "2026-10-19",
+          "other_ads_seen": 0,
+          "type": "unknown",
+          "unit_types": "2 BHK flats, 670 sq ft",
+          "price_hint": "Rs 51,000 down payment offer",
+          "ad_phones": [
+            "922 70 80 956",
+            "93748 93748"
+          ],
+          "notes": "Six WhatsApp-CTA ads all started 19 Oct = heavy fresh spend, best volume in the set. Gujarati copy. Amenity list (2-floor banquet hall, gym) suggests a developer, but the page could be a sales agency (name says Realty). Page id is an unusually long newer id. Source: dataset PF0L7uWMJ6iOPepQp offset 202."
+        },
+        {
+          "page_name": "JK GROUP",
+          "page_id": "235996176254628",
+          "city": "Rajkot",
+          "project": "JK Bungalow residential plots, Khokhaddad, Kothariya-Kotda Sangani Road",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-19",
+          "oldest_wa_ad": "2026-10-19",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "Residential plots (gated society, party plot, community hall)",
+          "price_hint": "none in ad",
+          "ad_phones": [
+            "81416 74823 (Jay Pipariya)",
+            "98598 84000 (Jayeshbhai Kavathiya)"
+          ],
+          "notes": "Plot-scheme developer with two named sales contacts in the ad. Plots buyers send many enquiries and site visits, a good WhatsApp follow-up fit. Page size not checked. Offset 275."
+        },
+        {
+          "page_name": "Rudra Realty",
+          "page_id": "100388989105377",
+          "city": "Rajkot",
+          "project": "Resale listings, e.g. 4 BHK fully furnished flat near Rajnagar Chowk (Property ID FLT0926136, reel no. 49)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "type": "broker",
+          "unit_types": "Resale flats (4 BHK seen)",
+          "price_hint": "Rs 2.41 Cr for the 4 BHK; says brokerage applicable",
+          "ad_phones": [
+            "8980919862"
+          ],
+          "notes": "Broker (Rudra Estate) posting numbered property reels with property IDs, so many listings and many enquiries to qualify. Different page from Rudra Group (GET_QUOTE, not WhatsApp). Offset 195."
+        },
+        {
+          "page_name": "Surat Property Deals",
+          "page_id": "869346816261547",
+          "city": "Surat",
+          "project": "Resale 2 BHK semi-furnished, Jahangirpura (near Vaishnav Devi Char Rasta)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "type": "broker",
+          "unit_types": "Resale 2 BHK, 1280 sq ft",
+          "price_hint": "price on request via WhatsApp",
+          "ad_phones": [
+            "+91 8000571911"
+          ],
+          "notes": "Property dealer asking buyers to WhatsApp for price. Ad text says DM or WhatsApp, so enquiry lands on WhatsApp. Small broker, ability to pay not known. Offset 162."
+        },
+        {
+          "page_name": "Estancia Realtors",
+          "page_id": "1010079468857128",
+          "city": "Surat",
+          "project": "Resale/new 2 BHK fully furnished, New Althan (skating rink, banquet hall, gym)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "type": "broker",
+          "unit_types": "2 BHK ready to move, fully furnished",
+          "price_hint": "Rs 52.21 lakh",
+          "ad_phones": [
+            "+91 78749 66431"
+          ],
+          "notes": "Realtor/agency listing a single flat; page size not checked. Offset 207."
+        },
+        {
+          "page_name": "Caladium Group",
+          "page_id": "123574924070688",
+          "city": "Vadodara",
+          "project": "Caladium Green, Bhayli TP-2 (sample flat ready, Navratri Dhamaka offer)",
+          "wa_ads_seen": 3,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "3 BHK luxury flats",
+          "price_hint": "none in ad; festive offer",
+          "ad_phones": [
+            "+91 9909444778/9"
+          ],
+          "notes": "Three WhatsApp video ads across 10 to 17 Oct, CTA title 'Chat with us'. Ad body is null; project text and phone came from snapshot.link_description. Hashtag #vrajrealty may mean a marketing or sales partner. Page about 445 likes. Offsets 101, 102, 249."
+        },
+        {
+          "page_name": "Murlidhar Glory",
+          "page_id": "106490352221052",
+          "city": "Ahmedabad",
+          "project": "Murlidhar Glory, Hanspura, Naroda (Spring Road)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK 128 sq yd, 2 and 3 BHK, shops, furnished flat special offer",
+          "price_hint": "none in ad",
+          "ad_phones": [
+            "+91 8200710933 (call 10:30 AM to 6:30 PM)"
+          ],
+          "notes": "Ad says 'Contact Direct Builder', so owner-run builder who handles calls only in office hours (WhatsApp auto-reply gap is a clear need). Offset 212."
+        },
+        {
+          "page_name": "Shyamal Park",
+          "page_id": "662972764076634",
+          "city": "Vadodara",
+          "project": "Shyamal Park Lane, Bhayli (Diwali offer, first 5 bookings)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "3 and 4 BHK, fully furnished at basic price",
+          "price_hint": "from Rs 51 lakh; 100% SBI loan mention",
+          "ad_phones": [
+            "75750 02421 / 22",
+            "99099 06574"
+          ],
+          "notes": "Developer type inferred from project-level page. Three numbers printed, so enquiries are split across phones. Offset 213."
+        },
+        {
+          "page_name": "Shree Vijay Vivanta Residency",
+          "page_id": "1344963098694164",
+          "city": "Surat",
+          "project": "Vivanta Residency, Dindoli (G+1 row houses, 25 ft internal road)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 and 3 BHK G+1 row houses",
+          "price_hint": "none in ad",
+          "ad_phones": [],
+          "notes": "No phone in ad text and link_url is the generic api.whatsapp.com/send, so contact must come from the Facebook page itself. Hindi copy. Offset 223."
+        },
+        {
+          "page_name": "Sampati Developer",
+          "page_id": "1026731497194172",
+          "city": "Surat",
+          "project": "Karadva Road, Dindoli (sample flat coming soon)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 and 3 BHK flats and shops, 1251 and 1656 sq ft",
+          "price_hint": "none in ad",
+          "ad_phones": [
+            "73830 77477",
+            "73830 77977"
+          ],
+          "notes": "Pre-launch style campaign (sample flat not ready yet), so enquiry flow is early-stage and unqualified. Offset 237."
+        },
+        {
+          "page_name": "Maa Bless",
+          "page_id": "173070369227055",
+          "city": "Vadodara",
+          "project": "BLESS (Maa Bless), Akhatri Road, Navabazar, Karjan; RERA PR/GJ/VADODARA/KARJAN/Karjan Municipality/MAA14579/241224/311228",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK duplex, 1 BHK flat, shops; PMAY subsidy Rs 1.5 lakh",
+          "price_hint": "Biggest Festival Offer: up to Rs 2 lakh discount; affordable segment",
+          "ad_phones": [
+            "+91 99746 01636"
+          ],
+          "notes": "RERA-registered small affordable-housing builder in Karjan. RERA number printed in the ad, so it can be cross-checked on GujRERA. Gujarati copy. Offset 126."
+        },
+        {
+          "page_name": "Hillom Group",
+          "page_id": "446430908552194",
+          "city": "Surat",
+          "project": "Hillom Pratishtha, Mota Varachha (2 towers, sample flat ready)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK 1380 sq ft",
+          "price_hint": "none in ad; home loan facility",
+          "ad_phones": [],
+          "notes": "No phone in ad. Page has only about 101 likes, so a small page; budget size unknown. Gujarati copy. Offset 44."
+        },
+        {
+          "page_name": "Suncity plus",
+          "page_id": "108072734806586",
+          "city": "Rajkot",
+          "project": "Suncity Plus, 80 Feet Road, near Ramapir Chowkdi",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK ultra luxurious flats and shops",
+          "price_hint": "none; loan available",
+          "ad_phones": [
+            "9428003200/3300"
+          ],
+          "notes": "Short ad copy, project page. Offset 190."
+        },
+        {
+          "page_name": "Vatsalya Hilltop",
+          "page_id": "1016565674862305",
+          "city": "Vadodara",
+          "project": "Vatsalya Hilltop, Tarsali (project by Shree Sainath Group)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-13",
+          "oldest_wa_ad": "2026-10-13",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "1 BHK flats and shops; booking gifts (modular kitchen, AC, RO, geysers)",
+          "price_hint": "1 BHK Rs 18.99 lakh; shops Rs 32.99 lakh",
+          "ad_phones": [
+            "99980 70521",
+            "99980 23521"
+          ],
+          "notes": "Low-ticket volume project, so likely many low-intent enquiries. Parent Shree Sainath Group is named in the ad. Offset 224."
+        },
+        {
+          "page_name": "Silent Sky",
+          "page_id": "1214551578409506",
+          "city": "Surat",
+          "project": "Silent Sky, Jeklera Circle, Valak Junction, Abrama-Valak Ring Road",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-13",
+          "oldest_wa_ad": "2026-10-13",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK flats",
+          "price_hint": "none in ad",
+          "ad_phones": [
+            "+91 79903 72699"
+          ],
+          "notes": "Phone printed in stylised Unicode digits in the ad. Offset 244."
+        },
+        {
+          "page_name": "HM Patel",
+          "page_id": "140139379191204",
+          "city": "Mehsana",
+          "project": "Shubh Heights (Navratri gold offer, RERA, loan up to 90%, limited units)",
+          "wa_ads_seen": 2,
+          "newest_wa_ad": "2026-10-11",
+          "oldest_wa_ad": "2026-10-11",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK flats with amenities",
+          "price_hint": "none; loan up to 90%",
+          "ad_phones": [
+            "919727934335 (from the ad's own wa.me phone parameter)"
+          ],
+          "notes": "Only ad with a real number inside the WhatsApp link_url. Ad body is hashtags only. Mehsana is outside the big four cities so likely less competitor coverage. Offset 307 and 309."
+        },
+        {
+          "page_name": "Sambhav Developers",
+          "page_id": "1147145165150903",
+          "city": "Vadodara",
+          "project": "Chandra Imperia (industrial plots), Uday Bungalow, Chandra Villa; Karjan",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "Industrial plots, 3 and 4 BHK bungalows, 3 and 4 BHK villas",
+          "price_hint": "flat 5% discount Navratri; premium villas and industrial plots suggest larger tickets",
+          "ad_phones": [
+            "+91 81600 57059"
+          ],
+          "notes": "Three project lines with different buyer types (industrial, villa), so routing and qualification is useful. Same Karjan market as Maa Bless. Offset 68."
+        },
+        {
+          "page_name": "Indra Group",
+          "page_id": "101652361881713",
+          "city": "Vadodara",
+          "project": "Indra Heritage, Gorwa Refinery Road (near Taksh Bungalows)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 BHK ready possession, sample flat ready",
+          "price_hint": "Rs 28.11 lakh offer price, up to Rs 4 lakh discount to Navratri",
+          "ad_phones": [
+            "+91 90165 30722"
+          ],
+          "notes": "Gujarati copy. Offset 105."
+        },
+        {
+          "page_name": "Nilkanth Residency",
+          "page_id": "1206259519234816",
+          "city": "Ahmedabad",
+          "project": "Nilkanth Residency, Jashodanagar",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "Premium 2 BHK flats",
+          "price_hint": "10% booking discount; none else",
+          "ad_phones": [],
+          "notes": "Page has about 5 likes, so a brand-new or tiny page; ability to pay doubtful. No phone in ad. Offset 160."
+        },
+        {
+          "page_name": "Rameshwaram Group",
+          "page_id": "223363491155292",
+          "city": "Surat",
+          "project": "Rameshwaram Ivaan, Palanpur (Pal) area, 43,000 sq ft garden, 30+ amenities",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-08",
+          "oldest_wa_ad": "2026-10-08",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 and 3 BHK, 1315 and 1825 sq ft; 2 flats per floor; ready and near-delivery",
+          "price_hint": "none in ad; premium positioning",
+          "ad_phones": [
+            "99097-94944"
+          ],
+          "notes": "Premium positioning. Name looks like the known Rameshwar Developers / Luxuriom.RameshwarDevelopers but is a different page and brand (Rameshwaram); dedupe check advised. Offset 25."
+        },
+        {
+          "page_name": "Vardhaman Realty",
+          "page_id": "385240058523469",
+          "city": "Surat",
+          "project": "Resale/new 2 BHK garden-side flat, 1255 sq ft (about 800 sq ft carpet)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-07",
+          "oldest_wa_ad": "2026-10-07",
+          "other_ads_seen": 0,
+          "type": "broker",
+          "unit_types": "2 BHK",
+          "price_hint": "Rs 42 lakh",
+          "ad_phones": [
+            "+91 99251 33892"
+          ],
+          "notes": "Hashtags say Property For Sale; broker/dealer inferred ('Think Property. Think Vardhaman.'). Offset 50."
+        },
+        {
+          "page_name": "Perfect Deals",
+          "page_id": "102373094940133",
+          "city": "unknown",
+          "project": "Unnamed 3 BHK ready possession and under-construction apartments, 25+ amenities, no brokerage",
+          "wa_ads_seen": 2,
+          "newest_wa_ad": "2026-10-06",
+          "oldest_wa_ad": "2026-10-06",
+          "other_ads_seen": 2,
+          "type": "unknown",
+          "unit_types": "3 BHK, 1920+ sq ft",
+          "price_hint": "from Rs 89 lakh",
+          "ad_phones": [],
+          "notes": "City and project not stated (appeared in the Surat/Gujarat searches). Page about 894 likes, biggest of the broker-style pages; could be a lead-gen or broker page rather than a builder. Two non-WhatsApp BOOK_TRAVEL ads from 26 Sep also seen. Weak lead until identity is confirmed. Offsets 19 and 186."
+        },
+        {
+          "page_name": "Shikhar Platinum",
+          "page_id": "101359539403513",
+          "city": "Vadodara",
+          "project": "Shikhar Platinum, Shubhanpura (Gorwa Main Road), ready possession, sample flat ready",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-05",
+          "oldest_wa_ad": "2026-10-05",
+          "other_ads_seen": 0,
+          "type": "developer",
+          "unit_types": "2 and 3 BHK",
+          "price_hint": "from Rs 57 lakh; price hike announced",
+          "ad_phones": [],
+          "notes": "No phone in the ad text or link. Page about 395 likes. Urgency copy (price hike in few days). Offset 120."
+        },
+        {
+          "page_name": "Ahmedabad Real Estate",
+          "page_id": "1249212318269492",
+          "city": "Ahmedabad",
+          "project": "Resale 3 BHK fully furnished, Naranpura (only 15% kapat, 2 flats per floor, 2 lifts)",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-01",
+          "oldest_wa_ad": "2026-10-01",
+          "other_ads_seen": 0,
+          "type": "broker",
+          "unit_types": "3 BHK resale",
+          "price_hint": "none in ad",
+          "ad_phones": [],
+          "notes": "Broker page with about 10 likes, no phone in the ad. Weakest of the set on size and reachability. Offset 201."
+        }
+      ],
+      "excluded": [
+        {
+          "name": "A1 Marketing Solution (Rajkot)",
+          "reason": "Marketing agency; its 12 and 19 Oct WhatsApp ads are for a client, SHIV Interior & Developers (interior design), so agency/competitor and not real estate. Possible reseller angle only."
+        },
+        {
+          "name": "Siddhivinayak Developers (page 345484465312671)",
+          "reason": "Already known (Surat, Elite Homes); WhatsApp ad 17 Oct."
+        },
+        {
+          "name": "shree_siddhivinayak_reality_56",
+          "reason": "Same as known Shree Siddhivinayak Realities / Vincy Tower (Rajkot), ad 20 Oct, phones 9687516666 and 9925913232 in ad."
+        },
+        {
+          "name": "BGSR, Param Developer, BLJ Infra LLP, Mahant Nakshatra, Shyam Rivanta, Vaidehi Developers, Shree Namasya, Brij Group, Silver Group, Swarna Group, 1 Clik Property",
+          "reason": "All on the KNOWN list; their recent WhatsApp ads were skipped."
+        },
+        {
+          "name": "Lions Real Estate Surat",
+          "reason": "Not on the known list but newest WhatsApp ad is 28 Sep, before the 30 Sep cutoff."
+        },
+        {
+          "name": "VR Group, Mahanta Group, Shivyan Heights",
+          "reason": "WhatsApp ads only 11 to 21 Sep, before the cutoff."
+        },
+        {
+          "name": "Sunfin Realty, Reseed Infra Group, Agami Realty, QBC Real estate Solution, Dev Aashish Group, Aadinath Developers, Biliparta Bunglows, Amar Group, Casa Estrella, Amogha",
+          "reason": "Real-estate pages with WhatsApp ads but all older than 30 Sep."
+        },
+        {
+          "name": "Parli art",
+          "reason": "Resin art and sketch gifts shop in Surat, non-real-estate."
+        },
+        {
+          "name": "SNSSK",
+          "reason": "Nadi chikitsa (ayurvedic) clinic in Surat, non-real-estate."
+        },
+        {
+          "name": "Power Rise and Iconic Solar Energy",
+          "reason": "Solar installers, non-real-estate."
+        },
+        {
+          "name": "Why hemmlock",
+          "reason": "Men's apparel store opening in Gandhinagar, non-real-estate."
+        },
+        {
+          "name": "jd_shreeji_interior",
+          "reason": "Interior designer (excluded category)."
+        },
+        {
+          "name": "Advertising - BUY, SELL, RENT, JOBS",
+          "reason": "Classified/ads page, not a developer or broker."
+        },
+        {
+          "name": "Magics Care Surat, Helper Hub, Joyfuljuniors, Gujarat Hardware Mart, Raja Border Tiles, tattoohouse38, Ruturajuiux",
+          "reason": "Non-real-estate pages that showed up in the search with WhatsApp CTA (care product, helper service, kids school/class, hardware, tiles, tattoo, UI/UX designer)."
+        },
+        {
+          "name": "99acres, 99acres New Apartments, 99acres New Home, Housing.com, Housing - Home Utsav, Housivity.com, Housiey",
+          "reason": "Property portals and aggregators (none use the WhatsApp CTA anyway)."
+        },
+        {
+          "name": "Adani Realty, SOBHA Limited",
+          "reason": "National/listed developers; no WhatsApp CTA."
+        },
+        {
+          "name": "Demak infinity, Dc marketing",
+          "reason": "Large volumes (about 40 ads) but APPLY_NOW lead forms, not WhatsApp."
+        }
+      ],
+      "rows_read": 550,
+      "rows_whatsapp": 127,
+      "distinct_pages": 253,
+      "distinct_whatsapp_pages": 79,
+      "notes": "Read-only; no Apify actor was run and nobody was contacted. Counts: PF0L7uWMJ6iOPepQp actually holds 450 rows and P3WR3suDei2WkpAPy holds 100 (task said 443 and 92), so 550 rows were read. rows_whatsapp, distinct_pages and distinct_whatsapp_pages are hand tallies of the listing and are approximate (plus or minus a few). Of the 79 distinct WhatsApp pages, 24 qualify; the rest were known, older than 30 Sep, or non-real-estate. P3WR3suDei2WkpAPy added no new advertiser: every WhatsApp ad there dated 30 Sep or later belonged to a KNOWN builder. Selection used snapshot.cta_type == WHATSAPP_MESSAGE only; pages with a null CTA type (Mangla Group, Aaryan Gandhinagar) were not counted. Quality read: most qualifiers are small single-project builders or one-listing brokers, usually 1 ad per page; the strongest signals are Matangi Realty (6 fresh ads, Rajkot), Caladium Group (3 video ads), HM Patel (2 ads, Mehsana, a number inside the link) and Sambhav Developers (multiple project lines). Weakest on size/reachability: Nilkanth Residency (about 5 page likes), Ahmedabad Real Estate (about 10), Perfect Deals (city and identity unknown, no phone). Phones: only numbers printed in the ad text, or the phone parameter in HM Patel's link; link_url is the generic api.whatsapp.com/send for the other ads, so 6 advertisers have no phone in the ad (Vivanta Residency, Hillom Group, Nilkanth Residency, Perfect Deals, Shikhar Platinum, Ahmedabad Real Estate) and need a business-published contact from their Facebook page. Where ad body text was null (Caladium Group) the text sits in snapshot.link_description. Only one ad per advertiser was read, so project and phone may differ on other ads. Developer vs broker tags are inferred from copy except where the ad says so (Murlidhar Glory 'Direct Builder', Rudra Realty 'Brokerage Applicable'). Operational note: the Apify connector rate-limits parallel get-dataset-items calls (about 16 in parallel mostly failed with 'server is rate-limiting'; batches of 4 to 5 worked). Offsets in the notes are positions in PF0L7uWMJ6iOPepQp unless stated, for re-reading. About 58 tool calls used."
+    },
+    "hiring": {
+      "employers": [
+        {
+          "name": "Akshya Space Consultants",
+          "city": "Ahmedabad",
+          "role": "Real Estate Specialist (manage inquiries and leads, convert prospects, property visits, keep records of leads and transactions; basic CRM and spreadsheets listed)",
+          "job_url": "https://in.linkedin.com/jobs/view/real-estate-specialist-4478207607",
+          "posted_relative": "2 days ago (about 19 Oct 2026)",
+          "type": "broker",
+          "notes": "Real estate advisory/brokerage firm. Ad poster is listed as the Founder, so the decision maker is likely the poster. No phone or email in the ad. Lead handling plus CRM duties in one role is a decent fit for a WhatsApp/lead follow-up pitch. Company size not shown."
+        },
+        {
+          "name": "TDS Properties",
+          "city": "Ahmedabad (job listed in Daskroi)",
+          "role": "Sales Executive (engage prospects, follow up leads, manage inquiries, property visits, basic CRM or sales-tracking tool)",
+          "job_url": "https://in.linkedin.com/jobs/view/sales-executive-at-tds-properties-4477779919",
+          "posted_relative": "3 days ago (about 18 Oct 2026)",
+          "type": "broker",
+          "notes": "Describes itself as a real estate consultancy based in Ahmedabad (buy, sell, rent, lease, investment). No phone, email or website in the ad. Appeared in 6 of my LinkedIn queries, so it is actively hiring. Seniority tagged mid-senior."
+        },
+        {
+          "name": "Vistara Group (LinkedIn page links to Vistara Realty LLP)",
+          "city": "Vadodara",
+          "role": "Real Estate Sales Executive (lead generation, property presentations, site visits, closing, customer management tools)",
+          "job_url": "https://in.linkedin.com/jobs/view/real-estate-sales-executive-at-vistara-group-4477394043",
+          "posted_relative": "4 days ago (about 17 Oct 2026)",
+          "type": "developer",
+          "notes": "Developer of industrial parks, farmhouses and residential projects. Poster is the HR Manager (no owner info). No phone or email in the ad. My web search could not confirm an official website or the exact legal entity, so verify identity before adding. Multi-vertical developer suggests larger enquiry flow."
+        },
+        {
+          "name": "VR Ahmedabad Realtors",
+          "city": "Ahmedabad",
+          "role": "Residential Real Estate Sales Specialist (inquiry to closing, site visits, uses CRM systems, listing platforms and spreadsheets to track leads)",
+          "job_url": "https://in.linkedin.com/jobs/view/residential-real-estate-sales-specialist-at-vr-ahmedabad-realtors-4476653776",
+          "posted_relative": "6 days ago (about 15 Oct 2026)",
+          "type": "broker",
+          "notes": "RERA-registered advisory firm that works with developers (broker, not developer). Entry-level role. Ad explicitly says leads are tracked in CRM plus spreadsheets, which is a manual-tracking signal. No phone or email in the ad."
+        },
+        {
+          "name": "The Galaxy Group",
+          "city": "Ahmedabad",
+          "role": "Real-estate Sales Executive (lead follow-up, site visits, CRM or sales-tracking, customer support, weekend work)",
+          "job_url": "https://in.linkedin.com/jobs/view/real-estate-sales-executive-4476422791",
+          "posted_relative": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "type": "developer",
+          "notes": "Says it develops and sells residential and commercial properties. Ad asks for a real estate licence and CRM proficiency. No contact in the ad. Company size and project names not shown, so check whether this is a real project developer or a small seller."
+        },
+        {
+          "name": "079 SPACES",
+          "city": "Ahmedabad (Thaltej)",
+          "role": "Real Estate Consultant / Real Estate Sales Executive (generate leads, follow up, handle sales and rental enquiries, site visits)",
+          "job_url": "https://in.linkedin.com/jobs/view/real-estate-consultant-at-079-spaces-4475922516",
+          "posted_relative": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "type": "broker",
+          "notes": "Sales plus rental enquiries, salary Rs 15,000 to 22,000 plus incentives, freshers allowed. The ad itself publishes a contact: Rishi Shah, phone 9327478459 (copied from the ad, source URL above). Employer type is not stated in the ad; looks like a small brokerage. Smallest and lowest ability to pay of the group."
+        },
+        {
+          "name": "The Real Estate CONNECT",
+          "city": "Ahmedabad",
+          "role": "Property Consultant (maintain listings and inquiries, qualify client needs and finances, site display, paperwork)",
+          "job_url": "https://in.linkedin.com/jobs/view/property-consultant-at-the-real-estate-connect-4475211560",
+          "posted_relative": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "type": "broker",
+          "notes": "Consultancy covering buy/sell, home loans and property management. No contact in the ad. Ad does not mention CRM or calls, only 'real estate software'. Weak need signal."
+        },
+        {
+          "name": "The Neo Homes",
+          "city": "Ahmedabad",
+          "role": "Sales and Marketing Specialist (lead generation and conversion, client follow-ups, CRM to manage leads, pipeline tracking)",
+          "job_url": "https://in.linkedin.com/jobs/view/sales-and-marketing-specialist-4476007756",
+          "posted_relative": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "type": "unknown",
+          "notes": "Calls itself a growing real estate company; developer vs broker not stated. Ad mentions CRM for lead management and pipeline forecasting. No contact in the ad. Needs a quick check of what they actually sell."
+        },
+        {
+          "name": "Cleardeals",
+          "city": "Ahmedabad",
+          "role": "Business Development Executive, field sales B2C (generate, follow up and convert leads, maintain leads in CRM)",
+          "job_url": "https://in.linkedin.com/jobs/view/business-development-executive-at-cleardeals-4476083922",
+          "posted_relative": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "type": "unknown",
+          "notes": "BORDERLINE. Describes itself as a PropTech/real estate company on a 0% brokerage model for property owners, so it is closer to a platform than a classic broker or developer; may count as a portal under our exclusion. 38 applicants, so the post is busy. Already has a CRM. No contact in the ad. Include only if you accept proptech."
+        }
+      ],
+      "rejected": [
+        "EH Jobs (Vadodara, urgent female inside-sales hiring for an unnamed real estate company): staffing agency, client not named",
+        "KAAPRO (Surat, Business Development Manager): company page is KAAPRO HR Consultants, ad is for a female BDM, employer type unclear",
+        "Bronco Buildwell Pvt Ltd (Ahmedabad, 6 sales vacancies): wholesale building materials seller, not a developer or broker",
+        "Civilis Infra Pvt Ltd (Surat, field sales): sells Civilis Mart building materials to builders, not a developer",
+        "Amitaujas LLP (Vadodara, sales representative): listed as IT services",
+        "Satyamev Group (Ahmedabad and Gandhinagar, 3 roles) and Swagat Group (Indeed telecaller roles): already known, skipped",
+        "Shivalik Group (Ahmedabad): only a Community Development Intern post, not a sales or lead-handling role",
+        "IND Global Realty (Surat): only a Video Editor post, no sales or telecaller role",
+        "Livspace, HomeLane, Adani Realty, CBRE, Cushman and Wakefield, Godrej Industries, RHC India, IDFC First Bank: national or listed groups, or not developers or brokers",
+        "TLJ Property (Ahmedabad telecaller on weekday.works): ad describes calling builders and brokers to book demos, looks like a vendor, and undated",
+        "Kautilya Group (Ahmedabad developer, Senior Sales Manager and Pre-Sales on weekday.works): page shows no posting date, so cannot confirm the 14-day window. Real developer, worth a manual check. The page text also contained instruction-like text aimed at the reader, which I ignored",
+        "Laxmi Developers (Surat, female sales executive), Shivalaya Associate (Vadodara RERA consultancy, sales executive), Our Vision Estate, Skill Spectrum (weekday.works): no posting date on the pages, so rejected as unverifiable",
+        "Team4 LifeSpaces (Hyderabad), Saanvi Nirman (Bopal, listing expired), Venus Infrastructure (2020 listing): wrong city or stale",
+        "Docdort, Steerway Business Consultants, TSS Consultancy, Pooja Enterprises, Sunchaser Structures, Shree Ram Corporation: CRM, tele-sales or sales roles but not real estate developers or brokers"
+      ],
+      "sources_reached": [
+        "LinkedIn public guest jobs search API (jobs-guest/seeMoreJobPostings) via WebFetch, 14-day filter, works logged out; about 20 queries across Gujarat, Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar, Anand, Jamnagar, Bhavnagar",
+        "LinkedIn public job view pages (in.linkedin.com/jobs/view/...) for 15 jobs: give relative date, employer description, duties, poster role; never an exact date or any phone/email except 079 Spaces",
+        "jobs.weekday.works job pages (reachable, but no posting dates shown)",
+        "WebSearch (standard) for Ahmedabad telecaller and Gujarat real estate sales postings"
+      ],
+      "sources_blocked": [],
+      "notes": "Yield is thin: 9 new employers (8 clear, 1 borderline Cleardeals), not 30. LinkedIn public search shows very little Gujarat real estate hiring outside Ahmedabad. Surat, Rajkot, Bhavnagar, Jamnagar, Anand returned no genuine developer or broker sales hiring in the window except Vistara in Vadodara; a Mehsana query returned empty content and Morbi, Junagadh, Bharuch, Vapi, Nadiad were not queried separately (Gujarat-wide queries should have caught them). Dates are relative only ('2 days ago' etc.); '1 week ago' means 7 to 13 days and sits inside the 14-day filter (cut-off 7 Oct). No exact dates available. Many pages carry a stray 'Mahesana' heading, which is a search-location label, ignore it. None of the ads is a pure telecaller, pre-sales or CRM role; they are sales executive roles with lead follow-up and some CRM duties, so the signal is moderate (hiring to handle enquiries) and does not prove lead overload or a missing system. Only contact found: 079 Spaces phone published in its own ad. All other ads give no phone, email or website; websites were not found and no owners were searched, as instructed. Not tried: direct Indeed, Naukri, Apna, Shine pages (only seen as search snippets). Tool calls used: about 39. Apify not used, spend zero. Best three to review first: Akshya Space Consultants, Vistara Group, VR Ahmedabad Realtors."
+    },
+    "rera": {
+      "projects": [
+        {
+          "promoter": "Sadhna Infrabuild (partnership firm)",
+          "project": "Skywalk 56",
+          "city": "Ahmedabad (Tragad)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17439/081026/311229",
+          "approval_date": "2026-10-08",
+          "source_url": "https://gujrera.com/projects/ahmedabad/skywalk-56-32083/",
+          "website": "",
+          "notes": "2 and 3 BHK residential group housing, possession Dec 2029. Authorised signatory Manojkumar Sharma. Units not published. No phone, email or website on the page. A brochure PDF and the official record are linked on the page but were not opened. Official record: https://gujrera.gujarat.gov.in/#/project-preview?id=MzIwODM="
+        },
+        {
+          "promoter": "Maruti Rebuild (partnership firm)",
+          "project": "Mangalya Heights",
+          "city": "Ahmedabad (Maninagar)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17424/061026/311228",
+          "approval_date": "2026-10-06",
+          "source_url": "https://gujrera.com/projects/ahmedabad/mangalya-heights-32283/",
+          "website": "",
+          "notes": "Residential group housing, address: Opp. Archana Society, Gopal Chock, Bhairvanath Road, Maninagar. Possession Dec 2028. Units not stated. No contact published on the page."
+        },
+        {
+          "promoter": "Mahakali Developers (partnership firm)",
+          "project": "Swarnim Villa",
+          "city": "Ahmedabad (Singarva, Daskroi)",
+          "rera_no": "PR/GJ/AHMEDABAD/DASKROI/Ahmedabad Urban Development Authority/RAA17421/061026/310330",
+          "approval_date": "2026-10-06",
+          "source_url": "https://gujrera.com/projects/ahmedabad/swarnim-villa-32258/",
+          "website": "",
+          "notes": "Residential, villa-type by name (behind Sthapatya Heights, D-mart Road, Singarva). Possession Mar 2030. Units not published. No contact on the page. Its brochure images are hosted on a third-party site (ahmedabadpropertyexpo.com), which hints the project is being marketed through property expos or portals."
+        },
+        {
+          "promoter": "Shree Developers (partnership firm)",
+          "project": "The Evara",
+          "city": "Ahmedabad (Kathwada)",
+          "rera_no": "PR/GJ/AHMEDABAD/DASKROI/Ahmedabad Municipal Corporation/RAA17437/081026/311230",
+          "approval_date": "2026-10-08",
+          "source_url": "https://gujrera.com/projects/ahmedabad/the-evara-32095/",
+          "website": "",
+          "notes": "1 and 2 BHK flats, near AUDA Garden, Kathwada. Possession Dec 2030. Units not published. No contact on the page. Affordable-segment project, so the buyer enquiry volume is likely high."
+        },
+        {
+          "promoter": "Neelkanth Developers (partnership firm)",
+          "project": "Pushkar Hill",
+          "city": "Ahmedabad (Muthiya, near Ring Road toll plaza)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17362/160926/311229",
+          "approval_date": "2026-09-16",
+          "source_url": "https://gujrera.com/projects/ahmedabad/pushkar-hill-32162/",
+          "website": "",
+          "notes": "2 BHK flats, residential group housing, possession Dec 2029. Units not stated. No contact on the page."
+        },
+        {
+          "promoter": "SNS Divine (partnership firm)",
+          "project": "SNS Priide",
+          "city": "Ahmedabad (Nava Vadaj)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17374/210926/290329",
+          "approval_date": "2026-09-21",
+          "source_url": "https://gujrera.com/projects/ahmedabad/sns-priide-32088/",
+          "website": "",
+          "notes": "One 10-storey tower with 60 two-BHK flats (6 per floor), Nava Vadaj, possession Mar 2029. A small, single-project developer, so a small team is likely. No contact on the page."
+        },
+        {
+          "promoter": "Eliseo Infra (partnership firm)",
+          "project": "Eden Eliseo (the same promoter also has a sister project, Eden Crown, ID 32300, listed at https://gujrera.com/projects/surat/eden-crown-32300/ and not opened)",
+          "city": "Surat (Kosad, listed under Choryasi)",
+          "rera_no": "PR/GJ/SURAT/CHORYASI/Surat Municipal Corporation/RAA17409/051026/311230",
+          "approval_date": "2026-10-05",
+          "source_url": "https://gujrera.com/projects/surat/eden-eliseo-32294/",
+          "website": "",
+          "notes": "Residential group housing, village Kosad, Katargam taluka, possession Dec 2030. Units not published. A promoter with two residential projects listed at once suggests an active sales push. No contact on the page. The page lists Choryasi but the address says Katargam taluka, so verify the location."
+        },
+        {
+          "promoter": "Shree Nilkanth Homes LLP",
+          "project": "Sukhdham 44 (the same promoter also lists Sukhdham 24, ID 32097, at https://gujrera.com/projects/surat/sukhdham-24-32097/, not opened)",
+          "city": "Surat (Dabholi)",
+          "rera_no": "PR/GJ/SURAT/SURAT CITY/Surat Municipal Corporation/RAA17350/160926/311230",
+          "approval_date": "2026-09-16",
+          "source_url": "https://gujrera.com/projects/surat/sukhdham-44-32103/",
+          "website": "",
+          "notes": "Residential group housing, Dabholi, Surat 395004, possession Dec 2030. Units not published. Two numbered projects (24 and 44) point to a repeat developer. No contact on the page."
+        },
+        {
+          "promoter": "Subodh Developers LLP",
+          "project": "Avani Iraaya",
+          "city": "Vadodara (Waghodia Road, opp. D Mart)",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Urban Development Authority/RAA17427/061026/311231",
+          "approval_date": "2026-10-06",
+          "source_url": "https://gujrera.com/projects/vadodara/avani-iraaya-32102/",
+          "website": "",
+          "notes": "Residential group housing, possession Dec 2031 (a long timeline, so likely a larger multi-phase project). Units not published. Avani is the name of an existing Vadodara brand, so the promoter may have other projects (not checked). No contact on the page."
+        },
+        {
+          "promoter": "Heer Associates (partnership firm)",
+          "project": "Tirth Niwas",
+          "city": "Vadodara",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Municipal Corporation/MAA17422/061026/300631",
+          "approval_date": "2026-10-06",
+          "source_url": "https://gujrera.com/projects/vadodara/tirth-niwas-32297/",
+          "website": "",
+          "notes": "Mixed development, 28 duplexes and 35 shops, possession Jun 2031. Authorised signatory Kalpeshkumar Rajnikant Shah. Address not published. No contact on the page."
+        },
+        {
+          "promoter": "Shaileshkumar Mansukhlal Mehta, proprietor of Jay Ambe Developers",
+          "project": "Rosewood Heights",
+          "city": "Rajkot (Rail Nagar, Shree Ram Park)",
+          "rera_no": "PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/MAA17415/051026/310329",
+          "approval_date": "2026-10-05",
+          "source_url": "https://gujrera.com/projects/rajkot/rosewood-heights-32160/",
+          "website": "",
+          "notes": "Mixed, 44 two-BHK flats and 15 shops (59 units), possession Mar 2029. Proprietorship, so a small developer. No contact on the page. The page says details were updated on 10 Oct 2026."
+        },
+        {
+          "promoter": "Shiv Infra (partnership firm)",
+          "project": "Shiv Aangan",
+          "city": "Vadodara",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Municipal Corporation/MAA17431/061026/311230",
+          "approval_date": "2026-10-06",
+          "source_url": "https://gujrera.com/projects/vadodara/shiv-aangan-32136/",
+          "website": "",
+          "notes": "Mixed, 56 flats on floors 1 to 7 plus 8 ground-floor shops (64 units), possession Dec 2030. Address not published. No contact on the page. A separate Vadodara promoter named Shiv Infra Space (project Aston Palm) also appears in the list, and it is not clear whether they are related."
+        }
+      ],
+      "sources_reached": [
+        "https://gujrera.com/ (homepage, /category/p/, /projects/, /projects/ahmedabad/, /projects/surat/, /projects/rajkot/, /projects/vadodara/ and 12 individual project pages)",
+        "https://www.aurumproptech.in/pulse/rera/gujarat (state listing and 3 project pages, used only to calibrate)",
+        "WebSearch (about 8 queries)"
+      ],
+      "sources_blocked": [
+        "https://gujrera.gujarat.gov.in (official portal) was not fetched; it is a JavaScript app, so the official records were not checked",
+        "https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad returned 404, and a guessed project-ID URL (/project/31000) also returned 404",
+        "No CAPTCHA or bot wall was hit anywhere"
+      ],
+      "notes": "DISCOVERY BY RECENCY WORKS, via gujrera.com. The city listing pages (https://gujrera.com/projects/ahmedabad/, /surat/, /vadodara/, /rajkot/, /gandhinagar/) show the newest registrations on page 1. They are not strictly sorted by date but are close to it. The numeric ID at the end of each project URL is a good recency marker. IDs of roughly 31300 to 32350 correspond to approvals from about mid-September to mid-October 2026. I checked 12 pages and every one fell between 16 Sep and 8 Oct 2026. Page 2 onward (/projects/<city>/page/N/) would reach back to 22 Aug. I did not go that far because of the call budget.\\n\\nTHE 12 RETURNED PROJECTS WERE ALL READ. Promoter, project, city, full RERA number, approval date and project type all come from the individual gujrera.com page. gujrera.com is a third-party republisher. Its own footer says to verify against the official GujRERA record before relying on it.\\n\\nCONTACTS ARE THE GAP. None of the 12 pages publishes a phone, email or website for the promoter. Each links to the official GujRERA record and a brochure PDF on gujrera.gujarat.gov.in. I did not open the brochures, and promoter phone numbers may be inside them. Nothing was guessed. To get a contact you would need to open the brochure PDF, find the developer's own site or a Meta/Google ad, or use the official portal. That step is not done.\\n\\nLEAD QUALITY, HONESTLY. These are verified fresh registrations, which is the 'stacked signal' for timing only: a new project means enquiries are about to start. Nothing yet shows ad spend, a WhatsApp number or a missing system. Best picks to check next for contact and ad evidence: SNS Priide (60 flats, one small developer), Rosewood Heights (59 units, proprietorship), Shiv Aangan (64 units), Eden Eliseo and Eden Crown (Eliseo Infra, two projects at once), Sukhdham 24 and 44 (Shree Nilkanth Homes LLP, repeat developer), and The Evara and Swarnim Villa (Daskroi, affordable or villa segment where enquiry volume is high). Pushkar Hill, Mangalya Heights and Skywalk 56 are similar but lower priority. Avani Iraaya and Tirth Niwas have long timelines and may be bigger or multi-project.\\n\\nSEEN BUT NOT READ (IDs near 31400 to 32350, probably Sept to Oct 2026, dates unverified, so not returned): Ahmedabad: Pacifica India Projects (Amara-ii 31741, Allure 31489, Zenith 31495; a mid-size multi-project developer, possibly too big), Neelkanth Flora (J J Developers, 32182), Kantam Apartment (Environs Realtors Buildcon, 32001), Arjun Parisar (Meha Infrastructure, 31985), Auracle (UE Living LLP, 32067), The Arsh Empire (Preyas Buildcon, 32021), Nityam Paradise (Balaji Associates, 31949), Hilltown Opulence (Balaji Homes, 31921). Surat: Pratham Aron (Swastik Corporation, 32304), Shantam Homes (Shantam Infra, 32081), Sangini (Vee Aar Life Space LLP, 32251), Pavitraa Happiness (Pavitraa Realtors, 31704). Rajkot: Matru Harmony (Matru Reality LLP, 31916), Shubhjivan Park (Shubhjivan Buildcon, 31798), Shivkant Silver (Gondal, 31826). Vadodara: Nilkanth Residency (31959), Meera Flats (Bhoomi Infraspace, 31763), Nexus 42 (Smaran Infra, 31472), Shilp Sparsh (Shilp Realty, 31816), Aarana Villa (Ambe Build Infra, 31890), Kesar Elegance (Anadi Infra, 30639). Sneh Enclave (Vastudevelopers, Nadiad, 31523). KNOWN list items that appeared and were skipped: Nitya Aurelia (Nitya Buildcon), Shyam Rivanta (Raghav Developers), Great Spaces Aaroham.\\n\\nWHAT DID NOT WORK (do not repeat): (1) WebSearch for RERA numbers such as 'MAA17359', 'MAA174' or 'PR/GJ/AHMEDABAD MAA174 2026' returns nothing useful, because the search engine does not index exact registration numbers. (2) Searches for 'October 2026 GujRERA launch' or builder press releases returned only generic GujRERA guides and older registrations. (3) aurumproptech.in listings are alphabetical across 570 pages with no recency sort and no approval date in the list, and guessed ID URLs return 404, so it is only useful for one known project at a time. (4) The aurumproptech and gujrera.com project IDs are different numbering systems and cannot be mixed. NOTE: the user's MAA17400 hint is slightly off for the RAA/MAA split. October 2026 numbers include both MAA174xx and RAA174xx (for example RAA17439 on 8 Oct).\\n\\nApify spend: US$0. About 35 tool calls used.\""
+    },
+    "pool": [
+      {
+        "k": "matangi",
+        "name": "Matangi Realty",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "122106275864002520",
+          "city": "Rajkot",
+          "project": "2 BHK near Ayodhya Chowk (670 sq ft; banquet hall, gym, cricket box, volleyball pitch)",
+          "unit_types": "2 BHK flats, 670 sq ft",
+          "price_hint": "Rs 51,000 down payment offer",
+          "wa_ads_seen": 6,
+          "newest_wa_ad": "2026-10-19",
+          "oldest_wa_ad": "2026-10-19",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "922 70 80 956",
+            "93748 93748"
+          ],
+          "type": "unknown",
+          "ad_notes": "Six WhatsApp-CTA ads all started 19 Oct = heavy fresh spend, best volume in the set. Gujarati copy. Amenity list (2-floor banquet hall, gym) suggests a developer, but the page could be a sales agency (name says Realty). Page id is an unusually long newer id. Source: dataset PF0L7uWMJ6iOPepQp offset 202."
+        }
+      },
+      {
+        "k": "jk",
+        "name": "JK GROUP",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "235996176254628",
+          "city": "Rajkot",
+          "project": "JK Bungalow residential plots, Khokhaddad, Kothariya-Kotda Sangani Road",
+          "unit_types": "Residential plots (gated society, party plot, community hall)",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-19",
+          "oldest_wa_ad": "2026-10-19",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "81416 74823 (Jay Pipariya)",
+            "98598 84000 (Jayeshbhai Kavathiya)"
+          ],
+          "type": "developer",
+          "ad_notes": "Plot-scheme developer with two named sales contacts in the ad. Plots buyers send many enquiries and site visits, a good WhatsApp follow-up fit. Page size not checked. Offset 275."
+        }
+      },
+      {
+        "k": "rudra",
+        "name": "Rudra Realty",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "100388989105377",
+          "city": "Rajkot",
+          "project": "Resale listings, e.g. 4 BHK fully furnished flat near Rajnagar Chowk (Property ID FLT0926136, reel no. 49)",
+          "unit_types": "Resale flats (4 BHK seen)",
+          "price_hint": "Rs 2.41 Cr for the 4 BHK; says brokerage applicable",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "8980919862"
+          ],
+          "type": "broker",
+          "ad_notes": "Broker (Rudra Estate) posting numbered property reels with property IDs, so many listings and many enquiries to qualify. Different page from Rudra Group (GET_QUOTE, not WhatsApp). Offset 195."
+        }
+      },
+      {
+        "k": "surat property deals",
+        "name": "Surat Property Deals",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "869346816261547",
+          "city": "Surat",
+          "project": "Resale 2 BHK semi-furnished, Jahangirpura (near Vaishnav Devi Char Rasta)",
+          "unit_types": "Resale 2 BHK, 1280 sq ft",
+          "price_hint": "price on request via WhatsApp",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 8000571911"
+          ],
+          "type": "broker",
+          "ad_notes": "Property dealer asking buyers to WhatsApp for price. Ad text says DM or WhatsApp, so enquiry lands on WhatsApp. Small broker, ability to pay not known. Offset 162."
+        }
+      },
+      {
+        "k": "estancia realtors",
+        "name": "Estancia Realtors",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1010079468857128",
+          "city": "Surat",
+          "project": "Resale/new 2 BHK fully furnished, New Althan (skating rink, banquet hall, gym)",
+          "unit_types": "2 BHK ready to move, fully furnished",
+          "price_hint": "Rs 52.21 lakh",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-17",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 78749 66431"
+          ],
+          "type": "broker",
+          "ad_notes": "Realtor/agency listing a single flat; page size not checked. Offset 207."
+        }
+      },
+      {
+        "k": "caladium",
+        "name": "Caladium Group",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "123574924070688",
+          "city": "Vadodara",
+          "project": "Caladium Green, Bhayli TP-2 (sample flat ready, Navratri Dhamaka offer)",
+          "unit_types": "3 BHK luxury flats",
+          "price_hint": "none in ad; festive offer",
+          "wa_ads_seen": 3,
+          "newest_wa_ad": "2026-10-17",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 9909444778/9"
+          ],
+          "type": "developer",
+          "ad_notes": "Three WhatsApp video ads across 10 to 17 Oct, CTA title 'Chat with us'. Ad body is null; project text and phone came from snapshot.link_description. Hashtag #vrajrealty may mean a marketing or sales partner. Page about 445 likes. Offsets 101, 102, 249."
+        }
+      },
+      {
+        "k": "murlidhar glory",
+        "name": "Murlidhar Glory",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "106490352221052",
+          "city": "Ahmedabad",
+          "project": "Murlidhar Glory, Hanspura, Naroda (Spring Road)",
+          "unit_types": "2 BHK 128 sq yd, 2 and 3 BHK, shops, furnished flat special offer",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 8200710933 (call 10:30 AM to 6:30 PM)"
+          ],
+          "type": "developer",
+          "ad_notes": "Ad says 'Contact Direct Builder', so owner-run builder who handles calls only in office hours (WhatsApp auto-reply gap is a clear need). Offset 212."
+        }
+      },
+      {
+        "k": "shyamal park",
+        "name": "Shyamal Park",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "662972764076634",
+          "city": "Vadodara",
+          "project": "Shyamal Park Lane, Bhayli (Diwali offer, first 5 bookings)",
+          "unit_types": "3 and 4 BHK, fully furnished at basic price",
+          "price_hint": "from Rs 51 lakh; 100% SBI loan mention",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "75750 02421 / 22",
+            "99099 06574"
+          ],
+          "type": "developer",
+          "ad_notes": "Developer type inferred from project-level page. Three numbers printed, so enquiries are split across phones. Offset 213."
+        }
+      },
+      {
+        "k": "shree vijay vivanta residency",
+        "name": "Shree Vijay Vivanta Residency",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1344963098694164",
+          "city": "Surat",
+          "project": "Vivanta Residency, Dindoli (G+1 row houses, 25 ft internal road)",
+          "unit_types": "2 and 3 BHK G+1 row houses",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-16",
+          "oldest_wa_ad": "2026-10-16",
+          "other_ads_seen": 0,
+          "ad_phones": [],
+          "type": "developer",
+          "ad_notes": "No phone in ad text and link_url is the generic api.whatsapp.com/send, so contact must come from the Facebook page itself. Hindi copy. Offset 223."
+        }
+      },
+      {
+        "k": "sampati",
+        "name": "Sampati Developer",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1026731497194172",
+          "city": "Surat",
+          "project": "Karadva Road, Dindoli (sample flat coming soon)",
+          "unit_types": "2 and 3 BHK flats and shops, 1251 and 1656 sq ft",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "73830 77477",
+            "73830 77977"
+          ],
+          "type": "developer",
+          "ad_notes": "Pre-launch style campaign (sample flat not ready yet), so enquiry flow is early-stage and unqualified. Offset 237."
+        }
+      },
+      {
+        "k": "maa bless",
+        "name": "Maa Bless",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "173070369227055",
+          "city": "Vadodara",
+          "project": "BLESS (Maa Bless), Akhatri Road, Navabazar, Karjan; RERA PR/GJ/VADODARA/KARJAN/Karjan Municipality/MAA14579/241224/311228",
+          "unit_types": "2 BHK duplex, 1 BHK flat, shops; PMAY subsidy Rs 1.5 lakh",
+          "price_hint": "Biggest Festival Offer: up to Rs 2 lakh discount; affordable segment",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 99746 01636"
+          ],
+          "type": "developer",
+          "ad_notes": "RERA-registered small affordable-housing builder in Karjan. RERA number printed in the ad, so it can be cross-checked on GujRERA. Gujarati copy. Offset 126."
+        }
+      },
+      {
+        "k": "hillom",
+        "name": "Hillom Group",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "446430908552194",
+          "city": "Surat",
+          "project": "Hillom Pratishtha, Mota Varachha (2 towers, sample flat ready)",
+          "unit_types": "2 BHK 1380 sq ft",
+          "price_hint": "none in ad; home loan facility",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "ad_phones": [],
+          "type": "developer",
+          "ad_notes": "No phone in ad. Page has only about 101 likes, so a small page; budget size unknown. Gujarati copy. Offset 44."
+        }
+      },
+      {
+        "k": "suncity plus",
+        "name": "Suncity plus",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "108072734806586",
+          "city": "Rajkot",
+          "project": "Suncity Plus, 80 Feet Road, near Ramapir Chowkdi",
+          "unit_types": "2 BHK ultra luxurious flats and shops",
+          "price_hint": "none; loan available",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-14",
+          "oldest_wa_ad": "2026-10-14",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "9428003200/3300"
+          ],
+          "type": "developer",
+          "ad_notes": "Short ad copy, project page. Offset 190."
+        }
+      },
+      {
+        "k": "vatsalya hilltop",
+        "name": "Vatsalya Hilltop",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1016565674862305",
+          "city": "Vadodara",
+          "project": "Vatsalya Hilltop, Tarsali (project by Shree Sainath Group)",
+          "unit_types": "1 BHK flats and shops; booking gifts (modular kitchen, AC, RO, geysers)",
+          "price_hint": "1 BHK Rs 18.99 lakh; shops Rs 32.99 lakh",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-13",
+          "oldest_wa_ad": "2026-10-13",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "99980 70521",
+            "99980 23521"
+          ],
+          "type": "developer",
+          "ad_notes": "Low-ticket volume project, so likely many low-intent enquiries. Parent Shree Sainath Group is named in the ad. Offset 224."
+        }
+      },
+      {
+        "k": "silent sky",
+        "name": "Silent Sky",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1214551578409506",
+          "city": "Surat",
+          "project": "Silent Sky, Jeklera Circle, Valak Junction, Abrama-Valak Ring Road",
+          "unit_types": "2 BHK flats",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-13",
+          "oldest_wa_ad": "2026-10-13",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 79903 72699"
+          ],
+          "type": "developer",
+          "ad_notes": "Phone printed in stylised Unicode digits in the ad. Offset 244."
+        }
+      },
+      {
+        "k": "hm patel",
+        "name": "HM Patel",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "140139379191204",
+          "city": "Mehsana",
+          "project": "Shubh Heights (Navratri gold offer, RERA, loan up to 90%, limited units)",
+          "unit_types": "2 BHK flats with amenities",
+          "price_hint": "none; loan up to 90%",
+          "wa_ads_seen": 2,
+          "newest_wa_ad": "2026-10-11",
+          "oldest_wa_ad": "2026-10-11",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "919727934335 (from the ad's own wa.me phone parameter)"
+          ],
+          "type": "developer",
+          "ad_notes": "Only ad with a real number inside the WhatsApp link_url. Ad body is hashtags only. Mehsana is outside the big four cities so likely less competitor coverage. Offset 307 and 309."
+        }
+      },
+      {
+        "k": "sambhav",
+        "name": "Sambhav Developers",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1147145165150903",
+          "city": "Vadodara",
+          "project": "Chandra Imperia (industrial plots), Uday Bungalow, Chandra Villa; Karjan",
+          "unit_types": "Industrial plots, 3 and 4 BHK bungalows, 3 and 4 BHK villas",
+          "price_hint": "flat 5% discount Navratri; premium villas and industrial plots suggest larger tickets",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 81600 57059"
+          ],
+          "type": "developer",
+          "ad_notes": "Three project lines with different buyer types (industrial, villa), so routing and qualification is useful. Same Karjan market as Maa Bless. Offset 68."
+        }
+      },
+      {
+        "k": "indra",
+        "name": "Indra Group",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "101652361881713",
+          "city": "Vadodara",
+          "project": "Indra Heritage, Gorwa Refinery Road (near Taksh Bungalows)",
+          "unit_types": "2 BHK ready possession, sample flat ready",
+          "price_hint": "Rs 28.11 lakh offer price, up to Rs 4 lakh discount to Navratri",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 90165 30722"
+          ],
+          "type": "developer",
+          "ad_notes": "Gujarati copy. Offset 105."
+        }
+      },
+      {
+        "k": "nilkanth residency",
+        "name": "Nilkanth Residency",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1206259519234816",
+          "city": "Ahmedabad",
+          "project": "Nilkanth Residency, Jashodanagar",
+          "unit_types": "Premium 2 BHK flats",
+          "price_hint": "10% booking discount; none else",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-10",
+          "oldest_wa_ad": "2026-10-10",
+          "other_ads_seen": 0,
+          "ad_phones": [],
+          "type": "developer",
+          "ad_notes": "Page has about 5 likes, so a brand-new or tiny page; ability to pay doubtful. No phone in ad. Offset 160."
+        }
+      },
+      {
+        "k": "rameshwaram",
+        "name": "Rameshwaram Group",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "223363491155292",
+          "city": "Surat",
+          "project": "Rameshwaram Ivaan, Palanpur (Pal) area, 43,000 sq ft garden, 30+ amenities",
+          "unit_types": "2 and 3 BHK, 1315 and 1825 sq ft; 2 flats per floor; ready and near-delivery",
+          "price_hint": "none in ad; premium positioning",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-08",
+          "oldest_wa_ad": "2026-10-08",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "99097-94944"
+          ],
+          "type": "developer",
+          "ad_notes": "Premium positioning. Name looks like the known Rameshwar Developers / Luxuriom.RameshwarDevelopers but is a different page and brand (Rameshwaram); dedupe check advised. Offset 25."
+        }
+      },
+      {
+        "k": "vardhaman",
+        "name": "Vardhaman Realty",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "385240058523469",
+          "city": "Surat",
+          "project": "Resale/new 2 BHK garden-side flat, 1255 sq ft (about 800 sq ft carpet)",
+          "unit_types": "2 BHK",
+          "price_hint": "Rs 42 lakh",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-07",
+          "oldest_wa_ad": "2026-10-07",
+          "other_ads_seen": 0,
+          "ad_phones": [
+            "+91 99251 33892"
+          ],
+          "type": "broker",
+          "ad_notes": "Hashtags say Property For Sale; broker/dealer inferred ('Think Property. Think Vardhaman.'). Offset 50."
+        }
+      },
+      {
+        "k": "perfect deals",
+        "name": "Perfect Deals",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "102373094940133",
+          "city": "unknown",
+          "project": "Unnamed 3 BHK ready possession and under-construction apartments, 25+ amenities, no brokerage",
+          "unit_types": "3 BHK, 1920+ sq ft",
+          "price_hint": "from Rs 89 lakh",
+          "wa_ads_seen": 2,
+          "newest_wa_ad": "2026-10-06",
+          "oldest_wa_ad": "2026-10-06",
+          "other_ads_seen": 2,
+          "ad_phones": [],
+          "type": "unknown",
+          "ad_notes": "City and project not stated (appeared in the Surat/Gujarat searches). Page about 894 likes, biggest of the broker-style pages; could be a lead-gen or broker page rather than a builder. Two non-WhatsApp BOOK_TRAVEL ads from 26 Sep also seen. Weak lead until identity is confirmed. Offsets 19 and 186."
+        }
+      },
+      {
+        "k": "shikhar platinum",
+        "name": "Shikhar Platinum",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "101359539403513",
+          "city": "Vadodara",
+          "project": "Shikhar Platinum, Shubhanpura (Gorwa Main Road), ready possession, sample flat ready",
+          "unit_types": "2 and 3 BHK",
+          "price_hint": "from Rs 57 lakh; price hike announced",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-05",
+          "oldest_wa_ad": "2026-10-05",
+          "other_ads_seen": 0,
+          "ad_phones": [],
+          "type": "developer",
+          "ad_notes": "No phone in the ad text or link. Page about 395 likes. Urgency copy (price hike in few days). Offset 120."
+        }
+      },
+      {
+        "k": "ahmedabad real estate",
+        "name": "Ahmedabad Real Estate",
+        "signals": [
+          "wa_ad"
+        ],
+        "details": {
+          "page_id": "1249212318269492",
+          "city": "Ahmedabad",
+          "project": "Resale 3 BHK fully furnished, Naranpura (only 15% kapat, 2 flats per floor, 2 lifts)",
+          "unit_types": "3 BHK resale",
+          "price_hint": "none in ad",
+          "wa_ads_seen": 1,
+          "newest_wa_ad": "2026-10-01",
+          "oldest_wa_ad": "2026-10-01",
+          "other_ads_seen": 0,
+          "ad_phones": [],
+          "type": "broker",
+          "ad_notes": "Broker page with about 10 likes, no phone in the ad. Weakest of the set on size and reachability. Offset 201."
+        }
+      },
+      {
+        "k": "akshya space consultants",
+        "name": "Akshya Space Consultants",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Real Estate Specialist (manage inquiries and leads, convert prospects, property visits, keep records of leads and transactions; basic CRM and spreadsheets listed)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/real-estate-specialist-4478207607",
+          "hiring_posted": "2 days ago (about 19 Oct 2026)",
+          "hiring_type": "broker"
+        }
+      },
+      {
+        "k": "tds",
+        "name": "TDS Properties",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Sales Executive (engage prospects, follow up leads, manage inquiries, property visits, basic CRM or sales-tracking tool)",
+          "hiring_city": "Ahmedabad (job listed in Daskroi)",
+          "hiring_url": "https://in.linkedin.com/jobs/view/sales-executive-at-tds-properties-4477779919",
+          "hiring_posted": "3 days ago (about 18 Oct 2026)",
+          "hiring_type": "broker"
+        }
+      },
+      {
+        "k": "vistara linkedin page links to vistara",
+        "name": "Vistara Group (LinkedIn page links to Vistara Realty LLP)",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Real Estate Sales Executive (lead generation, property presentations, site visits, closing, customer management tools)",
+          "hiring_city": "Vadodara",
+          "hiring_url": "https://in.linkedin.com/jobs/view/real-estate-sales-executive-at-vistara-group-4477394043",
+          "hiring_posted": "4 days ago (about 17 Oct 2026)",
+          "hiring_type": "developer"
+        }
+      },
+      {
+        "k": "vr ahmedabad realtors",
+        "name": "VR Ahmedabad Realtors",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Residential Real Estate Sales Specialist (inquiry to closing, site visits, uses CRM systems, listing platforms and spreadsheets to track leads)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/residential-real-estate-sales-specialist-at-vr-ahmedabad-realtors-4476653776",
+          "hiring_posted": "6 days ago (about 15 Oct 2026)",
+          "hiring_type": "broker"
+        }
+      },
+      {
+        "k": "galaxy",
+        "name": "The Galaxy Group",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Real-estate Sales Executive (lead follow-up, site visits, CRM or sales-tracking, customer support, weekend work)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/real-estate-sales-executive-4476422791",
+          "hiring_posted": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "hiring_type": "developer"
+        }
+      },
+      {
+        "k": "079 spaces",
+        "name": "079 SPACES",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Real Estate Consultant / Real Estate Sales Executive (generate leads, follow up, handle sales and rental enquiries, site visits)",
+          "hiring_city": "Ahmedabad (Thaltej)",
+          "hiring_url": "https://in.linkedin.com/jobs/view/real-estate-consultant-at-079-spaces-4475922516",
+          "hiring_posted": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "hiring_type": "broker"
+        }
+      },
+      {
+        "k": "real estate connect",
+        "name": "The Real Estate CONNECT",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Property Consultant (maintain listings and inquiries, qualify client needs and finances, site display, paperwork)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/property-consultant-at-the-real-estate-connect-4475211560",
+          "hiring_posted": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "hiring_type": "broker"
+        }
+      },
+      {
+        "k": "neo homes",
+        "name": "The Neo Homes",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Sales and Marketing Specialist (lead generation and conversion, client follow-ups, CRM to manage leads, pipeline tracking)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/sales-and-marketing-specialist-4476007756",
+          "hiring_posted": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "hiring_type": "unknown"
+        }
+      },
+      {
+        "k": "cleardeals",
+        "name": "Cleardeals",
+        "signals": [
+          "hiring"
+        ],
+        "details": {
+          "hiring_role": "Business Development Executive, field sales B2C (generate, follow up and convert leads, maintain leads in CRM)",
+          "hiring_city": "Ahmedabad",
+          "hiring_url": "https://in.linkedin.com/jobs/view/business-development-executive-at-cleardeals-4476083922",
+          "hiring_posted": "1 week ago (7 to 13 days; inside the 14-day filter)",
+          "hiring_type": "unknown"
+        }
+      },
+      {
+        "k": "sadhna infrabuild partnership firm",
+        "name": "Sadhna Infrabuild (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Skywalk 56",
+          "rera_city": "Ahmedabad (Tragad)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17439/081026/311229",
+          "rera_date": "2026-10-08",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/skywalk-56-32083/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "maruti rebuild partnership firm",
+        "name": "Maruti Rebuild (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Mangalya Heights",
+          "rera_city": "Ahmedabad (Maninagar)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17424/061026/311228",
+          "rera_date": "2026-10-06",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/mangalya-heights-32283/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "mahakali partnership firm",
+        "name": "Mahakali Developers (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Swarnim Villa",
+          "rera_city": "Ahmedabad (Singarva, Daskroi)",
+          "rera_no": "PR/GJ/AHMEDABAD/DASKROI/Ahmedabad Urban Development Authority/RAA17421/061026/310330",
+          "rera_date": "2026-10-06",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/swarnim-villa-32258/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "shree partnership firm",
+        "name": "Shree Developers (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "The Evara",
+          "rera_city": "Ahmedabad (Kathwada)",
+          "rera_no": "PR/GJ/AHMEDABAD/DASKROI/Ahmedabad Municipal Corporation/RAA17437/081026/311230",
+          "rera_date": "2026-10-08",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/the-evara-32095/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "neelkanth partnership firm",
+        "name": "Neelkanth Developers (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Pushkar Hill",
+          "rera_city": "Ahmedabad (Muthiya, near Ring Road toll plaza)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17362/160926/311229",
+          "rera_date": "2026-09-16",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/pushkar-hill-32162/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "sns divine partnership firm",
+        "name": "SNS Divine (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "SNS Priide",
+          "rera_city": "Ahmedabad (Nava Vadaj)",
+          "rera_no": "PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17374/210926/290329",
+          "rera_date": "2026-09-21",
+          "rera_url": "https://gujrera.com/projects/ahmedabad/sns-priide-32088/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "eliseo partnership firm",
+        "name": "Eliseo Infra (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Eden Eliseo (the same promoter also has a sister project, Eden Crown, ID 32300, listed at https://gujrera.com/projects/surat/eden-crown-32300/ and not opened)",
+          "rera_city": "Surat (Kosad, listed under Choryasi)",
+          "rera_no": "PR/GJ/SURAT/CHORYASI/Surat Municipal Corporation/RAA17409/051026/311230",
+          "rera_date": "2026-10-05",
+          "rera_url": "https://gujrera.com/projects/surat/eden-eliseo-32294/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "shree nilkanth homes",
+        "name": "Shree Nilkanth Homes LLP",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Sukhdham 44 (the same promoter also lists Sukhdham 24, ID 32097, at https://gujrera.com/projects/surat/sukhdham-24-32097/, not opened)",
+          "rera_city": "Surat (Dabholi)",
+          "rera_no": "PR/GJ/SURAT/SURAT CITY/Surat Municipal Corporation/RAA17350/160926/311230",
+          "rera_date": "2026-09-16",
+          "rera_url": "https://gujrera.com/projects/surat/sukhdham-44-32103/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "subodh",
+        "name": "Subodh Developers LLP",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Avani Iraaya",
+          "rera_city": "Vadodara (Waghodia Road, opp. D Mart)",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Urban Development Authority/RAA17427/061026/311231",
+          "rera_date": "2026-10-06",
+          "rera_url": "https://gujrera.com/projects/vadodara/avani-iraaya-32102/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "heer associates partnership firm",
+        "name": "Heer Associates (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Tirth Niwas",
+          "rera_city": "Vadodara",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Municipal Corporation/MAA17422/061026/300631",
+          "rera_date": "2026-10-06",
+          "rera_url": "https://gujrera.com/projects/vadodara/tirth-niwas-32297/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "shaileshkumar mansukhlal mehta proprietor of jay ambe",
+        "name": "Shaileshkumar Mansukhlal Mehta, proprietor of Jay Ambe Developers",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Rosewood Heights",
+          "rera_city": "Rajkot (Rail Nagar, Shree Ram Park)",
+          "rera_no": "PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/MAA17415/051026/310329",
+          "rera_date": "2026-10-05",
+          "rera_url": "https://gujrera.com/projects/rajkot/rosewood-heights-32160/",
+          "rera_website": ""
+        }
+      },
+      {
+        "k": "shiv partnership firm",
+        "name": "Shiv Infra (partnership firm)",
+        "signals": [
+          "new_rera"
+        ],
+        "details": {
+          "rera_project": "Shiv Aangan",
+          "rera_city": "Vadodara",
+          "rera_no": "PR/GJ/VADODARA/VADODARA/Vadodara Municipal Corporation/MAA17431/061026/311230",
+          "rera_date": "2026-10-06",
+          "rera_url": "https://gujrera.com/projects/vadodara/shiv-aangan-32136/",
+          "rera_website": ""
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Discover"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Merge"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "triage-ads",
+      "phaseIndex": 1,
+      "phaseTitle": "Discover",
+      "agentId": "ada43d24e1a50d983",
+      "agentType": "scout",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792564149597,
+      "queuedAt": 1792564149368,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Read-only; no Apify actor was run and nobody was contacted.…",
+      "promptPreview": "You are a lead triage analyst. Two Apify datasets hold Meta Ad Library results for Gujarat real-estate ads scraped on 21 Oct 2026: PF0L7uWMJ6iOPepQp (443 ads, search queries for Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar, Mehsana, Bhavnagar, Jamnagar, Anand/Nadiad, Morbi) and P3WR3suDei2WkpAPy (92 ads, earlier test). Read them with the Apify connector tool get-dataset-items (load it with Tool…",
+      "promptFramed": true,
+      "lastProgressAt": 1792564497694,
+      "tokens": 157986,
+      "toolCalls": 56,
+      "durationMs": 348095,
+      "resultPreview": "{\"advertisers\":[{\"page_name\":\"Matangi Realty\",\"page_id\":\"122106275864002520\",\"city\":\"Rajkot\",\"project\":\"2 BHK near Ayodhya Chowk (670 sq ft; banquet hall, gym, cricket box, volleyball pitch)\",\"wa_ads_seen\":6,\"newest_wa_ad\":\"2026-10-19\",\"oldest_wa_ad\":\"2026-10-19\",\"other_ads_seen\":0,\"type\":\"unknown\",\"unit_types\":\"2 BHK flats, 670 sq ft\",\"price_hint\":\"Rs 51,000 down payment offer\",\"ad_phones\":[\"922 …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "hiring-scout",
+      "phaseIndex": 1,
+      "phaseTitle": "Discover",
+      "agentId": "a0c04d69a133db490",
+      "agentType": "scout",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792564149597,
+      "queuedAt": 1792564149369,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Yield is thin: 9 new employers (8 clear, 1 borderline Clear…",
+      "promptPreview": "Hiring-signal scout. Find real-estate DEVELOPERS and BROKERS in Gujarat (Ahmedabad, Gandhinagar, Surat, Vadodara, Rajkot, Mehsana, Bhavnagar, Jamnagar, Anand, Nadiad, Morbi, Junagadh, Bharuch, Vapi) that posted a job in the last 14 days (on or after 7 Oct 2026) for telecaller, pre-sales, sales executive, CRM executive or lead follow-up staff. Best source found earlier: logged-out LinkedIn public j…",
+      "promptFramed": true,
+      "lastProgressAt": 1792564373759,
+      "tokens": 114723,
+      "toolCalls": 45,
+      "durationMs": 224156,
+      "resultPreview": "{\"employers\":[{\"name\":\"Akshya Space Consultants\",\"city\":\"Ahmedabad\",\"role\":\"Real Estate Specialist (manage inquiries and leads, convert prospects, property visits, keep records of leads and transactions; basic CRM and spreadsheets listed)\",\"job_url\":\"https://in.linkedin.com/jobs/view/real-estate-specialist-4478207607\",\"posted_relative\":\"2 days ago (about 19 Oct 2026)\",\"type\":\"broker\",\"notes\":\"Real…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "new-rera-scout",
+      "phaseIndex": 1,
+      "phaseTitle": "Discover",
+      "agentId": "a6a592c69c23ec802",
+      "agentType": "scout",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792564149598,
+      "queuedAt": 1792564149370,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "DISCOVERY BY RECENCY WORKS, via gujrera.com. The city listi…",
+      "promptPreview": "New-launch scout. Find residential projects in Gujarat newly registered with GujRERA in the last 60 days (approval on or after 22 Aug 2026) by small or medium developers (apartments, villas, row houses). Useful facts: GujRERA registration numbers end with the approval date as DDMMYY (for example MAA17359/160926 means 16 Sep 2026), and numbers above about MAA17400 are October 2026 launches; third-p…",
+      "promptFramed": true,
+      "lastProgressAt": 1792564378882,
+      "tokens": 101128,
+      "toolCalls": 37,
+      "durationMs": 229278,
+      "resultPreview": "{\"projects\":[{\"promoter\":\"Sadhna Infrabuild (partnership firm)\",\"project\":\"Skywalk 56\",\"city\":\"Ahmedabad (Tragad)\",\"rera_no\":\"PR/GJ/AHMEDABAD/AHMEDABAD CITY/Ahmedabad Municipal Corporation/RAA17439/081026/311229\",\"approval_date\":\"2026-10-08\",\"source_url\":\"https://gujrera.com/projects/ahmedabad/skywalk-56-32083/\",\"website\":\"\",\"notes\":\"2 and 3 BHK residential group housing, possession Dec 2029. Auth…"
+    }
+  ],
+  "totalTokens": 373837,
+  "totalToolCalls": 138
+}

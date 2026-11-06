@@ -1,0 +1,46 @@
+{
+ "files": [
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\proposal.pdf",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\proposal.html",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_1.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_2.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_3.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_4.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_5.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_6.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_7.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_8.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\page_9.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\html_view_desktop.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\html_view_mobile.png",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\whatsapp_message.txt",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\owner_notes.md",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\prices.json",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\build_proposal.py",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\proposal_assets\\proposal_template.html",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\proposal_assets\\proposal.css",
+  "C:\\Users\\Administrator\\Desktop\\AISales_agent_team\\agent\\state\\side_leads\\nexus360_demo\\proposal\\proposal_assets\\capture_figures.py"
+ ],
+ "recommended_price_summary": "Proposed prices, INR, before 18% GST, valid until 3 Nov 2026. Lead with A, the 2-week pilot for 50 builders at Rs 75,000 fixed (Rs 88,500 with GST; arithmetic 50 x Rs 1,500; highlighted as the recommended option). B is the monthly managed run for 150 builders at Rs 45,000 a month (Rs 53,100 with GST), offered only after the pilot and cancellable at any month end, plus an optional shared-risk version of Rs 30,000 + Rs 3,000 per demo held. C is a research-only list at Rs 18,500 for 50 builders or Rs 35,000 for 150. WhatsApp fees are passed through at cost: about Rs 30 to 310 for the pilot (cap Rs 500) and Rs 90 to 930 a month (cap Rs 1,500). One mid-level sales employee costs about Rs 36,900 a month all-in, so the monthly run is about 1.2 times one employee and is not cheaper on cost alone. The proposal says this openly. The pilot costs about 2 months of one employee. Payment terms are suggested as 50% on approval and 50% at the Day 14 report. All numbers sit in prices.json.",
+ "whatsapp_message_text": "Hi Sridhar, thank you for the call today. The proposal is attached as a PDF: how the research and WhatsApp outreach work, a sample dashboard and page, a two-week pilot with pass and fail rules agreed in advance, the estimate, and the comparison with hiring a sales executive. All prices are proposals and can change after your feedback. When would a 15-minute screen-share of the dashboard, page and video suit you this week?\n\nIV Infotech",
+ "decisions_for_owner": [
+  "Confirm the lead price and structure. The monthly run (Rs 45,000) costs more than one employee (Rs 36,900 all-in) and the proposal says so. Keep it, lower it, or keep the shared-risk alternative (switch show_alternative in prices.json).",
+  "Pilot pass/fail rules: I relaxed the cost workstream's strict 'at least 2 genuine replies' gate, because 50 builders will probably deliver fewer than 30 owner-level messages. Measure 3 is now 'pass or inconclusive'. Keep my version or restore the strict gate (table_gates() in build_proposal.py and the Decision rule paragraph in proposal_template.html).",
+  "Whether Sridhar sees real owner names on page 3 (show_owner_names in prices.json; individuals and unknowns are anonymised either way) and whether to disclose '9 contacted, no replies' (show_campaign1_reply_count; 2 of 7 on time stays).",
+  "Whether to keep the correction on page 9 telling him to disregard the first pitch's '92+ staff hours' and 'Rs 23,000+ monthly overhead saved', and the offer to ask MP RERA for permission (not promised).",
+  "First-touch channel and sender: the proposal promises WhatsApp templates from IV Infotech's line to business-published numbers (10 to 25 a day, STOP line, stop on any Meta warning) with a separate +91 number recommended. Alternative is a first touch from Sridhar's own number or an office-line call. I wrote 'IV Infotech's line' and not 'verified', because business verification status is unknown.",
+  "Build the forward-only reply rule for this account before any send: today a first inbound reply reaches the AI sales agent first, and the proposal promises no bot ever answers a builder-owner.",
+  "Do not send dashboard/dashboard.html as it is: its builder table shows real names with invented statuses that contradict the enrichment test (e.g. Shri Balajee marked Likely, our test found Unknown; Dee Vee marked Message approved). The PDF uses only the pipeline strip and the example lead with invented names. Skip that table on any screen share or get a version with every real row set to Researched / Unknown.",
+  "Payment terms (50/50 suggested), validity (14 days), whether to credit part of the pilot against month 1 (not in the document), data export and exit terms (not yet written), and Sridhar's title ('Founder' vs solo developer / acting CTO)."
+ ],
+ "open_gaps": [
+  "Our BSP (Fortius) per-message rate, plan fee, markup and INR billing status are unknown. The pass-through estimate assumes Rs 1.02 to Rs 1.29 per message and no markup; Meta's INR rate (Rs 0.8631) comes from a news report, not Meta's own rate card.",
+  "Our Meta quality rating and business verification status are unknown; a Meta restriction on our shared line is an unpriced risk.",
+  "Hours and margin behind the price conflict between workstreams: Rs 1,000/hour with 30% margin (price built on this) versus Rs 375/hour (cost to serve about Rs 13,600 to 21,400 a month). There may be room to lower the monthly fee.",
+  "Real-owner hit rate rests on n = 6 (owner named 4 of 6, direct owner WhatsApp number 0 of 6). The 5 to 20 owner-level messages for the pilot and the employee cost components, hiring time and research hours are assumptions, and Sridhar's own contract value, demo volume and hiring cost are unknown.",
+  "Hindi lines on the page and video have no native-speaker check, Sridhar's screen recordings, logo, voice and permissions are not in hand (the video is a storyboard, not a rendered MP4), and every product line comes from nexus360.in and needs his confirmation.",
+  "Dashboard funnel middle counts (146/135/131) differ slightly from the dashboard workstream's own replay (151/140/136); the proposal uses the saved script summary. Start (2,173) and end (72) match.",
+  "Pilot is too small to give a reply-rate verdict; about 150 builders (the first month of the run) is needed. Hand-off alert timing and the 'stop after a reply' rule are not yet measured or built for this account.",
+  "Cost workstream's 5-minute video render figure conflicts with the measured 40 seconds; no render time is in the proposal, so the price is unaffected."
+ ]
+}

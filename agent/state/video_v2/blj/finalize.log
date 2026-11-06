@@ -1,0 +1,6 @@
+breaks: [(5.23, 7.04, 1.81), (12.32, 13.4, 1.09), (17.38, 18.52, 1.15), (25.09, 26.33, 1.24), (30.69, 31.94, 1.25)]
+total 40.85 [(1, 0.0, 6.138, 5.234), (2, 6.138, 12.86, 5.274), (3, 12.86, 17.95, 3.972), (4, 17.95, 25.71, 6.568), (5, 25.71, 31.314, 4.359), (6, 31.314, 40.85, 6.51)]
+story.html -> C:\Users\Administrator\Desktop\AISales_agent_team\agent\pilot\video\dist\story
+wrote blj/story_final.html 25084 bytes
+OK C:\Users\Administrator\Desktop\AISales_agent_team\agent\state\video_v2\blj\renders\blj_final.mp4 4.4 MB 40.9 s
+DONE: /c/Users/Administrator/Desktop/AISales_agent_team/agent/state/video_v2/blj/renders/blj_final.mp4

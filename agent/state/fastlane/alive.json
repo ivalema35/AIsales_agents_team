@@ -1,0 +1,1 @@
+{"pid": 4668, "version": 1, "ts": 1792067988.576298, "ts_iso": "2026-10-15T12:39:48+00:00", "started": 1792056545.3490427, "claude_pid": 13652, "claude_ready": true, "busy": false, "queue": 0, "last_poll_ok_ts": 1792067986.354422, "poll_failures": 0, "sent_to_owner": 3, "spawn_failures": 0, "usage": {"window": "seven_day", "used": 0.95, "resets_at": 1792155600}}

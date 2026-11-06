@@ -1,0 +1,707 @@
+[
+ {
+  "part": 1,
+  "topics": [
+   "Intro: the 4-step client workflow and claimed results",
+   "Checklist before contacting any client",
+   "Dynamic (need-based) offers",
+   "Channel choice: email vs Instagram/WhatsApp by region",
+   "Lead-finding method 1 (start): Google Maps with the 'Ask Maps' AI feature",
+   "Why learn manual lead-finding before automation"
+  ],
+  "strategies": [
+   {
+    "name": "The 4-step client-acquisition workflow (framing)",
+    "what_it_is": "The speaker's backbone for the whole video: find leads, qualify them / work out which service to offer each one, message them, then lock the deal. He says this is the exact method that got him his first client within two weeks.",
+    "steps": [
+     "Step 1: find leads.",
+     "Step 2: qualify the lead, i.e. identify which service to offer them.",
+     "Step 3: message them.",
+     "Step 4: lock (close) the client.",
+     "Learn each lead source manually first, then automate it so new leads arrive daily without manual work."
+    ],
+    "claimed_result": "First client within two weeks. He 'guarantees' the viewer will also get a first client within a few weeks, as long as the viewer actually puts in the effort. No followers needed and no money needed at the start; the methods are free and can be started the same day.",
+    "numbers_or_rules": "Needs no followers and no ad spend. He says three lead-finding methods at the start and four later, so the count is inconsistent in the transcript. The chapter list says 4 methods.",
+    "example_or_template": ""
+   },
+   {
+    "name": "Checklist item 1: portfolio website with photo, story, projects, contact page, testimonials",
+    "what_it_is": "A personal or portfolio site to have in place before sending a single message or email. It builds trust and lets you charge more and win more clients.",
+    "steps": [
+     "Put your own photo on the site (number one item) so the client sees a real person behind it, not a bot.",
+     "Add your projects.",
+     "Write a short description: where you are from, your story, how you started. He says Western clients care about the person's story and struggle and are more likely to empathize and order.",
+     "Add an obvious contact page showing how to reach you.",
+     "Add testimonials from real customers. He also says that if you have none you could add fake ones, but make them sound realistic (this is the speaker's advice only; it is deceptive and should not be copied)."
+    ],
+    "claimed_result": "Higher trust, higher prices, more clients won.",
+    "numbers_or_rules": "Do all of this before the first message or email is sent.",
+    "example_or_template": ""
+   },
+   {
+    "name": "Checklist item 2: custom domain plus business email on that domain",
+    "what_it_is": "Buy your own domain and run email from it. Subdomains and Gmail make you look amateur.",
+    "steps": [
+     "Buy your own domain instead of using a free subdomain like .site, .vercel or netlify subdomains. Owning a domain subconsciously signals you invested in your work and are serious.",
+     "Create an email address on that domain and send outreach from it, not from Gmail.",
+     "If you must use Gmail, at least use your real name, not a random-looking address.",
+     "He points to his own earlier video 'How to get a business email in 2026' for the process, with the link in the description."
+    ],
+    "claimed_result": "Clients take you more seriously and are more likely to hire you; a subdomain lowers your perceived value.",
+    "numbers_or_rules": "Rule: domain, email and website must all exist together before outreach.",
+    "example_or_template": "Example he shows: a cold email he received from a freelancer (named like 'Uzair bhai') claiming 4 years of experience and linking a portfolio. The work looked good, but it came from a random-looking Gmail address and a non-custom domain, so it felt less professional. He says he does not take Gmail senders seriously and most likely will not give them work, whereas he takes custom-domain senders more seriously."
+   },
+   {
+    "name": "Checklist item 3: one demo project per service, tailored to the lead's niche",
+    "what_it_is": "For every service you offer, have a ready demo project or link to send, matched to the prospect's industry.",
+    "steps": [
+     "Build at least one demo per service you sell.",
+     "Keep a link ready to send and say 'this is the kind of thing I will build for you'.",
+     "Pick the demo that best matches the prospect's niche when you send it."
+    ],
+    "claimed_result": "The client is more likely to open the link and look at your work, and if they like it they are more likely to hire you. He says he gets cold emails offering websites with no website link at all, and anyone can claim they can build a site, so showing work is very important.",
+    "numbers_or_rules": "Demo must be niche-specific, not generic.",
+    "example_or_template": "Bad match: pitching a clothing brand and attaching a restaurant website as the demo. That does not make sense, because it is not their industry. Send the closest-fit demo you have."
+   },
+   {
+    "name": "Checklist item 4: booking link, payment method, tracking sheet, Loom account",
+    "what_it_is": "Operational basics to have ready before outreach so you can close and track.",
+    "steps": [
+     "Booking link: have a link ready for a first online meeting on Zoom or Google Meet, because many clients want a call first. The scheduling tool is not named in the transcript.",
+     "Payment method: pick a way for the client to pay and have a payment link ready. Local clients can pay by bank transfer. International clients need something else. He names services that sound like Wise and Payoneer, and one that sounds like 'Remitly'. The names are garbled in the transcript, so treat them as unclear.",
+     "Tracking sheet: create a Google Sheet listing every lead and client with name, details, whether they replied and whether you followed up. Use it to compute conversion rate, for example of 100 people messaged, how many replied and how many converted. Also use it to follow up with old contacts and track total outreach.",
+     "Loom account: make an account on a video tool (sounds like Loom; garbled as 'Lo/LM'). He says he will explain how it is used for videos later in the video."
+    ],
+    "claimed_result": "Conversion-rate visibility and an easy follow-up list.",
+    "numbers_or_rules": "Example metric: 100 messages sent, then count replies and conversions.",
+    "example_or_template": ""
+   },
+   {
+    "name": "Pick the channel by target market: DMs/WhatsApp for local, email for international",
+    "what_it_is": "Choose where you contact leads depending on where the lead is based.",
+    "steps": [
+     "Targeting local businesses in India or Pakistan (the subcontinent): use Instagram DMs and WhatsApp. Do not use email, because he says people there do not check email and live on WhatsApp and Instagram.",
+     "Targeting international clients such as the US or the West: use email.",
+     "He says he will cover how to collect all four kinds of contact: emails, phone numbers, Instagram and WhatsApp."
+    ],
+    "claimed_result": "Better response by matching the channel to the region.",
+    "numbers_or_rules": "Subcontinent: Instagram DM and WhatsApp. US and West: email.",
+    "example_or_template": ""
+   },
+   {
+    "name": "Dynamic offers: tailor the pitch to the single need you observe in the lead",
+    "what_it_is": "Do not send the same generic pitch listing all your services. Look at the prospect, identify one specific need, and offer only the service that fixes it. He says a slight difference in the pitch makes the order much more likely.",
+    "steps": [
+     "Check the prospect before messaging: Google Maps listing, website, Instagram bio, posts.",
+     "Map what you observe to a specific offer (see the list under 'numbers_or_rules').",
+     "State the observation first, then the offer.",
+     "Never list everything ('I can also do websites, voice agents, chatbots...'); mention only the one service matching their need."
+    ],
+    "claimed_result": "Higher chance the prospect orders because the pitch fits their actual requirement.",
+    "numbers_or_rules": "Observation to offer mapping given: (a) No website on Google Maps: 'I saw you on Google Maps, you have no website, I want to build you one.' (b) Has a website but it is old or badly designed: offer a new, better-designed site that improves conversion rate and SEO and brings more sales, not just 'a website'. (c) Website slow or not working on mobile: offer to make it mobile-friendly and fix SEO. (d) Instagram bio uses a Linktree: offer a real website on a custom domain that looks more professional. (e) Facebook or Instagram post with many unanswered questions or customer queries: offer a voice agent or a WhatsApp bot.",
+    "example_or_template": "Restaurant with no website found on Google Maps: message says you saw them on Google Maps, they had no website, so you would like to build them one."
+   },
+   {
+    "name": "Lead-finding Method 1 (manual): Google Maps with the 'Ask Maps' AI feature",
+    "what_it_is": "Use Google Maps' AI search ('Ask Maps', which he says is a new feature) to list businesses of a type in a place that lack a website but have a phone number. It is better than a plain Maps search. The speaker says Maps is the first of the lead methods; the later methods are in other parts.",
+    "steps": [
+     "Decide the service and the niche, for example websites for restaurants, and a city, for example San Francisco.",
+     "Open Google Maps and use the Ask Maps feature instead of the normal search box.",
+     "Type a prompt such as: find me restaurants in San Francisco that don't have a website but have a phone number.",
+     "Review the results. The returned example shows a phone number but a missing website and no email, which makes it a good lead for a domain plus full website offer.",
+     "Ask for more with a follow-up such as 'find me 20 more'. You can ask for as many as you like, so leads are close to unlimited.",
+     "Create a Google Sheet with columns such as client or lead name, phone, and email if available. Copy each business's name and phone number into it.",
+     "Reach out manually to each one, by WhatsApp or iMessage (phone number) with the offer.",
+     "Automation of this whole flow, from finding leads to sending messages, is promised later in the video."
+    ],
+    "claimed_result": "Practically unlimited leads, and the no-website restaurants with phone numbers are described as 'perfect' client prospects.",
+    "numbers_or_rules": "Filter to use in the prompt: no website AND has a phone number. Ask for batches such as 20 more.",
+    "example_or_template": "Result shown in his demo: a diner called something like 'Ming's Diner' (name uncertain in the transcript) with a phone number, no website, no email."
+   },
+   {
+    "name": "Learn manual first, then automate",
+    "what_it_is": "A principle for the lead-finding section: do each method by hand before automating it.",
+    "steps": [
+     "Learn the full manual process for each method.",
+     "Then build the automation, which makes building it easier.",
+     "If the automation breaks or stops running, you will know how to debug it."
+    ],
+    "claimed_result": "Easier setup and easier debugging of automations.",
+    "numbers_or_rules": "Order: manual first, then automation for each of the methods.",
+    "example_or_template": ""
+   }
+  ],
+  "message_scripts": [
+   "Paraphrase of his no-website pitch: 'I saw your restaurant on Google Maps, but you did not have a website, so I could not get much information. Are you interested in me building you a website?' (sent by WhatsApp or iMessage to the phone number from Maps).",
+   "Paraphrase of his old-website pitch: 'I can build you a new, better-designed website that improves your conversion rate and SEO and gets you more sales.'",
+   "Paraphrase of his slow or non-mobile-site pitch: 'I will make your website mobile friendly and fix the SEO.'",
+   "Paraphrase of his Linktree pitch: 'Instead of a Linktree in your bio, I can build you a real website on your own domain, which looks more professional.'",
+   "Paraphrase of his unanswered-questions pitch: 'I can build you a voice agent or WhatsApp bot to answer these customer queries.'",
+   "Maps AI prompt he types: 'Find me restaurants in San Francisco that don't have a website but have a phone number.' Follow-up prompt: 'Find me 20 more.'"
+  ],
+  "tools_mentioned": [
+   "Google Maps (Ask Maps AI feature)",
+   "Google Sheets (lead and tracking sheet)",
+   "Zoom",
+   "Google Meet",
+   "Wise (garbled in the transcript, likely)",
+   "Payoneer (garbled in the transcript, likely)",
+   "Remitly (garbled, uncertain)",
+   "Loom (garbled as 'Lo/LM', likely Loom; use is promised later)",
+   "Linktree (seen as a signal on prospects' Instagram bios)",
+   "Netlify, Vercel, .site subdomains (named as amateur hosting signs to avoid)",
+   "WhatsApp",
+   "Instagram DMs",
+   "iMessage",
+   "Gmail (named as what not to send from)",
+   "Facebook and Instagram posts (used to spot unanswered customer queries)"
+  ],
+  "unclear_or_garbled": [
+   "Lead method count: he says 'three main ways' and later 'four ways' in the same part; the chapter list says 4 methods. Unclear in the transcript.",
+   "Payment tool names are machine-garbled ('वाइज', 'पेनियर', 'रिमेटली'); likely Wise, Payoneer, Remitly, but not confirmed.",
+   "The video tool is garbled ('Lo अकाउंट ... LM'); probably Loom. How it is used is promised for later, not in this part.",
+   "The booking-link tool is not named; only Zoom and Google Meet are mentioned as meeting platforms.",
+   "The sample restaurant in the Ask Maps demo is transcribed as 'मिंग्स डाइनर'; the exact name is uncertain.",
+   "Name of the freelancer in the Gmail example is transcribed as 'उज़ैर भाई' (Uzair bhai); not important.",
+   "No prices, reply rates or response-rate numbers are given in this part; only the claim of a first client in two weeks and the hypothetical '100 messages' example.",
+   "He advises adding fake testimonials if you have none; this is stated as his advice, is deceptive, and is flagged here so nobody copies it as a tactic.",
+   "'वॉइस सर्जन' and 'चैटब' are most likely 'voice agent' and 'chatbot'; garbled, but the meaning is reasonably clear.",
+   "The part ends mid-way through Method 1 (the manual outreach step) and says the automation will be explained later; the other lead methods are not in this part."
+  ]
+ },
+ {
+  "part": 2,
+  "topics": [
+   "Method 1 (tail end): Google Maps manual prospecting, typical response and conversion rates",
+   "Method 2: Meta (Facebook) Ad Library to find businesses already paying for ads, and how to spot a need",
+   "Method 3: Instagram bios as a lead signal (needs automation, covered later with Apify and Zapier)",
+   "Method 4: LinkedIn Sales Navigator Core free trial, filters, headcount sweet spot, message cap, Apollo.io to get emails/phones",
+   "Credibility checklist: profile, portfolio and channels must be ready before any outreach",
+   "Use Claude or ChatGPT to choose search niches and Sales Navigator filters",
+   "Teaser for a later 'secret method' to lift conversion from 2-5% to 5-10%"
+  ],
+  "strategies": [
+   {
+    "name": "Google Maps manual prospecting (end of Method 1)",
+    "what_it_is": "Search a local business type in a city on Google Maps, collect the results, store them, and contact each business one by one. This part of the transcript starts partway through the demo, using restaurants as the example; how the tool listed them is unclear in the transcript (he says he keeps asking it to 'find more' and it returns only 3 or 4 extra places each time).",
+    "steps": [
+     "Search a business type in a city (restaurants in the demo).",
+     "Keep asking for more results; each round returns only a few places, so repeat many times (the city has plenty of restaurants).",
+     "Store every result in a list.",
+     "Reach out to each business individually, by email in his example.",
+     "Expect a low response rate and keep going anyway.",
+     "Other niches he names: barber shops, laundry services, 'different businesses'. Tip: ask Claude which kinds of businesses need websites, then search those types."
+    ],
+    "claimed_result": "About 100 emails gives 5 to 10 business replies, and from those maybe 1 or 2 clients. He calls roughly 1 to 2% a good conversion rate. Clients who convert will probably pay about $1000 or more, so the effort pays back.",
+    "example_or_template": "Search idea: 'restaurants', 'barber shops', 'laundry services', or any type Claude says needs a website.",
+    "numbers_or_rules": "100 emails -> 5-10 replies -> 1-2 clients; 1-2% conversion is 'good'; typical client value about $1000+. He says he will later show how to move a 2-5% figure to 5-10% (see the secret-method note). Results depend heavily on how good the message is (message content comes in a later chapter)."
+   },
+   {
+    "name": "Meta Ad Library prospecting (Method 2)",
+    "what_it_is": "Use Meta's public database of all active Facebook/Instagram ads to find businesses that are already paying for ads, then pick those with a visible gap (no website, a weak website, or a weak ad-to-sale funnel) and pitch the matching service. He says it is harder than the other methods but the leads are already spending money on marketing, so they are more likely to buy.",
+    "steps": [
+     "Search Google for 'Meta Ad Library' and open the facebook.com ads library page.",
+     "Choose 'All ads'.",
+     "Type a keyword that hints at a business needing your service. His example: 'DM to order'. He also mentions 'contact for price' as a similar phrase. Businesses that take orders by DM probably have no website, or one that can be upgraded.",
+     "Scroll the ad results and look at the website/destination link shown under each ad.",
+     "If the ad links to Instagram.com, the advertiser has probably linked only their Instagram account. Open the link in a new tab and check whether they have a website.",
+     "Skip advertisers with a good website. Keep those with no website, or a clearly weak one, as targets.",
+     "Collect those leads and reach out individually.",
+     "Expect lots of trial and error. He did this live and unscripted."
+    ],
+    "claimed_result": "No numbers claimed for this method. In the live demo, of about 5 advertisers checked, 2 or 3 looked like good prospects (one with a weak website, and one Facebook shop with only a Gmail address and social links and no website). The others already had decent sites and were skipped.",
+    "example_or_template": "Search keyword 'DM to order'. Pitch for advertisers with no site: 'we will build you a website'. Pitch for advertisers who already have a site and ads: improve conversion on the ads they already pay for, for example a voice-agent follow-up, or an automation that sends an email or message the moment someone clicks through from the ad to the website.",
+    "numbers_or_rules": "Rule: identify one signal that suggests the lead needs your specific service, such as no website for a web-design offer. For a voice-agent or AI-consulting offer, look for the thing that would make them need it. The transcript gives no volume or conversion numbers."
+   },
+   {
+    "name": "Instagram bio search (Method 3)",
+    "what_it_is": "Search Instagram bios for signals that someone could use your service. He says this cannot be done by hand and will be covered in the automation section with Apify and Zapier. Here he only explains the idea.",
+    "steps": [
+     "Use automation (Apify to scrape, Zapier to process; both covered later in the video) to search Instagram bios.",
+     "Look at what the bio reveals. His example is a bio that links to a Linktree instead of a real website, which suggests the person might want a website.",
+     "Offer the matching service, for example 'I will build you a website'."
+    ],
+    "claimed_result": "No numbers. He says people with such bios could be interested, though he personally is not because his work is different. He says to definitely try it.",
+    "example_or_template": "Signal example: bio link is a Linktree page rather than a website.",
+    "numbers_or_rules": "Needs the later automation steps (Apify and Zapier). The exact search or filter settings are not given in this part."
+   },
+   {
+    "name": "LinkedIn Sales Navigator Core with filters (Method 4)",
+    "what_it_is": "Use LinkedIn Sales Navigator to build a filtered list of decision-makers at small companies, mainly for B2B and international clients. He says these clients are harder to win but pay well; the figure he gives is garbled in the transcript (it reads like '$1000 or $2000' per client, unclear).",
+    "steps": [
+     "Sign up for the LinkedIn Premium free trial of Sales Navigator Core (the button reads 'Try for $0'; choose a goal such as finding and reaching prospective clients; the option you pick does not matter).",
+     "Enter payment details. He says you are not charged during the trial, but you must cancel before it ends (he mentions cancelling around day 25) or you will be billed. After the trial the price is about $90 a month, which he calls quite expensive.",
+     "Open Sales Navigator, go to Search, then Lead filters and Account filters.",
+     "Set the filters for your offer. His example offer is a voice agent for small companies: Company headquarters = United States (optional; any country works); Current job title = Founder and Co-founder (small companies, where the owner decides); Industry = e.g. dentists, or the broader Healthcare; Company headcount = 1-10 and 11-50.",
+     "Review the leads shown.",
+     "Contact them either directly inside LinkedIn, or export to Apollo (see the next strategy)."
+    ],
+    "claimed_result": "He says the filters returned a good list of leads. If you do land these clients, he says the trial cost is easily offset by what they pay.",
+    "example_or_template": "Voice-agent example: HQ United States; titles Founder and Co-founder; industry dentists or healthcare; headcount 1-10 and 11-50.",
+    "numbers_or_rules": "Headcount sweet spot is 1-10 and 11-50: small enough to outsource to freelancers and big enough to have a budget. A company with no employees likely has no budget, and big companies are less likely to buy. Sales Navigator Core says 'over 50 search filters'. Cost is about $90 a month after a 1-month free trial. Direct LinkedIn messages are capped at 50 a month."
+   },
+   {
+    "name": "Apollo.io for unlimited outreach to LinkedIn leads",
+    "what_it_is": "Because LinkedIn caps direct messages at about 50 a month, take the people found in Sales Navigator and look up their email addresses and phone numbers with Apollo.io, then contact them outside LinkedIn without that cap.",
+    "steps": [
+     "Build the lead list in LinkedIn Sales Navigator.",
+     "Use Apollo.io to find each lead's email address and phone number.",
+     "Message them individually by email or phone, with no message cap.",
+     "For a full Apollo and Sales Navigator tutorial he points to a video called 'How to Start an AI Automation Agency' by someone he calls Ali (link to be in the description). He will not re-cover it."
+    ],
+    "claimed_result": "He calls this a very good option. No numbers given.",
+    "example_or_template": "Not given in this part.",
+    "numbers_or_rules": "LinkedIn limit is 50 messages a month; Apollo removes that limit. Apollo pricing is not given."
+   },
+   {
+    "name": "Credibility checklist before any outreach",
+    "what_it_is": "Repeated rule that every channel you reach out from must look professional before you send a single message, or prospects will not reply.",
+    "steps": [
+     "Make your LinkedIn profile professional.",
+     "Put your portfolio and every project on it, so you have proof of work.",
+     "Make sure the email and any other outreach channel are fully set up and look right.",
+     "Only then start messaging."
+    ],
+    "claimed_result": "He says without credibility and proof of work people will not take you seriously or hire you, and outreach is wasted because they will not reply.",
+    "example_or_template": "Not given.",
+    "numbers_or_rules": "Applies to every channel you use, not just LinkedIn."
+   },
+   {
+    "name": "Ask Claude or ChatGPT to choose your Sales Navigator filters and niches",
+    "what_it_is": "Instead of guessing filters such as headcount, describe your offer to an AI chat tool and ask which LinkedIn Sales Navigator filters to use. He also suggests asking Claude which types of businesses need websites to pick Google Maps niches.",
+    "steps": [
+     "Open Claude or ChatGPT.",
+     "Describe your offer and ask which Sales Navigator filters you should use.",
+     "Apply the suggested filters in Sales Navigator."
+    ],
+    "claimed_result": "None given.",
+    "example_or_template": "Prompt: 'I want an offer building voice agents for small companies. Can you tell me which LinkedIn Sales Navigator filters I should use?'",
+    "numbers_or_rules": "None."
+   },
+   {
+    "name": "Teaser: secret method to raise conversion (details come later)",
+    "what_it_is": "He promises a 'secret method' later in the video to lift lead conversion, but says it takes more effort. Nothing about what it is appears in this part.",
+    "steps": [
+     "Not described in this part; it is covered in the later 'secret method' chapter."
+    ],
+    "claimed_result": "Raises a 2-5% figure to 5-10% (which rate this refers to, reply or conversion, is unclear in the transcript).",
+    "example_or_template": "None in this part.",
+    "numbers_or_rules": "Message quality also drives these rates; he says the message chapter comes later."
+   }
+  ],
+  "message_scripts": [
+   "No full outreach message is written out in this part; he says the message is covered later in the video.",
+   "Paraphrased pitch idea for businesses with no website (Meta Ad Library): offer to build them a website.",
+   "Paraphrased pitch idea for businesses already running ads (Meta Ad Library): 'You already pay for ads; to raise conversions, add a voice-agent follow-up, or an automation that sends an email or message the moment someone clicks through to your website.'",
+   "AI prompt he recommends for LinkedIn filters: 'I want an offer building voice agents for small companies. Can you tell me which LinkedIn Sales Navigator filter I should use?'"
+  ],
+  "tools_mentioned": [
+   "Google Maps",
+   "Claude",
+   "ChatGPT",
+   "Meta (Facebook) Ad Library",
+   "Instagram",
+   "Linktree",
+   "Apify",
+   "Zapier",
+   "LinkedIn Premium",
+   "LinkedIn Sales Navigator Core",
+   "Apollo.io",
+   "Gmail",
+   "Video: 'How to Start an AI Automation Agency' (by Ali; link in the video description)"
+  ],
+  "unclear_or_garbled": [
+   "The file starts partway through Method 1 (Google Maps), so its beginning, and exactly which search tool returned the restaurant lists and 'find more' results, are not in this part.",
+   "Response and conversion numbers are mixed: he says about 100 emails gives 5-10 replies and 1-2 clients, calls 1-2% a good conversion rate, and later says 'from 2-5% to 5-10%'. Which rate each figure refers to is unclear.",
+   "LinkedIn client value is garbled in the transcript ('$000 $2000'); it probably means roughly $1000-$2000 per client, but that is a guess, not stated.",
+   "'Try for $' is probably 'Try for $0' on the Sales Navigator trial. The Hindi text also has a garbled word before 'quite expensive' around the $90 per month price.",
+   "Tool names are garbled in the Hindi track: LinkedIn appears as 'Linkin' or 'Lindin', Apify as 'एपi', Zapier as 'zpियर', ChatGPT as 'चार जीबीटी', and Claude as 'क्लॉट'. I read them by context.",
+   "Business names seen in the Ad Library demo ('Perfect House Personalise', 'Aristotle Investments', 'Honey Trip Network') and the 'card store' on Facebook are unclear and unimportant.",
+   "'Ali bhai' who made the recommended Apollo and Sales Navigator video: full name and channel not clear in the transcript.",
+   "The 14-day-or-25-day cancel timing: he says cancel after 25 days 'or however many days'; the exact trial length in the Sales Navigator offer is stated as 1 month.",
+   "The 50 messages a month limit is described as a direct-message cap; the exact LinkedIn product (message vs InMail vs connection note) is unclear.",
+   "The file ends mid-Method 4 (LinkedIn), right after the tip to ask Claude or ChatGPT for filters; nothing after that is in this part."
+  ]
+ },
+ {
+  "part": 3,
+  "topics": [
+   "End of the LinkedIn Sales Navigator method: let Claude decide the filters (job titles, lead filters, account filters)",
+   "Sales Navigator cost (about $100 a month) and the first-month trial tactic",
+   "Why to automate lead finding, and the two tools: Zapier and Apify",
+   "Scraping Google Maps with an Apify actor, filtered to businesses with no website",
+   "Building the Zapier workflow with Copilot: Apify trigger to Google Sheets rows",
+   "Daily scheduling of lead pulls (example: 50 leads at 9 AM)",
+   "Auto-outreach by email or WhatsApp Business from the same Zap (mentioned, not built here)",
+   "Extending the method to Instagram hashtag scraping and the Meta Ad Library scraper",
+   "Adding an AI agent in Zapier to browse each lead's website and judge it",
+   "Rough economics claim: $4 per 1,000 scraped leads versus a few orders"
+  ],
+  "strategies": [
+   {
+    "name": "Let Claude choose the Sales Navigator filters (LinkedIn Sales Navigator, end of the method)",
+    "what_it_is": "Instead of working out LinkedIn Sales Navigator filters yourself, you describe your situation to Claude and it returns the exact filters to apply. The speaker's reason: the more of this thinking you hand to AI, the more time you free for other work, such as improving your portfolio. This part joins the method mid-way. The start of the segment is cut off, so how he opened it is unclear in the transcript.",
+    "steps": [
+     "Tell Claude your situation, the service you offer and who your audience is. His example target: healthcare companies, individual clinics and individual doctor offices.",
+     "Claude replies with specific filter options. He names job titles such as practice manager and office manager to enter in the job-title field. It also gives separate 'lead filters' and 'account filters'.",
+     "Enter those filters directly into Sales Navigator and pull the leads.",
+     "The speaker's point about quality: LinkedIn gives more professional, more useful people than other sources."
+    ],
+    "claimed_result": "No numeric result. He says Claude gave 'very specific options' and that this should be good enough to start from.",
+    "example_or_template": "Prompt content, paraphrased: here is my situation, here is the service I offer, here is my audience (healthcare companies, individual clinics, doctor offices); tell me which filters to apply. Example titles in the output: practice manager, office manager.",
+    "numbers_or_rules": "Job titles go in the job-title filter, and the lead and account filters are applied together. Claude's full list is not read out in this part."
+   },
+   {
+    "name": "Sales Navigator costs money, so use the trial month heavily",
+    "what_it_is": "A cost note and a tactic about LinkedIn Sales Navigator. Leads there are not free, and he recommends extracting as many as you can in the first (trial) month.",
+    "steps": [
+     "Budget about $100 a month for Sales Navigator.",
+     "In the first month, pull as many leads as you can.",
+     "He says a new account could be used to get another trial, but he personally does not recommend it because of legal problems. Only mentioned as something others could do."
+    ],
+    "claimed_result": "None.",
+    "example_or_template": "",
+    "numbers_or_rules": "About $100 per month. A first-month trial is implied. He says he would not recommend repeating the trial with new accounts."
+   },
+   {
+    "name": "Automated lead-finding stack: Apify plus Zapier",
+    "what_it_is": "A two-tool setup that finds leads automatically and files them in a Google Sheet. Apify does the scraping and Zapier connects it to Google Sheets. He also says it can later connect to email or WhatsApp outreach.",
+    "steps": [
+     "Create an Apify account (link in the video description).",
+     "Create a Zapier account (link in the description).",
+     "Build the scrape first in Apify, then the automation in Zapier, then a Google Sheet to hold the leads.",
+     "If you don't want to pay anything, do the same work by hand (slower). If you want to save time, you pay."
+    ],
+    "claimed_result": "The finished demo sheet holds restaurant names and phone numbers. He says Apify can also return emails and other details.",
+    "example_or_template": "",
+    "numbers_or_rules": "Zapier: roughly a one-month free trial, then about $20 a month. He advises cancelling before billing if it isn't useful. Apify: $5 free credit at the start, then pay as you go. He says the $5 gives you 'a good amount' of leads. These costs are his estimates, spoken loosely ('I believe')."
+   },
+   {
+    "name": "Scrape Google Maps for businesses with no website (Apify)",
+    "what_it_is": "Use an Apify Google Maps scraper to pull local businesses in a chosen city, filtered to those with no website. The idea is that they are the potential clients for web or digital services. His demo target was restaurants in New York.",
+    "steps": [
+     "Open the Apify console and go to the Apify Store.",
+     "Search 'maps'. Several Google Maps scrapers appear. He picks the one with the most reviews (about 1,800 reviews, 4.7 rating, versus another with about 200), reasoning that more reviews means better.",
+     "Open the actor page. It shows price and output fields.",
+     "Click 'Use Actor'. Fill the input: search term 'restaurant', location 'New York', number of places 10 for the test (more places cost more).",
+     "Open 'Add on search filters and categories' and set the website filter to 'scrape places without a website'.",
+     "Click Save and Start. The run returns the restaurants.",
+     "He only needs two fields, name and phone. The actor also gives address and, optionally, menu and opening hours.",
+     "Run it once so that Zapier can import that run in the next step."
+    ],
+    "claimed_result": "The 10-place test run returned a good list of restaurants with names and phone numbers.",
+    "example_or_template": "Input used: search = restaurant, location = New York, count = 10, filter = no website.",
+    "numbers_or_rules": "Cost per the actor page: about $4 for 1,000 places (the transcript wording is slightly garbled, around '1000 jobs/places'). Cost scales with the number of places. Rule he gives: choose the actor with more reviews."
+   },
+   {
+    "name": "Zapier workflow built with Copilot: Apify results into Google Sheets",
+    "what_it_is": "A Zap that fires when the Apify scrape succeeds and writes each lead as a row in a Google Sheet. Zapier's AI helper (Copilot) builds most of it.",
+    "steps": [
+     "Make a Google Sheet first (his is called 'Restaurant leads'). Put header names in row 1 (for example Lead, Phone, and any other fields you want). Without headers the mapping gets confused.",
+     "In Zapier, use Copilot and describe the automation in plain language (prompt below).",
+     "Copilot asks follow-up questions. He had to say explicitly that Apify is the tool to use for getting the leads, and then it confirmed both tools were available and showed a basic plan.",
+     "Continue with the Zap. The trigger is the Apify node: select the Google Maps scraper actor and set status to 'succeeded'.",
+     "Click Test trigger. The leads from the last Apify run appear (this is why he ran the actor once).",
+     "Add the Google Sheets action 'Create Multiple Spreadsheet Rows'. Connect your Google account, pick Google Drive, the 'Restaurant leads' spreadsheet and the worksheet 'Sheet1'.",
+     "Map the lead fields (name, phone, etc.) to the columns. He tells Copilot that the actor and the sheet are set and asks it to make sure all leads are stored properly.",
+     "Test: he deleted all rows, re-ran, and the sheet repopulated correctly.",
+     "Fix: the address was written into the email column, so he re-mapped that column to 'address'."
+    ],
+    "claimed_result": "The automation worked: the sheet filled with restaurant names, phones and addresses. He reports that it 'ran fine' after the one mapping fix.",
+    "example_or_template": "Zapier Copilot prompt (spoken, lightly cleaned up): 'I want to make an automation where we get leads which are restaurants that don't have a website in New York. And once we have those leads we will store them inside a Google Sheets file.'",
+    "numbers_or_rules": "Header row in the sheet is required. Copilot is described as improving slowly, so check what it builds. Source: the Apify 'Google Maps' actor run with status Succeeded."
+   },
+   {
+    "name": "Schedule the lead pull to run daily",
+    "what_it_is": "Make the Zap run on a timer so new leads arrive every day with no manual work. He describes it but does not build it in this part.",
+    "steps": [
+     "Tell Zapier Copilot to run the automation on a schedule.",
+     "Copilot then builds the scheduled version for you."
+    ],
+    "claimed_result": "Each day you get fresh leads.",
+    "example_or_template": "His example: every morning at 9:00, pull 50 leads.",
+    "numbers_or_rules": "Example numbers only: 9:00 AM daily and 50 leads per run. Remember that more places per run costs more Apify credit."
+   },
+   {
+    "name": "Add automatic outreach (email or WhatsApp) after the lead is saved",
+    "what_it_is": "After the lead lands in the sheet, the same Zap can message the business by email or WhatsApp. He only describes this here and promises a more advanced example later in the video. That later part is not in this file.",
+    "steps": [
+     "For WhatsApp, use the WhatsApp Business option inside Zapier and connect your own WhatsApp account.",
+     "Send the message from the Zap straight to the lead's phone number.",
+     "He says email automation works the same way."
+    ],
+    "claimed_result": "Reaching out to leads becomes part of the same automation. No numbers claimed. His wording on how WhatsApp Business sends messages ('send free') is garbled in the transcript.",
+    "example_or_template": "No message text is given in this part. The message copy comes in a later part of the video.",
+    "numbers_or_rules": "Unclear in the transcript whether WhatsApp sending is really free or limited. Treat the cost claim as unverified."
+   },
+   {
+    "name": "Reuse the same pipeline for other sources: Instagram hashtags and Meta Ad Library",
+    "what_it_is": "The same Apify-to-Zapier pattern works with other scrapers in the Apify Store. He shows two as examples without building them.",
+    "steps": [
+     "Instagram profile scraper: search by hashtags, for example #SanFrancisco together with #restaurant, to get San Francisco restaurants. Store them in a spreadsheet, or email or message them.",
+     "Meta Ad Library scraper: use it to automate the ad scraping he covered earlier in the video. The output includes the link URL of each ad.",
+     "In Zapier, check that link URL. If it points to Instagram or Facebook, the business most likely has no website of its own, so they become a target to contact.",
+     "Choose any other scraper in the store for other lead types."
+    ],
+    "claimed_result": "None given, only 'you can do any lead automation this way'.",
+    "example_or_template": "Hashtag example: #SanFrancisco and #restaurant. Check logic: does the ad's link URL contain instagram.com or facebook.com? If yes, flag as probably no website.",
+    "numbers_or_rules": "Rule of thumb: ad link goes to Instagram or Facebook means the business likely has no website. He says he is not showing every scraper, only the basic idea."
+   },
+   {
+    "name": "Add an AI agent step that visits each lead's website and judges it",
+    "what_it_is": "An optional extra step in Zapier: an AI agent (he calls it 'AI by Zapier' or an agent) with the browse-the-web option switched on. It opens the lead's website, analyzes it, and the outreach is then tailored to how good the site is. The transcript ends mid-sentence, so how exactly he uses the result is cut off.",
+    "steps": [
+     "Add an AI agent step to the Zap (he also mentions adding Claude).",
+     "Enable the 'browse the web' option.",
+     "Let it open each lead's website and analyze it automatically.",
+     "Choose or write the outreach depending on what the website is like (end of the file cuts off here)."
+    ],
+    "claimed_result": "None.",
+    "example_or_template": "",
+    "numbers_or_rules": "Unclear in the transcript: what exactly is checked and what the follow-up action is."
+   },
+   {
+    "name": "Cost-versus-return argument for scraping at volume",
+    "what_it_is": "His reasoning for why paying for the scraper is worth it.",
+    "steps": [
+     "Scrape 1,000 businesses for about $4.",
+     "Contact all of them, for example by email.",
+     "Expect a few of them to place orders."
+    ],
+    "claimed_result": "If you get five orders, that is about $5,000 earned against about $4 invested. The per-order amount is garbled in the transcript (it reads '$0000'), so roughly $1,000 each is only inferred from his $5,000 total.",
+    "example_or_template": "",
+    "numbers_or_rules": "$4 per 1,000 leads. Assumption in his example: 1,000 emails sent leads to 5 orders (about a 0.5% conversion). Treat this as an illustration, not a measured result."
+   }
+  ],
+  "message_scripts": [
+   "No outreach message text (email, WhatsApp, DM) appears in this part. The only script-like text is the Zapier Copilot prompt: 'I want to make an automation where we get leads which are restaurants that don't have a website in New York. And once we have those leads we will store them inside a Google Sheets file.' Follow-up prompt to Copilot once the actor and sheet were set: 'I have added the actor in Apify and also added the spreadsheet in the Sheets node. Now make sure that all the leads are properly stored in the spreadsheet.'",
+   "Prompt idea for Claude to get Sales Navigator filters (paraphrased, not read out word for word): describe your situation, the service you offer and your audience, for example targeting healthcare companies, individual clinics and doctor offices, then ask which lead filters and account filters to apply. Output examples he names: practice manager and office manager as job titles."
+  ],
+  "tools_mentioned": [
+   "LinkedIn Sales Navigator (about $100 a month)",
+   "Claude (to generate the Sales Navigator filters)",
+   "Zapier (about $20 a month after a free trial of roughly a month)",
+   "Zapier Copilot (AI workflow builder)",
+   "AI by Zapier / AI agent step with browse-the-web option",
+   "Apify (web scraping platform, $5 free credit)",
+   "Apify Google Maps scraper (about 1,800 reviews, 4.7 rating; about $4 per 1,000 places)",
+   "Apify Instagram profile scraper",
+   "Apify Meta Ad Library scraper",
+   "Google Sheets (Create Multiple Spreadsheet Rows action)",
+   "Google Drive",
+   "WhatsApp Business (via Zapier)",
+   "Email automation (via Zapier)"
+  ],
+  "unclear_or_garbled": [
+   "The file begins mid-sentence in the LinkedIn Sales Navigator segment, so the start of that explanation is missing.",
+   "The file is one long unbroken line with no timestamps, so exact minute marks cannot be given.",
+   "The per-order value in the $4-versus-orders example is garbled ('$0000'). Only the '$5,000 for five orders' total is clear.",
+   "The Apify cost line is garbled ('1000 jobs ... $4'). Read as about $4 per 1,000 places scraped.",
+   "Tool names are garbled by the machine dub: Zapier appears as 'ज़पियर' and 'Zp', Apify as 'एपीएफाई' and 'App', Sales Navigator as 'Lindin sales navigator', and Copilot as 'को पायलट' or 'कोट'. All are interpreted from context.",
+   "The Zapier trigger and step names (for example 'Finish Actor Run') are not spoken clearly. Only 'select actor' and 'status succeeded' are heard.",
+   "The WhatsApp Business sentence is garbled ('send free from message'), so whether sending is free or limited is unclear.",
+   "The final AI-agent sentence is cut off, so what the agent does after analyzing the website is unclear.",
+   "Prices ($100 a month for Sales Navigator, $20 a month for Zapier, $5 Apify credit) are given loosely with 'I believe' or 'around', so they may be out of date."
+  ]
+ },
+ {
+  "part": 4,
+  "topics": [
+   "End of the lead-finding automation section: LinkedIn profile scrapers on Apify, email extraction, automation as a sellable skill (the file starts mid-sentence)",
+   "What message to send: have AI write the email, keep it to 3-4 sentences, one observation, one link, one call to action",
+   "How to build a Google Calendar booking link",
+   "Free-first offer: the client pays only after seeing the result (Western clients only)",
+   "The secret method: a personalized 1-2 minute video per lead",
+   "Best variant: build a quick demo site with Claude and show it in the video",
+   "When to follow up: day 3 and day 7, then stop",
+   "How much to charge for AI web development, WhatsApp agents and voice add-ons",
+   "Payment terms: 50% deposit, and the beginner exception",
+   "Homework: pick 20 businesses on Google Maps in one day, work manually first, then automate"
+  ],
+  "strategies": [
+   {
+    "name": "Tail of lead-finding automation: LinkedIn profile scrapers and email extraction (Apify + Zapier)",
+    "what_it_is": "The first lines of this part finish the automation section from the previous part. Apify has LinkedIn profile scrapers that return basic profile data, and you can use that data to find people's emails. The speaker says Apify plus Zapier let you build fairly extensive lead-finding automation. Automation is also a skill you can sell, if you don't want to chase clients yourself.",
+    "steps": [
+     "Search for a profile with a LinkedIn profile scraper on Apify to get basic profile data.",
+     "Use that data to find the person's email.",
+     "Link the scrapers into an automation with Zapier (named as the tool pair; the exact workflow is in the previous part).",
+     "Optionally sell the same kind of automation to other people."
+    ],
+    "claimed_result": "None numeric. He says the automation takes time to build but saves time in the long run. The opening fragment says you may or may not offer your service if a business's website is already very good.",
+    "example_or_template": "",
+    "numbers_or_rules": "No numbers. The first sentence is cut off, so the full rule about skipping businesses with a good website is unclear in the transcript."
+   },
+   {
+    "name": "Never write outreach emails yourself: have Claude or ChatGPT write them",
+    "what_it_is": "His number-one messaging rule. He says many people in India and Pakistan write bad emails, for example putting the whole email in the subject line or leaving the subject empty. Describe the situation to an AI chatbot (he demos Claude, also names ChatGPT) and let it write a professional email. Only write it yourself if you are already good at professional emails.",
+    "steps": [
+     "Open Claude (or ChatGPT).",
+     "Describe the full situation: who you are emailing and what you found about them.",
+     "Ask it to write the email, including the offer.",
+     "Review it, then ask it to shorten it or add your calendar link.",
+     "Send it."
+    ],
+    "claimed_result": "None given.",
+    "example_or_template": "Demo prompt, paraphrased: write an email for 'Ali's restaurant' (a made-up name), telling him you came across his restaurant on Google Maps and noticed it didn't have a website. Make an appealing offer to build the website, just like a demo (a link to your demo site is attached), which can help him convert more customers. Second prompt: make this a bit shorter and add my calendar link.",
+    "numbers_or_rules": "Prompt well. The email needs a proper subject line and a body."
+   },
+   {
+    "name": "Short email formula: one observation, one link, one call to action",
+    "what_it_is": "Keep the pitch to a short paragraph that explains the whole picture. He says nobody reads long emails.",
+    "steps": [
+     "Open with one specific observation about the lead (example: you found their restaurant on Google Maps and they have no website).",
+     "Make one clear offer (you will build them a website like your demo).",
+     "Include one specific link for them to click: your demo website. He says to put the real demo link in, not a placeholder.",
+     "End with a single call to action: your calendar booking link, or alternatively your phone number so they can call.",
+     "Send it by email, or paste the same short message into WhatsApp or Instagram DMs."
+    ],
+    "claimed_result": "None given. He calls it 'a very good, simple pitch' that is short enough to get read.",
+    "example_or_template": "Reconstructed from his description, not verbatim: 'Hi [Name], I came across [Business] on Google Maps and noticed you don't have a website. I built a quick demo like this [demo link] that could help you win more customers. You only pay if you like the result. If you're interested, book a quick call here: [calendar link].' The transcript garbles the actual email Claude produced, so the exact wording is unclear.",
+    "numbers_or_rules": "3 to 4 sentences maximum. Exactly one observation, one link, one call to action. He says the same short message works on WhatsApp and Instagram."
+   },
+   {
+    "name": "Create a Google Calendar booking page so leads can book a call themselves",
+    "what_it_is": "A step-by-step for making the calendar link used in the call to action. Leads pick a slot on your schedule without back-and-forth.",
+    "steps": [
+     "Open Google Calendar.",
+     "Click the 'Booking pages' option.",
+     "Click the plus button to create a new booking page.",
+     "Set your availability.",
+     "Add a title, for example 'Consultation'.",
+     "Set the appointment duration, for example 30 minutes.",
+     "Finish the settings, press Next and save.",
+     "Copy the link it gives you and attach it to your offer message."
+    ],
+    "claimed_result": "Leads can schedule meetings on your calendar automatically.",
+    "example_or_template": "Title: 'Consultation'; duration: 30 minutes.",
+    "numbers_or_rules": "30-minute slot given as the example."
+   },
+   {
+    "name": "Free-first offer: the client pays only after seeing the result",
+    "what_it_is": "Offer to do the work (or a demo) for free first, and the client pays only if they like the result. He calls it a very good tactic for beginners with few portfolio projects and little social proof, but only for Western clients.",
+    "steps": [
+     "Say in the pitch that they only pay after they see the result.",
+     "Build the demo or work for them first.",
+     "Show them the result.",
+     "If they like it, they pay; only then hand over the real website (see the payment terms strategy)."
+    ],
+    "claimed_result": "He says Western clients are generally honest. Even if they don't love the result, many will still pay because they see you put in effort, and if they like it they pay willingly. No numbers.",
+    "example_or_template": "",
+    "numbers_or_rules": "Use it for Western clients (US and similar). Do NOT do this with clients in India or Pakistan: he says people will take the website and run, and you will lose your work for free."
+   },
+   {
+    "name": "The 'secret sauce': a personalized 1-2 minute video for every lead",
+    "what_it_is": "He calls this a game changer for conversion. Record a short screen-share video made for that one lead and send it with the message.",
+    "steps": [
+     "Record a 1 to 2 minute video for each lead.",
+     "Show the lead's website on screen. If they have no website, show their Google Maps listing instead.",
+     "Explain which points you would highlight and how you would build their website.",
+     "Keep your face camera on at the bottom of the screen to build trust.",
+     "Record with Loom (mentioned earlier in the video) or OBS (he is using OBS to record this video).",
+     "Attach or link the video in your email or message."
+    ],
+    "claimed_result": "Shows effort and proves a real person is behind the service, not a bot or automated message, so he says conversion rates go up a lot ('trust me'). He says he has personally received 2 to 3 such videos and replied to every one and discussed the service.",
+    "example_or_template": "",
+    "numbers_or_rules": "1 to 2 minutes long. It does not scale: realistic volume is about 10, 15 or 20 leads a day, because each video is made one by one. He recommends it especially for beginners with a weak portfolio or little social proof. No conversion percentages given."
+   },
+   {
+    "name": "Best variant: build the lead's website first with Claude, then show it in the video",
+    "what_it_is": "Instead of only describing what you would do, quickly build a real website for the lead using Claude, then show it in the personalized video.",
+    "steps": [
+     "Use Claude to quickly build a website for that business.",
+     "In the video, show it and say 'I made this website for you'.",
+     "Say you can make tweaks for them.",
+     "Discuss the specific cost and pricing with them."
+    ],
+    "claimed_result": "He says this is the best option, but it takes the most effort and time.",
+    "example_or_template": "",
+    "numbers_or_rules": "Same limit as above: roughly 10 to 20 leads a day, because it is slow."
+   },
+   {
+    "name": "Follow-up cadence: two follow-ups at day 3 and day 7, then stop",
+    "what_it_is": "Never send just one email. Follow up exactly twice, then leave the lead alone.",
+    "steps": [
+     "Send the first email.",
+     "Follow up a first time 3 days later.",
+     "Follow up a second time 7 days later.",
+     "Stop after that.",
+     "Use Claude to write the follow-up: ask it for a follow-up email after three days that slightly modifies the pitch and makes it more attractive. He says it gave three options to choose from.",
+     "Accept rejection and non-replies as normal and do not take stress over it."
+    ],
+    "claimed_result": "Reasons he gives: the first email may have been missed, or the pitch may not have been understood, so a tweaked pitch gives a second chance. He says you will get a lot of rejection and have to accept it.",
+    "example_or_template": "Prompt to Claude, paraphrased: 'Write me a follow-up email after three days, slightly modifying the pitch and making it more attractive.' Claude returned three options.",
+    "numbers_or_rules": "First follow-up after 3 days, second after 7 days; maximum 2 follow-ups. Whether 'seven days' is counted from the first email or from the first follow-up is unclear in the transcript."
+   },
+   {
+    "name": "Pricing guide for AI-built web development, WhatsApp agents and voice add-ons",
+    "what_it_is": "Rough price ranges he gives, split by local (India/Pakistan) and international (US/Western) clients. He stresses they are estimates, not exact rules.",
+    "steps": [
+     "Decide which tier the job is: one-page site, multi-page site with backend or CRM, or a WhatsApp or voice agent.",
+     "Quote inside the range for the market you sell to.",
+     "Adjust up or down for the client's business size and revenue: bigger client, charge more; small company or startup, charge less."
+    ],
+    "claimed_result": "None; these are suggested rates.",
+    "example_or_template": "",
+    "numbers_or_rules": "One-page or landing site (mostly front-end design, images, text): local about 15,000 up to something unclear (transcript says '400' after 15,000, likely 40,000; unclear), international $300 to $600. Multi-page site with a backend, maybe a CRM and Zapier automation: local from a garbled low figure (transcript says '500', probably 50,000; unclear) up to 1,20,000, maybe up to 1.5 lakh for a bigger client; international $800 to $2,000. WhatsApp agent or voice add-on: local 40,000 to 1 lakh; international $600 up to a garbled figure ('एक $100', probably around $1,000; unclear) for something more detailed. Local currency is not named, though he is talking about India and Pakistan."
+   },
+   {
+    "name": "Payment terms: 50% deposit, with a beginner exception",
+    "what_it_is": "His final pricing rule on when to get paid, and how to protect trust when you are new.",
+    "steps": [
+     "As a rule, take a 50% deposit up front, before delivering the website.",
+     "Beginner exception: if you are new, especially with international clients, show the finished result first and then expect payment. He says this lets the client trust you and not suspect you.",
+     "After the client has seen the result and agrees, take the payment, and only then deliver the real thing: host the website on the domain and hand over everything.",
+     "As you collect multiple clients, gradually start asking for the 50% deposit up front."
+    ],
+    "claimed_result": "He says you might get burned once or twice, which is not a big problem, and that doing the work first gives the client full trust in you.",
+    "example_or_template": "",
+    "numbers_or_rules": "50% deposit up front. He clarifies that 'deliver' means showing the result, not handing over the full website, domain and hosting before payment."
+   },
+   {
+    "name": "Daily action task: list 20 businesses on Google Maps",
+    "what_it_is": "The homework he gives at the end: start manually, build the habit, and add automation later.",
+    "steps": [
+     "Open Google Maps.",
+     "Identify 20 businesses in your city you could offer your services to. If you live in a third-world country, you can pick businesses in a US city instead and offer your service to them.",
+     "Do 20 on the first day; he says not to do more than 20.",
+     "Keep doing it consistently so the results add up; replies and then clients will come eventually.",
+     "Work manually at first to learn, then add automations step by step and eventually automate the whole lead-mining process."
+    ],
+    "claimed_result": "Eventually you will start getting responses and then clients. No timeline or numbers given.",
+    "example_or_template": "",
+    "numbers_or_rules": "20 businesses on day one, not more than 20."
+   }
+  ],
+  "message_scripts": [
+   "Prompt to Claude for the first email (paraphrased from the demo): 'Write an email for Ali's restaurant, telling him you came across his restaurant on Google Maps and noticed it didn't have a website. Make an appealing offer to build a website just like this demo [demo link], which can help him convert more customers.' He adds a note that they only pay after they see the result.",
+   "Second prompt to Claude: 'Make this a bit shorter and add my calendar link' (he pasted a dummy calendar test link).",
+   "Reconstructed short pitch (his description, not verbatim): 'Hi [Name], I came across [Business] on Google Maps and noticed you don't have a website. I built a quick demo like this [demo link]. You only pay if you like the result. Book a 30-minute call here: [calendar link].' He says the same short text can go on WhatsApp or Instagram.",
+   "Follow-up prompt to Claude (paraphrased): 'Write me a follow-up email after three days, slightly modifying the pitch and making it more attractive.' Claude returned three options; the exact wording is not in the transcript.",
+   "Personalized video line (paraphrased): 'This is the website I made for you; I can make a few tweaks, and we can talk about the specific cost.'"
+  ],
+  "tools_mentioned": [
+   "Claude (recommended for writing emails, building quick demo websites and writing follow-ups)",
+   "ChatGPT",
+   "Google Maps (finding businesses, and showing the listing in a video when there is no website)",
+   "Google Calendar Booking pages (the calendar link)",
+   "Loom (screen and face-cam video)",
+   "OBS (alternative recorder; he is using it for this video)",
+   "Apify (LinkedIn profile scrapers)",
+   "Zapier (named as 'Zpियर', used with Apify for lead automation)",
+   "WhatsApp and Instagram (channels for the same short message)",
+   "CRM (mentioned only as part of a multi-page site build, no specific product)"
+  ],
+  "unclear_or_garbled": [
+   "The file starts mid-sentence: the first lines wrap up the lead-finding automation section. The line about offering your service or not when the website is already very good is cut off.",
+   "Local one-page price: '15,000 से लेकर 400 के दरमियान' is garbled. It is probably 15,000 to 40,000, but the currency (INR or PKR) is not stated.",
+   "Local multi-page price: '500 से लेकर 1,20,000 तक ... ₹1.5 लाख' is garbled. The low end is probably 50,000. The upper range is up to 1,20,000, maybe 1.5 lakh for a bigger client.",
+   "International WhatsApp-agent or voice add-on price: '$600 से लेकर एक $100' is garbled. The low end is $600; the upper figure is unclear, possibly around $1,000.",
+   "The text of the demo email Claude produced is garbled in the transcript ('ओनली पे हैव टू रिसीव इट'). The exact wording of the 'only pay after seeing the result' line is unclear.",
+   "'Does not scale 10 per day realistic' is garbled. He then says you can reach roughly 10, 15 or 20 leads a day with personalized videos, so the daily limit is a rough estimate.",
+   "The 7-day follow-up is not clearly counted from the first email or from the first follow-up.",
+   "The 'secret method' chapter at 46:40 appears to be the personalized video only; no other secret technique is named. He gives no conversion percentages or reply rates anywhere in this part.",
+   "Tool names like Zapier and Lindin (LinkedIn) are spelled in Devanagari and may be mis-transcribed."
+  ]
+ }
+]

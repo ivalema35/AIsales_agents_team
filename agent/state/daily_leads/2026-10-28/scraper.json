@@ -1,0 +1,657 @@
+{
+ "campaign": "Website + Google profile + WhatsApp enquiry for local clinics (Gujarat)",
+ "need": "Local clinics (dentists, skin, eye, physio) that have no proper website or a very weak online presence lose patients who search on Google and WhatsApp",
+ "plan_round1": {
+  "need_analysis": {
+   "summary": "Independent clinics (dental, skin, eye, physio) in Mehsana, Ahmedabad and Gandhinagar that have no real website, or only a dead, expired or placeholder one, lose patients who search Google or WhatsApp. We sell a website, a complete Google Business Profile and an auto-answered WhatsApp enquiry/appointment button.",
+   "who_has_this_need": "Doctor-owned single-location clinics and small 1-3 doctor practices. They are well reviewed on Google, but their Maps listing has no website link, or the link points to a dead/placeholder page or to a social page, a portal profile or a free site builder.",
+   "observable_signals": [
+    "Google Maps listing with a phone number but NO website field",
+    "Maps website field points to a dead, parked, expired or 'coming soon' domain",
+    "Maps website field is only a Facebook/Instagram page, a Practo/Justdial profile, or a free builder subdomain (business.site, wixsite, blogspot, weebly). Google's old business.site pages were shut down, so those links are often dead",
+    "Listing is unclaimed, has few photos, no hours, or has reviews that the owner never answers",
+    "Many Google reviews and a good rating, so the clinic has real patient demand but weak online presence",
+    "Listing has a mobile number that looks like a personal number rather than a landline or call centre",
+    "Review text mentioning 'could not find number/website', 'hard to book', 'no online appointment'"
+   ],
+   "where_signals_show": [
+    "Google Maps place pages (website, phone, claimed status, reviews, photos)",
+    "The business's own website URL (fetching it shows whether it is dead or a placeholder)",
+    "Justdial and Practo listings (only to cross-check the clinic name and the doctor-owner)"
+   ],
+   "disqualifiers": [
+    "Hospital chains and large multi-speciality hospitals (Apollo, HCG, Zydus, Sterling, Shalby, etc.)",
+    "Doctors who exist only as a profile on Practo/Justdial/Lybrate with no clinic of their own",
+    "Dental, skin or other franchise chains (Clove, Sabka, Kaya, etc.)",
+    "Agencies, software vendors, freelancers and competitors",
+    "Anything outside Mehsana, Ahmedabad or Gandhinagar",
+    "Listings that are permanently closed",
+    "Listings whose only phone is a call centre, a portal virtual number or a booking bot",
+    "Clinics with a modern working website and a booking widget (no need)",
+    "Leads already in the do-not-return list"
+   ]
+  },
+  "considered": [
+   {
+    "source": "Google Maps listings via Apify (scraperlink/google-maps-scraper)",
+    "category": "maps and directories",
+    "signal_for_this_need": "Strong. The listing shows website present or absent, plus phone, review count and claimed status. This is the public place where the presence gap shows up.",
+    "verdict": "chosen",
+    "why": "Cheapest way to get hundreds of clinic listings with the website field. We then filter for missing, dead or social-only websites. About $0.00045 per result.",
+    "reachability": "High. The phone is business-published on the listing and is often the doctor's own mobile.",
+    "volume_in_geo": "Very high. Hundreds of clinics per specialty across the three cities.",
+    "cost_usd": 0.11,
+    "risk": "Low. Public data. Actor is small (about 880 monthly users), so verify the output fields on a tiny test first."
+   },
+   {
+    "source": "Google Maps with the website filter 'withoutWebsite' (compass/crawler-google-places), Mehsana only",
+    "category": "maps and directories",
+    "signal_for_this_need": "Very strong. The filter returns only listings with no website, which is the need itself.",
+    "verdict": "chosen",
+    "why": "Run for Mehsana, where small doctor-owned clinics are most common and least covered by agencies. Mehsana is also our home market. About $0.004 per place with the filter.",
+    "reachability": "High. Published phone on the listing.",
+    "volume_in_geo": "Medium. Mehsana is a small city, so expect about 15-30 no-website clinics.",
+    "cost_usd": 0.11,
+    "risk": "Low. Official Apify actor with a very large user base. The filter costs extra and can miss listings with mis-set categories."
+   },
+   {
+    "source": "Website liveness check (free WebFetch/WebSearch of the website URL found on Maps)",
+    "category": "the business's own website",
+    "signal_for_this_need": "Strong. It confirms the dead, expired, parked or placeholder website that the brief names as a valid signal.",
+    "verdict": "rejected",
+    "why": "It cannot find clinics by itself, it can only check them. It is used as a free verification step on the two chosen sources, not as a separate discovery source.",
+    "reachability": "Medium. Contact is only what the site publishes.",
+    "volume_in_geo": "Depends on the input list.",
+    "cost_usd": 0,
+    "risk": "Low. Fetching a public page is read-only."
+   },
+   {
+    "source": "Justdial clinic listings (thirdwatch/justdial-business-scraper or memo23)",
+    "category": "directories",
+    "signal_for_this_need": "Weak to medium. It lists clinics but does not show whether they have a website.",
+    "verdict": "rejected",
+    "why": "It only lists businesses of the right type and does not show the need. The cheap actor costs $0.002 per result, and the one that decodes real phone numbers costs $0.03 per record, which is too expensive for the budget. The numbers are often Justdial virtual numbers that reach a sales desk. Useful only as a cross-check.",
+    "reachability": "Low to medium. The number is often a portal number.",
+    "volume_in_geo": "High",
+    "cost_usd": 0.12,
+    "risk": "Medium. Justdial blocks bots, the data is stale, and there are terms-of-service concerns."
+   },
+   {
+    "source": "Practo doctor listings (shahidirfan or khadinakbar actors)",
+    "category": "listing platform",
+    "signal_for_this_need": "Weak. It shows doctors on a platform, and we must reject doctors who are on a platform only.",
+    "verdict": "rejected",
+    "why": "The target is exactly the doctor who has no clinic website of their own. Practo does not publish a direct number, since it routes through the platform. It cannot show the need.",
+    "reachability": "Low. Platform-routed numbers.",
+    "volume_in_geo": "High",
+    "cost_usd": 0.1,
+    "risk": "Medium. Anti-bot protection and terms of service."
+   },
+   {
+    "source": "Meta Ad Library (clinics running Facebook/Instagram ads)",
+    "category": "ad libraries",
+    "signal_for_this_need": "Medium. A clinic that runs click-to-WhatsApp ads has budget and wants patient enquiries. But it does not show a missing website.",
+    "verdict": "rejected",
+    "why": "It needs a scraper actor and has no geography filter below country. The signal is different (an ad spender), and clinics that advertise often already have an agency.",
+    "reachability": "Medium",
+    "volume_in_geo": "Low for small clinics in these three cities",
+    "cost_usd": 0.1,
+    "risk": "Medium. Platform terms; no personal profile scraping allowed."
+   },
+   {
+    "source": "Gujarat Medical Council / Gujarat State Dental Council registers",
+    "category": "statutory register",
+    "signal_for_this_need": "None. It lists registered practitioners but gives no clinic, no website signal and no contact.",
+    "verdict": "rejected",
+    "why": "It proves a doctor exists but gives no published business contact and no need signal.",
+    "reachability": "Very low",
+    "volume_in_geo": "Very high, but not useful",
+    "cost_usd": 0,
+    "risk": "Low risk, no use. Personal data of individuals."
+   },
+   {
+    "source": "Indian Dental Association / IMA / IAP Mehsana, Ahmedabad and Gandhinagar branch member lists",
+    "category": "association member lists",
+    "signal_for_this_need": "Weak. It lists members but not whether they have a web presence.",
+    "verdict": "rejected",
+    "why": "Lists are often PDFs or members-only, out of date, and give personal details. A web search turned up nothing usable.",
+    "reachability": "Medium. Members' phones can be published.",
+    "volume_in_geo": "Medium",
+    "cost_usd": 0,
+    "risk": "Medium. Privacy of individuals."
+   },
+   {
+    "source": "Job posts for 'clinic receptionist' or 'digital marketing' on Indeed, Naukri and OLX",
+    "category": "job posts",
+    "signal_for_this_need": "Weak. A clinic hiring a receptionist is growing, but this says nothing about a website.",
+    "verdict": "rejected",
+    "why": "Very low volume for independent clinics, and the contact is usually an HR number or a portal.",
+    "reachability": "Low",
+    "volume_in_geo": "Low",
+    "cost_usd": 0.1,
+    "risk": "Medium. Portal terms."
+   },
+   {
+    "source": "Facebook/Instagram business pages of clinics",
+    "category": "social media",
+    "signal_for_this_need": "Medium. A clinic with only a Facebook page has no website.",
+    "verdict": "rejected",
+    "why": "The rules forbid scraping Facebook/Instagram profiles. We only read the Facebook link that the Maps listing itself publishes, as a signal that the website is missing.",
+    "reachability": "Medium",
+    "volume_in_geo": "High",
+    "cost_usd": 0,
+    "risk": "High. Against the project rules."
+   },
+   {
+    "source": "Generic web search (WebSearch) for 'dentist/skin clinic Mehsana'",
+    "category": "news and web search",
+    "signal_for_this_need": "Weak. I tested this: results are doctor-directory pages (Bajaj Finserv Health, Medibuddy) with wrong localities and no phone numbers.",
+    "verdict": "rejected",
+    "why": "Returns portals, not clinics with a visible need. It is only useful to double-check a name.",
+    "reachability": "Low",
+    "volume_in_geo": "Low",
+    "cost_usd": 0,
+    "risk": "Low"
+   }
+  ],
+  "chosen": [
+   {
+    "id": "maps-broad-3cities",
+    "name": "Google Maps clinics in 3 cities, then filter for missing/dead/social-only website",
+    "tool": "apify",
+    "how_to_run": "Actor: scraperlink/google-maps-scraper. First run a tiny test (query [\"dentist\"], location \"Mehsana, Gujarat, India\", num 3, placeDetails false) to confirm the output has title, phone, website, rating, reviewsCount and claimed/closed status. Then the real run with query [\"dentist clinic\",\"skin clinic dermatologist\",\"eye clinic ophthalmologist\",\"physiotherapy clinic\"], locations [\"Mehsana, Gujarat, India\",\"Gandhinagar, Gujarat, India\",\"Ahmedabad, Gujarat, India\"], num 20, gl \"in\", hl \"en\", placeDetails false, reviews false. That is about 240 results at $0.00045, about $0.11. For Ahmedabad, to stay on small clinics, add area terms (Naranpura, Maninagar, Bopal, Chandkheda) in a second small call if the first run is dominated by chains. Post-filter in code: keep a listing if website is empty, OR the website domain is facebook, instagram, practo, justdial, lybrate, a *.business.site, wixsite, blogspot or weebly page. For the rest with a real domain, WebFetch the homepage (free) to detect dead, expired, parked or 'coming soon' pages. Drop chains by name (Apollo, HCG, Zydus, Sterling, Shalby, Clove, Kaya, Sabka etc.) and anything on the do-not-return list. Keep the owner-name check: the doctor's name must show in the listing title or the clinic's own page.",
+    "qualifying_signal": "Maps listing in the geography that is open, has a phone number and at least ~10 Google reviews, and either has no website, or its website is dead, parked, a placeholder, or only a social/portal/free-builder link. Review count and last-review date are the evidence. The evidence date comes from the newest review date (needs 90 days or newer), or from the date of the website fetch.",
+    "est_cost_usd": 0.11,
+    "expected_yield": "About 240 listings, of which about 15-25% should have no or a weak website, so roughly 35-60 raw, and about 5-8 usable after dropping chains, portal numbers and listings that already have a good site.",
+    "fields_to_capture": "clinic name, doctor name from title, specialty, full address, area, city, phone as published (and whether it looks like a mobile), website field as published, website check result, Google rating, review count, newest review date if available, Maps URL, claimed status, closed flag, photos count"
+   },
+   {
+    "id": "maps-nosite-mehsana",
+    "name": "Google Maps 'no website' filter, Mehsana, all four specialties",
+    "tool": "apify",
+    "how_to_run": "Actor: compass/crawler-google-places (official Apify actor). Input: searchStringsArray [\"dentist\",\"skin clinic\",\"eye clinic\",\"physiotherapy clinic\"], locationQuery \"Mehsana, Gujarat\", countryCode \"in\", language \"en\", maxCrawledPlacesPerSearch 7, website \"withoutWebsite\", skipClosedPlaces true, scrapePlaceDetailPage false, scrapeContacts false, maxReviews 0. About 28 places at roughly $0.004 each ($0.003 per place plus $0.001 for the website filter), so about $0.11 for the run. Do not call it again for other cities without a new budget decision, because locationQuery takes one location per run. Afterwards, drop chains and hospitals by name, keep clinics whose title carries a doctor name (Dr.) or a clinic of their own, and confirm the clinic is not a portal-only profile. If a clinic is shown with a Facebook link only, keep it as 'weak website'.",
+    "qualifying_signal": "Open Maps listing in Mehsana, with a phone number, no website link at all, and a visible review count. The 'no website' flag is the signal. The evidence date is the run date plus the newest review date on the listing, so require at least some reviews from the last 90 days.",
+    "est_cost_usd": 0.11,
+    "expected_yield": "About 28 places, of which maybe 8-15 are real independent clinics with no website, and about 3-5 usable after dropping portal profiles, hospitals and call-centre numbers.",
+    "fields_to_capture": "clinic name, doctor name, specialty, address, area, phone as published, Maps URL, rating, review count, newest review date, opening hours present or not, claimed status, categories"
+   }
+  ],
+  "if_low_yield": "If fewer than about 8 usable candidates come out: (1) run the compass actor with website \\\"withoutWebsite\\\" for Gandhinagar and a neighbourhood-level Ahmedabad query (for example \\\"dentist Naranpura Ahmedabad\\\"), if the budget allows a second run; (2) add narrower search terms (orthodontist, implant, dermatologist, hair transplant, cataract, pediatric physiotherapy, women's health) and Gujarati terms (\\\"દાંતનો દવાખાનો\\\", \\\"ચામડીના ડૉક્ટર\\\"); (3) widen the signal to clinics whose website is only a social or portal link and to those with a dead *.business.site link; (4) add Justdial (thirdwatch actor at $0.002 per result, about 50 results) only as a cross-check for names and a second phone number; (5) as a free source, use WebSearch with site: filters such as site:business.site \\\"clinic\\\" Mehsana to find the dead Google Business sites; (6) check nearby towns that fall under the same geography listing such as Kadi, Kalol and Visnagar only if the owner agrees to widen it.\"}"
+ },
+ "plan_round2": null,
+ "sources_used": [
+  "maps-broad-3cities",
+  "maps-nosite-mehsana"
+ ],
+ "run_reports": [
+  {
+   "source_id": "maps-broad-3cities",
+   "found": 11,
+   "report": {
+    "what_i_ran": "scraperlink/google-maps-scraper: a 10-result test (dentist, Mehsana; the actor rejects num below 10), then one real run: 4 queries (dentist clinic, skin clinic dermatologist, eye clinic ophthalmologist, physiotherapy clinic) x 3 locations (Mehsana, Gandhinagar, Ahmedabad), num 20, gl in, hl en, placeDetails false, reviews false, skipClosedPlaces true. Returned 235 listings (title, category, city, phone, website, reviews count, rating, placeId). I read 230 of the 235 rows (the last 5 were not fetched). I filtered by eye for: empty website or social/portal/free-builder website, mobile phone, 10+ reviews, doctor/independent clinic, dropping chains and hospitals. I then used WebFetch on 11 website URLs to check dead/placeholder status.",
+    "worked": "The actor works fine and is cheap. Mehsana and Gandhinagar returned mostly small independent clinics, and about 50 of 235 rows had an empty website field with a phone number. DNS check on a listed domain found one genuinely dead site (mkdental.clinic.net.in). A free-builder one-pager (Goradwala, Wix) was confirmed by opening it. Small physio and skin clinics in Mehsana and Gandhinagar are the richest vein for 'no website'.",
+    "did_not_work": "1) Evidence quality is thin: reviews were off, so there is NO newest-review date for any listing and signal_date is empty for the 'no website' rows; Google Maps pages cannot be rendered by WebFetch (returned only the title 'Google Maps'), so 'no website' comes from scraper output only (evidence_tier signal_from_data) and I could not confirm claimed status, hours or review text. 2) The brief's maxItems 40 would have cut the 240-row plan, so I set maxTotalChargeUsd 0.12 and maxItems 240 and stayed under the 0.13 total. 3) The actor has no claimed/unclaimed field (claimThisBusinessUrl was null on all rows) so claimed status is unknown. 4) Ahmedabad was dominated by clinics that already have real websites; the area-term second call was not made (budget and the Ahmedabad yield was low), so Ahmedabad has no candidates. 5) Many 'no website' rows are hospitals/eye hospitals (several beds, multi-doctor) which I dropped, as well as rows with no phone (SMILECARE Dental 183 reviews, Mahavir Dental 119 reviews, Dr Dhruvi Patel's Luxe clinic) which have no usable contact route. 6) Most websites checked were working (Pramukh Dental, Om Hi-tech Dental, Synergy Eye, Skinsight, Adya Skin) so they are NOT candidates; Adya Skin's WordPress blog is stale (last post July 2024 with the default 'hello-world' title) but still serves a working page, a weak signal I left out. Sattva Dental (Gandhinagar, blogspot, 370 reviews, posts to Dec 2025) and Vardhman Dental Paldi (blogspot, 3 posts March 2025, no address or doctor) are keyword blogs with no phone or booking: possible weak candidates for the researcher but not included. Instagram-only: Mehsana Dental Clinic & Implant Center (190 reviews), Dr Mauli's Hi-tech Dental World (67), Disha Eye Hospital Gandhinagar (412), The Skin Story Clinic (63) were not opened. grexa.site template sites (Dr Shukal brothers, Shri Hari Physio, Umiya Physio, Dr Dipak Shah's) are auto-generated, may be worth a second look. Names such as 'Dr Smitesh Patel' (4283 reviews) and Sabka Dentist were excluded as having a full site or being a chain. No candidate was checked against Practo/Justdial.",
+    "est_cost_usd": 0.111,
+    "apify_runs": [
+     {
+      "actor": "scraperlink/google-maps-scraper (test, 10 items)",
+      "items_returned": 10,
+      "est_cost_usd": 0.0046
+     },
+     {
+      "actor": "scraperlink/google-maps-scraper (main, 12 query-location pairs, 235 items)",
+      "items_returned": 235,
+      "est_cost_usd": 0.1064
+     }
+    ]
+   }
+  },
+  {
+   "source_id": "maps-nosite-mehsana",
+   "found": 12,
+   "report": {
+    "what_i_ran": "compass/crawler-google-places on Mehsana for dentist, skin clinic, eye clinic, physiotherapy clinic. Run 1 and run 2 used locationQuery 'Mehsana, Gujarat' and returned 0 places. Run 3 used city='Mehsana', state='Gujarat' instead and returned 24 places, all with no website. I then ran 4 WebSearch checks on the top clinics.",
+    "worked": "Run 3 worked once the location was passed as city and state. It returned 24 places with the website filter on, each with phone, rating, review count, claimed flag, photo count and closed status. Run 3 took 25 seconds. Only 6 places per search term were requested, so Mehsana likely has more no-website clinics.",
+    "did_not_work": "1) The tool refused callOptions.maxTotalChargeUsd below 0.50, so the 0.13 cap could not be set. I kept the spend inside the budget by limiting places in the input (6 per search, 24 in total). 2) locationQuery 'Mehsana, Gujarat' geocoded to Mehsana Airport (a Nominatim result), so every place was marked out of location and both of those runs returned 0 items. In future use city/state fields or customGeolocation. 3) Reviews were not scraped (maxReviews 0, as planned), so no newest-review date exists. Every signal_date is therefore the scrape date and is labelled scrape_date_only, not a signal date. The 90-day recency check could not be done. 4) 'claimThisBusiness' is false for all 24, so all appear to be claimed listings. 5) Web searches (4) found no own website for the named clinics. They only returned directory pages and unrelated results, so a missing website is not confirmed beyond the Maps website field. 6) I did not open the Maps URLs, so evidence_tier is signal_from_data. 7) Dropped without returning: Maitri Eye Hospital (1558 reviews, landline, hospital), Parshwa Spine Orthopedic and Eye Hospital (no phone, hospital), Udaan Charitable Trust physiotherapy (a trust), Smilecare Dental, Radiant Smiles and Vardaa Skin Clinic (no phone published), Choice Dental House (4 reviews), Dev Drashti and Drashti eye hospitals (hospitals with few reviews), Sai Physiotherapy Clinic (71 reviews, no doctor name) and Mehsana Physiotherapy Advanced Clinic (53 reviews). Sai and Mehsana Physiotherapy are fair backups.",
+    "est_cost_usd": 0.12,
+    "apify_runs": [
+     {
+      "actor": "compass/crawler-google-places (run 1, locationQuery, filter withoutWebsite + skipClosed)",
+      "items_returned": 0,
+      "est_cost_usd": 0.0002
+     },
+     {
+      "actor": "compass/crawler-google-places (run 2, locationQuery, no filter)",
+      "items_returned": 0,
+      "est_cost_usd": 0.0002
+     },
+     {
+      "actor": "compass/crawler-google-places (run 3, city/state, withoutWebsite filter)",
+      "items_returned": 24,
+      "est_cost_usd": 0.12
+     }
+    ]
+   }
+  }
+ ],
+ "judged": {
+  "final_candidates": [
+   {
+    "rank": 1,
+    "business": "M.K. Hi tech Dental Clinic, Mehsana",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "high",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps listing (73 reviews, 5.0, 87 photos) lists website http://mkdental.clinic.net.in/ ; collector fetched it twice (http and www) and DNS does not resolve, so the listed website is dead. Mobile phone published.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJw-QETi5DXDkRs233-yS--eU",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dental clinic, 2-5 Royal House, near old jakat naka, Radhanpur Road, Mehsana 384002",
+    "website": "http://mkdental.clinic.net.in/ (dead, no DNS)",
+    "why_need": "Patients who tap the website on Google get an error. Real demand (73 five-star reviews) but no working site or booking route. Exactly the 'dead website' signal in the brief.",
+    "keep_reason": "Only candidate with an opened, observed fault (dead domain), owner-type single clinic, mobile number on its own listing. Tier is signal_only because identity was seen only on the Maps listing and no signal date exists (scrape date only).",
+    "unknowns": "Doctor-owner name; whether the number reaches the doctor; when the domain died; newest review date; Maps page itself not opened."
+   },
+   {
+    "rank": 2,
+    "business": "Goradwala Smile Centre - An Advance Dental Clinic (Dr Saurabh Patel)",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "verified",
+    "confidence": "high",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps website field is a free Wix subdomain; collector opened it: one-page template with 4 services, hours and phone link only, no booking, no WhatsApp, no own domain. 157 reviews, 5.0.",
+    "signal_url": "https://sharpedge99.wixsite.com/website-1",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dental clinic, Shiv Complex, Radhanpur Cross Road, Mehsana; Dr Saurabh Patel named on the page",
+    "website": "https://sharpedge99.wixsite.com/website-1",
+    "why_need": "Free-builder placeholder-grade site with no appointment or WhatsApp feature, while demand is strong (157 reviews). Fits website upgrade plus WhatsApp enquiry.",
+    "keep_reason": "Signal page opened by collector and identity matched in a second place (phone +91 99250 99230 and Dr Patel appear on both the Wix page and the Maps listing). Doctor-owner named.",
+    "unknowns": "Newest review date; whether the number reaches Dr Patel directly; not checked beyond name against the do-not-return list (I found no match)."
+   },
+   {
+    "rank": 3,
+    "business": "Skin Sure Clinic (Dr. Sneha Patel, MD Skin)",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": true,
+    "source_ids": [
+     "maps-broad-3cities",
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: skin, hair transplant and laser clinic, 145 reviews, 4.9, 321 photos, mobile phone, no website field. Seen by both collectors (same phone +91 93286 74079). Second collector's web search found no other presence.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJGdYB64hDXDkRrHsPcVn1EP0",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dermatology, hair transplant and laser clinic, 3rd floor Silicon Skyland, Radhanpur Road, Mehsana; run by Dr Sneha Patel",
+    "website": "",
+    "why_need": "High-ticket treatments bought after online research, an active 321-photo listing, but no website for the traffic to land on.",
+    "keep_reason": "Found by two collectors, doctor-owner named in the title, highest ability-to-pay hint among the no-website group. Caveat: both collectors read Google Maps data, so the cross-match is a weaker check than two independent source types.",
+    "unknowns": "Maps page not opened; newest review date; whether the number reaches Dr Patel."
+   },
+   {
+    "rank": 4,
+    "business": "Uma Dental Clinic & Implant Center",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": true,
+    "source_ids": [
+     "maps-broad-3cities",
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 220 reviews, 5.0, 63 photos, mobile phone +91 89800 12380, empty website field. Second collector's web search found only a third-party directory page (Latrexa) repeating the same phone, no own site.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJxztnrCpCXDkRaypnXhQciI8",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dental and implant clinic, F8 Safal Complex, near new bus stand, Mehsana 384002",
+    "website": "",
+    "why_need": "Implant practice with 220 reviews and no own website; keyword-stuffed Maps title shows the owner cares about being found.",
+    "keep_reason": "Two collectors plus a directory page confirming the same phone (identity seen in a second place). Implant work suggests budget.",
+    "unknowns": "Doctor-owner name; Maps page not opened; could have an unlinked site; newest review date."
+   },
+   {
+    "rank": 5,
+    "business": "Orthopedic Physiotherapy Clinic Mehsana (Dr Rahul D Prajapati, MPT Ortho)",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": true,
+    "source_ids": [
+     "maps-broad-3cities",
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 137 reviews, 5.0, 27 photos, mobile phone +91 95109 11908, no website field; listed as claimed. Second collector gave address Dwarkesh Corporate F-10, Chokadi, Radhanpur Road, Mehsana 384002, which settles the first collector's doubt that it might be Radhanpur town.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0ZO6XQpDXDkRBRd7T2pV_h8",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Doctor-named orthopedic physiotherapy practice, Mehsana",
+    "website": "",
+    "why_need": "Doctor-owned single practice with good reviews and no website or booking route besides the phone.",
+    "keep_reason": "Two collectors, named doctor-owner, mobile number likely to reach him. Physio budgets are smaller.",
+    "unknowns": "Maps page not opened; newest review date; whether number reaches the doctor."
+   },
+   {
+    "rank": 6,
+    "business": "Ambika Skin, Hair & Laser Clinic",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": true,
+    "source_ids": [
+     "maps-broad-3cities",
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 105 reviews, 4.9, 35 photos, mobile phone +91 95745 72142, no website field. Address Sheth Punjiram Chambers, aerodrome cross roads, Radhanpur Road, Mehsana.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJhUL7ROVDXDkRNjk53aNG_kg",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Skin, hair and laser clinic, Mehsana",
+    "website": "",
+    "why_need": "Paid, repeat-visit laser and skin treatments with solid reviews and no website linked from Google.",
+    "keep_reason": "Seen by two collectors with the same phone; laser services suggest moderate budget.",
+    "unknowns": "Doctor-owner name; possible small multi-branch group (not checked); newest review date."
+   },
+   {
+    "rank": 7,
+    "business": "Mehta Physiotherapy Clinic",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": true,
+    "source_ids": [
+     "maps-broad-3cities",
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 174 reviews, 4.8, 142 photos, mobile phone +91 98793 50668, no website field. Address 8th floor Dharti Manan Plaza, Rotary Bhavan Road, Mehsana. A second collector's web search found nothing else.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJ17xRxc9DXDkRJIG6a76P_j8",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Physiotherapy clinic, Mehsana",
+    "website": "",
+    "why_need": "Active, trusted clinic (174 reviews, 142 photos) with no website; physio patients search 'near me' and book by WhatsApp.",
+    "keep_reason": "Two collectors, active listing, mobile number. Lower budget expected.",
+    "unknowns": "Owner name; newest review date; Maps page not opened."
+   },
+   {
+    "rank": 8,
+    "business": "Keshavam Eye Clinic - Dr. Poonam Sonagra (MS Ophthalmology)",
+    "city": "Gandhinagar",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps listing: 384 reviews, 5.0, mobile phone +91 91066 85877, empty website field.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJOTeVzaErXDkR86Us-S402fg",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "none",
+    "what_they_do": "Eye clinic run by Dr Poonam Sonagra, Gandhinagar",
+    "website": "",
+    "why_need": "Doctor-named clinic with strong demand and no website; eye care is booked ahead and searched on Google.",
+    "keep_reason": "Doctor-owner named in title, high review count, covers the eye segment the brief asked for. Single source and no date.",
+    "unknowns": "Maps page not opened; may belong to a larger eye group; newest review date."
+   },
+   {
+    "rank": 9,
+    "business": "Geeta Dental clinic and Implant center (Dr Ronak Modi, MDS Endodontist)",
+    "city": "Gandhinagar",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps listing: 269 reviews, 4.9, mobile phone +91 99741 93410, empty website field.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJiVa1NlUrXDkRswyNAgmW8iY",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "none",
+    "what_they_do": "Dental and implant clinic, Dr Ronak Modi, Gandhinagar",
+    "website": "",
+    "why_need": "Established clinic with no website on Google, fits website plus appointment automation.",
+    "keep_reason": "Doctor-owner named, 269 reviews. Single source, no date.",
+    "unknowns": "Address not captured; Maps page not opened; newest review date."
+   },
+   {
+    "rank": 10,
+    "business": "Dr Dhruv's Yashdeep Skin and Aesthetic Clinic",
+    "city": "Gandhinagar",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps listing: 576 reviews, 5.0, mobile phone +91 75678 07024, empty website field.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJewB8tDYrXDkRkuPJsxhvncU",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "none",
+    "what_they_do": "Skin, aesthetic and laser clinic, Dr Dhruv, Gandhinagar",
+    "website": "",
+    "why_need": "Very high demand (576 reviews) with no website, treatments and prices cannot be seen or booked online.",
+    "keep_reason": "Strongest review count in the set and good ability to pay. Ranked below others because the Yashdeep name may tie it to a hospital group, which would make it ineligible.",
+    "unknowns": "Possible link to the Yashdeep eye/children hospital group (unchecked); Maps page not opened; newest review date."
+   },
+   {
+    "rank": 11,
+    "business": "Shubham Dental & implant Clinic",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-broad-3cities"
+    ],
+    "signal_observed": "Maps listing: 133 reviews, 5.0, mobile phone +91 99989 32175, empty website field.",
+    "signal_url": "https://www.google.com/maps/place/?q=place_id:ChIJDwI4sypCXDkRhMURMHnegcQ",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "none",
+    "what_they_do": "Dental and implant clinic, Mehsana",
+    "website": "",
+    "why_need": "Good review base, no website linked from Google, no online appointment route.",
+    "keep_reason": "Fits profile, mobile number on listing. Thin data (no address, no doctor name).",
+    "unknowns": "Doctor name; address; Maps page not opened; newest review date."
+   },
+   {
+    "rank": 12,
+    "business": "Jay Physiotherapy and Health Center",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 165 reviews, 5.0, 29 photos, mobile phone +91 94275 43959, no website field. Address G-41 Someswar Mall, Visnagar Road, Basna, Mehsana 384001.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=JAY%20PHYSIOTHERAPY%20AND%20HEALTH%20CENTER&query_place_id=ChIJH51ngfJDXDkRAAAAMMGcIjs",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Physiotherapy and health centre in a mall unit, Mehsana",
+    "website": "",
+    "why_need": "165 reviews and no website, patients see only a phone number.",
+    "keep_reason": "Independent physio with steady demand and a mobile number. Moderate budget.",
+    "unknowns": "Doctor-owner name; 'Health Center' may mean several practitioners; newest review date."
+   },
+   {
+    "rank": 13,
+    "business": "Mayur Dental Clinic, Mehsana",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 63 reviews, 5.0, 15 photos, mobile phone +91 94270 15408, no website field. Prarthana Platina Complex, Radhanpur Road, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=Mayur%20Dental%20Clinic%2C%20Mehsana&query_place_id=ChIJ1Rc7_DhCXDkRXYY4U5DYZSQ",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Independent single-location dental clinic, Mehsana",
+    "website": "",
+    "why_need": "No website link; typical fit for website plus WhatsApp booking.",
+    "keep_reason": "Fits profile and has a mobile number; smaller practice with lower review count and modest budget.",
+    "unknowns": "Owner name; newest review date."
+   },
+   {
+    "rank": 14,
+    "business": "Dr. Amee's Skin Clinic (Dr. Amee Patel)",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "signal_only",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing: 28 reviews, 4.6, 55 photos, mobile phone +91 81283 22837, no website field. Laxmi Market, Radhanpur Cross Road, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=DR.AMEE'S%20SKIN%20CLINIC&query_place_id=ChIJNfj8zBVDXDkRW7WN42W5eYw",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Solo skin, hair, nail and laser clinic, Dr Amee Patel",
+    "website": "",
+    "why_need": "Doctor-named solo clinic with no website.",
+    "keep_reason": "Clear doctor-owner, but low review count means weaker demand and likely a modest budget. Kept at the bottom of the usable set.",
+    "unknowns": "Newest review date; demand is low."
+   },
+   {
+    "rank": 15,
+    "business": "Nilkanth Hi Tech Dental Hospital",
+    "city": "Mehsana",
+    "entity_type": "unclear",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing (Dental clinic): 430 reviews, 5.0, only 11 photos, mobile phone +91 97729 58088, no website field. Seven Space, Radhanpur Road, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=Nilkanth%20Hi%20Tech%20Dental%20Hospital&query_place_id=ChIJrQ7PLiZDXDkR60BNpS6N9Zc",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dental clinic with 'Hospital' in its name, Mehsana",
+    "website": "",
+    "why_need": "High patient volume but no website.",
+    "keep_reason": "Kept only as a backup. The 'hospital' name and unknown ownership mean we cannot tell if there is a single doctor-owner or a multi-dentist set-up, so it is not counted.",
+    "unknowns": "Owner, size, number of dentists, newest review date."
+   },
+   {
+    "rank": 16,
+    "business": "Ambika Eye Hospital (Dr Kaushal A Modi)",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing (category Hospital): 35 reviews, 5.0, 10 photos, mobile phone +91 99099 72950, no website field. At OM Medical Centre, Radhanpur Four Cross Road, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=Ambika%20eye%20hospital%20%2C%20Dr%20Kaushal%20A%20Modi&query_place_id=ChIJAXEAUkNDXDkRvgDY0Fmrafs",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Eye clinic of Dr Kaushal A Modi",
+    "website": "",
+    "why_need": "Named ophthalmologist with thin online presence and no website.",
+    "keep_reason": "Backup only. Named doctor, but 'Hospital' name/category and a medical-centre address leave independence unclear.",
+    "unknowns": "Size and ownership; newest review date."
+   },
+   {
+    "rank": 17,
+    "business": "Prism Eye Clinic",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing (category Hospital): 43 reviews, 5.0, 31 photos, mobile phone +91 99098 10200, no website field. Hubtown, B K Road, Modhera Circle, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=Prism%20eye%20clinic&query_place_id=ChIJr6kC73dDXDkRBZWibAmvly4",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Eye clinic, Mehsana",
+    "website": "",
+    "why_need": "Eye specialty clinic with no website.",
+    "keep_reason": "Backup only. No doctor name and 'Hospital' category, so owner and size are unknown.",
+    "unknowns": "Doctor name, size, newest review date."
+   },
+   {
+    "rank": 18,
+    "business": "EVA Skin, Hair and Laser Clinic",
+    "city": "Mehsana",
+    "entity_type": "end_business",
+    "tier": "unverified",
+    "confidence": "low",
+    "multi_source": false,
+    "source_ids": [
+     "maps-nosite-mehsana"
+    ],
+    "signal_observed": "Maps listing (Dermatologist): 81 reviews, 4.9, 24 photos, mobile phone +91 87994 43371, no website field. City Centre complex (Navjivan hospital building), Radhanpur Circle, Mehsana.",
+    "signal_url": "https://www.google.com/maps/search/?api=1&query=EVA%20skin%2C%20hair%20and%20laser%20clinic&query_place_id=ChIJSeKHsHxDXDkRVbFHW1TA8Ik",
+    "signal_date": "2026-10-28",
+    "signal_date_kind": "scrape_date_only",
+    "what_they_do": "Dermatology and laser clinic, Mehsana",
+    "website": "",
+    "why_need": "Well-rated skin clinic with no website.",
+    "keep_reason": "Backup only. Address is in a building shared with Navjivan hospital, so it may be a hospital room rather than an independent clinic; collector confidence low.",
+    "unknowns": "Independence from the hospital; owner name; newest review date."
+   }
+  ],
+  "dropped": [],
+  "per_source": [
+   {
+    "source_id": "maps-broad-3cities",
+    "found": 11,
+    "usable": 11,
+    "note": "11 candidates, all kept (2 opened-site checks: M.K. dead domain, Goradwala Wix one-pager; 9 are 'no website' rows read from scraper output only). No dates (reviews were off), Ahmedabad gave zero candidates, Maps pages were not opened. 5 of its candidates also appear in maps-nosite-mehsana."
+   },
+   {
+    "source_id": "maps-nosite-mehsana",
+    "found": 12,
+    "usable": 8,
+    "note": "12 candidates, 5 merged into the other source's records, 7 unique: 3 usable (Jay Physio, Mayur Dental, Dr Amee's) and 4 kept as unverified (Nilkanth, Ambika Eye, Prism Eye, EVA) because independence from a hospital is unclear. Mehsana only. usable = 5 shared + 3 unique. Evidence is Maps field only, scrape-date dated."
+   }
+  ],
+  "cross_matches": [
+   "Skin Sure Clinic (Dr. Sneha Patel): maps-broad-3cities + maps-nosite-mehsana",
+   "Uma Dental Clinic & Implant Center: maps-broad-3cities + maps-nosite-mehsana",
+   "Orthopedic Physiotherapy Clinic Mehsana (Dr Rahul D Prajapati): maps-broad-3cities + maps-nosite-mehsana",
+   "Ambika Skin, Hair & Laser Clinic: maps-broad-3cities + maps-nosite-mehsana",
+   "Mehta Physiotherapy Clinic: maps-broad-3cities + maps-nosite-mehsana (caveat: both sources are Google Maps scrapes by different actors, so this confirms the same listing data, not an independent second source)"
+  ],
+  "usable_count": 14,
+  "tier_counts": {
+   "verified": 1,
+   "signal_only": 13,
+   "fit_only": 0,
+   "unverified": 4
+  },
+  "enough": true,
+  "replan_advice": "The target is met (14 usable vs 5), but the evidence is thin: 13 of 14 rest only on an empty Maps website field read from scraper output, with no signal dates (reviews were not scraped) and no Maps page opened. Only M.K. Hi tech Dental (dead domain) and Goradwala (Wix one-pager) were actually opened. Next round: (1) have the researcher check each top candidate's Maps page or search for an own site, and find the doctor-owner name and a human-reachable number; (2) scrape the 3 newest reviews for each shortlisted clinic to get dated evidence and any 'no website / hard to book' review text; (3) Ahmedabad and Gandhinagar are under-covered: the broad run gave no Ahmedabad candidates and the no-site run covered Mehsana only, so rerun the no-website filter (city/state fields, not locationQuery 'City, Gujarat') for Gandhinagar and for Ahmedabad using area terms (Satellite, Maninagar, Naranpura, Bopal etc.); (4) follow the weaker-website vein the collector noted but did not return: blogspot keyword blogs (Sattva Dental Gandhinagar, Vardhman Dental Paldi), Instagram-only clinics (Mehsana Dental Clinic & Implant Center, Dr Mauli's Hi-tech Dental World, The Skin Story Clinic) and grexa.site template sites; also Sai Physiotherapy and Mehsana Physiotherapy Advanced Clinic as backups; (5) before outreach, check the unverified four and Dr Dhruv's Yashdeep / Keshavam for hospital-group ties."
+ },
+ "est_apify_spend_usd": 0.231,
+ "note": "Candidates are CLAIMS with evidence. Run lead-researcher on them before anything is added to a campaign."
+}

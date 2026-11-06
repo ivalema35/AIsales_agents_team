@@ -1,0 +1,92 @@
+{
+ "business": "Arbuda Car (Arbuda Car Accessories & Customization Studio)",
+ "city": "Gandhinagar",
+ "identity_verified": false,
+ "verification_trail": [
+  "https://arbudaaccessories.netlify.app/ (opened 2026-11-04): self-described car accessories and customization studio, GIDC Sector 28 Gandhinagar; detailing is a secondary service; has a Send Enquiry form (contact-form) plus WhatsApp button; embedded Google Map; counters show 0",
+  "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar: detailing/ceramic page, Book Now / Get a Quote scroll to #contact (which on the home page holds a working-looking enquiry form), footer Last Updated May 2025, PPF only mentioned in an FAQ, not offered",
+  "nslookup arbudacar.com: NXDOMAIN (schema.org url on the page points to it)",
+  "WebSearch name / phone / Instagram handle / address: no Google Maps listing, no directory entry, no review, no independent page found; only the business's own netlify pages. A namesake (Shree Arbuda Motors, Arbuda Instruments) is unrelated"
+ ],
+ "official_website": "https://arbudaaccessories.netlify.app (free Netlify subdomain; declared domain arbudacar.com does not resolve)",
+ "what_they_do": "Car accessories and customisation shop (seat covers, LED headlights, Android screens, alloy wheels, music systems, ambient lighting, interiors) that also lists three detailing packages (Signature Wash, Premium Detail, Ultimate Ceramic Coating). Detailing is a secondary line.",
+ "entity_type": "end_business",
+ "size_cues": "Single Gandhinagar studio (GIDC Sector 28). No years, no staff, no review count verifiable; 4.9 rating is a self-claim in the schema markup with no external listing found.",
+ "decision_maker": "not found",
+ "contacts": [
+  {
+   "kind": "phone",
+   "value": "+91 70169 25846",
+   "source_url": "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar",
+   "note": "business-published as call and WhatsApp (wa.me link); Indian mobile, likely WhatsApp; whether it reaches the owner is unknown; NOT verified on a Google Maps listing"
+  },
+  {
+   "kind": "website",
+   "value": "https://arbudaaccessories.netlify.app",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "note": "free netlify subdomain"
+  },
+  {
+   "kind": "email",
+   "value": "(business-published Gmail on the page)",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "note": "email is not a route"
+  },
+  {
+   "kind": "instagram",
+   "value": "arbuda_car_accessories",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "note": "link on own page; not opened (no profile scraping)"
+  }
+ ],
+ "observed_facts": [
+  {
+   "fact": "arbudacar.com, the domain named in the page's schema.org markup, does not exist (NXDOMAIN); the live site is a free netlify.app address",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "date": "2026-11-04"
+  },
+  {
+   "fact": "The home page has a Send Enquiry form (name, phone, car model, message) and a WhatsApp button, so 'Book Now with no form' (slot d) is NOT literally true site-wide; it is only true that the Book Now button on the detailing page jumps to the contact anchor",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "date": "2026-11-04"
+  },
+  {
+   "fact": "Site self-describes as an accessories and customisation destination; detailing is one service among ~10 categories",
+   "source_url": "https://arbudaaccessories.netlify.app/",
+   "date": "2026-11-04"
+  },
+  {
+   "fact": "Footer says Last Updated May 2025; no prices, no owner name, no years in business",
+   "source_url": "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar",
+   "date": "May 2025"
+  }
+ ],
+ "hypotheses": [
+  "They may win customers by Instagram/WhatsApp (unverified)",
+  "A dead declared domain suggests they could not finish connecting a custom domain (inference only)"
+ ],
+ "need_evidence": "inferred",
+ "ability_to_pay": "Unknown. No ad activity, review count, branch count or listing found; the only thing visible is a free-hosted site.",
+ "pay_signal": "none",
+ "reachability": "business_contact",
+ "owner_direct_contact": "unknown",
+ "resistance": "Has a working site with enquiry form and WhatsApp; no vendor evidence. Owner unnamed.",
+ "grade": "reject",
+ "reject_reason": "Accessory shop (excluded type: detailing is a secondary line of an accessories and modification store) and unverifiable: only one source (its own site), no Google Maps listing or directory entry found, no independent second source. Need claim also partly wrong (the site has an enquiry form).",
+ "case_for": "Single-owner-looking local studio in Gandhinagar (target geo) with a published mobile/WhatsApp number and a literally true, reproducible gap (declared domain arbudacar.com is dead; site is on a free netlify address).",
+ "case_against": "Excluded type (accessory shop first, detailing second); identity rests on one self-published source; no Maps listing, reviews, ads or owner name found so pay signal is none; site already has an enquiry form and WhatsApp button; the booking-form gap is not true; not a studio that needs a proof page more than a product catalogue.",
+ "best_angle": "None recommended. If the owner insisted: slot a only (the address arbudacar.com in the page code does not open, the live site is a free netlify address). Do not use slot d.",
+ "best_channel": "None (not ready). Only route would be WhatsApp to +91 70169 25846 after Maps confirmation that the number is the shop's and reaches the decider.",
+ "gaps": [
+  "Google Maps listing, phone on Maps, reviews, owner replies not found",
+  "owner name unknown",
+  "Instagram not opened",
+  "ad status not checked (low value)"
+ ],
+ "phone_published": "+91 70169 25846 on own website only (not confirmed on Maps)",
+ "website_status": "dead or parked declared domain (arbudacar.com NXDOMAIN); live site on free netlify.app subdomain with an enquiry form",
+ "newest_review_date": "unknown (no Maps listing found)",
+ "owner_replies_in_newest_3": "unknown",
+ "brand_franchise_flag": "no franchise; accessory-shop flag TRUE (excluded type)",
+ "safe_first_message_slot": "a (only if ever used); d is refuted. Not ready, so none."
+}

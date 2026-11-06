@@ -1,0 +1,190 @@
+[
+ {
+  "lens": "visual",
+  "result": {
+   "verdict": "ready_after_small_fixes",
+   "summary": "I viewed all 4 pages on phone (390px: hero, video, steps, calculator, FAQ, final CTA, footer) and desktop (1280px, all 4 chunks), plus the 4 poster.jpg and email_banner.jpg files, and checked page.css, build_pages.py and the file timestamps. Nothing is broken and nothing overlaps the fixed navbar. The pass-1 fixes that I could check are in place. The h1 is now 4 lines on desktop and the hero CTA is fully visible at 1280x800 on all 4 pages. The eyebrow has a 18px radius and 1.3 line-height. The volume play icon is dark on amber. The Space Age footer note is now its own darker block, so the extra sentence reads clearly. The final CTA email link stacks on its own line. The 'Which type?' chips wrap cleanly: 'Tell me more', '4 BHK Penthouse', '400 sq yd plot' and '4B3HK villa' all fit or wrap inside the bubble. The long names wrap cleanly in the eyebrow, steps, 'Want to see this for ...?', the sticky bar and the footer. Contrast is fine in every tone: luxury navy and gold, teal, green and blue all read well, and the white-on-teal and white-on-green final CTAs are fine. One pass-1 finding was NOT applied and is now the main remaining problem (finding 1). Per page: GREAT SPACES (luxury): ready after finding 1; finding 5 is cosmetic. SWAGAT (teal launch): ready after finding 1, which hides its long '4 BHK Penthouse' chip. PARSHWANATH (corporate green): ready after finding 1; fix finding 2 only if the video is being re-rendered anyway. SPACE AGE (blue volume): ready after finding 1; findings 3 and 4 are cosmetic. Known and not flagged: on a 1366x768 laptop the hero CTA is still at or below the fold on Swagat and Space Age. Desktop has no sticky bar, but the play button and the site navbar are visible.",
+   "findings": [
+    {
+     "lead": "all",
+     "severity": "major",
+     "where": "agent/pages/template/page.css line 76, .vplay { inset: 0; margin: auto; width: 76px; height: 76px }, over the 17 s poster.jpg. Seen in site_<key>_m_01.png and site_<key>_d_00.png for all four keys.",
+     "problem": "The centred 76px play button sits exactly on the 'Which size?' row, which is the only personalised content in the poster. It hides the whole chip row on Great Spaces ('4B3HK villa' / 'Other size'), Parshwanath ('2 BHK' / 'Other size') and Space Age ('400 sq yd plot' / '550 sq yd plot'). On Swagat it hides '4 BHK Penthouse' and half of '3 BHK', so the poster shows only '3 BHK'. It also cuts the question text down to 'Which'. The pass-1 fix (.vplay { inset: auto 0 31% 0 }) was not applied. It would not work with the new 17 s frame anyway: there the chat ends at about 60% of the height and the composer bar starts at about 68%, so there is no 76px gap.",
+     "fix": "In page.css line 76 replace `inset: 0; margin: auto;` with `inset: auto 0 12% 0; margin: 0 auto;`. That centres the button on the dark caption bar ('and offers a site visit slot.') at the bottom of the poster. It works at both video widths (304px phone and 340px desktop). The bar is a frozen half-highlighted caption fragment, so hiding it also helps. All the chat content and the 'Mehsana made for ...' lockup then stay visible. The sticky play state (.vwrap.vjs.playing .vplay { display: none }) is unaffected. Rebuild all four pages afterwards."
+    },
+    {
+     "lead": "parshwanath",
+     "severity": "minor",
+     "where": "state/outreach/assets/renders/parshwanath_emerald_en_v3.mp4 (rendered 12:24) against pages/leads.json (bhk2 changed to 'Tell me more' at 12:37); poster.jpg and email_banner.jpg are taken from that older video.",
+     "problem": "The second chip is now 'Tell me more' in the page step-2 chat and in backend/services/demo_projects.json, but the video, the poster (hero) and the email banner still show 'Other size'. The two sit side by side in the hero and in step 2. Pass 1 changed this chip because 'Other size' implies other configurations at a 2 BHK-only project, and the poster still says it.",
+     "fix": "Re-render the Parshwanath video with --bhk2 'Tell me more' (the owner already needs a new voice take) and rebuild the pages and banners. If no re-render is planned, set the poster and video to match by setting bhk2 back to something neutral on both sides. Do not leave the two different."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "minor",
+     "where": "Hero eyebrow on phone (site_spaceage_m_00.png). Eyebrow is built in build_pages.py ('A free demo for ' + project) and styled by .eyebrow { text-wrap: balance } in page.css.",
+     "problem": "At 390px the eyebrow breaks inside the brand name: 'A FREE DEMO FOR SPACE' / 'AGE CONSULTANTS'. The other pages break before the name ('... FOR' / 'PARSHWANATH EMERALD'), so this one looks like a typo.",
+     "fix": "Add to the spaceage entry in leads.json: \"eyebrow\": \"A free demo for Space Age Consultants\" (non-breaking spaces). The line then breaks only after 'for', giving 'A FREE DEMO FOR' / 'SPACE AGE CONSULTANTS'. The second line is about 235px, which fits even at 320px."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "minor",
+     "where": "template/index.html line 112 ('<b>2.</b> Which type?') against leads.json spaceage hook ('asks for plot size and budget') and the poster/video chat ('Which size?'), seen in site_spaceage_m_04.png and site_spaceage_d_01.png.",
+     "problem": "The hook promises a question about plot size, the video and poster ask 'Which size?', but the step-2 chat on the page asks 'Which type?' with chips '400 sq yd plot' / '550 sq yd plot'. 'Type' reads off for plots and the hero and step 2 disagree on the same page.",
+     "fix": "Change template line 112 to 'Which size?' so the page matches the video for all leads ('4B3HK villa', '4 BHK Penthouse', '2 BHK' and the plots are all sizes in the video's own wording). If the bot should match too, change backend/services/demo_responder.py line 71 q_type to 'Question 2 of 3\\nWhich size do you want?'. Otherwise leave the bot alone: it is not visible on the page."
+    },
+    {
+     "lead": "greatspaces",
+     "severity": "minor",
+     "where": "page.css luxury block: --display: Georgia ... plus font-variant-numeric: lining-nums. Affects .num, .res-n and .rng output in site_greatspaces_m_03.png, m_06.png and m_07.png. Template-wide for luxury, not new in wave 2.",
+     "problem": "Georgia only has old-style figures and ignores lining-nums, so the numbers look uneven on desktop and iOS. The step badge '1' looks like a small 'I'. The big calculator results '60', '6' and '15' have mismatched heights, and '300' and '₹400' in the sliders drop below the baseline. It does not match the luxury tone.",
+     "fix": "Add to page.css: body[data-tone=\"luxury\"] .num, body[data-tone=\"luxury\"] .res-n, body[data-tone=\"luxury\"] .rng output { font-family: var(--font); } (Inter has lining numerals). Headings keep Georgia."
+    }
+   ]
+  }
+ },
+ {
+  "lens": "claims",
+  "result": {
+   "verdict": "ready_after_small_fixes",
+   "summary": "Pass-1 fixes verified. Hooks, ads_phrase/ads_seen, email intros, recipient domains and \"found this address\" lines are true to _wave2_factcheck.json for all four leads. Nothing implies price, \"4 BHK\" for Aaroham, \"lead form\" for Parshwanath, Bavla, RERA/launch/possession status, or any Adani/Arvind endorsement. Space Age: no Arvind logo or artwork anywhere (checked banner, poster and 8 video frames), the project is named \"Space Age Consultants\", and non-affiliation is stated in the page footer and in the email. All four emails are free of \"your ads\", \"free\", \"instant\", staff names and guarantee wording, and are signed \"IV Infotech\". The WhatsApp line \"We saw your ads for {{2}}\" is true for greatspaces (\"Great Spaces Aaroham\"), swagat (\"Swagat Cilantra\") and parshwanath (\"Parshwanath Emerald\"). For spaceage, \"ads for Arvind Sensora\" is true, but the second use, \"We made a short video for {{2}}\", is false. Remaining issues: (1) the hero h1 still says \"from your ads\", which presupposes WhatsApp enquiries from ads and is not supported for Great Spaces or Parshwanath (and only partly for Space Age); (2) the Space Age hook overstates the WhatsApp button; (3) the Space Age WhatsApp param; (4) the Space Age email subject; (5) the video voice-over, which is owner-accepted but untrue for Great Spaces and Parshwanath. Everything else is minor. Out of lens: earlier research notes say cold WhatsApp templates to these published numbers failed in round 1 (Meta 131049/131026). That is a deliverability point, not an honesty one.",
+   "findings": [
+    {
+     "lead": "all",
+     "severity": "major",
+     "where": "C:/Users/Administrator/Desktop/AISales_agent_team/agent/pages/template/index.html, hero <h1> (line 41). Rendered in all four site_<key>_d_00.png.",
+     "problem": "The h1 reads 'Every WhatsApp enquiry from your ads can get an automatic reply...'. That says the lead's ads produce WhatsApp enquiries. The fact-check says the opposite or 'unknown' for greatspaces (Book Now + phone number, destination not visible, 'do not say where Book Now leads') and parshwanath (FB.ME 'Book now', no wa.me or WhatsApp number in any ad, 'do not call it a lead form'). For spaceage only 1 of 3 Sensora ads has a WhatsApp button. The h1 also contradicts the hook directly under it, which correctly says their ads invite buyers to 'enquire and tap Book Now' or 'book a site visit'. This line was not touched in pass 1 and is fine for wave-1 click-to-WhatsApp leads only.",
+     "fix": "Replace with: <h1>Every WhatsApp enquiry can get an automatic reply <span class=\"hl\">in about a minute</span>, even at night.</h1> (i.e. delete 'from your ads'). Rebuild and redeploy all pages. It stays true for swagat and for the wave-1 pages."
+    },
+    {
+     "lead": "greatspaces",
+     "severity": "major",
+     "where": "Video voice-over and slides (C:/Users/Administrator/Desktop/AISales_agent_team/agent/state/outreach/assets/master_voice_en_v2.txt lines 1-2; slide 'Your WhatsApp ads. Your own number.' with 'Ad / WhatsApp button' tiles). The same video is the WhatsApp template header and the page video.",
+     "problem": "Owner-accepted, but it is still a false statement about the lead for greatspaces and parshwanath, and only partly true for spaceage: 'Every enquiry from your ads gets an automatic WhatsApp reply', 'It works with your WhatsApp ads, on your own number'. It is also stronger than the owner's soft rule ('gets' instead of 'can get'). The page and email carefully avoid this. The video is the first thing played and also leads the WhatsApp message.",
+     "fix": "Before sending to greatspaces and parshwanath, re-voice. Line 1: 'Namaste, we are I V Infotech, Mehsana. Every WhatsApp enquiry can get an automatic reply, in about a minute, even at night.' Line 2: 'It can work on your own WhatsApp number.' Scene-1 title: 'Every WhatsApp enquiry can get an automatic reply in about a minute'. Scene-2 slide: 'WhatsApp enquiries. Your own number.', with neutral 'Enquiry' tiles instead of 'Ad / WhatsApp button'. If the owner keeps the current video, record that decision explicitly for these two leads. swagat is fine as is (2 of 3 ads have the button)."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "major",
+     "where": "C:/Users/Administrator/Desktop/AISales_agent_team/agent/pages/leads.json spaceage \"wa_project\": \"Arvind Sensora\"; template iv_en_realestate_demo_v1 (state/outreach/wave1_template_en_spec.json); agent/tools/campaign_send.py line 100.",
+     "problem": "The template uses {{2}} twice. The WhatsApp text becomes 'We saw your ads for Arvind Sensora' (true) and 'We made a short video for Arvind Sensora' (false). The video, page and demo are 'made for Space Age Consultants'. This undoes the pass-1 decision to name the reseller as the project. It also implies work for or a link with the developer, and 'the next developer' fits a reseller poorly.",
+     "fix": "Quickest fix: delete \"wa_project\" from the spaceage entry so {{2}} = 'Space Age Consultants'. Both sentences are then true and match the page and video, but the first one reads a little odd. Arvind Sensora stays in the email and page only. Cleaner: approve a v2 template with 'We saw your ads for {{2}}' and 'We made a short video for {{3}}', and pass {{2}} = 'Arvind Sensora', {{3}} = 'Space Age Consultants'. If neither is done, do not send the WhatsApp template to Space Age this wave, and delete the paragraph 'You may also see a short message from us on WhatsApp with the same video...' from email_spaceage.txt."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "major",
+     "where": "leads.json spaceage: hook, ads_phrase, ads_seen (rendered in the hero, the 'From IV Infotech...' line and the footer of lead_spaceage.html).",
+     "problem": "'The Arvind Sensora pre-launch ads ... include a Send WhatsApp Message button' reads as all of them. Fact-check: only 1 Sensora ad (the 18 Oct poster ad, 2 versions) has that button; the two SAC AHM ads (16 Oct) say 'Apply now'. The email is accurate ('including one with a Send WhatsApp Message button'), so the page and email disagree.",
+     "fix": "hook: \"One of the Arvind Sensora pre-launch ads from Space Age Consultants has a Send WhatsApp Message button. Here is how a WhatsApp enquiry can get an automatic reply in about a minute that asks for plot size and budget.\"  ads_phrase: \"runs Arvind Sensora pre-launch ads, one of which has a Send WhatsApp Message button\"  ads_seen: \"its Arvind Sensora pre-launch ads include one with a Send WhatsApp Message button\"."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "minor",
+     "where": "C:/Users/Administrator/Desktop/AISales_agent_team/agent/state/drafts/campaign1_v3/email_spaceage.subject.txt (and leads.json email_subject).",
+     "problem": "'Space Age Consultants: automatic WhatsApp replies for Arvind Sensora' puts a third party's registered mark in the subject and reads as if the service is for the Arvind project. The non-affiliation sentence is only in the body, after the subject has been read. Arvind's page forbids use of ARVIND/ARVIND SMARTSPACES 'in any form' without permission; the body use is descriptive, but the subject is avoidable.",
+     "fix": "Subject: \"Space Age Consultants: automatic WhatsApp replies\" (same pattern as the other three). Keep 'Arvind Sensora' in the body only."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "minor",
+     "where": "email_spaceage.txt, line 'We help real-estate developers and channel partners reply to buyers on WhatsApp.' (leads.json email_intro).",
+     "problem": "'We help ... reply' asserts an existing service or client base. It is only safe if IV Infotech already does this for real-estate teams; nothing in the files shows that.",
+     "fix": "\"We build automatic WhatsApp replies for real-estate developers and channel partners.\" (or keep the current line only if it is true)."
+    },
+    {
+     "lead": "greatspaces",
+     "severity": "minor",
+     "where": "leads.json greatspaces, swagat, parshwanath: no \"contact_for\", so it defaults to the project. This feeds the page footer and the calculator note.",
+     "problem": "The footer says 'a business contact published for Great Spaces Aaroham / Swagat Cilantra / Parshwanath Emerald'. The addresses are company mailboxes (greatspacesrealty.com contact page, swagatdevelopers.in contact page, parshwanath.co.in homepage), not project contacts. The email's own source line is correct; the page is slightly off.",
+     "fix": "Add \"contact_for\": \"Great Spaces\" (greatspaces), \"contact_for\": \"Swagat Developers\" (swagat), \"contact_for\": \"Parshwanath Corporation\" (parshwanath). The footer then reads 'a business contact published for Great Spaces (on its ads, website or public records)...', and the calculator reads 'not based on any data from Great Spaces'. Do not change spaceage; its project is already the firm."
+    },
+    {
+     "lead": "swagat",
+     "severity": "minor",
+     "where": "Send-day gate for leads.json swagat hook/ads_phrase/ads_seen and the swagat and spaceage email intros (swagat ads started 18 Oct; Sensora WhatsApp poster ad started 18 Oct).",
+     "problem": "These are the only claims that hang on a specific ad type, and the ads are 1-2 days old. If the Send WhatsApp message ads are paused by send day, the hook, 'From' line, footer and email become untrue. The existing Ad Library recheck is a to-do but has no fallback wording.",
+     "fix": "If the swagat WhatsApp-button ads are gone, use: hook \"The 3 BHK and 4 BHK penthouse ads for Swagat Cilantra in Vesu invite buyers to book a site visit. Here is how each enquiry can get an automatic WhatsApp reply in about a minute.\" with ads_phrase \"has 3 BHK and 4 BHK penthouse ads in Vesu that invite buyers to book a site visit\". If the Space Age WhatsApp ad is gone, use: \"The Arvind Sensora pre-launch ads from Space Age Consultants invite buyers to apply.\" Also apply the same change in the matching email_intro. Recheck Great Spaces (ads started 13 Oct) and Parshwanath (3 Oct) before sending as well."
+    }
+   ]
+  }
+ },
+ {
+  "lens": "recipient",
+  "result": {
+   "verdict": "ready_after_small_fixes",
+   "summary": "Verdicts per lead. GREAT SPACES: ready after small fixes. The email is specific and honest, but paragraph 1 is a dense block, it never says we sell this, and \"each enquiry\" assumes Book Now leads to WhatsApp. SWAGAT: ready after the common edits. It is the strongest note because the observation is the Send WhatsApp message button itself. PARSHWANATH: ready after small fixes. It has the weakest premise fit, because nothing in their ads or on their site is WhatsApp, so the page h1 and video say \"WhatsApp enquiry from your ads\" and the email says \"each enquiry\". Use the WhatsApp-hold rule for this lead. SPACE AGE: ready after small fixes. It is the only email that says what we do, but the subject is cut off on a phone and the non-affiliation sentence interrupts the hook. Pass-1 fixes check out. The project and brand names match the fact-check, no email says \"your ads\", \"free\" or \"instant\", the wording is soft, and no staff names appear. The Space Age {{2}} = \"Arvind Sensora\" versus a page \"made for Space Age Consultants\" is a known trade-off and I left it alone.\n\nEmail plus WhatsApp the same day: acceptable only as an email-first sequence. Send the email at about 10:30 to 11:30 and the WhatsApp 3 to 4 hours later, at about 3 to 4 PM. Skip the WhatsApp if the lead replied, clicked Try the demo, or wrote stop. The reason is that a cold WhatsApp from a +1 number with no warning is the message most likely to be blocked. Blocks and reports land on the only WABA (CAMPAIGN_PLAYBOOK line 22). A heads-up in the email lowers that risk, and the email promising an opt-out only works if a \"stop\" email is read before the WhatsApp slot.\n\nSingle change that most raises taps: split paragraph 1 into two short paragraphs, adding a one-line \"what we do\" sentence and dropping the four-item list. Exact text is in the per-lead findings.",
+   "findings": [
+    {
+     "lead": "greatspaces",
+     "severity": "major",
+     "where": "email_greatspaces.txt, paragraph 1",
+     "problem": "One block of about 75 words with a clumsy detached clause ('the ads for X, the new villa community in Bhayli, that invite...'). It never says IV Infotech sets this up, so the recipient has to infer what we sell and what we want. 'Each enquiry' also assumes Book Now leads to WhatsApp, which the Ad Library does not show (the creative shows a phone number). The colon list repeats what the banner and page already show.",
+     "fix": "Replace paragraph 1 with two paragraphs:\n\"We are IV Infotech, Mehsana. We set up automatic WhatsApp replies for real-estate teams. We saw the Great Spaces Aaroham ads for the new villa community in Bhayli, which invite buyers to enquire and tap Book Now.\"\n\"We made a video of under 40 seconds for Great Spaces Aaroham. It shows how a buyer who messages you on WhatsApp can get an automatic reply in about a minute, with the brochure, three quick questions and a site-visit slot.\""
+    },
+    {
+     "lead": "swagat",
+     "severity": "minor",
+     "where": "email_swagat.txt, paragraph 1",
+     "problem": "Best observation of the four (the Send WhatsApp message button), but it is buried in a 75-word block and never says what we do. The page FAQ answers the likely objection (WhatsApp already has a greeting), but the email never hints at it.",
+     "fix": "Replace paragraph 1 with two paragraphs:\n\"We are IV Infotech, Mehsana. We set up automatic WhatsApp replies for real-estate teams. We saw the 3 BHK and 4 BHK penthouse ads for Swagat Cilantra in Vesu, some of which have a Send WhatsApp message button.\"\n\"We made a video of under 40 seconds for Swagat Cilantra. It shows how each message from that button can get an automatic reply in about a minute, with the brochure, three quick questions and a site-visit slot.\""
+    },
+    {
+     "lead": "parshwanath",
+     "severity": "major",
+     "where": "email_parshwanath.txt paragraph 1; template/index.html line 41 (h1); the video voice-over",
+     "problem": "The fact-check found no WhatsApp entry point in their ads (the Book now button goes to fb.me, destination unknown). The site shows only phone, email and a Free Estimate form. The email says 'each enquiry can get an automatic WhatsApp reply', then the page h1 says 'Every WhatsApp enquiry from your ads' and the video says 'your WhatsApp ads'. After the tap, an owner who does not run WhatsApp ads will think the note was not written for them. The email also never says what we sell.",
+     "fix": "Replace paragraph 1 with two paragraphs:\n\"We are IV Infotech, Mehsana. We set up automatic WhatsApp replies for real-estate teams. We saw the Parshwanath Emerald ads in Adalaj, which invite buyers to book a site visit.\"\n\"We made a video of under 40 seconds for Parshwanath Emerald. It shows how a buyer who messages you on WhatsApp can get an automatic reply in about a minute, with the brochure, three quick questions and a site-visit slot.\"\nAlso apply the h1 change in the 'greatspaces + parshwanath' finding. The voice-over 'your WhatsApp ads' is an accepted owner decision, but it is most likely to embarrass this lead and Great Spaces, and it is true for Swagat and Space Age."
+    },
+    {
+     "lead": "spaceage",
+     "severity": "major",
+     "where": "email_spaceage.subject.txt",
+     "problem": "At 68 characters, phone inboxes cut it at about 'Space Age Consultants: automatic WhatsApp rep...', so the project they care about (Arvind Sensora) never shows. It is also the only subject that does not lead with the project.",
+     "fix": "Arvind Sensora ads: automatic WhatsApp replies"
+    },
+    {
+     "lead": "spaceage",
+     "severity": "minor",
+     "where": "email_spaceage.txt, end of paragraph 1",
+     "problem": "The best opening of the four ('We help real-estate developers and channel partners reply to buyers on WhatsApp'), but the legal-sounding sentence 'We are not connected with Arvind SmartSpaces; the project name is used only because the ads name it' sits right before the buttons. It reads like a disclaimer in the middle of the hook and raises a question nobody had asked yet.",
+     "fix": "Replace paragraph 1 with two paragraphs and move the disclaimer to the last body line, just above 'Regards,':\n\"We are IV Infotech, Mehsana. We help real-estate developers and channel partners reply to buyers on WhatsApp. We saw the Arvind Sensora pre-launch ads from Space Age Consultants, including one with a Send WhatsApp Message button.\"\n\"We made a video of under 40 seconds for Space Age Consultants. It shows how a WhatsApp enquiry can get an automatic reply in about a minute that asks for plot size and budget.\"\nLast line before Regards: \"We are not connected with Arvind SmartSpaces; the project name appears only because the ads name it.\""
+    },
+    {
+     "lead": "all",
+     "severity": "major",
+     "where": "All four email .txt files, the line 'You may also see a short message from us on WhatsApp...'",
+     "problem": "'You may also see' hedges something that will certainly happen. It does not say when, and it offers no way to stop it before it arrives. Because the line comes after the Watch button, a reader who taps straight away misses it, so the WhatsApp still lands as a surprise. The wording only softens the second touch if it is certain and gives an exit.",
+     "fix": "Replace the line with (swap the brand per lead: Great Spaces / Swagat Developers / Parshwanath / Space Age Consultants):\n\"Later today we will also send this same note on WhatsApp, to the number published for Great Spaces, so open whichever is easier. If you would rather not get it, reply \\\"stop\\\" to this email and we will not send it.\"\nSend order: email first at about 10:30 to 11:30, WhatsApp at about 3 to 4 PM, skipped for anyone who replied, clicked or wrote stop. Check that a 'stop' email suppresses the WhatsApp (suppression.txt) before the WhatsApp slot."
+    },
+    {
+     "lead": "greatspaces",
+     "severity": "major",
+     "where": "template/index.html line 41 (shared h1); email wording for greatspaces and parshwanath",
+     "problem": "The h1 'Every WhatsApp enquiry from your ads' asserts a WhatsApp path from their ads that was not observed for Great Spaces (Book Now, destination unknown, a phone number in the creative) or Parshwanath. For these two it is the one sentence a reader can call wrong in the first three seconds on the page. The same line repeated three times above the fold (h1, lede, sub) also makes the hero feel padded.",
+     "fix": "Template line 41, replace the h1 text with: \"Every buyer who messages you on WhatsApp can get an automatic reply <span class=\\\"hl\\\">in about a minute</span>, even at night.\" It is true for all four leads. In leads.json, replace the hook (drop its repeated second sentence):\ngreatspaces: \"The Great Spaces Aaroham ads for Bhayli invite buyers to enquire and tap Book Now. This short demo shows the reply that can go out next.\"\nswagat: \"Some of the 3 BHK and 4 BHK penthouse ads for Swagat Cilantra in Vesu have a Send WhatsApp message button. This short demo shows the reply that can go out when someone taps it.\"\nparshwanath: \"The Parshwanath Emerald ads in Adalaj invite buyers to book a site visit. This short demo shows the reply that can go out when a buyer messages you on WhatsApp.\"\nspaceage: \"The Arvind Sensora pre-launch ads from Space Age Consultants include a Send WhatsApp Message button. This short demo shows a reply that asks for plot size and budget.\""
+    },
+    {
+     "lead": "parshwanath",
+     "severity": "major",
+     "where": "Send plan (CAMPAIGN_PLAYBOOK 'Day 0 template + email same day'); also greatspaces",
+     "problem": "Parshwanath's site lists only phone, email and a Free Estimate form (fact-check), and Great Spaces' site is an enquiry-form stub with a phone number in the ad creative. If the number we WhatsApp is a call number rather than one they label WhatsApp, the same-day double touch is the pushiest here and carries the Meta opt-in risk (playbook line 22).",
+     "fix": "For these two, if the number is not labelled WhatsApp: send the email only on day 0, and send the WhatsApp about 24 hours later only if there is no reply or stop. In the email change the heads-up to: \"Tomorrow we will also send this same note on WhatsApp, to the number published for Parshwanath, so open whichever is easier. If you would rather not get it, reply \\\"stop\\\" to this email and we will not send it.\""
+    },
+    {
+     "lead": "all",
+     "severity": "minor",
+     "where": "Hidden preheader in email_<key>.preview.html (auto-taken from the first 110 characters of the body)",
+     "problem": "For three leads the inbox preview line is cut mid-sentence: Great Spaces 'Aaroham, the new villa community in Bhayli, that', Swagat '...some of whi', Parshwanath '...to book a site vi'. The preview line is the second thing the reader sees after the subject, and it carries no offer. Space Age's preheader is already good and should stay.",
+     "fix": "Set an explicit preheader:\ngreatspaces: \"A video of under 40 seconds, made for Great Spaces Aaroham, on replying to buyers on WhatsApp.\"\nswagat: \"A video of under 40 seconds, made for Swagat Cilantra, on replying to WhatsApp messages.\"\nparshwanath: \"A video of under 40 seconds, made for Parshwanath Emerald, on replying to buyers on WhatsApp.\"\nspaceage: keep as is."
+    },
+    {
+     "lead": "all",
+     "severity": "minor",
+     "where": "All four emails, the demo paragraph and the close",
+     "problem": "The Try the demo button sends a message to a +1 555 959 7730 number. A Gujarat developer may hesitate to message a US-format number from an unknown sender. The wa.me chat shows 'IV Infotech' (verified name), which resolves the doubt, but the email does not say so. The email also has no plain reply path, only two buttons, while the real goal is a conversation.",
+     "fix": "In the demo paragraph replace \"from our own number. Nothing is connected to your number.\" with \"from our own number, which WhatsApp shows as IV Infotech. Nothing is connected to your number.\" Add this line after the Try the demo button and before 'Regards,': \"If it looks useful, just reply to this email and we will show how it would work on your own WhatsApp number.\""
+    }
+   ]
+  }
+ }
+]

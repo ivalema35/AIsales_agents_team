@@ -1,0 +1,38 @@
+{
+  "_about": "Apify ka mahine ka budget (owner ka rule, 29 Oct 2026): 'mahine ka 4-5 usd use ho to chalega'. Har paid Apify run se pehle yahan dekho; run ke baad kharcha jodo. Free tools (WebSearch, WebFetch, free actor listings) pehle.",
+  "monthly_cap_usd": 4.5,
+  "per_run_cap_usd": 0.5,
+  "rule": "Agar is mahine ka spent_usd + planned run > monthly_cap_usd, Apify mat chalao. Owner ki OK ke bina cap se upar nahi, aur naya bada scan (>US$0.5) pehle owner ko batao.",
+  "months": {
+    "2026-10": {
+      "spent_usd": 18.0,
+      "note": "owner ke console ke hisaab se ~18; mere workflow logs me 16.09 (28 Oct ke research ~9.80, 26-27 Oct lead-agent tests ~6.30); baaki ~2 daily-leads runs / doosre sessions"
+    },
+    "2026-11": {
+      "spent_usd": 0.0,
+      "note": ""
+    }
+  },
+  "log": [
+    {
+      "date": "2026-10-29",
+      "what": "owner ne budget tay kiya: mahine me 4-5 USD; daily-leads cap 0.25 -> 0.10 per day",
+      "usd": 0.0
+    },
+    {
+      "date": "2026-10-30",
+      "what": "daily-leads detailing run: Apify NOT used (month cap exhausted), free web tools only",
+      "usd": 0.0
+    },
+    {
+      "date": "2026-11-04",
+      "what": "daily-leads detailing run: Apify NOT used (tools unavailable in subagents), free web tools only",
+      "usd": 0.0
+    },
+    {
+      "date": "2026-11-06",
+      "what": "daily-leads detailing run: Apify NOT used, Maps list method in built-in browser + WebSearch only",
+      "usd": 0.0
+    }
+  ]
+}

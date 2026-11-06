@@ -1,0 +1,681 @@
+{
+ "leads": [
+  {
+   "business": "Elenza Realty LLP (brand: Elenza Group) - project Elenza Gardens Phase-2, Sanathal / SP Ring Road, Ahmedabad",
+   "grade": "B",
+   "case_for": "Pay signal is real and fresh. I re-read the Meta Ad Library today (2026-10-15): page \"Elenza Gardens\" has two active ads, both started 29 Sep 2026, CTA \"Get Offer\" (instant lead form), copy ends \"Book your site visit today\", 2 BHK at Rs 40 lakh. The Instagram posts of 18 Sep and 10 Oct 2026 show a live sales push, with a show house \"ready\". The brand link is proven: @elenzagroupahm's 18 Sep post tags @elenzagardens and points to elenza.group. The developer is local, not a chain, with an MD/founder named on the site and several business-published reach routes (email, 2 phones, 2 WhatsApp numbers). The funnel has visible gaps. Ad leads land in a Facebook form. The website has no Elenza Gardens page, no booking flow and no chatbot, and the contact route is a plain form plus click-to-chat. The sales model is mixed (a channel-partner programme exists) and no sales, telecaller or CRM roles are advertised, so first-reply and follow-up discipline is plausibly manual.",
+   "case_against": "The need is inferred, not observed. I found no review, complaint or test showing slow replies, and I cannot contact anyone to measure response time. They already have working click-to-chat, a brochure PDF download on project pages, and several phone lines, so a team may be answering fast. The register shows the Phase-2 application submitted 2026-09-08 with no registration number and approval date \"Date Not Found\", so volume may be pre-launch and the developer may be cautious about lead or booking automation until RERA registration is issued. The RERA-linked entity (Elenza Realty LLP) is a new project SPV that I could not tie to the group through a legal-entity document. The link rests on the Instagram tag, the project name and the Sanathal match, and the group's other projects each sit in their own LLP. Ad spend, lead volume and any existing CRM or agency are unknown. The Meta page is tiny (36 likes per scout), so spend may be modest. The scout's unit counts (851 flats, 17 shops, 0 booked, 18,816 sq m) did not appear in the public RERA record I could read.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "sales@elenza.group",
+     "source_url": "https://www.elenza.group/contact-us/",
+     "note": "Business-published general sales email (header and footer of the site). Best first-touch route."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 75739 56000",
+     "source_url": "https://www.elenza.group/contact-us/",
+     "note": "Main number on the site (tel link). Not labelled WhatsApp."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 97144 42928",
+     "source_url": "https://www.elenza.group/contact-us/",
+     "note": "Header link labelled 'Whatsapp' (wa.me/919714442928). Published for enquiries, so it is not an opt-in for a sales pitch."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 70410 01777",
+     "source_url": "https://www.elenza.group/contact-us/",
+     "note": "Site 'WhatsApp' contact block (api.whatsapp.com link); the contact page also lists it as phone. Likely WhatsApp-capable, not confirmed."
+    }
+   ],
+   "observed_facts": [
+    "GujRERA public record (projRegId 32333, read today): project ELENZA GARDENS PHASE-2, promoter ELENZA REALTY LLP (LLP firm), Mixed Development, application submitted 2026-09-08 18:21 IST. It has no registration number and approval date 'Date Not Found'. It lists a promoter email and mobile, which I did not copy. The endpoint gives no unit count, land area or status text. URL: https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32333",
+    "Meta Ad Library (viewed 2026-10-15, India): page 'Elenza Gardens' shows ~2 active ads, Library IDs 1096661563065171 and 1088741990368700. Both started 29 Sep 2026 and each has multiple versions. CTA 'Get Offer'. Gujarati/English headline '2 BHK flat @ Rs 40 lakh, SP Ring Road touch, 500m from SG Highway, 1,234 sq ft'. Copy ends 'Book your site visit today'. I did not capture which placements run the ads.",
+    "Instagram @elenzagroupahm post of 18 Sep 2026 (2 BHK show house, image text 'Show House Ready @SANATHAL') tags @elenzagardens and gives www.elenza.group. @elenzagardens (171 followers) bio is 'Premium 2 BHK Residential Homes, On SP Ring Road, Sanathal' with link elenza.group, and has a reel dated 10 Oct 2026. @elenzagroupahm has ~4.3K followers. The posts show a phone number as image text ('CALL: 9090 7474') that I could not read in full or verify, so I am not using it.",
+    "elenza.group (fetched today): a teaser page '2BHK Coming Soon @Sanathal, SP Ring Road' has no price, RERA number or form. Its project-name field says 'Elenza GreenWoods - Exclusive 3BHK Living + Retail', which looks like template residue. There is no Elenza Gardens page. Contact page says 'Do fill in the form below' (fields not readable by my fetch). No chatbot, booking or site-visit flow is mentioned. WhatsApp is a plain wa.me click-to-chat link, and a second WhatsApp number is in the footer block. The Greenwood page offers a 'Download Brochure' PDF.",
+    "About page names Vinesh Vora as Managing Director and founder (B.E. Civil, 22+ years experience). The site claims a 'decade-long reputation', ~28 lakh sq ft built, 13 lakh in progress and 15 lakh upcoming. About, Channel Partner and Careers pages mention no CRM or lead system. The Careers page has only 3 'Personal Assistant' openings and no sales, telecaller or digital roles. The Channel Partner page invites broker partners via a form. Office: VIP Road, South Bopal, Ahmedabad 380058.",
+    "Not a chain or franchise. It is a local Ahmedabad developer with ~10 portfolio entries. Third-party aggregators list the group's projects under separate LLPs (Elenza Developers LLP, Elenza Gradient LLP and others); I did not confirm this on a primary registry.",
+    "All evidence dates are within 90 days of 2026-10-15 (RERA 2026-09-08, Instagram 2026-09-18, ads 2026-09-29, reel 2026-10-10)."
+   ],
+   "hypotheses": [
+    "Ad leads from the Facebook instant form ('Get Offer') are handled by phone or manually, and no instant brochure or site-visit slot is sent. This is inferred from the visible stack and absence of automation, not seen.",
+    "Leads are split across the FB form, the website form, two WhatsApp numbers and calls, so there is probably no single lead board or follow-up discipline.",
+    "Launch pressure (a show house ready, ads live, 'Book your site visit today') makes the first-reply gap costly right now.",
+    "Phase-2 may be pre-launch volume only, since there is no RERA registration yet, so lead volume may be low until approval.",
+    "Their broker (channel-partner) sales route may mean a share of leads arrive via brokers, not ads."
+   ],
+   "identity_verified": true,
+   "decision_maker": "Vinesh Vora, Managing Director and founder (named on https://www.elenza.group/about-us/). No separate sales or marketing head is named publicly.",
+   "size_cues": "About 10 portfolio entries on the site, claimed ~28 lakh sq ft built, one office (South Bopal), ~4.3K Instagram followers, and a channel-partner programme. Team size is not stated. Unit count for Phase-2 (scout: 868 units) is unverified by me.",
+   "ability_to_pay": "Medium-high, with real evidence only for ad activity. Two paid ads have run for 16 days and a multi-project developer is selling Rs 40 lakh entry homes. Actual ad spend, margins and software budget are unknown, and the Elenza Gardens Meta page is very small.",
+   "resistance": "Unknown vendor or CRM: I found no evidence of a CRM, chatbot or agency, but I could not read the contact-form HTML. They run a channel-partner (broker) model, which may already feed their sales process. The new Phase-2 SPV has no RERA registration yet, which may make them slow or cautious to add automated booking. They do not position against AI or bots. The MD is named and reachable via the business-published email and phones.",
+   "best_angle": "Their own live ads: 'Get Offer' ads running since 29 Sep promise 'Book your site visit today'. Offer a short demo of an instant WhatsApp reply with the brochure and a site-visit slot picker plus one lead board for Elenza Gardens leads. State what is visible (ads live, no booking flow on the site) and make no claim that they are slow. Do not mention RERA status in the pitch.",
+   "best_channel": "Email to sales@elenza.group (business-published), addressed to the MD, with a one-line offer to show a demo. Treat WhatsApp as a human follow-up after a reply, not a cold pitch route, because the published wa.me link is an enquiry line and not a sales opt-in.",
+   "chain_franchise_or_agency": false,
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Beverlynn Group (Beverlynn Infraspace LLP, Ahmedabad) - project Beverlynn Upvan, Nikol; promoter of record for Upvan is P. Das Infrastructure Pvt Ltd",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Not stated publicly for the brand on its site or Facebook page. Beverlynn Infraspace LLP (incorporated 2023-10-26 per a RERA-data mirror) lists three designated partners on the public GujRERA record for Skyvue; names not repeated here and no single owner or sales head is identified. Upvan's registered promoter is a different company (P. Das Infrastructure Pvt Ltd), so the exact decision-maker for Upvan marketing is unclear.",
+   "size_cues": "Local developer, young LLP (2023). Four live projects in north and east Ahmedabad: Skyvue (RERA: 182 flats, 28 shops, 12 offices; 43% built at April 2026), Skyvue II (Hanspura/Nava Naroda), Vasudha (106 flats, 27 shops per a RERA mirror) and Upvan (the website lists two building structures of 10 and 7 blocks, several hundred flats plus retail). Two sales phone lines per project (8 numbers on beverlynn.com/locateUs.html), recorded sales calls, in-house CRM. Facebook page 774 followers, Instagram 3,587 followers, 0 Facebook reviews. Not a chain, franchise or agency.",
+   "ability_to_pay": "Medium-high. Four concurrent projects, a newly launched large Upvan scheme, paid Meta ads across several placements, a custom-built CRM and ad-conversion pipeline. Against that: the LLP is only about 2 years old, ad spend is not visible, and the Ad Library shows no ads from this page before 29 Sep 2026.",
+   "case_for": "They pay for enquiries right now and the ad is time-boxed. Four ads are live on the Beverlynn Group page (started 29 Sep, 29 Sep, 30 Sep and 13 Oct 2026). Three of them use a \"Send WhatsApp Message\" button. The Upvan ad is a Diwali offer with a Rs 1.51 lakh discount that is valid only till Diwali 2026, and its copy prints the Upvan GujRERA number (22 Jul 2026), which ties the ad to that project. All WhatsApp clicks funnel into published WhatsApp number +91 99099 08311. The website has no chat widget, and its enquiry form promises only \"We will get back to you soon\" (no instant reply). The identity is clean: the Upvan RERA number appears in the ad, on beverlynn.com/upvan.html, and in the GujRERA record. The firm is local, owner-run in style, and not a chain.",
+   "case_against": "The need is assumed, not observed. I found no complaint or review showing slow replies, and I may not message them to test. Facebook shows 0 reviews and web searches for reviews found nothing. Resistance is real: Beverlynn runs its own login-protected \"Beverlynn CRM\" (leads.beverlynn.in). It posts website forms into that CRM, stores campaign attribution, and sends hashed lead and site-visit/booking events back to Meta and Google. Its privacy policy (updated 24 Sep 2026) says WhatsApp and call conversations are logged \"so our team can follow up\" and that sales calls are recorded. The site scripts were revised on 24 Sep 2026, so someone is actively building. A team that built this may already have, or be building, WhatsApp automation, which would overlap with our \"one lead board\" and perhaps the first reply. The 8 staffed sales lines suggest a human telesales team that may answer fast. The scout's claim of no official website was wrong. The scout's Upvan unit count (586, 0 booked) did not show up in my GujRERA fetch.",
+   "resistance": "High-ish. They have an in-house CRM with Meta/Google conversion reporting, multiple sales lines and recorded calls, and an outside web agency (footer credits Creative Web Crafters) plus whoever maintains the CRM. They do not position against AI. The decision-maker is not named and the only direct routes are a shared Gmail enquiry inbox, a vendor application form, and sales lines that sit inside the lead flow they pay for. Pitch as a layer that plugs into their CRM, not a replacement, or the \"we already have a CRM\" objection ends it.",
+   "best_angle": "Diwali-window speed-to-lead on the Upvan WhatsApp number. Their ads send every click to one WhatsApp number with a \"sample house ready\" offer that expires at Diwali, so an unanswered or late-answered chat costs ad money in a fixed window. Offer to pilot an instant 24x7 first reply (Upvan brochure, 2 and 3 BHK price range, booking plan, site-visit slot booking) plus follow-up nudges, with each qualified chat pushed into their existing Beverlynn CRM. Do not pitch the lead board, since they already have one. Keep it to one line about measuring first-reply time on the ad number.",
+   "best_channel": "The \"Vendor and Consultants\" application form on beverlynn.com (a business-published inbound route for service providers), with a short follow-up email to the published enquiry inbox. Avoid cold WhatsApp to the ad number or sales lines, because that lands in the lead queue they pay for and reads as a fake enquiry. This needs the user's explicit go-ahead; nothing was submitted or sent.",
+   "contacts": [
+    {
+     "kind": "whatsapp",
+     "value": "+91 99099 08311",
+     "source_url": "https://www.facebook.com/BeverlynngroupIN/about",
+     "note": "Labelled WhatsApp on the Facebook page About tab, and the same number is behind the wa.me button on https://www.beverlynn.com/. This is the number the ads most likely send chats to. I could not confirm that from the ad link itself because the Ad Library hides it. Likely the live lead-intake line, so do not message it as a vendor."
+    },
+    {
+     "kind": "email",
+     "value": "enquirybeverlynn@gmail.com",
+     "source_url": "https://www.beverlynn.com/upvan.html",
+     "note": "Shared enquiry inbox, a Gmail address, also published on the Facebook page and in the site footer and privacy policy. The most direct business-published email for a vendor first touch."
+    },
+    {
+     "kind": "form",
+     "value": "Vendor and Consultants application form (name, firm, product description, mobile, email)",
+     "source_url": "https://www.beverlynn.com/vendor.html",
+     "note": "Published route for service providers, linked from https://www.beverlynn.com/workWithUs.html. Not submitted."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 823 823 5566 and +91 823 823 5577",
+     "source_url": "https://www.beverlynn.com/upvan.html",
+     "note": "Upvan sales lines. The privacy policy at https://www.beverlynn.com/privacy.html lists +91 82382 35566 as its contact. Likely WhatsApp-capable, not confirmed. Other projects have their own pairs of lines on https://www.beverlynn.com/locateUs.html."
+    },
+    {
+     "kind": "email",
+     "value": "upvan@pdasinfra.com",
+     "source_url": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/31455",
+     "note": "Contact on the GujRERA record for the legal promoter, P. Das Infrastructure Pvt Ltd, on its own business domain. Regulatory contact, not the marketing team. Lowest priority."
+    },
+    {
+     "kind": "phone",
+     "value": "9925163099",
+     "source_url": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/31455",
+     "note": "Listed on the same GujRERA record as the promoter's contact. Lowest priority, use only if the Beverlynn routes fail."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library page 'Beverlynn Group' (page id 160573087136703) shows 4 active ads, fetched 2026-10-15: Library ID 4497796620474924 (Vastral, started 29 Sep 2026, WhatsApp button), 1955976832327832 (Upvan Diwali offer, started 30 Sep 2026, WhatsApp button, 'This ad is from a URL link', 2 ads share the creative), 876659315442561 (Skyvue II, started 29 Sep 2026, WhatsApp button), 1791422228657858 (Vasudha video, started 13 Oct 2026, 'Get Offer' button). Source: https://www.facebook.com/ads/library/?id=1955976832327832",
+    "The Upvan ad copy offers a Rs 1.51 lakh Diwali discount, says the sample house is ready, gives a 10%/20%/30% booking plan, says the offer is valid till Diwali 2026, and prints the GujRERA number ending MAA17169/220726/311231. Platform icons show Facebook, Instagram, Audience Network, Messenger and WhatsApp.",
+    "With the Ad Library status set to 'all', the page still shows only these ads, all starting 29 Sep to 13 Oct 2026. I saw no earlier ads on this page, so the paid push is about 2 to 3 weeks old.",
+    "GujRERA record 31455: project BEVERLYNN UPVAN, promoter P. DAS INFRASTRUCTURE PRIVATE LIMITED, approved 22-07-2026, contact email upvan@pdasinfra.com and phone 9925163099. My fetch returned no unit count or booked count, so I could not confirm the scout's 586 units and 0 booked.",
+    "Official site https://www.beverlynn.com/ exists and contradicts the scout. Footer: Beverlynn Infraspace LLP. Projects: Skyvue, Skyvue II, Vasudha, Upvan. The Upvan page prints the same RERA number as the ad, so the brand-to-promoter link is confirmed. The pdasinfra.com page is a generic EPC contractor page that never mentions Beverlynn.",
+    "The Facebook page About tab (Beverlynn Group, category Property, 774 followers, 0 reviews) publishes mobile 099099 08311, WhatsApp +91 99099 08311, email enquirybeverlynn@gmail.com, website beverlynn.com and Instagram beverlynngroup. The Instagram profile shows 3,587 followers.",
+    "The website has a WhatsApp button (wa.me/919909908311?text=Hi), a brochure-request popup, a sales enquiry form and a get-in-touch form. I found no chat widget or chatbot. After a form submission it says 'We will get back to you soon'.",
+    "All site forms post to https://leads.beverlynn.in/integrations/website/enquiry, and the root of that host redirects to 'Secure Login | Beverlynn CRM'. addData.js and track.js (versions dated 20260924) comment that enquiries become leads in the CRM, that ad attribution (utm, gclid, fbclid) is stored for 90 days, and that the CRM reports leads to Meta server-side. The privacy policy, last updated 24 Sep 2026, says hashed contacts and funnel stages such as site visit and booking go to Meta and Google, that WhatsApp and call conversations are recorded so the team can follow up, and that sales calls may be recorded.",
+    "beverlynn.com/locateUs.html lists two phone numbers per project (Skyvue 7575 0077 31/32, Skyvue II 7575 0077 62/63, Vasudha 7575 0077 45/59, Upvan 823 823 5566/5577), which points to a staffed sales team.",
+    "Beverlynn Infraspace LLP is shown as incorporated 2023-10-26 on a RERA-data mirror. The same mirror shows Skyvue approved 6 May 2024 and 43.39% built at April 2026. Source: https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/beverlynn-skyvue/22392",
+    "Tried and did not work or came up empty: WebFetch on the Ad Library URL (socket hang up; the built-in browser worked). The Ad Library does not expose the WhatsApp destination number, so the number behind the ad CTA is not directly verified. The shared browser tab was navigated by another agent mid-run, so I moved to my own tab. Web searches for reviews, complaints and hiring posts about Beverlynn returned nothing relevant. I found no Google Maps review data. I did not test response speed because contact is forbidden."
+   ],
+   "hypotheses": [
+    "Hypothesis: with one WhatsApp number carrying all ad clicks during a Diwali-limited offer, evening and night enquiries wait for a human reply. This is unobserved and untestable without contacting them.",
+    "Hypothesis: the CRM's 'we keep a record of WhatsApp conversations' line means chats are already logged, possibly through a WhatsApp Business API integration. If so, the lead board and message logging are redundant, and only qualification, scheduling logic or after-hours coverage might be a gap.",
+    "Hypothesis: the CRM and site were built by a small in-house or contract dev team that could also build basic auto-replies, so our value is speed to deploy and conversation design, not tooling.",
+    "Hypothesis: the P. Das Infrastructure and Beverlynn arrangement is a joint venture or land-owner tie. Nothing public states the relationship, so treat Beverlynn as the marketing operator and do not claim a corporate link in outreach."
+   ],
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Brij Group (Gandhinagar residential developer; office Sargasan; projects Sandalwood, Azalea, Iris)",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Krunal Desai (Founder) and Arpan Desai (Co-founder), named on brijgroup.in/about. A third-party RERA aggregator (Aurum PropTech, not the official portal) lists both as partners of VLEE Infrastructure LLP, the promoter of Brij Azalea. No direct contact for either is published, so the route is the shared inbox or the sales line. Sandalwood is registered under a different partnership firm, Ashwamegh Infracon, with other individual partners plus VLEE LLP as a corporate partner. Budget decisions on Sandalwood may therefore involve people other than the Desais.",
+   "size_cues": "Local single-office developer, founded 2010. Verified live projects are three, about 470 units in total: Sandalwood (Randesan, 200 units, 3/4 BHK), Azalea (Sargasan, 162 units per the site and the RERA aggregator) and Iris (Kudasan, 108 units per the site, about 80 per ads). The site's self-claims of 50+ delivered and 10+ ongoing projects, and 1,000+ families, are not corroborated. Houssed lists Brij Group as 8 projects: 5 ongoing, 3 completed. Instagram brij.group has 19.9K followers and Facebook has 4.4K. Google Maps shows 4.8 stars from 22 reviews. The careers page lists 5 open roles, including a Sales Manager and a Digital Marketing and Content Specialist, and no telecaller or CRM role.",
+   "ability_to_pay": "Moderate to strong, but inferred, not measured. Ad activity is real, sustained and multi-format. Units are priced roughly Rs 55 lakh to Rs 2.4 Cr per aggregator listings. Unsold inventory, per aggregator data only, raises the value of each extra converted lead: Azalea shows 38 of 162 booked and Sandalwood shows conflicting counts (101 or 6 of 200). Spend is unknown, because India ad spend is not published. The ~180-ad figure includes many duplicate cards (several say 'N ads use this creative and text'), so it overstates the number of distinct campaigns. The developer is an LLP/partnership structure with RERA-registered projects, not a funded corporate.",
+   "case_for": "I could not refute the core pay signal. 1) Independent re-check of the Meta Ad Library on 2026-10-15 (page id 265462261976256, India, active) shows '~180 results'. Click-to-WhatsApp ads (Send WhatsApp message, api.whatsapp.com) run across Sandalwood, Azalea and Iris. Seven of the 27 cards I loaded started within the last 90 days (2026-07-19, 08-14, 08-20, 08-26, 09-11 twice and 09-16). The oldest started 2025-07-17. Lead-form 'Get Offer' ads started 2026-06-19 and a buyer survey 2026-06-20. 2) The number in the ads (875 875 875 7), the website, the Facebook About tab, an influencer reel caption and the wa.me link are all the same line, +91 87587 58757, so the number is theirs. 3) Not a chain, agency or freelancer, and in Gujarat. Identity is cross-confirmed by the website, Facebook, Instagram, Google Maps (corporate office at the same address) and the RERA aggregator listing the Desai founders as LLP partners. 4) Structural reply gap, from the business's own published terms: the contact form promises a reply within 24 hours, the site-visit form says confirmation within 2 hours, and hours are Mon-Sat 9:30-7:00, while Meta ads send people to one WhatsApp line. 5) The funnel is fragmented: click-to-WhatsApp ads, Meta lead forms, website forms (which post to the site's own backend), influencer reels pointing to the same number, and portal listings. There is no chat widget, bot or third-party CRM script on the site (only Google Analytics). 6) The site-form script shows the 'sent' message whether or not the POST succeeds (no status check), which suggests lead capture is not closely monitored. This is observed in the page source. It is not proof that leads are lost. 7) Business-published email and phone routes exist, and the founders are named.",
+   "case_against": "1) The need is assumed, not observed. I found no complaint or review about slow replies: Google Maps has 4.8 stars with positive reviews, Facebook shows 'Not yet rated (1 review)', a web search returned nothing relevant (it mixed in Brigade Group), and the Instagram comments I could read logged-out were spam. We cannot tell whether the WhatsApp line already has a WhatsApp Business auto-reply, an API bot or telecallers behind it, because nothing was sent. 2) Pay is a proxy: ad-library India spend is null, ~180 cards are largely duplicated creatives, and Meta marks long-running ads Active, so live budget is unknown. 3) Probable incumbent on the marketing side: influencer collab reels via collabcentraldesk and creator accounts, plus Meta lead-form ads. There is also an open in-house Digital Marketing role. Someone may already own the ad and lead stack, and the founders may not be the buyer. 4) The decision-maker is not directly reachable. The email is a shared info@ inbox plus a Gmail, and the WhatsApp line is the sales line, read by the sales team. Sandalwood sits in a JV with other partners. 5) Marketing claims run ahead of the record, which suggests puffery and possible sensitivity. Site claims of 50+ delivered and 10+ ongoing projects are not corroborated by Houssed (8 projects: 5 ongoing, 3 completed). The Iris ad says 'Possession by August 2026' while Houssed lists 30 Mar 2028. The Sandalwood ad says 'Possession soon' while the aggregator lists 30 Sep 2027. Do not cite possession dates in outreach. 6) A grade A needs observed need. A reply-speed gap cannot be observed without contacting them, so this stays a B on evidence, though a strong one.",
+   "resistance": "Medium. No anti-AI or anti-bot positioning anywhere. Probable existing agency or influencer vendor for ads, and an unknown lead-handling process (a telecalling team or WhatsApp Business app auto-reply is possible). The founders are named but only reachable through the shared inbox or sales line. The Sandalwood JV may add decision-makers.",
+   "best_angle": "Use only their own public facts, as an offer and not an accusation. For example: your Azalea, Iris and Sandalwood ads send people to one WhatsApp number, and your site promises a callback within 24 hours or a visit confirmation within 2 hours. We put an instant first reply on that same number with the project brochure and a site-visit slot, BHK and budget qualification, follow-ups, and one board that merges WhatsApp, Meta form and website leads. Offer a 10-minute demo on one project's brochure, for example Azalea. Do not claim their replies are slow, do not cite possession dates, and do not mention the influencer or agency setup.",
+   "best_channel": "Email first to the business-published info@brijgroup.in, addressed to the founders by name. Then, if there is no reply, a short WhatsApp note to the business-published sales line, which is their own inbound route. thebrijgroup@gmail.com (Facebook About) is the backup. Do not submit the buyer enquiry or site-visit forms for B2B outreach.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "info@brijgroup.in",
+     "source_url": "https://brijgroup.in/contact",
+     "note": "Shared inbox on the contact page and footer. Best first route; address it to the founders."
+    },
+    {
+     "kind": "email",
+     "value": "thebrijgroup@gmail.com",
+     "source_url": "https://www.facebook.com/people/Brij-Group/100075735016340/",
+     "note": "Facebook page About tab. Backup route."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 87587 58757",
+     "source_url": "https://brijgroup.in/contact",
+     "note": "Main sales line. Also on the Facebook About tab and in ad copy as 875 875 875 7. Site hours Mon-Sat 9:30-7:00."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 87587 58757 (https://wa.me/918758758757)",
+     "source_url": "https://brijgroup.in/contact",
+     "note": "Business-published wa.me link in the header, footer and mobile menu. Same number as the click-to-WhatsApp ads. Unknown whether it is a Business API line or has an auto-reply."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library, loaded 2026-10-15 for page id 265462261976256 (India, active, all ads): header reads '~180 results'. A scroll-load returned 27 cards, with start dates from 2025-07-17 to 2026-09-16. Seven started on or after 2026-07-17: 2026-07-19, 08-14, 08-20, 08-26, 09-11 (two) and 09-16. A prior qualifier reported the newest ad at 2026-10-09, which I could not reload because only 27 cards lazy-loaded.",
+    "Click-to-WhatsApp ads (Send WhatsApp message, api.whatsapp.com) seen for all three projects. The newest I saw started 2026-09-11, including one run with an influencer account ('saanvidave with Brij Group') whose copy carries the same number. Meta lead-form ads (Get Offer, fb.me) started 2026-06-19 and a Gandhinagar buyer survey ad started 2026-06-20.",
+    "Several cards say 'N ads use this creative and text' or 'This ad has multiple versions', so the ~180 count includes many duplicates.",
+    "The Iris ad started 2026-01-06 still says 'Possession by August 2026' with a WhatsApp CTA. Houssed lists Iris possession as 30 Mar 2028, and Sandalwood as 30 Sep 2027 against ad copy 'Possession soon'.",
+    "brijgroup.in/contact: phone +91 87587 58757, wa.me/918758758757, info@brijgroup.in, office 1110 Shreeji Signature, opposite Aashka Hospital, Sargasan, Gandhinagar 382419, Mon-Sat 9:30 AM-7:00 PM, 'reply within 24 hours' after an enquiry. The homepage form says 'call you back within 24 hours'. brijgroup.in/book-site-visit says the team confirms within 2 hours, and the post-submit text says 'within a few hours'.",
+    "Page source (fetched 2026-10-15): the only external script is Google Analytics (G-6091F84042). No chat, CRM or WhatsApp-bot vendor. Forms POST to the site's own Laravel backend at /enquiry and /book-site-visit. The JS shows the success message in both the then and catch branches without checking the response status.",
+    "Facebook page (brij.group page, 'Property developer'): 4.4K followers, phone, email thebrijgroup@gmail.com, 'Always open', 'Not yet rated (1 review)', posting actively (a post '10 hours ago' on the day checked). Instagram brij.group: 19.9K followers, with collab reels from creator accounts. One collab reel (relative timestamp '1d') has a caption giving the same number. Its visible comments were spam, with no genuine enquiries.",
+    "Google Maps 'Brij Group': Corporate office, 4.8 stars (22 reviews), same Sargasan address, closes 7 pm. No complaint about reply speed found anywhere.",
+    "Third-party RERA aggregator Aurum PropTech (not the official portal, flagged as possibly inaccurate): Azalea promoter VLEE Infrastructure LLP, partners include Arpan and Krunal Desai, registration 12 Feb 2024, completion 31 Dec 2028, 38 of 162 units booked. Sandalwood promoter Ashwamegh Infracon (partnership, other individual partners plus VLEE LLP), completion 30 Sep 2027, with conflicting booked counts (101 or 6 of 200).",
+    "Houssed lists Brij Group as 8 projects (5 ongoing, 3 completed) and uses a separate portal-assigned WhatsApp number for its 'Connect Now' buttons. That number is not Brij-published and is excluded from the contacts. The site's own claim of 50+ delivered and 10+ ongoing projects is not corroborated.",
+    "Careers page (no dates): Site Engineer, Senior Project Architect, Sales Manager (Luxury Real Estate), QC and Estimation Engineer, Digital Marketing and Content Specialist. No telecaller, presales or CRM role is listed.",
+    "Did not work or not done: the public Ad Library gives no India spend, so budget is unknown. A web search for complaints returned only unrelated Brigade Group and other-city results. Nothing could be learned about the WhatsApp line's auto-reply or CRM without sending a message, which was out of scope. The official GujRERA portal was not checked, so RERA data is aggregator-only. The prior qualifier's 'Pride of Gujarat award' (indiacsr.in) was not independently re-verified. My first browser JS call hit another agent's shared tab because I omitted the tabId. It only read the page, wrote nothing, and I then used tab-11 explicitly."
+   ],
+   "hypotheses": [
+    "Hypothesis: click-to-WhatsApp ad clicks arrive in the evening and on Sundays, when the published hours (Mon-Sat 9:30-7) leave the line unstaffed. Whether an auto-reply covers this is unknown.",
+    "Hypothesis: leads from click-to-WhatsApp ads, Meta instant forms, website forms, influencer reels and portal listings are split across several inboxes with no single board. This is inferred from the number of funnels and the absence of any CRM or bot script, not observed.",
+    "Hypothesis: with a large share of units still unbooked per aggregator data, the extra conversion value of faster follow-up is high. That aggregator data is unverified.",
+    "Hypothesis: a creative or influencer agency runs the ads and may own the lead flow. This would make the agency the gatekeeper, or a possible partner."
+   ],
+   "challenged": true,
+   "first_grade": "A",
+   "found_in": []
+  },
+  {
+   "business": "NB Developer (legal entity NB INFRA PROJECTS LIMITED), Sola, Ahmedabad",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Not stated by the business. Mr. Rahul Prajapati fronts the 'Legacy Talk' ad series and is congratulated as 'NB Developer' in a 14 Sep 2026 ad, so he is a likely senior person. His title is not published and I did not verify it. No MCA/director record found.",
+   "size_cues": "Single-city developer, Ahmedabad only. Group heritage since 1946 (bricks), real estate since 2011. Four projects on the site: NB Legacy Tower, NB Relife, Pearl Heights, Silver Pearl. NB Legacy Tower is a 22-storey RERA-numbered tower with 211 residences per the site (Square Yards says 111). Corporate office at NB House, Sola. Facebook page has 1.8K followers and 0 reviews. A new project in New Nikol was teased on 7 Oct 2026. Not a chain, franchise or agency.",
+   "ability_to_pay": "Strong, from observed facts. Meta Ad Library shows 18 active ads on 15 Oct 2026 and about 33 ads in total. There were two paid flights: roughly 18 Apr to 20 May 2026 (9 ended ads), and a new flight from 13 Sep 2026 that is still running. Ad creatives are produced videos plus influencer and channel-partner collabs. Units cost Rs 4.5 Cr (4 BHK) to Rs 8.1 Cr (5 BHK), with a 20% now / 80% at possession plan. One closed deal is worth far more than any automation fee. Caveat: lead volume is probably low (ultra-luxury, 211 units), so the budget they will give a tool is a judgement call.",
+   "need_note_placeholder_do_not_use": "",
+   "case_for": "1) They pay for enquiries, and this is verified in the Ad Library: 18 active ads, the first on 13 Sep 2026 and the latest on 9 Oct 2026, after an earlier flight in Apr-May 2026. 2) Three ads (13 Sep, 24 Sep, 25 Sep 2026) use a click-to-WhatsApp CTA, so WhatsApp enquiries really arrive. The CTA opens api.whatsapp.com/send, and the target number is not shown. 3) The other ads send people to a landing page whose form collects only a phone number and a BHK choice (no email, name or budget). Many creatives also print a phone number (+91 97271 14499), and one prints a separate advisor line. That means a human callback is needed for every lead, which is exactly the step instant reply, qualification and visit booking would handle. 4) The contact page lists business hours Mon-Sat 11 AM to 6:30 PM, while ads and social posts run through evenings and weekends. 5) The site has no chatbot or booking widget in the raw HTML. It is a Wix site with a floating WhatsApp button, and it still shows Lorem ipsum text and placeholder testimonials, which points to a DIY digital stack with room to improve. 6) Business-published email, phone and WhatsApp routes are all available. 7) Ticket size makes one saved enquiry very valuable, and a new project is being teased, so volume is likely to grow.",
+   "case_against": "1) No direct evidence of slow replies or lost leads. Reply time is unknown, and I could not test it because that would mean contacting them. The need is a hypothesis. 2) The scout's key claim that the homepage has no WhatsApp widget, phone or email was wrong. It came from a truncated text fetch. The raw HTML shows a floating WhatsApp button (wa.me/919016819904), a phone number in the footer and info@ in the footer. So a WhatsApp route is already wired at site level. 3) Ultra-luxury buyers (Rs 4.5-8.1 Cr) get personal 'Luxury Property Advisor' handling, and NB positions itself on personal service. Lead volume is probably low, so a human team may cope, and an automated first reply could feel off-brand. 4) What sits behind the WhatsApp or form (CRM, bot, a person) is unknown. Marketing may be run by an agency or in-house team that gatekeeps vendors. 5) Decision-maker not clearly identified. 6) Number sprawl (see contacts) shows fragmented routing, but it could also just be several sales advisors. 7) No Google review or complaint evidence found.",
+   "best_channel": "Email first to office@nbdeveloper.co.in (goes to the corporate office, more likely to reach management), copying info@nbdeveloper.co.in. Do not use the ad WhatsApp CTA or the sales-advisor line as a cold sales route, because they are buyer-enquiry channels and a pitch there would be unsolicited. The contact-page form on nbdeveloper.co.in/contact-us is a fallback. The WhatsApp numbers are an opt-in route only after they reply.",
+   "best_angle": "Lead with what is visible in their own funnel. The Legacy Tower ads split enquiries across a click-to-WhatsApp CTA, a phone-only web form and printed phone numbers, while published office hours are Mon-Sat 11 to 6:30. Offer a 2-week pilot on the WhatsApp-CTA ads only: instant reply with the brochure and the 20/80 payment plan, two qualifying questions (BHK and budget), site-visit slot booking for the advisors, follow-ups, and one lead board. Stay humble and do not claim they respond slowly. Ask for a 15-minute call, and ask how enquiries are handled today.",
+   "resistance": "Medium. Unknown vendor or CRM. The brand is personal-service luxury, and an automated first reply may be seen as off-brand unless it is framed as a concierge, with a human handover. The marketing team or agency may gatekeep (produced video, influencer collabs, channel-partner collabs). No evidence of anti-bot or anti-AI positioning. The owner or senior person looks reachable through the published office@ and info@ emails.",
+   "observed_facts": [
+    "Identity: nbdeveloper.co.in footer and contact page (fetched 2026-10-15) name 'NB INFRA PROJECTS LIMITED (NB Developer)', NB House, Sola, Ahmedabad 380060. Copyright 2025. Square Yards (squareyards.com/nb-legacy-tower-hebatpur-ahmedabad-npd-344288) names the developer as NB Infra Projects Limited and shows the same RERA number as the NB Legacy Tower page (PR/GJ/AHMEDABAD/DASKROI/Ahmedabad Municipal Corporation/RAA16634/240326/311232).",
+    "Meta Ad Library (page 398147130297850, country India, viewed 2026-10-15): about 18 active ads, started 13 Sep to 9 Oct 2026. About 33 ads in the all-status view, with earlier ended ads dated 18 Apr to 20 May 2026. This confirms the scout's count.",
+    "Ads with a WhatsApp CTA: 13 Sep 2026 (ID 1689463342133718, 'Learn more' with a WHATSAPP tag), 24 Sep 2026 (ID 1816725645985886, 'Send WhatsApp message'), 24 Sep 2026 (ID 1983062352376525) and 25 Sep 2026 (ID 1475080377875317). The CTA link target in the DOM is api.whatsapp.com/send with no phone number visible. I found 4 such ads where the scout reported 3.",
+    "Other ads link to nbdeveloper.co.in/nb-legacy-tower-enquiry (14 Sep, 30 Sep, 7 Oct, 9 Oct 2026 and others). Many creatives print phone numbers: +91 9727114499 / 97271 14499 (ads from 14 Sep to 9 Oct 2026) and 92744 19531 labelled 'Luxury Property Advisor' (ads from 6 and 7 Oct 2026).",
+    "Enquiry landing page (raw HTML): Wix site. The form asks only Phone plus 'Size Interested In' (4 BHK Simplex) with a Submit button. There is no WhatsApp link on this page, no chatbot, and no tel/mailto link. It carries a Meta pixel (fbq) and Google Tag Manager.",
+    "Home page raw HTML: floating green WhatsApp icon button linking to wa.me/919016819904 (its accessible label is 'Close', a Wix labelling quirk). It also has a mailto link for info@nbdeveloper.co.in and a footer phone +91-9727 11 44 99. The scout's 'no phone or email, no WhatsApp' claim is therefore incorrect. The home page still shows Lorem ipsum text and placeholder testimonials (River Watts, Ash Marcus, Jamie Lane).",
+    "Contact page (nbdeveloper.co.in/contact-us): business hours Mon-Sat 11 AM to 6.30 PM, a Call Us number, an email and a Wix form (name, email, phone, comment). It has the same floating WhatsApp button.",
+    "Facebook page (viewed 2026-10-15, no login): the page lists 097271 14477, +91 90161 34880 and office@nbdeveloper.co.in, plus an Instagram handle and the website. It has 1.8K followers, shows 'Not yet rated (0 reviews)', and a post dated 'about 6 hours ago' (teaser: 'Something BIG is about to be revealed'). The text did not label which number is WhatsApp (the page then showed a login wall).",
+    "Five different phone numbers appear across channels: 97271 14499 (site and ads), 97271 14477 (Facebook), 90161 34880 (Facebook), 90168 19904 (website WhatsApp button; shown as wa.me/919016819904) and 92744 19531 (ad advisor line).",
+    "Co-marketing: ads co-branded with Instagram collaborators 'rahul99_prajapati', 'tanejaestatemanagement' and 'The Real Gold Properties' (Sep-Oct 2026), which suggests channel-partner or influencer lead sources as well.",
+    "New project teasers: 7 Oct 2026 ads about 'New Nikol' and a new brand face 'coming soon'.",
+    "Pricing and offer: 4 BHK from Rs 4.50 Cr (5,420 sq ft), 5 BHK from Rs 8.10 Cr (9,400 sq ft), 20% now / 80% at possession, 'Sample House Ready' ad dated 7 Oct 2026. Aggregators disagree on details: Square Yards shows launch Feb 2026, 111 units and Rs 3.58 Cr from; the site says 211 residences, possession Dec 2029."
+   ],
+   "hypotheses": [
+    "HYPOTHESIS: Phone-only form leads and WhatsApp-CTA enquiries are followed up by humans within office hours (Mon-Sat 11 to 6:30), so evening, night and Sunday enquiries from ads wait. Not verified; reply time is unknown.",
+    "HYPOTHESIS: Five different phone numbers across site, Facebook and ads point to leads being split across several people with no single lead board.",
+    "HYPOTHESIS: The WhatsApp number behind the ad CTA may be handled by a person or a shared phone. I could not tell which number it is or whether a bot or CRM is behind it.",
+    "HYPOTHESIS: Placeholder text and a mislabelled WhatsApp button on a live site suggest digital operations are DIY or agency-light, which could mean openness to a tool but also a weak internal owner for it.",
+    "HYPOTHESIS: Volume is probably modest (Rs 4.5-8 Cr units, small follower base), so the pitch should be about not losing any single high-value lead, rather than scale."
+   ],
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "office@nbdeveloper.co.in",
+     "source_url": "https://www.facebook.com/nbdeveloper/",
+     "note": "Listed on the NB Developer Facebook page intro. Corporate-office address, preferred first-touch route."
+    },
+    {
+     "kind": "email",
+     "value": "info@nbdeveloper.co.in",
+     "source_url": "https://www.nbdeveloper.co.in/contact-us",
+     "note": "Published as a mailto link on the website contact page and home footer."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97271 14499",
+     "source_url": "https://www.nbdeveloper.co.in/contact-us",
+     "note": "Main number on the website footer and contact page; also printed in many Meta ads (e.g. Ad Library ID 1630905311996035, 14 Sep 2026). Likely WhatsApp-capable (Indian mobile), not confirmed."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 90168 19904 (wa.me/919016819904)",
+     "source_url": "https://www.nbdeveloper.co.in/",
+     "note": "Floating WhatsApp button on the home and contact pages. This is the only number published as an explicit WhatsApp link. Use only as an opt-in or enquiry route."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97271 14477 and +91 90161 34880",
+     "source_url": "https://www.facebook.com/nbdeveloper/",
+     "note": "Both listed on the Facebook page. The scout labelled 90161 34880 as WhatsApp, but the page text did not label it, so it is only a likely WhatsApp-capable mobile. These differ from the website's numbers."
+    }
+   ],
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Lotus Lifestyle (promoter: Lotus Buildcon), Sama-Savli Road, Vadodara",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "case_for": "The scout's core claim holds up. They pay for enquiries that land in WhatsApp. I opened the Meta Ad Library page for this advertiser (page ID 270693699450339) and saw about 14-15 active ads. Ad 2188384578404382 started 30 Sep 2026 (15 days ago) and carries a \"Send WhatsApp message\" button pointing to api.whatsapp.com. Other ads started 4 May 2026 (three) and 15 Jul 2026, so click-to-WhatsApp advertising has run for at least 5.5 months, and one ad is brand new. They are one real, RERA-registered Gujarat developer and not a chain: 43 units, Block 46/48 Sama-Savli Road, address and RERA number match the third-party RERA mirror. They are actively selling: daily Instagram posts on 10 to 14 Oct 2026, a Facebook post 8 hours before my check, and a ready sample villa advertised on 13 Sep 2026. The RERA mirror shows the project 29.11% built as of Apr 2026 with completion due 31 Mar 2028, so inventory has to sell for another 1.5 years or more. The mirror's booking count is inconsistent (0 vs about 22 of 43), so treat the remaining stock as unknown but probably substantial. Their lead handling is thin: the site has no chat widget or bot, and the \"Book Site Visit\" page is a plain contact form (name, email, phone, subject, free-text message) with no slot picker. The brochure pop-up gives the PDF only on a thank-you page after a form. Phone, WhatsApp and email are all business-published, so the first touch can go to a real inbox.",
+   "case_against": "The need is inferred, not observed. I cannot see their WhatsApp reply time, and we may not test it. Their number could already have a free WhatsApp Business greeting or away message, or a person who replies fast. The brochure pop-up posts to enquiry.php with \"source\":\"24\" and \"responsetype\":\"1\", which looks like a CRM or lead-system payload, so some lead tracking may already exist behind the form. The ads and the Meta pixel (1062843198533001) may be run by a marketing agency that also handles lead follow-up, which would make the agency the real gatekeeper. Scale is modest. It is a single project by a partnership firm incorporated 5 Apr 2021 (7 partners on the RERA record), with 0 other completed or ongoing projects on the RERA mirror. The newest ad shows under 100 impressions, Instagram has 1,074 followers, Facebook has 4.5K followers and 0 reviews. The ad spend level is not visible. The project ends in 2028, so this is a short-lived customer unless it turns into a repeat developer. No sales head or marketing owner is named anywhere, so the decision-maker is unclear. High-ticket villa buyers are often handled by personal calls, and the owners may prefer that. Only about 5 of the 15 ads rendered in my logged-out view, so the scout's April and June start dates are unverified.",
+   "decision_maker": "Unknown. It is a partnership firm (7 partners on the RERA record) and no sales or marketing head is published. Ads may be run by an unnamed agency. Address the first email to the sales desk and ask who handles enquiries; do not guess a name.",
+   "size_cues": "Single RERA project, 43 villas with a clubhouse (Block 46/48, Sama-Savli Road, near IOCL pump, Vemali). Promoter is a partnership firm incorporated 5 Apr 2021 with 7 partners; its only project on the RERA mirror is this one. RERA approval 26 Feb 2024, 29.11% progress in Apr 2026, completion 31 Mar 2028. Facebook has 4.5K followers and 0 reviews; Instagram has 1,074 followers. Lotus Aura, named as the neighbouring landmark, is a different developer (Raamah/Aakar Enterprise per 99acres), so this is not a group.",
+   "ability_to_pay": "Medium, unproven. Positive: premium 5BHK villa product, about 14-15 live ads, click-to-WhatsApp ads running since at least 4 May 2026, a Meta pixel, GA4 and GTM on the site, a sample villa built, and steady social posting. Negative: first and only project of a young partnership firm, a small audience, new ads with very low impressions, and no pricing or spend data. A tool priced at a few thousand rupees a month looks affordable; a large retainer is not.",
+   "resistance": "Medium. Possible agency or CRM already behind the lead form (\"source\":\"24\" payload). Unknown whether the WhatsApp number runs WhatsApp Business with auto-replies. There are 7 partners and no named owner. Villa selling is relationship-driven, so they may not want automation. I found no sign that they position against bots or AI. The 90990 49690 WhatsApp number differs from the 96620 90620 call line, which suggests someone separately watches WhatsApp. The firm may have a short buying horizon, since the project closes in 2028.",
+   "best_angle": "Lead with their own ads, as a question. Their latest ad (started 30 Sep 2026) sends people to WhatsApp, so say we help projects like theirs make sure every WhatsApp enquiry gets the brochure, a few qualifying questions and a site-visit slot within a minute, day or night, with follow-ups and one lead board for the partners. Offer a free test: they message their own number at 11pm and see what a buyer sees, then we show the difference. Do not claim they reply slowly.",
+   "best_channel": "Email to the business-published sales@lotusbaroda.com, copying sales.lotuslifestyle@gmail.com from their Facebook page. The website contact form (contact.html) is a backup. Do not pitch on the WhatsApp line without opt-in, since it is their buyer enquiry line. A call to the published phone is a possible second touch.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "sales@lotusbaroda.com",
+     "source_url": "https://www.lotusbaroda.com/",
+     "note": "Mailto link in site footer/header. Primary first-touch address."
+    },
+    {
+     "kind": "email",
+     "value": "sales.lotuslifestyle@gmail.com",
+     "source_url": "https://www.facebook.com/lotuslifestylebaroda/",
+     "note": "Published in the Facebook page intro. Gmail, likely a shared sales inbox."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 96620 90620",
+     "source_url": "https://www.lotusbaroda.com/",
+     "note": "Site 'Call Now' line. Also shown on Facebook (096620 90620) and in Instagram post graphics."
+    },
+    {
+     "kind": "whatsapp",
+     "value": "+91 90990 49690",
+     "source_url": "https://www.lotusbaroda.com/",
+     "note": "Labelled 'Chat on Whatsapp' (api.whatsapp.com link) on the site, a different number from the phone line. Not confirmed to be WhatsApp Business or API. This is their buyer enquiry line, so do not use it for cold pitching without opt-in."
+    },
+    {
+     "kind": "form",
+     "value": "https://www.lotusbaroda.com/contact.html",
+     "source_url": "https://www.lotusbaroda.com/contact.html",
+     "note": "Book Site Visit form: name, email, phone, subject, message. Posts to enquiry.php. I did not submit it."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library (page 270693699450339, India, active), checked 2026-10-15: about 14-15 results. Verified ad 2188384578404382, active, started 30 Sep 2026, impressions under 100, CTA 'Send WhatsApp message' to API.WHATSAPP.COM, headline '5BHK Luxury Villas at Sama-Savli - Limited Units'. Ad 2130218767768623 started 4 May 2026 with the same CTA. Ads 1654070658972613 and 1470985308144763 (4 May 2026) and 1040685138824136 (15 Jul 2026) are active; their CTA buttons did not appear in the text I saw.",
+    "The ad copy pushes 'Book your site visit' and 'before units get sold out'. The ad page text does not show the WhatsApp number behind the button.",
+    "Site lotusbaroda.com (raw HTML): sticky bar with Call Now (tel +919662090620), Chat on Whatsapp (phone 919099049690), Download Brochure and Book Site Visit. No chat widget, bot or CRM script. It has GTM-NHMTKQ5N, GA4 G-VKBX3W7PDL and a Meta pixel (1062843198533001).",
+    "Brochure pop-up opens 3 seconds after page load and asks for name, email and mobile (mobile required). It posts to enquiry.php with remark 'Intrested in Lotus Lifestyle', source '24', responsetype '1', then redirects to thankyou.html, which links the brochure PDF. A thank-you page that links the brochure PDF means web leads already get the brochure instantly; follow-up after that is not visible.",
+    "contact.html form: name, email, phone (optional), subject, message; action enquiry.php (POST); a hidden botcheck field. No time-slot or booking logic.",
+    "Facebook page (checked in browser 2026-10-15): 4.5K followers, address 'Next to Lotus Aura, B/S IOCL Pump, Sama-Savli Main Road', phone 096620 90620, sales.lotuslifestyle@gmail.com, 0 reviews, last post about 8 hours earlier.",
+    "Instagram @lotuslifestylebaroda (as fetched): 1,074 followers; posts dated 10, 11, 12, 13, 14 Oct 2026 and a 13 Sep 2026 'Sample Villa (ready)' post.",
+    "RERA mirror (aurumproptech.in): project Lotus Lifestyle, promoter Lotus Buildcon (partnership firm, incorporated 5 Apr 2021), 43 residential units with common plot and clubhouse, approved 26 Feb 2024, end date 31 Mar 2028, progress 29.11% as of Apr 2026, 0 other completed/ongoing projects. The page shows contradictory booking numbers (0 booked vs about 22). The RERA number on lotusbaroda.com (PR/GJ/VADODARA/VADODARA/VADODARA MUNICIPAL CORPORATION/RAA13039/260224/310328) matches Square Yards.",
+    "Lotus Aura, named in the address, is a separate commercial development by other developers per 99acres search snippets. 'Lotus White Field' (Vadodara) belongs to a different promoter (Saral Corporation). Neither is a group company.",
+    "Tried, did not work: both Apify MCP servers returned 'Monthly usage hard limit exceeded', so I could not run an Ad Library scraper.",
+    "Tried, did not work: the logged-out Ad Library view renders only 4 of about 15 ads and scrolling did not load more, so the scout's 21-23 Apr and 26-27 Jun start dates are unverified; I confirmed 4 May, 15 Jul and 30 Sep only.",
+    "Tried, did not work: the shared browser tab was briefly overwritten by another agent's Ad Library page (Elenza Gardens), and a second tab could not be opened (tab cap). 99acres returned 403. A WebFetch of the Facebook page returned only the page name (I used the browser instead). No Google Maps rating or review text was found by search, and Facebook shows 0 reviews.",
+    "Not tested by design: WhatsApp reply speed, auto-replies and whether enquiry.php feeds a CRM. I contacted nobody and submitted no form."
+   ],
+   "hypotheses": [
+    "HYPOTHESIS: Many ad clicks land in a WhatsApp chat that a person must answer by hand, so night or busy-time enquiries go unanswered for hours. Not observed.",
+    "HYPOTHESIS: Site-visit booking depends on a human calling back after a free-text form, so no-shows and drop-offs are likely. Not observed.",
+    "HYPOTHESIS: Follow-up of cold enquiries from the web form and WhatsApp is manual and not tracked on one board.",
+    "HYPOTHESIS: A CRM or marketing agency may sit behind enquiry.php (source id '24'), which would lower the need or move the buyer to the agency.",
+    "HYPOTHESIS: About half the 43 villas may still be unsold, so every missed enquiry matters, but the RERA booking counts conflict."
+   ],
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Somnath Buildcon (partnership firm), project Shreeji Homes, Kathwada (Singarva Road), Ahmedabad",
+   "grade": "B",
+   "case_for": "Genuinely fresh and paid: the Meta Ad Library shows an Active ad that started 10 Oct 2026, 5 days before today, for a new 1 and 2 BHK plus shops launch on Kathwada Singarva Road, in Gujarati, with prices from Rs 23.50 lakh and Rs 30 lakh. This meets the \"pays for enquiries\" test. The scout was wrong that the ad carries no phone number: the ad body says \"Call Now\" and lists two mobiles, and its stated aim is site-visit enquiries. So every click lands on a phone call or an fb.me/Messenger route, with no WhatsApp number, website or booking flow shown. That is the gap we fill. The ad-page-to-promoter link is circumstantial but strong: same project name, same locality, flats plus shops matching the RERA type \"Mixed Development\", ad launched 11 days after the 2026-09-29 application, and the RERA project email handle is \"shreejihomes012\". It is a local firm, not a chain, with no website and no visible CRM or vendor. Three business-published contact routes exist, with sources.",
+   "case_against": "Ability to pay is unproven. It is a new partnership firm with one ad (the Ad Library shows about 1 result), no website, and a new page. The affordable price band suggests a thin-margin, volume-driven scheme. The project has no RERA registration number yet (registration number null, approval \"Date Not Found\" in the GujRERA record), and the ad body text shows none, though I did not inspect the creative image. They are selling before registration, which is their compliance risk. It could also mean the scheme pauses or is slow. The need is a hypothesis, not observed: nothing shows they are slow to reply, and a phone-first \"Call Now\" ad with staffed sales numbers may be handled adequately. The two ad numbers differ from the RERA promoter mobile, so they may belong to a sales agency or channel partner who would be the real gatekeeper or would resist new tooling. No partner names are published in what I could read, so the decision-maker is unknown. The units (233 flats + 24 shops) and the Kathwada address are the scout's figures. I could not reproduce them from the public GujRERA endpoint.",
+   "contacts": [
+    {
+     "kind": "email",
+     "value": "shreejihomes012@gmail.com",
+     "note": "Promoter project email in the GujRERA record (role-style, project-branded Gmail). Only email found; best first-touch route.",
+     "source_url": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32531"
+    },
+    {
+     "kind": "phone",
+     "value": "9737006510",
+     "note": "Promoter mobile in the GujRERA record. Indian mobile, likely WhatsApp-capable but not labelled WhatsApp.",
+     "source_url": "https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32531"
+    },
+    {
+     "kind": "phone",
+     "value": "99250 05430",
+     "note": "Printed in the ad body as a 'Call Now' number for details and site visits. Not labelled WhatsApp. Likely a sales or channel-partner line, since it differs from the RERA mobile.",
+     "source_url": "https://www.facebook.com/ads/library/?id=1765250348094690"
+    },
+    {
+     "kind": "phone",
+     "value": "99250 05460",
+     "note": "Second 'Call Now' number in the same ad body. Not labelled WhatsApp.",
+     "source_url": "https://www.facebook.com/ads/library/?id=1765250348094690"
+    },
+    {
+     "kind": "facebook_page",
+     "value": "https://www.facebook.com/61591892581602/",
+     "note": "Ad page 'Shreeji Homes - Kathwada'; the ad's page link goes here. About details not readable by me. The ad CTA 'See Details' routes to fb.me.",
+     "source_url": "https://www.facebook.com/ads/library/?id=1765250348094690"
+    }
+   ],
+   "observed_facts": [
+    "GujRERA public record (fetched live 2026-10-15): project SHREEJI HOMES, promoter SOMNATH BUILDCON, type PARTNERSHIP FIRM, project type Mixed Development, ack no. PR/AHMEDABAD/DASKROI/AHMEDABAD MUNICIPAL CORPORATION/260929/032531, application submitted 2026-09-29 14:48 IST, registration number null, approvedDate 'Date Not Found'. Promoter mobile 9737006510 and email shreejihomes012@gmail.com. No website, no address or unit counts in this public endpoint.",
+    "Meta Ad Library, page 'Shreeji Homes - Kathwada' (page id 1236306442892452, India): about 1 result, Library ID 1765250348094690, Active, 'Started running on 10 Oct 2026', 'This ad has multiple versions'. Ad text is in Gujarati: new launch residential project with 1 and 2 BHK flats and shops, 1 BHK from Rs 23.50 lakh, 2 BHK from Rs 30 lakh, 'All Inclusive Price', on Kathwada Singarva Road. It asks buyers to contact for details and site visit, with 'Call Now: 99250 05430 | 99250 05460'. CTA button is 'See Details'. The link target is fb.me via l.facebook.com, and the page link is facebook.com/61591892581602.",
+    "The ad shows phone numbers but no WhatsApp number or wa.me link, and no website or booking link in the body text. This corrects the scout's claim that the ad carries no phone number.",
+    "The two ad phone numbers differ from the RERA promoter mobile (9737006510). The ad body text I read shows no RERA registration number; the creative image was not inspected.",
+    "Web searches for Somnath Buildcon, 'Shreeji Homes' Kathwada, the RERA mobile and email, and the two ad numbers returned no website, portal listing or other public footprint. The only 'Shreeji' project found in Kathwada was Shreeji Residency (Shree Krishna Developers, completed), a different firm and project.",
+    "Gujarat, Ahmedabad, local single-project partnership firm; no sign of chain, franchise or agency status on the RERA record."
+   ],
+   "hypotheses": [
+    "Enquiries from the ad arrive mainly as calls plus Facebook Messenger or lead-form messages. Staff on site or out of hours may miss or delay replies, and there is no instant brochure, price sheet or site-visit slot booking. Nothing seen proves slow replies.",
+    "The ad numbers (9925...) are likely a sales team or channel-partner line separate from the promoter's mobile. The partner who answers calls may be the practical buyer or blocker.",
+    "Ad budget is probably small to moderate, given one ad, a brand-new page and an affordable price band. A launch-phase pilot priced low is more realistic than a premium package.",
+    "The ad page belongs to the promoter Somnath Buildcon. Supported by name, locality, flats plus shops, timing and the project-branded RERA email. Not confirmed by any RERA number or promoter name on the page or ad.",
+    "Advertising before RERA approval may make the firm cautious about new tools or data capture, or may slow the project."
+   ],
+   "identity_verified": false,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Partners of Somnath Buildcon (partnership firm). No individual names appear in the public record I could read. The RERA mobile 9737006510 is presumably a partner or promoter contact, but that is not stated.",
+   "size_cues": "Scout reports 233 flats + 24 shops (257 units); I could not verify this from the public GujRERA endpoint. The ad shows 1 BHK from Rs 23.50 lakh and 2 BHK from Rs 30 lakh (affordable segment). One active ad, a brand-new page (scout: 91 likes, not re-verified), no website, no RERA registration number yet. No other projects found for this promoter.",
+   "ability_to_pay": "Low to medium, unproven. Paid Meta ad is live (since 10 Oct 2026), but spend is unknown and it is a single ad. The firm is new to the register, in the affordable price band, with no web presence. Inventory value is large on paper (if 257 units were true, roughly Rs 60-75 crore at the ad's starting prices, an estimate), but there is no evidence of marketing budget beyond one ad.",
+   "resistance": "No visible existing vendor, chatbot or CRM, and no anti-AI stance found. Unknowns: a separate sales agency or channel partner may own the ad numbers and the lead handling; the promoter's mobile is the only owner-level number and it was not labelled WhatsApp; the project is not yet RERA-approved, so priorities may be elsewhere. Reachability is fair, with one email and three mobiles published.",
+   "best_angle": "Lead with their own live ad: it says 'Call Now' with two numbers, so any call missed during site work or at night is a lost buyer. Offer an instant Gujarati/English WhatsApp reply that sends the 1 and 2 BHK price sheet and brochure and books a site-visit slot, with every enquiry on one lead board. Offer a small launch-phase pilot.",
+   "best_channel": "Email first to the RERA-published project address, shreejihomes012@gmail.com. If there is no reply, follow with a human phone call to the RERA mobile or the ad's numbers to ask permission to send a WhatsApp demo. Do not cold-send a WhatsApp template: the numbers are published only as call numbers, not as WhatsApp, and there is no opt-in route.",
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Rivanta Group / Rudra Enterprise (advertiser: \"Rivanta Heritage\" Facebook page), Variyav, Surat. NOT proven to be the same entity as Om Infra / Rivanta Victorious.",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "case_for": "The ad spend is real, recent and runs through several lead doors. About 17 distinct creatives were loaded in the Ad Library (about 27 results), all Active. The earliest started 1 Aug 2026 and the newest on 14 Oct 2026, so the campaign is about 75 days old and still being refreshed. Three lead doors are in the CTAs: Meta instant form (\"Get offer\"), click-to-WhatsApp (\"Send WhatsApp Message\", ad started 8 Aug 2026) and Messenger (\"Chat with us\"). Two phone numbers are also printed in every ad. That is a multi-channel inbound funnel with no single reply or follow-up layer that I could see. The business itself publishes a wa.me WhatsApp link, an email and a named contact person on its contact page, so first touch needs no guessing. The advertiser is a local owner-led partnership firm, not a chain or agency. It has a 616-unit flagship (Rivanta Garden City), six listed projects and a claim of 25,000+ customers. The ad copy is Diwali-timed (\"first 100 customers\", furniture gift), so response speed matters now. Its own website has no form or chat widget and does not mention Rivanta Heritage in visible text.",
+   "case_against": "There is no direct evidence that enquiries go unanswered or are answered slowly. The need is a hypothesis built from the funnel shape, not an observed failure. The click-to-WhatsApp ad probably already lands on a number that sales staff watch. An ad agency may already own the lead-form and follow-up setup, and I could not tell. Ad spend is unknown, because Meta does not show it for commercial ads. The scout's hook is partly unsupported. The ad advertiser is Rudra Enterprise's Rivanta Heritage (Variyav / New Katargam, next to Rivanta Garden City). Rivanta Victorious is registered to Om Infra, a different partnership firm, with a different RERA phone number and email. The only link is the Rivanta brand and an email handle (\"rivantagroupsurat\"). Third-party RERA listings show each Rivanta project sitting in its own partnership firm with overlapping partners. So \"they are opening another launch\" cannot be used as a fact. \"Nearly sold out\" is not supported either. It is the ad's marketing line, while a third-party aggregator lists most of the 616 units as unbooked (undated, unreliable). The Facebook page's 345 likes could not be verified. The sales model looks like sample-flat and site-office walk-ins, so a WhatsApp bot may be a hard sell to an owner-led, Gujarati-first team.",
+   "contacts": [
+    {
+     "kind": "whatsapp",
+     "value": "+91 97279 42000",
+     "source_url": "https://rivantagroup.com/contact.html",
+     "note": "Published by the business as a wa.me/919727942000 link (contact page and footer). Same number is printed in all the Rivanta Heritage ads. WhatsApp-capable per their own link."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 97279 43000",
+     "source_url": "https://www.facebook.com/ads/library/?id=1575121487682476",
+     "note": "Second number in the Rivanta Heritage ad copy only. It is not on the website. Likely WhatsApp-capable, not confirmed."
+    },
+    {
+     "kind": "email",
+     "value": "rudraenterprise1170@gmail.com",
+     "source_url": "https://rivantagroup.com/contact.html",
+     "note": "Published as a mailto link on the business's own contact page and in the site footer. Gmail address, so owner-run, not a role mailbox."
+    },
+    {
+     "kind": "contact_person",
+     "value": "Renishbhai (surname on the page)",
+     "source_url": "https://rivantagroup.com/contact.html",
+     "note": "Named as contact person under 'Our Office' on the business's own contact page. Role not stated."
+    },
+    {
+     "kind": "address",
+     "value": "T.P.NO.37, F.P.NO-62, R.S.NO-1226,1227, Block No.1170, Variyav, Surat 394520",
+     "source_url": "https://rivantagroup.com/contact.html",
+     "note": "Office address as published. The ad address is next to Rivanta Garden City, New Katargam, Variyav."
+    }
+   ],
+   "observed_facts": [
+    "Identity link: the phone +91 97279 42000 in the Rivanta Heritage ads matches the contact page and footer of rivantagroup.com. That site's footer says 'Brand of RUDRA ENTERPRISE'. Source: https://rivantagroup.com/projects.html and https://rivantagroup.com/contact.html",
+    "Rivanta Heritage's RERA promoter per third-party aggregators is Rudra Enterprise, a partnership firm, in Variyav moje (Surat, Adajan/Choryasi taluka). Registration PR/GJ/SURAT/CHORYASI/Surat Municipal Corporation/RAA14470/021224/311228, end date 31 Dec 2028. Sources: https://www.gujrera.com/p/surat/rivanta-heritage-surat/ and https://www.aurumproptech.in/pulse/rera/gujarat/surat/rivanta-heritage/24911",
+    "Meta Ad Library (page 'Rivanta Heritage', India, all ads): about 27 results. 17 distinct Library IDs were loaded, all marked Active. Start dates seen: 1 Aug 2026 (ID 1064637379372880), 8 Aug, 15 Aug, 20 Aug, 22 Aug, 11 Sep, 12 Sep (ID 1575121487682476), 21 Sep, and 14 Oct 2026 (ID 1576981343743131). Source: https://www.facebook.com/ads/library/?id=1575121487682476, page view_all_page_id=1008771698989686",
+    "CTAs seen on the ads: 'Get offer' (instant form, FB.ME destination), 'Send WhatsApp Message' (ID 4278088289001604, started 8 Aug 2026), 'Chat with us' (several video ads), and an Instagram profile link on one ad. Phone numbers +91 97279 42000 and +91 97279 43000 are printed in the copy of every ad.",
+    "Ad copy (Gujarati): free full-furniture gift on a ready 2 BHK, Diwali theme, 'only first 100 customers', 80% loan, sample flat ready, 'only a few flats left'. Location: next to Rivanta Garden City, New Katargam, Variyav, Surat. Several video creatives run 0:49 to 2:46.",
+    "rivantagroup.com lists six projects: Earth Plaza (65 units), Rivanta Luxuria (280), Rivanta Varni (251), Rivanta Square (25), Rivanta River View (232) and Rivanta Garden City (616 units, 9.8 lakh sq ft, 'flagship'). It claims 25,000+ customers. The footer gives a GST number. Source: https://rivantagroup.com/projects.html",
+    "The website has no lead form, chatbot or chat widget. The only messaging element is the wa.me link. 'Rivanta Heritage' and 'Victorious' do not appear in its visible text. Source: https://rivantagroup.com/ and https://rivantagroup.com/contact.html",
+    "Rivanta Victorious: GujRERA record shows promoter OM INFRA (partnership firm), submitted 2026-10-01, approved 14-10-2026, registration number ending RAA17464/141026. The public API record has no unit count and no booked count, so the scout's '52 flats / 0 booked' could not be verified. The RERA contact phone and email differ from the ad and website contacts. The email handle is 'rivantagroupsurat'. Source: https://gujrera.gujarat.gov.in/project_reg/public/alldatabyprojectid/32541",
+    "The Rivanta name is used by several separate partnership firms (Rudra Enterprise, Rivanta Infra, Anjani Infra, Shivay Infra, Rivanta Developers). Aggregators show overlapping partner names. 'Rivanta by Pramukh Omkar' (Gandhinagar, rivanta.in) is a different, unrelated developer. Sources: https://www.aurumproptech.in/pulse/rera/gujarat/surat/rivanta-river-view/12209 and https://www.aurumproptech.in/pulse/rera/gujarat/surat/rivanta-varni/12501"
+   ],
+   "hypotheses": [
+    "Leads from Meta forms, the WhatsApp CTA, Messenger and two phone numbers are probably handled by hand by a small sales team, so night or weekend enquiries probably wait. This is not observed. Their reply time could not be tested because we may not contact them.",
+    "Rivanta Victorious (Om Infra) may be another firm in the same Rivanta partner group, and the same lead handling might be reused there. This is unconfirmed. Do not use it in outreach.",
+    "Large unsold inventory, a Diwali deadline and many creative variants suggest pressure to convert enquiries quickly. The unsold-inventory figure comes from an undated third-party aggregator.",
+    "An outside agency may run the ads and lead forms. If so, the buyer may need to be convinced separately from the agency."
+   ],
+   "decision_maker": "Partners of Rudra Enterprise (owner-run partnership firm). The only person named on the business's own site is Renishbhai, shown as contact person on the contact page. Partner names appear on third-party RERA aggregators and are omitted here.",
+   "size_cues": "Six projects delivered or listed (25 to 616 units), a 616-unit flagship township in Variyav and a claim of 25,000+ customers. A GST-registered partnership firm, reportedly incorporated 13 Oct 2021 (aggregator). Part of a wider family of Rivanta-branded partnership firms in Surat. About 17 active ad creatives with video, in Gujarati.",
+   "ability_to_pay": "Medium. About 75 days of continuous, multi-creative paid social with video production, a flagship 616-unit project and several completed projects. Ad spend is not visible, and the owner-led structure suggests a small-to-mid ticket would be affordable.",
+   "resistance": "No visible CRM, chatbot or vendor, and no anti-AI positioning. The owner-led firm is reachable through published channels. The risks are an unseen ad agency or CRM behind the lead forms, a Gujarati-first and phone-first culture, and a sales model built on site visits to the sample flat.",
+   "best_angle": "Open with the evidence in the ads: Rivanta Heritage's Diwali offer sends enquiries into four doors at once (Meta 'Get offer' form, 'Send WhatsApp Message', Messenger chat and two phone numbers). Offer to pilot one instant WhatsApp reply with the brochure, a sample-flat visit slot booking, and a single lead board, so no Diwali-season enquiry waits for a callback. Write in Gujarati or simple English. Do not mention Rivanta Victorious, Om Infra or 'nearly sold out'.",
+   "best_channel": "Email to rudraenterprise1170@gmail.com first (a published mailto, so the safest route). Follow up with a short human 1:1 message to the wa.me/919727942000 link they publish on their own contact page. Do not send a template broadcast without opt-in.",
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Trinetra Group (brand of Siddhi Developers; projects Trinetra Skydeck and Trinetra Silvernest), Vadodara",
+   "grade": "B",
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Not published as a sales or marketing owner. Gujarat RERA (via a third-party mirror) lists Siddhi Developers, a four-partner family partnership (Agrawal family), as promoter of both live projects. Two of the partners are Chiragkumar Mohanbhai Agrawal and Mohanbhai Jagdishprasad Agrawal. Their roles in sales or ads are unconfirmed. The ads may be run by an agency or an in-house sales team, which is unknown.",
+   "size_cues": "Local developer, not a chain. The website says it was established in 2014 and claims 1,600+ properties sold (self-claim, unverified). The site lists 4 projects: Skydeck, Silvernest, and past projects Siddheshwar Haridarshan and Zillion Landmark. Skydeck has 72 residential and 13 commercial units (85 units, matching RERA). Silvernest has 166 homes and 29 shops (195 units). Facebook page: about 4.2K followers. Google Maps listing for Skydeck: 4.5 stars from 8 reviews. Small family firm, likely a lean sales team.",
+   "ability_to_pay": "Real but modest. Meta Ad Library shows about 18 active ads across two projects, running since 2026-07-23, with new creative variants added almost weekly (latest start 2026-10-12). They also fund festival offers: up to 5-10% discount, free furniture and appliances, and fully furnished packages. A RERA mirror (undated, internally inconsistent) lists about 59 of 85 Skydeck units and about 98 of 195 Silvernest units as unbooked, so there is plenty of inventory to move. Ticket sizes are 31-57 lakh. Ad spend is not visible in India's Ad Library. Treat it as a small to mid local ad budget, not a large one.",
+   "resistance": "No direct evidence of resistance. We could not tell which vendors, CRM or agency they use, and they do not position against bots or AI. Headwinds: (1) the funnel is phone-first, with ad copy saying \"call today\" on two mobile numbers, so the owners may believe a sales team calling back is enough. (2) Lead-form leads may already flow to a sales team or agency, which is unknown. (3) The website designer credit is Globelectra, and the ads may be agency-run, so the real buyer may be an agency or the partners. (4) No named person to address. (5) The ads say \"Shortly Possession / Just Move In\" while the RERA mirror shows both projects under construction (Skydeck about 55% in Apr 2026, due 2026-12-31; Silvernest about 52%, due 2028-03-31). Never echo those claims in outreach.",
+   "best_channel": "Email first to trinetraskydeck@gmail.com. It is published on their Facebook page and the site's Contact Us page, and its masked form on the RERA record (tri...@gmail.com, mobile 81...) is consistent with it. Second choice: a short WhatsApp message to +91 81400 05606 (likely WhatsApp-capable, not confirmed) only through our approved opt-in or template route. The Gravity Forms enquiry form on trinetragroups.com is a fallback, not preferred.",
+   "best_angle": "Ask what happens to a \"Get quote\" or WhatsApp enquiry from the Skydeck or Silvernest ads at 10pm on a festival weekend. Offer a 60-second, no-obligation demo of an instant reply in Gujarati or English with the brochure and a site-visit slot, follow-up reminders, and one board for leads from ads, WhatsApp and calls. Anchor on facts only: they have run Skydeck and Silvernest ads since July and added creatives weekly. Do not claim they reply slowly and do not mention possession claims.",
+   "case_for": "1) Identity is solid: the Facebook page, website, Google Maps listing and the RERA email and mobile prefix all line up. It is a Vadodara developer with two live projects. 2) The pay-for-enquiries signal is real and fresh. Meta Ad Library shows the ads active at observation, started 2026-07-23 to 2026-10-12, so the latest is 3 days old. The CTAs are call-us, Get quote lead forms, and links to api.whatsapp.com. 3) Large unsold inventory plus incentive-heavy offers means lead cost and speed matter to them. 4) Observable gaps in the intake path: the site has no WhatsApp button or chat widget, only a Gravity Forms contact form, and the brochure is a static PDF. The TLS certificate expired on 2026-05-31 and is still expired on 2026-10-15, so the web path is neglected and the ad-to-WhatsApp, call and lead-form routes carry the enquiries. 5) Several business-published contact routes exist, each with a source, and the business is not a chain, franchise or agency.",
+   "case_against": "1) The need is a hypothesis, not an observed fact. No review, post or ad says they are slow to reply or lose leads. The visible Google reviews are positive and about 3 years old, and the review sort needed a sign-in. 2) The funnel is phone-first (\"call today\" in most ads). WhatsApp is the CTA on only 3 of the 15 ads I could see, and those point to a bare api.whatsapp.com/send link with the number hidden. 3) What happens to Get quote leads is unknown. They may already go to a sales team, a CRM or an agency. 4) The ad budget is unknown. This is a 4-partner family firm with 2 projects, and the ability to pay is plausible but not proven. 5) No named decision-maker or sales owner, and the contacts are Gmail and general mailboxes. 6) The RERA unbooked counts come from an undated, inconsistent third-party mirror, so use them as indicative only. 7) The ads' possession claims conflict with RERA progress. That is a sensitivity to avoid, not a selling point. Hence B, not A.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 81400 05606",
+     "source_url": "https://www.facebook.com/trinetragroupbaroda/",
+     "note": "Published on the Facebook page intro and as the 'call today' number in Skydeck ads (Ad Library, observed 2026-10-15). Indian mobile, likely WhatsApp-capable but not confirmed."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 87358 90416",
+     "source_url": "https://trinetragroups.com/contact-us/",
+     "note": "Published as the website header, footer and Contact Us number, on the Google Maps listing for Trinetra Skydeck, and in the Silvernest ads. Indian mobile, likely WhatsApp-capable but not confirmed."
+    },
+    {
+     "kind": "email",
+     "value": "trinetraskydeck@gmail.com",
+     "source_url": "https://trinetragroups.com/contact-us/",
+     "note": "Also published on the Facebook page intro. Consistent with the masked tri...@gmail.com on the RERA record. Best first-touch email."
+    },
+    {
+     "kind": "email",
+     "value": "info@trinetragroups.com",
+     "source_url": "https://trinetragroups.com/",
+     "note": "Website footer. The mailbox is untested, and the site's TLS certificate has been expired since 2026-05-31, so it may be unmonitored."
+    },
+    {
+     "kind": "email",
+     "value": "trinetrabuildcon2023@gmail.com",
+     "source_url": "https://trinetragroups.com/contact-us/",
+     "note": "Listed on the website footer and Contact Us page. Likely a general or accounts mailbox. Secondary."
+    },
+    {
+     "kind": "form",
+     "value": "Gravity Forms enquiry form (Name, Phone, Email, Subject, Description)",
+     "source_url": "https://trinetragroups.com/",
+     "note": "Home page 'Get in Touch' form. Fallback only. We did not submit it."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library (India), page 'Trinetra Group' (page id 106939495601500), viewed 2026-10-15: about 18 active ads. I could read 15 (the rest did not load). Start dates run from 2026-07-23 (earliest, Skydeck and Silvernest, both api.whatsapp.com links) to 2026-10-12 (latest, Skydeck, 'Low impression count', under 100 impressions). Page view: https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=106939495601500",
+    "Of the 15 readable ads: 3 point to api.whatsapp.com/send (library ids 1052597830613043 and 1065230662692930 dated 2026-07-23, and 1108577678393494 dated 2026-09-14). 9 Skydeck ads use a Get quote lead form (fb.me), dated 2026-09-18 to 2026-10-12. 3 Silvernest ads show no visible CTA button (2026-08-18, 2026-09-17, 2026-10-03). The scout's 'Get quote from 2026-08-18' is not confirmed. In my view the earliest Get quote ad is 2026-09-18.",
+    "The WhatsApp destination number is not exposed in the Ad Library link. It could not be identified, and it is unknown whether the number is on the WhatsApp Business app or an API.",
+    "Ad copy is Gujarati. Skydeck: 2 BHK from 36.99 lakh and 3 BHK from 56.99 lakh with festival offers (free furniture or appliances, 5-10% discount). Silvernest, Tarsali: 2 BHK from 31.99 lakh and 3 BHK from 41.99-42.99 lakh. Most ads say 'call today' and show a mobile number.",
+    "Facebook page https://www.facebook.com/trinetragroupbaroda/ : 'Trinetra Group', category Construction company, about 4.2K followers, last post about 4 days before 2026-10-15, 'Not yet rated (0 reviews)'. Intro shows phone 081400 05606, trinetraskydeck@gmail.com, trinetragroups.com, Nr. Khiskholi Circle, Manjalpur-Atladara Road, Vadodara.",
+    "Website https://trinetragroups.com/ (Apache/WordPress, designer credit Globelectra): established 2014, 4 projects (Skydeck and Silvernest current, two past), '1,600+ properties sold' (self-claim). Hours 08:30-19:30. Only a Gravity Forms enquiry form: no WhatsApp button, no chat widget, no wa.me link (the only 'whatsapp' strings are Elementor template CSS). Skydeck and Silvernest pages offer a static brochure PDF. The Silvernest page has leftover 'Lorem ipsum' filler.",
+    "TLS certificate for trinetragroups.com: notBefore 2026-03-02, notAfter 2026-05-31, so expired for over 4 months at 2026-10-15. The http:// URL returns a 301 to https:// and needs browser-like headers to load.",
+    "Google Maps listing 'Trinetra Skydeck': 4.5 stars, 8 reviews, phone 087358 90416, website trinetragroups.com, open until 8pm. Visible reviews are all positive and mostly about 3 years old, with none about response time. 3 reviews were not visible, and the sort needed a sign-in, which I did not do.",
+    "Gujarat RERA data via a third-party mirror (Aurum PropTech, not the official portal): the promoter of Skydeck (RERA PR/GJ/VADODARA/VADODARA/Others/MAA11153/050123, approved 2023-01-05, due 2026-12-31) and of Silvernest (approved 2023-10-10, due 2028-03-31) is Siddhi Developers, a partnership registered in 2020 with four partners. The mirror lists Skydeck 26 of 85 units booked (progress 55.12% as of Apr 2026) and Silvernest 97 of 195 booked (progress 52.23% as of Apr 2026). The page is undated and internally inconsistent. Source: https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/trinetra-skydeck/18064 and https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/trinetra-silvernest/19195",
+    "Property portals (Houssed) list Trinetra Group with 3 projects (1 ongoing, 2 completed) and describe Skydeck as 72 units, which conflicts with 85 on RERA. Some portals name 'Trinetra Developers'. This is branding, and I found no link to the unrelated firms Trinetra Buildtech or Trinatra Buildcon.",
+    "TRIED, DID NOT WORK: WebFetch on trinetragroups.com failed on the expired certificate. I read it with a read-only curl GET ignoring the certificate. WebFetch on the Facebook page returned only the title, and I read it in the browser pane instead.",
+    "TRIED, DID NOT WORK: the Ad Library hides the WhatsApp number and spend. The inactive-ads query returned nothing, which proves nothing because non-political inactive ads are not shown. Google Maps review sorting needs a sign-in (not done). The official RERA portal was not queried, only a mirror. The browser pane is shared with other agents, so one navigation was overwritten by another advertiser's page (Rivanta Heritage, Surat), and I re-ran the check on my own page."
+   ],
+   "hypotheses": [
+    "Likely: with a phone-first CTA plus Get quote forms and WhatsApp-link ads, enquiries arrive out of hours (evenings, festival weekends) and wait for a person to call or reply. Not observed.",
+    "Possible: Get quote leads sit in Meta's lead centre or are forwarded to a small sales team or agency with no instant first touch and no single board. The destination of the form leads is unknown.",
+    "Possible: the brochure and site-visit booking are handled manually, because the site only offers a static PDF and a plain form. Not observed beyond the site.",
+    "The expired certificate suggests the website is not the main conversion path and may be unmaintained, so ads to phone, WhatsApp or form carry the enquiries. Not proven.",
+    "Unbooked inventory plus incentive-heavy offers suggests they value lead speed and cost, but the RERA mirror numbers are indicative only.",
+    "The ads may be agency-managed (many near-duplicate creatives refreshed weekly), so the buyer may be the partners, with an agency as influencer."
+   ],
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Silver Group (Rajkot) - owner-led Rajkot developer; ads promote Silver Residency 3 bungalows (New 150 Ft Ring Road, near Atal Lake)",
+   "grade": "B",
+   "case_for": "Paid, still-running, WhatsApp-only demand generation by a local owner-led Gujarat developer. I viewed the Meta Ad Library page myself on 2026-10-15: 13 active ads, all with the Send WhatsApp message button, promoting one project (Silver Residency 3, 3/4/5 BHK bungalows). Two waves: 8 ads started 9-10 May 2026 and 7... precisely 4 on 12 Aug and 3 on 13 Aug 2026, so the latest refresh is 63 days old (inside the 90-day window) and the May ads are still live (5+ months of spend). The ad copy itself publishes two named business contact numbers, so there is a clear published route and a reachable decision-maker (Niraj Bhimjiyani, with Amit Bhimjiyani). The creatives push 'visit the sample bungalow', i.e. the exact funnel we automate: instant WhatsApp reply, brochure, site-visit slot, follow-up. Identity holds up: the FB page phone matches the ad-copy phone, and RERA lists Niraj A. and Amit M. Bhimjiyani as partners of Ishavashyam Enterprise, the promoter of Silver Residency 3. Repeat developer (earlier Silver Residency, 20 units, completed 2023, all booked). High-ticket product (luxury bungalows), so one extra converted visit pays for the tool. No website, so no web form or lead board is visible.",
+   "case_against": "The need is a hypothesis, not observed: I found no review, complaint or other evidence that their enquiries go unanswered or are slow, and I could not test response time (contacting is forbidden). The promoted inventory is small (35 bungalows; RERA booked count is inconsistent: 12 vs 0 of 35), so lead volume may be modest and the owners may well answer WhatsApp personally. 13 ads are mostly copies of a few creatives, so the 13 figure overstates breadth. No website/digital footprint (1.2K followers, 0 reviews) suggests low digital maturity and a longer sell. Ad spend is not visible. The legal entity behind the ads is inferred (Ishavashyam Enterprise), not stated; the Silver brand spans several separately registered partnership firms. The sister 'Silver Nest 2' page from the scout could not be tied to this group (RERA lists a different promoter for Silver Nest 2/3).",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 98257 55580",
+     "source_url": "https://www.facebook.com/silvergrouprajkot/",
+     "note": "Niraj Bhimjiyani. Shown on the FB page About and in the ad copy of all 13 ads. Indian mobile, likely WhatsApp-capable (not confirmed). Ad Library view: https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=106557024987102"
+    },
+    {
+     "kind": "phone",
+     "value": "+91 98791 80500",
+     "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=106557024987102",
+     "note": "Amit Bhimjiyani. Published in the ad copy of the 13 active ads (e.g. Library ID 2459233101266800). Likely WhatsApp-capable (not confirmed)."
+    },
+    {
+     "kind": "email",
+     "value": "nirajnewlife@gmail.com",
+     "source_url": "https://www.facebook.com/silvergrouprajkot/",
+     "note": "Listed in the Silver Group Facebook page intro/contact block (Gmail address, so not clearly a corporate mailbox)."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library (India, active ads, page Silver Group, id 106557024987102), viewed live 2026-10-15: ~13 results, all Active, all with the Send WhatsApp message button. Start dates: 4 ads on 9 May 2026, 2 on 10 May, 4 on 12 Aug, 3 on 13 Aug. Latest start = 2026-08-13 (63 days before today). Note: the scout's sample ad 2459233101266800 started 12 Aug, not 13 Aug.",
+    "All 13 ads promote one project: '3, 4 & 5 BHK Luxury Bungalows - Silver Residency 3', 'Located near Atal Lake, New 150 Ft. Ring Road, Rajkot'. Hooks are sample-bungalow visits ('Take the sample flat tour today', 'visit the ready sample bungalow'). Ad destinations show 'WHATSAPP' (one shows API.WHATSAPP.COM), i.e. click-to-WhatsApp style.",
+    "Ad copy publishes contacts: 'Niraj Bhimjiyani - 98257 55580' and 'Amit Bhimjiyani - 98791 80500'.",
+    "Facebook page https://www.facebook.com/silvergrouprajkot/ (vanity URL): 'Silver Group', 1.2K followers, category Property, intro 'real estate developer committed to clients since 2005', lists IT parks, ultra luxury villas, high-end commercials and flats; address 'Opp., New Race Course, Rajkot'; phone 098257 55580; email nirajnewlife@gmail.com; no website listed; 'Not yet rated (0 reviews)'. Latest visible post: profile picture update on '16 August' (year not displayed on the page).",
+    "RERA via third-party aggregator aurumproptech.in: Silver Residency 3 - promoter Ishavashyam Enterprise (partnership firm; partners include Bhimjiyani Niraj A and Amit M. Bhimjiyani), near Prabhu Heights opp. SRP Camp, New 150 Feet Ring Road, approved 1 Aug 2025, completion Dec 2027, 35 units; booked count inconsistent on the page (12 booked/23 unbooked in one section, 0/35 in another). https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/silver-residency-3/27815",
+    "RERA via aurumproptech.in: earlier Silver Residency (promoter Shreeji Developers, partners include Niraj Ashokkumar Bhimjiyani and Amit M Bhimjiyani), Opp. Atal Lake, 20 units, all booked, completed June 2023. Shows a repeat-project developer. https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/silver-residency/13832",
+    "Other Silver-branded projects in Rajkot exist under different partnership firms (e.g. Silver Techno Park by Silver Skyline Infra, opp. New Racecourse, RERA 2024-2028 - gujrera.com listing; Housivity lists a 'Silver Group' profile with 4 projects, 'operating since 2008', no contact shown). Founding-year claims conflict (2005 on FB vs 2008 on Housivity).",
+    "Web searches found no website, Instagram handle or Google Maps rating for Silver Group. Not a national chain, franchise or agency: a local family-run developer."
+   ],
+   "hypotheses": [
+    "Every ad sends the prospect to WhatsApp, so enquiries land in a personal or business WhatsApp inbox with no web form; with no website there is likely no brochure link, booking flow or lead board (inferred from absence, not seen).",
+    "Responses are probably handled by the two owners personally, so night/weekend enquiries and follow-ups after a sample-bungalow visit are plausibly slow or inconsistent - unverified, no evidence either way.",
+    "The tool's value rests on the high ticket price of the bungalows rather than on lead volume.",
+    "The ads may be run by Ishavashyam Enterprise (SR3 promoter); the legal entity is inferred, not stated.",
+    "The scout's sister page 'Silver Nest 2' may belong to a related but separate firm (RERA shows Shriji Developers / Krishna Corporation for Silver Nest 2 / 3); not confirmed as the same group."
+   ],
+   "decision_maker": "Niraj Bhimjiyani (named first in the ad contact line and tied to the page phone/email); Amit Bhimjiyani is the second named contact. Both are listed as partners of the promoter firm in RERA records. Role/title not stated anywhere.",
+   "size_cues": "Small to mid, owner-led: 1.2K followers; claims operating since 2005 (a directory says 2008); at least 5-6 Silver-branded projects across several partnership firms; current promoted project is 35 bungalows, the previous one 20 units (est. cost about Rs 4.3 Cr per aggregator). 13 live ads on one project. No website, 0 reviews.",
+   "ability_to_pay": "Moderate, plausible but unproven. Positives: 13 paid ads live for 5+ months with an August refresh, a high-ticket luxury product, a repeat developer with completed and sold-out projects. Unknowns: actual ad spend (not visible), lead volume, margin on a 35-unit project. A modest monthly price is likely affordable; a heavy enterprise price is not.</ability_to_pay>\n<parameter name=\"resistance\">Medium. Reachable: the owners publish their own mobiles in the ads. No known existing CRM, chatbot or vendor (no website to check). Risks: owner-led and may feel personal replies are the selling point; low visible digital maturity; small inventory; I found no anti-bot positioning. Many of my checks hit walls (see tried-and-failed in the best_angle note).</resistance>\n<parameter name=\"best_angle\">Specific to their own ads: 'Your Silver Residency 3 ads send people to WhatsApp for the sample bungalow visit. We reply in seconds, 24x7, with the brochure and visit slots, qualify budget and BHK, follow up after the visit, and keep every enquiry on one board.' Do not assert that they are slow. Offer a no-cost trial on one project and let the owners judge. Did NOT work / could not verify: Facebook pages and the Ad Library could not be read through WebFetch (title only / socket error), so I used the shared browser pane for the Ad Library and FB page; the pane was being navigated by other sessions mid-task (it jumped to other businesses), so I stopped using it. No Google Maps rating, Instagram or website found via search. The sister page 'Silver Nest 2' and its lead-form ads were not verified. I did not test their WhatsApp response time (contacting is forbidden), so the need stays a hypothesis.",
+   "best_channel": "Email to the published address (nirajnewlife@gmail.com) as a transparent business introduction referencing their Silver Residency 3 ads, followed by a call to the published number. Use WhatsApp only once they reply or opt in; do not message through the ad CTA posing as a buyer.",
+   "chain_franchise_or_agency": false,
+   "identity_verified": true,
+   "challenged": false,
+   "found_in": []
+  },
+  {
+   "business": "Pride Group / Pride Aura (promoter on RERA: Pride Realtors), Madhapar Circle, 150 Ft Ring Road, Rajkot",
+   "grade": "B",
+   "case_for": "Direct, fresh evidence that they pay for WhatsApp enquiries. On 2026-10-15 the Meta Ad Library showed the page \"Pride Group\" with about 180 active ads in India, all started 9-10 Oct 2026 (the sample I read had no other start dates). 21 of the first 30 active ads carry a \"Send WhatsApp message\" button, and the ad text gives one phone number. The advertised number (76111 52111) is also the \"Enquiry / Site Visit\" number on the project's own YouTube channel, so the ads are tied to the Pride Aura project and not to some other \"Pride\". Pride Aura is a real, RERA-registered project (268 flats and 154 shops, approved 2025-04-25, completion 2029-12-31). The promoter is an established local family firm group with a named decision-maker. Ticket size is large: a third-party listing puts a 3 BHK at about Rs 70-75 lakh. They have no website and the project's own social pages are tiny (project Facebook page 1 follower, Instagram 14 followers, YouTube 11 subscribers), so paid WhatsApp taps and phone calls look like the main enquiry channel. That fits an instant reply with brochure, BHK and budget questions, site-visit booking and one lead board. The ad copy literally says \"Created By AI\", so they are unlikely to be anti-AI. The timing suits a festive-season push, which is a hypothesis since only the start dates are observed. Business-published routes exist: two phone numbers on the ads and Facebook page, plus a RERA-published email and developer phone.",
+   "case_against": "The need is inferred, not observed. I found no review, complaint or other evidence of slow replies, and I cannot test for an auto-reply because contacting them is not allowed. The Ad Library shows 9-10 Oct start dates only, so this could be a short festive burst. Some ads are tagged \"Low impression count\", which suggests small spend per variant. About 180 near-identical AI-written variants point to an ad tool or an agency running the account. If so, the real buyer may be that agency, and a WhatsApp auto-reply may already be bundled. Three loose ends: (1) the Facebook page \"Pride Group\" is linked to the promoter Pride Realtors only through the project name, location and the shared enquiry number, with no document that names the page owner; (2) there are two different numbers (76111 52111 in the ads and YouTube, 76004 00352 on the Facebook page), and I cannot tell which one the WhatsApp button opens; (3) the page intro talks about shops and offices while the ads sell 3 and 4 BHK flats, and the third-party listings show only 3 BHK, which looks like loose, unpolished marketing. No website was found. The only email is a generic Gmail address from the RERA record as copied by an aggregator. The only reachable people are the RERA-listed partners, and I found no sales head or marketing manager.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 76111 52111",
+     "source_url": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=842757642244155",
+     "note": "Enquiry number in the ad copy of the Pride Aura ads. It also appears as 'Enquiry / Site Visit: 76 111 52 111' on the project's YouTube channel (second source below). Indian mobile, so likely WhatsApp-capable (not confirmed)."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 76111 52111",
+     "source_url": "https://www.youtube.com/channel/UCTbjSi5wWgFbmJgIzQAwgxQ",
+     "note": "Same number as the ads. Official project channel 'PRIDE AURA11' (joined 2025-11-30, 11 subscribers, 4 videos). Its description links to facebook.com/prideaura11 and instagram.com/pride_aura11."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 76004 00352",
+     "source_url": "https://www.facebook.com/people/Pride-Group/61581009147597/",
+     "note": "Phone shown in the intro of the 'Pride Group' Facebook page (the advertiser), Page type: Property. The scout called it WhatsApp, but logged out I saw no WhatsApp label, so it is likely WhatsApp-capable but not confirmed. It is unclear whether the ad button routes here or to 76111 52111."
+    },
+    {
+     "kind": "email",
+     "value": "priderealtors2024@gmail.com",
+     "source_url": "https://rajkotpropertyexpo.gujrera.com/project/pride-aura-25922",
+     "note": "Promoter email from the Gujarat RERA record for Pride Aura, shown on a RERA-data mirror page. A second aggregator shows a masked 'pri***@gmail.com' that is consistent with it. It is a generic Gmail and not confirmed as monitored. Best route for a first email."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 96876 11184",
+     "source_url": "https://rajkotpropertyexpo.gujrera.com/project/pride-aura-25922",
+     "note": "The page says buyers can contact Pride Realtors directly at this number (mirror of RERA data). Use for a call or as a second route. A personal mobile for the authorised signatory is also listed on that page and is deliberately not repeated here."
+    }
+   ],
+   "observed_facts": [
+    "Meta Ad Library, viewed 2026-10-15 (page 'Pride Group', page ID 842757642244155, country India): about 180 results under the Active filter. In the first 30 loaded, start dates were 9 Oct 2026 (25 ads) and 10 Oct 2026 (5 ads), and 21 carried a 'Send WhatsApp message' button. A separate view of the first 17 results with status 'All' showed the same dates, all Active. Neither view reaches the scout's '13 Oct' ads. Example ad IDs: 2605924546517117 (WhatsApp CTA, started 9 Oct 2026) and 1108850685223385 (Instagram-profile ad, started 10 Oct 2026). I could not open the scout's sample ad ID 2075821816631097 (the fetch failed).",
+    "Ad copy ends 'Pride Aura - 3 & 4 BHK Flats. Address: Near Madhapar Circle, Rajkot. Contact: 76111 52111. Created By AI'. Many ads are grouped as '6 ads use this creative and text'. Some are tagged 'Low impression count'. India ads show no spend figures.",
+    "Facebook page 'Pride Group' (viewed 2026-10-15): 149 followers, type Page - Property, intro 'Where Pride Meets Opportunity - Premium Shops & Offices for Ambitious Brands - Rajkot', phone +91 76004 00352, 1 review with no rating, and a post tagged 'AI content' about an hour old, so the page is posted to actively. No website is listed. The page creation date from the scout was not verified.",
+    "Project identity is confirmed: the YouTube channel 'PRIDE AURA11' (official project source, joined 2025-11-30, 11 subscribers) lists 'Enquiry / Site Visit: 76 111 52 111', the same number as the ads, and describes Pride Aura as 3 & 4 BHK homes at Madhapar Circle, 150 Ft Ring Road. The project's own Facebook page facebook.com/prideaura11 (1 follower, a different page ID) and Instagram @pride_aura11 (14 followers, 8 posts) are tiny and new.",
+    "Gujarat RERA data (mirrors: aurumproptech.in and rajkotpropertyexpo.gujrera.com): Pride Aura, promoter Pride Realtors (partnership, registered 2024-04-01), reg. no. PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/MAA15139/250425/311229, 268 flats plus 154 shops, approved 2025-04-25, construction start 2024-07-19, completion 2029-12-31, near Madhapar Chowkdi, 150 Ft Ring Road. Office: 302 Pride One, Akshar Marg, Kalawad Road, Rajkot. Authorised signatory (named decision-maker): Rohitbhai Harilal Ravani. Six partners are listed.",
+    "Third-party listings (houssed.com, 99acres) show only 3 BHK of about 990-1000 sq ft carpet at Rs 70-75 lakh, one tower of 15 floors on 2.58 acres, status 'New Launch'. Shops are Rs 35 lakh to 3.6 crore. The ads, the YouTube channel and the scout say '3 & 4 BHK'. The listing's WhatsApp number 81691 14718 belongs to the Houssed platform and is excluded.",
+    "No official website was found for Pride Aura or Pride Realtors. The domains prideaura.com and priderealtors.com return near-empty 114-byte pages (parked or placeholder, not verified as theirs). No Google or other customer reviews were found for the sales office.",
+    "Aggregator listings show Pride-named sister firms with the same Pride One address and Ravani family partners: Pride Construction (GST active since 2017), Pride Buildcon, and projects such as Pride Square, Pride Classic and The Landmark Pride. Ownership overlap is inferred from shared names and addresses. It is not a national chain, franchise or agency."
+   ],
+   "hypotheses": [
+    "The ad burst on 9-10 Oct looks like a festive-season push before Dussehra and Diwali, so it may run for several weeks. This is a guess, since only start dates are observed.",
+    "With about 180 ad variants driving to one WhatsApp or phone line, replies are probably handled by one or two sales people by hand, and night or high-volume enquiries probably wait. No evidence of this was found.",
+    "Whoever generates the 'Created By AI' variants may be an agency or an AI ad tool. That party may influence, or already offer, WhatsApp automation.",
+    "The 'Pride Group' page and the Pride Aura project belong to the same promoter family (Pride Realtors). It is strongly suggested by the name, location and shared number, but no document confirms it.",
+    "The two numbers (76111 52111 and 76004 00352) are probably a sales desk line and a second or owner-side line."
+   ],
+   "identity_verified": true,
+   "chain_franchise_or_agency": false,
+   "decision_maker": "Rohitbhai Harilal Ravani, authorised signatory and partner of Pride Realtors per the RERA record (https://rajkotpropertyexpo.gujrera.com/project/pride-aura-25922). Partners Karan and Maulik Ravani are listed on aggregator pages. No sales head or marketing manager was found.",
+   "size_cues": "One tower, 15 floors, 2.58 acres, 268 flats plus 154 shops (422 units) and 865 covered parking spaces per the aggregator RERA data. Established local family developer group per aggregators: Pride Construction GST active since 2017, a Pride Square listing citing about 20 years' experience, and several completed or ongoing commercial and residential projects. The project's own social presence is small and very new. There is no website. Local to Rajkot, not a chain.",
+   "ability_to_pay": "Likely adequate, though ad spend itself cannot be seen. About 180 active ad variants, a 422-unit project and a ticket of about Rs 70 lakh or more (from a third-party listing) show an established firm with marketing money. Many ads are tagged 'Low impression count', so spend per variant looks small. A WhatsApp automation subscription would be minor next to one booked flat, but a tight-fisted buyer might still decline.",
+   "resistance": "Unknown and moderate. No sign they position against bots or AI; the ads even label themselves 'Created By AI'. Possible blockers: an agency or ad tool that runs the account and may also control WhatsApp replies; an existing WhatsApp auto-reply (not testable without contacting); a family-owned firm where the partners decide; and no sales or marketing contact named, so the first touch has to land with the partners or the sales line. No website means no contact form to use.",
+   "best_angle": "Reference what is visible. 'You switched on about 180 click-to-WhatsApp ads for Pride Aura on 9-10 Oct, and every tap lands in one chat.' Offer an instant reply with the brochure, 3 or 4 BHK and budget questions and a site-visit slot, and one lead board for the sales team, so enquiries that arrive at night or in bulk do not go cold. Offer a short demo that runs on their own ad traffic. Do not claim their replies are slow, because that is not evidenced.",
+   "best_channel": "Email first, to the RERA-published promoter address (priderealtors2024@gmail.com), with a call to the RERA-listed developer number (+91 96876 11184) as the follow-up route. No cold WhatsApp template to the ad or Facebook numbers: they are published as enquiry lines, and a pitch there is unsolicited and needs an opt-in. Use a WhatsApp opt-in route only if they reply or ask for it. The ad button is a click-to-WhatsApp ad, so there is no form.",
+   "challenged": false,
+   "found_in": []
+  }
+ ],
+ "scouts": [
+  {
+   "source": "gujrera",
+   "found": 6,
+   "apify_spend_usd": 0.35,
+   "did_not_work": "Apify spend is an estimate (about US$0.3 to 0.4): five runs of curious_coder/facebook-ads-library-scraper (roughly 500 ad rows at $0.00075). The account then showed only about $0.17 left, a planned Google Maps run (114 queries) was refused, and the next Ad Library call returned 'Monthly usage hard limit exceeded'. Apify is effectively exhausted for this month; no Maps reviews/phones/ratings were gathered for any candidate.\n\nGujRERA facts worth reusing (all free via curl -k --tlsv1.2): filter-details dates filter by APPLICATION date (2026-08-10 to 2026-10-14 gave 229 rows statewide, 159 in Ahmedabad/Gandhinagar/Surat/Vadodara/Rajkot). The per-project endpoints need projectRegId (31xxx-32xxx), NOT projectId (225xx), otherwise data is empty. alldatabyprojectid/{projectRegId} gives promoter mobile/email, promoterId and approvedDate (= actual registration date; the full RERA number carries ddmmyy as its last-but-one segment). getproject-details/{projectRegId} gives address, flat/shop counts and booked count. project-list-bypromoterid returned an empty list for the id I tried. Using approvedDate on applications from June to October, 130 projects in the five cities were registered between 2026-08-15 and 2026-10-14, which is a better 'freshly registered' list than application date. Only 7 of 159 fresh promoters used a business email domain; 150 used gmail, so register emails are mostly not usable as business-published contacts.\n\nWhat did not work: (1) Exact-phrase Ad Library search of 140 fresh project names found ads for only one project (Elenza). Search matches ad copy, not page names, so ads with dynamic catalog placeholder text (e.g. Shreeji Homes - Kathwada, Beverlynn catalog ads) are invisible to it; I found those only by broad launch-keyword searches and then matched by locality or by the RERA number printed in the ad. (2) Generic project names (Green Valley, The Glorious, The Centrum, Sangini, Vellure) return dozens of unrelated political, news and clothing ads, wasting budget. (3) WebSearch does not index fresh projects at all (Elenza Gardens, Swagat Cordelia, The Amore, Beverlynn Upvan all returned only older sister projects or portals); do not use it for launch discovery. (4) WebFetch cannot read Facebook pages (title only) or the Ad Library (socket hang up). (5) Ad Library search by 'PR/GJ/<CITY>' mostly surfaces large or portal advertisers (Pacifica, Chandarana, Swagat Group, Kala, 99acres, Magicbricks, Housiey) whose registrations are old. (6) Swagat Cordelia (Swagat Infra, Surat, approved 2026-10-12, 448 units) could not be tied to Swagat Group: swagatgroup.in does not list it, so I dropped it.\n\nRejected on purpose: Pacifica India Projects (Amara-II, Zenith, Allure approved 2026-10-08, heavy multi-variant lead-form ads) because it is a large established developer; portals and brokers (99acres, Magicbricks, PropTiger, Housiey, Housivity).\n\nParked, not RERA-linked, for other sources: Bagrecha Realties LLP (Ahmedabad broker, lead-form pre-launch ads for Zundal, phone 99742 39545 in ad, ads since April so not fresh), Siban Gift City by United Yogi LLP (GIFT City, 4-like page, Get offer ads since 2026-09-23), Vasudha Prarambh (Gandhinagar pre-launch, since 2026-09-26) and Amoda.infra (Kudasan coming soon, 2026-10-10). None matched a fresh RERA record by name.\n\nBest next step if budget returns: run the Ad Library once per newly approved registration using the unique number token (e.g. MAA17169, RAA17464). Ads must print the RERA number, and this exact join worked for Beverlynn. New registrations are sequential (MAA17169 on 2026-07-22, MAA17434 on 2026-10-08), so the approved list from approvedDate maps cleanly to ads. Also note several approved projects with 100+ units (Century Regalia Rajkot 466 units, The Arsh Empire Ahmedabad 309, Evara Gandhinagar 300, Shantam Homes Surat 228, Anmol Luxuria Surat 224) were never checked for ads."
+  },
+  {
+   "source": "meta-ads",
+   "found": 8,
+   "apify_spend_usd": 1.5,
+   "did_not_work": "APIFY SPEND: about US$1.5 estimated from per-event prices (the connector does not return usageTotalUsd). Roughly $1.0 for ~1,500 ad rows at $0.00075 each with curious_coder/facebook-ads-library-scraper, and about $0.5 for 41 page lookups at $0.012 each with apify/facebook-pages-scraper. Nothing was sent, posted or signed up. Apify dataset ids for re-reading: ad searches fhgzsOQerfBjCT5Gf, g6c0nyURJZfXOF9L9, ZtU3SkkuOTRFmKHVs; per-page ads ERA6hGqaKMzo18pg1, dmmq4k9kA4nk97FKN; page contacts n4R4A3ccY6Tw0qKYR, FjyfMLxM0o0wb3yh7, TEk1tjDwyw4cgv84b.\\n\\nWHAT WORKED: keyword Ad Library URLs with active_status=active&country=IN, then filtering on snapshot.cta_type == WHATSAPP_MESSAGE (or link_url containing api.whatsapp.com when the button reads Learn more, See details or Get quote). Then a per-page Ad Library URL (view_all_page_id=...&search_type=page) for ad counts and first-ad dates. Facebook-page enrichment for phone, email and website, then a text fetch of the advertiser's own site.\\n\\nDID NOT WORK / CAVEATS:\\n- The Ad Library has no CTA filter and keyword search is noisy. Gujarati keywords (flat, bungalow, plot) pulled in jewellers, salons, textile and restaurants. 'villa' pulls party plots and rentals. 'shop' pulls retailers. Roughly half of each result set was not real estate.\\n- The scraper 'total' field looks right for small pages (Silver Group 13, Lotus 15, NB Developer 18) but showed an identical 175 for both Brij Group and Pride Group, so it is probably capped. Use it as 'many', not as a count. The scraper also needs at least 10 results, at least 1 URL per 512 MB of memory, and a minimum maxTotalChargeUsd.\\n- India spend and impressions are null, so ad spend cannot be quantified. Ad liveness is only 'Meta flags active at scrape time'; Silver Group's and Balar Homes' latest ads are about 2 months old.\\n- apify/facebook-pages-scraper silently returned only 14 of 29 requested pages in one batch (tiny new pages dropped) and often has no website, phone or email for new pages.\\n- Fetch problems: www.brijgroup.co does not resolve (its non-www form redirects to brijgroup.in); the Trinetra site has an expired or unverifiable TLS certificate, and Apify web-fetch also failed with 502; suvidhagroup.net did not resolve; balarhomes and caladium needed plain http. WebFetch returns a model summary of the page, so 'no chat widget or bot' means 'none seen in the text', not a full audit.\\n- WebSearch could not tie the Silver Group (Rajkot) phone or email to any registered developer, and 'Pride' is shared by several unrelated Rajkot developers, so both identities are unconfirmed. I did not cross-check the GujRERA portal.\\n- Whether any WhatsApp number already has an auto-reply, Business API bot or CRM cannot be tested without messaging them, so it is unknown for every candidate.\\n\\nREJECTED / NOT RETURNED: Agami Realty (Mumbai), Milestonestar Parle Point (a school), Vaibe / FarmHouseHub (vacation rentals), Rajshekar (Mumbai-prefix number), Pradhan Altiss and Pradhan Glenforest (Vadodara pages with 1-8 followers, no email), JATIN LALWALA (an individual's personal number in the ad link), national portals and chains (99acres, Housing.com, Magicbricks, Arvind SmartSpaces, Adani Realty, Birla Estates), and Bonanza.ahmedabad (not real estate).\\n\\nNEAR MISSES (real WhatsApp-CTA ads, thinner or smaller): Atmiya Group, Surat (11 WhatsApp ads 2026-05-04 to 2026-10-05; sales.atmiyagroup@gmail.com; no website or phone on page); Rivanta Heritage, Surat (27 ads, ~8 WhatsApp, rest lead forms and Instagram; rivantagroupsurat@gmail.com; 345 followers); Krishna Developers, Surat (6 WhatsApp ads 2026-08-19 to 09-29); Shivay Group, Surat (since 1989; 5 WhatsApp ads 2026-07-28 to 09-28; +91 93131 43781, no email); Shagun Developers, Surat (6.6k followers, 5 projects, site quick-enquiry form; only 2 WhatsApp ads, latest 2026-10-11; info@shagundevelopers.in); Subhanu Realty Ahmedabad (broker, 3 WhatsApp ads 2026-09-30 to 10-05); Caladium Group, Vadodara (2 WhatsApp ads 2026-10-10); Suvidha Developers, Vadodara (WhatsApp ad 2026-07-21); Shreenathji Buildcon, Kalol (1 WhatsApp ad 2026-10-12); Panth Park, Vadodara plots (6+ WhatsApp ads since 2026-09-11 but a 4-follower page). Prior-round names still showing active WhatsApp ads on 2026-10-15: Lions Real Estate Surat (2026-09-27/28) and Madhav Reality (2026-09-13). None of the 8 returned candidates appeared in the 2026-10-14 trigger list.\\n\\nGAPS: no Rajkot or Vadodara developer was checked on Google Maps for reviews mentioning slow replies; the Ad Library cannot show how many leads a page gets; the Gandhinagar and Ahmedabad sample is thinner than Surat, Vadodara and Rajkot because many Ahmedabad hits were national or aggregator advertisers."
+  },
+  {
+   "source": "gmaps",
+   "found": 3,
+   "apify_spend_usd": 1,
+   "did_not_work": "The honest result is that Google Maps reviews are a weak source for the 'enquiries arrive but nobody answers' signal in Gujarat real estate. No candidate met the strict bar (a dated complaint about no reply, late callback or unreachable staff within 90 days). The three leads above are stacked-signal leads with low confidence, not proven slow responders.\n\nWhat I ran (about US$1.0 of the US$3 cap):\n- 5 Maps place searches (Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar), 2 queries x 20 places each, 200 places, about $0.80. The generic queries 'real estate developer' and 'property dealer real estate agency' return mostly tiny brokers: roughly 40% of listings had fewer than 10 reviews and many had 1 to 5 reviews. Rajkot and Gandhinagar are especially thin. There is no review-count filter in the actor, so I paid for lots of noise. A better route is to start from known project or developer names.\n- Reviews of the last 90 days (from 2026-07-17) for 29 higher-volume places returned only 81 reviews in total. Zero of them complained about unanswered enquiries. Most places had 0 to 3 reviews in the window.\n- Keyword-filtered review scans ('call' and 'response') over about 80 more places for the last 90 days returned only 4 reviews, all positive. Further scans for 'reply' and 'pick' were blocked (see the last point below).\n- Lowest-rated reviews (all dates) for about 55 places. The real 'not picking calls / no callback' complaints all turned out to be older than 90 days, so they are rejected as stale: Priority Real Estate, Vadodara (2025-10-12); Nilesh Real Estate Group, Surat (2025-01-30); Property of Gujarat, Gandhinagar (2025-11-15); TheMuslimProperty.com, Vadodara (2026-02-21); OM Estate Broker, Ahmedabad (2024-07-01); R J Estate, Ahmedabad (2024-01 and 2025-02); Sagar Dave Property Dealer, Vadodara (2024, and it also looks like a pre-visit-fee scam pattern); Samanvay Satgunam refund calls unanswered (2024-06-01); Neptune Realty calls unanswered (2023-08-07); Sunfin Realty (2017 to 2021). Big Block Reality (2026-05-19, rude replies) is outside 90 days and not about response.\n- Developers' recent 1-star reviews are about possession delays, construction quality and maintenance, not enquiry handling. Examples: Neptune Realty (2026-08-07, two reviews, delayed possession), Samanvay Satgunam (2026-08-25 and 2026-09-19, delays and unfriendly staff), Sheetal Infrastructure (2026-07-05), Parshwanath Corporation (2026-07-05), Anil Bakeri (2026-07-02), Saumya Constructions (2026-05-05). These firms are not included. Neptune Realty (Vadodara, mktg@neptunerealty.in, no WhatsApp or site-visit booking on its website) is the closest near-miss if you want a fourth low-confidence name.\n- Rejected as scam: Balaji Property Broker, Surat. Two recent 1-stars (2026-09-27 and 2026-10-06) say the staff do not take calls after a Rs 300 'registration fee', and one reviewer alleges fraud.\n- Rejected as already responsive: Gajanan Properties, Gandhinagar. The owner replies to every review within minutes. Sunfin Realty, Vadodara, also replies within the hour.\n- High-star brokers (Pooja Real Estate Surat, GJ05, Divya Estate and others) often show bursts of text-less 5-star reviews, for example 4 reviews within 32 minutes on 2026-07-17. Star rating and review count are weak proxies for enquiry flow here.\n- A Google Maps Q&A (unanswered public questions) scrape would have been the best on-brief signal, but it was not run. The Apify account then hit its monthly hard limit, so the Q&A scrape and the extra keyword scans were blocked. The compass/crawler-google-places actor also requires a per-run cap of at least $0.50, above the roughly $0.17 left.\n- Two WebSearch queries for public complaints about Gujarat builders not answering or not calling back returned only directories and RERA articles, nothing usable.\n\nSuggestion: for this campaign, Meta Ad Library (builders paying for ads that send enquiries to WhatsApp) and GujRERA new registrations are likely to give much stronger signals than Maps reviews. Maps is best used afterwards, to check reachability and how the owner handles public feedback. Apify spend this run is about US$1.0."
+  }
+ ],
+ "scout_failures": 0,
+ "candidates_total": 17,
+ "qualified": 10
+}

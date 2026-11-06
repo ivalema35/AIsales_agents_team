@@ -1,0 +1,26 @@
+WEBSITE SAMPLE CHECK (aggregate counts only, no builder names or domains kept)
+Date: Tue 20 Oct 2026. Method: from the 133 builder groups (Raipur / Durg / Rajnandgaon, private, not Nexus360 customers, with an
+ongoing project) that have a usable website on the register, 40 were picked at random (seed 20261020). One GET of the home page each
+(http, then https if needed), 2.5 seconds apart, a plain research user-agent, no login, no CAPTCHA, nothing submitted.
+Signals are simple text matches on the home page HTML. n is small: read the numbers as "roughly", not as measurements.
+
+Sites requested: 40
+  domain does not resolve (dead or wrong address): 12   (30%)
+  resolves but gave an error or an empty page:      6   (15%)   [3 HTTP errors, 2 near-empty pages, 1 connection error]
+  loaded a real page:                               22  (55%)
+
+Of the 22 working sites:
+  shows a RERA number or the word RERA:             12  (55%)
+  has a contact form:                               13  (59%)
+  has a WhatsApp link or chat widget:               8   (36%)
+  has a Google tag (analytics or ads, cannot tell): 8   (36%)
+  loads a Facebook script (pixel or plain plugin):  4   (18%)
+  built on WordPress:                               8   (36%)
+  shows Hindi (Devanagari) text:                    1   (5%)
+  Sell.do / Makanify / Zoho / HubSpot visible:      0
+  LeadSquared visible:                              1
+  the word Tally or ERP on the home page:           0
+
+Reading: "has a website on the register" is true for about 90% of rows but only about half the sample had a working site, so it is a
+weak signal until the site is opened. A rival CRM is visible on very few sites (1 of 22), so a "rival detector" would remove few builders.
+A Google or Facebook script does not prove ads are running (that needs the Meta Ad Library).

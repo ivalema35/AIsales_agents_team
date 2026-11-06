@@ -1,0 +1,25 @@
+{
+  "business": "Detailing Culture",
+  "agree_with_grade": false,
+  "final_grade": "C",
+  "checks": [
+    {"claim": "Business exists as described, single outlet, right entity", "verdict": "confirmed", "note": "Own site (contact page) and Garware locator show the identical Bodakdev address; Instagram bio matches. Web search found no other listing, no namesake chain. Maps page was not readable by me either."},
+    {"claim": "Both gallery pages say no photos / no videos added yet", "verdict": "confirmed", "note": "Re-opened /gallery/photos and /gallery/videos on 2026-11-04: both say nothing added yet; no review/testimonial block on home page. Literally true but the pages carry no date."},
+    {"claim": "This is an observed NEED for our offer (proof page)", "verdict": "corrected", "note": "It is an observed state of a site, not a need. The campaign's need list is closed (no own site, website button opens sign-in/Linktree/Instagram, newest 3 reviews unanswered, Book Now with no form); an empty gallery is none of these, and the investigator itself says it fits no a/b/c/d slot. Their Instagram (public, 2026-11-04) shows about 11 grid items incl. 8 photos and 3 reels dated Mar, Apr and Oct 2026, so proof content exists and is simply not on the site yet. The site is brand new, so empty galleries most likely mean 'launch in progress', not neglect."},
+    {"claim": "Booking half is missing / pitch is booking + proof page", "verdict": "refuted", "note": "They already have a working booking form with a 4-step follow-up flow and a wa.me button, so the booking half of the offer is already done by someone. The remaining gap is only gallery content the owner can upload in an afternoon."},
+    {"claim": "Pay signal weak (not strong)", "verdict": "confirmed", "note": "426 followers, following 9, no ad evidence (not checked), no review data. Garware Application Studio is a supplier applicator listing, not proof of spend; the locator also lists junk entries (e.g. a 'Test' row at 7878787979), so it is a loosely curated list. Custom-coded site suggests a developer was already paid, which also suggests an existing vendor."},
+    {"claim": "Contact +91 91063 26281 is the studio's own, published on own site with wa.me", "verdict": "confirmed", "note": "Seen on / and /contact. Email detailingculture@gmail.com also on contact page. Who answers (owner vs team) is unproven; no owner name anywhere."},
+    {"claim": "Second number 9825033072 belongs to the studio", "verdict": "unsupported", "note": "Only on the Garware third-party page. Do not use; could be the owner's, the applicator's, or a stale entry."},
+    {"claim": "Reachability = business_contact, owner_direct_contact unknown", "verdict": "confirmed", "note": "Site says a 'team' follows up on bookings, so a front-desk or team person may read the WhatsApp. The campaign requires the number published on the Maps listing, which nobody has read. Owner rule not met, so not ready_for_campaign."},
+    {"claim": "Google profile state (reviews, owner replies, website button)", "verdict": "not_checked", "note": "Maps unreadable for the investigator and for me. Slots b (unanswered reviews) and a (broken website button) remain unknown and could be the real hook if checked by a human or a cheap Apify Maps call."}
+  ],
+  "strongest_objection": "The 'need' is only that a brand-new site still has empty photo and video galleries while their Instagram already has posts from March to October 2026: it is a launch-phase to-do the owner will fill himself, it matches none of the campaign's defined gap slots, the booking half of our offer already exists, and nobody has shown that the 91063 number reaches the owner or what the Maps listing looks like.",
+  "corrections": [
+    "Downgrade B to C: need observed is a site-state, not one of the campaign's gap types; no safe first-message slot a/b/c/d.",
+    "Note Instagram does show proof posts (8 photos, 3 reels, Mar-Oct 2026), so 'no proof' is wrong; only the website lacks it.",
+    "Note the site already has booking + WhatsApp, so the pitch is narrower than the investigator implied.",
+    "Garware locator is a weak identity/pay source (contains a 'Test' entry); do not use 9825033072.",
+    "To earn B again: a human reads the Maps listing and finds the Maps-published mobile, plus one of: website button broken/Instagram-only, newest 3 reviews unanswered, or a running Meta ad; and some sign the 91063 number reaches the owner.",
+    "To earn A: owner named on a public page, a verified Maps-published owner mobile, and an observed ad or review-volume pay signal."
+  ]
+}

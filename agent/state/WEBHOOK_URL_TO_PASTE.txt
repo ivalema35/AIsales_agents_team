@@ -1,0 +1,5 @@
+BSP (fortius) dashboard -> WhatsApp webhook / callback URL ko EXACTLY isse badalna hai (verify token same rahega):
+
+https://sales.ivinfotech.com/api/v1/inbound/whatsapp?k=1_QE6iAF5rE8uc7FcP46JFN17erkz0lb
+
+Ye secret hai: kisi ko share mat karna. Kaam hone ke baad is file ko delete kar dena.

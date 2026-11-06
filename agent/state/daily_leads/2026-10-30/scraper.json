@@ -1,0 +1,810 @@
+{
+ "campaign": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+ "need": "Owner-run detailing, coating and PPF studios win customers on Google, Instagram and WhatsApp. The gap must be something we can SEE from outside, literally true today: no working own website; the website button on the Google listing opens a sign-in page, a Linktree or an Instagram profile; the newest 3 Google reviews have no owner reply; a Book Now button with no booking form. Some studios already pay for Meta ads that lead to WhatsApp or a call (a spend signal). Lost bookings are NOT observed: never claim a loss.",
+ "plan_round1": {
+  "need_analysis": {
+   "summary": "Owner-run car/bike detailing, coating and PPF studios in Gujarat win customers through Google Maps, Instagram and WhatsApp, but many have no working own site, a Linktree/Instagram as the website, unanswered reviews, or a Book Now button without a form. We sell a one-page booking and proof page plus Google profile upkeep; the gap has to be visible from outside today.",
+   "who_has_this_need": "Single-outlet, owner-run detailing / ceramic coating / PPF / bike detailing studios in Mehsana, Kadi, Visnagar, Patan, Palanpur, Gandhinagar, Ahmedabad, then Surat, Rajkot, Vadodara, Anand and Nadiad. They are small (1 to 3 staff), the owner decides alone and answers the studio's published mobile number.",
+   "observable_signals": [
+    "Own website missing, dead, parked, or a Wix/Linktree/Instagram-only page (visible by fetching the studio's own URL)",
+    "Website button on the Google listing opens a sign-in page, Linktree or Instagram profile (needs Maps, which is not reachable free today)",
+    "Newest 3 Google reviews have no owner reply (Maps only)",
+    "Book Now button with no booking form on the studio's own page",
+    "Studio is certified/listed by a film or coating brand (Garware Application Studio, Ceramic Pro, XPEL, Llumar), so it is a real, active, premium-priced studio that already pays for brand presence",
+    "Phone/WhatsApp number published by the business itself in a brand locator, directory listing or its own page"
+   ],
+   "where_signals_show": [
+    "Brand installer locators (Garware Hi-Tech Films 'Locate Us' city pages; other film/coating brand locators)",
+    "Studio's own site, if any (fetch it to classify: none / Linktree / own site alive / dead / Book Now without form)",
+    "Small public directories with phone numbers (carchhe.com, magicpin, IndiaMART service sellers) found by WebSearch per town",
+    "Google Maps listing (website button, reviews): blocked to free tools; Apify budget is 0",
+    "Meta Ad Library: not reachable without Apify or a browser"
+   ],
+   "disqualifiers": [
+    "Franchises and multi-outlet brands (CarzSpa, 3M Car Care, Exotic Car Detailing Studio, GoMechanic, Detailing Devils, The Detailing Mafia)",
+    "Car dealerships, showrooms, hotels, plain car-wash points, accessory shops",
+    "Film/coating dealers and traders that are not studios (for example the dealer rows on the Garware pages: S M Trade Co, Futkar Sales, Global Auto Traders)",
+    "Placeholder rows such as the 'Test' entry on the Garware Ahmedabad page",
+    "Studios already verified or in our leads list (Krishna Auto Coating, Krishna Xtreme, Detailing Xpert, Walker's, DNX, Motors Inn, Dwarkesh Car Detailing Studio, RRR, Carx Care, Arihant, Exotic, CarzSpa Mehsana)",
+    "Phone that only reaches a call centre or portal number, and anything outside the listed geography"
+   ]
+  },
+  "considered": [
+   {
+    "source": "Google Maps search per town (Apify Maps scraper)",
+    "category": "maps and directories",
+    "signal_for_this_need": "Strongest: shows website button target, newest reviews and owner replies, and the studio's own phone, all in one place.",
+    "volume_in_geo": "High; hundreds of detailing listings across the 12 towns.",
+    "cost_usd": 0,
+    "reachability": "Excellent: the owner's number published on the listing.",
+    "risk": "Apify budget is used up this month so it must not be used. Free WebFetch of google.com/maps returned only the page title, so no data.",
+    "verdict": "rejected",
+    "why": "Best source in theory, but cap is US$0 and the free fetch returns nothing. It is the first thing to buy back when budget returns."
+   },
+   {
+    "source": "Meta Ad Library (exact-name search)",
+    "category": "ad libraries",
+    "signal_for_this_need": "Shows spend on ads to WhatsApp/call, a spend signal, but not the website gap.",
+    "volume_in_geo": "Low; few small studios run visible ads.",
+    "cost_usd": 0,
+    "reachability": "Poor: the ad page does not publish a number reliably.",
+    "risk": "Needs a browser or Apify; the built-in browser is unavailable. Login-walled in practice.",
+    "verdict": "rejected",
+    "why": "Cannot be run free from here, and it is only a secondary signal (check per-name later, only if cheap)."
+   },
+   {
+    "source": "Garware Hi-Tech Films 'Locate Us' city pages (Garware Application Studios) and similar brand locators",
+    "category": "association / brand member lists",
+    "signal_for_this_need": "Medium: proves the studio is real, active and brand-certified (pays for premium positioning). Website status must be checked separately on each studio.",
+    "volume_in_geo": "Tested live: Ahmedabad page lists 3 application studios (Dignity Care, Detailing Culture, Dwarkesh Enterprise) with phones; Surat and Rajkot pages list only dealers; Vadodara search hint names Autotouch and Detailing Xperts. Roughly 5 to 10 studios across the geography.",
+    "cost_usd": 0,
+    "reachability": "Good: the phone is published by the business in the brand's own locator.",
+    "risk": "Low: public static pages. The page data can be stale and has a placeholder 'Test' row. Dealers must be filtered out.",
+    "verdict": "chosen",
+    "why": "Free, verified fetchable, gives named independent studios with business-published phones; the need signal is then confirmed by fetching each studio's own site."
+   },
+   {
+    "source": "WebSearch per town for studio-owned pages and small directories (carchhe.com, magicpin, IndiaMART, studio own domains, dead business.site pages)",
+    "category": "mixed: directories and owner websites",
+    "signal_for_this_need": "Medium-high: the result URL itself shows whether the studio has its own site or only a directory/Instagram/Linktree presence, which is the website-gap signal; the page shows a phone.",
+    "volume_in_geo": "Tested: Patan/Mehsana returned the already-verified Krishna Auto Coating (093273 66780 on carchhe); Palanpur, Visnagar, Kadi, Nadiad, Anand returned little in standard mode, so small-town volume is thin; Ahmedabad, Surat, Rajkot, Vadodara are richer.",
+    "cost_usd": 0,
+    "reachability": "Good when the phone is on the studio's own page or a directory entry it claimed.",
+    "risk": "Low legal risk; search results are dominated by CarzSpa and need many query variants. Directory phones can be portal numbers, so mark those weak.",
+    "verdict": "chosen",
+    "why": "The only free route that shows the website state directly; combine with brand-locator names to fill gaps."
+   },
+   {
+    "source": "Justdial / Sulekha category pages",
+    "category": "maps and directories",
+    "signal_for_this_need": "Weak to medium: lists studios and phones but not the website/review gap.",
+    "volume_in_geo": "High in theory.",
+    "cost_usd": 0,
+    "reachability": "Numbers are often Justdial call-routing numbers, not the owner's.",
+    "risk": "Tested: Justdial returned HTTP 403, Sulekha 404. Scraping against terms.",
+    "verdict": "rejected",
+    "why": "Blocked, and the numbers are a listing-portal route which the owner rules mark weak."
+   },
+   {
+    "source": "GoMechanic and similar marketplace partner pages",
+    "category": "marketplaces",
+    "signal_for_this_need": "Low: the platform sells the service, not the studio.",
+    "volume_in_geo": "Ahmedabad / Gandhinagar pages exist.",
+    "cost_usd": 0,
+    "reachability": "None: no studio phone, the marketplace takes the enquiry.",
+    "risk": "Competitor-like platform; no owner contact.",
+    "verdict": "rejected",
+    "why": "No business-published contact and the studios are not identifiable."
+   },
+   {
+    "source": "Local news and launch announcements (Divya Bhaskar, Gujarat Samachar, Times of India city, Business World pieces) about new detailing studios",
+    "category": "news and launches",
+    "signal_for_this_need": "Medium: a new studio often has no site and no review replies yet; still must be verified.",
+    "volume_in_geo": "Low, a few per year per city.",
+    "cost_usd": 0,
+    "reachability": "Medium: article may quote a number.",
+    "risk": "Low; evidence age filter of 90 days will drop many.",
+    "verdict": "rejected",
+    "why": "Too few hits and mostly older than 90 days; keep as a fallback."
+   },
+   {
+    "source": "Job posts (OLX / Indeed / Naukri / Apna 'detailing technician' in Gujarat)",
+    "category": "job posts",
+    "signal_for_this_need": "Low: hiring shows growth, not a website gap.",
+    "volume_in_geo": "Low to medium.",
+    "cost_usd": 0,
+    "reachability": "Often a manager or agency number.",
+    "risk": "Login walls and scraping limits.",
+    "verdict": "rejected",
+    "why": "Weak link to this need and poor reachability."
+   },
+   {
+    "source": "Community threads (Team-BHP ceramic coating threads, Reddit r/IndianCars)",
+    "category": "communities",
+    "signal_for_this_need": "Low-medium: names real studios people recommend (for example an XPEL installer near Mekhri circle) but no website data.",
+    "volume_in_geo": "Low per city; mostly Bangalore/Delhi/Mumbai.",
+    "cost_usd": 0,
+    "reachability": "Poor: no published business number in the thread.",
+    "risk": "Posts are personal opinions; names can be dated or promoted by studios.",
+    "verdict": "rejected",
+    "why": "Weak signal and no contact."
+   },
+   {
+    "source": "Instagram / Facebook business pages and Linktree hunt",
+    "category": "social platforms",
+    "signal_for_this_need": "High that the studio sells there, but the rules forbid scraping those platforms; free search for linktr.ee returned zero studio pages (tested).",
+    "volume_in_geo": "High.",
+    "cost_usd": 0,
+    "reachability": "DM only.",
+    "risk": "Terms and rule conflict.",
+    "verdict": "rejected",
+    "why": "Not allowed and the test returned nothing."
+   },
+   {
+    "source": "IndiaMART service sellers (detailing / ceramic coating)",
+    "category": "marketplaces",
+    "signal_for_this_need": "Low: B2B product-seller pages (for example CP Nanotech sells coating products).",
+    "volume_in_geo": "Medium.",
+    "cost_usd": 0,
+    "reachability": "Business-published, but sellers are product vendors, not studios.",
+    "risk": "Mix of competitors and suppliers.",
+    "verdict": "rejected",
+    "why": "Mostly suppliers, not studios."
+   }
+  ],
+  "chosen": [
+   {
+    "id": "garware-studio-locator",
+    "name": "Garware and other film/coating brand installer locators, then own-site audit",
+    "tool": "web",
+    "how_to_run": "Step 1: WebFetch https://www.garwarehitechfilms.com/paint-protection-film/<city> for city in ahmedabad, gandhinagar, vadodara, surat, rajkot, anand, nadiad, mehsana, patan, palanpur (the city slug pattern is confirmed on ahmedabad, surat, rajkot, vadodara). Prompt: list every business in 'Locate Us' with name, address, phone; label rows as 'Garware Application Studio' vs plain dealer/trader. Step 2: WebSearch for other brand locators for Gujarat: 'Ceramic Pro certified installer Ahmedabad', 'Llumar / Gtechniq / Kavaca / Autoglym authorised detailing studio <city>', and keep only single-outlet studios. Step 3: for every kept studio run WebSearch '<studio name> <area> <city>' and WebFetch its own site if one exists; classify website status: none / Instagram only / Linktree / own site alive / dead or parked / sign-in wall; check for a Book Now button without a form. Step 4: drop anything on the already-verified list, any franchise or multi-outlet brand, any dealer or trader, and any 'Test' placeholder row.",
+    "qualifying_signal": "Independent single-outlet studio named in a brand locator with a business-published phone, AND own website is absent, Linktree/Instagram, dead/parked, or has Book Now without a booking form (slot a, c or d). Reviews-unanswered (slot b) is recorded as 'unverified' because Maps is not reachable today.",
+    "fields_to_capture": "studio name, area, city, phone as published (with the URL where seen), brand locator name, website URL and status, Book Now present with or without form, brand/franchise flag, safe first-message slot, date seen",
+    "expected_yield": "3 to 6 usable studios (Ahmedabad: Dignity Care, Detailing Culture, Dwarkesh Enterprise to be checked; Vadodara: Autotouch, Detailing Xperts to be checked), minus any already verified.",
+    "est_cost_usd": 0
+   },
+   {
+    "id": "town-web-search-own-sites",
+    "name": "Per-town WebSearch for studio-owned pages and small directories, with website-state check",
+    "tool": "web",
+    "how_to_run": "Run WebSearch (standard mode, one town at a time) with these queries, then WebFetch each hit that is a studio's own domain or a directory entry: (1) '<town> car detailing studio ceramic coating PPF' for town in Mehsana, Kadi, Visnagar, Patan, Palanpur, Gandhinagar, Ahmedabad, Surat, Rajkot, Vadodara, Anand, Nadiad; (2) '<town> bike detailing ceramic coating studio'; (3) 'business.site car detailing <town>' (dead Google business.site pages mean a dead website button); (4) 'car detailing <area> <city> book now' to find Book Now pages; (5) 'carchhe OR magicpin car detailing <town>' for directory entries with phone. Use blocked_domains carzspa.com, gomechanic.in, write.as, 3mcarcare to cut franchise noise. For each hit fetch the studio's own page: record the phone published there, whether a booking form exists behind Book Now, last blog/offer date (evidence date must come from the page), and whether a separate own domain exists.",
+    "qualifying_signal": "Studio with a business-published phone on its own page or claimed directory entry, whose own web presence shows a gap: no own domain (directory/Instagram/Linktree only), dead or parked site, or Book Now with no form. Evidence page URL and a date on the page must exist; no URL means no candidate.",
+    "fields_to_capture": "studio name, town, phone with source URL, website status, Book Now with/without form, evidence URL and date, brand/franchise flag, safe first-message slot",
+    "expected_yield": "2 to 4 usable studios; richer in Ahmedabad, Surat, Rajkot and Vadodara than in Visnagar, Kadi, Palanpur where standard search returned almost nothing.",
+    "est_cost_usd": 0
+   }
+  ],
+  "if_low_yield": "1) Ask for one paid Apify Google Maps run next month (cap US$0.5, search 'car detailing' for the 12 towns, limit 15 each) because Maps is the only source that shows the website button target, review replies and owner phone together. 2) Use WebSearch extended mode on the thinner towns (Visnagar, Kadi, Palanpur, Nadiad, Anand). 3) Try more locators: Ceramic Pro, XPEL, Llumar, Kavaca, Gtechniq, Autoglym, and sun-film brand pages for Gujarat. 4) Search news/launch pieces ('new car detailing studio inaugurated' plus town, within 90 days). 5) Run a cheap exact-name Meta Ad Library check only on the final 8 for the ad-spend signal."
+ },
+ "plan_round2": {
+  "need_analysis": {
+   "summary": "Owner-run detailing, coating and PPF studios in Gujarat win customers through Google Maps, Instagram and WhatsApp, but many have no real website or booking path and do not manage their Google profile. We need studios where that gap can be seen from outside today, with a human owner reachable on the phone the studio itself publishes.",
+   "who_has_this_need": "Single-outlet, owner-run car and bike detailing, ceramic coating and PPF studios (not car-wash points, dealers, garages or franchises) in Mehsana, Kadi, Visnagar, Patan, Palanpur, Gandhinagar and Ahmedabad first, then Surat, Rajkot, Vadodara, Anand, Nadiad. Best fit: a studio with a good rating and 15+ reviews that is visibly selling a premium service but has a weak online booking path.",
+   "observable_signals": [
+    "Appears in car-service directories (carchhe, Sulekha) with a rating and review count but with no own website or social link on the listing",
+    "Directory listing shows a phone but no website field; own-name web search returns only the directory, Instagram or a Linktree",
+    "Own site is a free auto-generated template (grexa.site, business.site, wixsite, linktr.ee) with a Book Now or Contact button but no booking form",
+    "Own site is dead, parked, shows another business, or has a Book Now button linking to # or a contact page",
+    "Rating has few reviews versus the service price point (young listing, no review push)",
+    "Studio lists ceramic coating, PPF, graphene and steam wash prices, so it is a premium service that depends on trust, proof and photos"
+   ],
+   "where_signals_show": [
+    "carchhe.com town car-detailing pages and listing detail pages (name, locality, rating, review count, tel: phone)",
+    "Sulekha car-detailing town pages and profile pages",
+    "The studio's own site or free-template page, fetched with WebFetch",
+    "Name plus town WebSearch results (Instagram-only, Linktree, directory-only footprint)",
+    "Google Maps website button and review replies (not reachable without Maps access)"
+   ],
+   "disqualifiers": [
+    "Franchise or multi-outlet brands (CarzSpa, 3M Car Care, Autoism, Detailing Mafia, Detailing Street, Detailing Devils, Exotic, God of Ceramic, Coating Guru, Autotouch)",
+    "Dealerships, showrooms (Halleys Kia, Toyota, Tata) and brand-authorised service centres",
+    "Plain car-wash points, foam-wash only, garages, accessory shops, GoMechanic workshops, hotels",
+    "Studios already verified or already collected (Krishna, DNX, Motors Inn, Dwarkesh, RRR, Carx Care, Arihant, Detailing Xpert, Walker's, Autokrafte, Sunshine Autochem, Dignity Care, Detailing Culture)",
+    "Only route is a call centre or aggregator number, e.g. an 080 or 1800 number, or a shared dealer number",
+    "Working booking form already in place (GT Cars Care, MK29): no gap"
+   ]
+  },
+  "considered": [
+   {
+    "source": "carchhe.com town car-detailing-services pages and detail pages",
+    "category": "Maps-derived directory",
+    "signal_for_this_need": "Medium. Listing carries Google-style rating and review count, locality, tel: phone and a Maps pin, with no website or Instagram field. Missing field is only a weak hint of no website, so it must be confirmed by a web audit.",
+    "verdict": "chosen",
+    "why": "Tested today: Mehsana (4 pages), Gandhinagar (10 pages), Palanpur (4), Ahmedabad (11) and Vadodara (11) return 10 rows per page via WebFetch with name, locality and rating. The detail page gave a tel: phone (075670 06633 for Incredible Car Detailing). Free and fetchable. Names unseen so far: Washkr Sola, SHREEJI CAR SPA, MP Car Spa Gota, AutoGlow Chandkheda, Coating Buddies Odhav, Incredible Car Detailing, MotorX Car Care, Vampires Detailing, Caroholics Car Spa Raysan, Veer Car Accessories & Car Detailing Sargasan, Capital Autozone Sargasan, Uma Autocare, GURUKRUPA Car Decor, KD Car Spa, Autotech Dumad, Swish Auto Care, One Stop Carz.",
+    "volume_in_geo": "High: about 40 pages of 10 rows across the 5 tested towns, though many are washes, garages and dealers (roughly 25-35% are real detailing studios).",
+    "reachability": "Good: the page shows the phone the business published on Maps. Detail page also lists address and Maps coordinates.",
+    "cost_usd": 0,
+    "risk": "Low. Public directory, no login. Some rows are misplaced (Surat rows under Palanpur), opening hours are unreliable (all days closed), and there is no date on listings. Phone is aggregator-copied, so confirm it is a mobile number."
+   },
+   {
+    "source": "Own-footprint audit of each carchhe studio (name plus town WebSearch, then WebFetch of own site, free-template page or Linktree)",
+    "category": "Web search / own-site audit",
+    "signal_for_this_need": "Strong. It is the only free way to see the need itself: Instagram-only, Linktree, free template, dead domain, Book Now with no form. The last round's two opened signals (Autokrafte, Sunshine Autochem) came from this.",
+    "verdict": "chosen",
+    "why": "Run as a second pass on the carchhe roster instead of blind town queries, which returned nothing last round. Searching by an exact studio name is far more likely to surface its site or template page than town-level queries.",
+    "volume_in_geo": "Medium. Applies to 30-60 roster names; expect about 1 in 3 to give a classifiable page.",
+    "reachability": "Own site contact page or footer often repeats the owner mobile or WhatsApp number, which is the business's own publication.",
+    "cost_usd": 0,
+    "risk": "Low. WebSearch is US-only and its local index is thin, so a studio missing from results is not proof of no website; mark it fit_only, not a signal."
+   },
+   {
+    "source": "Sulekha car-detailing-services town pages and profile pages",
+    "category": "Service marketplace",
+    "signal_for_this_need": "Weak. Gives names, localities and Sulekha-verified flags, but no phone, website or review replies on the list page. Ahmedabad page returned 20 rows, Mehsana returned 3 (wash points).",
+    "verdict": "rejected",
+    "why": "Largely overlaps carchhe and rows mostly lack phone and signals. Use only as a cross-check for a name that carchhe does not list (Royal Car Spa Vastrapur, Chamunda Bike Care are examples of wash or spa rows).",
+    "volume_in_geo": "Low-medium; thin outside Ahmedabad.",
+    "reachability": "Poor on the list page; profile pages not tested.",
+    "cost_usd": 0,
+    "risk": "Low"
+   },
+   {
+    "source": "magicpin Mehsana car-care page",
+    "category": "Local deals marketplace",
+    "signal_for_this_need": "Unknown",
+    "verdict": "rejected",
+    "why": "The URL tested returned 404 and no working path was found.",
+    "volume_in_geo": "Unknown",
+    "reachability": "Unknown",
+    "cost_usd": 0,
+    "risk": "Low"
+   },
+   {
+    "source": "Ceramic Pro, XPEL, Llumar and Garware installer locators",
+    "category": "Brand-authorised installer lists",
+    "signal_for_this_need": "Weak. They show who is a studio but not the website or review gap, and installers are often multi-outlet or franchise.",
+    "verdict": "rejected",
+    "why": "Ceramic Pro locator covers USA, Canada and Latin America only. xpel.in/find-an-installer redirects to a JS-driven page with no static Gujarat list. Garware has only Ahmedabad and Vadodara pages. A search for Llumar in Gujarat only found Carglass in Bhuj, which is outside the geography.",
+    "volume_in_geo": "Very low",
+    "reachability": "Low",
+    "cost_usd": 0,
+    "risk": "Medium: locator pages are dynamic and unreliable to fetch."
+   },
+   {
+    "source": "Justdial and IndiaMART listings",
+    "category": "Business directory",
+    "signal_for_this_need": "Medium for listing presence, none for the gap.",
+    "verdict": "rejected",
+    "why": "Justdial returned 403 last round. IndiaMART is built for B2B sellers and shows trade numbers, not walk-in studios.",
+    "volume_in_geo": "Medium",
+    "reachability": "Justdial shows virtual or lead-gen numbers, not the owner's.",
+    "cost_usd": 0,
+    "risk": "High: terms prohibit scraping, and the number is a paid lead line."
+   },
+   {
+    "source": "Google Maps pages for each studio (website button, newest 3 reviews and replies)",
+    "category": "Maps / review site",
+    "signal_for_this_need": "Strongest. It shows the website button, review replies and Book button, which are exactly the 4 safe first-message slots.",
+    "verdict": "rejected",
+    "why": "Not reachable now: Apify is capped at 0, the built-in browser is not available to this run and Maps does not render under WebFetch. Keep as the fallback if the owner enables Chrome or a small top-up.",
+    "volume_in_geo": "High",
+    "reachability": "Excellent: phone published on listing.",
+    "cost_usd": 0,
+    "risk": "Medium: automated Maps scraping is against Google terms; read-only manual page opens are lower risk."
+   },
+   {
+    "source": "Meta Ad Library (exact-name search)",
+    "category": "Ad library",
+    "signal_for_this_need": "Spend signal only, not the gap.",
+    "verdict": "rejected",
+    "why": "Ad Library is a JS app and was unreachable last round; no free fetch path, and the brief says to use it only if cheap.",
+    "volume_in_geo": "Low for small studios",
+    "reachability": "Page name only",
+    "cost_usd": 0,
+    "risk": "Medium"
+   },
+   {
+    "source": "Job posts (Naukri, Apna, Indeed: detailing technician or PPF installer hiring)",
+    "category": "Job posts",
+    "signal_for_this_need": "Weak for this need: hiring shows growth, not a missing booking page.",
+    "verdict": "rejected",
+    "why": "Posts usually hide the employer or give a recruiter number, and the search tool's US-only index rarely returns Indian local job pages.",
+    "volume_in_geo": "Low",
+    "reachability": "Poor",
+    "cost_usd": 0,
+    "risk": "Low"
+   },
+   {
+    "source": "Instagram and Facebook studio pages, Team-BHP forum recommendation threads",
+    "category": "Social and community",
+    "signal_for_this_need": "Instagram bio-link and Linktree would be a direct signal; Team-BHP threads name active studios.",
+    "verdict": "rejected",
+    "why": "Brief forbids scraping Instagram or Facebook profiles. Team-BHP threads are old, national, and name the same chains and big studios.",
+    "volume_in_geo": "Low in Gujarat small towns",
+    "reachability": "Low",
+    "cost_usd": 0,
+    "risk": "High for social, Medium for forums"
+   },
+   {
+    "source": "Apify Google Maps scrapers (compass/crawler-google-places and similar)",
+    "category": "Paid scraper",
+    "signal_for_this_need": "Strong, as it returns the website field, review replies and phone together.",
+    "verdict": "rejected",
+    "why": "This month's Apify budget is used up and the cap today is 0, so it cannot be called. Kept only as an owner-approved top-up option (cap about US$0.5 for roughly 30 studios).",
+    "volume_in_geo": "High",
+    "reachability": "Excellent",
+    "cost_usd": 0.5,
+    "risk": "Low technically; blocked by budget."
+   }
+  ],
+  "chosen": [
+   {
+    "id": "carchhe-roster",
+    "name": "carchhe.com town listings as a studio roster with published phone",
+    "tool": "web",
+    "how_to_run": "For each town fetch the category page and its ?page=N pages with WebFetch: https://www.carchhe.com/car-detailing-services/{town}. Working slugs tested today: mehsana (4 pages), gandhinagar (10), palanpur (4), ahmedabad (11), vadodara (11). kadi returned 404. Also try patan, visnagar, anand, nadiad, surat, rajkot in the same URL pattern; skip any that 404. Pages to read first: Mehsana 1-4, Gandhinagar 1-4, Palanpur 1-4 (drop Surat or Ahmedabad rows that sit under Palanpur), Ahmedabad 1-6 (the page 1 rows are mostly top-rated and active), Vadodara 1-4. WebFetch prompt: list each business with name, locality, rating, review count and listing path. Keep a row only if the name or path contains detailing, coating, PPF, ceramic, car spa, studio, wrap or bike detailing. Drop dealers, showrooms, GoMechanic, Toyota, Kia, Tata, garages, plain washing or foam-wash points, accessory shops, and the verified and franchise names. Then open each kept listing at https://www.carchhe.com/car-detailing-service/{town}/{slug} and read the tel: number, address and Maps pin. Keep the number only if it is a mobile (10 digits starting 6-9); mark landline, 080 and 1800 numbers as weak. First kept names from today's pages: Washkr Sola, SHREEJI CAR SPA (Satellite), MP Car spa (Gota), AutoGlow (Chandkheda), Coating Buddies (Odhav), INCREDIBLE CAR DETAILING (Shilaj, Bopal, phone 075670 06633), MotorX Car Care (Makarba), Vampires Detailing (Sola), Caroholics Car Spa Centre (Raysan), VEER CAR ACCESSORIES & CAR DETAILING (Sargasan, 145 reviews), Capital Autozone (Sargasan), Autotech the car detailing studio (Vadodara), GURUKRUPA CAR DECOR AND DETAILING (Vadodara), KD CAR SPA (Manjalpur), Swish Auto Care (Vadodara), Jaitra (Gandhinagar sector 13). Stop at about 40 kept rows.",
+    "qualifying_signal": "A single-outlet detailing, coating or PPF studio in the geography that carchhe lists with a rating and review count and a mobile number, and whose listing has no website, Instagram or social field. This makes it fit_only until the own-footprint audit opens a real signal: it never counts as a signal on its own, and no loss is ever claimed.",
+    "fields_to_capture": "studio name, town, locality, rating, review count, carchhe listing URL, published phone with the URL where seen, address, whether a website or social field is present (yes/no), single-outlet or multi-outlet flag, rejected-type flag, date fetched (2026-10-30). Review recency and reply status stay empty because carchhe shows neither.",
+    "est_cost_usd": 0,
+    "expected_yield": "About 30-40 roster rows with a mobile number, fit_only. Feeds the second source; does not stand alone."
+   },
+   {
+    "id": "studio-footprint-audit",
+    "name": "Own-footprint audit of each roster studio (website, Linktree, Instagram-only, free template, booking form)",
+    "tool": "web",
+    "how_to_run": "For every kept roster name (top priority: studios with 15+ reviews and a 4.5+ rating, since they have trust but a weak path), run WebSearch in standard mode with these exact patterns: (1) \"{studio name}\" {town} car detailing, (2) \"{studio name}\" {town} contact booking, (3) \"{studio name}\" linktr.ee OR grexa.site OR business.site OR wixsite OR godaddysites. Fetch the studio's own URL with WebFetch and classify it as: none found / Instagram only / Linktree / free template (grexa.site, business.site, wixsite, godaddysites, blogspot) / own site alive / dead or parked / sign-in wall. On any live site, read the page for a booking form, a Book Now or Contact button (does it link to # or a bare contact page, or does it open a form), and the footer mobile or WhatsApp number plus any dated post or copyright year. Also add a name-only cross-check on Sulekha: WebFetch https://www.sulekha.com/car-detailing-services/{town} and see if the studio appears with a profile link. Extra small-town queries in the Mehsana, Kadi, Patan and Palanpur belt, using the town plus these words: car detailing studio ceramic coating contact, car polish ceramic coating Gujarati (કાર ડિટેલિંગ મહેસાણા), PPF wrap studio {town} 9, and bike detailing {town}. Before outreach, confirm that the studio really does detailing and is single-outlet (check for other branches on its site). Do not open Instagram or Facebook profiles; use only what search results and the business's own site show.",
+    "qualifying_signal": "One of the 4 safe slots, backed by a fetched page with a date or the fetch date: (a) its own site, Linktree or Instagram link is dead, parked, a sign-in wall or the wrong business, (c) no own website found for a studio with 15+ reviews, (d) Book Now or Contact button on its own or template site with no booking form or a link to #. Slot (b) (newest 3 reviews unanswered) cannot be opened without Maps and is left empty. Free-template pages (grexa.site and similar) count as a signal because the studio has no site of its own.",
+    "fields_to_capture": "studio name, signal slot (a, c or d), website status class, own-site URL, evidence quote or element (for example Book Now links to #), date seen or the page's own date, owner or WhatsApp mobile published on the own site with the URL, single-outlet flag, one-line reason it is not a franchise, confidence (signal confirmed vs fit_only).",
+    "est_cost_usd": 0,
+    "expected_yield": "From 30-40 roster names, expect 8-12 with a classifiable footprint and 4-8 usable with a slot (c or d most often), which is close to the target of about 8 across both rounds."
+   }
+  ],
+  "if_low_yield": "1) Widen the roster: fetch further carchhe pages (Ahmedabad 7-11, Vadodara 5-11, Gandhinagar 5-10) and try carchhe slugs for patan, visnagar, anand, nadiad, surat, rajkot, then use the Sulekha town pages as a cross-check for the same towns. 2) If most roster names have no findable site, treat 'no own site found for a studio with 15+ reviews' as slot c but label it fit_only, and ask the owner to approve a short Maps check instead. 3) Maps is still the missing link: ask the owner to turn on Claude in Chrome so the Maps pages of the top 15 studios can be opened read-only for the website button and last 3 review replies, or to approve a one-off Apify top-up capped at about US$0.5 (one Google Maps places run, 30 detailing studios across the first-tier towns, with the website and review-reply fields). 4) Re-check the earlier open items once a browser works: Detailing Dude (Surat), A2Z Car Detailing Studio (Bodakdev) and Akshar Car Spa (Vadodara). 5) Last resort: query by product brand pages that small studios link to, for example site pages mentioning 'authorised applicator' plus a Gujarat town.\"}]"
+ },
+ "sources_used": [
+  "garware-studio-locator",
+  "town-web-search-own-sites",
+  "carchhe-roster",
+  "studio-footprint-audit"
+ ],
+ "run_reports": [
+  {
+   "source_id": "garware-studio-locator",
+   "found": 4,
+   "report": {
+    "what_i_ran": "WebFetch of Garware PPF city pages: ahmedabad, vadodara, surat and rajkot opened; gandhinagar, mehsana, anand, nadiad, palanpur and patan returned 404. About 14 WebSearch queries (per-studio name checks, Ceramic Pro and XPEL locators, other Gujarat studios). WebFetch of autotouchcars.com, thecoatingguru.in, godofceramic.in and detailingstreetvadodara.in for the own-site audit. No Apify calls.",
+    "est_cost_usd": 0,
+    "apify_runs": [],
+    "worked": "The Garware Ahmedabad and Vadodara pages give 5 named studios with mobile numbers (Dignity Care, Detailing Culture, Dwarkesh Enterprise, Autotouch, Detailing Xperts) and the 'Test' placeholder row is confirmed. Surat (Futkar Sales) and Rajkot (Global Auto Traders) are dealers only and were dropped. Autotouch has an own site that was auditable.",
+    "did_not_work": "The Garware city pages for Gandhinagar, Mehsana, Anand, Nadiad, Palanpur and Patan return 404, so only 4 city pages exist and Gujarat coverage is Ahmedabad and Vadodara only. WebSearch (US-only, thin local index) found no own site, Instagram or listing for Detailing Culture, Detailing Xperts or Dwarkesh Enterprise, and could not confirm whether they operate. Justdial returned 403 on WebFetch and was seen only as search snippets. Maps (website button, review replies), the Meta Ad Library and the Ceramic Pro and XPEL locators were not reachable. The Garware page gives no date, so the signal dates are none. The 4 candidates are fit_only: the need is not verified, and absence of a site in search is not proof. Dropped: Autotouch The Car Studio (own site autotouchcars.com is alive with Book Now buttons that link to a contact page, but it lists 4 branches: Vadodara Gotri and Manjalpur, Surat and Deesa, so it is multi-outlet), The Coating Guru (head office plus 2 branches; its hero Book Now links to '#'), God of Ceramic (franchise page and branches), Detailing Street Vadodara (franchise-type brand, 080 landline), S M Trade Co / Futkar Sales / Global Auto Traders (dealers; they share one number, 9689968996), the 'Test' row, and CarzSpa and Autoism as chains or multi-outlet. A2Z Car Detailing Studio (Bodakdev) and Akshar Car Spa (Vadodara) were not audited: a2zcardetailingstudio.com does not resolve and aksharcarspa.com returned a 500."
+   }
+  },
+  {
+   "source_id": "town-web-search-own-sites",
+   "found": 5,
+   "report": {
+    "what_i_ran": "About 17 WebSearch calls (standard mode, free) across Mehsana, Gandhinagar, Rajkot, Vadodara, Surat, Ahmedabad, Anand/Nadiad, Palanpur/Patan/Visnagar, plus business.site, bike detailing and carchhe queries. About 20 WebFetch calls on studio sites and the Garware locator pages (Ahmedabad, Vadodara, Surat, Rajkot). Apify was not used.",
+    "est_cost_usd": 0,
+    "apify_runs": [],
+    "worked": "WebSearch and WebFetch worked for Ahmedabad, Vadodara and Surat. Studio-owned sites could be fetched and classified (booking form yes/no, phone, copyright or blog date). The Garware locator pages give real phones for installer studios. Most useful find was an actively posting studio running on a free grexa.site template with no booking form.",
+    "did_not_work": "Standard search returned almost nothing for Kadi, Visnagar, Patan, Palanpur and Nadiad, and nothing for Gandhinagar except an accessory shop (Dharti Auto Accessories and Ceramic Coating, rejected). No business.site pages came up at all. wheree.com returned 403. detailingdude.in and o3carspa.cloud returned only a title when fetched, so they could not be classified (Detailing Dude, Surat, may be worth a second look). Janvi Car Wash (Mehsana), Prime Auto Coatings (Rajkot), Forza Detailing Hub and Exppress Vadodara returned nothing verifiable. Maps data (website button, review replies), the Meta Ad Library and owner names were unreachable, so no candidate has a confirmed Maps-level signal. Dropped on purpose: GT Cars Care Vadodara (working booking form, so no gap), MK29 Detailing and Autoism (both have booking forms; Autoism also has 2 branches), God of Ceramic Vadodara (franchise page and branches), The Coating Guru Vadodara (Book Now button links to a dead '#', but it lists 3 outlets, so it is a multi-outlet brand), Detailing Devils, Detailing Street, Detailing Gang, Detailing Mafia, Lords of Detailing, CarzSpa, 3M Car Care and Creative Motors (chains or multi-city), Brotomotiv and JJ Details (outside Gujarat), Detailing Xperts Vadodara (name too close to already-verified Detailing Xpert) and Dwarkesh Enterprise Ahmedabad (name too close to already-verified Dwarkesh), Garware dealer rows (S M Trade Co, Futkar Sales, Global Auto Traders) and the 'Test' placeholder row. Garware locator pages carry no date, so those three are fit_only with no signal date."
+   }
+  },
+  {
+   "source_id": "carchhe-roster",
+   "found": 12,
+   "report": {
+    "what_i_ran": "WebFetch on carchhe.com category pages (Mehsana p1-2, Gandhinagar p1, Ahmedabad p1, Palanpur p1, Vadodara p1) and 16 listing detail pages (Veer, Shreeji, Coating Buddies, Incredible, MotorX, MP Car Spa Gota and Mehsana, AutoGlow, Vampires, Washkr, Capital Autozone, Caroholics, Gunman Car, Shakti Car Care, Autotech, Gurukrupa, Swish, KD Car Spa) plus one WebSearch. No Apify.",
+    "est_cost_usd": 0,
+    "worked": "Category and detail pages fetch fine and give name, locality, rating, review count and a tel: number for most listings. Mobile numbers appear with a leading 0 (e.g. 075670 06633), so the real number is the 10 digits after the 0. Every detail page shows no website or social field for the business, and the services text is the same template on every page, so carchhe looks auto-generated from Google Maps data; the 'no website' fact therefore says little about the real footprint.",
+    "did_not_work": "Every row is fit_only: carchhe shows no review dates, reply status, website button or ad data, so no real need signal was seen and the 'no website field' may just be how carchhe is built. The first-wave Mehsana pages are mostly car-wash points, garages and dealers (Chehar, Jay Madi, GJ2, Bajrang, Shree Hari, Arihant Accessories, NEXA were dropped) so only The Gunman Car and Shakti Car Care are real detailing rows there; MP Car Spa Mehsana has no phone. Palanpur page 1 is mostly Surat or Ahmedabad rows, dealers and wash points (nothing kept). WebSearch is US-only and returned only CarzSpa/Autoism noise for 'Incredible Car Detailing', so it is weak for Indian local identity checks. Several carchhe pages show 'Closed' every day, which may be stale. Not fetched for time: Gandhinagar p2-10, Ahmedabad p2-11, Mehsana p3-4, Vadodara p2-11, Palanpur p2-4, patan/visnagar/anand/nadiad/surat/rajkot slugs, and Jaitra, Capital Autozone, Caroholics (Caroholics is on the verified-adjacent Raysan list with only 4 ratings; Capital Autozone 10 ratings, phone 096012 93600; Autotech Vadodara 25 ratings, phone 070438 21811; KD Car Spa Vadodara 16 ratings, phone 070167 40209; Washkr Sola 79 ratings, phone 075750 03005, but 'Washkr' looks like a multi-outlet brand so it was left out). Owner identity and whether the carchhe phone equals the Maps phone are unverified for all rows. Next round: run the own-footprint audit (Maps website button, newest 3 reviews, Instagram) on the top rows by review count."
+   }
+  },
+  {
+   "source_id": "studio-footprint-audit",
+   "found": 10,
+   "report": {
+    "what_i_ran": "About 35 free calls, no Apify. Roughly 22 WebSearch (standard) queries: town plus detailing/ceramic/PPF terms, grexa.site, linktr.ee, business.site, a Gujarati query, and name-only footprint searches for about 12 roster studios. About 15 WebFetch pages: grexa template sites (Kesari Custom incl. contact page, Shivam Automall, Royal Detailing Studio, Khan Car Decor, Supercars Wash & Repair), carchhe town directories (Surat, Ahmedabad, Mehsana, Gandhinagar), Sulekha Mehsana. A few curl fetches and DNS lookups for Detailing Dude, O3 Car Spa, NextGen Autocare, Motorus and the dead-domain check on Quartz and Patel Autocare.",
+    "worked": "The Grexa free-template search (grexa.site + car detailing) gave the only clean, opened-page signals (Kesari Custom, Shivam Automall). A DNS check (Google DNS NXDOMAIN plus WebFetch ENOTFOUND) showed Quartz Detailing Studio's own domain is dead today, while the search index still lists it. Carchhe town directory pages (/car-detailing-services/{town}) fetch fine and give name, locality, rating and review count (no phone, no website).",
+    "est_cost_usd": 0,
+    "apify_runs": [],
+    "did_not_work": "The planner's roster list was not provided to me, so I built my own from carchhe directory pages. Search coverage of small local studios is poor: most own-name searches returned nothing or CarzSpa franchise pages (hence mostly fit_only rows and low confidence; 'no site found' is not proof of no site). Justdial returns 403; carchhe has no phone or website in page text; Sulekha Mehsana had only 3 non-qualifying rows; the carchhe /car-detailing/{town} and Sulekha-style URLs in the plan gave 404. Instagram, Facebook and Maps were not opened per the rules, so slot b (newest 3 reviews unanswered) and the Maps website button could not be checked. Wayback Machine blocked my fetch (I did not try to bypass). Nothing found for Kadi (beyond Janvi), Visnagar, Patan, Palanpur, Rajkot or Nadiad; no Linktree studio in Gujarat appeared. Rejected after checking: Detailing Dude (Surat, has a working /booking page), NextGen Autocare (Ahmedabad, has a booking form), Motorus (multi-branch network and franchise), GT Cars Care (working form), Patel Autocare Services Gandhinagar (garage, and its .com domain is dead), O3 Car Spa Anand (site is JavaScript-only, content unreadable), Supercars Wash & Repair Surat (mostly a car wash), Royal Detailing Studio (Bengaluru), Khan Car Decor (Burhanpur MP), Sunshine Autochem (planner already excluded), and chains and franchises (CarzSpa, 3M Car Care, Detailing Devils, Detailing Street, Detailing Mafia, Autoism, Exotic, Autotouch)."
+   }
+  }
+ ],
+ "judged": {
+  "final_candidates": [
+   {
+    "rank": 1,
+    "business": "Kesari Custom - The Car Detailing Studio",
+    "city": "Ahmedabad (Tragad / Mansarovar Rd)",
+    "entity_type": "end_business",
+    "what_they_do": "Single studio: car wash, detailing, polishing, ceramic coating, PPF, glass coating, wraps",
+    "website": "https://kesari-custom.grexa.site/",
+    "signal_observed": "Collector opened the site: free Grexa auto-generated template (grexa.site subdomain, no own domain). Service pages only have Enquire buttons; the Contact page has no booking form, only phone, hours, address. No Book Now. Site shows 4.8 stars from 52+ Google reviews. Slot c/d.",
+    "signal_url": "https://kesari-custom.grexa.site/contact",
+    "signal_date": "",
+    "signal_date_kind": "scrape_date_only",
+    "why_need": "Premium services (PPF, coating) sell on trust and photos; good rating but only a free template with no booking path, so a booking and proof page plus profile upkeep fills a visible gap. The state is permanent until fixed.",
+    "tier": "signal_only",
+    "confidence": "medium",
+    "source_ids": [
+     "studio-footprint-audit"
+    ],
+    "multi_source": false,
+    "keep_reason": "Only candidate with an opened, concrete booking-path gap and a phone published by the studio itself on its own site. Identity seen only on its own page (no second place), so not verified.",
+    "unknowns": "Whether the Google website button points to this template; newest-3-review replies; whether 9274582116 reaches the owner; ad status; owner name; single outlet inferred only. Page has no date, only a 2026 copyright.",
+    "what_they_do_note": "",
+    "contact_routes": "Phone +91 9274582116 on https://kesari-custom.grexa.site/contact"
+   },
+   {
+    "rank": 2,
+    "business": "Quartz Detailing Studio",
+    "city": "Surat (Vesu Main Road)",
+    "entity_type": "end_business",
+    "what_they_do": "Detailing studio: sanitisation, washing, polishing, headlight restoration, 9H/10H and graphene ceramic coatings",
+    "website": "quartzdetailingstudio.in (does not resolve)",
+    "signal_observed": "Own domain does not resolve today (Google DNS non-existent domain, WebFetch ENOTFOUND, checked 2026-10-30). Search index still lists the old site with Vesu address; Internet Archive shows a 2024-08-06 snapshot; a Surat directory lists it at 4.8 stars from 16 reviews. Slot a if the Google website button still points at the dead domain.",
+    "signal_url": "http://www.quartzdetailingstudio.in/",
+    "signal_date": "",
+    "signal_date_kind": "scrape_date_only",
+    "why_need": "A customer tapping a dead website link gets an error; a working booking and proof page plus profile clean-up fixes it directly.",
+    "tier": "verified",
+    "confidence": "medium",
+    "source_ids": [
+     "studio-footprint-audit"
+    ],
+    "multi_source": false,
+    "keep_reason": "Dead-domain signal was actually tested by the collector (DNS and fetch) and identity appears in three places (search index, Internet Archive, Surat directory). Ranked below Kesari because the phone is unconfirmed and Surat is second-wave geography.",
+    "unknowns": "What the Google website button opens; which of the two phones (9825461781 / 9854165416) is right and whether it reaches the owner; Instagram bio mentions Chikhli so a second outlet is possible; still operating? The phones came from a search snippet of the dead site, not an opened page.",
+    "contact_routes": "Phones +91 9825461781 / +91 9854165416 seen in a search snippet of http://www.quartzdetailingstudio.in/ (unconfirmed, one likely a typo)"
+   },
+   {
+    "rank": 3,
+    "business": "Coating Buddies",
+    "city": "Ahmedabad (Odhav)",
+    "entity_type": "end_business",
+    "what_they_do": "Ceramic coating, PPF, detailing, car spa (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe listing: 4.8 rating, 48 ratings, mobile 8154897959, no website or social field. Instagram handle coatingbuddies_vastral surfaced (not opened), hinting at a second location.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/coating-buddies",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Coating-led studio where proof matters; directory shows no own web footprint. Need not observed, only fit.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster",
+     "studio-footprint-audit"
+    ],
+    "multi_source": true,
+    "keep_reason": "Seen by two collectors (both from carchhe, so not independent) and has a published mobile. No real gap seen.",
+    "unknowns": "Possible second outlet (Vastral) would make it multi-outlet; carchhe 'no website' may just be how carchhe is built; Maps button, replies, ads, owner.",
+    "contact_routes": "Phone 8154897959 on the carchhe listing"
+   },
+   {
+    "rank": 4,
+    "business": "Incredible Car Detailing",
+    "city": "Ahmedabad (Shilaj / Bopal)",
+    "entity_type": "end_business",
+    "what_they_do": "Detailing, polishing, ceramic coating, PPF (per carchhe; one summary said wax polish and foam wash only)",
+    "website": "",
+    "signal_observed": "carchhe: 4.9 rating, 36 ratings, mobile 7567006633, no website field; own-name web searches found no studio site.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/incredible-car-detailing",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Premium area, high rating, no own footprint found; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster",
+     "studio-footprint-audit"
+    ],
+    "multi_source": true,
+    "keep_reason": "Two collectors, published mobile, affluent area; still no observed gap.",
+    "unknowns": "Whether it really sells coating or PPF; carchhe shows Closed every day; website status; owner.",
+    "contact_routes": "Phone 7567006633 on the carchhe listing"
+   },
+   {
+    "rank": 5,
+    "business": "The Gunman Car",
+    "city": "Mehsana (Panchot Circle)",
+    "entity_type": "end_business",
+    "what_they_do": "Car detailing, ceramic coating, PPF, steam wash (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 4.9 rating, 15 ratings, mobile 9662551896, Mon-Sat 10-6, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/mehsana/the-gunman-car",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Home-belt (Mehsana) studio with a young review base and no own footprint shown; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster",
+     "studio-footprint-audit"
+    ],
+    "multi_source": true,
+    "keep_reason": "Priority geography, two collectors, published mobile. No gap observed.",
+    "unknowns": "Real website or Instagram; whether it is a true detailing studio; Maps data; owner.",
+    "contact_routes": "Phone 9662551896 on the carchhe listing"
+   },
+   {
+    "rank": 6,
+    "business": "MotorX Car Care",
+    "city": "Ahmedabad (Makarba)",
+    "entity_type": "unclear",
+    "what_they_do": "Detailing, car spa, ceramic coating, PPF (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 4.6 rating, 63 ratings, mobile 8490890010, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/motorx-car-care",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Mid-size review base and no own footprint shown on the directory; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster",
+     "studio-footprint-audit"
+    ],
+    "multi_source": true,
+    "keep_reason": "Two collectors with a published mobile; chain risk keeps it below the others.",
+    "unknowns": "'MotorX' may be a multi-outlet brand or a service garage; Closed all days on carchhe; owner.",
+    "contact_routes": "Phone 8490890010 on the carchhe listing"
+   },
+   {
+    "rank": 7,
+    "business": "SHREEJI CAR SPA",
+    "city": "Ahmedabad (Satellite)",
+    "entity_type": "end_business",
+    "what_they_do": "Car spa, detailing, ceramic coating, PPF, steam wash (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 4.7 rating, 116 ratings, mobile 7383222244, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/shreeji-car-spa",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Established studio with a large review base and no own footprint shown; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Largest review base among single-source carchhe rows; published mobile.",
+    "unknowns": "Other Shreeji outlets; real website or Instagram; Maps button; replies; owner.",
+    "contact_routes": "Phone 7383222244 on the carchhe listing"
+   },
+   {
+    "rank": 8,
+    "business": "Vampires Detailing",
+    "city": "Ahmedabad (Sola)",
+    "entity_type": "end_business",
+    "what_they_do": "Car wash, PPF, ceramic coating, detailing (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 5.0 rating, 14 ratings, mobile 9307731406, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/vampires-detailing-car-wash-in-sola-ppf-ceramic-coating-in-ahmedabad",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Young studio selling PPF and coating; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Priority geography, published mobile.",
+    "unknowns": "Own site or Instagram; replies; owner.",
+    "contact_routes": "Phone 9307731406 on the carchhe listing"
+   },
+   {
+    "rank": 9,
+    "business": "AutoGlow: Car Washing and Detailing",
+    "city": "Ahmedabad (Chandkheda)",
+    "entity_type": "end_business",
+    "what_they_do": "Washing, detailing, ceramic coating, PPF (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 5.0 rating, 26 ratings, mobile 7817951639, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/autoglow-car-washing-and-detailing",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Coating and PPF seller with no own footprint shown; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Published mobile, priority geography; wash-led risk.",
+    "unknowns": "May be mainly a wash point; website; replies; owner.",
+    "contact_routes": "Phone 7817951639 on the carchhe listing"
+   },
+   {
+    "rank": 10,
+    "business": "Swish Auto Care",
+    "city": "Vadodara (Saiyed Vasna)",
+    "entity_type": "end_business",
+    "what_they_do": "Detailing, car spa, ceramic coating, PPF (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 4.6 rating, 53 ratings, mobile 8140001190, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/vadodara/swish-auto-care",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Decent review base, no own footprint shown; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Published mobile; second-wave geography.",
+    "unknowns": "Website or Instagram; replies; owner.",
+    "contact_routes": "Phone 8140001190 on the carchhe listing"
+   },
+   {
+    "rank": 11,
+    "business": "MP Car Spa (Gota)",
+    "city": "Ahmedabad (Gota)",
+    "entity_type": "unclear",
+    "what_they_do": "Detailing, ceramic coating, PPF, steam wash (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 5.0 rating, 28 ratings, mobile 9274872753, no website field. A separate MP CAR SPA listing exists in Mehsana, so it may be a two-outlet brand.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/ahmedabad/mp-car-spa-ahmedabad",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Strong rating, premium services, no own footprint shown; possible multi-outlet.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Kept at the bottom as a check-first row; brand scope unresolved.",
+    "unknowns": "Whether Gota and Mehsana are one brand (one message per brand); owner.",
+    "contact_routes": "Phone 9274872753 on the carchhe listing"
+   },
+   {
+    "rank": 12,
+    "business": "Shakti Car Care",
+    "city": "Mehsana (Palodar, bypass)",
+    "entity_type": "end_business",
+    "what_they_do": "Car detailing, car spa, ceramic coating, PPF, steam wash (per carchhe)",
+    "website": "",
+    "signal_observed": "carchhe: 4.7 rating, only 7 ratings, mobile 9664996657, no website field.",
+    "signal_url": "https://www.carchhe.com/car-detailing-service/mehsana/shakti-car-care",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Home-belt studio with a thin review base; need unproven.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "carchhe-roster"
+    ],
+    "multi_source": false,
+    "keep_reason": "Mehsana priority geography, published mobile; may be a car-care point.",
+    "unknowns": "Real detailing scope; website; owner.",
+    "contact_routes": "Phone 9664996657 on the carchhe listing"
+   },
+   {
+    "rank": 13,
+    "business": "Janvi Car Wash and Detailing Studio",
+    "city": "Kadi",
+    "entity_type": "end_business",
+    "what_they_do": "Auto detailing and car washing",
+    "website": "",
+    "signal_observed": "Justdial snippet (page returned 403, not opened): 4.5 stars from 28 reviews, WhatsApp option. No own site found by search.",
+    "signal_url": "https://www.justdial.com/Kadi/Car-Washing-Services/nct-10079017",
+    "signal_date": "",
+    "signal_date_kind": "none",
+    "why_need": "Kadi is priority geography; no site found, but search coverage is weak.",
+    "tier": "fit_only",
+    "confidence": "low",
+    "source_ids": [
+     "studio-footprint-audit"
+    ],
+    "multi_source": false,
+    "keep_reason": "Kept only as a priority-geography row to check; no phone seen, likely wash-led.",
+    "unknowns": "Phone not obtained; real detailing or just a wash point; Maps data.",
+    "contact_routes": "None obtained (Justdial WhatsApp option only)"
+   }
+  ],
+  "dropped": [
+   {
+    "business": "Dignity Care (Dignity Cares), Ghodasar, Ahmedabad",
+    "reason": "Listed in the need analysis as already collected; also fit_only with no website or need signal seen (Garware locator and Justdial snippet only). Seen by two collectors."
+   },
+   {
+    "business": "Detailing Culture, Bodakdev, Ahmedabad",
+    "reason": "Listed in the need analysis as already collected; fit_only, no web footprint found, existence not confirmed outside the Garware page. Seen by two collectors."
+   },
+   {
+    "business": "Autokrafte India (Autokrafte Car Detailing & PPF), Ahmedabad",
+    "reason": "Need analysis lists it as already collected. Note: it had a real opened signal (alive site, no Book Now or booking form, poorly kept, casino text, phone and email on the site), so if it is not actually in the lead database it is worth reviving as signal_only."
+   },
+   {
+    "business": "Sunshine Autochem, Ahmedabad (grexa.site)",
+    "reason": "Need analysis lists it as already collected and the footprint collector says the planner excluded it. Identity also ambiguous (IndiaMART chemicals trader of the same name). It had an opened signal (grexa template, no booking form, blog posts dated 2026-10-25 to 28), so revive only if it is not in the lead database."
+   },
+   {
+    "business": "Shivam Automall - Car Detailing & Car Accessories Store, Ahmedabad",
+    "reason": "Google category is Auto Accessories Store (a named reject type), 504+ reviews suggest staff rather than owner on the phone. Grexa template with no booking form was real but the entity type disqualifies it."
+   },
+   {
+    "business": "VEER CAR ACCESSORIES & CAR DETAILING, Gandhinagar",
+    "reason": "Accessories shop first, detailing second (reject type); fit_only; carchhe shows Closed against its own hours."
+   },
+   {
+    "business": "GURUKRUPA CAR DECOR AND DETAILING, Vadodara",
+    "reason": "Car decor and accessories business (reject type); fit_only, no signal."
+   },
+   {
+    "business": "Autotouch The Car Studio (Vadodara Manjalpur)",
+    "reason": "Multi-outlet brand (Vadodara x2, Surat, Deesa) per the Garware collector's own-site audit; also a disqualifier in the need analysis."
+   },
+   {
+    "business": "Detailing Xperts, Vasna-Bhayli Road, Vadodara",
+    "reason": "Name too close to the already-verified Detailing Xpert (possible alias); fit_only, no footprint found."
+   },
+   {
+    "business": "Dwarkesh Enterprise, South Bopal, Ahmedabad",
+    "reason": "Name too close to the already-verified Dwarkesh Car Detailing Studio; may be a trader or closed; not shown to be a detailing studio."
+   },
+   {
+    "business": "AUTOZ HUB Ciramic & PPF Studio, Surat",
+    "reason": "Only contact is an IndiaMART number that looks like a routing number, not the owner's mobile (listing-portal route); no signal, low-price operation."
+   },
+   {
+    "business": "Perfect Shine Car Detailing Center, Surat",
+    "reason": "No phone, services not confirmed, rating 4.4 below the bar, no signal."
+   },
+   {
+    "business": "The Coating Guru, God of Ceramic, Detailing Street Vadodara, Autoism, Motorus, Detailing Devils and similar brands (Garware and town collectors)",
+    "reason": "Multi-outlet brands or franchises, already excluded by the collectors."
+   },
+   {
+    "business": "GT Cars Care, MK29 Detailing, Detailing Dude (Surat), NextGen Autocare (Ahmedabad)",
+    "reason": "Working booking form already in place, so no gap."
+   },
+   {
+    "business": "S M Trade Co, Futkar Sales, Global Auto Traders (Garware dealer rows) and the Garware 'Test' placeholder row",
+    "reason": "Dealers sharing one number, not detailing studios; placeholder row is not a business."
+   },
+   {
+    "business": "Patel Autocare Services Gandhinagar, Dharti Auto Accessories and Ceramic Coating, Supercars Wash & Repair, Royal Detailing Studio, Khan Car Decor, Brotomotiv, JJ Details",
+    "reason": "Garage, accessory shop, wash point, or outside Gujarat."
+   }
+  ],
+  "per_source": [
+   {
+    "source_id": "garware-studio-locator",
+    "found": 4,
+    "usable": 0,
+    "note": "Only Ahmedabad and Vadodara locator pages carry studios; the rest return 404. All four rows are fit_only with undated pages, and three are dropped as already collected or aliases of verified studios. Autotouch dropped as multi-outlet."
+   },
+   {
+    "source_id": "town-web-search-own-sites",
+    "found": 5,
+    "usable": 0,
+    "note": "Best rows (Autokrafte, Sunshine Autochem) had real opened signals but are flagged as already collected in the need analysis; the other three are Garware duplicates with no signal. Search found almost nothing for Kadi, Visnagar, Patan, Palanpur, Nadiad or Gandhinagar."
+   },
+   {
+    "source_id": "carchhe-roster",
+    "found": 12,
+    "usable": 0,
+    "note": "All rows fit_only. carchhe shows no review dates, reply status, website button or ads, and its template 'no website' field may be auto-generated from Maps, so it proves no gap. Still gives a published mobile for each row."
+   },
+   {
+    "source_id": "studio-footprint-audit",
+    "found": 10,
+    "usable": 2,
+    "note": "Only source with opened gap signals: Kesari Custom (Grexa template, no booking form) and Quartz Detailing Studio (dead own domain). Shivam Automall had a real signal but is an accessory store."
+   }
+  ],
+  "cross_matches": [
+   "Coating Buddies (carchhe-roster, studio-footprint-audit)",
+   "Incredible Car Detailing (carchhe-roster, studio-footprint-audit)",
+   "The Gunman Car (carchhe-roster, studio-footprint-audit)",
+   "MotorX Car Care (carchhe-roster, studio-footprint-audit)",
+   "Dropped but seen by 2 collectors: Dignity Care and Detailing Culture (garware-studio-locator, town-web-search-own-sites). Note that all four kept cross-matches come from the same underlying directory (carchhe), so they are weak cross-checks, not independent confirmation."
+  ],
+  "usable_count": 2,
+  "tier_counts": {
+   "verified": 1,
+   "signal_only": 1,
+   "fit_only": 11,
+   "unverified": 0
+  },
+  "enough": false,
+  "replan_advice": "Only 2 usable leads (Kesari Custom, Quartz Detailing Studio), below the 5 needed. Cause: the free tools cannot see the signals that matter (Maps website button, newest 3 reviews and replies, ad status). carchhe and Garware pages give only name, rating and phone, so 11 rows stay fit_only. Next round: (1) Search for the gap directly instead of the directory. Run WebSearch and WebFetch on 'grexa.site car detailing', 'grexa.site ceramic coating', 'grexa.site PPF' with town names, and also linktr.ee, business.site, wixsite, godaddysites, mystrikingly and 'site.google.com' plus detailing. The Grexa template search was the only query that produced opened-page signals. Open the Garware 'Test' placeholder-style neighbours and Kesari-type pages one by one. (2) DNS and fetch check the websites of roster studios found in directories, to find dead or parked domains like Quartz (a cheap and fully free test). Candidates: Detailing Dude-type brands with a domain listed on Justdial/Sulekha snippets. (3) Check the two dropped studios with real signals, Autokrafte (no booking form, site poorly kept) and Sunshine Autochem (grexa template, active blog), against the real lead database. If they are not in it, restore them as signal_only, which would bring usable to 4. (4) Widen geography to Surat, Rajkot, Vadodara, Anand and Nadiad using Grexa and free-template queries, since Kadi, Visnagar, Patan, Palanpur and Gandhinagar returned almost nothing from free search. (5) Ask the owner whether a small, capped Apify run (Google Maps scraper with website, reviews and review-reply fields) is allowed later, because only Maps data can confirm slots a, b and c. Without it, expect fit_only rows. (6) Treat carchhe as a phone and name roster only; do not count its 'no website' field as a signal."
+ },
+ "est_apify_spend_usd": 0,
+ "note": "Candidates are CLAIMS with evidence. Run lead-researcher on them before anything is added to a campaign."
+}

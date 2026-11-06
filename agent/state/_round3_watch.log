@@ -1,0 +1,26 @@
+watching 3 approvals: CWUBS(email shyamal), 6ADA4(email vistara), 3MZXZ(email namasya)
+[10:43:48] email shyamal APPROVED -> sending
+    exit=2
+== send_email [LIVE]
+   to:      sh***@gmail.com   lead: shyamal
+   subject: Automatic WhatsApp replies for Shyamal Park Lane enquiries
+   caps:    email 0/20, total 0/40 used today
+BLOCKED:
+  - email image cannot be loaded (URLError): https://www.ivinfotech.com/assets/campaign/shyamal-park-lane-k4m8vz/email_banner.jpg - deploy the pages package first
+[10:45:35] email vistara APPROVED -> sending
+    exit=0
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+IV Infotech is an independent company, not affiliated with Vistara Group, W
+   approval: 6ADA4 verified and used up
+SENT  id=01a16209-47bd-78d7-ad9e-b457df660d7a
+[10:47:10] email namasya APPROVED -> sending
+    exit=0
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+IV Infotech is an independent company, not affiliated with Shree Namasya, WhatsApp or Me
+   approval: 3MZXZ verified and used up
+SENT  id=01a1620a-bb11-7318-8807-55c01081f317
+watcher finished

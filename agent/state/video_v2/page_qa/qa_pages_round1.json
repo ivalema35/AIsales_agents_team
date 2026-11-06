@@ -1,0 +1,619 @@
+{
+  "summary": "Three independent reviewers judge the four new lead-specific landing pages (mobile + desktop sheets): UI/UX, claims/compliance, lead persona; one synthesis of fixes. Read-only.",
+  "agentCount": 4,
+  "logs": [
+    "Reviews: uiux=6, claims=6, lead=6"
+  ],
+  "result": {
+    "reviews": [
+      {
+        "key": "uiux",
+        "score_out_of_10": 6,
+        "verdict": "A calm, consistent and legible template with one clear action, but it is not yet a good phone-first conversion page. On a 390x844 phone the first screen shows the lead name, a four-line headline, a four-line paragraph and only the top half of a very tall video. The green button first appears roughly 1.5 screens down, and the sticky bar is also absent on load. The IV Infotech chrome (floating nav, then a footer about two screens long) is louder than the lead's own brand, whose logo chip is tiny and, for three of four leads, clipped or illegible. Contrast mostly passes; I sampled pixels and the weak spots are the BLJ and Namasya active tabs and the Vistara badge. The 'three steps' section hides steps 2 and 3 behind tabs and opens on the emptiest step. Fix the first screen, the logo chips, the IV chrome and the stepper, and this goes from 6 to about 8. Limit of this review: the desktop sheets show only three viewport shots, so the 'What we noticed' section is not visible on desktop and I could not judge it there.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "where": "Mobile first screen (all four pages, tile 1)",
+            "problem": "No button on the first screen. At 390x844 the stack is: floating IV nav (to about y=78), lead chip (about 96-140), a 4-line h1 (about 150-230), a 3-4 line paragraph (about 250-330), then a 9:16 video that starts at about y=520 and is cut at the fold (play button at about y=784). The green 'Yes, send the demo' button sits roughly 1,200px down, about 1.5 screens. The sticky bar is also not shown on load (first appears in tile 3). The page's single action is invisible at first glance.",
+            "fix": "1) Compress the hero on phones: @media (max-width:640px){ .hero{padding-top:76px} .hero h1{font-size:25px;line-height:1.15} .hero .sub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15px} .hero .hero-note{display:none} .hero-video{height:min(46svh,400px);width:auto;aspect-ratio:9/16;margin:16px auto 0} } (a centred phone-shaped card instead of a full-width 590px-tall one). 2) Show the sticky bar from load: use an IntersectionObserver on the hero button and set sticky.hidden = entry.isIntersecting, with no scrollY>0 condition, so the sticky is the first-screen button. 3) Add padding-bottom: calc(10px + env(safe-area-inset-bottom)) to the sticky and body{padding-bottom:84px} so nothing is hidden under it. Target on first screen: name/logo, headline, whole video with play button, and the green button."
+          },
+          {
+            "severity": "blocker",
+            "where": "Lead logo chip (hero, all pages); measured on the mobile sheet",
+            "problem": "The logo tile reads as a decorative element and the logos are mishandled. Shyamal: the 'shyamal' wordmark is cropped off the bottom (object-fit: cover). Namasya: the wordmark touches and clips both edges of the square. Vistara: readable mark, but 'VISTARA GROUP' is squeezed to the tile edges and too small. BLJ: a low-resolution grey-on-sand logo that is illegible and looks like a blurry beige blob. The dark tiles for Shyamal, Vistara and Namasya also match the hero background so the tile border disappears. The chip is only about 36px (mobile) / 30px (desktop), the weakest element on a page whose hook is 'made for you'. Showing a clipped version of their own logo to the developer looks careless.",
+            "fix": "Use a light tile and never crop: .lead-logo{min-width:48px;height:48px;max-width:120px;border-radius:12px;background:#fff;display:grid;place-items:center;padding:6px;box-shadow:0 0 0 1px rgba(255,255,255,.25)} .lead-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}. Wordmark logos (Shyamal, Vistara, Namasya) then get a wide tile, not a square. For BLJ get a higher-resolution copy from a public source of theirs (e.g. the Silver Square ad page profile image) and do not upscale it; if none exists, drop the chip and show the name only, rather than a typographic fake logo. Also raise the name to 16px/600 and the 'A concept for' label to 12px so the lead identity is visibly the first thing on the page."
+          },
+          {
+            "severity": "blocker",
+            "where": "Hero microcopy under the buttons (all pages): 'Opens WhatsApp with a message ready. Just press Send. Free. No call unless you ask.'",
+            "problem": "The campaign rule allows 'free' only in the FAQ cost answer. It appears in the hero, directly under the primary button.",
+            "fix": "Change to 'Opens WhatsApp with a message ready. Just press Send. No call unless you ask.' Keep any 'free' wording only in the FAQ 'What does it cost?' answer."
+          },
+          {
+            "severity": "important",
+            "where": "Floating IV Infotech navbar and the IV footer (all pages, mobile and desktop)",
+            "problem": "IV chrome outweighs the lead's brand. The nav pill logo is about 195x48px real against a 36px lead logo, the nav stays fixed (about 70px of 844) and adds a hamburger with the whole site menu plus an 'Ask IV' chatbot icon, which are exits and a second action. With the sticky bar that is about 140px (17%) of a phone screen as permanent chrome. The footer (Quick Links, Services, address, phone, a bright blue 'GET A QUOTE' button) is about 2 screens on mobile, about 25% of the page, and its blue CTA competes with the one green action. It also shows a +91 number; confirm it is the company line, not a personal one.",
+            "fix": "On these pages only (body.lead-page): at max-width 640px make the nav position:absolute (scrolls away), logo height 28px, pill height 48px, hide .ask-iv and the hamburger (or keep just the logo). Replace the full footer with a compact one: IV Infotech logo, 'info@ivinfotech.com', Privacy / Terms, (c) line; remove Quick Links, Services, the phone line and the GET A QUOTE button. That alone cuts the page by about 1.5 screens."
+          },
+          {
+            "severity": "important",
+            "where": "'See it in three taps' section (mobile tiles 3-4, desktop shot 2)",
+            "problem": "The requested 'three numbered steps' are hidden behind tabs, and it opens on step 1, the emptiest one: a single chat bubble inside a tall beige card with about 150px of empty space (the card is sized for the longest step). The caption repeats itself: heading 'A buyer taps your ad and writes at night' directly above 'A buyer taps the Send WhatsApp message button on your Diwali ad and writes to you.' A skimming visitor never sees the value (brochure, three questions, site-visit time, team list). On desktop the 336px chat card plus caption sits left-heavy in a 760px column with large empty margins.",
+            "fix": "Show the value moment first and make steps visible. Mobile: keep the 3 tabs but auto-advance 1>2>3 every about 3s once the section is 60% in view (IntersectionObserver), stop on the first tap; set .chat{min-height:<tallest step>} via JS measurement so the card does not jump, or open on step 2. Delete one of the two caption lines (keep the h3 only, or the paragraph only). Desktop (>=900px): two columns, left a vertical list of 3 numbered steps with one short line each (all visible, active one highlighted and synced with the chat), right the chat card at about 360px wide. This is the Mobbin 'three numbered steps' pattern."
+          },
+          {
+            "severity": "important",
+            "where": "Contrast of accent colours on the cream sections (measured from the screenshots)",
+            "problem": "Hero accent lines pass everywhere (gold #d6b792 on navy 7.7:1, BLJ gold 8.2:1, Namasya copper 9.9:1, Vistara orange #ff6133 on navy 5.2:1, about 4.6:1 at the lighter bottom of the gradient). The green button is #0a7a6b with white at 5.24:1, fine. Failures are in the cream sections: BLJ active tab white on #a87a2e is 3.83:1, Namasya white on #b8693a is 4.10:1 (small 12-13px bold labels need 4.5). The Vistara 'EXAMPLE' badge is dark #211e35 on #e45937 at 4.44:1 at about 10px. Vistara's active tab puts an orange number disc (#ea5c35) on blue (#235bdd), 1.68:1, which vibrates.",
+            "fix": "Split each theme into --accent-text (for text on dark) and --accent-ui (for fills carrying white text), with --accent-ui at least 4.5:1 against #fff: BLJ --accent-ui:#8a6420 (5.35:1), Namasya --accent-ui:#a5562a (5.30:1), Vistara badge background #c2410c with white text (5.18:1), or keep #e45937 with white text only at 14px/700+. Make the active tab's number disc white with an accent-coloured digit on every theme. Keep the existing hero accents."
+          },
+          {
+            "severity": "important",
+            "where": "Independence/opt-out block under the closing CTA (mobile tile 6, desktop shot 3)",
+            "problem": "A single dense paragraph of about 150 words at about 13px (second paragraph about 60 more), run together without breaks. On desktop it spans about 1060px (the line 'logo are shown only to make this page about your project...' is about 170 characters), wider than the 760px FAQ column and far beyond a readable line length. The 'why you are seeing this' message is told three times (hero note, 'What we noticed' intro, this block). The disclosure is needed, but as a wall it is not 'easy' for STOP/opt-out.",
+            "fix": "Show three short lines with bold lead-ins: 'Why you got this link', 'Not affiliated with X, WhatsApp or Meta', 'Stop or remove: reply STOP or email info@ivinfotech.com'. Put the rest (data use, counting opens, samples) inside <details><summary>More details</summary>. Constrain: .legal{max-width:62ch;margin-inline:auto;font-size:13px;line-height:1.55}. Remove the 'From IV Infotech. We wrote to you because...' line from the hero, since the same message follows in the legal block."
+          },
+          {
+            "severity": "important",
+            "where": "Hero copy and buttons (mobile)",
+            "problem": "Text-heavy for a phone: a 4-line h1 ('A WhatsApp enquiry for Shyamal Park Lane can get a first reply in about a minute.') and a 3-4 line paragraph that repeats the h1 and the first 'What we noticed' card ('has a Send WhatsApp message button'). Two full-width, equal-height stacked buttons ('Yes, send the demo' plus an outlined 'See it in three taps') split attention against the ONE-action brief. 'Send WhatsApp message button' appears about 7 times on the page.",
+            "fix": "H1: 'A WhatsApp first reply for every {Name} enquiry' is a stronger claim than allowed, so use the soft form 'Shyamal Park Lane enquiries can get a WhatsApp first reply in about a minute' (3 lines at 25px). Paragraph: one line, 'Your Diwali ad has a Send WhatsApp message button. Here is how each message can get an automatic first reply.' (clamp to 2 lines). Turn the secondary button into a small text link, 'See how it works', 14px underlined, or hide it at <=640px."
+          },
+          {
+            "severity": "important",
+            "where": "'What we noticed' cards (mobile tile 2-3)",
+            "problem": "Every row uses an identical white star in a coloured square. A star reads as a rating/review/highlight and carries no information, which is risky next to a factual, no-judgement section. Each claim is bold 14-15px with a 11px grey source line; the grey source text on the darker sand band is tight on contrast.",
+            "fix": "Use small 20px stroke icons by type (megaphone for Ad Library rows, globe for website, phone for the call ad) in the theme's --accent-ui, or numbered markers 1/2/3. Make the claim 15px/500 (not bold) and the source line 12px #5b6470 on the sand band (check at least 4.5:1)."
+          },
+          {
+            "severity": "nice",
+            "where": "Sticky bottom bar and closing CTA",
+            "problem": "The sticky bar behaves well otherwise: it hides when the hero button or the closing CTA is on screen, uses the same green, and sits on a solid white bar, so nothing bleeds through. But the white bar (about 72px) plus the floating nav is heavy, and the closing CTA is a white pill with green text, a different button from the solid-green primary elsewhere.",
+            "fix": "Replace the solid white sticky panel with a 16px gradient fade to the page background and a 12px side gutter. Make the closing CTA the same solid green (#0a7a6b) button, with a white ring 2px only if it needs lift on the dark band."
+          },
+          {
+            "severity": "nice",
+            "where": "Per-lead theming (all pages)",
+            "problem": "The four heroes are all very dark (navy #102a43, navy #162342, brown-charcoal #342f2b, near-black #181c24), so on a phone Shyamal and Vistara differ only by one accent phrase and Namasya looks like a darker Shyamal. Below the hero everything is the same cream, so the 'made for you' feel is mostly the name and a tab colour.",
+            "fix": "Tint the cream section background very lightly per lead (a 3-4% mix of the theme colour, e.g. Shyamal #f7f7fa, Vistara #f6f7fb, BLJ #f8f5ee, Namasya #f8f4f0), use the accent on the number discs and a 3px top border on the notice cards, and let the hero gradient end with a visible theme-colour glow. Do not add more colours; calm is a strength."
+          },
+          {
+            "severity": "nice",
+            "where": "Desktop layout",
+            "problem": "The hero is good: copy left, vertical video right, name, headline, both buttons, microcopy and video all fit in one 1280x800 viewport. Below it the container widths drift: the hero is about 1030px, the FAQ about 760px, the legal paragraph about 1060px and the footer about 1200px. The video card is the smallest hero element at about 340px wide.",
+            "fix": "Standardise on two widths: .wrap{max-width:1040px} for hero and the steps section, .narrow{max-width:760px} for FAQ and the legal block. Increase the hero video to about 380px wide and move the lead chip into the same row as a 'Shyamal Park Lane . Bhayli, Vadodara' line at 17px. Capture the 'What we noticed' section on desktop and check card width (aim 3 cards in a row at >=900px)."
+          },
+          {
+            "severity": "nice",
+            "where": "Video play affordance",
+            "problem": "The 72-80px white play button is good (big, high-contrast), but it sits dead centre over the video's burned-in title text ('Shyam[play]k Lane'). The video is a vertical 9:16 card; on phones it consumes about 70% of the viewport height.",
+            "fix": "In the final videos keep the title in the top third and the middle clear. In the card, set the poster with object-fit:cover; object-position:50% 30%, and on mobile open the video in a full-screen dialog or requestFullscreen() on play, so the card can stay short on the page."
+          }
+        ],
+        "what_works": [
+          "One action only, consistently styled: the green #0a7a6b 'Yes, send the demo' button has 5.24:1 with white text and is repeated in the hero, the sticky bar and the closing CTA. The sticky hides when the hero or closing button is visible.",
+          "Hero text contrast passes on all four themes: white headline on dark ground is 13-17:1, gold on navy 7.7:1, BLJ gold on charcoal 8.2:1, Namasya copper on near-black 9.9:1, and Vistara orange on navy 5.2:1. Even the small grey disclosure lines under the video are above 6:1.",
+          "Calm and uncluttered visual language: rounded white cards on cream, one accent per page, generous gutters and tap targets about 60px tall in the FAQ. Nothing shouts. FAQ text is about 18:1 and the collapsed accordion keeps the page short.",
+          "The honesty system is visible without hurting the layout: 'An IV Infotech idea', AI-voice and not-affiliated labels sit near the video; the chat card carries an 'EXAMPLE' pill plus 'Example chat'; the fact cards cite 'Meta Ad Library, checked 21 Oct 2026' and the section ends with 'We only describe what is public...'.",
+          "The desktop hero is well balanced and fits a 1280x800 viewport: copy plus two buttons left, vertical video card right with a large play button.",
+          "The how-it-works chat card (WhatsApp-style header, green bubble, timestamp, 'EXAMPLE' pill) and the segmented tab control are cleanly styled and use the lead's accent colour for the active state, which gives each page a recognisable identity at low cost."
+        ],
+        "per_lead_notes": "Shyamal (navy #102a43 / gold #d6b792): best-looking theme and the most premium. Gold on navy is 7.7:1, the navy active tab and navy fact icons feel cohesive, and the tan 'EXAMPLE' badge is fine. Problems: the logo chip crops the bottom of the 'shyamal' wordmark (object-fit: cover) and the chip blends into the navy hero; fix with a white contain tile (see logo item). The fact cards are the longest of the four (Diwali ad with '3 and 4 BHK, first 5 bookings', then the button on one of three versions, then the website), so keep the sentences short; if the '3 and 4 BHK / first 5 bookings' line comes from the ad itself, label it as their ad wording, since unit counts are on the do-not-claim list.\n\nVistara (navy #162342 / orange #ff6133 / blue #235bdd): orange headline accent is fine (5.2:1, about 4.6:1 at the lighter bottom of the gradient). The weakest accent system: the blue active tab with an orange number disc (1.68:1) looks jarring, and the 'EXAMPLE' badge is dark on orange at 4.44:1. Blue also happens to match IV Infotech's own blue (GET A QUOTE, Ask IV), so the page reads as IV-themed, not Vistara-themed; use the blue sparingly (tab only) and make the orange the single accent. Logo chip is the best of the four (white mark on dark), but 'VISTARA GROUP' is too small at 36px; give it a wide tile.\n\nBLJ Infra / Silver Square (charcoal-brown #342f2b / gold #edc773, bronze #a87a2e): warm and premium on the hero (gold 8.2:1). The logo is the biggest problem across the set: a low-resolution beige-on-sand blob inside a sand square that is unreadable and muddy on the dark hero. The active tab (white on #a87a2e, 3.83:1) fails; darken to #8a6420 or use dark text on gold (4.46:1 is still weak, so darken instead). No website means only Ad Library facts (three ads from 12 Oct, two WhatsApp-button ads, the Gujarati sample-flat call ad). That is correct, but the section is thin; fine, do not pad it.\n\nShree Namasya (near-black #181c24 / copper #feb679, fill #b8693a): strong hero contrast (9.9:1) and the copper accent looks elegant, though it is nearly indistinguishable from the Shyamal hero on a phone; lean on the copper tint elsewhere. Active tab white on #b8693a is 4.10:1; use #a5562a (5.30:1). The logo chip crops the wordmark at both edges ('sri namasya' touches the square) and is low-resolution; give it a wider light tile. The facts (six ads from 28 Sep, 8 Oct, 17 Oct; four with the button; Register Your Interest form with a WhatsApp number field) are the richest and read well, but the third fact repeats the paragraph above it.\n\nCapture limits: each desktop sheet is only three viewport shots, so 'What we noticed' and the tab row are not visible on desktop; I did not judge those there. The placeholder Shyamal video on all four pages was ignored as instructed, including its burned-in 'Not affiliated with Shyamal Group' overlay on the other three pages.\""
+      },
+      {
+        "key": "claims",
+        "score_out_of_10": 6,
+        "verdict": "Not ready to send yet. The \"What we noticed\" counts and dates match the verified facts on all four pages, and the footer carries a real independence and opt-out statement. Three things must be fixed first. The site footer shows +91 9924426361, which leads.json calls the boss's personal number. The copy keeps saying \"your ads\" and \"your page\" although who owns the page is unverified. Shyamal's card claims \"no WhatsApp link or chat\", and \"chat\" was never verified. After that come a dozen smaller fixes: the night-time scenario implying a problem, mock details that outrun the verified facts, disclosure gaps and a broken from-line on BLJ. One limit on this review: every FAQ answer and chat tab 2/3 is collapsed in all eight screenshots. I read that hidden text from agent/pages/leads.json, template_v2/index.html and build_pages.py. The screenshots also do not match what those files would build today (see problem 6).",
+        "problems": [
+          {
+            "severity": "blocker",
+            "where": "All four pages, site footer under the page, CONNECT block (visible in every mobile and desktop sheet)",
+            "problem": "The IV Infotech site footer prints \"PHONE +91 9924426361\". agent/pages/leads.json (_flags_note) says 9924426361 is the boss's PERSONAL number, never to be used, and the build refuses it. The guard in build_pages.fill() only scans the page body. The site footer is added by Jinja afterwards, so the guard never sees it. This breaks the rule \"no personal phone numbers\" on a page whose one action is the demo WhatsApp number. The footer also adds a competing \"GET A QUOTE\" button and a full services menu.",
+            "fix": "On campaign pages, use a minimal footer with address and info@ivinfotech.com only, with no phone and no GET A QUOTE. Alternatively the owner confirms in writing that this public site number is acceptable. Either way, run the personal-number check on the final rendered HTML, footer included, so the guard cannot give false assurance."
+          },
+          {
+            "severity": "blocker",
+            "where": "All four hero hook lines, noticed cards, step-1 caption, from-line and footer. Examples: Shyamal \"Your Diwali ad for Shyamal Park Lane has a Send WhatsApp message button on one of its versions\"; Vistara \"Two of your Anahata Florenza ads have a Send WhatsApp message button\"; BLJ \"Two of your Silver Square ads...\"; Namasya \"Four of your Shree Namasya ads...\" and \"Six live ads on your Shree Namasya page\"; every page \"A buyer taps your ad and writes at night\"",
+            "problem": "\"Your ads\" and especially \"your ... page\" assert ownership of the Meta page and ads. Who owns the page is explicitly NOT verified. Meta Ad Library shows the advertiser page. That page can be run by an agency or channel partner, as with Space Age Consultants in wave 2. The footer \"its Silver Square ads\" and the from-lines \"Shyamal Park Lane runs a Diwali ad\" / \"Vistara Group runs Anahata Florenza ads\" imply the same.",
+            "fix": "Use ad-neutral wording. Shyamal hook: \"A Diwali ad for Shyamal Park Lane has a Send WhatsApp message button on one of its versions.\" Vistara: \"Two of the Anahata Florenza ads on Meta have a Send WhatsApp message button.\" BLJ: \"Two of the Silver Square ads on Meta have...\" Namasya: \"Four of the Shree Namasya ads on Meta have...\" and card \"Six live ads on the Shree Namasya page on Meta\". Step 1: \"A buyer taps the Send WhatsApp message button on a Diwali ad and writes.\" From-line: \"We wrote to you because Meta Ad Library shows a Diwali ad for Shyamal Park Lane with a Send WhatsApp message button.\" Footer: \"after seeing that one version of a Diwali ad for Shyamal Park Lane has a Send WhatsApp message button\". \"Your website\" is fine only because the sites were verified as their own."
+          },
+          {
+            "severity": "blocker",
+            "where": "Shyamal, What we noticed, third card: \"Your website lists phone numbers and an email for enquiries; we did not see a WhatsApp link or chat there\"",
+            "problem": "The verified fact is \"website lists phones and an email, no WhatsApp link seen\". \"or chat\" is an unverified absence claim. A chat widget loaded by script is easy to miss, and a chat on their site would embarrass us in front of the director. The card also stands next to a pitch for WhatsApp, so it reads as a gap we spotted.",
+            "fix": "\"The Shyamal Group website lists phone numbers and an email address for enquiries; we did not see a WhatsApp link there.\" Re-check in a real browser before sending, or drop the absence clause and keep only the first half."
+          },
+          {
+            "severity": "important",
+            "where": "All pages, step 1 heading \"A buyer taps your ad and writes at night\", timestamp \"10:47 PM\", step 3 \"By morning, your team sees who asked\"",
+            "problem": "The only scenario is a night-time enquiry that the team sees \"by morning\". That implies enquiries go unanswered overnight. Slow or missed replies were NOT observed or verified, and the rule is never to imply the lead's team fails. The card disclaimer does not cancel what the example insinuates.",
+            "fix": "Step 1 heading: \"A buyer taps the ad and writes, at any hour\". Use a daytime example timestamp such as \"2:15 PM\". Step 3 heading: \"Your team sees every enquiry in one list\" and body \"Buyers who picked a visit time are easy to spot. Your team can take over any chat whenever it wants.\""
+          },
+          {
+            "severity": "important",
+            "where": "BLJ (and Namasya, per current leads.json) hero from-line: \"We wrote to you because Silver Square runs Silver Square ads with a Send WhatsApp message button.\" Namasya sheet: \"Shree Namasya runs Shree Namasya ads\"",
+            "problem": "The tautology (project runs project ads) looks like a template bug and would embarrass us. It also treats a project name as the advertiser. Current leads.json would instead render \"BLJ Infra LLP runs Silver Square ads...\", which asserts the company runs the ads.",
+            "fix": "\"From IV Infotech. We wrote to you because Silver Square ads on Meta include a Send WhatsApp message button.\" Same pattern for Namasya: \"...because Shree Namasya ads on Meta include a Send WhatsApp message button.\""
+          },
+          {
+            "severity": "important",
+            "where": "Process: all eight screenshots vs agent/pages/template_v2/index.html (line 62 uses {{BRAND}}) and leads.json",
+            "problem": "The screenshots show \"Shyamal Park Lane runs a Diwali ad\", \"Silver Square runs Silver Square ads\" and \"Shree Namasya runs Shree Namasya ads\". Current files would render \"Shyamal Group runs a Diwali ad...\", \"BLJ Infra LLP runs Silver Square ads...\" and \"Shree Namasya runs ads...\". What was reviewed is not what the current build produces, so some fixes may already be in the files and others may be missing. The FAQ answers and tabs 2 and 3 were never captured in any shot.",
+            "fix": "Rebuild all four, then re-shoot with every FAQ item open and all three tabs. Re-run this review on the new shots."
+          },
+          {
+            "severity": "important",
+            "where": "BLJ and Namasya step-3 example list (not visible in the screenshots; from leads.json u1/u2): \"Example buyer A / 3 BHK · Sat 11:00 AM\", \"Example buyer B / 3 BHK · Sat 4:00 PM\". Vistara: \"Villa\" in both rows",
+            "problem": "\"3 BHK\" states a flat type for Silver Square and for Shree Namasya. Unit types and counts are not verified for either. Only Shyamal's \"3 and 4 BHK\" is in the ad text, and Vistara's \"villas\" is in the brief. Two identical rows (\"3 BHK\" / \"3 BHK\", \"Villa\" / \"Villa\") also look sloppy.",
+            "fix": "Use neutral example values for BLJ and Namasya such as \"Size noted\" and \"Size asked\". For Vistara use \"Villa size asked\" and \"Villa size noted\". Keep the question pill \"Preferred size?\"."
+          },
+          {
+            "severity": "important",
+            "where": "All pages: the independence line is only at the very bottom (\"IV Infotech is an independent company. This page is not from, or endorsed by, Shyamal Group, WhatsApp or Meta.\"). The hero shows their logo, their colours and their project name with no such line next to it",
+            "problem": "A page in the lead's colours, with their logo first and their name as the whole headline, can read as theirs or as endorsed. The only independence text above the footer is burned into the placeholder video. The footer sits below the FAQ and CTA in small type. This is the biggest endorsement risk.",
+            "fix": "Add one line under the hero button or in the from-line: \"From IV Infotech, an independent company in Mehsana. Not affiliated with or endorsed by Shyamal Group, WhatsApp or Meta.\" Keep \"A concept for\"."
+          },
+          {
+            "severity": "important",
+            "where": "All pages, hero fine line: \"Opens WhatsApp with a message ready. Just press Send. Free. No call unless you ask.\"",
+            "problem": "The rule limits \"free\" to the FAQ cost answer. A bare \"Free.\" under the button is ambiguous (free what?) and is exactly the kind of word that trips filters and distrust. The owner's demo_free decision covers the demo, but not a stray fragment.",
+            "fix": "\"Opens WhatsApp with a message ready. Just press Send. No call unless you ask.\" Leave \"The demo is free.\" only in the FAQ cost answer."
+          },
+          {
+            "severity": "important",
+            "where": "All pages, footer: \"We count how often this page and its video are opened.\"",
+            "problem": "This understates the tracking. The site template loads Google Analytics and Tag Manager (components/tracking_head.html: G-GHJZ3SP69R, GTM-N7F9VWCB). page.js also records video plays, 25/50/75% watched, tab taps, FAQ opens and button taps. The page loads Google Fonts, jsDelivr and unpkg too. A third-party tracker in a page sent to a named business, with a footer that mentions only counting opens, is an honesty gap.",
+            "fix": "Either remove GA/GTM from campaign pages, or say: \"We use Google Analytics and our own counter to see page opens, video plays and button taps.\" Do not claim \"no cookies\" while GTM is present."
+          },
+          {
+            "severity": "important",
+            "where": "All pages, FAQ \"What happens when I tap the button?\": \"...and we reply with a short sample of this chat... We keep your number and message only to send the demo.\" Footer: \"only to send you this demo and to reply to you\"",
+            "problem": "\"We reply\" implies a person. If the demo number is run by the AI sales agent, the page must say the demo reply is automatic. The data-use sentence is narrower than what actually happens if the sales agent follows up. The two sentences (FAQ and footer) also differ.",
+            "fix": "\"Press Send, and our automatic assistant replies with a short sample of this chat for Shyamal Park Lane, from our own number.\" Align the data-use wording with real follow-up behaviour, for example \"We use your number to send the demo, reply to you and, if you say yes, follow up once. Reply STOP any time.\""
+          },
+          {
+            "severity": "important",
+            "where": "All pages, step 2 text and FAQ: \"Buyers are told the first reply is automatic. They can ask for a person...\"",
+            "problem": "The example chat in step 2 has no such disclosure. The first bubble is \"Hello! Thank you for your interest in Shyamal Park Lane.\", which reads as sent by the developer. The mock shows no \"automatic reply\" line or option to ask for a person. The copy promises a behaviour the mock does not show, and it needs to match what the real flow does.",
+            "fix": "Make the first mock bubble \"Hello! This is an automatic reply for Shyamal Park Lane. Reply 'person' any time to talk to the team.\" Confirm the real flow does exactly that, otherwise soften the FAQ to what is true."
+          },
+          {
+            "severity": "important",
+            "where": "All pages: H1 \"can get a first reply in about a minute\" (accent-coloured), hook \"each message can get an automatic first reply\", step-2 heading \"An automatic first reply in about a minute\"",
+            "problem": "\"About a minute\" is allowed, but it is the strongest claim, it is highlighted and it is repeated three times. \"Each message\" is universal. The step-2 heading drops the \"can\". Nothing on the page says it was measured on the demo number.",
+            "fix": "Time the real demo number before send. Then write the hook as \"Here is how a message can get an automatic first reply.\" and step 2 as \"A first reply can arrive in about a minute\". Consider not colour-highlighting the time phrase."
+          },
+          {
+            "severity": "important",
+            "where": "Shyamal card 1: \"A Diwali ad for Shyamal Park Lane, Bhayli: 3 and 4 BHK, first 5 bookings\"; BLJ card 3: \"invites buyers to call a sales number for a visit\"; BLJ area line \"Near 150 Ft Ring Road, Rajkot\"",
+            "problem": "\"3 and 4 BHK, first 5 bookings\", \"for a visit\" and the BLJ road line are not in the verified-facts list supplied. Quoting their offer back is risky if it was misread or has ended. The verified BLJ fact is only \"invites a call to a sales number\".",
+            "fix": "If the ad text confirms them, keep them. If not: \"A Diwali ad for Shyamal Park Lane, Bhayli\" and \"A Gujarati sample-flat ad invites buyers to call a sales number\", and use \"Silver Square, Rajkot\" for the area line."
+          },
+          {
+            "severity": "nice",
+            "where": "All pages, noticed band: \"We only describe what is public. We have not seen how your team replies to enquiries, so nothing here is a judgement of how you handle them.\"",
+            "problem": "It is protective, but it plants exactly the doubt we want to avoid (how your team replies) and repeats \"your team\".",
+            "fix": "\"These are public details only (Meta Ad Library and the website).\""
+          },
+          {
+            "severity": "nice",
+            "where": "All pages, FAQ \"Which WhatsApp number does it use?\": \"Normally the WhatsApp number you already publish.\"",
+            "problem": "On Shyamal our own card says we did not see a WhatsApp link, and BLJ has no website. \"Already publish\" is contradicted or unsupported there.",
+            "fix": "\"Normally the WhatsApp number your ads already use. We check this with you first, and nothing is switched on without your approval. For the demo we use our own number, not yours.\""
+          },
+          {
+            "severity": "nice",
+            "where": "All pages, FAQ \"Doesn't WhatsApp already have an auto-reply?\": \"...shows your team who is ready.\"",
+            "problem": "\"Who is ready\" implies buyer readiness scoring that we did not claim elsewhere.",
+            "fix": "\"...and lists who picked a visit time for your team.\""
+          },
+          {
+            "severity": "nice",
+            "where": "All pages, footer: \"We wrote to a business contact published for Shyamal Park Lane (on its ads, website or public records)\"",
+            "problem": "The \"ads, website or public records\" list is generic. The lead's real question is how we got the number or address.",
+            "fix": "Name the actual source per lead, for example \"the contact page of shyamalgroup.co.in\", or for BLJ \"the sales number in its Silver Square ad\"."
+          },
+          {
+            "severity": "nice",
+            "where": "All pages, \"See it in three taps\" / \"Three quick questions\"",
+            "problem": "\"Three taps\" reads like a product-speed claim (three taps to do what?). It is only three tabs of the example.",
+            "fix": "\"See how it works in three steps\"."
+          },
+          {
+            "severity": "nice",
+            "where": "Logos: Vistara (logo_white.png), Namasya (logo.svg), BLJ (logo.jpg, no website)",
+            "problem": "The rule is \"as published by them\". A white or reversed version, or an SVG, may be our own recolour or redraw. BLJ has no site, so the source must be its Meta page.",
+            "fix": "Keep a source note (URL and date) for each logo. Use only their own published files, unrecoloured on a neutral tile."
+          },
+          {
+            "severity": "nice",
+            "where": "IV Infotech site navbar: the \"Ask IV\" bot button; site footer menus",
+            "problem": "A second AI chat entry on a claims-reviewed page lets the visitor ask about the lead's project, and it is an uncontrolled claims surface. It also dilutes the single action.",
+            "fix": "Hide \"Ask IV\" and the footer menus on campaign pages, or at least test that it will not talk about the lead."
+          }
+        ],
+        "what_works": [
+          "Every \"What we noticed\" count and date matches the verified facts. Shyamal: 3 versions started 16 Oct, one with the WhatsApp button, two with a Get quote form. Vistara: 8 live ads, oldest 18 Jun, 2 with the button. BLJ: 3 ads from 12 Oct, 2 with the button. Namasya: 6 ads from 28 Sep, 8 Oct and 17 Oct, 4 with the button. Each card carries a dated source line, and the website-based cards match too (Vistara's callback chat, Namasya's Register Your Interest form).",
+          "No prices, budget figures, unit counts or results appear on the visible pages. The budget brackets in leads.json are not rendered by the template. The \"no instant\", \"no invented numbers\" and soft-\"can\" rules are largely respected.",
+          "The mock phone carries an EXAMPLE badge. The chat header uses a generic icon, not the lead's logo. Buyers are \"Example buyer A/B/C\", the PDF chip says \"Example\" and the footer says \"Names, numbers and chats marked Example are samples\".",
+          "AI voice is disclosed under the video (\"The voice-over is AI-generated and every chat shown is an example\"), with the video tag \"An IV Infotech idea\".",
+          "The footer has a proper independence statement naming the brand, WhatsApp and Meta. It also has a takedown offer, STOP instructions in two channels, a \"we do not sell it\" line and IV Infotech's address, so the sender is identifiable. The page has noindex.",
+          "The page has one clear action (\"Yes, send the demo\"). The \"opens WhatsApp... Just press Send... no call unless you ask\" line explains the click, and the demo uses our own number, not the lead's.",
+          "No personal number appears in the page body, and the lead's own number is never used."
+        ],
+        "per_lead_notes": "Shyamal: Fix first the \\\"or chat\\\" absence claim, then the ownership wording (\\\"Your Diwali ad\\\", \\\"Shyamal Park Lane runs a Diwali ad\\\", current JSON \\\"Shyamal Group runs...\\\"). Verify \\\"3 and 4 BHK, first 5 bookings\\\" against the ad text. 3 and 4 BHK in the mock question \\\"3 or 4 BHK?\\\" is supported by the ad. This is the strongest-sourced page, but it is the only one with an absence claim.\nVistara: Facts match. The page headlines the project (Anahata Florenza) but the footer names Vistara Group, so say whose ads they are neutrally. Its own site already shows a call/WhatsApp number and a callback chat, so keep the tone \\\"can also get\\\", not a gap. The duplicate \\\"Villa\\\" example rows should be varied. Confirm the white logo is their own file.\nBLJ Infra LLP: The hero from-line \\\"Silver Square runs Silver Square ads\\\" must be corrected. \\\"BLJ Infra LLP\\\" appears only in the footer, so the page never says who the company is until the last screen. \\\"3 BHK\\\" rows are unverified. \\\"for a visit\\\" and \\\"Near 150 Ft Ring Road\\\" need source confirmation. There is no website, so the footer must state the real contact source, for example the sales number in the ad. The page must say it contacted the sales number published in the ad and nothing more.\nShree Namasya: \\\"Six live ads on your Shree Namasya page\\\" is the worst ownership phrasing of the four. The from-line \\\"Shree Namasya runs Shree Namasya ads\\\" is a template tautology in the screenshot. \\\"3 BHK\\\" rows are unverified. The contact-page card is fine and accurately worded.\nShip gates (not for this round): every page still shows Shyamal's logo, name and the line \\\"Not affiliated with Shyamal Group\\\" in the placeholder video, so the three other leads' pages must never go out until their own videos are swapped in. This was ignored as instructed. The real videos need the same checks: an independence line, no budget brackets from leads.json, a consistent length claim (page says \\\"About 40 seconds\\\", email text says \\\"under 40 seconds\\\"), and the AI-voice caption kept when the ElevenLabs voice is added. The three ElevenLabs mp3 files in the user message are for the video step and were not part of this review."
+      },
+      {
+        "key": "lead",
+        "score_out_of_10": 6,
+        "verdict": "Calm, honest and clearly about my project, so it will not offend anyone, but it is not yet persuasive. On a phone, the first screen has a headline and a video but no button. The tiny \"A concept for\" logo tile is the only thing that says the page is about me, and the big IV Infotech navbar and footer say it is about them. A stranger asks me to message an unknown number, and the page gives me no human, no proof and no description of what I will get back. Two copy slips (the \"Free.\" line and \"X runs X ads\") plus a few lines that sound like fault-finding (the \"did not see a WhatsApp link\" note and the night-time framing) need fixing before send. Conditional on a busy developer opening the link and reading about 10 seconds, with the correct per-lead video in place, I would tap about 8-14% of the time. The pages are good enough to send as a soft test once the blockers are fixed, but I would not expect more than a handful of taps from four leads.",
+        "problems": [
+          {
+            "severity": "blocker",
+            "where": "All four pages, microcopy under the primary button (hero, desktop and mobile): 'Opens WhatsApp with a message ready. Just press Send. Free. No call unless you ask.'",
+            "problem": "The word 'Free.' sits next to the main button. The campaign rule allows 'free' only in the FAQ cost answer. It also reads as a hook, and developers get a lot of 'free demo' spam.",
+            "fix": "Replace with 'Opens WhatsApp with a message ready. Just press Send. No call unless you ask.' Keep 'free' only in the 'What does it cost?' FAQ answer."
+          },
+          {
+            "severity": "blocker",
+            "where": "Mobile first screen on all four pages (frame 1 of each mobile sheet)",
+            "problem": "The phone's first view has the nav pill, a tiny logo lockup, the headline, the body copy and the top of the video. The green 'Yes, send the demo' button is not visible, and the sticky button does not appear until after the inline button has scrolled away. On a 10-second glance the only visible action is the video play button. For a page whose only job is that one tap, this is the biggest conversion leak.",
+            "fix": "Put the primary button directly under the body copy and above the video, or show the sticky button from the first paint. Keep the video as the secondary element below the button."
+          },
+          {
+            "severity": "important",
+            "where": "BLJ and Namasya hero microcopy: 'We wrote to you because Silver Square runs Silver Square ads' and '...because Shree Namasya runs Shree Namasya ads'",
+            "problem": "The tautology looks like a template slip. Shyamal ('runs a Diwali ad') and Vistara ('Vistara Group runs Anahata Florenza ads') read correctly. A mistake like this on a page meant to look hand-made costs trust straight away.",
+            "fix": "Use the developer and project names in the right slots. BLJ: 'BLJ Infra LLP runs Silver Square ads with a Send WhatsApp message button'. Namasya: 'Shree Namasya runs ads with a Send WhatsApp message button'. Check every per-lead string for the same slot error."
+          },
+          {
+            "severity": "important",
+            "where": "Lead logo lockup ('A concept for ...') at the top of every hero, about 40px square",
+            "problem": "The only thing that makes the page feel like mine is smaller than the IV Infotech navbar logo above it. The Shyamal wordmark is clipped inside the tile. The BLJ logo is a blurry sand square with an unreadable 'BLJ'. The Vistara logo is a white wordmark on navy, so it is tiny and low-contrast and the tile blends into the navy page. Namasya's script logo is barely legible.",
+            "fix": "Show a bigger lockup of about 56-72px height or 120px wide. Vistara: show the white wordmark large directly on the navy hero, or on a white chip. BLJ: do not show the blurry photo; use a clean typographic 'SILVER SQUARE' monogram in sand/gold with 'BLJ Infra LLP' as text. Do not crop wordmarks into squares."
+          },
+          {
+            "severity": "important",
+            "where": "Shyamal 'What we noticed' card: 'we did not see a WhatsApp link or chat there', followed by the line 'nothing here is a judgement of how you handle them'",
+            "problem": "The card points at a gap on their website, and the next line denies judging them, which makes the reader feel judged. Developers are touchy about agencies auditing them. It breaks the rule of never implying the lead's team fails.",
+            "fix": "Rewrite the card as neutral facts: 'Your website lists phone numbers and an email for enquiries.' Drop the 'did not see' clause. Shorten the disclaimer to 'Everything above is from your public ads and website.'"
+          },
+          {
+            "severity": "important",
+            "where": "'See it in three taps' step 1 on all pages: 'A buyer taps your ad and writes at night' with a 10:47 PM timestamp",
+            "problem": "The story is built on a night enquiry nobody answers, which quietly says that my team is not there at night. It is labelled Example, but it is the emotional core of the page and it can feel like an insult to a sales team that works late.",
+            "fix": "Use a neutral moment such as 'A buyer taps your ad and writes' with a daytime or unspecific timestamp. Present the benefit as 'every enquiry gets the brochure and a site-visit slot straight away, while your team is on a site visit'. Never imply nobody replies."
+          },
+          {
+            "severity": "important",
+            "where": "Hero copy and 'What we noticed' card",
+            "problem": "The page says 'automatic first reply' but never says what I will actually receive when I tap. The brochure, three quick questions, a site-visit time and a list for the sales team are only inside the interactive example further down. The headline is about the mechanism, not about what I get. A busy developer who gets an unknown company's link will worry about what happens to their number after the tap.",
+            "fix": "Add one line directly under the headline or button: 'You will get a sample reply on WhatsApp, exactly as a buyer would see it: brochure, 3 questions, site-visit time.' Move 'Which number does it use? Reply STOP to end' into the same line or right under the button."
+          },
+          {
+            "severity": "important",
+            "where": "Whole page: no human and no proof",
+            "problem": "The only identity is the IV Infotech navbar and footer and a Mehsana address. There is no person's name, no line on what IV Infotech has built, and no real-estate or WhatsApp work shown. A Vadodara or Rajkot developer will ask who this is and whether other builders use it. The independence disclaimer is long and legal, but nothing builds trust positively.",
+            "fix": "Add one human line such as 'From <named person> at IV Infotech, Mehsana', plus one true sentence about what IV Infotech does or has built. Do not invent claims. Keep the independence line, shortened, near the button."
+          },
+          {
+            "severity": "nice",
+            "where": "Footer and navbar (IV Infotech site chrome): 'GET A QUOTE', the services list, 'Hire', Career, and the phone +91 9924426361",
+            "problem": "These dilute the single action and make the page feel like a generic dev-shop site. The footer shows a phone number, and the rule says no personal phone numbers. I cannot tell whether it is a company line or a personal mobile.",
+            "fix": "Confirm the footer number is a company line. If it is personal, remove it from these noindex pages. Consider hiding or de-emphasising the 'Get a quote' button on these lead pages."
+          },
+          {
+            "severity": "nice",
+            "where": "Footer legal paragraph: 'a business contact published for X (on its ads, website or public records)'",
+            "problem": "'Public records' sounds like scraped data. The paragraph is also a long dense block on mobile.",
+            "fix": "Change to 'published on your ads or website'. Split into two short paragraphs or fold the STOP line into the button microcopy."
+          },
+          {
+            "severity": "nice",
+            "where": "Language on all pages",
+            "problem": "The pages are English-only for Gujarat developers. BLJ's own sample-flat ad is in Gujarati, which tells us its buyers and probably its owner prefer Gujarati. The footer tagline says 'Digital Future of Gujarat' but the copy is not Gujarati.",
+            "fix": "Add a one-line Gujarati or Hinglish summary under the headline, or an EN/GU toggle. At minimum, make the pre-filled WhatsApp message and the example chat available in Gujarati for BLJ."
+          },
+          {
+            "severity": "nice",
+            "where": "'See it in three taps' example chat card on mobile (tabs plus chat)",
+            "problem": "Before any tap, the chat shows one buyer message and a big empty beige area, so it looks unfinished. The 'EXAMPLE' pill is small. The sticky button floats over body text with no backing bar, so text shows behind it in frames 3-4.",
+            "fix": "Show a short complete exchange on load, with a clear 'Example chat' banner. Add a solid or gradient backing to the sticky bar."
+          },
+          {
+            "severity": "nice",
+            "where": "Cross-lead",
+            "problem": "Shyamal, Vistara and Namasya are all Vadodara developers who likely know each other. The four pages share the same layout and copy, differing only by accent colour and name, so a side-by-side comparison would reveal the template, and the 'made just for me' feel is thin.",
+            "fix": "Vary one real element per lead: the example chat content using their own real ad wording, their own project hero photo (if published by them), or a different step order. Keep it honest and public-only."
+          }
+        ],
+        "what_works": [
+          "The headline is simple and specific: 'A WhatsApp enquiry for Shyamal Park Lane can get a first reply in about a minute.' I understand the idea in 5 seconds, and the soft claims ('can', 'about a minute') are believable.",
+          "The 'What we noticed' card is built on real, dated, sourced facts (Meta Ad Library, checked 21 Oct 2026), and it names exact things about my ads (3 versions started 16 Oct; 8 live ads, oldest 18 Jun; 3 ads from 12 Oct; 6 ads, 4 with the WhatsApp button). That is what makes the page feel written for me rather than mass-mailed.",
+          "The honest framing builds trust: 'A concept for', 'An IV Infotech idea', 'Independent concept by IV Infotech, AI voice, Not affiliated', the 'Example' labels, STOP/opt-out and a take-down line. Nothing feels like a fake enquiry presented as real.",
+          "One consistent green WhatsApp-icon button, repeated in the hero, in the sticky bar and in the final 'Want to see this for ...?' section. There is no second competing CTA on the page body.",
+          "The visual design is calm and uncluttered: a dark hero with a gradient, a cream body, a rounded card for the video, one numbered 'three taps' module, and a short FAQ with plain questions that match what a sceptic would ask. Per-lead accent colours (gold, orange, gold on charcoal, copper) are applied consistently to the headline accent, the stars and the tabs.",
+          "The FAQ questions are the right ones: what happens when I tap, what does it cost, doesn't WhatsApp already have an auto-reply, will buyers feel they are talking to a machine, which number does it use, how do I stop hearing from you. I could not check the answers because every item is collapsed in the screenshots."
+        ],
+        "per_lead_notes": "All probabilities are conditional on a busy developer opening the link and reading about 10 seconds, with the correct per-lead video in place (the Shyamal placeholder video on the other three pages is ignored per the brief; if it shipped, the three non-Shyamal numbers would fall to 1-2%).\n\nSHYAMAL GROUP (Shyamal Park Lane, Bhayli; navy/gold) - tap probability about 8%.\nFirst 10 seconds, as the developer: 'Someone has seen my Diwali ad and wants to set up an automatic WhatsApp reply.' The page is clearly about my project, with the project name in the headline and my logo in the lockup, but the logo is tiny and the wordmark is clipped. Nothing feels fake. The line 'we did not see a WhatsApp link or chat there', followed by 'nothing here is a judgement of how you handle them', feels like an audit I did not ask for, and the night-time chat makes me think they are implying my team is asleep. Trust is medium: it is specific, but I do not know who these people are. A group of this size has an agency and a CRM, so I would forward the link rather than tap. Three changes that would raise it most: 1) put the button above the video; 2) remove the 'did not see a WhatsApp link' clause and the 'not a judgement' line; 3) add a named person and one true proof line, and enlarge the logo.\n\nVISTARA GROUP (Anahata Florenza, Ankhol; navy/blue/orange) - tap probability about 9%.\nFirst 10 seconds: 'An automatic WhatsApp reply for my Anahata Florenza ads.' It is about my project, and the project name is bigger than the company name, which I like for villas. The logo lockup is a small dark square with a white wordmark on a navy page, so it barely reads and the page does not feel 'mine'. I already have a call/WhatsApp number and a callback chat on my site, so my honest question is 'what does this do that mine does not?', and the page does not answer it. The card is neutral and non-pushy, which is good. Two of eight ads have the button, which hints at a gap but is not an insult. Trust is medium. Three changes: 1) show the white wordmark large and directly on navy, or on a white chip; 2) add one line on what an automatic reply does beyond a callback chat (brochure, qualifying questions, a site-visit slot, a list for the sales team); 3) button above the fold, with a named person.\n\nBLJ INFRA LLP (Silver Square, Rajkot; sand/charcoal/gold, no website) - tap probability about 11%.\nFirst 10 seconds: 'Someone has seen my Silver Square ads and says WhatsApp can reply automatically.' The project name is in the headline, so it feels like mine; the logo does not help, because it is a tiny blurry sand square where 'BLJ' cannot be read, and that looks careless for a premium page. I run my ads with a call-a-sales-number message in Gujarati, so I think in Gujarati and calls, and an English-only page with a robot-ish idea feels slightly foreign, but it is not insulting. I am the owner, I check WhatsApp all day, and tapping a button that opens WhatsApp is easy, so I am the most likely to try it out of curiosity if I trust the sender. I am wary of an unknown number and of my number being kept. The 'Silver Square runs Silver Square ads' line looks like a template error. Three changes: 1) drop the blurry logo for a clean typographic Silver Square / BLJ Infra LLP mark; 2) add Gujarati or Hinglish copy and a Gujarati demo message; 3) fix the tautology and state clearly what I will receive and that there will be no call unless I ask.\n\nSHREE NAMASYA (Atladra-Padra Road, Vadodara; charcoal/copper) - tap probability about 14%, the highest of the four.\nFirst 10 seconds: 'Four of my ads have a Send WhatsApp message button; they are offering an automatic reply for those enquiries.' It is the most relevant pitch, because four of six ads use the WhatsApp button and my contact page already asks for a WhatsApp number, so I clearly care about WhatsApp leads. The project name and a legible-enough script logo on charcoal feel like mine, and the copper accent is tasteful. Nothing is pushy; the 'Register Your Interest form that asks for a WhatsApp number' card is neutral. The problems: 'Shree Namasya runs Shree Namasya ads' is a template slip, the button is not on the first phone screen, and I do not know who IV Infotech is. Three changes: 1) put the button above the video; 2) fix the tautology and use the developer and project names correctly; 3) add a named person and one honest proof line, and name the form on my contact page as the place buyers' WhatsApp numbers already arrive, so the pitch is 'the first reply after that number'.\n\nCross-lead: the order of change impact is the CTA above the fold, then the logos and the human or proof line, then removing the 'Free.' line and the fault-finding or night-time framing, and last the Gujarati copy. Not verifiable from the screenshots: the FAQ answers (all collapsed), the actual per-lead video, and how the 'See it in three taps' example plays after a tap."
+      }
+    ],
+    "synthesis": {
+      "overall": "Merged result: three reviews, each scored 6 of 10. The pages are calm and honest in structure but not ready to send. Order of work: (1) campaign honesty, (2) lead trust and the phone first screen, (3) UI polish. must_fix and should_fix below are TEMPLATE-WIDE only (agent/pages/template_v2/*, plus build_pages.py and build_site_pages.py, which build the shared pages). Per-lead items are in per_lead_changes. Items tagged MUST there are honesty blockers and rank with must_fix. Rebuild all four before editing. The reviewed screenshots are older than the current files: the current build prints {{BRAND}} in the hero from-line, and .lbox is already 64px with object-fit contain. Some reported issues may already be fixed, so re-shoot with all FAQ items open, all three steps and the desktop notice section. Conflict calls: ad-neutral wording beats the lead-trust idea of naming the company as the advertiser. Never fake a logo typographically, because only the lead's own published file is allowed. Drop the Shyamal absence clause entirely, which satisfies both honesty and trust. The three ElevenLabs mp3 files belong to the video step and are not handled here; keep the AI-voice caption when they go in. Deferred, not this round: Gujarati copy, per-lead cream tint, 3-column notice cards and a desktop two-column stepper, fullscreen video on play, varying one real element per lead, and unifying container widths.",
+      "must_fix": [
+        {
+          "where": "build_site_pages.py line ~184 (include components/footer.html) and the FORBIDDEN_NUMBERS guard in build_pages.fill()",
+          "change": "On lead pages replace the full IV site footer with a compact one: IV logo, info@ivinfotech.com, Privacy and Terms links to the existing site pages, copyright. Remove the phone line, Quick Links, Services and the GET A QUOTE button. Run the FORBIDDEN_NUMBERS check on the final rendered HTML after Jinja (footer included), and add the same check to verify_live.py.",
+          "why": "The site footer prints +91 9924426361, which leads.json marks as the boss's personal number. The guard only scans the page body, so it never saw it."
+        },
+        {
+          "where": "index.html line 62 (from-line) and line 93; leads.json hook, noticed[], step1_text, ads_phrase, ads_seen for all four",
+          "change": "Describe the ads as public items on Meta, never as the lead's own. No 'your ads', 'your page' or 'X runs ads'. The hero from-line stops using {{BRAND}} plus 'runs' and uses {{ADS_PHRASE}} written as 'Meta Ad Library lists ...'. 'Your website' and 'Your contact page' stay only where the site was verified as theirs.",
+          "why": "Who owns the Meta page or runs the ads is unverified; it can be an agency or channel partner (Space Age case). It also fixes the 'Silver Square runs Silver Square ads' tautology."
+        },
+        {
+          "where": "build_pages.py lines 67 and 71 (FINE_LINE)",
+          "change": "Delete the `(\" Free.\" if free else \"\")` part in both the WhatsApp and the email branches. Say what the tap gives instead (sample reply). Keep 'free' only in the cost_answer FAQ.",
+          "why": "Campaign rule: 'free' is allowed only in the FAQ cost answer. All three reviews flagged it."
+        },
+        {
+          "where": "index.html lines 91, 93, 117",
+          "change": "Remove the night-time story: step 1 heading no longer says 'at night', timestamp 10:47 PM becomes a daytime time, step 3 no longer says 'By morning'. Exact strings are in wording_changes.",
+          "why": "It implies the lead's team leaves night enquiries unanswered. That was never observed, and the rule is never to imply the lead's team fails."
+        },
+        {
+          "where": "index.html line 62 (hero-cta, under the button)",
+          "change": "Merge the independence statement and the 'why you got this' reason into ONE two-sentence line under the button, so it is visible next to the lead's logo and name. Then drop the repeated hero wording from the footer block.",
+          "why": "A page in the lead's logo and colours reads as theirs or endorsed. The only independence text is in the footer and burned into the video."
+        },
+        {
+          "where": "index.html line 100 (first chat bubble); leads.json demo_what; index.html footer line 148 data-use sentence",
+          "change": "Make the copy match what the demo really does. First mock bubble says it is an automatic reply and offers a person. demo_what says the assistant replies, not 'we reply'. The data-use sentence in the footer and in demo_what is identical and includes any follow-up. Do this only after confirming the real flow; otherwise soften the FAQ and step-2 text to what is true.",
+          "why": "The FAQ promises 'told the reply is automatic / can ask for a person', but the mock shows neither. 'We reply' implies a person. The two data-use sentences differ."
+        },
+        {
+          "where": "build_site_pages.py lines ~171-177 (tracking_head, tracking_body, navbar includes)",
+          "change": "Remove the GA/GTM tracking includes on lead pages (the own beacon in page.js stays) and say so in the footer. If the owner wants GA kept, the footer must name Google Analytics. Hide the 'Ask IV' bot button on lead pages.",
+          "why": "The footer says only 'we count how often this page is opened', but GA, GTM and an AI chat entry are loaded. That is an honesty gap, and the bot is an uncontrolled claims surface."
+        },
+        {
+          "where": "page.css lines 45-48 and a new @media (max-width:640px) block",
+          "change": "Put the green button on the first phone screen: grid-template-areas \"copy\" \"cta\" \"video\". At <=640px also set hero padding 20px 0 24px; h1 25px/1.15; lede 15px clamped to 2 lines (-webkit-line-clamp:2); .hero-video width min(240px,62vw); .btn.ghost as a 14px underlined text link. Keep the sticky rule (hidden while the hero button is on screen).",
+          "why": "On 390x844 the button sits about 1.5 screens down, and the sticky bar is hidden on load. The page's one action is invisible at first glance. All three reviews rated this a blocker."
+        },
+        {
+          "where": "page.css lines 52-53 (.lbox, .lead-logo), index.html line 42, build_pages.py line 94",
+          "change": "Logo tile: height 64px, width auto, min-width 64px, max-width 168px, padding 8px, never crop (object-fit contain, width/height auto). Tile colour per lead from theme logo-bg, chosen for contrast with the file, with a visible 1px light border. If a lead has no usable logo file, omit the whole .lbox and show the name only; make lead_logo optional in fill(). Raise the name to 22px/700 (already) and the 'A concept for' label to 13px.",
+          "why": "Wordmarks were clipped, the BLJ logo was an illegible blur, and dark tiles vanished into the dark hero. Showing a clipped version of their own logo looks careless."
+        }
+      ],
+      "should_fix": [
+        {
+          "where": "build_site_pages.py SITE_CSS (nav selectors are in components/navbar.html)",
+          "change": "On lead pages at <=640px make the floating IV navbar position:absolute so it scrolls away, with logo height 28px, and hide the hamburger menu. Footer is covered in must_fix.",
+          "why": "Nav plus footer are louder than the lead's own brand and offer exits and a second action."
+        },
+        {
+          "where": "index.html hero-cta; leads.json (new optional fields sender_name, proof_line)",
+          "change": "Add one human line under the from-line: 'From <name> at IV Infotech, Mehsana' plus ONE true proof sentence about what IV Infotech does. Owner supplies the name and facts; do not invent clients or results. If not supplied, leave the line out.",
+          "why": "The page has no person and no proof. A developer asks who this is."
+        },
+        {
+          "where": "index.html footer (lines 148-149)",
+          "change": "Restructure into three short lines with bold lead-ins: 'Why you got this link', 'Not affiliated with {{BRAND}}, WhatsApp or Meta', 'Stop or take down: reply STOP or email {{EMAIL}}'. Put data use, counting and samples inside <details><summary>More details</summary>. Set the block to max-width 62ch, centred, 13px/1.55. Add a {{CONTACT_SOURCE}} placeholder to the footer text and fill it per lead.",
+          "why": "Today it is a wall of about 150 words at 13px, and a hard-to-use opt-out."
+        },
+        {
+          "where": "page.css lines 79-83 and page.js tabs; index.html lines 80-120",
+          "change": "Stop opening on the emptiest step. Auto-advance 1 to 2 to 3 about every 3s once the section is 60% in view, and stop on the first tap. Set .stage min-height to the tallest panel in JS so it does not jump. Make step-1 heading and caption not repeat each other (see wording).",
+          "why": "Step 1 is one bubble in a tall empty card, and steps 2 and 3 are hidden behind tabs."
+        },
+        {
+          "where": "page.css line 83 (.tab.on .n) and line 88 (.eg)",
+          "change": ".tab.on .n: background #fff, colour var(--accent). .eg badge: background #fff, colour var(--hero-a), box-shadow inset 0 0 0 1.5px var(--accent2). Then darken the per-lead accents (see per_lead_changes).",
+          "why": "Measured contrast: BLJ and Namasya active tabs 3.83 and 4.10 against a 4.5 minimum; the Vistara orange disc on blue is 1.68; the Vistara badge is 4.44 at about 10px."
+        },
+        {
+          "where": "build_pages.py line 93 (noticed HTML) and page.css .fi/.facts",
+          "change": "Replace the identical #i-spark icon with numbered markers 1/2/3. Make the claim text 15px/500 (not bold) and the source line 12px #5b6470, checked at 4.5:1 or better on the band colour.",
+          "why": "The same icon on every row carries no information, and the grey source text is weak on the darker band."
+        },
+        {
+          "where": "index.html line 112-114 (U1/U2) and leads.json u1/u2",
+          "change": "Example rows must not state unverified unit types or repeat the same value twice. Use 'Size noted' and 'Size asked' where the unit type is unverified. Keep real values only where the ad or brief states them.",
+          "why": "BLJ and Namasya '3 BHK' are not verified, and Vistara 'Villa' appears in both rows."
+        },
+        {
+          "where": "Pre-send checks (process)",
+          "change": "(1) Time the real demo reply and keep 'can ... in about a minute' only if true; consider dropping the .hl highlight on the time phrase. (2) Make 'About 40 seconds' (index.html line 54) match the final video length and the email wording. (3) Confirm each page's own video is in (no Shyamal overlay on the other three). (4) Keep a source note (URL and date) for every lead logo. (5) Re-run the claims check on the rendered HTML, footer included.",
+          "why": "The strongest claim is repeated 3 times unmeasured, and the length wording differs between page and email."
+        },
+        {
+          "where": "page.css line 135 (.sticky) and .final .btn",
+          "change": "Polish: sticky bar becomes a 16px fade to the page background with 12px side gutters. The closing CTA uses the same solid green (#0a7a6b) as the primary button.",
+          "why": "The solid white bar plus floating nav is heavy, and the closing CTA is a different button style."
+        }
+      ],
+      "wording_changes": [
+        {
+          "where": "build_pages.py lines 67/71 FINE_LINE",
+          "old": "Opens WhatsApp with a message ready. Just press Send. Free. No call unless you ask.",
+          "new": "Opens WhatsApp with a message ready. Just press Send and you get a short sample reply. No call unless you ask. (Email branch: 'Opens your email with a message ready. Just press Send and you get a short sample reply. No call unless you ask.')"
+        },
+        {
+          "where": "index.html line 62 (from-line, merged with independence)",
+          "old": "From IV Infotech. We wrote to you because {{BRAND}} {{ADS_PHRASE}}.",
+          "new": "From IV Infotech, an independent company in Mehsana, not affiliated with or endorsed by {{BRAND}}, WhatsApp or Meta. We wrote to you because {{ADS_PHRASE}}. (ads_phrase pattern: 'Meta Ad Library lists two Silver Square ads with a Send WhatsApp message button')"
+        },
+        {
+          "where": "index.html line 93 step-1 heading",
+          "old": "A buyer taps your ad and writes at night",
+          "new": "A buyer writes on WhatsApp"
+        },
+        {
+          "where": "index.html line 91 chat timestamp",
+          "old": "10:47 PM",
+          "new": "2:15 PM"
+        },
+        {
+          "where": "index.html line 105 step-2 heading",
+          "old": "An automatic first reply in about a minute",
+          "new": "A first reply can arrive in about a minute"
+        },
+        {
+          "where": "index.html line 117 step-3 heading and text",
+          "old": "By morning, your team sees who asked ... Your team takes over any chat whenever it wants.",
+          "new": "Your team sees every enquiry in one list ... Your team can take over any chat whenever it wants."
+        },
+        {
+          "where": "index.html lines 80 and 59 (section title and ghost button)",
+          "old": "See it in three taps",
+          "new": "How it works in three steps (button: 'See how it works')"
+        },
+        {
+          "where": "index.html line 74 (.honest)",
+          "old": "We only describe what is public. We have not seen how your team replies to enquiries, so nothing here is a judgement of how you handle them.",
+          "new": "These are public details only, each with its source and date."
+        },
+        {
+          "where": "index.html line 128 FAQ 'Doesn't WhatsApp already have an auto-reply?'",
+          "old": "...and shows your team who is ready.",
+          "new": "...and lists who picked a visit time for your team."
+        },
+        {
+          "where": "index.html line 130 FAQ 'Which WhatsApp number does it use?'",
+          "old": "Normally the WhatsApp number you already publish.",
+          "new": "Normally the WhatsApp number your ads already use."
+        },
+        {
+          "where": "index.html line 100 first chat bubble (only if the real flow does this)",
+          "old": "Hello! Thank you for your interest in {{PROJECT}}.",
+          "new": "Hello! This is an automatic reply for {{PROJECT}}. Reply 'person' any time to talk to the team."
+        },
+        {
+          "where": "leads.json demo_what (if the demo number is the automatic assistant)",
+          "old": "Press Send, and we reply with a short sample of this chat for {PROJECT}, from our own number. ... We keep your number and message only to send the demo.",
+          "new": "Press Send, and our automatic assistant replies with a short sample of this chat for {PROJECT}, from our own number. ... We use your number only to send the demo, reply to you and, if you say yes, follow up."
+        },
+        {
+          "where": "index.html footer line 148 (data use, same words as demo_what)",
+          "old": "We use your WhatsApp number or email address only to send you this demo and to reply to you.",
+          "new": "We use your WhatsApp number or email address only to send you this demo, to reply to you and, if you say yes, to follow up."
+        },
+        {
+          "where": "index.html footer line 148 (source)",
+          "old": "a business contact published for {{CONTACT_FOR}} (on its ads, website or public records)",
+          "new": "a business contact published on {{CONTACT_SOURCE}}"
+        },
+        {
+          "where": "index.html footer line 149 (tracking)",
+          "old": "We count how often this page and its video are opened.",
+          "new": "We count page opens, video plays and button taps with our own counter. (If GA stays: 'We use Google Analytics and our own counter to see page opens, video plays and button taps.')"
+        }
+      ],
+      "per_lead_changes": "SHYAMAL PARK LANE (data: leads.json key shyamal)\n- MUST (honesty): noticed[2] drop the absence claim. New: 'Your website lists phone numbers and an email address for enquiries.' (no 'or chat', no 'did not see').\n- MUST: hook becomes 'A Diwali ad for Shyamal Park Lane has a Send WhatsApp message button on one of its versions. Here is how a message can get an automatic first reply.' step1_text becomes 'A buyer taps the Send WhatsApp message button on a Diwali ad and writes to you.'\n- MUST: ads_phrase 'Meta Ad Library lists a Diwali ad for Shyamal Park Lane with a Send WhatsApp message button'. ads_seen 'a Diwali ad for Shyamal Park Lane has a Send WhatsApp message button on one of its versions'. Add contact_source 'the contact page of shyamalgroup.co.in'.\n- noticed[0]: cut 'first 5 bookings', which is an offer detail that goes stale. Keep '3 and 4 BHK' only if it is in the ad text; otherwise use 'A Diwali ad for Shyamal Park Lane, Bhayli'.\n- Logo: confirm shyamal_logo.png is not cropped after the .lbox change; pick logo-bg for contrast with the file (light tile if the wordmark is dark).\n\nVISTARA GROUP, ANAHATA FLORENZA\n- MUST: hook becomes 'Two of the Anahata Florenza ads on Meta have a Send WhatsApp message button. Here is how a message can get an automatic first reply.' ads_phrase 'Meta Ad Library lists Anahata Florenza ads with a Send WhatsApp message button'. ads_seen 'two Anahata Florenza ads have a Send WhatsApp message button'. Add contact_source 'the contact page of vistararealty.com'.\n- u1/u2 become 'Villa size noted' and 'Villa size asked' (both rows are 'Villa' today).\n- Logo: the 'VISTARA GROUP' wordmark was too small. With the wide tile, show logo_white.png on a navy tile at 120px or wider. Confirm it is their own published file and not our recolour; if it is a recolour, use their original on a light tile.\n- Theme: keep accent #235BDD for the active tab only (it matches IV's own blue). The orange stays the single accent (hl, badge border). The template contrast fixes handle the disc and the EXAMPLE badge.\n- Keep the 'Your website shows a call and WhatsApp number...' card as is. The tone is neutral.\n\nBLJ INFRA LLP, SILVER SQUARE\n- MUST: hook becomes 'Two of the Silver Square ads on Meta have a Send WhatsApp message button. Here is how a message can get an automatic first reply.' ads_phrase 'Meta Ad Library lists Silver Square ads with a Send WhatsApp message button'. ads_seen 'two Silver Square ads have a Send WhatsApp message button'.\n- MUST: noticed[2] becomes 'The Gujarati sample-flat ad invites buyers to call a sales number' (drop 'for a visit', not verified).\n- MUST: area_line 'Near 150 Ft Ring Road, Rajkot' becomes 'Rajkot' unless the ad or their page confirms the road.\n- MUST: BLJ has no website and no email_source in leads.json. Add contact_source with the real source used (for example 'the sales number in its Silver Square ad'), confirm it is accurate, and make sure the hero merged line names BLJ Infra LLP.\n- u1/u2 become 'Size noted' and 'Size asked' ('3 BHK' is not verified).\n- Logo: logo.jpg is low-resolution and unreadable. Get a higher-resolution copy from their own public Meta page or ad assets and do not upscale. No typographic stand-in logo. If none exists, set lead_logo empty so the chip is omitted and the name shows alone.\n- Theme: accent #a87a2e becomes #8a6420 (white on it is about 5.35:1, was 3.83).\n\nSHREE NAMASYA\n- MUST: hook becomes 'Four of the Shree Namasya ads on Meta have a Send WhatsApp message button. Here is how a message can get an automatic first reply.' noticed[0] becomes 'Six live Shree Namasya ads, started 28 Sep, 8 Oct and 17 Oct 2026' (drop 'on your ... page'). ads_phrase 'Meta Ad Library lists Shree Namasya ads with a Send WhatsApp message button'. ads_seen 'four Shree Namasya ads have a Send WhatsApp message button'. Add contact_source 'the contact page of shreenamasya.com'.\n- u1/u2 become 'Size noted' and 'Size asked'.\n- Logo: logo.svg touches both tile edges. Use a wide tile with 8px padding. Confirm the SVG is their own published file, not a redraw.\n- Theme: accent #B8693A becomes #a5562a (white on it is about 5.3:1, was 4.10). Keep accent2 #E3A46F for the hero highlight.\n- Keep noticed[2] (Register Your Interest form with a WhatsApp number); it is accurate and neutral."
+    }
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Review"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Synthesize"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "review:uiux",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "acdf7632cf72f5f99",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792642804700,
+      "queuedAt": 1792642804575,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "A calm, consistent and legible template with one clear acti…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send each of four real-estate developers in Gujarat a short WhatsApp/email note with a link to a PAGE made just for them (a noindex page on ivinfotech.com, shown inside the ivinfotech.com site navbar/footer). The page pitches an automatic WhatsApp first reply for property enquiries (brochure, three quick questions, a site-visit time, a s…",
+      "promptFramed": true,
+      "lastProgressAt": 1792643224928,
+      "tokens": 103153,
+      "toolCalls": 21,
+      "durationMs": 420226,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"A calm, consistent and legible template with one clear action, but it is not yet a good phone-first conversion page. On a 390x844 phone the first screen shows the lead name, a four-line headline, a four-line paragraph and only the top half of a very tall video. The green button first appears roughly 1.5 screens down, and the sticky bar is also absent on load. The IV…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "review:claims",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "a2f890af0e9c01f9e",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792642804701,
+      "queuedAt": 1792642804576,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Not ready to send yet. The \"What we noticed\" counts and dat…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send each of four real-estate developers in Gujarat a short WhatsApp/email note with a link to a PAGE made just for them (a noindex page on ivinfotech.com, shown inside the ivinfotech.com site navbar/footer). The page pitches an automatic WhatsApp first reply for property enquiries (brochure, three quick questions, a site-visit time, a s…",
+      "promptFramed": true,
+      "lastProgressAt": 1792643122497,
+      "tokens": 123246,
+      "toolCalls": 21,
+      "durationMs": 315540,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"Not ready to send yet. The \\\"What we noticed\\\" counts and dates match the verified facts on all four pages, and the footer carries a real independence and opt-out statement. Three things must be fixed first. The site footer shows +91 9924426361, which leads.json calls the boss's personal number. The copy keeps saying \\\"your ads\\\" and \\\"your page\\\" although who owns …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "review:lead",
+      "phaseIndex": 1,
+      "phaseTitle": "Review",
+      "agentId": "afc34dd5aef722660",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792642804701,
+      "queuedAt": 1792642804576,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Calm, honest and clearly about my project, so it will not o…",
+      "promptPreview": "CONTEXT: IV Infotech (a small Gujarat software company) will send each of four real-estate developers in Gujarat a short WhatsApp/email note with a link to a PAGE made just for them (a noindex page on ivinfotech.com, shown inside the ivinfotech.com site navbar/footer). The page pitches an automatic WhatsApp first reply for property enquiries (brochure, three quick questions, a site-visit time, a s…",
+      "promptFramed": true,
+      "lastProgressAt": 1792642962265,
+      "tokens": 81126,
+      "toolCalls": 10,
+      "durationMs": 155307,
+      "resultPreview": "{\"score_out_of_10\":6,\"verdict\":\"Calm, honest and clearly about my project, so it will not offend anyone, but it is not yet persuasive. On a phone, the first screen has a headline and a video but no button. The tiny \\\"A concept for\\\" logo tile is the only thing that says the page is about me, and the big IV Infotech navbar and footer say it is about them. A stranger asks me to message an unknown nu…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "synthesize",
+      "phaseIndex": 2,
+      "phaseTitle": "Synthesize",
+      "agentId": "a8d037b35371852e5",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792643227780,
+      "queuedAt": 1792643227718,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Merged result: three reviews, each scored 6 of 10. The page…",
+      "promptPreview": "Merge three independent reviews of four lead landing pages into ONE short prioritized change list. Campaign honesty rules first, then lead trust, then UI polish. Make every item buildable in the shared HTML/CSS/JS template (agent/pages/template_v2) or in the per-lead data (agent/pages/leads.json: hook, noticed[], theme colours, logo). Keep items concrete and short. Separate template-wide changes f…",
+      "promptFramed": true,
+      "lastProgressAt": 1792643426910,
+      "tokens": 110358,
+      "toolCalls": 11,
+      "durationMs": 199130,
+      "resultPreview": "{\"overall\":\"Merged result: three reviews, each scored 6 of 10. The pages are calm and honest in structure but not ready to send. Order of work: (1) campaign honesty, (2) lead trust and the phone first screen, (3) UI polish. must_fix and should_fix below are TEMPLATE-WIDE only (agent/pages/template_v2/*, plus build_pages.py and build_site_pages.py, which build the shared pages). Per-lead items are …"
+    }
+  ],
+  "totalTokens": 417883,
+  "totalToolCalls": 63
+}

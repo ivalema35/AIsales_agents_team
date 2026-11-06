@@ -1,0 +1,362 @@
+# -*- coding: utf-8 -*-
+"""Generic lead video builder, derived from shyamal/build_story_v3.py (that file is left untouched).
+Usage: C:/ivtools/venv/Scripts/python.exe build_story_lead.py <key> [timeline.json] [out.html]
+  reads  video_v2/<key>/lead.json  and  video_v2/<key>/<timeline.json>   (default timeline.json = the SAPI preview timeline)
+  writes video_v2/<key>/<out.html>                                      (default story.html)
+Kept from v3: unique gradient id per IV robot (a robot lost its body when an earlier copy sat in a display:none scene), the lead's logo only in
+scene 1 and in the ad banner (neutral house avatar in the mock chat / list), plain-text 'Concept by IV Infotech' corner mark, independence plate in
+scene 1, three tappable-looking question rows with their own caption per beat, disclaimer above the arrow in scene 6.
+New vs v3: everything lead-specific comes from lead.json (names, sub line, ad caption, question rows, buyer sizes, colours, logo sizing); no Diwali
+text; colours are CSS variables derived from lead.json brand; the shared assets (fonts, IV logo, common stills) are copied from _shared/assets
+into <key>/assets on every build, so a lead folder is self-contained.
+lead.json keys: name (brand, used in 'Not affiliated with'), project, area, ad_page (name in the ad header), units (ad line, before the area),
+  sub_line (scene 1 line under the project), s1_area (optional, scene 1 area line; '' hides it when sub_line already holds the area),
+  ad_line (optional override of '<units> · <area>'), scene2_caption, questions[3], buyers[3], chat_time,
+  brand{navy,navy2,gold(accent),gold2,tint(headings on dark),sub(sub-line colour),tagtext}, logo (scene 1), logo_ad (ad banner, default logo),
+  logo_s1{w,h?,radius?}, logo_ad_h, logo_ad_radius, sparks (default false), stills{1..5},
+  fx{tap,b2,b3,r1,r2,r3,hand,cta1,cta2,arr} = beat times as fractions of the scene's voice duration (defaults tuned on Shyamal; check with chk_beats_lead.py)."""
+import html as _html
+import json
+import shutil
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+if len(sys.argv) < 2:
+    sys.exit("usage: build_story_lead.py <key> [timeline.json] [out.html]")
+KEY = sys.argv[1]
+HERE = ROOT / KEY
+sys.path.insert(0, "C:/Users/Administrator/Desktop/AISales_agent_team/agent/pilot/video")
+import story_build as sb  # noqa: E402
+
+lead = json.loads((HERE / "lead.json").read_text(encoding="utf-8"))
+tl = json.loads((HERE / (sys.argv[2] if len(sys.argv) > 2 else "timeline.json")).read_text(encoding="utf-8"))
+out_name = sys.argv[3] if len(sys.argv) > 3 else "story.html"
+
+# shared assets (fonts, IV logo, common stills) -> into the lead folder, never overwriting lead-specific files of the same name
+SH = ROOT / "_shared" / "assets"
+for f in SH.rglob("*"):
+    if f.is_file():
+        dst = HERE / "assets" / f.relative_to(SH)
+        if not dst.exists():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dst)
+
+
+def esc(s):
+    return _html.escape(s, quote=False)
+
+
+def hex_rgb(h):
+    h = h.lstrip("#")
+    return "%d,%d,%d" % (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+
+def iv(wave, w, tag):
+    # every inline robot needs its own gradient id: an id defined inside a display:none scene stops resolving for the other copies
+    return sb.iv("happy", wave, w).replace("ivg", "ivg" + tag)
+
+
+IV4 = iv(False, 190, "A")
+IV5 = iv(True, 220, "B")
+IV6 = iv(True, 200, "C")
+CHAT = '<svg viewBox="0 0 24 24" width="34" height="34"><path fill="#fff" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2z"/></svg>'
+HOUSE = '<svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>'
+TOUCH = ('<svg viewBox="0 0 24 24" width="64" height="64"><path fill="#fff" stroke="#10222f" stroke-width="1" d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.69-5.1c.01-.07.02-.13.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>')
+ap = lead["brand"]
+TINT = ap.get("tint", "#e7d3b4")
+ARROW = ('<svg viewBox="0 0 24 24" width="84" height="84"><path fill="none" stroke="%s" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3v16M5 12l7 7 7-7"/></svg>' % TINT)
+AV_CHAT = '<div class="avh" style="background:#128C7E">%s</div>' % HOUSE
+AV_LIST = '<div class="avh" style="background:var(--navy2)">%s</div>' % HOUSE
+AV_AD = '<div class="avh" style="background:#7b8794">%s</div>' % HOUSE
+CONCEPT = '<div class="concept">Concept by IV Infotech</div>'
+
+T = """<!doctype html><html><head><meta charset="utf-8"><title>__KEY__ story</title>
+<style>
+@font-face{font-family:"Inter";src:url("assets/fonts/inter.woff2") format("woff2");font-weight:100 900}
+@font-face{font-family:"SG";src:url("assets/fonts/space-grotesk.woff2") format("woff2");font-weight:300 700}
+:root{--navy:__NAVY__;--navy2:__NAVY2__;--gold:__GOLD__;--gold2:__GOLD2__;--tint:__TINT__;--sub:__SUB__;--tagtext:__TAGTEXT__;--nrgb:__NRGB__;--wa:#25D366;--wag:#075E54}
+*{box-sizing:border-box}
+html,body{margin:0;background:#06121e;width:720px;height:1280px;overflow:hidden;font-family:"Inter","Segoe UI",Arial,sans-serif;color:#10222f}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;background:var(--navy)}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.bg{position:absolute;inset:-30px;background-size:cover;background-position:center top;will-change:transform}
+.avh{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.cap{position:absolute;left:34px;right:34px;top:950px;display:flex;justify-content:center}
+.cap div{background:rgba(var(--nrgb),.95);border:3px solid var(--gold);border-radius:44px;padding:18px 34px;font:600 36px/1.18 "SG","Inter",sans-serif;color:#fff;text-align:center;box-shadow:0 12px 34px rgba(0,0,0,.35)}
+.concept{position:absolute;left:26px;top:92px;background:rgba(var(--nrgb),.62);border-radius:24px;padding:7px 18px;font:600 22px "Inter",sans-serif;color:#fff;letter-spacing:.01em}
+.tag{position:absolute;top:14px;right:16px;background:var(--gold);color:var(--tagtext);font:800 21px "Inter",sans-serif;letter-spacing:.06em;padding:6px 14px;border-radius:20px;z-index:5}
+.card{position:absolute;background:#fff;border-radius:34px;box-shadow:0 22px 60px rgba(8,20,32,.4);overflow:hidden}
+/* scene 1 */
+#s1 .dim{position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(var(--nrgb),.55) 0%,rgba(var(--nrgb),.2) 60%,rgba(var(--nrgb),0) 100%)}
+#s1 .logo{position:absolute;left:0;right:0;top:130px;height:440px;display:flex;justify-content:center;align-items:center}
+#s1 .logo img{__LOGOS1__}
+#s1 .t1{position:absolute;left:0;right:0;top:600px;text-align:center;font:600 62px/1.05 "SG",sans-serif;color:var(--tint);text-shadow:0 4px 18px rgba(0,0,0,.45)}
+#s1 .t2{position:absolute;left:0;right:0;top:684px;text-align:center;font:500 32px "Inter",sans-serif;color:#e9eff5;text-shadow:0 3px 12px rgba(0,0,0,.5)}
+#s1 .offer{position:absolute;left:0;right:0;top:__SUBTOP__px;text-align:center;font:700 34px "SG",sans-serif;color:var(--sub);text-shadow:0 3px 14px rgba(0,0,0,.6)}
+#s1 .plate{position:absolute;left:44px;right:44px;top:968px;background:rgba(var(--nrgb),.9);border:2px solid var(--gold);border-radius:26px;padding:16px 22px;text-align:center;font:600 28px/1.3 "Inter",sans-serif;color:#fff;text-wrap:balance}
+.sp{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#fff 0%,var(--gold) 55%,rgba(255,255,255,0) 100%)}
+/* scene 2 ad card */
+#s2 .ad{left:56px;top:580px;width:608px;height:346px}
+#s2 .tag{font-size:18px;letter-spacing:.03em;padding:5px 12px}
+.ad .hd{display:flex;align-items:center;gap:14px;padding:8px 20px;height:62px}
+.ad .hd b{font:700 25px "Inter",sans-serif;display:block;line-height:1.1}.ad .hd small{font:500 19px "Inter",sans-serif;color:#5b6b78}
+.ad .hd .avh{width:44px;height:44px}
+.ad .cr{height:148px;background:linear-gradient(135deg,var(--navy2),var(--navy));position:relative;display:flex;align-items:center;gap:24px;padding:0 28px}
+.ad .cr img{__LOGOAD__;flex:none}
+.ad .cr .tx b{display:block;font:700 40px/1.05 "SG",sans-serif;color:var(--tint)}
+.ad .ln{padding:8px 24px 0;font:600 __ADLN_PX__px "Inter",sans-serif;height:42px;white-space:nowrap}
+.ad .cta{margin:8px 24px 0;height:68px;border-radius:18px;background:var(--wa);display:flex;align-items:center;justify-content:center;gap:14px;color:#fff;font:700 28px "Inter",sans-serif;position:relative}
+.ripple{position:absolute;border-radius:50%;border:5px solid rgba(255,255,255,.95);opacity:0;pointer-events:none}
+.finger{position:absolute;opacity:0;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+/* chat card (scenes 3, 4) */
+.chatcard{left:70px;top:596px;width:580px;height:330px;border-radius:36px}
+#s3 .chatcard{height:236px;top:640px}
+.wh{height:84px;background:var(--wag);display:flex;align-items:center;gap:14px;padding:0 20px;color:#fff;position:relative;z-index:3}
+.wh .avh{width:50px;height:50px}
+.wh b{font:700 26px "Inter",sans-serif;display:block;line-height:1.1}.wh small{font:600 20px "Inter",sans-serif;opacity:.92}
+.cbody{position:absolute;left:0;right:0;top:84px;bottom:0;background:#ECE5DD}
+.bub{border-radius:18px;padding:12px 18px;font:500 26px/1.25 "Inter",sans-serif;box-shadow:0 1px 1px rgba(0,0,0,.12);position:absolute}
+.bub.out{right:20px;top:30px;background:#DCF8C6;border-top-right-radius:4px;max-width:420px}
+.bub small{display:block;text-align:right;font:500 20px "Inter",sans-serif;color:#5b6b78;margin-top:4px}
+.beat{position:absolute;left:22px;right:22px;top:16px;bottom:12px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;opacity:0}
+.beat .hdg{font:700 25px "Inter",sans-serif;color:#10222f}
+.beat .atag{font:700 21px "Inter",sans-serif;color:#0d6b3a;background:#d9f3e4;border-radius:20px;padding:5px 14px}
+.pdf{display:flex;align-items:center;gap:16px;background:#fff;border-radius:16px;padding:12px 18px;width:100%;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.pdf i{display:block;width:48px;height:56px;border-radius:9px;background:#E5484D;color:#fff;font:800 16px/56px "Inter",sans-serif;text-align:center;font-style:normal}
+.pdf b{font:700 25px "Inter",sans-serif;display:block}.pdf span{font:500 21px "Inter",sans-serif;color:#4a5a67}
+.qrows{display:flex;flex-direction:column;gap:9px;width:100%}
+.qrows div{border:3px solid #18a05a;color:#0f6a3c;background:#fff;border-radius:16px;padding:7px 20px;font:700 24px "Inter",sans-serif}
+.qs{display:flex;flex-wrap:wrap;gap:12px}
+.qs span{border:3px solid #18a05a;color:#0f6a3c;background:#fff;border-radius:34px;padding:10px 20px;font:700 25px "Inter",sans-serif}
+.stamp{font:600 21px "Inter",sans-serif;color:#4a5a67}
+#s4 .iv{position:absolute;left:34px;top:300px;width:190px}
+/* scene 5 */
+#s5 .iv{position:absolute;left:486px;top:200px;width:220px}
+#s5 .lst{left:56px;top:566px;width:608px;height:360px}
+#s5 .hand{position:absolute;left:56px;top:488px;background:#fff;color:var(--navy);border-radius:30px;padding:9px 22px;font:700 25px "Inter",sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.lst .hd{display:flex;align-items:center;gap:14px;padding:10px 22px;height:62px;border-bottom:2px solid #eef2f5}
+.lst .hd .avh{width:42px;height:42px}
+.lst .hd b{font:700 26px "Inter",sans-serif;display:block;line-height:1.1}.lst .hd small{font:500 20px "Inter",sans-serif;color:#4a5a67}
+.row{display:flex;align-items:center;gap:16px;padding:0 22px;height:92px;border-bottom:2px solid #f1f4f6}
+.row .av{width:54px;height:54px;border-radius:50%;background:var(--navy2);color:#fff;font:700 25px/54px "Inter",sans-serif;text-align:center;flex:none}
+.row .mid{flex:1}.row .mid b{font:700 24px "Inter",sans-serif;display:block}.row .mid span{font:500 21px "Inter",sans-serif;color:#4a5a67}
+.row .st{font:700 21px "Inter",sans-serif;padding:6px 14px;border-radius:30px;text-align:center;line-height:1.2;display:inline-block}
+.st.ok{background:#DDF3E5;color:#0d6b3a}.st.ask{background:#E4EEFF;color:#1D4ED8}
+.row .vs{display:block;font:500 20px "Inter",sans-serif;color:#4a5a67;margin-top:4px;text-align:right}
+/* scene 6 */
+#s6 .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--nrgb),.74) 0%,rgba(var(--nrgb),.84) 100%)}
+#s6 .ivlogo{position:absolute;left:0;right:0;top:132px;display:flex;flex-direction:column;align-items:center;gap:8px}
+#s6 .ivlogo div{background:#fff;border-radius:22px;padding:12px 30px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+#s6 .ivlogo img{height:60px;display:block}
+#s6 .ivlogo span{font:700 28px "SG",sans-serif;color:#fff;letter-spacing:.02em}
+#s6 .robot{position:absolute;left:0;right:0;top:262px;display:flex;justify-content:center}
+#s6 .robot svg{filter:drop-shadow(0 0 22px rgba(120,170,255,.55))}
+#s6 h1{position:absolute;left:50px;right:50px;top:492px;margin:0;text-align:center;font:600 52px/1.12 "SG",sans-serif;color:#fff}
+#s6 h1 em{font-style:normal;color:var(--tint)}
+#s6 .cta1{position:absolute;left:0;right:0;top:638px;text-align:center;font:600 30px "Inter",sans-serif;color:var(--tint)}
+#s6 .cta2{position:absolute;left:0;right:0;top:680px;text-align:center;font:700 44px "SG",sans-serif;color:#fff}
+#s6 .foot{position:absolute;left:46px;right:46px;top:770px;text-align:center;font:500 28px/1.32 "Inter",sans-serif;color:rgba(255,255,255,.93);text-wrap:balance}
+#s6 .arrow{position:absolute;left:0;right:0;top:940px;display:flex;justify-content:center}
+</style></head><body><div id="stage">
+
+<div class="scene" id="s1" data-start="__S1A__" data-end="__S1B__" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('__STILL1__')"></div><div class="dim"></div>
+  <div class="sparks"></div>
+  <div class="logo" data-in="0.1" data-dur="0.9" data-fx="pop"><img src="__LOGO__" alt=""></div>
+  <div class="t1" data-in="0.6" data-dur="0.6">__PROJECT__</div>
+  __S1AREA__
+  <div class="offer" data-inf="0.45" data-dur="0.6">__SUBLINE__</div>
+  <div class="cap" style="top:850px" data-in="1.6" data-dur="0.5"><div>An IV Infotech idea</div></div>
+  <div class="plate" data-in="2.0" data-dur="0.5">Independent concept by IV Infotech \u00b7 AI voice<br>Not affiliated with __NAME__</div>
+</div>
+
+<div class="scene" id="s2" data-start="__S2A__" data-end="__S2B__" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('__STILL2__')"></div>
+  __CONCEPT__
+  <div class="card ad" data-in="0.4" data-dur="0.8"><span class="tag">EXAMPLE \u00b7 ILLUSTRATION</span>
+    <div class="hd">__AVAD__<div><b>__ADPAGE__</b><small>Sponsored</small></div></div>
+    <div class="cr"><img src="__LOGOAD_SRC__" alt=""><div class="tx"><b>__PROJECT__</b></div></div>
+    <div class="ln">__ADLINE__</div>
+    <div class="cta" id="ctabtn">__CHAT__ Send WhatsApp message</div>
+    <div class="ripple" id="rip"></div><div class="finger" id="fing">__TOUCH__</div>
+  </div>
+  <div class="cap" data-in="0.7" data-dur="0.5"><div>__S2CAP__</div></div>
+</div>
+
+<div class="scene" id="s3" data-start="__S3A__" data-end="__S3B__" data-kb0="1.0" data-kb1="1.05" data-ty0="-90" data-ty1="-100">
+  <div class="bg" style="background-image:url('__STILL3__')"></div>
+  __CONCEPT__
+  <div class="card chatcard" data-in="0.2" data-dur="0.7"><span class="tag">EXAMPLE</span>
+    <div class="wh">__AVCHAT__<div><b>__PROJECT__</b><small>Example chat</small></div></div>
+    <div class="cbody"><div class="bub out" data-inf="0.10" data-dur="0.4" data-fx="left">Hi, I want details of __PROJECT_NB__<small>__TIME__ \u2713\u2713</small></div></div>
+  </div>
+  <div class="cap" data-in="0.5" data-dur="0.5"><div>Example: a buyer asks for details</div></div>
+</div>
+
+<div class="scene" id="s4" data-start="__S4A__" data-end="__S4B__" data-kb0="1.1" data-kb1="1.15" data-ty0="-52" data-ty1="-62">
+  <div class="bg" style="background-image:url('__STILL4__')"></div>
+  __CONCEPT__
+  <div class="iv" data-in="0.3" data-dur="0.6" data-fx="pop">__IV4__</div>
+  <div class="card chatcard"><span class="tag">EXAMPLE</span>
+    <div class="wh">__AVCHAT__<div><b>__PROJECT__</b><small>Example chat</small></div></div>
+    <div class="cbody">
+      <div class="beat" data-f0="0.04" data-f1="__B2__"><span class="atag">Automatic reply \u00b7 10:48 PM</span><div class="pdf"><i>PDF</i><div><b>Brochure or project details</b><span>PDF \u00b7 example</span></div></div></div>
+      <div class="beat" data-f0="__B2__" data-f1="__B3__"><span class="hdg">Three quick questions</span><div class="qrows">__QROWS__</div></div>
+      <div class="beat" data-f0="__B3__" data-f1="9"><span class="hdg">Site visit time</span><div class="qs"><span>Sat 11:00 AM</span><span>Sat 4:00 PM</span></div><span class="stamp">Example times</span></div>
+    </div>
+  </div>
+  <div class="cap" id="cap4" data-in="0.3" data-dur="0.5"><div>Example: first reply in about a minute</div></div>
+</div>
+
+<div class="scene" id="s5" data-start="__S5A__" data-end="__S5B__" data-kb0="1.0" data-kb1="1.05">
+  <div class="bg" style="background-image:url('__STILL5__')"></div>
+  __CONCEPT__
+  <div class="iv" data-in="0.4" data-dur="0.6" data-fx="pop">__IV5__</div>
+  <div class="hand" data-inf="__HAND__" data-dur="0.5">Your team takes over</div>
+  <div class="card lst" data-in="0.3" data-dur="0.8"><span class="tag">EXAMPLE</span>
+    <div class="hd">__AVLIST__<div><b>__PROJECT__</b><small>Enquiries in one list</small></div></div>
+    <div class="row" data-inf="__R1__" data-dur="0.5"><div class="av">A</div><div class="mid"><b>Example buyer A</b><span>__BUYER1__</span></div><div style="text-align:right"><span class="st ok">Visit picked</span><span class="vs">Sat 11:00 AM</span></div></div>
+    <div class="row" data-inf="__R2__" data-dur="0.5"><div class="av">B</div><div class="mid"><b>Example buyer B</b><span>__BUYER2__</span></div><div style="text-align:right"><span class="st ok">Visit picked</span><span class="vs">Sat 4:00 PM</span></div></div>
+    <div class="row" data-inf="__R3__" data-dur="0.5"><div class="av">C</div><div class="mid"><b>Example buyer C</b><span>__BUYER3__</span></div><div style="text-align:right"><span class="st ask">Asked</span><span class="vs">Time not picked</span></div></div>
+  </div>
+  <div class="cap" data-in="0.5" data-dur="0.5"><div>Example: next morning, who asked, who picked a visit</div></div>
+</div>
+
+<div class="scene" id="s6" data-start="__S6A__" data-end="__S6B__" data-kb0="1.0" data-kb1="1.04">
+  <div class="bg" style="background-image:url('__STILL6__')"></div><div class="dim"></div>
+  <div class="ivlogo" data-in="0.1" data-dur="0.6" data-fx="pop"><div><img src="assets/iv-infotech-logo.png" alt="IV Infotech"></div><span>IV Infotech</span></div>
+  <div class="robot" data-in="0.3" data-dur="0.6" data-fx="pop">__IV6__</div>
+  <h1 data-in="0.6" data-dur="0.6">See it for<br><em>__PROJECT__</em></h1>
+  <div class="cta1" data-inf="__CTA1__" data-dur="0.5">Tap the button below:</div>
+  <div class="cta2" data-inf="__CTA2__" data-dur="0.5">\u201cYes, send the demo\u201d</div>
+  <div class="foot" data-in="0.9" data-dur="0.5">Independent concept by IV Infotech. Voice is AI. Not affiliated with __NAME__, WhatsApp or Meta.</div>
+  <div class="arrow" data-inf="__ARR__" data-dur="0.5">__ARROW__</div>
+</div>
+
+</div>
+<script>
+const TL = __TL__;
+const SPARKS = __SPARKS__;
+const sc = {}; TL.scenes.forEach(s => sc[s.id] = s);
+const XF = 0.4;
+const CAP4 = ['Example: first reply in about a minute','Example: three quick questions','Example: visit times offered'];
+function ease(x){x=Math.max(0,Math.min(1,x));return 1-Math.pow(1-x,3)}
+const sparks = document.querySelector('#s1 .sparks');
+if(SPARKS){for(let i=0;i<20;i++){const d=document.createElement('div');d.className='sp';sparks.appendChild(d)}}
+function sparkles(local){
+  document.querySelectorAll('#s1 .sp').forEach((d,i)=>{
+    const side = (i%2===0) ? 20+((i*53)%90) : 600+((i*47)%90);
+    const sy=(i*181)%1100+40, ph=i*1.7;
+    d.style.left=(side+Math.sin(local*0.7+ph)*10)+'px';
+    d.style.top=(sy-local*12*(0.4+(i%5)*0.15)+1100)%1140+40+'px';
+    d.style.opacity=0.25+0.55*Math.abs(Math.sin(local*1.6+ph)); d.style.transform='scale('+(0.6+0.9*((i%4)/3))+')';
+  });
+}
+function setT(t){
+  [1,2,3,4,5,6].forEach(id=>{
+    const s=sc[id], el=document.getElementById('s'+id);
+    const start=s.start-(id===1?0:XF);
+    const vis=t>=start && t<s.end;
+    el.style.display=vis?'block':'none';
+    if(!vis) return;
+    el.style.opacity = id===1 ? 1 : Math.min(1,(t-start)/XF);
+    const local=t-s.start, base=s.voice_at-s.start, vd=s.voice_dur;
+    const bg=el.querySelector('.bg');
+    if(bg){const k0=+(el.dataset.kb0||1), k1=+(el.dataset.kb1||1.05); const k=Math.max(0,Math.min(1,(t-start)/(s.end-start)));
+      const ty0=+(el.dataset.ty0||0), ty1=+(el.dataset.ty1||0);
+      bg.style.transform='translateY('+(ty0+(ty1-ty0)*k)+'px) scale('+(k0+(k1-k0)*k)+')'}
+    el.querySelectorAll('[data-in],[data-inf]').forEach(n=>{
+      const a=(n.dataset.inf!==undefined)?(base+(+n.dataset.inf)*vd):+n.dataset.in, d=+(n.dataset.dur||0.5), fx=n.dataset.fx||'up';
+      const p=ease((local-a)/d);
+      n.style.opacity=p;
+      if(fx==='up') n.style.transform='translateY('+((1-p)*26)+'px)';
+      else if(fx==='pop') n.style.transform='scale('+(0.86+0.14*p)+')';
+      else if(fx==='left') n.style.transform='translateX('+((1-p)*-36)+'px)';
+    });
+    if(id===1 && SPARKS) sparkles(local);
+    if(id===2){
+      const rip=document.getElementById('rip'), fing=document.getElementById('fing'), btn=document.getElementById('ctabtn');
+      const a=base+__TAP__*vd, p=(local-a)/0.9;
+      const r=btn.getBoundingClientRect(), card=btn.parentElement.getBoundingClientRect(); const k2=card.width/608;
+      const cx=(r.left-card.left)/k2 + (r.width/k2) - 92, cy=(r.top-card.top)/k2 + 30;
+      if(p>-0.35&&p<1){
+        const fp=ease((p+0.35)/0.35); fing.style.opacity=Math.min(1,fp)*(p<0.7?1:Math.max(0,1-(p-0.7)/0.3));
+        fing.style.left=(cx-20)+'px'; fing.style.top=(cy+4+(1-fp)*30+(p>0&&p<0.18?5:0))+'px';
+      } else fing.style.opacity=0;
+      if(p>0&&p<1){rip.style.opacity=1-p; const z=36+p*130; rip.style.width=z+'px'; rip.style.height=z+'px'; rip.style.left=(cx-z/2)+'px'; rip.style.top=(cy-z/2)+'px'} else rip.style.opacity=0;
+      btn.style.transform=(p>0&&p<0.2)?'scale(0.97)':'scale(1)';
+    }
+    if(id===4){
+      let cur=0;
+      el.querySelectorAll('.beat').forEach((b,i)=>{
+        const f0=+b.dataset.f0, f1=+b.dataset.f1, x0=base+f0*vd, x1=base+f1*vd;
+        const fi=ease((local-x0)/0.35), fo=(f1>=9)?1:ease((x1-local)/0.3);
+        b.style.opacity=Math.max(0,Math.min(fi,fo)); b.style.transform='translateY('+((1-fi)*16)+'px)';
+        if(local>=x0-0.05) cur=i;
+      });
+      const cp=el.querySelector('#cap4 div'); if(cp.textContent!==CAP4[cur]) cp.textContent=CAP4[cur];
+      const iv=el.querySelector('.iv'); const p=ease((local-0.3)/0.6); iv.style.transform='translateY('+(Math.sin(local*2.2)*9+(1-p)*24)+'px) scale('+(0.86+0.14*p)+')';
+    }
+    if(id===5){const iv=el.querySelector('.iv'); const p=ease((local-0.4)/0.6); iv.style.transform='translateY('+(Math.sin(local*2.0)*8+(1-p)*24)+'px) scale('+(0.86+0.14*p)+')'}
+    if(id===6){const ar=el.querySelector('.arrow'); const p=ease((local-(base+__ARR__*vd))/0.5); ar.style.transform='translateY('+(Math.abs(Math.sin(local*3.2))*14+(1-p)*14)+'px)'}
+  });
+}
+window.setT=setT;
+document.fonts.ready.then(()=>{setT(0);window.READY=true});
+</script></body></html>"""
+
+
+def px(v):
+    return "%dpx" % v
+
+
+# --- lead-specific pieces -------------------------------------------------------------------------------------------------------------
+st = lead["stills"]
+l1 = lead.get("logo_s1", {})
+logo_s1_css = "width:%s;height:%s;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5))" % (px(l1.get("w", 400)), px(l1["h"]) if l1.get("h") else "auto")
+if l1.get("radius"):
+    logo_s1_css += ";border-radius:%s" % px(l1["radius"])
+ad_h = lead.get("logo_ad_h", 126)
+logo_ad_css = "height:%s;width:auto" % px(ad_h)
+if lead.get("logo_ad_radius"):
+    logo_ad_css += ";border-radius:%s" % px(lead["logo_ad_radius"])
+area = lead["area"]
+s1_area = lead.get("s1_area", area)
+sub_line = lead["sub_line"]
+ad_line = lead.get("ad_line", "%s \u00b7 %s" % (lead["units"], area))
+adln_px = 25 if len(ad_line) <= 46 else round(25 * 46 / len(ad_line), 1)  # long area lines shrink so they stay on one line in the ad card
+FX = {"tap": 0.82, "b2": 0.46, "b3": 0.76, "r1": 0.30, "r2": 0.50, "r3": 0.66, "hand": 0.80, "cta1": 0.52, "cta2": 0.64, "arr": 0.74}
+FX.update(lead.get("fx", {}))
+qs = lead["questions"]
+buyers = lead["buyers"]
+assert len(qs) == 3 and len(buyers) == 3
+rep = {
+    "__KEY__": KEY, "__NAVY__": ap["navy"], "__NAVY2__": ap["navy2"], "__GOLD__": ap["gold"], "__GOLD2__": ap.get("gold2", ap["gold"]),
+    "__TINT__": TINT, "__SUB__": ap.get("sub", TINT), "__TAGTEXT__": ap.get("tagtext", ap["navy"]), "__NRGB__": hex_rgb(ap["navy"]),
+    "__LOGOS1__": logo_s1_css, "__LOGOAD__": logo_ad_css, "__LOGOAD_SRC__": lead.get("logo_ad", lead["logo"]), "__LOGO__": lead["logo"],
+    "__ADLN_PX__": str(adln_px), "__SUBTOP__": "748" if s1_area else "690",
+    "__S1AREA__": ('<div class="t2" data-in="0.85" data-dur="0.6">%s</div>' % esc(s1_area)) if s1_area else "",
+    "__SUBLINE__": esc(sub_line), "__PROJECT__": esc(lead["project"]), "__PROJECT_NB__": esc(lead["project"]).replace(" ", "&nbsp;"), "__NAME__": esc(lead["name"]).replace(" ", "&nbsp;"), "__ADPAGE__": esc(lead["ad_page"]),
+    "__ADLINE__": esc(ad_line), "__S2CAP__": esc(lead["scene2_caption"]), "__TIME__": lead["chat_time"],
+    "__QROWS__": "".join("<div>%s</div>" % esc(q) for q in qs),
+    "__BUYER1__": esc(buyers[0]), "__BUYER2__": esc(buyers[1]), "__BUYER3__": esc(buyers[2]),
+    "__AVAD__": AV_AD, "__AVCHAT__": AV_CHAT, "__AVLIST__": AV_LIST, "__CONCEPT__": CONCEPT, "__CHAT__": CHAT, "__TOUCH__": TOUCH, "__ARROW__": ARROW,
+    "__IV4__": IV4, "__IV5__": IV5, "__IV6__": IV6,
+    "__STILL1__": st["1"], "__STILL2__": st["2"], "__STILL3__": st["3"], "__STILL4__": st["4"], "__STILL5__": st["5"], "__STILL6__": st.get("6", st["1"]),
+    "__TAP__": str(FX["tap"]), "__B2__": str(FX["b2"]), "__B3__": str(FX["b3"]), "__R1__": str(FX["r1"]), "__R2__": str(FX["r2"]), "__R3__": str(FX["r3"]),
+    "__HAND__": str(FX["hand"]), "__CTA1__": str(FX["cta1"]), "__CTA2__": str(FX["cta2"]), "__ARR__": str(FX["arr"]),
+    "__SPARKS__": "true" if lead.get("sparks") else "false",
+    "__TL__": json.dumps(tl),
+}
+for s in tl["scenes"]:
+    rep["__S%dA__" % s["id"]] = str(s["start"])
+    rep["__S%dB__" % s["id"]] = str(s["end"])
+out = T
+for k, v in rep.items():
+    out = out.replace(k, v)
+left = [w for w in out.replace("<", " ").replace(">", " ").replace("'", " ").replace('"', " ").split() if w.startswith("__") and w.endswith("__")]
+assert not left, "unreplaced placeholder: %s" % left
+assert "iwali" not in out, "Diwali text left in the page"
+(HERE / out_name).write_text(out, encoding="utf-8")
+print("wrote", KEY + "/" + out_name, len(out), "bytes")

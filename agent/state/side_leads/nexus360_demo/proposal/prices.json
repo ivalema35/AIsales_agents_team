@@ -1,0 +1,81 @@
+{
+  "_readme": "All numbers in the proposal come from this file. Change a value, then run: C:/ivtools/venv/Scripts/python.exe build_proposal.py  (rebuilds proposal.html, proposal.pdf and the page PNGs). Every price is PROPOSED, in INR, before GST, valid 14 days from 20 Oct 2026. Internal cost lines, margin and hourly rate are NOT in this file and never appear in the proposal. Third pass 20 Oct 2026: review applied, 10 pages. See owner_notes.md, 'Defaults I applied'.",
+  "status": "PROPOSED",
+  "currency": "INR",
+  "date": "20 Oct 2026",
+  "valid_days": 14,
+  "gst_rate": 0.18,
+  "payment_terms_text": "To be agreed. We suggest 50% on written approval and 50% at the Day 17 report.",
+  "credit_text": "No part of the pilot fee is credited to month 1 of the run: the pilot already covers the set-up that a run without a pilot would pay for.",
+  "data_exit_text": "Your lists and records are exported to you at the end of the pilot and on request, as CSV: the research records, the send and reply log and the dashboard data. Either side can stop at any month end. Retention and deletion of builder contact data are agreed in writing before Day 0.",
+  "pilot": {
+    "builders": 50,
+    "days": 14,
+    "fee": 75000,
+    "report_day": 17,
+    "max_touches": 2,
+    "numbers_per_builder_high": 1.5,
+    "whatsapp_estimate_low": 30,
+    "whatsapp_estimate_high": 200,
+    "whatsapp_cap": 500,
+    "messages_sent_low": 100,
+    "messages_sent_high": 150
+  },
+  "monthly": {
+    "builders": 150,
+    "fee": 45000,
+    "price_status": "indicative, confirmed in writing after the pilot. It assumes about 4.5 minutes of our staff time per builder (checking the record and the message); a manual registry lookup can take 5 to 10 minutes, so we measure the real time in the pilot before we confirm it",
+    "whatsapp_estimate_low": 90,
+    "whatsapp_estimate_high": 580,
+    "whatsapp_cap": 1500,
+    "messages_sent_low": 300,
+    "messages_sent_high": 450,
+    "setup_if_no_pilot": 53000,
+    "show_alternative": true,
+    "alt_retainer": 30000,
+    "alt_per_demo": 3000
+  },
+  "research_only": {
+    "small": {
+      "builders": 50,
+      "fee": 18500
+    },
+    "large": {
+      "builders": 150,
+      "fee": 35000
+    }
+  },
+  "whatsapp": {
+    "meta_marketing_inr": 0.8631,
+    "provider_marketing_inr_high": 1.09,
+    "per_message_incl_gst_low": 1.02,
+    "per_message_incl_gst_high": 1.29
+  },
+  "employee": {
+    "label": "One mid-level sales executive, Raipur / Bhilai / Rajnandgaon",
+    "components": {
+      "Fixed pay": 25000,
+      "Employer PF": 1600,
+      "Incentive (average)": 5000,
+      "Phone, CRM seat, laptop": 2700,
+      "Hiring and ramp-up, spread over 24 months": 2600
+    },
+    "all_in_monthly": 36900,
+    "band_low": 20000,
+    "band_high": 67000,
+    "hours_per_month": 176,
+    "research_hours_each_low": 0.25,
+    "research_hours_each_high": 0.67
+  },
+  "pilot_gates": {
+    "owner_coverage_pass_share": 0.4,
+    "whatsapp_reach_pass_share": 0.3,
+    "delivery_pass_share": 0.6,
+    "genuine_replies_pass": 1,
+    "delivery_basis": "delivered to owner-level numbers"
+  },
+  "display": {
+    "show_owner_names": false,
+    "show_campaign1_reply_count": true
+  }
+}

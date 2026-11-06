@@ -1,0 +1,6 @@
+breaks: [(4.87, 6.87, 2.0), (12.32, 13.4, 1.08), (17.12, 18.31, 1.19), (24.95, 26.62, 1.68), (31.02, 32.89, 1.87)]
+total 42.52 [(1, 0.0, 5.87, 4.872), (2, 5.87, 12.859, 5.451), (3, 12.859, 17.715, 3.718), (4, 17.715, 25.785, 6.635), (5, 25.785, 31.951, 4.394), (6, 31.951, 42.52, 7.234)]
+story.html -> C:\Users\Administrator\Desktop\AISales_agent_team\agent\pilot\video\dist\story
+wrote vistara/story_final.html 24977 bytes
+OK C:\Users\Administrator\Desktop\AISales_agent_team\agent\state\video_v2\vistara\renders\vistara_final.mp4 4.5 MB 42.5 s
+DONE: /c/Users/Administrator/Desktop/AISales_agent_team/agent/state/video_v2/vistara/renders/vistara_final.mp4

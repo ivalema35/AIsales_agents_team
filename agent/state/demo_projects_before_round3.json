@@ -1,0 +1,128 @@
+{
+  "prideaura": {
+    "name": "Pride Aura",
+    "brand": "Pride Group",
+    "types": [
+      "3 BHK",
+      "4 BHK"
+    ],
+    "budget": [
+      "Up to 75 lakh",
+      "75 lakh to 1.5 cr",
+      "Above 1.5 crore"
+    ],
+    "slug": "pride-aura-e6ph9g"
+  },
+  "brijsandalwood": {
+    "name": "BRIJ Sandalwood",
+    "brand": "Brij Group",
+    "types": [
+      "3 BHK",
+      "4 BHK"
+    ],
+    "budget": [
+      "Up to 75 lakh",
+      "75 lakh to 1.5 cr",
+      "Above 1.5 crore"
+    ],
+    "slug": "brij-sandalwood-5mbzd3"
+  },
+  "nblegacytower": {
+    "name": "NB Legacy Tower",
+    "brand": "NB Developer",
+    "types": [
+      "4 BHK",
+      "5 BHK"
+    ],
+    "budget": [
+      "Up to 4.5 crore",
+      "4.5 to 6 crore",
+      "Above 6 crore"
+    ],
+    "slug": "nb-legacy-tower-x4vyv9"
+  },
+  "elenzagardens": {
+    "name": "Elenza Gardens",
+    "brand": "Elenza Group",
+    "types": [
+      "2 BHK",
+      "Shop"
+    ],
+    "budget": [
+      "Up to 75 lakh",
+      "75 lakh to 1.5 cr",
+      "Above 1.5 crore"
+    ],
+    "slug": "elenza-gardens-vyqa09"
+  },
+  "rivantaheritage": {
+    "name": "Rivanta Heritage",
+    "brand": "Rivanta Group",
+    "types": [
+      "2 BHK",
+      "Other size"
+    ],
+    "budget": [
+      "Up to 40 lakh",
+      "40 to 70 lakh",
+      "Above 70 lakh"
+    ],
+    "slug": "rivanta-heritage-ttmbo7"
+  },
+  "greatspacesaaroham": {
+    "name": "Great Spaces Aaroham",
+    "brand": "Great Spaces",
+    "types": [
+      "4B3HK villa",
+      "Other size"
+    ],
+    "budget": [
+      "Up to 1.5 crore",
+      "1.5 to 2.5 crore",
+      "Above 2.5 crore"
+    ],
+    "slug": "great-spaces-aaroham-bdjo4z"
+  },
+  "swagatcilantra": {
+    "name": "Swagat Cilantra",
+    "brand": "Swagat Developers",
+    "types": [
+      "3 BHK",
+      "4 BHK Penthouse"
+    ],
+    "budget": [
+      "Up to 1.5 crore",
+      "1.5 to 2.5 crore",
+      "Above 2.5 crore"
+    ],
+    "slug": "swagat-cilantra-w9e5oh"
+  },
+  "parshwanathemerald": {
+    "name": "Parshwanath Emerald",
+    "brand": "Parshwanath",
+    "types": [
+      "2 BHK",
+      "Tell me more"
+    ],
+    "budget": [
+      "Up to 55 lakh",
+      "55 to 70 lakh",
+      "Above 70 lakh"
+    ],
+    "slug": "parshwanath-emerald-i7m0wn"
+  },
+  "spaceageconsultants": {
+    "name": "Space Age Consultants",
+    "brand": "Space Age Consultants",
+    "types": [
+      "400 sq yd plot",
+      "550 sq yd plot"
+    ],
+    "budget": [
+      "Up to 40 lakh",
+      "40 to 60 lakh",
+      "Above 60 lakh"
+    ],
+    "slug": "space-age-consultants-qs0295"
+  }
+}

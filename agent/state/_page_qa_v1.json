@@ -1,0 +1,278 @@
+{
+ "comprehension": {
+  "verdict": "ready_after_small_fixes",
+  "summary": "Reviewed as the busy Gujarat developer owner on the Pride Aura phone page (site_pride_m_00 to m_13, plus d_00 and nb_m_00 for comparison). I changed no files. In 5 seconds I understand \"automatic WhatsApp reply in about a minute\" and \"free demo for Pride Aura\". The project name makes it feel written for me, and I like the honest calculator note, the Example labels and the STOP line. What I do NOT get in 5 seconds is who is sending this (only the site's navbar logo shows), what the result is in site visits or money, or whether tapping means calls and spam. The page says the same thing five times (hero, \"Does this sound familiar?\", \"Often today vs With IV\", \"How it works\", \"What you get\"). That is about 10 phone screens of our content plus about 2.5 screens of site footer (m_00 to m_10 are ours, m_10 to m_13 are the site's). The calculator talks in typing-hours rather than money or visits. The best reassurance lines (\"A call happens only if you ask\", \"We never share your number\") are hidden in a closed FAQ and in tiny footer text. The fixes are mostly copy, ordering and deletions; only the calculator needs a small rework. Outside my lens: the task text says /campaign/<slug>, but the user's own request said ivinfotech.com/camping, so confirm the final path. The template's assets also load from /p/<slug>/..., and leads.json still talks about sales.ivinfotech.com/p/<slug>. I did not deploy anything.",
+  "findings": [
+   {
+    "severity": "major",
+    "where": "Hero CTA and the demo itself (site_pride_m_00, FAQ 'What happens when I tap the button?', leads.json demo_what)",
+    "problem": "I do not know what 'the demo' is or when it arrives. 'Send the demo' sounds like a file or a sales call. If the demo is a human reply later, it contradicts 'in about a minute' on the same page.",
+    "fix": "Make the demo the product. On tap, WhatsApp opens with a ready message ('Hi, please send the Pride Aura demo'). The automatic reply arrives in about a minute with the brochure and the 3 questions, so I feel exactly what my buyer feels. Say it under the button: 'Tap, press send, and watch the reply arrive in about a minute. This is what your buyers get.' If the demo is delivered by a person, drop 'in about a minute' near the button and state a real timing instead, for example 'You get the sample chat within [X hours]'. New demo_what: 'You get a short sample of this chat for Pride Aura, here on WhatsApp, [timing]. Nobody will call you unless you ask for a call.'"
+   },
+   {
+    "severity": "major",
+    "where": "Hero fine print and chips (m_00: 'Opens WhatsApp and takes about ten seconds.' plus chips 'Free demo / No obligation / Made for Pride Aura'); footer small text (m_10)",
+    "problem": "My hesitation is 'what does tapping cost me, will they call me, will my number be sold'. The answers are buried: 'a call happens only if you ask' is inside a closed FAQ, 'We never share your number' is in 12px footer text. 'Takes about ten seconds' says nothing about risk. 'Free demo' is also repeated three times (eyebrow, chip, button).",
+    "fix": "Replace the fine print with: 'Opens WhatsApp with a message ready. Just press send. Free. No call unless you ask. We never share your number.' Change the chips to 'Free', 'No call unless you ask', 'Made for Pride Aura'. Keep the footer line, but it must not be the only place."
+   },
+   {
+    "severity": "major",
+    "where": "Hero headline, sub-line and eyebrow (m_00, d_00, nb_m_00)",
+    "problem": "The headline states a feature (automatic reply), not what I want, which is site visits. 'Even at night', the strongest emotional hook in the video script, is missing from the page H1. 'Your team talks only to buyers who are ready' is the real benefit but it sits in small grey text. The sender (IV Infotech, Mehsana) is not named anywhere above the fold, and I got this from an unknown company.",
+    "fix": "Eyebrow: 'A FREE DEMO FOR PRIDE AURA · FROM IV INFOTECH, MEHSANA'. H1: 'Every enquiry from your ads gets an automatic WhatsApp reply in about a minute, even at night.' Sub-line, in normal text colour: 'The buyer gets the brochure and picks a site-visit time. Your team calls only the people who are ready.'"
+   },
+   {
+    "severity": "major",
+    "where": "Calculator (m_06, m_07; template section #calc)",
+    "problem": "(1) It uses typing-hours, where 15 hours a month looks tiny to an owner, and not my language of ad money and site visits. (2) 'Late first reply' is never defined, so I cannot fill the slider. 'Share who would still visit if answered in a minute' is a guess nobody can know, and 'share' is confusing for second-language English. (3) Four sliders is too much work for a busy owner. (4) On a phone the results sit below the sliders, out of view while dragging. (5) I trust the arithmetic because the formula is shown, but I do not trust the vendor-chosen 10 percent behind '6 extra buyers'. 'Simple arithmetic' is a hard word.",
+    "fix": "Use 3 inputs. (a) 'Enquiries you get in a month' (default 300). (b) 'Out of every 100 enquiries, how many wait more than an hour for the first reply?' (default 20). (c) 'What one enquiry costs you in ads, in rupees (example)' (default 400). Show the results ABOVE the sliders or in a sticky box inside the card, as sentences: '60 enquiries a month wait too long. You paid about Rs 24,000 in ads for them.' then 'If just 1 in 10 of them still came to see the site, that is 6 more site visits.' Put the '1 in 10' assumption in plain text and make hours a small third line ('Your team also saves about 15 hours of first replies'). Keep the honest note, with 'simple maths' instead of 'simple arithmetic'. Title: 'A quick estimate for Pride Aura. Try your own numbers.' Maths check: 300 x 20% = 60, 60 x 400 = 24,000, 60 x 10% = 6."
+   },
+   {
+    "severity": "major",
+    "where": "'Does this sound familiar?' (m_01 to m_02), 'Often today vs With IV' (m_02 to m_03), 'How it works' (m_04 to m_06), 'What you get' (m_07 to m_08)",
+    "problem": "The same four points (late reply, same brochure typing, hot vs casual, forgotten follow-ups) appear in four sections after the hero. The page is about 10 phone screens of our content before the site footer, which is too long for a busy owner and dilutes the one ask.",
+    "fix": "Delete the 'Does this sound familiar?' band, and delete the 'What you get' tick list (it duplicates the 'With IV Infotech' column). Keep 'What changes for Pride Aura' then 'How it works'. In How it works, drop the step 1 chat mock (the brochure bubble is already in the hero video) and keep the step 2 chat and the step 3 list mock. Target 6 phone screens or fewer."
+   },
+   {
+    "severity": "major",
+    "where": "Hero video block (m_01; d_00 right column)",
+    "problem": "I arrived by tapping 'See details' under this exact video in WhatsApp. On a phone it takes a full screen between the hero and the content, and pushes the 'what changes' message down a screen. Caption says '38 seconds' while the player shows 0:37.",
+    "fix": "On phone, move the video below 'How it works' (or after the calculator) with the heading 'Watch it again (under 40 seconds)'. Keep it in the right column on desktop. Fix the caption to 'Under 40 seconds. Made for Pride Aura.'"
+   },
+   {
+    "severity": "major",
+    "where": "'Who we are' (m_09), after the FAQ and near the bottom",
+    "problem": "'Who are these people' is the first doubt, yet it is answered last. The chips 'Hospital management software' and 'Institute management software' make a real-estate owner think they are generalists with no real-estate understanding. There is no proof at all, but I accept that fake testimonials are banned.",
+    "fix": "Add a one-line 'who' right under the hero buttons or right after the compare block: 'IV Infotech, Mehsana. We build CRM and ERP software for businesses across Gujarat.' Trim the chips to 'CRM and ERP systems', 'Websites and mobile apps', 'AI automation'. If any REAL fact exists (years in business, number of projects, a real client who agrees to be named, an existing lead-tracking system), add exactly one line with it. Do not invent. Keep the owner's name out."
+   },
+   {
+    "severity": "major",
+    "where": "FAQ (m_08, m_09) and the price answer",
+    "problem": "The questions I really have are missing. (a) 'Doesn't WhatsApp already have an auto-reply?' (b) 'What do I have to do, how long to start?' (c) 'Will my current WhatsApp number stop working?' (d) What it costs: 'We share the details after the demo' is what every vendor says, and busy owners ignore unpriced pitches.",
+    "fix": "Reorder and reword the FAQ to: 1 What happens when I tap? 2 What does it cost? 3 Doesn't WhatsApp already reply by itself? A: 'WhatsApp's own greeting is one fixed message. This sends your brochure, asks the three questions, fixes a site-visit time and tells your team who is ready.' 4 What do I need to do? A: 'Nothing technical. You share your brochure and your sales team's details. We set it up and look after it. [Add real setup time if known.]' 5 Will buyers feel it is a machine? 6 How do I stop hearing from you? Cost answer (owner decision): give a real anchor ('monthly fee from Rs ___') or, at minimum, 'We tell you the price in the demo chat, before anything else, if you ask. No call needed.' Check that the answer to 'Which WhatsApp number does it use?' is accurate regarding the existing WhatsApp app, and fold it into 4."
+   },
+   {
+    "severity": "minor",
+    "where": "Jargon in compare, steps and mocks (m_03 'One board shows hot buyers first, with the visit slot already picked'; m_04 to m_06 'Three quick questions and a visit slot', 'Pick a site visit slot', 'No slot yet', 'Your team sees one board')",
+    "problem": "'Board' and 'slot' are tech or booking words for this reader; 'late first reply' is vague; 'share' means percent here; 'first-reply typing' is odd English.",
+    "fix": "'One simple list on your phone shows the ready buyers first, with the site-visit time already fixed.' Step 2 title: 'Three quick questions, then a visit time.' Step 3 title: 'Your team sees one simple list.' Mock bubble: 'Pick a site visit time.' Mock row: 'No visit time yet.' Calculator labels: 'Hours your team saves on first replies', 'wait more than an hour for the first reply', 'Out of every 100'. Keep the 'Hot' tag, since developers say 'hot lead'."
+   },
+   {
+    "severity": "minor",
+    "where": "m_02 note under the familiar band: 'This is common for busy developers. It is not a criticism of your team.'",
+    "problem": "It plants the idea of criticism, so it sounds patronising or defensive. The red X column 'Often today' has a similar edge.",
+    "fix": "Delete the note (the whole band goes anyway, see the repetition finding). Rename the 'Often today' column to 'Without it' and keep the X items."
+   },
+   {
+    "severity": "minor",
+    "where": "Hero CTA label and the ghost button (m_00, nb_m_00)",
+    "problem": "'Yes, send the demo for Pride Aura' wraps to two lines on phone ('for NB Legacy Tower' is worse), while the video and the sticky bar say 'Yes, send the demo'. The video voice tells me to tap those exact words, so I look for them. The second button, 'See how it works', gives a busy owner a reason not to tap.",
+    "fix": "Make the hero button 'Yes, send the demo' (same as the video, the sticky bar and the final CTA) and keep the project name in the eyebrow and lede only. Hide the 'See how it works' button on phone, since scrolling does the same."
+   },
+   {
+    "severity": "minor",
+    "where": "Final CTA alternative contact (m_10: 'Prefer another way? email · phone')",
+    "problem": "Gujarat business owners prefer a call to an email, but email comes first and the phone number is hard to read (+919924426361).",
+    "fix": "'Prefer to talk? Call +91 99244 26361 (IV Infotech, Mehsana). Or email info@ivinfotech.com.' Phone first, with spaces in the number."
+   }
+  ]
+ },
+ "claims": {
+  "verdict": "ready_after_small_fixes",
+  "summary": "VERDICT: page and video are honest in spirit and close to shippable, but about a dozen sentences state a hoped-for outcome as a present fact or make a promise that is broader than IV can keep. These are wording fixes (page edits are quick; the voice-script fixes need the 4 lead videos and the SAMPLE_neutral header video re-voiced and re-rendered). Separately, the send channel is an owner-risk decision the page cannot cure (finding 1).\n\nALREADY GOOD (do not touch): no testimonials, no invented results, no owner name anywhere (grepped), no Meta/WhatsApp partnership wording, calculator prints its formula and says \"not a promise or a result\", every mock carries an Example badge (site_pride_m_05, site_pride_d_01, video badge), noindex + random slug, sender is named (IV Infotech, Mehsana) in the voice script, navbar and Who we are, \"Often today\" and \"It is not a criticism of your team\" soften the problem section well.\n\nCLAIM LEDGER (S = supportable as a service promise, C = needs owner confirmation first, X = soften/remove):\n- \"Every enquiry from your ads gets an automatic reply\" (H1, voice l.1, DESC) = X, present tense and absolute. Fix in finding 2.\n- \"in about a minute, even at night\" = C. Fine as a \"can\" claim once you time it end to end on a real number (webhook + BSP + any model step) and server uptime is 24x7. Say \"usually/can\", never \"every\".\n- \"Free demo, no obligation\" = S, if owner keeps demo_free=true and the demo is what DEMO_WHAT says (finding 11).\n- \"Brochure + 3 quick questions + visit slot\" = C. The client must supply the brochure and calendar; the slot picker must be built.\n- \"Hot buyers first, visit slot already picked\" = C and soften. The video defines Hot as \"a visit slot is set\"; the page should say so (finding 9).\n- \"Polite reminders day 1, 3, 7\" = X as written (finding 3).\n- \"On your own number\" / FAQ number answer = C and soften (finding 4).\n- \"Your team can join any chat at any moment\" / \"buyer can ask for a person at any time\" = C and soften (finding 13).\n- \"We set it up and look after it\" = C (finding 10).\n- Calculator and disclaimer = soften and relabel (finding 5).\n- \"We never share your number\" = X (finding 6).\n- \"Reply STOP ... we will not contact you again\" = C and narrow (finding 7).\n- \"Your team talks only to buyers who are ready\" = X (finding 9).\n- Hooks that describe their ads (\"send every tap to one WhatsApp chat\", \"invite buyers to visit the site\", \"open a WhatsApp chat\") = C, verify per lead in the Meta Ad Library that the ad is live with a WhatsApp CTA (finding 8).\n- Who we are chips (hospital, institute software) = S only if these are real portfolio items; the site footer lists CRM/ERP, web, apps, AI but not hospital/institute software by name. Confirm.\n- \"What does it cost? shared after the demo\" = S, add the WhatsApp-fees line (finding 11).\n- Contact email/phone = S (match the live site footer).\n\nWHY-YOU-SEE-THIS: the page does say who we are and why, but the reason is only in 12px footer text under the final CTA, and the first screen (site_pride_d_00 / m_00) never names the sender in the body (only the navbar logo). Fixes in finding 8 make it clear without sounding like surveillance.",
+  "findings": [
+   {
+    "severity": "major",
+    "where": "Whole plan: template iv_en_realestate_demo_v1 sent as a MARKETING template to developers; page footer 'You are seeing this page because your project advertises on WhatsApp' (template/index.html l.216)",
+    "problem": "Your own docs (AGENTIC_SALES_BLUEPRINT.md point 1, memory.md section 4) record that a cold marketing template to numbers the developer did not hand to IV for WhatsApp messaging breaks the WhatsApp Business Messaging Policy (opt-in is required; a number published on an ad or RERA page is not opt-in). Enforcement is reactive (blocks and reports, then template block, send block, account lock) and the only WABA is at risk. The footer line is a disclosure, not consent, and cannot fix this. DPDP core duties start about May 2027 and have no business-contact exemption either.",
+    "fix": "Owner decision, not a page fix. Safest: first touch by email or a message the developer started (wa.me), template only after they reply. If the owner still sends cold: one lead at a time, tiny volume, STOP handler verified live first, and treat any block/report as a stop signal. Do not rely on the page wording as cover."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.43 H1; build_pages.py DESC (also og:description / WhatsApp link preview); master_voice_en_v2.txt l.1 and l.13 ('Your team sees every enquiry'); compare list l.92; leads.json brij hook 'answer first, every time'",
+    "problem": "'Every enquiry from your ads gets an automatic reply in about a minute' is present tense and absolute. To the lead it reads as a guarantee, or as something already true for their ads. Not every enquiry arrives on WhatsApp, and outages, quality limits or an opted-out buyer break 'every'.",
+    "fix": "H1: 'Every WhatsApp enquiry from your ads can get an automatic reply in about a minute.' DESC: 'A short video and a simple example of how {{PROJECT}} can reply to WhatsApp ad enquiries automatically, usually in about a minute.' Compare l.92: 'The buyer can get an automatic reply in about a minute, even at night.' Voice l.1: 'Namaste, we are I V Infotech, Mehsana. With our system, every WhatsApp enquiry from your ads can get an automatic reply in about a minute, even at night.' Voice l.13 start: 'Your team can see every enquiry on one board, with hot buyers first.' BRIJ hook: '...Here is how that chat can answer first, even at night.' Time the real flow before keeping 'about a minute'."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.95 (compare), l.176 (What you get), l.119 context; master_voice_en_v2.txt l.13 ('Reminders go to the buyer on day one, three and seven'); video scene 4 Day 1/3/7 chips",
+    "problem": "Stated as automatic and unconditional. In practice reminders outside the 24-hour window (day 3 and 7 are outside even the 72-hour free window for click-to-WhatsApp ads) need pre-approved marketing templates, the buyer's opt-in captured in the chat, and each message is a billable marketing message. A buyer who says STOP must stop.",
+    "fix": "Page: 'Polite reminders can go to buyers who agree to get them, for example on day 1, day 3 and day 7. You choose the timing and the words.' Voice: 'You can also set polite reminders, for example on day one, three and seven, for buyers who agree to them.' Owner confirms: opt-in question exists in the chat flow, templates are approved, and who pays the per-message fee."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.187 FAQ 'Which WhatsApp number does it use?' ('The number your buyers already message from your ads'); master_voice_en_v2.txt l.5 ('on your own number')",
+    "problem": "A technical and ownership promise IV may not be able to keep as stated: the ad may point to an agency, a channel partner or a salesperson's personal number; a number already on the WhatsApp Business app needs coexistence or migration to the API, which can change how the team uses their phone; setup needs the client's Meta Business access. It also blurs that the free demo runs on IV's number, not theirs.",
+    "fix": "FAQ: 'Normally the number your ads already point to. We check this with you first, and nothing is switched on without your approval. For the free demo we use our own number, not yours.' Voice l.5: 'It is meant to work with your WhatsApp ads, on the number you already use.' Owner confirms the real onboarding path (coexistence vs API migration) and what happens to the team's existing phone use."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.144-165 calculator (screens site_pride_m_06/m_07, d_02); defaults 300 / 3 / 20% / 10% give 15 hours and 6 buyers",
+    "problem": "The first thing a visitor sees in the result tiles is '15 hours saved' and '6 extra buyers who may still visit' under the heading 'Estimate the time and visits for Pride Aura', which reads as an estimate made for their project. The tiles carry no Example tag; the disclaimer sits small under the formula, after the numbers. The 20% and 10% assumptions are invented defaults, not evidence.",
+    "fix": "Heading: 'A simple calculator (example numbers)'. Add an 'Example' badge on the result tiles. Rename tile 2: 'Buyers who might still visit (illustration)'. Move the disclaimer above the tiles and reword: 'Example numbers and simple arithmetic. They are not based on {{PROJECT}}'s own data, and they are not a promise, forecast or result.' Keep the printed formula."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.216 footer 'We never share your number.'; no link to a privacy notice on the page body",
+    "problem": "Absolute and not literally true: the number is necessarily processed by WhatsApp/Meta, the messaging provider and IV's own CRM/tools. 'Your number' is also ambiguous (the number we wrote to, or the one that taps the button). Under DPDP and Meta policy a plain notice of what we collect, why, and how to withdraw is the honest minimum; the page also loads the site's GA/GTM, which the page never mentions.",
+    "fix": "'We use your WhatsApp number only to send you this demo and to reply to you. We do not sell it or give it to other companies for their marketing. WhatsApp and our messaging provider carry the messages. See our Privacy Policy.' Link the site's existing Privacy Policy (allowed by the build check, https://www.ivinfotech.com prefix). Owner confirms the policy actually covers WhatsApp contact data and campaign-page analytics."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.188 FAQ 'How do I stop hearing from you?' and l.216 footer ('we will not contact you again')",
+    "problem": "'Not contact you again' promises all channels, but the STOP handling documented in AGENT_API_CONTRACT.md is keyed on a number or email in the suppression list and an inbound webhook. It only works if the wa.me number on the page (919924426361) is the same number that sends the template and that the webhook watches, and if STOP and the 'No, thanks' button both suppress. Opt-out appears only in the footer and the FAQ.",
+    "fix": "'Reply STOP in the WhatsApp chat and we will stop messaging you. You can also email info@ivinfotech.com.' Owner confirms before sending: STOP and No-thanks suppress on the sender number; the wa.me number equals the sender number; suppression also blocks email to the same person if you keep the all-channel wording; test with the two owner numbers."
+   },
+   {
+    "severity": "major",
+    "where": "Hero (site_pride_d_00 / m_00) and footer note l.216; leads.json hooks (pride 'send every tap to one WhatsApp chat', brij 'open a WhatsApp chat', elenza 'invite buyers to visit the site', nb 'with your team ready to join')",
+    "problem": "Sender identity and the reason for the message are not in the body above the fold, and the footer reason is vague ('because your project advertises on WhatsApp'). The hooks assert specific facts about the lead's ads and team; if one is stale or wrong the page looks like it was written by someone who is guessing, or watching. Template body says 'We saw your ads', the page says something slightly different.",
+    "fix": "Under the hero button (replace or extend l.50): 'From IV Infotech, Mehsana. We wrote to you because {{PROJECT}} runs ads that open a WhatsApp chat.' Footer: 'You are seeing this page because IV Infotech sent you this link. We wrote to the business number for {{PROJECT}} after seeing that your ads open a WhatsApp chat. We cannot see your WhatsApp, your ads account or your buyers' chats.' NB hook: change 'with your team ready to join' to 'with your team able to join'. Before send, check each lead in the Meta Ad Library that the ad is live with a WhatsApp CTA (the journey doc's own 'verify freshness' step)."
+   },
+   {
+    "severity": "major",
+    "where": "template/index.html l.45 ('Your team talks only to buyers who are ready') and l.94 ('hot buyers first, with the visit slot already picked'); l.131",
+    "problem": "'Talks only to' is an absolute, and it contradicts the page's own 'your team can join any chat'. 'Hot' is never defined on the page (the video defines it as a visit slot being set). 'With the visit slot already picked' is false for buyers who did not pick one (the board itself shows 'No slot yet').",
+    "fix": "l.45: 'Your team can focus on buyers who are ready.' l.94: 'One board shows buyers who picked a visit slot first.' l.131: 'Buyers who picked a visit slot come first. Your team can take over any chat whenever it wants.'"
+   },
+   {
+    "severity": "minor",
+    "where": "template/index.html l.178 'We set it up and look after it.'; l.186 cost FAQ",
+    "problem": "'Look after it' implies ongoing monitoring/support with no scope, and setup depends on the client's Meta Business Verification, template approval and message fees, none of which IV controls. Cost FAQ is honest but silent on WhatsApp's own per-message charges, which is where a surprise bill would come from.",
+    "fix": "l.178: 'We set it up with you and support it after launch. Scope and price are shared before you decide.' l.186: 'The demo is free. If you want to go ahead, we give the full price in writing before you pay anything. WhatsApp's own message charges are separate and we show them to you.' Owner confirms support scope and who pays Meta fees."
+   },
+   {
+    "severity": "minor",
+    "where": "leads.json demo_what; template/index.html l.50 and l.185 FAQ 'What happens when I tap the button?'",
+    "problem": "The answer omits that wa.me only pre-fills a message (the visitor must press Send), that the sample comes from IV's number, what IV then holds (their number and message), and when the sample arrives. The page has just promised a reply in about a minute; if the sample takes up to 3 working days (open item (h) in the journey doc) the demo contradicts the pitch. 'Demo' (non-tech reader: a live working system) and 'sample' are used interchangeably.",
+    "fix": "Hero fine line: 'Opens WhatsApp with a ready message. Press Send. Takes about ten seconds.' demo_what: 'WhatsApp opens with a ready message. Press Send, and we reply with a short sample of this chat for {{PROJECT}}, from our own number. Nothing is connected to your number or your ads. We keep your number and message only to send the demo. A call happens only if you ask for one.' Add 'You get it within one working day' only if true. Owner confirms the 'no call unless asked' rule is enforced in the follow-up process."
+   },
+   {
+    "severity": "minor",
+    "where": "template/index.html l.183 FAQ 'Will buyers feel they are talking to a machine?'; l.177 'join any chat at any moment'",
+    "problem": "The answer sidesteps the question, and 'at any moment / at any time' implies a person is always available. Agent KB says never imply a human and disclose automation in the first message of a conversation; the page should say buyers are told, but only if the chat flow really does tell them.",
+    "fix": "'Buyers are told the first reply is automatic. They can ask for a person, and your team can take over any chat whenever it wants.' l.177: 'Your team can take over any chat whenever it wants.' Owner confirms the automation line exists in the flow and the takeover works from the board."
+   },
+   {
+    "severity": "minor",
+    "where": "Footer l.217 and hero/video; project name used in title, og tags, mocks, hero eyebrow, video",
+    "problem": "Using the lead's project name is fine on a private noindex page addressed to them, but nothing says IV is independent of them, WhatsApp or Meta, and the mock WhatsApp profile named after the project could be read as their real account. The link preview (og:title/description) also carries their project name if forwarded. There is no way on the page to ask for takedown.",
+    "fix": "Add to footer: 'IV Infotech is an independent company. This page is not from, or endorsed by, {{BRAND}}, WhatsApp or Meta. If you want this page taken down, reply STOP or email us and we will remove it.' Do not use their logo, real brochure, RERA number or real buyer names in samples; keep noindex, random slug, out of any sitemap. Keep the Example badge visible on every mock."
+   },
+   {
+    "severity": "minor",
+    "where": "leads.json bhk1/bhk2; template l.112, l.123 mocks; hero video; template l.77-83 and l.70",
+    "problem": "Small accuracy and tone slips. Elenza asks 'Which size?' with pills '2 BHK / Shop' (a shop has no BHK). Inventory claims (pride 3/4 BHK, brij 3/4, nb 4/5, elenza 2 BHK/Shop) are unverified guesses about their units. NB hook says 'personal first reply' for an automatic reply. Mock buyers (Meera S., Kunal P., Anita R., Dhruv M.) look like real people. Heading 'What changes for Pride Aura' states the 'Often today' column as if it were their current state; 'some buyers are forgotten' is a mild accusation.",
+    "fix": "Elenza question: 'Which type?'. Verify unit mixes against each project's public listing. NB hook: 'A premium address deserves a prompt first reply. Here is how every NB Legacy Tower enquiry can get one, with your team able to join the chat.' Use placeholders such as 'Sample buyer 1/2/3'. Heading: 'What can change for {{PROJECT}}'. Card: 'some buyers can be missed'."
+   },
+   {
+    "severity": "minor",
+    "where": "template/index.html l.58 figcaption; master_voice_en_v2.txt (AI voice); wave1_template_en_spec.json body",
+    "problem": "Figcaption says '38 seconds' but the player shows 0:37. The voice-over is synthetic and nothing says so; memory.md flags that ElevenLabs free-plan audio and kie.ai assets are not cleared for commercial use, and ASCI AI-labelling rules start about Jan 2027. Adjacent: the template body says 'many buyers move on to the next developer' (unsourced market claim) and 'how site visits can grow' (outcome claim).",
+    "fix": "Figcaption: 'Under 40 seconds. Press play. Voice-over is AI-generated. The chat shown is an example.' Confirm the ElevenLabs plan/licence and image/video asset terms allow commercial use before the first send. Template body: 'some buyers may move on to the next developer' and replace 'how site visits can grow' with 'how your team can save time and give buyers a quicker first reply' (template edit means re-approval if already submitted)."
+   }
+  ]
+ },
+ "visual": {
+  "verdict": "ready_after_small_fixes",
+  "summary": "VERDICT: ready after small fixes. There are no blockers. I viewed all 14 pride phone chunks and all 4 pride desktop chunks. I also viewed 13 NB phone chunks, 12 of 13 brij phone chunks (m_02, m_03, m_05, m_08, m_11 and m_12 unseen), and 7 of 13 elenza phone chunks (m_02, m_03, m_04, m_08, m_09, m_11 and m_12 unseen). Desktop chunks for NB, brij and elenza were all seen.\n\nWhat works:\n- Nothing is permanently hidden. The sticky bar hides at the final CTA, and the footer has 110px of padding below it.\n- The site navbar is a fixed pill, about 80px on phone and 88px on desktop. It covers the top of every chunk, but that is expected.\n- Contrast is fine almost everywhere. The final blue band (white on #1D4ED8) is 6.7:1, the teal band is 5.5:1, and muted text is 6 to 10:1 in every tone, NB included. The one real failure is the luxury WhatsApp button, 3.3:1 (finding 1).\n- The three light tones look clean, calm and trustworthy. The \"Example\" badges and the \"not a promise\" note read as honest.\n\nJudgement on NB (luxury): it is a good start, not yet premium. Navy, gold and the Georgia headlines are right. But it is the same card template re-skinned. The CTA is WhatsApp-teal beside gold, 24px bubbly corners, and bright beige chat mocks pasted onto navy. There is a white seam before the site footer, and the calculator numerals are old-style (findings 1, 4, 9 and 12).\n\nTone differentiation: BRIJ (green) and Elenza (teal) are close. The launch --pop orange is only used for the keyboard focus ring.\n\nAlso worth doing: the page is about 14 phone screens, and the same pain points and benefits appear three or four times (finding 11).\n\nCould not verify from the stills:\n- The desktop chunks are sampled, not contiguous, so the final CTA band is hidden under the navbar on pride, brij and elenza desktop.\n- The desktop 3-column chat mocks are cut off at the bottom of d_01.\n- The FAQ open state is not shown.\n- The template still has its own header.top and footer.foot. The stills show header.top removed and the footer kept, so ship the embedded build.",
+  "findings": [
+   {
+    "severity": "major",
+    "where": "NB / luxury, every WhatsApp button (hero, sticky bar, final band). site_nb_m_00, site_nb_m_01, site_nb_m_10, site_nb_d_00",
+    "problem": "White 18px bold text on --wa #11A08C in the luxury tone is only 3.27:1 (fails AA 4.5:1). The WhatsApp-teal button also clashes with the gold palette used everywhere else. It is the single most important element on the page.",
+    "fix": "Make the luxury CTA gold with navy text (7.7:1): `body[data-tone=\"luxury\"] .btn.wa, body[data-tone=\"luxury\"] .final .btn.wa{background:var(--pop);color:var(--accent-ink);box-shadow:0 12px 28px rgba(212,175,90,.28)} body[data-tone=\"luxury\"] .btn.wa:hover{background:#E3C374}`. The second selector must come after the existing `.final .btn.wa` luxury rule. Also set `body[data-tone=\"luxury\"] .with .ico, body[data-tone=\"luxury\"] .ticks .ico{color:var(--pop)}` so the ticks match (teal ticks on navy are only 4.7:1)."
+   },
+   {
+    "severity": "major",
+    "where": "Hero video, all tones and viewports. site_*_m_01, site_*_d_00",
+    "problem": "(a) The native control bar sits on the video's own baked-in footer 'Mehsana - made for <Project>' and the logo, so that text is half covered and looks garbled. (b) The poster is a mid-sentence subtitle frame ('in about a minute,') with a half-empty phone screen. There is no big play button, only a tiny triangle in the bar, which is hard for non-tech users. (c) The caption says '38 seconds' but the player shows 0:37.",
+    "fix": "Use a purpose-made poster (title card with project name). Remove `controls` at first and add a centred play button: wrap the video in `.vwrap{position:relative}`, add `<button class=\"vplay\" aria-label=\"Play video\">` styled `position:absolute;inset:0;margin:auto;width:76px;height:76px;border-radius:50%;background:var(--pop);color:var(--accent-ink);border:0`. On click: `v.controls=true; v.play(); wrap.classList.add('playing')`, with `.vwrap.playing .vplay{display:none}`. Alternatively re-render the video so its footer sits at least 64px above the bottom edge. Change the caption to 'About 40 seconds' (or 37)."
+   },
+   {
+    "severity": "major",
+    "where": "Calculator on phone, all tones. site_pride_m_06 to m_07, site_nb_m_06 to m_07, site_brij_m_06 to m_07, site_elenza_m_05 to m_07",
+    "problem": "Four sliders take about 560px, and the result numbers (15 / 6) start below them. When the visitor drags the first slider the result is off-screen, so the calculator feels dead.",
+    "fix": "On <=819px put the results first as a compact 2-column row: `.calc{display:flex;flex-direction:column-reverse} .calc-out{grid-template-columns:1fr 1fr;gap:10px 14px;padding:18px 20px} .res-l{font-size:15px} .res-n{font-size:44px} .formula,.honest{grid-column:1/-1}`. Optionally wrap the two `.res` blocks in `<div class=\"res-pair\">` and make it `position:sticky;top:96px;background:var(--surface)` so it stays visible under the navbar while sliding."
+   },
+   {
+    "severity": "major",
+    "where": "Page end, above the site footer. site_nb_m_10 (y about 770-795), site_nb_d_03 (y about 390-416). Milder on site_pride_d_03, site_brij_d_03, site_elenza_d_03, site_pride_m_10",
+    "problem": "Dark NB page, then a white strip, then the dark rounded site footer. The seam looks broken. On the light tones it is a tint-to-white-to-navy step. Our small disclaimer block (.foot) is also stacked directly above the site footer as orphaned grey text, so the page ends with two footers.",
+    "fix": "Make the tone background cover the gap: wrap the site-footer include in `<div class=\"cp-tail\">` with `background:var(--bg);padding-bottom:24px`, or set the site footer wrapper background to transparent under `body[data-tone]`. Move the disclaimer lines inside `.final` as small print under `.alt` (or give `.foot` a top hairline and `font-size:13px`) so only the site footer remains as the page footer."
+   },
+   {
+    "severity": "minor",
+    "where": "Hero 'See how it works' anchor (#how), all tones",
+    "problem": "page.css has no scroll-padding-top or scroll-margin-top. The `.band` top padding (40px phone, 56px desktop) is smaller than the fixed navbar (80px phone, 88px desktop). Tapping 'See how it works' will land with the 'How it works, in three steps' heading hidden under the pill. This is derived from the CSS, not visible in the stills, so verify on the live site.",
+    "fix": "`html{scroll-padding-top:100px}` (or `#how{scroll-margin-top:100px}`)."
+   },
+   {
+    "severity": "minor",
+    "where": "Desktop 'How it works' cards. site_pride_d_01, site_brij_d_01, site_elenza_d_01 (bottom of chunk)",
+    "problem": "The three chat mocks start at different heights (about 741 / 741 / 716 on pride, and 769 / 741 / 716 on brij and elenza) because the titles and paragraphs wrap to different line counts. It looks unaligned.",
+    "fix": "Use subgrid: `@media(min-width:820px){.steps{grid-template-rows:auto auto auto 1fr} .step{display:grid;grid-template-rows:subgrid;grid-row:span 4;row-gap:10px}}`. The four rows are .num, h3, p and .mock."
+   },
+   {
+    "severity": "minor",
+    "where": "Desktop hero CTA row. site_pride_d_00, site_nb_d_00, site_brij_d_00, site_elenza_d_00",
+    "problem": "The primary button plus 'See how it works' is wider than the 585px column, so the ghost button wraps to its own left-aligned line. It reads as an accident, and the NB serif headline is worst (a 5-line H1 pushes the ghost button to the fold).",
+    "fix": "Make the secondary action a text link: `.cta-row .btn.ghost{border:0;min-height:auto;padding:0 6px;width:auto;text-decoration:underline;text-underline-offset:4px}`. Or shorten the primary label to 'Yes, send the demo' so both fit on one line."
+   },
+   {
+    "severity": "minor",
+    "where": "Headlines. site_nb_m_00, site_nb_d_00, site_nb_m_04, site_nb_m_02",
+    "problem": "Orphan words: the NB H1 ends with a lone 'minute.' on both phone and desktop, 'How it works, in three / steps' leaves a single word on the second line, and 'What changes for NB / Legacy Tower' breaks late. The 52px Georgia H1 runs to 5 lines on desktop and is heavy.",
+    "fix": "`h1,h2,h3{text-wrap:balance}` and `body[data-tone=\"luxury\"] h1{font-size:clamp(30px,5vw,46px)}`."
+   },
+   {
+    "severity": "minor",
+    "where": "Calculator numerals. site_nb_m_06, site_nb_m_07, site_nb_d_02 (NB); site_pride_d_02, site_brij_m_07, site_elenza_m_07 ('10%', '15')",
+    "problem": "Georgia uses old-style figures, so '300' has descending 3s, '15' has a small-cap 1 and '6' sits oddly (NB). Space Grotesk tabular-nums gives a wide flagged '1' that visually collides with the next digit in '10%' and '15' on the other tones.",
+    "fix": "`body[data-tone=\"luxury\"]{font-variant-numeric:lining-nums}` and for the other tones set `.res-n,.rng output{font-variant-numeric:normal}`. Keep the output min-width so there is no jitter."
+   },
+   {
+    "severity": "minor",
+    "where": "Calculator sliders, all tones, phone. site_pride_m_05/m_06 etc.",
+    "problem": "The input is 10px tall with a 28px thumb (22px on Firefox). That is well under a 44px touch target for non-tech phone users. In luxury the unfilled track (rgba white .16) is about 1.6:1 against the panel, so it is nearly invisible.",
+    "fix": "Make the input the hit area and style the track via pseudo-elements: `.rng input[type=range]{height:44px;background:none} .rng input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--accent) var(--pct,30%),var(--line) var(--pct,30%))} .rng input[type=range]::-webkit-slider-thumb{width:32px;height:32px;margin-top:-11px} .rng input[type=range]::-moz-range-track{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--accent) var(--pct,30%),var(--line) var(--pct,30%))} .rng input[type=range]::-moz-range-thumb{width:28px;height:28px}`. For luxury use a lighter track, rgba(255,255,255,.28)."
+   },
+   {
+    "severity": "minor",
+    "where": "Page length and repetition on phone. Whole page, about 14 screens (site_pride_m_00 to m_11)",
+    "problem": "The same content is shown repeatedly. The 3 'Does this sound familiar?' cards and the 'Often today' column carry the same pains. The 'With IV Infotech' column, the 3 steps and 'What you get' repeat the same benefits. The audience has no time.",
+    "fix": "On <=520px hide the duplicate blocks: `.compare .today{display:none}` (about 380px saved) and the `What you get` list (about 550px saved, with 'Questions' staying full width). Keep them on desktop if wanted."
+   },
+   {
+    "severity": "minor",
+    "where": "NB luxury polish. site_nb_m_02, site_nb_m_04 to m_05, site_nb_m_10, site_nb_d_01",
+    "problem": "(a) --soft #121D3F vs --bg #0E1730 is nearly identical, so section rhythm disappears. (b) The bright beige chat mocks look pasted onto navy. (c) 24px bubbly radii and drop-shadows that are invisible on dark feel generic, not premium. (d) The final band (#17234B) is barely lighter than the page, so it does not read as the conversion moment.",
+    "fix": "For luxury only: `.band{border-block:1px solid var(--line)}`, `--radius:14px`, give `.mock` a bezel (`border:6px solid #0A1228;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.45)`), and give `.final` a gold top border plus a subtle gradient (`background:linear-gradient(180deg,#17234B,#101A3A);border-top:1px solid var(--pop)`)."
+   },
+   {
+    "severity": "minor",
+    "where": "Hero on phone. site_pride_m_00, site_nb_m_00, site_brij_m_00, site_elenza_m_00; final band site_*_m_10",
+    "problem": "The project name appears four times above the fold (eyebrow, lede, button, 'Made for X' chip), and 'Free demo' appears in both the eyebrow and a chip. The long button label wraps to 2 lines ('Pride / Aura') with the WhatsApp icon pinned far left and the text centred, so it looks off-balance. The video starts exactly at the fold.",
+    "fix": "Drop the 'Made for X' and 'Free demo' chips (keep 'No obligation' and 'Takes about ten seconds') to bring the video about 44px up. Use the label 'Yes, send the demo' on the hero and final buttons. It fits on one line and matches the sticky bar and the video's own voice line."
+   },
+   {
+    "severity": "minor",
+    "where": "Final band alt contacts, phone. site_pride_m_10, site_nb_m_10, site_brij_m_10, site_elenza_m_10",
+    "problem": "The email and phone links are small inline text, about 26px line height, split by a wrap at the '.' separator. The phone shows as raw '+919924426361' while the site footer shows '+91 9924426361'. This is the fallback contact for people who do not want WhatsApp.",
+    "fix": "Show each on its own line with large targets: `.final .alt a{display:inline-block;padding:10px 6px}`. Display the number as '+91 99244 26361' (separate display text from the tel: value). Do the same for the 'www.ivinfotech.com' link in 'Who we are'."
+   },
+   {
+    "severity": "minor",
+    "where": "Sticky bar vs native video controls, phone. Visible around site_*_m_01",
+    "problem": "The sticky bar appears as soon as the hero CTA scrolls out, which is while the video is on screen. It is 72px high and can cover the native control bar if the video's lower part sits in the bottom 72px.",
+    "fix": "In page.js add a third IntersectionObserver on #demo-video and include it: `sticky.classList.toggle('show', !visible.hero && !visible.fin && !visible.vid)`."
+   },
+   {
+    "severity": "minor",
+    "where": "page.css embedded into the real site",
+    "problem": "page.css uses unscoped global selectors: `* {margin:0;padding:0}`, `body{...}`, `a{...}`, `ul{list-style:none}`, `img,svg,video{display:block}`, plus generic class names (.btn, .card, .wrap, .top, .foot, .sticky, .skip, .band, .block, .col). On the live ivinfotech.com page these can restyle the site's own navbar and footer. The stills show them intact, so this is a ship-time risk to check on staging, not a current bug.",
+    "fix": "Wrap the page content in `<div class=\"cp\">`, prefix every rule with `.cp` (or use a `cp-` class prefix), and move the `body[data-tone]` variables onto `.cp[data-tone]`."
+   }
+  ]
+ }
+}

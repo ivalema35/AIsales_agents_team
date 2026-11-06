@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>IV Infotech master explainer v2 (render page)</title>
+<style>
+@font-face { font-family: "Inter"; src: url("fonts/inter.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Space Grotesk"; src: url("fonts/space-grotesk.woff2") format("woff2"); font-weight: 300 700; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 720px; height: 1280px; overflow: hidden; background: #000; font-family: "Inter", "Segoe UI", sans-serif; }
+#stage { position: relative; width: 720px; height: 1280px; overflow: hidden; color: #14213D; }
+.abs { position: absolute; }
+.bg { position: absolute; inset: 0; }
+#bgDay { background: linear-gradient(180deg, #FBF8F1 0%, #F1EBDD 100%); }
+#bgNight { background: radial-gradient(120% 70% at 50% 0%, #2B3F7E 0%, #17254F 45%, #0C1632 100%); }
+.stars i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #fff; opacity: .7; }
+.head { position: absolute; left: 40px; right: 40px; top: 58px; font: 700 52px/1.1 "Space Grotesk", sans-serif; letter-spacing: -.02em; text-align: center; }
+.night { color: #fff; }
+/* brand pill: safe area (above the player controls), readable on both backgrounds */
+.brandfoot { position: absolute; left: 0; right: 0; bottom: 88px; display: flex; justify-content: center; align-items: center; gap: 14px; }
+.brandfoot .lg { background: #fff; border-radius: 999px; padding: 7px 18px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+.brandfoot .lg img { display: block; height: 32px; }
+.brandfoot .tx { font: 600 22px "Inter"; letter-spacing: .01em; }
+/* phone */
+.phone { position: absolute; width: 360px; height: 640px; border-radius: 46px; background: #0b1220; padding: 12px; box-shadow: 0 30px 60px rgba(8,14,32,.32); }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 36px; background: #ECE5DD; overflow: hidden; display: flex; flex-direction: column; }
+.wahead { height: 82px; flex: none; background: #075E54; color: #fff; display: flex; align-items: flex-end; gap: 12px; padding: 0 16px 12px; }
+.wahead b { font: 600 21px/1.15 "Inter"; display: block; }
+.wahead small { font: 400 15px "Inter"; opacity: .85; display: block; }
+.av { width: 40px; height: 40px; border-radius: 50%; background: #CFE9E4; flex: none; display: grid; place-items: center; color: #075E54; font: 700 18px "Inter"; }
+.chat { flex: 1; padding: 10px 12px 6px; display: flex; flex-direction: column; gap: 8px; background: #ECE5DD; overflow: hidden; }
+.bub { max-width: 90%; padding: 8px 12px 7px; border-radius: 12px; font: 500 18px/1.28 "Inter"; color: #1b2430; box-shadow: 0 1px 1px rgba(0,0,0,.12); }
+.bub.out { align-self: flex-end; background: #DCF8C6; border-top-right-radius: 3px; }
+.bub.in { align-self: flex-start; background: #fff; border-top-left-radius: 3px; }
+.bub small { display: block; text-align: right; font: 500 15px "Inter"; color: #4b5563; margin-top: 3px; }
+.tick { color: #9aa4b2; letter-spacing: -3px; font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.chip { padding: 5px 13px; border-radius: 999px; border: 1.5px solid #128C7E; color: #0b6e63; font: 600 16px "Inter"; background: #fff; }
+.chip.sel { background: #128C7E; color: #fff; }
+.pdf { display: flex; align-items: center; gap: 10px; padding: 7px; margin-top: 6px; border-radius: 8px; background: #F1F5F4; }
+.pdf i { width: 36px; height: 42px; border-radius: 5px; background: #E5484D; color: #fff; font: 700 12px/42px "Inter"; text-align: center; font-style: normal; }
+.pdf b { font: 600 16px/1.2 "Inter"; display: block; }
+.pdf s { text-decoration: none; font: 500 15px "Inter"; color: #4b5563; }
+.slotbtn { display: inline-block; width: 48%; margin: 6px 1% 0; padding: 7px 4px; text-align: center; border-radius: 10px; background: #fff; border: 1.5px solid #128C7E; color: #0b6e63; font: 600 16px "Inter"; }
+.inputbar { height: 54px; flex: none; background: #F0F0F0; display: flex; align-items: center; padding: 0 12px; }
+.inputbar span { flex: 1; height: 34px; border-radius: 17px; background: #fff; }
+/* "Example" tag: a readable chip outside the mock, never on a bezel */
+.eg { position: absolute; padding: 6px 16px; border-radius: 999px; background: #14213D; color: #fff; font: 700 19px "Inter"; letter-spacing: .08em; text-transform: uppercase; }
+.night-eg { background: #E3C26F; color: #14213D; }
+.card { position: absolute; background: #fff; border-radius: 28px; box-shadow: 0 18px 44px rgba(20,33,61,.16); }
+.pill { display: inline-block; padding: 8px 20px; border-radius: 999px; font: 600 22px "Inter"; }
+/* subtitles */
+.subbg { position: absolute; left: 24px; right: 24px; bottom: 170px; height: 138px; border-radius: 28px; background: rgba(12,22,50,.9); }
+.sub { position: absolute; left: 36px; right: 36px; bottom: 170px; height: 138px; text-align: center; font: 600 35px/1.25 "Inter"; color: #fff; }
+.sub .chunk { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); opacity: 0; text-wrap: balance; }
+.sub .wd { opacity: .55; }
+.sub .wd.on { opacity: 1; }
+.row { position: absolute; left: 22px; right: 22px; height: 86px; border-radius: 18px; background: #F7F5EF; display: flex; align-items: center; gap: 14px; padding: 0 16px; }
+.row .av { width: 50px; height: 50px; font-size: 21px; }
+.row b { font: 600 23px/1.2 "Inter"; display: block; }
+.row small { font: 400 17px "Inter"; color: #6b7280; display: block; }
+.row .st { margin-left: auto; text-align: right; }
+.st i { display: inline-block; font-style: normal; padding: 4px 14px; border-radius: 999px; font: 700 16px "Inter"; background: #E8EEF9; color: #2B4C9B; }
+.st i.hot { background: #FDE7E0; color: #C2410C; }
+.st small { margin-top: 4px; }
+.dayc { display: inline-block; padding: 9px 20px; margin-right: 12px; border-radius: 14px; background: #E6F3F0; color: #0b6e63; font: 700 24px "Inter"; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: absolute; left: 22px; right: 22px; top: 92px; }
+.cal div { height: 170px; border-radius: 14px; background: #F4F1E9; position: relative; text-align: center; font: 600 17px "Inter"; color: #6b7280; padding-top: 8px; }
+.cal div u { position: absolute; left: 5px; right: 5px; bottom: 8px; top: 40px; border-radius: 10px; background: #128C7E; color: #fff; font: 700 16px/1.2 "Inter"; text-decoration: none; padding: 8px 3px; overflow: hidden; }
+.ripple { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 5px solid rgba(255,255,255,.9); background: rgba(255,255,255,.25); }
+svg { display: block; }
+</style></head>
+<body><div id="stage">
+  <div class="bg" id="bgDay"></div>
+  <div class="bg" id="bgNight"><div class="stars" id="stars"></div></div>
+  <div id="scenes"></div>
+  <div class="subbg" id="subbg"></div>
+  <div class="sub" id="subs"></div>
+  <div class="brandfoot" id="foot"></div>
+</div>
+<script>
+// ---------------------------------------------------------------- inputs
+const Q = new URLSearchParams(location.search);
+const V = { project: Q.get("project") || "Your Project", city: Q.get("city") || "Gujarat", time: Q.get("time") || "10:47 PM", bhk1: Q.get("bhk1") || "2 BHK", bhk2: Q.get("bhk2") || "3 BHK" };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const P = esc(V.project), C = esc(V.city), TM = esc(V.time), B1 = esc(V.bhk1), B2 = esc(V.bhk2);
+const LOGO = "brand/iv-infotech-logo.png";
+const anims = [];
+function A(el, kf, t0, dur, opt) {
+  const a = el.animate(kf, Object.assign({ duration: Math.max(1, dur * 1000), delay: Math.max(0, t0) * 1000, fill: "both", easing: "cubic-bezier(.2,.8,.2,1)" }, opt || {}));
+  a.pause(); anims.push(a); return a;
+}
+// one animation per element: appears at t0 and stays (t1 = null) or leaves at t1
+function win(el, t0, t1, o) {
+  o = Object.assign({ inD: .4, outD: .3, y: 16, x: 0, s: 1 }, o || {});
+  const from = `translate(${o.x}px, ${o.y}px) scale(${o.s})`;
+  if (t1 === null) return A(el, [{ opacity: 0, transform: from }, { opacity: 1, transform: "none" }], t0, o.inD);
+  const tot = Math.max(.1, t1 - t0), a = Math.min(.5, o.inD / tot), b = Math.max(a, (tot - o.outD) / tot);
+  return A(el, [{ opacity: 0, transform: from, offset: 0 }, { opacity: 1, transform: "none", offset: a }, { opacity: 1, transform: "none", offset: b }, { opacity: 0, transform: "none", offset: 1 }], t0, tot, { easing: "linear" });
+}
+const $ = (html, parent) => { const d = document.createElement("div"); d.innerHTML = html.trim(); const e = d.firstElementChild; if (parent) parent.appendChild(e); return e; };
+const scenesEl = document.getElementById("scenes");
+
+function avatar(skin, hair, shirt, w) {
+  return `<svg width="${w}" viewBox="0 0 80 90"><circle cx="40" cy="30" r="17" fill="${skin}"/><path d="M22 28c0-12 8-19 18-19s18 7 18 19c-4-7-9-10-18-10s-14 3-18 10z" fill="${hair}"/><path d="M8 90c0-20 14-32 32-32s32 12 32 32z" fill="${shirt}"/></svg>`;
+}
+function building(w) {
+  let wins = ""; for (let r = 0; r < 6; r++) for (let c = 0; c < 4; c++) wins += `<rect x="${30 + c * 24}" y="${36 + r * 26}" width="14" height="16" rx="2" fill="${(r * 3 + c) % 5 === 0 ? "#FFD27A" : "#BFD3EA"}"/>`;
+  return `<svg width="${w}" viewBox="0 0 150 230"><rect width="150" height="230" rx="16" fill="#DCE7F5"/><rect x="18" y="18" width="114" height="196" rx="6" fill="#7B93B8"/>${wins}<rect x="62" y="186" width="26" height="28" rx="3" fill="#3C4F73"/></svg>`;
+}
+// phone: a wrapper carries the scale, the inner phone carries the appear animation
+function phone(parent, x, y, scale, title, subtitle, egOnNight) {
+  const wrap = $(`<div class="abs" style="left:${x}px;top:${y}px;width:360px;height:640px;transform:scale(${scale});transform-origin:top left"></div>`, parent);
+  const p = $(`<div class="phone" style="left:0;top:0"><div class="screen"><div class="wahead"><div class="av">${esc(String(title)[0] || "P")}</div><div><b>${title}</b><small>${subtitle}</small></div></div><div class="chat"></div><div class="inputbar"><span></span></div></div></div>`, wrap);
+  const eg = $(`<div class="eg ${egOnNight ? "night-eg" : ""}" style="left:${x + 360 * scale - 112}px;top:${y - 40}px">Example</div>`, parent);
+  return { el: p, chat: p.querySelector(".chat"), eg };
+}
+function msg(chat, side, html, t0) {
+  const m = $(`<div class="bub ${side}">${html}</div>`, chat);
+  A(m, [{ opacity: 0, transform: "translateY(14px) scale(.96)" }, { opacity: 1, transform: "none" }], t0, .35);
+  return m;
+}
+function scene(t0, t1) {
+  const s = $(`<div class="abs" style="left:0;top:0;width:720px;height:1280px"></div>`, scenesEl);
+  win(s, t0, t1, { inD: .3, outD: .25, y: 0 });
+  return s;
+}
+function ripple(parent, x, y, t) {
+  const r = $(`<div class="ripple" style="left:${x}px;top:${y}px"></div>`, parent);
+  A(r, [{ opacity: 0, transform: "scale(.4)" }, { opacity: 1, transform: "scale(.8)", offset: .3 }, { opacity: 0, transform: "scale(1.6)" }], t, .7, { easing: "ease-out" });
+}
+function head(parent, html, t0, t1, night) {
+  const h = $(`<div class="head ${night ? "night" : ""}">${html}</div>`, parent);
+  win(h, t0, t1, { inD: .45, outD: .25 });
+  return h;
+}
+
+function build(T) {
+  const SEG = T.segments.map(s => s.out);
+  const W = T.words;
+  const norm = w => String(w).toLowerCase().replace(/[^a-z0-9]/g, "");
+  // start / end time of a spoken word inside a scene (nth occurrence); fb = fallback seconds after the scene start
+  const tw = (scene, word, nth, fb) => { const ws = W.filter(w => w.scene === scene && norm(w.w) === norm(word)); return ws[nth || 0] ? ws[nth || 0].s : SEG[scene - 1][0] + (fb || 0); };
+  const twe = (scene, word, nth, fb) => { const ws = W.filter(w => w.scene === scene && norm(w.w) === norm(word)); return ws[nth || 0] ? ws[nth || 0].e : SEG[scene - 1][0] + (fb || 0); };
+
+  const foot = document.getElementById("foot");
+  foot.innerHTML = `<div class="lg"><img src="${LOGO}" alt="IV Infotech"></div><div class="tx">Mehsana · made for ${P}</div>`;
+  A(foot.querySelector(".tx"), [{ color: "#fff" }, { color: "#fff", offset: .9 }, { color: "#14213D" }], 0, SEG[0][1] + .6, { easing: "linear" });
+  const st = document.getElementById("stars"); for (let i = 0; i < 38; i++) { const e = document.createElement("i"); e.style.left = (Math.sin(i * 12.9898) * 43758 % 1 + 1) % 1 * 720 + "px"; e.style.top = (Math.sin(i * 78.233) * 12345 % 1 + 1) % 1 * 620 + "px"; e.style.opacity = .3 + ((i * 37) % 7) / 10; st.appendChild(e); }
+  A(document.getElementById("bgNight"), [{ opacity: 1 }, { opacity: 1, offset: .55 }, { opacity: 0 }], SEG[0][1] - .3, .9, { easing: "linear" });
+
+  // ================= SCENE 1 (night): the offer is on screen from the first second, the phone from the first words of it
+  const s1 = scene(SEG[0][0] - .01, SEG[0][1] + .15);
+  head(s1, "Every enquiry from your ads<br>gets an automatic WhatsApp<br>reply in about a minute", .15, null, true);
+  const tEvery = tw(1, "Every", 0, 3.6), tEnqry = tw(1, "enquiry", 0, 4.0), tAuto = tw(1, "automatic", 0, 6.0), tMin = twe(1, "minute", 0, 9.0);
+  const nm = $(`<div class="abs night" style="left:0;right:0;top:360px;text-align:center;font:700 70px 'Space Grotesk'">Namaste</div>`, s1); win(nm, 0.05, tEvery - .1, { inD: .45, y: 20, outD: .3 });
+  const lc = $(`<div class="abs" style="left:80px;top:470px;width:560px;height:210px;border-radius:34px;background:#fff;display:grid;place-items:center;box-shadow:0 24px 60px rgba(0,0,0,.35)"><img src="${LOGO}" alt="IV Infotech" style="width:470px"></div>`, s1); win(lc, 0.1, tEvery - .1, { inD: .5, y: 24, outD: .3 });
+  const lcs = $(`<div class="abs night" style="left:0;right:0;top:700px;text-align:center;font:500 34px 'Inter'">Mehsana, Gujarat</div>`, s1); win(lcs, 0.3, tEvery - .1, { inD: .5, y: 10, outD: .3 });
+  // one big phone (the buyer's chat with the project), a clear night cue, the automatic reply, the minute ring
+  const p1 = phone(s1, 156, 306, 1.04, P, "online", true);
+  win(p1.el, tEvery - .05, null, { inD: .5, y: 70 }); win(p1.eg, tEvery - .05, null, { inD: .4, y: 10 });
+  const clock = $(`<div class="abs" style="left:44px;top:252px;display:flex;align-items:center;gap:12px;padding:8px 20px;border-radius:999px;background:#fff;color:#14213D;font:700 30px 'Inter'"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M21 13.5A8.5 8.5 0 0 1 10.5 3 8.5 8.5 0 1 0 21 13.5z" fill="#E3A93B"/></svg>${TM} \u00B7 night</div>`, s1); win(clock, tEnqry - .1, null, { inD: .4, y: -10 });
+  msg(p1.chat, "out", `Hi, I want details of ${P}<small>${TM} <span class="tick">\u2713\u2713</span></small>`, tEnqry + .2);
+  msg(p1.chat, "in", `Hello! Thank you for your interest in ${P}.<div class="pdf"><i>PDF</i><div><b>${P} brochure</b><s>Sent automatically</s></div></div>`, tAuto + .25);
+  const ring = $(`<div class="abs night" style="left:575px;top:480px;width:130px;text-align:center"><svg width="104" height="104" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="9"/><circle id="ringc" cx="50" cy="50" r="42" fill="none" stroke="#34D399" stroke-width="9" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" transform="rotate(-90 50 50)"/><path d="M34 51l11 11 21-23" fill="none" stroke="#34D399" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" id="ringok"/></svg><div style="font:700 22px/1.2 'Inter';margin-top:8px">about a<br>minute</div></div>`, s1); win(ring, tEnqry + .3, null, { inD: .4 });
+  A(ring.querySelector("#ringc"), [{ strokeDashoffset: 264 }, { strokeDashoffset: 0 }], tEnqry + .5, Math.max(1, tMin - tEnqry - .6), { easing: "ease-in-out" });
+  A(ring.querySelector("#ringok"), [{ opacity: 0 }, { opacity: 1 }], tMin - .1, .3);
+
+  // ================= SCENE 2 (day): the ad cards flow into one number
+  const s2 = scene(SEG[1][0], SEG[1][1] + .15);
+  head(s2, "Your WhatsApp ads.<br>Your own number.", SEG[1][0] + .1, null, false);
+  const tOwn = tw(2, "own", 0, 3.0);
+  const src = (y, t) => { const e = $(`<div class="card abs" style="left:34px;top:${y}px;width:236px;height:104px;border-radius:22px;display:flex;align-items:center;gap:14px;padding:14px"><div style="flex:none">${building(48)}</div><div style="font:700 28px 'Space Grotesk'">Ad<div style="font:500 18px 'Inter';color:#4b5563">WhatsApp button</div></div></div>`, s2); win(e, t, null, { inD: .45, x: -30, y: 0 }); return e; };
+  src(310, SEG[1][0] + .35); src(440, SEG[1][0] + .75); src(570, SEG[1][0] + 1.15);
+  const arrows = $(`<svg class="abs" style="left:270px;top:300px" width="110" height="380" viewBox="0 0 110 380"><g fill="none" stroke="#128C7E" stroke-width="5" stroke-linecap="round"><path id="ar1" d="M0 62 C60 62 40 190 100 190" stroke-dasharray="140" stroke-dashoffset="140"/><path id="ar2" d="M0 192 L100 192" stroke-dasharray="110" stroke-dashoffset="110"/><path id="ar3" d="M0 322 C60 322 40 194 100 194" stroke-dasharray="140" stroke-dashoffset="140"/></g></svg>`, s2);
+  A(arrows.querySelector("#ar1"), [{ strokeDashoffset: 140 }, { strokeDashoffset: 0 }], SEG[1][0] + .8, .5); A(arrows.querySelector("#ar2"), [{ strokeDashoffset: 110 }, { strokeDashoffset: 0 }], SEG[1][0] + 1.2, .5); A(arrows.querySelector("#ar3"), [{ strokeDashoffset: 140 }, { strokeDashoffset: 0 }], SEG[1][0] + 1.6, .5);
+  const p2 = phone(s2, 384, 300, .86, P, "Your own number", false); win(p2.el, SEG[1][0] + .3, null, { inD: .5, x: 40, y: 0 }); win(p2.eg, SEG[1][0] + .3, null, { inD: .4, y: 6 });
+  [0.85, 1.4, 1.95].forEach(d => { msg(p2.chat, "in", `New enquiry<br><b style="color:#0b6e63">from an ad</b>`, SEG[1][0] + d); msg(p2.chat, "out", `Replied automatically`, SEG[1][0] + d + .4); });
+  const own = $(`<div class="abs" style="left:372px;width:330px;top:878px;text-align:center"><span class="pill" style="background:#128C7E;color:#fff;font-size:20px;white-space:nowrap;padding:8px 16px">Your own WhatsApp number</span></div>`, s2); win(own, tOwn - .1, null, { inD: .45 });
+
+  // ================= SCENE 3
+  const s3 = scene(SEG[2][0], SEG[2][1] + .15);
+  head(s3, "Brochure. Three questions.<br>A site visit slot.", SEG[2][0] + .1, null, false);
+  const tBro = tw(3, "brochure", 0, 0.8), tThree = tw(3, "three", 0, 2.0), tQs = tw(3, "questions", 0, 2.6), tSite = tw(3, "site", 0, 3.6), tSlot = twe(3, "slot", 0, 4.9);
+  const p3 = phone(s3, 156, 252, 1.06, P, "online", false); win(p3.el, SEG[2][0] + .05, null, { inD: .45, y: 40 }); win(p3.eg, SEG[2][0] + .05, null, { inD: .4, y: 6 });
+  msg(p3.chat, "in", `Thank you for your interest in ${P}.<div class="pdf"><i>PDF</i><div><b>${P} brochure</b><s>Sent automatically</s></div></div>`, tBro - .1);
+  msg(p3.chat, "in", `<b>1.</b> What budget are you looking at?`, tThree);
+  msg(p3.chat, "in", `<b>2.</b> Which size?<div class="chips"><span class="chip sel">${B1}</span><span class="chip">${B2}</span></div>`, tThree + (tQs - tThree) * .55);
+  msg(p3.chat, "in", `<b>3.</b> Best time to visit?<div class="chips"><span class="chip">Morning</span><span class="chip sel">Evening</span></div>`, tQs + .35);
+  const slotmsg = msg(p3.chat, "in", `Pick a site visit slot<span class="slotbtn" id="sl1">Sat 11:00 AM</span><span class="slotbtn" id="sl2">Sun 4:00 PM</span>`, tSite - .1);
+  A(slotmsg.querySelector("#sl1"), [{ background: "#fff", color: "#0b6e63" }, { background: "#128C7E", color: "#fff" }], tSlot - .1, .25, { easing: "linear" });
+
+  // ================= SCENE 4: two beats - the board, then reminders and the team
+  const s4 = scene(SEG[3][0], SEG[3][1] + .15);
+  const tRem = tw(4, "Reminders", 0, 5.2), tHot = tw(4, "hot", 0, 3.2), tFirst = twe(4, "first", 0, 4.2), tJoin = tw(4, "people", 0, 7.5) - .1, tEnq = tw(4, "enquiry", 0, 1.3);
+  head(s4, "One board.<br>Hot buyers first.", SEG[3][0] + .1, tRem - .1, false);
+  head(s4, "Reminders to the buyer.<br>Your team can join the chat.", tRem + .05, null, false);
+  const board = $(`<div class="card" style="left:40px;top:252px;width:640px;height:500px"><div style="padding:18px 26px 0"><div style="font:700 29px 'Space Grotesk'">${P} · ${C}</div><div style="font:500 18px 'Inter';color:#6b7280;margin-top:2px">All enquiries in one place</div></div></div>`, s4); win(board, SEG[3][0] + .2, null, { inD: .5, y: 30 });
+  const beg = $(`<div class="eg" style="left:546px;top:208px">Example</div>`, s4); win(beg, SEG[3][0] + .2, null, { inD: .4, y: 6 });
+  // Hot = a visit slot is set. The two hot buyers start at the bottom and move to the top.
+  const rowsData = [["A", "Anita R.", "Ad", B1, "No slot yet", "New", 0], ["D", "Dhruv M.", "Ad", B2, "No slot yet", "New", 0], ["M", "Meera S.", "Ad", B1, "Visit: Sat 11:00 AM", "Hot", 1], ["K", "Kunal P.", "Ad", B2, "Visit: Sun 4:00 PM", "Hot", 1]];
+  const finalPos = [2, 3, 0, 1];
+  rowsData.forEach((r, i) => {
+    const row = $(`<div class="row" style="top:${96 + i * 100}px"><div class="av" style="background:${["#F7E2C8", "#D8E6F7", "#CFE9E4", "#E4DDF7"][i]}">${r[0]}</div><div><b>${r[1]}</b><small>From ${r[2]} · ${r[3]}</small></div><div class="st"><i class="${r[6] ? "hot" : ""}">${r[5]}</i><small>${r[4]}</small></div></div>`, board);
+    A(row, [{ opacity: 0 }, { opacity: 1 }], tEnq - .1 + i * .3, .4);
+    A(row, [{ transform: "translateY(0)" }, { transform: `translateY(${(finalPos[i] - i) * 100}px)` }], tHot - .25, .55, { easing: "ease-in-out" });
+  });
+  const lower = html => $(`<div class="card" style="left:40px;top:772px;width:640px;height:160px;padding:18px 26px">${html}</div>`, s4);
+  const remC = lower(`<div style="font:700 20px 'Inter';color:#6b7280;margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase">Polite reminders go to the buyer</div><span class="dayc" id="d1">Day 1</span><span class="dayc" id="d3">Day 3</span><span class="dayc" id="d7">Day 7</span>`);
+  win(remC, tRem, tJoin - .15, { inD: .45, y: 12, outD: .25 });
+  const tD1 = tw(4, "one", 1, 7.0), tD3 = tw(4, "three", 0, 8.0), tD7 = tw(4, "seven", 0, 9.0);
+  [["d1", tD1], ["d3", tD3], ["d7", tD7]].forEach(([id, t]) => A(remC.querySelector("#" + id), [{ opacity: .15, transform: "scale(.9)" }, { opacity: 1, transform: "none" }], t - .1, .35));
+  const joinC = lower(`<div style="display:flex;align-items:center;gap:16px"><div class="av" style="width:70px;height:70px;background:#F7E2C8;font-size:28px">S</div><div style="flex:1;padding:14px 18px;border-radius:18px;background:#E6F3F0;font:600 23px/1.3 'Inter';color:#0b4f47">Hello, I am from the ${P} team. How can I help?</div></div><div style="margin-top:12px;font:700 18px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:#128C7E">Your team can join the chat anytime</div>`);
+  win(joinC, tJoin - .05, null, { inD: .45, x: 24, y: 0 });
+
+  // ================= SCENE 5: the ask (nothing that looks like a button, nothing the service does not do)
+  const s5 = scene(SEG[4][0], null);
+  const tTap = tw(5, "Tap", 0, 2.0);
+  head(s5, `Free demo for ${P}.<br>No obligation.`, SEG[4][0] + .1, null, false);
+  const lock = $(`<div class="abs" style="left:80px;top:360px;width:560px;height:210px;border-radius:34px;background:#fff;display:grid;place-items:center;box-shadow:0 22px 56px rgba(20,33,61,.2)"><img src="${LOGO}" alt="IV Infotech" style="width:470px"></div>`, s5); win(lock, SEG[4][0] + .15, null, { inD: .5, y: 24 });
+  const cue = $(`<div class="abs" style="left:50px;right:50px;top:640px;text-align:center"><div style="font:700 38px/1.2 'Space Grotesk';color:#14213D">Tap \u201CYes, send the demo\u201D</div><div style="margin-top:14px;font:600 28px 'Inter';color:#4b5563">in the button below this video</div></div>`, s5); win(cue, tTap - .1, null, { inD: .45, y: 20 });
+  const arrow = $(`<svg class="abs" style="left:324px;top:1166px" width="72" height="100" viewBox="0 0 72 100"><path d="M36 6v68M12 54l24 26 24-26" fill="none" stroke="#128C7E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`, s5); win(arrow, tTap, null, { inD: .4, y: -10 });
+  A(foot, [{ opacity: 1 }, { opacity: 0 }], SEG[4][0] + .1, .3, { easing: "linear" });   // the big logo takes over: no second logo in the corner
+
+  // ================= fit headlines (long project names must not wrap into the content)
+  document.querySelectorAll(".head").forEach(h => { let fs = 52; h.style.fontSize = fs + "px"; while (h.scrollHeight > 150 && fs > 32) { fs -= 2; h.style.fontSize = fs + "px"; } });
+
+  // ================= subtitles (word by word, one chunk at a time, hard cuts, never two at once)
+  const subs = document.getElementById("subs"), chunks = [];
+  const sentences = []; let curS = [];
+  W.forEach((w, i) => { curS.push(w); if (/[.?!]$/.test(w.w) || i === W.length - 1 || W[i + 1].scene !== w.scene) { sentences.push(curS); curS = []; } });
+  sentences.forEach(sent => {
+    const parts = []; let cp = [];
+    sent.forEach((w, i) => { cp.push(w); if (/,$/.test(w.w) && cp.length >= 3 && i < sent.length - 1) { parts.push(cp); cp = []; } });
+    if (cp.length) { if (cp.length < 3 && parts.length) parts[parts.length - 1] = parts[parts.length - 1].concat(cp); else parts.push(cp); }
+    parts.forEach(pt => { const k = Math.ceil(pt.length / 7), size = Math.ceil(pt.length / k); for (let i = 0; i < pt.length; i += size) chunks.push(pt.slice(i, i + size)); });
+  });
+  chunks.forEach(ws => {
+    const el = document.createElement("div"); el.className = "chunk";
+    el.innerHTML = ws.map(w => `<span class="wd">${esc(w.w)}</span> `).join(""); subs.appendChild(el);
+    el._a = ws[0].s - .06; el._spans = [...el.querySelectorAll(".wd")]; el._ws = ws;
+    el._b = ws[ws.length - 1].e + .4;
+  });
+  [...subs.children].forEach((el, i, all) => { const nx = all[i + 1]; if (nx && nx._a - .02 < el._b) el._b = Math.max(el._a + .2, nx._a - .02); });
+  window.__chunks = [...subs.children].map(el => el._ws.map(w => w.w).join(" "));
+  window.__updateSubs = t => {
+    let any = false;
+    [...subs.children].forEach(el => { const on = t >= el._a && t < el._b; el.style.opacity = on ? 1 : 0; if (on) { any = true; el._spans.forEach((sp, i) => sp.classList.toggle("on", t >= el._ws[i].s - .02)); } });
+    document.getElementById("subbg").style.opacity = any ? 1 : 0;
+  };
+}
+
+window.TOTAL = 0;
+window.setT = t => { anims.forEach(a => { a.currentTime = t * 1000; }); window.__updateSubs && window.__updateSubs(t); };
+fetch(Q.get("tl") || "timeline.json").then(r => r.json()).then(T => { window.TOTAL = T.total; build(T); document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.decode ? i.decode().catch(() => 0) : 0))).then(() => { window.setT(0); window.READY = true; }); });
+</script></body></html>

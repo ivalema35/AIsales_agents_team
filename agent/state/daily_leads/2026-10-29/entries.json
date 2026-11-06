@@ -1,0 +1,82 @@
+[
+ {
+  "type": "lead",
+  "key": "clinic-web-shivam-skin-hair-laser-clinic",
+  "data": {
+   "name": "Shivam Skin Hair & Laser Clinic",
+   "city": "Surat (Nana Varachha)",
+   "product": "A lean WhatsApp patient desk: an automatic reply to every enquiry (also when the clinic is closed or busy), the patient picks an appointment slot, ONE reminder 24 hours before with confirm or reschedule, and one simple list for the clinic. Recall and review requests only later, as paid add-ons. The first-touch angle is a question (who answers the clinic's WhatsApp number when the clinic is closed?), never a claim about lost patients.",
+   "campaign": "WhatsApp patient desk for doctor-owned clinics (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "WhatsApp from a human to Dr. Dipak Mandaviya's published mobile +91 95373 88973 (Dr. Bhavita on +91 90232 99691 as the second route). Both are listed against the doctors by name on the digital card, so they are the likeliest to reach the decider. Do not use 95373 88962 first, as it is the appointments line and a staff member may answer. Send outside OPD hours (not 9:30-13:00 or 17:00-21:00). Never email.",
+   "best_angle": "A question, not a claim: 'Dr. Dipak, your acne ads open WhatsApp. Who answers that number at 10 pm, or when both of you are with patients?' Offer to show a free sample reply plus slot picker on the clinic's own number.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 95373 88962",
+     "source": "https://www.shivamclinik.com/",
+     "note": "Clinic appointments number. Printed in the Meta ads and on the clinic website; the digital card links it as WhatsApp. Likely WhatsApp, could be the desk or reception rather than the doctor."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95373 88997",
+     "source": "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782",
+     "note": "Second number printed in the ad text (acne ad, started 2026-08-13). Owner not stated. Likely WhatsApp."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95373 88973",
+     "source": "https://digital-card.in/shivam/",
+     "note": "Listed against Dr. Dipak Mandaviya on the clinic's digital business card. Indian mobile, likely WhatsApp."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 90232 99691",
+     "source": "https://digital-card.in/shivam/",
+     "note": "Listed against Dr. Bhavita Mandaviya on the same digital card. The card's WhatsApp button also points at this number. Indian mobile, likely WhatsApp."
+    },
+    {
+     "kind": "email",
+     "value": "info@shivamclinic.com",
+     "source": "https://www.shivamclinik.com/",
+     "note": "Generic inbox on the site (the site domain is shivamclinik.com, so the spelling differs). Email is not a way in."
+    },
+    {
+     "kind": "instagram",
+     "value": "@shivam_skin_hair_laser_clinic",
+     "source": "https://www.instagram.com/shivam_skin_hair_laser_clinic/",
+     "note": "Business profile, 11.6K followers. Not used for outreach."
+    },
+    {
+     "kind": "website",
+     "value": "https://www.shivamclinik.com/",
+     "source": "https://www.shivamclinik.com/",
+     "note": "Address: 23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat 395006. Contact form only, no online booking."
+    }
+   ],
+   "observed_facts": [
+    "The Meta Ad Library page 'Shivam Skin Hair & Laser Clinic' (page id 101194626197782, 88 likes) has 6 active ads, all with the 'Send WhatsApp message' call to action. Start dates: 2026-08-06 (two ads), 2026-08-08, 2026-08-13, 2026-09-16, 2026-09-18. The oldest has run about 84 days. All were still active when scraped on 2026-10-29. I could not open the Ad Library page directly (403), so I re-read it with a small Apify run (about US$0.005). (2026-08-06, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+    "Ad text prints the clinic address (23 Shivam Row-House, Nr. Tulsi Shyam Vadi, Shyam Dham Chowk, Nana Varachha, Surat) and the numbers +91 95373 88962 / +91 95373 88997. One ad (2026-09-18, Gujarati) offers a free skin and hair consultation and a Face Glow & Acne treatment for Rs 799, and claims '12+ years' and '20,000+ patients'. (2026-09-18, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+    "One ad (start 2026-08-06) says 'Visit Shivam Skin Hair & Laser Clinic - Mota Varachha, Surat'. No other source confirms a Mota Varachha branch. (2026-08-06, https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&view_all_page_id=101194626197782)",
+    "The official site shows the same address and phone +91 95373 88962. It lists acne, Hydrafacial, hair PRP and laser hair removal. It has no doctor profiles, no online booking and no WhatsApp link. 'Book Now' leads to a contact form. Hours on the page contradict each other. The site credits Techbit Design Studio. (2026-10-29, https://www.shivamclinik.com/)",
+    "The digital card names Dr. Dipak Mandaviya (+91 95373 88973) and Dr. Bhavita Mandaviya (+91 90232 99691), both B.A.M.S. 'Skin & Hair Experts'. It lists the clinic number 95373 88962 as 'appointments compulsory' and gives Skin OPD hours of 9:30-13:00 and 17:00-21:00. The card is by the same web developer, Techbit Design Studio. (2026-10-29, https://digital-card.in/shivam/)",
+    "The Instagram profile has 11.6K followers and a bio reading 'Trusted by 15K+ Patients / 10+ Years Experience'. Posts continue through 2026-10-10 with reels and carousels. This points to an active content effort. (2026-10-10, https://www.instagram.com/shivam_skin_hair_laser_clinic/)",
+    "A search listing shows a Justdial page for this clinic at Yogi Chowk, Nana Varachha. The search summary of it gives established 2015 and a 4.9 rating from 284 reviews. I could not open it myself, so this is second-hand. (2026-10-29, https://www.justdial.com/Surat/Shivam-Skin-Hair-Laser-Clinic-Near-Tulsi-Shyam-Soc-Vadi/0261PX261-X261-230913033810-M8M6_BZDET)",
+    "Not the same clinic: 'Shivam Skin & Hair Care' (Dr. Vandana Dave, Adajan) and 'Shivam Clinic & Skin Care' (homeopathic, Dr. Jignesh Maniya, Mota Varachha). Do not mix their numbers or details with this lead. (2026-10-29, https://www.drlogy.com/surat/clinic/shivam-clinic-skin-care)"
+   ],
+   "hypotheses": [
+    "The two Mandaviya doctors probably own and run the clinic, as a couple. This is inferred from the shared surname and the digital card, and no page says 'owner'.",
+    "The doctors' mobiles on the digital card were most likely given by the clinic, so they probably reach the doctors themselves. The card is a third-party page, not the clinic's own site, so this is a hypothesis.",
+    "The WhatsApp-opening ads probably route to 95373 88962, which may be answered by reception or a staff member. The ad's WhatsApp destination number is hidden in the Ad Library, so this is unverified.",
+    "They may miss some enquiries after OPD hours (21:00 close) or when the doctors are with patients. Nothing observed shows a missed enquiry. The need is only inferred from the fact that they pay for six WhatsApp ads and have no online booking.",
+    "They may already use a Meta click-to-WhatsApp auto-greeting or the WhatsApp Business app's away message. This cannot be seen from outside and should be asked, not assumed."
+   ],
+   "case_for": "Doctor-named, single-site (probably) skin and hair clinic with 6 active WhatsApp-opening Meta ads, the oldest 84 days old (start 2026-08-06), so it matches the 'best lead' profile (30+ days). Both doctors' mobiles are published on a clinic-linked digital card, so a human WhatsApp message can reach the decider. The website has no online booking and the clinic's own card says appointments are compulsory, which matches the offer. Several creatives and a recent Rs 799 offer show an ongoing, steady ad spend.",
+   "case_against": "The need is only inferred; nothing observed shows a missed enquiry or no-shows. Doctor numbers come from a third-party digital card, not from the clinic's site or Google Maps, so 'reaches the owner' is not proven, and the clinic number may be a desk. Ownership is not stated anywhere. One ad mentions Mota Varachha, so a second branch is unverified. I could not open Justdial or Google Maps, so only the website, the Ad Library (via Apify), the digital card and Instagram confirm the business; that is enough for identity but the pay and size signals are thin (88 Facebook likes, template site). The ads might be run by an outside marketer who could object. | Skeptic: The need is purely inferred, and the decision-maker route is not proven. No source says who owns the clinic or who answers the WhatsApp number. The doctors' names come from a developer-made digital card, not from the clinic's own site or a Maps entry. The six ads look like boosted reels with SEO-style copy, so an agency or freelancer may run the ads and control the messaging. Nothing shows a missed enquiry. Pay evidence is thin: 88 Facebook likes, a template site with placeholder counters, a Rs 799 hook, and no spend data. The one pay-signal figure (Justdial 284 reviews) is unverified.",
+   "next_step": "Owner review, then add to the campaign.",
+   "researched": "2026-10-29"
+  }
+ }
+]

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ANIMATIC - Nexus360 17-second video</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   WHAT THIS FILE IS: a silent, timed preview (an "animatic") of the 17-second builder video, 720 x 1280 (9:16).
+   It follows the same contract as agent/video/master_video.html: window.setT(t) draws the frame at time t, window.READY = true when fonts
+   are loaded. So the same file can be rendered to MP4 frame by frame once the real recordings and the voice exist.
+   Boxes marked PLACEHOLDER are where Sridhar's real screen recordings go. No voice is included here.
+   URL options (for stills and renders): ?t=5.2  ?lang=hi|en  ?variant=master|builder  ?bare=1 (stage only, 720x1280)  ?guides=1  ?autoplay=0
+   RULE CHECKED BY SCRIPT: every piece of text on the 720-px stage is 28 px or larger, which is about 15 px on a 390-px-wide phone.
+   ========================================================================== */
+:root {
+  --night: #14262C; --paper: #E9EEEC; --sheet: #F8FAF8; --ink: #15262C; --soft: #425760; --mark: #FFD84D; --go: #0B7A55; --brick: #A8341F; --brick-bg: #F5E3DE; --pale: #D5E0DD;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --deva: "Noto Sans Devanagari", "Nirmala UI", "Mangal", "Kohinoor Devanagari", "Devanagari Sangam MN", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0c1519; color: #fff; font: 400 16px/1.5 var(--body); -webkit-font-smoothing: antialiased; }
+.hi { font-family: var(--deva); }
+
+/* ---------- the 720 x 1280 stage ---------- */
+#stage { position: relative; width: 720px; height: 1280px; overflow: hidden; background: var(--night); transform-origin: top left; flex: none; }
+.bg { position: absolute; inset: 0; }
+#bgNight { background-color: var(--night); background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 40px 40px; }
+#bgDay { background-color: var(--paper); background-image: linear-gradient(rgba(21,38,44,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(21,38,44,.06) 1px, transparent 1px); background-size: 40px 40px; }
+.sc { position: absolute; inset: 0; }
+.abs { position: absolute; }
+.chip { position: absolute; left: 40px; top: 112px; font: 500 28px/1.2 var(--mono); padding: 8px 16px; border-radius: 6px; background: var(--mark); color: var(--ink); max-width: 640px; }
+.chip.light { background: var(--sheet); border: 2px solid var(--ink); }
+.t-hi { position: absolute; left: 40px; right: 40px; font: 700 62px/1.4 var(--deva); }
+.t-en { position: absolute; left: 40px; right: 40px; font: 600 40px/1.2 var(--display); letter-spacing: .005em; }
+.t-main-en { position: absolute; left: 40px; right: 40px; font: 700 76px/1.04 var(--display); letter-spacing: .005em; }
+.night-t { color: #fff; } .night-t .y { color: var(--mark); } .night-sub { color: var(--pale); }
+.day-t { color: var(--ink); } .day-sub { color: var(--soft); }
+
+/* hook */
+.brand-row { position: absolute; left: 40px; right: 40px; top: 1030px; display: flex; align-items: center; gap: 18px; }
+.logo-slot { width: 120px; height: 72px; border: 3px dashed var(--mark); border-radius: 10px; display: grid; place-items: center; font: 500 28px/1 var(--mono); color: var(--mark); flex: none; }
+.brand-row b { display: block; font: 700 46px/1 var(--display); }
+.brand-row span { font: 500 30px/1.2 var(--body); color: var(--pale); }
+
+.grp { position: absolute; left: 40px; right: 40px; }
+.grp .t-hi, .grp .t-en, .grp .t-main-en { position: static; display: block; }
+.indent { position: absolute; left: 110px; top: 700px; width: 500px; border-radius: 16px; background: var(--sheet); color: var(--ink); padding: 22px 24px 26px; transform: rotate(-2.5deg); box-shadow: 10px 12px 0 rgba(0,0,0,.28); }
+.indent .hd { font: 500 28px/1.2 var(--mono); letter-spacing: .04em; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 16px; }
+.indent .ln { height: 14px; border-radius: 7px; background: #CBD5D1; margin: 0 0 16px; }
+.indent .stamp { position: absolute; right: -18px; bottom: -26px; transform: rotate(5deg); background: var(--mark); color: var(--ink); border: 3px solid var(--ink); border-radius: 8px; padding: 6px 20px; font: 700 48px/1.1 var(--display); }
+/* phone + recording slot */
+.phone { position: absolute; left: 150px; width: 420px; border-radius: 44px; background: #0b1318; padding: 12px; box-shadow: 10px 12px 0 rgba(21,38,44,.18); }
+.scr { position: relative; width: 100%; height: 100%; border-radius: 34px; overflow: hidden; background: #fff; }
+.ph-slot { position: absolute; inset: 0; background: #FBF0D4; border: 3px dashed #D2A93F; border-radius: 34px; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px; }
+.ph-tag { font: 500 28px/1.2 var(--mono); color: #6B4500; }
+.ph-row { background: #fff; border-radius: 10px; padding: 12px 14px; font: 600 28px/1.15 var(--body); color: var(--ink); border: 3px solid transparent; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ph-row.on { border-color: var(--ink); background: var(--mark); }
+.ph-row i { display: block; height: 12px; width: 60px; border-radius: 6px; background: #CBD5D1; flex: none; }
+.ph-note { margin-top: auto; font: 500 28px/1.2 var(--mono); color: #6B4500; }
+.rec { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+
+/* caption ticker (one check at a time) */
+.tick { position: absolute; left: 40px; right: 40px; height: 128px; border-radius: 20px; background: var(--ink); color: #fff; padding: 14px 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 0 rgba(21,38,44,.18); }
+.tick .n { width: 60px; height: 60px; border-radius: 50%; background: var(--mark); color: var(--ink); display: grid; place-items: center; font: 700 38px/1 var(--display); flex: none; }
+.tick .tx { min-width: 0; flex: 1; position: relative; height: 100px; }
+.tick .it { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); opacity: 0; }
+.tick .it b { display: block; font: 700 44px/1.3 var(--deva); }
+.tick .it small { display: block; font: 500 30px/1.15 var(--display); color: var(--pale); letter-spacing: .01em; }
+.tick .it.only-en small { font: 700 54px/1.1 var(--display); color: #fff; letter-spacing: .005em; }
+.dots { display: flex; gap: 10px; flex: none; }
+.dots i { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.3); }
+.dots i.on { background: var(--mark); }
+
+/* CTA scene */
+.avatar { position: absolute; left: 255px; top: 180px; width: 210px; height: 210px; border-radius: 50%; border: 4px dashed var(--mark); display: grid; place-items: center; text-align: center; font: 500 28px/1.2 var(--mono); color: var(--mark); }
+.numcard { position: absolute; left: 40px; right: 40px; top: 880px; text-align: center; font: 500 40px/1.2 var(--mono); border-top: 2px solid rgba(255,255,255,.4); border-bottom: 2px solid rgba(255,255,255,.4); padding: 16px 0; }
+.numcard .ph { background: var(--mark); color: var(--ink); padding: 0 8px; border-radius: 4px; }
+.plain { position: absolute; left: 40px; right: 40px; text-align: center; color: var(--pale); }
+
+/* guides: unsafe zones of the player UI */
+#guides { position: absolute; inset: 0; pointer-events: none; display: none; }
+#guides.on { display: block; }
+#guides i { position: absolute; left: 0; right: 0; background: rgba(220, 38, 38, .22); border-top: 2px dashed #ef4444; border-bottom: 2px dashed #ef4444; font: 500 28px/1.2 var(--mono); color: #fecaca; padding: 8px 16px; font-style: normal; }
+#guides i.top { top: 0; height: 100px; } #guides i.bot { bottom: 0; height: 120px; display: flex; align-items: flex-end; }
+
+/* ---------- viewer chrome (not part of the video) ---------- */
+body.bare { background: #000; }
+body.bare #stage { transform: none; }
+.viewer { display: grid; gap: 20px; padding: 16px max(16px, env(safe-area-inset-left, 0px)); max-width: 1100px; margin: 0 auto; }
+.v-head { display: grid; gap: 4px; }
+.v-head h1 { font: 700 30px/1.1 var(--display); letter-spacing: .01em; }
+.v-head p { font-size: 15px; color: #9fb2ad; max-width: 70ch; }
+.v-head .tag { display: inline-block; font: 500 12px/1 var(--mono); letter-spacing: .1em; background: var(--brick); color: #fff; padding: 5px 8px; border-radius: 3px; margin-right: 8px; vertical-align: 3px; }
+.v-main { display: grid; gap: 20px; align-items: start; }
+.v-stage { position: relative; width: 100%; background: #000; border-radius: 14px; overflow: hidden; }
+.v-ctrl { display: grid; gap: 10px; margin-top: 12px; }
+.v-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.v-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1.5px solid #5d7770; background: #1b3037; color: #fff; font: 600 15px var(--body); cursor: pointer; }
+.v-btn[aria-pressed="true"] { background: var(--mark); color: var(--ink); border-color: var(--mark); }
+.v-btn:focus-visible, input:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+.v-range { flex: 1; min-width: 160px; accent-color: var(--mark); height: 32px; }
+.v-time { font: 500 14px var(--mono); color: #9fb2ad; min-width: 90px; text-align: right; }
+.v-info { display: grid; gap: 14px; }
+.card { background: #172b32; border: 1px solid #2c4650; border-radius: 12px; padding: 16px; display: grid; gap: 8px; }
+.card h2 { font: 500 12px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #9fb2ad; }
+.card p { font-size: 15px; line-height: 1.55; color: #dbe6e3; }
+.vo-hi { font: 700 22px/1.5 var(--deva); color: #fff; }
+.vo-ro { font: 400 15px/1.5 var(--mono); color: #b8cbc6; }
+.vo-en { font-size: 16px; color: #dbe6e3; }
+.legend { display: grid; gap: 6px; }
+.legend li { list-style: none; font-size: 14.5px; line-height: 1.45; color: #dbe6e3; padding-left: 16px; position: relative; }
+.legend li::before { content: ""; position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 2px; background: var(--mark); }
+.v-left { min-width: 0; width: var(--sw, 100%); }
+@media (min-width: 900px) { .v-main { grid-template-columns: max-content minmax(0, 520px); gap: 32px; justify-content: start; } .v-stage { width: auto; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="viewer" id="viewer">
+  <header class="v-head">
+    <h1><span class="tag">ANIMATIC</span>Nexus360 builder video, 17 seconds</h1>
+    <p>A silent preview of the timing, the on-screen text and where the real screen recordings go. Boxes marked PLACEHOLDER are replaced by Sridhar's recordings. The voice-over lines for each scene are shown next to or below the video.</p>
+  </header>
+  <div class="v-main">
+    <div class="v-left" id="vleft">
+      <div class="v-stage" id="vstage"><div id="stage"></div></div>
+      <div class="v-ctrl">
+        <div class="v-row">
+          <button class="v-btn" id="bPlay" type="button">Play</button>
+          <input class="v-range" id="rng" type="range" min="0" max="17" step="0.05" value="0" aria-label="Time">
+          <span class="v-time" id="tt">0.0 / 17.0 s</span>
+        </div>
+        <div class="v-row">
+          <button class="v-btn" id="bHi" type="button" aria-pressed="true">हिन्दी + English</button>
+          <button class="v-btn" id="bEn" type="button" aria-pressed="false">English only</button>
+          <button class="v-btn" id="bMaster" type="button" aria-pressed="true">One master video</button>
+          <button class="v-btn" id="bBuilder" type="button" aria-pressed="false">Per-builder version</button>
+          <button class="v-btn" id="bGuides" type="button" aria-pressed="false">Show unsafe zones</button>
+        </div>
+      </div>
+    </div>
+    <div class="v-info">
+      <div class="card"><h2 id="voTitle">Voice-over, scene 1</h2><p class="vo-hi" id="voHi" lang="hi"></p><p class="vo-ro" id="voRo"></p><p class="vo-en" id="voEn"></p></div>
+      <div class="card"><h2>What to look for</h2>
+        <ul class="legend">
+          <li>0.0 s is already a finished hook: the question is on screen from the first frame. No logo card first.</li>
+          <li>Every text on the 720 px stage is 28 px or larger (about 15 px on a 390 px phone).</li>
+          <li>No button-like shapes. The call to action is plain text and a number you can read.</li>
+          <li>The "Per-builder version" button shows the only things that change: a name chip on the first and last scene.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var Q = new URLSearchParams(location.search);
+  var BARE = Q.get("bare") === "1";
+  var state = { lang: Q.get("lang") === "en" ? "en" : "hi", variant: Q.get("variant") === "builder" ? "builder" : "master", t: parseFloat(Q.get("t") || "0") || 0, playing: false };
+  // Scene boundaries in seconds. With the real voice these come from the length of each voice clip (the existing renderer does the same for the Gujarati plan).
+  var SC = [[0, 3.0], [3.0, 9.2], [9.2, 13.2], [13.2, 17.0]]; var TOTAL = 17.0;
+  var REC = { A: Q.get("recA"), B: Q.get("recB") };   // folder of numbered JPEG frames (s0001.jpg ...) cut from Sridhar's recordings, at 30 fps
+
+  var VO = [
+    { hi: "साइट से इंडेंट आया है। अप्रूव करने से पहले आप क्या देखते हैं?", ro: "Site se indent aaya hai. Approve karne se pehle aap kya dekhte hain?", en: "An indent came in from site. What do you check before you approve it?" },
+    { hi: "अप्रूव से पहले Nexus360 देखता है: साइट का स्टॉक, दूसरी साइटों पर पड़ा स्टॉक, ऑर्डर पर माल, BOQ की सीमा।", ro: "Approve se pehle Nexus360 dekhta hai: site ka stock, doosri saiton par pada stock, order par maal, BOQ ki seema.", en: "Before you approve, Nexus360 checks site stock, unused stock at other sites, material on order, and the BOQ limit." },
+    { hi: "ग्राहक, फॉलो-अप, साइट विज़िट और पेमेंट भी इसी सिस्टम में।", ro: "Grahak, follow-up, site visit aur payment bhi isi system mein.", en: "Leads, follow-ups, site visits and payments are in the same system." },
+    { hi: "डेमो के लिए WhatsApp पर मुझे लिखिए। मैं श्रीधर, Nexus360 से।", ro: "Demo ke liye WhatsApp par mujhe likhiye. Main Sridhar, Nexus360 se.", en: "To see a demo, message me on WhatsApp. I'm Sridhar, from Nexus360." }
+  ];
+  var CHECKS_A = [["साइट का स्टॉक", "Stock at site"], ["दूसरी साइटों पर पड़ा स्टॉक", "Unused stock at other sites"], ["ऑर्डर पर चल रहा माल", "Material already on order"], ["BOQ की सीमा", "BOQ limit"]];
+  var CHECKS_B = [["लीड और फॉलो-अप", "Leads and follow-ups"], ["साइट विज़िट", "Site visits"], ["पेमेंट, शेड्यूल के अनुसार", "Payments against the schedule"]];
+
+  var stage = document.getElementById("stage");
+  var el = function (html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstElementChild; };
+  var clamp = function (x) { return Math.min(1, Math.max(0, x)); };
+  var ease = function (x) { return 1 - Math.pow(1 - x, 3); };
+  var anims = [];   // each: function(t) that sets styles from time only
+  function win(node, t0, t1, o) {   // fade+slide in at t0, out at t1 (t1 null = stays)
+    o = o || {}; var inD = o.inD === undefined ? .35 : o.inD, outD = o.outD === undefined ? .25 : o.outD, y = o.y === undefined ? 18 : o.y, x = o.x || 0;
+    anims.push(function (t) {
+      var a = inD <= 0 ? (t >= t0 ? 1 : 0) : ease(clamp((t - t0) / inD));
+      var b = t1 === null ? 1 : clamp((t1 - t) / outD);
+      node.style.opacity = Math.min(a, b);
+      node.style.transform = "translate(" + ((1 - a) * x) + "px," + ((1 - a) * y) + "px)";
+    });
+  }
+  var T = { hi: function (s) { return '<span class="hi" lang="hi">' + s + "</span>"; } };
+
+  /* ---------- backgrounds ---------- */
+  stage.appendChild(el('<div class="bg" id="bgNight"></div>'));
+  var bgDay = stage.appendChild(el('<div class="bg" id="bgDay"></div>'));
+  anims.push(function (t) { bgDay.style.opacity = (t >= SC[1][0] - .2 && t < SC[3][0] - .1) ? Math.min(1, ease(clamp((t - (SC[1][0] - .2)) / .3)), clamp((SC[3][0] - .1 - t) / .3)) : 0; });
+
+  /* ---------- scene 1: the hook (complete at frame 0) ---------- */
+  var s1 = stage.appendChild(el('<div class="sc"></div>'));
+  var chip1 = s1.appendChild(el('<div class="chip" id="chip1"></div>'));
+  var g1 = s1.appendChild(el('<div class="grp" id="g1" style="top:200px"></div>'));
+  var h1hi = g1.appendChild(el('<div class="t-hi night-t" style="font-size:68px">साइट से इंडेंट आया है।<br><span class="y">अप्रूव करने से पहले आप क्या देखते हैं?</span></div>'));
+  var h1en = g1.appendChild(el('<div class="t-en night-sub" style="font-size:42px;margin-top:10px">An indent came in from site. What do you check before you approve it?</div>'));
+  var h1main = g1.appendChild(el('<div class="t-main-en night-t">An indent came in from site.<br><span class="y">What do you check before you approve it?</span></div>'));
+  s1.appendChild(el('<div class="indent" id="indentCard"><div class="hd">INDENT FROM SITE</div><div class="ln" style="width:92%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:81%"></div><div class="stamp">Approve?</div></div>'));
+  var brand = s1.appendChild(el('<div class="brand-row"><div class="logo-slot">[logo]</div><div><b>Nexus360</b><span>Sridhar Patnaik</span></div></div>'));
+  win(s1, SC[0][0], SC[0][1] + .1, { inD: 0, outD: .3, y: 0 });
+
+  /* ---------- screen scenes (2 and 3) ---------- */
+  function screenScene(idx, tagText, headHi, headEn, rows, checks, recKey, phoneTop, phoneH) {
+    var s = stage.appendChild(el('<div class="sc"></div>'));
+    s.appendChild(el('<div class="chip light">' + tagText + "</div>"));
+    var hHi = s.appendChild(el('<div class="t-hi day-t" style="top:186px;font-size:58px">' + headHi + "</div>"));
+    var hEn = s.appendChild(el('<div class="t-en day-sub" style="top:272px">' + headEn + "</div>"));
+    var hMain = s.appendChild(el('<div class="t-main-en day-t" style="top:182px;font-size:62px">' + headEn + "</div>"));
+    var ph = s.appendChild(el('<div class="phone" style="top:' + phoneTop + 'px;height:' + phoneH + 'px"><div class="scr"></div></div>'));
+    var scr = ph.firstChild;
+    var slot = scr.appendChild(el('<div class="ph-slot"><div class="ph-tag">PLACEHOLDER<br>Screen recording ' + (recKey === "A" ? "A" : "B") + '</div></div>'));
+    var rowEls = rows.map(function (r) { return slot.appendChild(el('<div class="ph-row"><span>' + r + "</span><i></i></div>")); });
+    slot.appendChild(el('<div class="ph-note">from Sridhar</div>'));
+    var img = scr.appendChild(el('<img class="rec" alt="">'));
+    if (REC[recKey]) { slot.style.display = "none"; img.style.display = "block"; }
+    // ticker
+    var tk = s.appendChild(el('<div class="tick" style="top:' + (phoneTop + phoneH + 26) + 'px"><div class="n"></div><div class="tx"></div><div class="dots"></div></div>'));
+    var n = tk.querySelector(".n"), tx = tk.querySelector(".tx"), dots = tk.querySelector(".dots");
+    var items = checks.map(function (c) { var it = tx.appendChild(el('<div class="it"><b lang="hi">' + c[0] + "</b><small>" + c[1] + '</small><span class="en-only"></span></div>')); return it; });
+    var dotEls = checks.map(function () { return dots.appendChild(el("<i></i>")); });
+    var s0 = SC[idx][0], s1_ = SC[idx][1], w = (s1_ - s0 - 1.0) / checks.length;
+    win(s, s0, s1_ + .1, { inD: .3, outD: .25, y: 0 });
+    win(ph, s0 + .15, null, { inD: .45, y: 40 });
+    win(tk, s0 + .5, null, { inD: .35, y: 16 });
+    anims.push(function (t) {
+      var k = Math.min(checks.length - 1, Math.max(0, Math.floor((t - (s0 + .6)) / w)));
+      var active = t >= s0 + .6;
+      n.textContent = (k + 1);
+      items.forEach(function (it, i) {
+        var a = t >= s0 + .6 + i * w ? ease(clamp((t - (s0 + .6 + i * w)) / .2)) : 0;
+        var b = (i < checks.length - 1) ? clamp((s0 + .6 + (i + 1) * w - t) / .12) : 1;
+        it.style.opacity = active ? Math.min(a, b) : 0;
+        it.classList.toggle("only-en", state.lang === "en");
+      });
+      dotEls.forEach(function (d, i) { d.classList.toggle("on", active && i <= k); });
+      // highlight the row the caption is about (3 captions over 4 rows: the last caption covers the last two rows)
+      rowEls.forEach(function (r, i) {
+        var on = active && (checks.length === rows.length ? i === k : (k === 0 ? i <= 1 : i === k + 1));
+        r.classList.toggle("on", on);
+      });
+      // language: show Hindi + small English, or English only
+      hHi.style.display = state.lang === "hi" ? "block" : "none"; hEn.style.display = state.lang === "hi" ? "block" : "none"; hMain.style.display = state.lang === "en" ? "block" : "none";
+      items.forEach(function (it) { it.firstChild.style.display = state.lang === "hi" ? "block" : "none"; it.children[1].style.display = "block"; });
+      // real recording frames: 30 fps image sequence, starts 0.2 s after the phone is in
+      if (REC[recKey]) { var f = Math.max(1, Math.floor((t - (s0 + .2)) * 30) + 1); img.src = REC[recKey] + "/s" + String(f).padStart(4, "0") + ".jpg"; }
+    });
+  }
+  screenScene(1, "SCREEN A · Purchase control", "अप्रूवल से पहले जाँच।", "Checked before you approve.", ["Stock at site", "Other sites", "On order", "BOQ limit"], CHECKS_A, "A", 334, 676);
+  screenScene(2, "SCREEN B · Customers", "फिर ग्राहक भी उसी में।", "Customers in the same system.", ["Leads + follow-ups", "Site visits", "Payments"], CHECKS_B, "B", 334, 676);
+
+  /* ---------- scene 4: the ask, plain text ---------- */
+  var s4 = stage.appendChild(el('<div class="sc"></div>'));
+  var cta = SC[3][0];
+  s4.appendChild(el('<div class="avatar">[photo of<br>Sridhar]</div>'));
+  var chip4 = s4.appendChild(el('<div class="chip" id="chip4" style="top:396px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center"></div>'));
+  var g4 = s4.appendChild(el('<div class="grp" id="g4" style="top:420px;text-align:center"></div>'));
+  g4.appendChild(el('<div class="t-main-en night-t" style="font-size:60px;line-height:1.05">Sridhar Patnaik</div>'));
+  g4.appendChild(el('<div class="night-sub" style="font:500 32px/1.3 var(--body);margin-bottom:26px">Nexus360</div>'));
+  var c4hi = g4.appendChild(el('<div class="t-hi night-t" style="font-size:50px;white-space:nowrap"><span class="y">WhatsApp पर डेमो बुक करें</span></div>'));
+  var c4en = g4.appendChild(el('<div class="t-en night-sub" style="font-size:42px">Book a demo on WhatsApp</div>'));
+  var c4main = g4.appendChild(el('<div class="t-main-en night-t"><span class="y">Book a demo<br>on WhatsApp</span></div>'));
+  s4.appendChild(el('<div class="numcard">+91 <span class="ph">[Sridhar&#39;s number]</span></div>'));
+  var plainHi = s4.appendChild(el('<div class="plain hi" lang="hi" style="top:1010px;font:500 30px/1.45 var(--deva)">"डेमो बुक करें" दबाइए। भेजने से पहले कुछ नहीं जाता।</div>'));
+  var plainEn = s4.appendChild(el('<div class="plain" style="top:1010px;font:500 32px/1.4 var(--body)">Tap "Book a demo". Nothing is sent until you press Send.</div>'));
+  win(s4, cta, null, { inD: .35, y: 0 });
+
+  /* ---------- the per-builder slots and the language switch, applied every frame ---------- */
+  anims.push(function () {
+    var b = state.variant === "builder", en = state.lang === "en";
+    document.getElementById("chip1").textContent = b ? "Made for [Project name] · [City]" : "Nexus360 · ERP + CRM for builders";
+    var c4 = document.getElementById("chip4"); c4.textContent = b ? "For [Project name], [City]" : ""; c4.style.display = b ? "block" : "none"; document.getElementById("g4").style.top = (b ? 466 : 424) + "px";
+    h1hi.style.display = en ? "none" : "block"; h1en.style.display = en ? "none" : "block"; h1main.style.display = en ? "block" : "none";
+    c4hi.style.display = en ? "none" : "block"; c4en.style.display = en ? "none" : "block"; c4main.style.display = en ? "block" : "none";
+    plainHi.style.display = en ? "none" : "block"; plainEn.style.display = en ? "block" : "none";
+    document.getElementById("g1").style.top = (b ? 222 : 196) + "px"; document.getElementById("indentCard").style.top = (en ? 770 : 720) + "px";
+  });
+
+  var guides = stage.appendChild(el('<div id="guides"><i class="top">top 100 px: app bar</i><i class="bot">bottom 120 px: player controls</i></div>'));
+  if (Q.get("guides") === "1") { guides.classList.add("on"); }
+
+  /* ---------- time ---------- */
+  window.setT = function (t) {
+    state.t = Math.max(0, Math.min(TOTAL, t));
+    anims.forEach(function (f) { f(state.t); });
+    var si = 0; SC.forEach(function (s, i) { if (state.t >= s[0]) { si = i; } });
+    if (!BARE) {
+      var v = VO[si];
+      document.getElementById("voTitle").textContent = "Voice-over, scene " + (si + 1) + " of 4";
+      document.getElementById("voHi").textContent = v.hi; document.getElementById("voRo").textContent = v.ro; document.getElementById("voEn").textContent = "English: " + v.en;
+      document.getElementById("rng").value = state.t; document.getElementById("tt").textContent = state.t.toFixed(1) + " / " + TOTAL.toFixed(1) + " s";
+    }
+  };
+  window.TOTAL = TOTAL;
+
+  /* ---------- viewer ---------- */
+  function fit() {
+    if (BARE) { return; }
+    var box = document.getElementById("vstage"); var avail = Math.min(window.innerWidth - 32, 1100);
+    var wide = window.innerWidth >= 900;
+    var h = wide ? Math.min(window.innerHeight - 190, 820) : null;
+    var sc = wide ? Math.min(h / 1280, 0.62) : Math.min(avail / 720, 1);
+    stage.style.transform = "scale(" + sc + ")";
+    box.style.width = (720 * sc) + "px"; box.style.height = (1280 * sc) + "px"; document.getElementById("vleft").style.setProperty("--sw", wide ? (720 * sc) + "px" : "100%");
+  }
+  var raf = null, last = 0;
+  function loop(ts) { if (!state.playing) { return; } var dt = (ts - last) / 1000; last = ts; var nt = state.t + dt; if (nt >= TOTAL) { nt = 0; } window.setT(nt); raf = requestAnimationFrame(loop); }
+  function play(on) { state.playing = on; document.getElementById("bPlay").textContent = on ? "Pause" : "Play"; if (on) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+  function press(id, on) { document.getElementById(id).setAttribute("aria-pressed", on ? "true" : "false"); }
+
+  if (BARE) {
+    document.body.classList.add("bare"); document.getElementById("viewer").replaceWith(stage); document.body.style.margin = "0";
+  } else {
+    document.getElementById("bPlay").addEventListener("click", function () { play(!state.playing); });
+    document.getElementById("rng").addEventListener("input", function (e) { play(false); window.setT(parseFloat(e.target.value)); });
+    var setLang = function (l) { state.lang = l; press("bHi", l === "hi"); press("bEn", l === "en"); window.setT(state.t); };
+    var setVar = function (v) { state.variant = v; press("bMaster", v === "master"); press("bBuilder", v === "builder"); window.setT(state.t); };
+    document.getElementById("bHi").addEventListener("click", function () { setLang("hi"); });
+    document.getElementById("bEn").addEventListener("click", function () { setLang("en"); });
+    document.getElementById("bMaster").addEventListener("click", function () { setVar("master"); });
+    document.getElementById("bBuilder").addEventListener("click", function () { setVar("builder"); });
+    document.getElementById("bGuides").addEventListener("click", function (e) { var on = !guides.classList.contains("on"); guides.classList.toggle("on", on); e.currentTarget.setAttribute("aria-pressed", on ? "true" : "false"); });
+    var vs = document.getElementById("vstage"); vs.appendChild(stage); window.addEventListener("resize", fit);
+    press("bHi", state.lang === "hi"); press("bEn", state.lang === "en"); press("bMaster", state.variant === "master"); press("bBuilder", state.variant === "builder");
+  }
+  window.setT(state.t); fit();
+  var ready = function () { window.READY = true; if (!BARE && Q.get("autoplay") !== "0" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && !Q.get("t")) { play(true); } };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { window.setT(state.t); fit(); ready(); });
+})();
+</script>
+</body>
+</html>

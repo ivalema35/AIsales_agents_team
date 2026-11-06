@@ -1,0 +1,66 @@
+{
+  "business": "Detailing Spot",
+  "city": "Nizampura (Chhani Jakat Naka), Vadodara",
+  "identity_verified": true,
+  "verification_trail": [
+    "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489 : opened; confirms name, address Shop no. 2-3 Sanwaliya Enclave GF, Chhani Jakat Naka Cir, Chistiya Nagar, Vadodara 390024, phone +91 95877 11010, rating 4.7 from 63 ratings; no website, no business Instagram, no owner name (only a 'Claim listing' link, i.e. unclaimed); no review dates",
+    "https://detailing-spot-car-detailing.wheree.com/ : page itself returned HTTP 403 to me; only the search-engine snippet was seen (same address, same phone, hours 07:00-11:00, PPF/ceramic/graphene detailing). Second directory, but a scraped aggregator, so weak independence",
+    "WebSearch x3 (name + area, name + phone, name + instagram/justdial): no official website, no Instagram, no Google Maps listing surfaced; searches mostly returned CarzSpa (a different chain)"
+  ],
+  "official_website": "none found",
+  "website_status": "none found (two directory pages show none; Google Maps profile NOT seen, so a site or social link could exist there)",
+  "what_they_do": "Car detailing, PPF and ceramic/graphene coating shop (single shop, directory-described)",
+  "entity_type": "end_business",
+  "brand_franchise_flag": "single outlet as far as seen (no chain evidence); not verified beyond directories",
+  "size_cues": "One shop (Shop 2-3, ground floor). 63 ratings on Magicpin. Long listed hours (07:00-11:00 per Wheree snippet). No staff/years/branch info found.",
+  "decision_maker": "not found",
+  "contacts": [
+    {
+      "kind": "phone",
+      "value": "+91 95877 11010",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "note": "Indian mobile, likely WhatsApp-capable (not confirmed). Same number in the Wheree snippet. Published by directories, NOT confirmed as published by the business itself, and not confirmed to reach the owner. Magicpin listing is unclaimed."
+    },
+    {
+      "kind": "whatsapp",
+      "value": "magicpin 'Enquire now' WhatsApp link points to a different number (+91 87965 76868); NOT recorded as the business's number, likely a magicpin platform/lead-routing number",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "note": "Do not use"
+    }
+  ],
+  "phone_published": "yes, +91 95877 11010 on Magicpin and Wheree directories; not seen on a business-owned page or on its Google Maps listing",
+  "observed_facts": [
+    {"fact": "Magicpin lists the shop at Shop no. 2-3, Sanwaliya Enclave, Chhani Jakat Naka Circle, Chistiya Nagar, Vadodara 390024, 4.7 rating from 63 ratings, phone +91 95877 11010", "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489", "date": "undated (fetched 2026-11-04)"},
+    {"fact": "The Magicpin listing shows no website and no business Instagram, and has an unclaimed 'Claim listing' link", "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489", "date": "2026-11-04"},
+    {"fact": "Wheree (search snippet only) lists same address and phone, hours 07:00-11:00, PPF, ceramic and graphene coating; reviews summarised as positive", "source_url": "https://detailing-spot-car-detailing.wheree.com/", "date": "undated"},
+    {"fact": "No official website found by three web searches", "source_url": "web search 2026-11-04", "date": "2026-11-04"}
+  ],
+  "hypotheses": [
+    "No website of its own means no booking/proof page: a gap our offer fills (inferred from directory pages only; the Google profile may link a site or Instagram)",
+    "PPF/ceramic/graphene work is premium-priced, so the owner can likely afford Rs 15-25k setup (inference from service type, no direct pay evidence)",
+    "The +91 95877 11010 mobile may be the owner's or a staff phone (unknown)"
+  ],
+  "need_evidence": "inferred",
+  "ability_to_pay": "Premium services (PPF, ceramic, graphene) and 63 ratings at 4.7 suggest a working shop; no ad activity, no funding, no branch count observed. Moderate, unproven.",
+  "pay_signal": "weak",
+  "reachability": "business_contact",
+  "owner_direct_contact": "unknown",
+  "resistance": "Unknown. No evidence of an existing vendor or agency; no website to show one. Listing unclaimed on Magicpin (suggests low digital engagement, also means the number may be scraped/stale).",
+  "newest_review_date": "not observable (Magicpin shows no review dates; Wheree 403; Google reviews not accessible)",
+  "owner_replies_in_newest_3": "not observable",
+  "ad_status": "unknown (not checked; no Meta Ad Library access)",
+  "grade": "C",
+  "reject_reason": "",
+  "case_for": "Real-looking single-outlet detailing shop doing premium work (PPF/ceramic/graphene), 4.7 from 63 ratings, a mobile number published in two directories, and no website found anywhere: a match for the booking + proof page offer.",
+  "case_against": "All evidence is from two aggregator directories (likely sharing source data); the page is unclaimed and I could not open the Google Maps listing, so the 'no website' signal is unconfirmed and the number is not shown to be the owner's or business-published. No owner name, no review dates, no ad or pay evidence, and Vadodara is second-wave geography. Need is inferred, not observed.",
+  "best_angle": "Only after a Google Maps check: a short, human-style question about whether customers can see price/packages and before-and-after photos and book on WhatsApp from one page (no claims about lost customers), reusing the shop's own review rating.",
+  "best_channel": "WhatsApp (call/voice note) to +91 95877 11010 ONLY after the owner confirms this lead and the number is confirmed on its Google Maps listing as the business's own; opt-in route preferred. Not ready now: owner_direct_contact unknown.",
+  "safe_first_message_slot": "c ONLY after confirming on Google (agree with finder; do not send until the Google listing, number and no-website status are verified)",
+  "gaps": [
+    "Open the Google Maps listing: confirm the number, website/Instagram link, newest review date, owner replies, Q&A",
+    "Check Instagram for a business account by the shop's name (public page only)",
+    "Confirm whether the number reaches the owner (cannot be done read-only)",
+    "Wheree page was 403, so only snippet seen",
+    "No ad-activity check done (Meta Ad Library)"
+  ]
+}

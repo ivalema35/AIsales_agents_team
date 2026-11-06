@@ -1,0 +1,30 @@
+{
+ "keys": {
+  "re-gj-shyamal-park-lane-vadodara": {
+   "must_not_claim": "Do not say we saw slow or missed replies. Say only that one of the three Diwali ad versions has a Send WhatsApp message button; do not say all their ads are WhatsApp ads (the other two use a Get quote form). Do not say they lack a CRM or an auto-reply (untested). Do not state 990 units, 24 buildings or 99.64% as verified (third-party mirror with conflicting sources). Refer to the two directors only as 'shown on your About page'.",
+   "will_buy_view": "Possible but unproven. A family-run Vadodara developer with a Diwali push, three call lines and no WhatsApp number or chat on its site could use a WhatsApp first reply with a site-visit slot, but it already captures leads through a Meta form and phone, so I would expect a low reply rate, in line with campaign 1's 0 of 22. The pain is only a hypothesis, and I found no reviews or other evidence of unanswered enquiries.",
+   "decision_maker_confidence": "LIKELY",
+   "whatsapp_path": "possible"
+  },
+  "re-gj-vistara-anahata-florenza": {
+   "must_not_claim": "Do not say Vistara is Vadodara-headquartered (the site says Gandhinagar, LinkedIn says Ahmedabad; Vadodara is the Anahata Florenza project site and the sales hire). Say the Anahata Florenza ads have a Send WhatsApp message button; do not say slow or missed replies, and do not say they lack a CRM (they have a website chatbot that promises a callback). Do not name an owner. Do not attribute the Bangalore pre-leased office ads, the Pune resale-flat ad by 'vistararealty2024' or the UAE company at vistara-group.com to this builder. Never repeat the guaranteed-return wording seen in some Kalrav Farms ads.",
+   "will_buy_view": "Possible but not likely on a first cold touch: they are active (live ad, sales hire, launches) and publish a WhatsApp number, so a first-reply service fits, but they already run their own lead chatbot with a human callback and have a web developer who may build it themselves. There is no evidence of slow replies, the need is inferred, and the owner is unverified, so expect a low reply chance like campaign 1.",
+   "decision_maker_confidence": "UNKNOWN",
+   "whatsapp_path": "observed"
+  },
+  "re-gj-blj-infra-silver-square": {
+   "must_not_claim": "Do not say anyone is the owner, founder or MD (11-partner LLP); that 77788 11154 is the number behind the ad's WhatsApp button; that enquiries go unanswered, or that they lack a CRM or sales team; that an agency runs their ads; that Rs 60-70 lakh is BLJ's price, or that Silver Square has few bookings (the RERA mirror is stale); that BLJ built Silver Avenue, 48 Avenue, 36 Avenue or Zen Garden (other promoters); never say we saw their Instagram.",
+   "will_buy_view": "Probably not a quick yes: a 12-month-old 11-partner LLP running one 9-day launch campaign on a single mobile number will likely say someone replies themselves, and a free WhatsApp Business greeting is an easy substitute. Money is not the blocker, so a Silver Square-specific sample shown to the right partner is the only realistic route to a yes, and the odds of any reply from a cold first touch stay low.",
+   "decision_maker_confidence": "LIKELY (as the person to ask for; not proven decision-maker)",
+   "whatsapp_path": "observed",
+   "kept_at_owner_request": "Warm (5), below the hungry threshold; kept because the owner asked to keep the two leads found on 21 Oct 2026."
+  },
+  "re-gj-shree-namasya-vadodara": {
+   "must_not_claim": "Do not claim: slow or missed replies, lost enquiries, or that they have no chatbot or CRM (we cannot see inside the WhatsApp line or the forms); that 70696 06777 is a WhatsApp number or Mr. Bhagwat's own mobile; that the ads are WhatsApp-only (two are lead-form ads); that Mr. Bhagwat alone owns the firm or decides on tools, or any title such as CEO, association president or exhibitor; that units are unsold or that 97 flats exist (82 flats + 15 shops per the mirror, portals say 82 units); the 'No.1 3 BHK' or festive-offer wording as our own claim; that the 28 Sep festive offer is still running; that Sunfin's 75673 11777 or any Sunfin number is a Shree Namasya contact; the masked RERA mobile or email; or any price, result or free offer for our service.",
+   "will_buy_view": "A real but modest maybe: they pay for ads and a website and the project is large enough for a small monthly service, but the owner's own brokerage already sells the project by phone, so the likeliest reply is 'we handle it ourselves' or silence. With no pain evidence and the newest ads moving to lead forms, I would expect no reply and treat this as a test of the email route and message, not as pipeline.",
+   "decision_maker_confidence": "LIKELY (partner; not proven to decide on tools)",
+   "whatsapp_path": "possible",
+   "kept_at_owner_request": "Warm (5), below the hungry threshold; kept because the owner asked to keep the two leads found on 21 Oct 2026."
+  }
+ }
+}

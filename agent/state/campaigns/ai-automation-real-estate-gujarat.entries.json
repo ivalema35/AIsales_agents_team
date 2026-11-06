@@ -1,0 +1,110 @@
+[
+  {
+    "type": "campaign",
+    "key": "ai-automation-real-estate-gujarat-2026-10",
+    "tags": [
+      "round-1",
+      "real-estate"
+    ],
+    "data": {
+      "name": "AI automation - Gujarat real estate",
+      "product": "AI automation",
+      "status": "active",
+      "segment": "Real estate developers and brokers in Gujarat (Ahmedabad, Gandhinagar, Surat, Vadodara, Rajkot) with a fresh sign of enquiry volume",
+      "start": "2026-10-15",
+      "end": "2026-10-31",
+      "target_leads": 10,
+      "daily_send_cap": 10,
+      "budget_used": 3,
+      "budget_cap": 15,
+      "unit": "USD",
+      "leads": 10,
+      "sent": 0,
+      "replies": 0,
+      "evidence_methods": [
+        "GujRERA public register: newly registered projects (a new launch means new enquiries to answer)",
+        "Meta Ad Library: active ads with a WhatsApp button (they pay for enquiries, so slow replies cost them money)",
+        "Google Maps reviews: complaints about no reply or late callback"
+      ],
+      "design_pack": "Real estate theme chosen from Mobbin (property and listing apps), not the lead's own site",
+      "offer": "AI automation: instant WhatsApp first reply with brochure and site-visit booking, lead qualification, follow-ups, one lead board. Prices are never quoted by the agent.",
+      "milestones": [
+        {
+          "date": "2026-10-15",
+          "label": "Campaign started - lead research"
+        },
+        {
+          "date": "2026-10-15",
+          "label": "10 leads researched (all grade B, none A)"
+        },
+        {
+          "date": "2026-10-18",
+          "label": "Landing pages and videos for the best leads"
+        },
+        {
+          "date": "2026-10-19",
+          "label": "Owner review and OK CODE"
+        },
+        {
+          "date": "2026-10-20",
+          "label": "First outreach (only after OK CODE, max 10 per day)"
+        },
+        {
+          "date": "2026-10-30",
+          "label": "Round 1 review"
+        }
+      ],
+      "rules": "Active = research is running. Nothing is sent to any lead until the owner approves with OK CODE. First touch by approved WhatsApp template only. Account cap 40 outreach per day. No hardcoded claims: every pitch uses facts found for that lead.",
+      "budget_note": "Estimate: scouts about 2.85 USD of Apify (GujRERA 0.35, Meta Ad Library 1.5, Google Maps 1.0) plus small qualifier runs. Apify then hit its monthly hard limit.",
+      "result_round_1": "10 real-estate developers in Ahmedabad, Gandhinagar, Surat, Vadodara and Rajkot, each with a live paid-ad or fresh-launch signal and a visible funnel gap. None is proven to reply slowly (need inferred), so none reached grade A. Research recommends email first, not WhatsApp, because the WhatsApp numbers are published for enquiries, not as an opt-in for pitches.",
+      "validation_plan": "Hunger check first (public evidence only), then the reply decides. Wave 1: only the Hungry group, soft no-pitch first touch, email first, at most 5 a day, wait 5 days for replies. Wave 2: the Warm group, only after the wave-1 reply rate is known. Cold stays parked. Compare reply rate Hungry vs Warm: that is the real validation. No fake buyer enquiries are ever made to test response time.",
+      "waves": [
+        {
+          "wave": 1,
+          "group": "Hungry",
+          "leads": 5,
+          "rule": "soft first touch, email first, max 5 a day, wait 5 days"
+        },
+        {
+          "wave": 2,
+          "group": "Warm",
+          "leads": 4,
+          "rule": "only after the wave-1 reply rate is known"
+        },
+        {
+          "wave": 3,
+          "group": "Cold",
+          "leads": 1,
+          "rule": "parked until new evidence"
+        }
+      ]
+    }
+  },
+  {
+    "type": "activity",
+    "key": "started-ai-automation-real-estate-gujarat-2026-10-15",
+    "data": {
+      "kind": "campaign_started",
+      "text": "Campaign started today: AI automation for Gujarat real estate. Scouts are searching GujRERA, Meta Ad Library and Google Maps for round 1 leads. Nobody is contacted.",
+      "campaign": "AI automation - Gujarat real estate"
+    }
+  },
+  {
+    "type": "activity",
+    "key": "created-ai-automation-real-estate-gujarat-2026-10",
+    "data": {
+      "kind": "campaign_created",
+      "text": "Campaign drafted: AI automation for Gujarat real estate (round 1, 10 leads). Waiting for the start date and the owner's OK before any outreach.",
+      "campaign": "AI automation - Gujarat real estate"
+    }
+  },
+  {
+    "type": "activity",
+    "key": "pages-live-ai-automation-real-estate-gujarat-2026-10-16",
+    "data": {
+      "kind": "assets_ready",
+      "text": "4 landing pages are LIVE on ivinfotech.com/campaign (unlisted, noindex) with a personalised English video each: Pride Aura, BRIJ Sandalwood, NB Legacy Tower, Elenza Gardens. Independent QA done and fixes applied. Nothing sent to any lead; next: WhatsApp template approval, then test sends to the owner's own numbers.",
+      "campaign": "AI automation - Gujarat real estate"
+    }
+  }
+]

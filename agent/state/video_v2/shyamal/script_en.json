@@ -1,0 +1,30 @@
+{
+  "lead": "Shyamal Group",
+  "project": "Shyamal Park Lane",
+  "scenes": [
+    {
+      "id": 1,
+      "voice": "For Shyamal Park Lane. An I V Infotech idea."
+    },
+    {
+      "id": 2,
+      "voice": "One of your Diwali ads has a Send WhatsApp message button. A buyer taps it."
+    },
+    {
+      "id": 3,
+      "voice": "Say it is ten forty-seven at night. A buyer asks for details."
+    },
+    {
+      "id": 4,
+      "voice": "An automatic reply can send a brochure, ask three quick questions, and offer visit times, in about a minute."
+    },
+    {
+      "id": 5,
+      "voice": "By morning, your team sees who asked and who picked a visit, then takes over."
+    },
+    {
+      "id": 6,
+      "voice": "Want to see this for Shyamal Park Lane? Tap the button below. It says: Yes, send the demo."
+    }
+  ]
+}

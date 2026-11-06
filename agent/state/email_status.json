@@ -1,0 +1,110 @@
+{
+ "checked_at": "2026-10-19T17:57:00+05:30",
+ "emails": [
+  {
+   "id": "01a13df4-b87c-7967-87e2-32cfdb311c82",
+   "to": "ivaiagent05@gmail.com",
+   "sent_at": "2026-10-15T05:06:50Z",
+   "last_event": "opened",
+   "subject": "Approval-flow test from the Ivinfotech sales agent"
+  },
+  {
+   "id": "01a14455-9724-7362-93c1-a5106d09b31a",
+   "to": "hardikv682@gmail.com",
+   "sent_at": "2026-10-16T10:50:22Z",
+   "last_event": "clicked",
+   "subject": "[Test] A short video for BRIJ Sandalwood"
+  },
+  {
+   "id": "01a1445e-2b84-7bb3-a12d-fc96ef238fd3",
+   "to": "info@brijgroup.in",
+   "sent_at": "2026-10-16T10:59:44Z",
+   "last_event": "delivered",
+   "subject": "A short video for BRIJ Sandalwood"
+  },
+  {
+   "id": "01a14462-d6e4-74ce-b5b9-3e12b5983dfc",
+   "to": "office@nbdeveloper.co.in",
+   "sent_at": "2026-10-16T11:04:50Z",
+   "last_event": "delivered",
+   "subject": "A short video for NB Legacy Tower"
+  },
+  {
+   "id": "01a14463-08bb-72ba-97c3-47fa6ca38e8a",
+   "to": "sales@elenza.group",
+   "sent_at": "2026-10-16T11:05:03Z",
+   "last_event": "bounced",
+   "subject": "A short video for Elenza Gardens"
+  },
+  {
+   "id": "01a14824-a38f-701d-9423-6777492ae555",
+   "to": "priderealtors2024@gmail.com",
+   "sent_at": "2026-10-17T04:35:23Z",
+   "last_event": "delivered",
+   "subject": "A short video for Pride Aura"
+  },
+  {
+   "id": "01a15251-2a3b-7ce0-a90d-25b047a80a9d",
+   "to": "info@brijgroup.in",
+   "sent_at": "2026-10-19T04:00:13Z",
+   "last_event": "delivered",
+   "subject": "Following up: short video for BRIJ Sandalwood"
+  },
+  {
+   "id": "01a15252-fa57-7629-ad3d-423f26769977",
+   "to": "rudraenterprise1170@gmail.com",
+   "sent_at": "2026-10-19T04:02:12Z",
+   "last_event": "opened",
+   "subject": "A short video for Rivanta Heritage"
+  },
+  {
+   "id": "01a15283-7e6a-7a1f-81cd-9768a480769d",
+   "to": "office@nbdeveloper.co.in",
+   "sent_at": "2026-10-19T04:55:11Z",
+   "last_event": "opened",
+   "subject": "Automatic WhatsApp replies for NB Legacy Tower enquiries"
+  },
+  {
+   "id": "01a15283-af61-70b7-852d-d0a9d7f1212f",
+   "to": "priderealtors2024@gmail.com",
+   "sent_at": "2026-10-19T04:55:24Z",
+   "last_event": "delivered",
+   "subject": "Automatic WhatsApp replies for Pride Aura enquiries"
+  },
+  {
+   "id": "01a1534f-134b-73c3-9096-bda457f41992",
+   "to": "reachus@greatspacesrealty.com",
+   "sent_at": "2026-10-19T08:37:33Z",
+   "last_event": "clicked",
+   "subject": "Great Spaces Aaroham: automatic WhatsApp replies"
+  },
+  {
+   "id": "01a1534f-a11a-79c5-93da-7a2d04253736",
+   "to": "info@swagatdevelopers.in",
+   "sent_at": "2026-10-19T08:38:10Z",
+   "last_event": "delivered",
+   "subject": "Swagat Cilantra: automatic WhatsApp replies"
+  },
+  {
+   "id": "01a15350-2bed-799c-966c-0c0e7bac7ea2",
+   "to": "marketing@parshwanath.co.in",
+   "sent_at": "2026-10-19T08:38:45Z",
+   "last_event": "delivered",
+   "subject": "Parshwanath Emerald: automatic WhatsApp replies"
+  },
+  {
+   "id": "01a15350-ad3c-7c04-aae2-21e938cff95b",
+   "to": "inquiry@spaceageconsultants.com",
+   "sent_at": "2026-10-19T08:39:18Z",
+   "last_event": "delivered",
+   "subject": "Space Age Consultants: automatic WhatsApp replies"
+  },
+  {
+   "id": "01a15395-4109-74c1-9a2b-3dac1d4e6dc4",
+   "to": "hardikv682@gmail.com",
+   "sent_at": "2026-10-19T09:54:13Z",
+   "last_event": "opened",
+   "subject": "[Test] Great Spaces Aaroham: automatic WhatsApp replies"
+  }
+ ]
+}

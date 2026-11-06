@@ -1,0 +1,43 @@
+APPROVAL NEEDED [QTGRB]
+EMAIL
+To: inquiry@spaceageconsultants.com
+Lead label (typed by the agent, not checked): Space Age Consultants
+Subject: Space Age Consultants: automatic WhatsApp replies
+Reply-To: info@ivinfotech.com
+Agent's reason (typed by the agent, not checked): wave 2 first touch (email), English, Hungry lead; page + video live; ads rechecked today
+Links the lead will see:
+  https://www.ivinfotech.com/assets/campaign/space-age-consultants-qs0295/email_banner.jpg
+  https://www.ivinfotech.com/campaign/space-age-consultants-qs0295
+  https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Space%20Age%20Consultants
+  https://www.ivinfotech.com/assets/campaign/space-age-consultants-qs0295/logo.png
+--- text ---
+[theme: volume]
+
+Hello Space Age Consultants team,
+
+We are IV Infotech, Mehsana. We build automatic WhatsApp replies for real-estate developers and channel partners. We saw the Arvind Sensora pre-launch ads from Space Age Consultants, including one with a Send WhatsApp Message button.
+
+We made a video of under 40 seconds for Space Age Consultants. It shows how a WhatsApp enquiry can get an automatic reply in about a minute that asks for plot size and budget.
+
+[image] https://www.ivinfotech.com/assets/campaign/space-age-consultants-qs0295/email_banner.jpg | https://www.ivinfotech.com/campaign/space-age-consultants-qs0295 | Space Age Consultants - watch the video
+
+[button] Watch the video (under 40 seconds) | https://www.ivinfotech.com/campaign/space-age-consultants-qs0295
+
+Later today we will also send this same note on WhatsApp, to the number published for Space Age Consultants, so open whichever is easier. If you would rather not get it, reply "stop" to this email and we will not send it.
+
+Want to see it answer on WhatsApp? Tap the button below. WhatsApp opens with a message ready, you press Send, and we reply with a short sample chat for Space Age Consultants from our own number. Nothing is connected to your number.
+
+[button] Try the demo on WhatsApp | https://wa.me/15559597730?text=Yes%2C%20send%20the%20demo%20for%20Space%20Age%20Consultants
+
+If it looks useful, just reply to this email and we will walk you through it.
+
+We are not connected with Arvind SmartSpaces; the project name appears only because the ads name it.
+
+Regards,
+IV Infotech
+--- end of text ---
+(Our sender name, postal address and an opt-out line are added automatically.)
+(Sent as a designed HTML email in the landing-page colours, with a plain-text copy; the [button] / [image] lines above become buttons and a banner.)
+This code approves exactly the text above and nothing else.
+Reply OK QTGRB to approve, NO QTGRB to skip.
+Valid till 20 Oct 00:59 IST.

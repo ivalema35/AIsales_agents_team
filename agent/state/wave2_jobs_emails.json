@@ -1,0 +1,90 @@
+[
+ {
+  "code": "25CU3",
+  "label": "email Great Spaces",
+  "group": "email",
+  "cmd": [
+   "python",
+   "agent/tools/send_email.py",
+   "--to",
+   "reachus@greatspacesrealty.com",
+   "--subject",
+   "Great Spaces Aaroham: automatic WhatsApp replies",
+   "--body-file",
+   "agent/state/drafts/campaign1_v3/email_greatspaces.txt",
+   "--reply-to",
+   "info@ivinfotech.com",
+   "--lead",
+   "Great Spaces",
+   "--live",
+   "--approval",
+   "25CU3"
+  ]
+ },
+ {
+  "code": "SFC2E",
+  "label": "email Swagat Developers",
+  "group": "email",
+  "cmd": [
+   "python",
+   "agent/tools/send_email.py",
+   "--to",
+   "info@swagatdevelopers.in",
+   "--subject",
+   "Swagat Cilantra: automatic WhatsApp replies",
+   "--body-file",
+   "agent/state/drafts/campaign1_v3/email_swagat.txt",
+   "--reply-to",
+   "info@ivinfotech.com",
+   "--lead",
+   "Swagat Developers",
+   "--live",
+   "--approval",
+   "SFC2E"
+  ]
+ },
+ {
+  "code": "Y9QP7",
+  "label": "email Parshwanath",
+  "group": "email",
+  "cmd": [
+   "python",
+   "agent/tools/send_email.py",
+   "--to",
+   "marketing@parshwanath.co.in",
+   "--subject",
+   "Parshwanath Emerald: automatic WhatsApp replies",
+   "--body-file",
+   "agent/state/drafts/campaign1_v3/email_parshwanath.txt",
+   "--reply-to",
+   "info@ivinfotech.com",
+   "--lead",
+   "Parshwanath",
+   "--live",
+   "--approval",
+   "Y9QP7"
+  ]
+ },
+ {
+  "code": "QTGRB",
+  "label": "email Space Age Consultants",
+  "group": "email",
+  "cmd": [
+   "python",
+   "agent/tools/send_email.py",
+   "--to",
+   "inquiry@spaceageconsultants.com",
+   "--subject",
+   "Space Age Consultants: automatic WhatsApp replies",
+   "--body-file",
+   "agent/state/drafts/campaign1_v3/email_spaceage.txt",
+   "--reply-to",
+   "info@ivinfotech.com",
+   "--lead",
+   "Space Age Consultants",
+   "--live",
+   "--approval",
+   "QTGRB"
+  ]
+ }
+]

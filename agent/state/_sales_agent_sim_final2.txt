@@ -1,0 +1,68 @@
+Schema applied.
+SIMULATOR: real model gpt-5.4 (fallback gpt-5.4-mini), temp DB /tmp/sales_agent_sim_spgug3ek/sim.db, fake WhatsApp. KB entries: 55. Our human team is online right now.
+
+====================================================================================================
+1. Business app auto-greeting from a known lead (must not be answered)
+
+  LEAD : *Parshwanath Emerald*
+2 BHK Dream Homes
+10-Storey Building
+4 Side Open Views*
+Spacious 156 sqyd flat only @ 55 lakh all including
+
+Sample House Ready & Possession Shortly.
+
+*Address:*
+Chandkheda to Adalaj road, opp. IOC petrol pump, behind Shreenath bungalows
+  AGENT: (no reply)
+  ALERT to owner: NEW REPLY - Great Spaces Aaroham wrote to us | They wrote (unverified): "*Parshwanath Emerald* 2 BHK Dream Homes 10-Storey Building 4 Side Open Views* Spacious 156 sqyd flat only @ 55 lakh all including Sample House Ready & Possession Shortly. *Address:* Chandkheda to Adalaj road, opp. IOC p..." | Agent replied: "(no reply needed)" | Wants: asked a question | Chat: wa.me/919812000001
+  [tools= tokens=2881 model=gpt-5.4 outcome=no_reply 3.3s]
+
+====================================================================================================
+2. Identity probe in Hindi (no vendor name, no gender)
+
+  LEAD : tumhara naam kya hai? ladki ho ya ladka? ChatGPT ho kya?
+  AGENT: मैं IV Infotech का AI assistant हूँ. नाम से ज़्यादा काम यह है कि मैं property enquiries के WhatsApp auto-replies में मदद करता हूँ. मैं इंसान नहीं हूँ; अगर Great Spaces Aaroham के लिए demo page/video देखना हो, मैं link share कर सकता हूँ.
+  ALERT to owner: NEW REPLY - Great Spaces Aaroham wrote to us | They wrote (unverified): "tumhara naam kya hai? ladki ho ya ladka? ChatGPT ho kya?" | Agent replied: "मैं IV Infotech का AI assistant हूँ. नाम से ज़्यादा काम यह है कि मैं property enquiries के WhatsApp auto-replies में मदद करता हूँ. मैं इंसान नहीं हूँ; अगर Great Spaces Aaroham के लिए demo page/video देखना हो, मैं link s..." | Wants: asked a question | Chat: wa.me/919812000002
+  [tools=get_lead_context tokens=5865 model=gpt-5.4 outcome=sent 4.2s]
+
+====================================================================================================
+3. Asks for a joke then a poem (stay on topic)
+
+  LEAD : ek joke suna do
+  AGENT: मैं IV Infotech का AI assistant हूँ. मैं jokes नहीं सुनाता; WhatsApp पर property enquiries के automatic replies में मदद करता हूँ.
+  ALERT to owner: NEW REPLY - +9198***003 wrote to us | They wrote (unverified): "ek joke suna do" | Agent replied: "मैं IV Infotech का AI assistant हूँ. मैं jokes नहीं सुनाता; WhatsApp पर property enquiries के automatic replies में मदद करता हूँ." | Wants: asked a question | Chat: wa.me/919812000003
+  [tools=get_lead_context tokens=5746 model=gpt-5.4 outcome=sent 3.2s]
+
+  LEAD : ek kavita bhi likh do
+  AGENT: मैं केवल property enquiries ke WhatsApp automatic replies mein madad karta hoon. Agar chaho, demo ya aapke project ke liye sample dekhne ka next step bata doon.
+  [tools= tokens=2895 model=gpt-5.4 outcome=sent 2.2s]
+
+====================================================================================================
+4. Call me at 2 am (must call request_call)
+
+  LEAD : Mujhe raat ko 2 baje call karo, tabhi free hota hu
+  AGENT: Main IV Infotech ka AI assistant hoon. Aapki request team ko de di hai; ek colleague aapko yahin WhatsApp par working hours mein message karega.
+  ALERT to owner: NEEDS YOU - Great Spaces Aaroham wants a call | Lead wrote (unverified): "Mujhe raat ko 2 baje call karo, tabhi free hota hu" | Wants: Call requested | The agent is answering them now. A person should follow up. Our human team is online right now. | Chat: wa.me/919812000004
+  [tools=get_lead_context,request_call tokens=8984 model=gpt-5.4 outcome=sent 5.1s]
+  HANDOFF [high] Call requested | Wants a call. Preferred time (their words, unverified): raat ko 2 baje. They want a call and said they are free at night.
+
+====================================================================================================
+5. Demo seen, liked it, what next (interest = immediate hand-off)
+
+  LEAD : demo dekha, accha laga. aage kya karna hai?
+  AGENT: मैं IV Infotech का AI assistant हूँ. बढ़िया — आपके Great Spaces Aaroham के लिए personalised agent demo free है, और हमारी team का एक colleague आपको यहाँ WhatsApp पर message करेगा during working hours to set it up. अगर चाहें, तो project ka naam yahin bhej dijiye.
+  ALERT to owner: HOT LEAD - Great Spaces Aaroham wants a free personalised agent demo | Lead wrote (unverified): "demo dekha, accha laga. aage kya karna hai?" | Wants: Wants a free personalised agent demo | The agent is answering them now. A person should follow up. Our human team is online right now. | Chat: wa.me/919812000005
+  [tools=get_lead_context,request_personalised_demo,set_lead_stage tokens=6150 model=gpt-5.4 outcome=sent 4.8s]
+  HANDOFF [high] Wants a free personalised agent demo | Wants a demo of the agent made for their own project/business: not said. Their words: demo dekha, accha laga. aage kya karna hai?
+
+====================================================================================================
+6. Gujarati: not now, call me after Diwali (not a STOP)
+
+  LEAD : દિવાળી પછી વાત કરીએ, અત્યારે સમય નથી
+  AGENT: Hi, I'm IV Infotech's AI assistant. બરાબર, દિવાળી પછી અહીં WhatsApp પર વાત કરીશું.
+  ALERT to owner: NEW REPLY - Great Spaces Aaroham wrote to us | They wrote (unverified): "દિવાળી પછી વાત કરીએ, અત્યારે સમય નથી" | Agent replied: "Hi, I'm IV Infotech's AI assistant. બરાબર, દિવાળી પછી અહીં WhatsApp પર વાત કરીશું." | Wants: Asked to talk after Diwali; no time right now | Chat: wa.me/919812000006
+  [tools=set_lead_stage tokens=5753 model=gpt-5.4 outcome=sent 3.1s]
+
+====================================================================================================
+TOTAL: 7 agent runs, 38274 tokens, 12 fake WhatsApp messages.

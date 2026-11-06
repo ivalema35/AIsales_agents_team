@@ -1,0 +1,14 @@
+[
+  {"type": "lead", "name_contains": "Shreem Avdhesh",
+   "set": {"status": "contacted", "contacted": true, "next_step": "Message sent on WhatsApp 27 Oct (video + personalised Gujarati text + demo link) to both ad numbers, one shows delivered. Waiting for a reply. If nothing by 30 Oct send ONE short follow-up to a single number; a STOP means never message again."},
+   "history_add": {"date": "2026-10-27", "text": "Owner sent the WhatsApp message with the reel video, a personalised Gujarati text and the personalised demo link from his own WhatsApp at about 11:03 IST, to all numbers printed in the ads (96248 42535 and 95865 64040). No reply yet."}},
+  {"type": "lead", "name_contains": "Shivanta Krushnam",
+   "set": {"status": "contacted", "contacted": true, "next_step": "Message sent on WhatsApp 27 Oct to three numbers; the main number (92270 31144) answered with an automatic welcome message (not a human reply). Waiting for a human reply. Follow-up on 30 Oct to ONE number only if no reaction. Their WhatsApp Business already has a greeting: the angle for a follow-up is qualification + visit slot + one list, not just a greeting."},
+   "history_add": {"date": "2026-10-27", "text": "Owner sent the WhatsApp message (reel video + personalised English text + demo link) at about 11:05-11:07 IST to 92270 31144, 81411 33114 and 75673 31144. The main number auto-replied with a welcome message (automatic, not a reply from a person)."}},
+  {"type": "lead", "name_contains": "Kishan Antilia",
+   "set": {"status": "contacted", "contacted": true, "next_step": "Message sent on WhatsApp 27 Oct to both ad numbers; one answered with an automatic thank-you message (not a human reply). Waiting for a human reply. Follow-up on 30 Oct to ONE number only if no reaction."},
+   "history_add": {"date": "2026-10-27", "text": "Owner sent the WhatsApp message (reel video + personalised English text + demo link) at about 11:08-11:09 IST to 84696 18000 and 84697 18000. One number auto-replied 'Thank you for contacting Kishanantilia' (automatic greeting, not a person)."}},
+  {"type": "lead", "name_contains": "Class One Evoq",
+   "set": {"status": "contacted", "contacted": true, "next_step": "Message sent on WhatsApp 27 Oct to the ad number (shows as Classone Infra, first tick only when last seen). Waiting for delivery and a reply. Follow-up on 30 Oct only if no reaction."},
+   "history_add": {"date": "2026-10-27", "text": "Owner sent the WhatsApp message (reel video + personalised English text + demo link) at about 11:10 IST to 91575 96575 (the chat is named Classone Infra). Only one grey tick was visible at the time."}}
+]

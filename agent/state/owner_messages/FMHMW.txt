@@ -1,0 +1,22 @@
+APPROVAL NEEDED [FMHMW]
+CREATE WHATSAPP TEMPLATE (submit to Meta)
+To: the WhatsApp Business account
+Lead label (typed by the agent, not checked): template iv_en_followup_v1
+Template name: iv_en_followup_v1
+Language: en   Category: MARKETING
+Header: none
+Agent's reason (typed by the agent, not checked): follow-up template for leads who read our earlier message but did not reply (Great Spaces, Swagat)
+--- text ---
+Hi {{1}}, a short follow-up from IV Infotech, Mehsana. Earlier we sent a short video about automatic WhatsApp replies for {{2}}.
+
+If someone taps the WhatsApp button on a {{2}} ad late in the evening, an automatic first reply can go out while your team is offline.
+
+Want to see it for {{2}}? Tap "Yes, send the demo" below.
+--- end of text ---
+Body examples: Sunrise Heights team | Sunrise Heights
+Footer: Reply STOP to opt out
+Button [Yes, send the demo] (QUICK_REPLY)
+Button [No, thanks] (QUICK_REPLY)
+This code approves exactly the text above and nothing else.
+Reply OK FMHMW to approve, NO FMHMW to skip.
+Valid till 28 Oct 00:08 IST.

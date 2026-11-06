@@ -1,0 +1,54 @@
+[
+ {
+  "type": "campaign",
+  "key": "detailing-studios-gujarat-2026-10",
+  "tags": [
+   "round-1",
+   "detailing"
+  ],
+  "data": {
+   "name": "Car / bike detailing studios: booking + proof page and Google profile upkeep (Gujarat)",
+   "product": "Websites and custom software",
+   "status": "active",
+   "start": "2026-10-29",
+   "end": "2026-11-27",
+   "unit": "USD",
+   "budget_cap": 4.5,
+   "budget_used": 0,
+   "budget_note": "Owner's Apify budget: about US$4-5 a month in total (ledger agent/state/apify_budget.json). No paid sends: the owner messages 1:1 from his own WhatsApp.",
+   "daily_send_cap": 12,
+   "target_leads": 46,
+   "leads": 21,
+   "sent": 9,
+   "delivered": 6,
+   "failed": 2,
+   "replies": 0,
+   "page_opens": 0,
+   "segment": "Owner-run car and bike detailing, coating and PPF studios in Gujarat (Mehsana, Gandhinagar, Ahmedabad first) with a visible gap on their own Google or site page; some already pay for Meta ads that lead to WhatsApp or a call.",
+   "offer": "Booking and proof page (packages by car size, before/after, reviews, WhatsApp Book button), Google profile clean-up and monthly upkeep, WhatsApp Business set-up, source-tagged links, a weekly not-yet-booked enquiry list. About Rs 15-25k setup and about Rs 5k a month (the owner decides; never quoted in messages). Smallest paid step: Rs 5,000 Google + WhatsApp booking tune-up in 3 working days, 50% advance.",
+   "evidence_methods": [
+    "Google Maps scan of 120 Gujarat businesses on 28 Oct 2026: 9 of 11 independent detailing studios had no working own website",
+    "Meta Ad Library exact-name checks: 3 of 8 conclusive checks showed an active ad",
+    "Independent re-check of 11 named studios on 28 Oct 2026 (10 usable, Exotic Car Detailing held back as a multi-outlet brand)"
+   ],
+   "rules": "The owner messages 1:1 from his own WhatsApp; nothing is automated. First message = one literally true observation from THEIR own Google or site page + a one-word question; never mention their ads, offers or prices; no price, free, instant, every or guarantee; one message per brand; day-3 follow-up only if the sample already exists; day-7 soft close; STOP is final; 10-12 new chats a day at most from one number; stop and review at 2 blocks. A website is NOT the pitch: sell the booking + proof page and profile upkeep.",
+   "validation_plan": "PRE-REGISTERED 28 Oct 2026. Gate 1 Thu 5 Nov 18:00, n = 46 sends (Thu 29 Oct 10, Fri 30 12, Sat 31 12, Mon 2 Nov 12; delivered >= 36): PASS R >= 8 and Q >= 4; KEEP GOING R >= 4 and Q >= 2; PIVOT R <= 3 or Q <= 1 (batch 2 = wedding vendors); KILL R = 0. Gate 2 Fri 27 Nov, n about 96: PASS >= 1 advance of Rs 5,000 or more; KEEP 0 advance but >= 3 calls or demos; PIVOT <= 2 calls and R >= 5; KILL <= 2 calls and R <= 4. No cold sends 6-15 Nov (Diwali about 8 Nov). R = any human reply, Q = owner says the gap matters or asks what / how much, C = call or demo.",
+   "waves": [
+    {
+     "wave": 1,
+     "group": "Spend seen",
+     "leads": 6,
+     "rule": "studios with a live Meta ad or a broken website link; one message each, first 3 on Thu 29 Oct"
+    },
+    {
+     "wave": 2,
+     "group": "Visible gap",
+     "leads": 4,
+     "rule": "no working site or unanswered reviews, no ad seen"
+    }
+   ],
+   "pack": "agent/docs/FIRST_CLIENT_PACK_DETAILING_2026-10-28.md",
+   "channel_note": "30 Oct 2026: 7 company-number template sends (Hindi, video): 5 delivered, 1 failed (Meta 131049), 1 pending receipt; 4 automatic bot greetings (not replies); no human reply yet. The owner's own 1:1 messages (Gate 1) are logged separately. Second touches the same day to alternative numbers: Krishna 2nd line delivered, RRR Justdial number not on WhatsApp (131026). Krishna's first message was read at 11:07 IST."
+  }
+ }
+]

@@ -1,0 +1,31 @@
+{
+  "name": "iv_en_realestate_demo_v1",
+  "language": "en",
+  "category": "MARKETING",
+  "header": {
+    "format": "VIDEO",
+    "file": "assets/SAMPLE_neutral_en_v3.mp4"
+  },
+  "body": "Namaste {{1}},\n\nWe are IV Infotech, Mehsana. We saw your ads for {{2}}.\n\nWhen an enquiry arrives at night or in a busy hour and the reply comes late, some buyers may move on to the next developer.\n\nWe made a short video for {{2}}. In simple words it shows how every WhatsApp enquiry can get an automatic reply in about a minute, and how your team can save time and give buyers a quicker first reply.\n\nWatch the video, and if it looks useful, tap \"Yes, send the demo\" below.",
+  "body_examples": [
+    "Sunrise Heights team",
+    "Sunrise Heights"
+  ],
+  "footer": "Reply STOP to opt out",
+  "buttons": [
+    {
+      "type": "URL",
+      "text": "See details",
+      "url": "https://www.ivinfotech.com/campaign/{{1}}",
+      "example": "https://www.ivinfotech.com/campaign/nb-legacy-tower-x4vyv9"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "Yes, send the demo"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "No, thanks"
+    }
+  ]
+}

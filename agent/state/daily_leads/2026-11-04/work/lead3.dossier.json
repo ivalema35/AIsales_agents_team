@@ -1,0 +1,63 @@
+{
+  "business": "Auto Clinic (AUTOCLINIC) - Car Detailing, PPF and Coating Studio, Llumar partner",
+  "city": "Ahmedabad (Iscon / Bellagio Road - Ambli Road area; address differs by source)",
+  "identity_verified": true,
+  "verification_trail": [
+    "https://www.grasi.in/locate-llumar-dealer - Llumar India dealer locator (footer (c) 2025): row 'Auto Clinic', Near Iscon Flyover, beside Maruti 360, Bellagio Road, Ahmedabad 380053; contacts Vaibhav Solanki / Sagar Jethva; phone 9909956565; Instagram @autoclinic_ahmedabad; no website field; description calls them a dependable AFC in Ahmedabad. No last-updated date.",
+    "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing - directory entry 'Auto Clinic' (Car Spa and Detailing), Iscon, Ambli Rd, beside Rajwadi Tea Stall, opp. Vikram Nagar, Ahmedabad 380058; same phone 9909956565; no website; NO rating shown (the finder's '4.6 rating' was not reproduced here).",
+    "https://www.instagram.com/autoclinic_ahmedabad/ - public business page 'AUTOCLINIC', bio says since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4,546 followers; no website link and no phone shown in bio/header.",
+    "WebSearch x5 (name, phone, handle, Vaibhav Solanki, Maps/Justdial): no own website, no Maps/Justdial page surfaced; results were all CarzSpa (a different, franchise chain). An IndiaMART 'Auto Clinic' in Junagadh-Rajkot Highway is a namesake, NOT this business."
+  ],
+  "official_website": "none found",
+  "what_they_do": "Car detailing, PPF (Llumar authorised partner), ceramic coating and car audio studio in Ahmedabad, operating since 2017 per its own Instagram bio.",
+  "entity_type": "end_business",
+  "size_cues": "Single studio found (no multi-outlet claim in any of the 3 sources). Operating since 2017 (Instagram bio). About 4.5k Instagram followers. Two named contacts on the Llumar row (Vaibhav Solanki / Sagar Jethva), suggesting two partners/principals. Not a Garware/Llumar-run brand; a dealer of it.",
+  "decision_maker": "Not confirmed. Llumar locator row (grasi.in/locate-llumar-dealer) lists contacts 'Vaibhav Solanki / Sagar Jethva' (roles not stated). Treat as probable owners/partners, hypothesis only.",
+  "contacts": [
+    { "kind": "phone", "value": "9909956565", "source_url": "https://www.grasi.in/locate-llumar-dealer", "note": "Published by/for the business on the Llumar dealer row and repeated on localeye.in directory. Indian mobile: likely WhatsApp-capable, NOT confirmed. NOT seen on the Google Maps listing (Maps not reachable from here), so 'phone published on Maps' is unverified." },
+    { "kind": "phone", "value": "9909956565", "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing", "note": "Second independent directory source for the same number." },
+    { "kind": "email", "value": "v*********050@gmail.com (full address on the locator row)", "source_url": "https://www.grasi.in/locate-llumar-dealer", "note": "Personal-style Gmail on a supplier locator; NOT a sales route, email does not count for this campaign." },
+    { "kind": "instagram", "value": "@autoclinic_ahmedabad", "source_url": "https://www.instagram.com/autoclinic_ahmedabad/", "note": "Business page; no phone or link in bio. Do not DM (cold)." },
+    { "kind": "website", "value": "none found", "source_url": "https://www.grasi.in/locate-llumar-dealer", "note": "No website on locator row, localeye, or Instagram bio; no site surfaced in searches." }
+  ],
+  "observed_facts": [
+    { "fact": "Llumar India dealer locator lists Auto Clinic, Ahmedabad, with phone and Instagram handle and no website field.", "source_url": "https://www.grasi.in/locate-llumar-dealer", "date": "page footer 2025; checked 2026-11-04" },
+    { "fact": "Same phone number appears in an independent directory entry (localeye) with no website.", "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing", "date": "checked 2026-11-04" },
+    { "fact": "Instagram page AUTOCLINIC states since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4.5k followers; bio has no website link.", "source_url": "https://www.instagram.com/autoclinic_ahmedabad/", "date": "checked 2026-11-04" },
+    { "fact": "Two different street descriptions for the studio (Bellagio Road near Iscon Flyover, beside Maruti 360, 380053 vs Ambli Road, beside Rajwadi Tea Stall, 380058) - same Iscon area, can be the same place described differently, but unreconciled.", "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing", "date": "checked 2026-11-04" }
+  ],
+  "hypotheses": [
+    "The Google Maps listing probably has no website button (slot c) or links to Instagram, because no site exists anywhere else. UNVERIFIED: Maps could not be read here.",
+    "Enquiries come via Instagram DMs, calls and WhatsApp; a booking and proof page with packages and before/after photos could help. No evidence of lost bookings.",
+    "Vaibhav Solanki and/or Sagar Jethva are the owners/partners and the 9909956565 mobile reaches one of them.",
+    "The finder's '4.6 rating' and Google review facts are unverified; no review count, newest-review date or owner-reply data observed."
+  ],
+  "need_evidence": "inferred",
+  "ability_to_pay": "Moderate to strong for a single studio: Llumar-authorised PPF partner (premium film dealer, supplier vets partners), operating since 2017, 4.5k Instagram followers, sells PPF/ceramic/high-end audio (high-ticket services). No ad activity checked (Ad Library not queried), no review counts seen.",
+  "pay_signal": "strong",
+  "reachability": "business_contact",
+  "owner_direct_contact": "probably",
+  "resistance": "No website vendor or booking system seen. Already well served by Instagram and Llumar-supplied brand presence; may feel Instagram is enough. Possible that two partners split decisions. Llumar locator listing means the supplier may route leads to them, so they may think they need no site. No anti-AI positioning seen.",
+  "grade": "B",
+  "reject_reason": "",
+  "case_for": "Real, single, owner-run premium PPF/coating studio verified by 3 independent public sources (Llumar locator, directory, own Instagram). Absence of any own website in all three and a supplier-vetted premium positioning (Llumar partner, since 2017) make a booking-plus-proof page plausible and the buyer likely small enough to decide alone. Same business-published mobile appears in two places.",
+  "case_against": "Need is INFERRED, not observed: the only gap evidence is the absence of a website; the Google Maps website button, newest review date, owner replies and published-on-Maps phone could not be checked, so no campaign slot (a/b/c/d) is provable. Phone is from the Llumar dealer locator and a directory, not confirmed on Maps; whose phone it is unknown. Two principals named; address conflict between sources; 4.6 rating in finder claim not reproduced; Llumar locator is undated.",
+  "best_angle": "Slot c, to be confirmed on the Google listing before use: the Google listing (and Llumar page) have no website for a Llumar PPF/coating studio, so a one-page booking and proof page (packages by car size, before/after PPF photos, WhatsApp Book button) plus profile upkeep. Lead with the PPF proof/booking page, not 'a website'. Do not claim any lost bookings. Hypothesis, not fact, until Maps is checked.",
+  "best_channel": "WhatsApp or a call from a human to 9909956565 (likely WhatsApp, probably reaches one of the two named principals) only after the owner confirms that number is on their Google Maps listing; if it is not on Maps, do not use it cold. No email.",
+  "phone_published_on_maps": "unverified (number is published on the Llumar dealer locator and localeye; Maps not readable from here)",
+  "website_status": "none found (no own website; Instagram only; no website on Llumar row, directory or Instagram bio)",
+  "newest_review_date": "unknown",
+  "owner_replies_in_newest_3": "unknown",
+  "ad_status": "not checked",
+  "brand_franchise_flag": "single studio; a Llumar partner/dealer (supplier, not a franchisor); no multi-outlet evidence",
+  "safe_first_message_slot": "c (no website button) - NOT yet provable; needs a manual look at the Google listing before sending. Do not use a/b/d.",
+  "ready_for_campaign": false,
+  "ready_reason": "Not ready: need is inferred only, Google Maps listing (phone, website button, reviews) could not be verified, and the owner-direct reach of 9909956565 is unconfirmed. Becomes a B-ready lead once someone confirms on the Maps listing that (1) the same phone is published there and (2) the website button is missing or points to Instagram.",
+  "gaps": [
+    "Google Maps listing: published phone, website button, address, rating/review count, newest review date, owner replies.",
+    "Who the owner is (Vaibhav Solanki vs Sagar Jethva) and whose mobile 9909956565 is.",
+    "Which of the two addresses is correct.",
+    "Ad Library status not checked.",
+    "Finder's 4.6 rating not reproduced anywhere."
+  ]
+}

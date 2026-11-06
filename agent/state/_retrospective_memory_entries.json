@@ -1,0 +1,38 @@
+[
+ {
+  "name": "campaign1-offer-is-whatsapp-automation-not-video",
+  "description": "Owner decision 19 Oct 2026: campaign copy must sell WhatsApp automation; the video only explains it.",
+  "type": "feedback",
+  "body": "Owner (19 Oct 2026, two minutes after the fifth first-touch email went out): \"hume whatsapp automation bechna he, video nahi\". Six emails had already gone out as \"A short video for X\".\nRule: every subject names the OUTCOME in the lead's words, the first paragraph says what we do before what we made, the first 8 s of the video and the page H1 state the product. No asset-first subjects.\nAlso banned until the owner decides or evidence exists: \"your ads\" (only if the advertiser page is linked from the lead's own site), \"free\" (the owner never confirmed the demo is free), \"instant\", \"gets\", \"every\", staff names in the subject, personal phone numbers.\nHow to apply: at draft stage show the owner 3 lines (what we sell, what the subject promises, the one ask) before proposing codes. Add an offer-alignment lens to QA for the first email of each new copy version."
+ },
+ {
+  "name": "approval-chat-words-are-not-approval",
+  "description": "Owner approval is an OK code sent from his own WhatsApp; chat 'send' does not count. Gate pattern and owner's time preferences.",
+  "type": "feedback",
+  "body": "On 16 Oct 2026 the owner typed \"send\" in chat three times and wrote \"time waste\"; the send happened 23 min later when he sent the real OK code. A chat-token workaround was refused as a security weakening and reverted. The agent must never mint, forge or work around approvals, write secrets, or edit settings.local.json.\nHow to apply: open every wave with one sentence: \"Chat words are not approval; send OK CODE from your own WhatsApp.\" Create proposals only after copy is frozen (any wording change burns a code). Show ONE consolidated message about 10 minutes before an agreed send hour. The owner wants to be at his desk when sends go out (\"UNHE 3.30 KO BHEJO TAKI KOI ISSUE AYE TO ME YAHA HU\"). Codes live 12 h. Wave-2 delay of 68 min was owner availability, not the gate. Batch approval is optional and needs his explicit security decision."
+ },
+ {
+  "name": "cold-whatsapp-template-stop-loss",
+  "description": "Cold WhatsApp marketing templates to business-published numbers delivered 0 of 3; stop-loss rule and what the 15:30 wave-2 round must decide.",
+  "type": "project",
+  "body": "Campaign 1 (16 Oct 2026): Brij failed with Meta code 131049 five seconds after send, NB failed 131026 (number cannot receive), Elenza never got a status. Only the owner's and boss's own numbers delivered. The 14 Oct research had predicted it. Email delivered 11 of 12.\nThe owner still chose both channels for wave 2 (\"email first nahi, WhatsApp bhi saath me\"); 4 templates were queued for 15:30 IST 19 Oct, result unknown when this was written.\nRule: read Meta status about 60 s after each template send and do not send the next until it is read. Stop-loss: 3 consecutive non-deliveries = cold templates OFF for that WABA; at the 15:30 round, 2 or more of 4 delivered = keep templates only for personal mobiles, 0-1 = off for cold leads. Default route is email plus a lead-initiated wa.me button, or a human 1:1. Own-number tests prove rendering, not deliverability. Check the Meta phone-number quality rating after cold sends."
+ },
+ {
+  "name": "campaign2-gate-and-human-call-decision",
+  "description": "Do not add volume or start campaign 2 research before the 26 Oct checkpoint; human calls need an explicit owner decision.",
+  "type": "project",
+  "body": "As of 19 Oct 2026: 22 leads researched, 9 contacted, 0 replies, 13 unsent. Operator advice from 17 Oct (not followed): no new research while the unsent A/B pool is 2x the next wave or the last wave has no recorded decision.\nPlan: 15:30 IST 19 Oct apply the cold-WhatsApp rule; Thu 22 Oct touch 2 for wave 2; Mon 26 Oct checkpoint; stop all touches by about 5 Nov (Diwali about 8 Nov); weekdays only.\nOwner rule of 14 Oct 2026: \"hume call nahi karna\". Researchers want human calls (16 of 22 plans), and the owner's team made one hand-off call for Pride on 19 Oct. Ask the owner explicitly before proposing calls or a 10-lead human sprint; do not assume it is allowed.\nDecision rules proposed: at least 2 positive in at least 10 real conversations = continue; 0 of 10 = change offer or segment; fewer than 10 conversations = reachability problem. Next campaigns after the checkpoint: solar, then education/coaching, then high-ticket clinics, each needing about US$3 Apify credit and a 5-call discovery sprint first."
+ },
+ {
+  "name": "engagement-signals-need-a-qualified-rule",
+  "description": "6 of 8 early engagement signals were false; do not report hot/engaged from web events alone, and 'zero replies' is unverified for email.",
+  "type": "feedback",
+  "body": "False signals in campaign 1 (16-19 Oct 2026): owner's own test click, boss test number, mail auto-opens at +20 s and +30 s, a link scanner at +6 s, and the team's demo test that made Pride look HOT. Scanner thresholds (30 s page, 60 s click) come from n=1. Only 2 page opens look human (Brij 17 Oct, Pride 19 Oct) and neither is attributed.\nRule: report to the owner only a page visit after 60 s, video play, button tap, reply, STOP or bounce. Never mark a lead hot from a web event alone; an email open never counts. Register all team phones, IPs and browsers in the ignore lists BEFORE the first send; team tests go through the [Test] email to the owner, not lead links.\nEmail replies go to a shared Reply-To mailbox the agent cannot read, so 'zero replies' is not measured for the channel that carried 12 of 15 sends. Say 'reply path monitored: yes/no' next to every reply count. With 9 leads, always give k/n with a 95% interval (0 of 9 only rules out a true rate above about 28-34%)."
+ },
+ {
+  "name": "owner-style-and-day0-checklist",
+  "description": "How the owner works and the one-message Day-0 list to send before any campaign.",
+  "type": "user",
+  "body": "The owner sends short Hinglish commands (123 messages 15-19 Oct 2026, median 66 characters), decides fast, and flips plans often. Standing orders: answer his points and ask nothing back unless blocked (\"bas tu meri bato ka jawab deta jaa aur kuch mat puch\"); log every discussion point in memory.md; non-tech UI; live data in the console. He prefers speed, presence and both channels over risk-averse advice: state the risk once, then comply inside the gate. End each work chunk with one line, \"what I need from you\".\nDay-0 list to send in ONE message before any campaign: (1) Apify credit; (2) voice-recording slot if the vertical or language is new; (3) who watches the shared info mailbox and a neutral From address; (4) confirm the vps_run.sh allow rule exists; (5) a fixed daily send hour; (6) team test phones and IPs for the ignore list; (7) who makes human calls; (8) open claim decisions (is the demo free, what does 'Yes' send); (9) secrets only through the hidden-prompt script, never pasted in chat."
+ }
+]

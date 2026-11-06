@@ -1,0 +1,37 @@
+CHHATTISGARH RERA - public register, fetched 2026-10-20 10:36 from https://rera.cgstate.gov.in/Approved_project_List.aspx
+One request, no login, no CAPTCHA, no detail pages. No phone, e-mail or personal name is kept.
+
+FUNNEL (every filter is a visible rule):
+  All registered projects in the register                                             2173
+  In DURG, RAIPUR, RAJNANDGAON                                                        1317
+  Registration still valid (not 'Expired')                                            1127
+  Approved in the last 18 months                                                       146
+  Residential / plotted / mixed projects                                               135
+  Government bodies removed                                                            131
+  Promoter has 3 or fewer registered projects (stand-in for small/medium)               82
+  Names you already serve removed (name match only)                                     80
+  One row per promoter (newest registration first)                                      72
+
+NOTE: the register has no company-size field. 'Small/medium' above is a stand-in (few registered projects), not a measurement.
+
+TOP 20:
+   1. SHRI BALAJEE REAL INFRABUILD PRIVATE L | RIVERA | RAIPUR/MANDIR HASAUD | approved 07 Oct 2026 | PCGRERA071026002163
+   2. ARUN KUMAAR BHAIYA | R.K.GREENS-A | RAJNANDGAON/DONGARGARH | approved 07 Oct 2026 | PCGRERA071026002164
+   3. PAVAN BHAIYA | R.K.GREENS-P | RAJNANDGAON/DONGARGARH | approved 01 Oct 2026 | PCGRERA011026002162
+   4. RAVI DULANI | SAMRUDDHI | RAJNANDGAON/RAJNANDGAON | approved 21 Sep 2026 | PCGRERA210926002156
+   5. M/S MAHA GANPATI DEVELOPERS | SAI GREEN VALLEY | RAIPUR/ABHANPUR | approved 18 Sep 2026 | PCGRERA180926002155
+   6. BILTECH ESTATES | SURYA ANANYA PHASE - II | DURG/DURG | approved 17 Sep 2026 | PCGRERA170926002154
+   7. DEE VEE PROJECTS LIMITED | 31 MARINA BY DEEVEE | RAIPUR/MANDIR HASAUD | approved 01 Sep 2026 | PCGRERA010926002151
+   8. SENDH INTEGRATED PROJECT PRIVATE LIMIT | SENDH LAKE CITY PHASE III | RAIPUR/MANDIR HASAUD | approved 25 Aug 2026 | PCGRERA250826002144
+   9. JASMEET KOUR BHATIA | SHANTI NAGAR. | RAJNANDGAON/DONGARGARH | approved 25 Aug 2026 | PCGRERA250826002149
+  10. AJIT KUMAR TIGGA | PMAY 28 BILTECH JUNWANI BHILAI | DURG/DURG | approved 19 Aug 2026 | PCGRERA190826002142
+  11. GRADUATE PROPERTIES PVT.LTD. | SUNCITY PHASE-2 | DURG/DURG | approved 11 Aug 2026 | PCGRERA110826002139
+  12. URBAN CAPITAL REAL ESTATE | URBAN GREENS | DURG/BHILAI | approved 03 Aug 2026 | PCGRERA030826002132
+  13. SILVER DEVELOPERS | ACACIA | RAIPUR/RAIPUR | approved 03 Aug 2026 | PCGRERA030826002134
+  14. PRAGATEE BUILDERS & DEVELOPERS | TAPOVAN | RAIPUR/RAIPUR | approved 03 Aug 2026 | PCGRERA030826002136
+  15. JAI BABA BUILDERS | GURMUKH PARK | DURG/BHILAI | approved 03 Aug 2026 | PCGRERA030826002137
+  16. SHREE G DEVELOPER'S AND MARKETING | SHIVOM | RAIPUR/RAIPUR | approved 03 Aug 2026 | PCGRERA030826002138
+  17. HARSHIT SINGHANIA BUILDCON | HARSHIT GOLD CITY PHASE-2 | RAIPUR/MANDIR HASAUD | approved 31 Jul 2026 | PCGRERA310726002127
+  18. LAXMI FINANCE AND DEVELOPERS | S G PARK | RAIPUR/RAIPUR | approved 31 Jul 2026 | PCGRERA310726002130
+  19. SHIVNATH BUILDERS AND DEVELOPERS | SHIVAM MEADOWS | DURG/DURG | approved 24 Jul 2026 | PCGRERA240726002123
+  20. JAINAM REALTY | SERENITY BY CLASSIC | RAIPUR/RAIPUR | approved 24 Jul 2026 | PCGRERA240726002126

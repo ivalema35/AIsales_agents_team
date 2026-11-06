@@ -1,0 +1,47 @@
+{
+ "total": 40.51,
+ "scenes": [
+  {
+   "id": 1,
+   "start": 0.0,
+   "end": 4.646,
+   "voice_at": 0.0,
+   "voice_dur": 4.053
+  },
+  {
+   "id": 2,
+   "start": 4.646,
+   "end": 11.543,
+   "voice_at": 5.239,
+   "voice_dur": 5.759
+  },
+  {
+   "id": 3,
+   "start": 11.543,
+   "end": 16.98,
+   "voice_at": 12.088,
+   "voice_dur": 4.317
+  },
+  {
+   "id": 4,
+   "start": 16.98,
+   "end": 24.559,
+   "voice_at": 17.555,
+   "voice_dur": 6.364
+  },
+  {
+   "id": 5,
+   "start": 24.559,
+   "end": 30.071,
+   "voice_at": 25.199,
+   "voice_dur": 4.242
+  },
+  {
+   "id": 6,
+   "start": 30.071,
+   "end": 40.51,
+   "voice_at": 30.702,
+   "voice_dur": 7.408
+  }
+ ]
+}

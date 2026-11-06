@@ -1,0 +1,802 @@
+{
+ "campaign": "detailing-studios",
+ "researched": 6,
+ "grade_counts": {
+  "C": 5,
+  "reject": 1
+ },
+ "ready_count": 0,
+ "leads": [
+  {
+   "business": "Detailing Culture",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "ready_for_campaign": false,
+   "strongest_objection": "The 'need' is only that a brand-new site still has empty photo and video galleries while their Instagram already has posts from March to October 2026: it is a launch-phase to-do the owner will fill himself, it matches none of the campaign's defined gap slots, the booking half of our offer already exists, and nobody has shown that the 91063 number reaches the owner or what the Maps listing looks like.",
+   "reason_not_ready": "grade C: need only inferred / owner-direct contact and Google Maps signals unverified",
+   "dossier": {
+    "business": "Detailing Culture",
+    "city": "Bodakdev (SG Highway), Ahmedabad",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://detailingculture.in/ : own site, live; address Shop No-1, Gurudwar Lane, SG Highway, Behind Western Park, Opp Balaji Home's, Bodakdev, Ahmedabad 380054; hours Mon-Sat 11-19, Sun closed; services list; footer 'automotive care and Marine PPF for yachts and boats'",
+     "https://detailingculture.in/contact : phone/WhatsApp +91 91063 26281 (wa.me/919106326281); an email shown on the page (value withheld here, see contacts)",
+     "https://detailingculture.in/booking : form fields name, phone, vehicle, service category, preferred service, date, time (mandatory); 4-step 'Booking Submitted > Confirmation Message > Team Follow-Up > Service Appointment'; no prices, no packages by car size. Nothing submitted.",
+     "https://detailingculture.in/gallery/photos : text 'No project photos have been added yet' (seen 2026-11-04)",
+     "https://detailingculture.in/gallery/videos : 'No project videos have been added yet' (seen 2026-11-04)",
+     "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad : independent third-party page lists 'Detailing Culture (Garware Application Studio)' at the identical address, phone 9825033072 (one of 3 Garware Application Studios in the Locate Us list)",
+     "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7 (Get Direction link from the Garware row) redirects to a Google Maps place named DETAILING CULTURE at 23.0468N 72.5138E (Bodakdev); the Maps page itself is not readable with our tools (no rating, reviews, phone)",
+     "https://www.instagram.com/detailing_culture1/ : public profile 'DETAILING CULTURE', professional detailing studio, Bodakdev Ahmedabad, 426 followers, ~12 visible posts, no phone/email/website in bio, only a Maps link",
+     "https://www.facebook.com/p/Detailing-Culture-61592006451171/ : only the page title was readable; no details",
+     "WebSearch for the name + area returned no other listing (no JustDial/directory hit); so independent confirmations = Garware locator + Maps link, plus own site"
+    ],
+    "official_website": "https://detailingculture.in",
+    "what_they_do": "Single-outlet car detailing studio in Bodakdev: PPF, ceramic and graphene coating, deep cleaning, interior/exterior detailing; also accessories, modification, denting/painting, servicing, car buy/sell, and Marine PPF (190 micron 'Premium' 5-year warranty, 210 micron 'Ultimate' 8-year warranty). Listed by Garware as a Garware Application Studio.",
+    "entity_type": "end_business",
+    "size_cues": "One outlet, no branches or franchise claim, no years-in-business or car-count claim on site. 426 Instagram followers. Facebook page ID looks recently created (inference). Site says a 'team' follows up on bookings, so more than one person. Wide service list (6 categories) suggests a general auto shop that also does detailing.",
+    "decision_maker": "not found (no owner name on site, Garware page, Instagram bio)",
+    "contacts": [
+     {
+      "kind": "whatsapp",
+      "value": "+91 91063 26281",
+      "source_url": "https://detailingculture.in/contact",
+      "note": "wa.me link and phone on the studio's own site; Indian mobile, likely WhatsApp-capable; who answers (owner vs front desk/team) unknown"
+     },
+     {
+      "kind": "phone",
+      "value": "+91 91063 26281",
+      "source_url": "https://detailingculture.in/",
+      "note": "same number as above"
+     },
+     {
+      "kind": "phone",
+      "value": "9825033072",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "note": "published by Garware (third party) for this studio, not by the studio itself; different number from the site; unknown whose it is"
+     },
+     {
+      "kind": "email",
+      "value": "detailingculture@gmail.com",
+      "source_url": "https://detailingculture.in/contact",
+      "note": "published on own contact page; not a way in for this campaign (WhatsApp is the channel)"
+     },
+     {
+      "kind": "website",
+      "value": "https://detailingculture.in",
+      "source_url": "https://detailingculture.in/",
+      "note": "own site, live"
+     },
+     {
+      "kind": "instagram",
+      "value": "https://www.instagram.com/detailing_culture1/",
+      "source_url": "https://www.instagram.com/detailing_culture1/",
+      "note": "business profile"
+     },
+     {
+      "kind": "facebook",
+      "value": "https://www.facebook.com/p/Detailing-Culture-61592006451171/",
+      "source_url": "https://detailingculture.in/",
+      "note": "linked from own site"
+     },
+     {
+      "kind": "maps",
+      "value": "https://maps.app.goo.gl/XmLNat7mTyJQFwFL7",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "note": "resolves to a Google Maps place 'DETAILING CULTURE'; phone and website button on the listing could not be read"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Own site /gallery/photos says no project photos have been added yet",
+      "source_url": "https://detailingculture.in/gallery/photos",
+      "date": "2026-11-04 (date opened; page shows no date)"
+     },
+     {
+      "fact": "Own site /gallery/videos says no project videos have been added yet",
+      "source_url": "https://detailingculture.in/gallery/videos",
+      "date": "2026-11-04 (date opened; page shows no date)"
+     },
+     {
+      "fact": "Site has a working-looking booking form (name, phone, vehicle, category, service, date, time) but no prices and no packages by car size; only Marine PPF has two tiers",
+      "source_url": "https://detailingculture.in/booking",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "No testimonials or Google-review block on the home page",
+      "source_url": "https://detailingculture.in/",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Garware lists the studio as a Garware Application Studio at the same address",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Instagram profile has 426 followers and about 12 visible posts",
+      "source_url": "https://www.instagram.com/detailing_culture1/",
+      "date": "2026-11-04"
+     }
+    ],
+    "hypotheses": [
+     "The site and the Facebook page look new (Facebook ID range, empty galleries), so the galleries are probably 'not filled yet' rather than neglected; the owner may fill them himself within weeks",
+     "A custom-coded site with a /api/bookings backend probably means a developer or agency built it, so they may already have a web vendor",
+     "Newly started or recently expanded studios often have few Google reviews, which a proof page could help; unproven because Maps is unreadable",
+     "The 91063 26281 number is probably the studio line; whether the owner or a front-desk person answers is unknown"
+    ],
+    "need_evidence": "observed",
+    "ability_to_pay": "Mixed. Positive: Garware Application Studio listing, Marine PPF (premium tiers with 5/8-year warranty), a custom booking site recently built, a 6-category service business on SG Highway (a premium area). Negative: only 426 Instagram followers, new-looking social presence, no ad evidence (Ad Library not checked, not cheap), no review volume known. Offer is about Rs 15-25k setup plus about Rs 5k/month, which is plausible but not proven.",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "Has an own site with a booking form already built (a vendor may exist); our 'booking page' half is largely done, only the 'proof' half is missing. Site is clearly in launch phase, so the owner may fill the galleries himself. Garware may supply marketing material. Owner name and who answers the 91063 number are unknown.",
+    "grade": "B",
+    "reject_reason": "",
+    "case_for": "Real single-outlet studio, identity confirmed in three places (own site, Garware locator with identical address, Google Maps link). A need we SEE and that is literally true today: both gallery pages on their own site say no photos or videos yet, there is no review block, and no packages by car size, which is exactly the proof half of our offer. They are investing (new site, Garware studio, premium Marine PPF), so they are in a build phase and open to tools. A published wa.me WhatsApp number exists.",
+    "case_against": "The gap is a 'not yet filled' state on a new site, not neglect, and the booking half of our offer already exists, so the pitch is narrower than for a studio with no site. It is not one of the campaign's a/b/c/d slots and nothing is proven about Google reviews or the profile (Maps unreadable). Pay signal is weak to moderate (426 followers, no ads known). It is a general auto shop with six service lines, not a pure detailer. Owner not named; two different phone numbers; no proof the WhatsApp number reaches the decider. Possible existing web vendor.",
+    "best_angle": "One literally true sentence: 'your site has a booking form, but the photo and video galleries say no projects have been added yet'. Offer to build the proof side: before/after gallery, Google reviews block, packages by car size next to the existing Book button. Never say customers are lost. Do not mention the Garware listing as leverage beyond saying we saw it, and no prices in the message.",
+    "best_channel": "WhatsApp, human-approved, to +91 91063 26281 (the number the studio itself publishes with a wa.me link on its own site). It is the studio's own line, but who reads it is not proven, so open by asking for the owner. Do not use 9825033072 (published by Garware, not by the studio). Not email.",
+    "gaps": [
+     "Google Maps listing unreadable: phone, website button target, rating, newest review date and owner replies unknown",
+     "Whether 91063 26281 or 9825033072 reaches the owner is unknown; owner name not found",
+     "Whether the studio runs Meta ads is not checked (Ad Library exact-name search would be needed)",
+     "Whether the site is newly launched and the galleries are about to be filled",
+     "Facebook page content unreadable"
+    ],
+    "phone_published": "+91 91063 26281 (own site, with wa.me link); 9825033072 listed by Garware, not by the studio; the number on the Maps listing could not be read",
+    "website_status": "own site alive (detailingculture.in), booking form present, gallery pages empty, no review block; the Maps website-button target is unknown",
+    "newest_review_date": "unknown (Google Maps not readable)",
+    "owner_replies_in_newest_3": "unknown",
+    "brand_franchise_flag": "single outlet, no franchise claim; Garware Application Studio is a film-supplier approved-applicator label, not a franchise of the studio",
+    "safe_first_message_slot": "other (not a/b/c/d): 'site has a booking form but the photo and video galleries say no projects added yet'. a/b not provable (Maps unreadable), c not applicable (a site exists), d not applicable (the form exists)",
+    "ready_for_campaign": false,
+    "ready_reason": "Grade B, but owner_direct_contact is unknown (two different numbers, no owner name, a 'team' handles bookings) and the slot is outside a-d; the Maps phone/review state could not be checked."
+   },
+   "challenge": {
+    "business": "Detailing Culture",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Business exists as described, single outlet, right entity",
+      "verdict": "confirmed",
+      "note": "Own site (contact page) and Garware locator show the identical Bodakdev address; Instagram bio matches. Web search found no other listing, no namesake chain. Maps page was not readable by me either."
+     },
+     {
+      "claim": "Both gallery pages say no photos / no videos added yet",
+      "verdict": "confirmed",
+      "note": "Re-opened /gallery/photos and /gallery/videos on 2026-11-04: both say nothing added yet; no review/testimonial block on home page. Literally true but the pages carry no date."
+     },
+     {
+      "claim": "This is an observed NEED for our offer (proof page)",
+      "verdict": "corrected",
+      "note": "It is an observed state of a site, not a need. The campaign's need list is closed (no own site, website button opens sign-in/Linktree/Instagram, newest 3 reviews unanswered, Book Now with no form); an empty gallery is none of these, and the investigator itself says it fits no a/b/c/d slot. Their Instagram (public, 2026-11-04) shows about 11 grid items incl. 8 photos and 3 reels dated Mar, Apr and Oct 2026, so proof content exists and is simply not on the site yet. The site is brand new, so empty galleries most likely mean 'launch in progress', not neglect."
+     },
+     {
+      "claim": "Booking half is missing / pitch is booking + proof page",
+      "verdict": "refuted",
+      "note": "They already have a working booking form with a 4-step follow-up flow and a wa.me button, so the booking half of the offer is already done by someone. The remaining gap is only gallery content the owner can upload in an afternoon."
+     },
+     {
+      "claim": "Pay signal weak (not strong)",
+      "verdict": "confirmed",
+      "note": "426 followers, following 9, no ad evidence (not checked), no review data. Garware Application Studio is a supplier applicator listing, not proof of spend; the locator also lists junk entries (e.g. a 'Test' row at 7878787979), so it is a loosely curated list. Custom-coded site suggests a developer was already paid, which also suggests an existing vendor."
+     },
+     {
+      "claim": "Contact +91 91063 26281 is the studio's own, published on own site with wa.me",
+      "verdict": "confirmed",
+      "note": "Seen on / and /contact. Email detailingculture@gmail.com also on contact page. Who answers (owner vs team) is unproven; no owner name anywhere."
+     },
+     {
+      "claim": "Second number 9825033072 belongs to the studio",
+      "verdict": "unsupported",
+      "note": "Only on the Garware third-party page. Do not use; could be the owner's, the applicator's, or a stale entry."
+     },
+     {
+      "claim": "Reachability = business_contact, owner_direct_contact unknown",
+      "verdict": "confirmed",
+      "note": "Site says a 'team' follows up on bookings, so a front-desk or team person may read the WhatsApp. The campaign requires the number published on the Maps listing, which nobody has read. Owner rule not met, so not ready_for_campaign."
+     },
+     {
+      "claim": "Google profile state (reviews, owner replies, website button)",
+      "verdict": "not_checked",
+      "note": "Maps unreadable for the investigator and for me. Slots b (unanswered reviews) and a (broken website button) remain unknown and could be the real hook if checked by a human or a cheap Apify Maps call."
+     }
+    ],
+    "strongest_objection": "The 'need' is only that a brand-new site still has empty photo and video galleries while their Instagram already has posts from March to October 2026: it is a launch-phase to-do the owner will fill himself, it matches none of the campaign's defined gap slots, the booking half of our offer already exists, and nobody has shown that the 91063 number reaches the owner or what the Maps listing looks like.",
+    "corrections": [
+     "Downgrade B to C: need observed is a site-state, not one of the campaign's gap types; no safe first-message slot a/b/c/d.",
+     "Note Instagram does show proof posts (8 photos, 3 reels, Mar-Oct 2026), so 'no proof' is wrong; only the website lacks it.",
+     "Note the site already has booking + WhatsApp, so the pitch is narrower than the investigator implied.",
+     "Garware locator is a weak identity/pay source (contains a 'Test' entry); do not use 9825033072.",
+     "To earn B again: a human reads the Maps listing and finds the Maps-published mobile, plus one of: website button broken/Instagram-only, newest 3 reviews unanswered, or a running Meta ad; and some sign the 91063 number reaches the owner.",
+     "To earn A: owner named on a public page, a verified Maps-published owner mobile, and an observed ad or review-volume pay signal."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "Arbuda Car (Arbuda Car Accessories & Customization Studio)",
+   "first_grade": "reject",
+   "skeptic_grade": null,
+   "final_grade": "reject",
+   "challenged": false,
+   "ready_for_campaign": false,
+   "strongest_objection": "",
+   "reason_not_ready": "Accessory shop (excluded type: detailing is a secondary line of an accessories and modification store) and unverifiable: only one source (its own site), no Google Maps listing or directory entry found, no independent second source. Need claim also partly wrong (the site has an enquiry form).",
+   "dossier": {
+    "business": "Arbuda Car (Arbuda Car Accessories & Customization Studio)",
+    "city": "Gandhinagar",
+    "identity_verified": false,
+    "verification_trail": [
+     "https://arbudaaccessories.netlify.app/ (opened 2026-11-04): self-described car accessories and customization studio, GIDC Sector 28 Gandhinagar; detailing is a secondary service; has a Send Enquiry form (contact-form) plus WhatsApp button; embedded Google Map; counters show 0",
+     "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar: detailing/ceramic page, Book Now / Get a Quote scroll to #contact (which on the home page holds a working-looking enquiry form), footer Last Updated May 2025, PPF only mentioned in an FAQ, not offered",
+     "nslookup arbudacar.com: NXDOMAIN (schema.org url on the page points to it)",
+     "WebSearch name / phone / Instagram handle / address: no Google Maps listing, no directory entry, no review, no independent page found; only the business's own netlify pages. A namesake (Shree Arbuda Motors, Arbuda Instruments) is unrelated"
+    ],
+    "official_website": "https://arbudaaccessories.netlify.app (free Netlify subdomain; declared domain arbudacar.com does not resolve)",
+    "what_they_do": "Car accessories and customisation shop (seat covers, LED headlights, Android screens, alloy wheels, music systems, ambient lighting, interiors) that also lists three detailing packages (Signature Wash, Premium Detail, Ultimate Ceramic Coating). Detailing is a secondary line.",
+    "entity_type": "end_business",
+    "size_cues": "Single Gandhinagar studio (GIDC Sector 28). No years, no staff, no review count verifiable; 4.9 rating is a self-claim in the schema markup with no external listing found.",
+    "decision_maker": "not found",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 70169 25846",
+      "source_url": "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar",
+      "note": "business-published as call and WhatsApp (wa.me link); Indian mobile, likely WhatsApp; whether it reaches the owner is unknown; NOT verified on a Google Maps listing"
+     },
+     {
+      "kind": "website",
+      "value": "https://arbudaaccessories.netlify.app",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "note": "free netlify subdomain"
+     },
+     {
+      "kind": "email",
+      "value": "(business-published Gmail on the page)",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "note": "email is not a route"
+     },
+     {
+      "kind": "instagram",
+      "value": "arbuda_car_accessories",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "note": "link on own page; not opened (no profile scraping)"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "arbudacar.com, the domain named in the page's schema.org markup, does not exist (NXDOMAIN); the live site is a free netlify.app address",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "The home page has a Send Enquiry form (name, phone, car model, message) and a WhatsApp button, so 'Book Now with no form' (slot d) is NOT literally true site-wide; it is only true that the Book Now button on the detailing page jumps to the contact anchor",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Site self-describes as an accessories and customisation destination; detailing is one service among ~10 categories",
+      "source_url": "https://arbudaaccessories.netlify.app/",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Footer says Last Updated May 2025; no prices, no owner name, no years in business",
+      "source_url": "https://arbudaaccessories.netlify.app/car-detailing-gandhinagar",
+      "date": "May 2025"
+     }
+    ],
+    "hypotheses": [
+     "They may win customers by Instagram/WhatsApp (unverified)",
+     "A dead declared domain suggests they could not finish connecting a custom domain (inference only)"
+    ],
+    "need_evidence": "inferred",
+    "ability_to_pay": "Unknown. No ad activity, review count, branch count or listing found; the only thing visible is a free-hosted site.",
+    "pay_signal": "none",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "Has a working site with enquiry form and WhatsApp; no vendor evidence. Owner unnamed.",
+    "grade": "reject",
+    "reject_reason": "Accessory shop (excluded type: detailing is a secondary line of an accessories and modification store) and unverifiable: only one source (its own site), no Google Maps listing or directory entry found, no independent second source. Need claim also partly wrong (the site has an enquiry form).",
+    "case_for": "Single-owner-looking local studio in Gandhinagar (target geo) with a published mobile/WhatsApp number and a literally true, reproducible gap (declared domain arbudacar.com is dead; site is on a free netlify address).",
+    "case_against": "Excluded type (accessory shop first, detailing second); identity rests on one self-published source; no Maps listing, reviews, ads or owner name found so pay signal is none; site already has an enquiry form and WhatsApp button; the booking-form gap is not true; not a studio that needs a proof page more than a product catalogue.",
+    "best_angle": "None recommended. If the owner insisted: slot a only (the address arbudacar.com in the page code does not open, the live site is a free netlify address). Do not use slot d.",
+    "best_channel": "None (not ready). Only route would be WhatsApp to +91 70169 25846 after Maps confirmation that the number is the shop's and reaches the decider.",
+    "gaps": [
+     "Google Maps listing, phone on Maps, reviews, owner replies not found",
+     "owner name unknown",
+     "Instagram not opened",
+     "ad status not checked (low value)"
+    ],
+    "phone_published": "+91 70169 25846 on own website only (not confirmed on Maps)",
+    "website_status": "dead or parked declared domain (arbudacar.com NXDOMAIN); live site on free netlify.app subdomain with an enquiry form",
+    "newest_review_date": "unknown (no Maps listing found)",
+    "owner_replies_in_newest_3": "unknown",
+    "brand_franchise_flag": "no franchise; accessory-shop flag TRUE (excluded type)",
+    "safe_first_message_slot": "a (only if ever used); d is refuted. Not ready, so none."
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "Auto Clinic (AUTOCLINIC) - Car Detailing, PPF and Coating Studio, Llumar partner",
+   "first_grade": "B",
+   "skeptic_grade": "C",
+   "final_grade": "C",
+   "challenged": true,
+   "ready_for_campaign": false,
+   "strongest_objection": "Nothing the campaign requires has actually been observed: the gap (website button, reviews, owner replies) and the Maps-published phone are all unseen, so the whole lead rests on 'no website found' from a supplier locator and a directory, plus a 4.6 rating that is probably CarzSpa Ambli's, and an unproven owner mobile.",
+   "reason_not_ready": "grade C: need only inferred / owner-direct contact and Google Maps signals unverified",
+   "dossier": {
+    "business": "Auto Clinic (AUTOCLINIC) - Car Detailing, PPF and Coating Studio, Llumar partner",
+    "city": "Ahmedabad (Iscon / Bellagio Road - Ambli Road area; address differs by source)",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.grasi.in/locate-llumar-dealer - Llumar India dealer locator (footer (c) 2025): row 'Auto Clinic', Near Iscon Flyover, beside Maruti 360, Bellagio Road, Ahmedabad 380053; contacts Vaibhav Solanki / Sagar Jethva; phone 9909956565; Instagram @autoclinic_ahmedabad; no website field; description calls them a dependable AFC in Ahmedabad. No last-updated date.",
+     "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing - directory entry 'Auto Clinic' (Car Spa and Detailing), Iscon, Ambli Rd, beside Rajwadi Tea Stall, opp. Vikram Nagar, Ahmedabad 380058; same phone 9909956565; no website; NO rating shown (the finder's '4.6 rating' was not reproduced here).",
+     "https://www.instagram.com/autoclinic_ahmedabad/ - public business page 'AUTOCLINIC', bio says since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4,546 followers; no website link and no phone shown in bio/header.",
+     "WebSearch x5 (name, phone, handle, Vaibhav Solanki, Maps/Justdial): no own website, no Maps/Justdial page surfaced; results were all CarzSpa (a different, franchise chain). An IndiaMART 'Auto Clinic' in Junagadh-Rajkot Highway is a namesake, NOT this business."
+    ],
+    "official_website": "none found",
+    "what_they_do": "Car detailing, PPF (Llumar authorised partner), ceramic coating and car audio studio in Ahmedabad, operating since 2017 per its own Instagram bio.",
+    "entity_type": "end_business",
+    "size_cues": "Single studio found (no multi-outlet claim in any of the 3 sources). Operating since 2017 (Instagram bio). About 4.5k Instagram followers. Two named contacts on the Llumar row (Vaibhav Solanki / Sagar Jethva), suggesting two partners/principals. Not a Garware/Llumar-run brand; a dealer of it.",
+    "decision_maker": "Not confirmed. Llumar locator row (grasi.in/locate-llumar-dealer) lists contacts 'Vaibhav Solanki / Sagar Jethva' (roles not stated). Treat as probable owners/partners, hypothesis only.",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "9909956565",
+      "source_url": "https://www.grasi.in/locate-llumar-dealer",
+      "note": "Published by/for the business on the Llumar dealer row and repeated on localeye.in directory. Indian mobile: likely WhatsApp-capable, NOT confirmed. NOT seen on the Google Maps listing (Maps not reachable from here), so 'phone published on Maps' is unverified."
+     },
+     {
+      "kind": "phone",
+      "value": "9909956565",
+      "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing",
+      "note": "Second independent directory source for the same number."
+     },
+     {
+      "kind": "email",
+      "value": "v*********050@gmail.com (full address on the locator row)",
+      "source_url": "https://www.grasi.in/locate-llumar-dealer",
+      "note": "Personal-style Gmail on a supplier locator; NOT a sales route, email does not count for this campaign."
+     },
+     {
+      "kind": "instagram",
+      "value": "@autoclinic_ahmedabad",
+      "source_url": "https://www.instagram.com/autoclinic_ahmedabad/",
+      "note": "Business page; no phone or link in bio. Do not DM (cold)."
+     },
+     {
+      "kind": "website",
+      "value": "none found",
+      "source_url": "https://www.grasi.in/locate-llumar-dealer",
+      "note": "No website on locator row, localeye, or Instagram bio; no site surfaced in searches."
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Llumar India dealer locator lists Auto Clinic, Ahmedabad, with phone and Instagram handle and no website field.",
+      "source_url": "https://www.grasi.in/locate-llumar-dealer",
+      "date": "page footer 2025; checked 2026-11-04"
+     },
+     {
+      "fact": "Same phone number appears in an independent directory entry (localeye) with no website.",
+      "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing",
+      "date": "checked 2026-11-04"
+     },
+     {
+      "fact": "Instagram page AUTOCLINIC states since 2017, LLUMAR USA PPF partner, ceramic coating, high-end audio; about 4.5k followers; bio has no website link.",
+      "source_url": "https://www.instagram.com/autoclinic_ahmedabad/",
+      "date": "checked 2026-11-04"
+     },
+     {
+      "fact": "Two different street descriptions for the studio (Bellagio Road near Iscon Flyover, beside Maruti 360, 380053 vs Ambli Road, beside Rajwadi Tea Stall, 380058) - same Iscon area, can be the same place described differently, but unreconciled.",
+      "source_url": "https://localeye.in/ahmedabad/automobile-sales-services/car-spa-detailing",
+      "date": "checked 2026-11-04"
+     }
+    ],
+    "hypotheses": [
+     "The Google Maps listing probably has no website button (slot c) or links to Instagram, because no site exists anywhere else. UNVERIFIED: Maps could not be read here.",
+     "Enquiries come via Instagram DMs, calls and WhatsApp; a booking and proof page with packages and before/after photos could help. No evidence of lost bookings.",
+     "Vaibhav Solanki and/or Sagar Jethva are the owners/partners and the 9909956565 mobile reaches one of them.",
+     "The finder's '4.6 rating' and Google review facts are unverified; no review count, newest-review date or owner-reply data observed."
+    ],
+    "need_evidence": "inferred",
+    "ability_to_pay": "Moderate to strong for a single studio: Llumar-authorised PPF partner (premium film dealer, supplier vets partners), operating since 2017, 4.5k Instagram followers, sells PPF/ceramic/high-end audio (high-ticket services). No ad activity checked (Ad Library not queried), no review counts seen.",
+    "pay_signal": "strong",
+    "reachability": "business_contact",
+    "owner_direct_contact": "probably",
+    "resistance": "No website vendor or booking system seen. Already well served by Instagram and Llumar-supplied brand presence; may feel Instagram is enough. Possible that two partners split decisions. Llumar locator listing means the supplier may route leads to them, so they may think they need no site. No anti-AI positioning seen.",
+    "grade": "B",
+    "reject_reason": "",
+    "case_for": "Real, single, owner-run premium PPF/coating studio verified by 3 independent public sources (Llumar locator, directory, own Instagram). Absence of any own website in all three and a supplier-vetted premium positioning (Llumar partner, since 2017) make a booking-plus-proof page plausible and the buyer likely small enough to decide alone. Same business-published mobile appears in two places.",
+    "case_against": "Need is INFERRED, not observed: the only gap evidence is the absence of a website; the Google Maps website button, newest review date, owner replies and published-on-Maps phone could not be checked, so no campaign slot (a/b/c/d) is provable. Phone is from the Llumar dealer locator and a directory, not confirmed on Maps; whose phone it is unknown. Two principals named; address conflict between sources; 4.6 rating in finder claim not reproduced; Llumar locator is undated.",
+    "best_angle": "Slot c, to be confirmed on the Google listing before use: the Google listing (and Llumar page) have no website for a Llumar PPF/coating studio, so a one-page booking and proof page (packages by car size, before/after PPF photos, WhatsApp Book button) plus profile upkeep. Lead with the PPF proof/booking page, not 'a website'. Do not claim any lost bookings. Hypothesis, not fact, until Maps is checked.",
+    "best_channel": "WhatsApp or a call from a human to 9909956565 (likely WhatsApp, probably reaches one of the two named principals) only after the owner confirms that number is on their Google Maps listing; if it is not on Maps, do not use it cold. No email.",
+    "phone_published_on_maps": "unverified (number is published on the Llumar dealer locator and localeye; Maps not readable from here)",
+    "website_status": "none found (no own website; Instagram only; no website on Llumar row, directory or Instagram bio)",
+    "newest_review_date": "unknown",
+    "owner_replies_in_newest_3": "unknown",
+    "ad_status": "not checked",
+    "brand_franchise_flag": "single studio; a Llumar partner/dealer (supplier, not a franchisor); no multi-outlet evidence",
+    "safe_first_message_slot": "c (no website button) - NOT yet provable; needs a manual look at the Google listing before sending. Do not use a/b/d.",
+    "ready_for_campaign": false,
+    "ready_reason": "Not ready: need is inferred only, Google Maps listing (phone, website button, reviews) could not be verified, and the owner-direct reach of 9909956565 is unconfirmed. Becomes a B-ready lead once someone confirms on the Maps listing that (1) the same phone is published there and (2) the website button is missing or points to Instagram.",
+    "gaps": [
+     "Google Maps listing: published phone, website button, address, rating/review count, newest review date, owner replies.",
+     "Who the owner is (Vaibhav Solanki vs Sagar Jethva) and whose mobile 9909956565 is.",
+     "Which of the two addresses is correct.",
+     "Ad Library status not checked.",
+     "Finder's 4.6 rating not reproduced anywhere."
+    ]
+   },
+   "challenge": {
+    "business": "Auto Clinic (AUTOCLINIC) - Car Detailing, PPF and Coating Studio, Llumar partner, Ahmedabad",
+    "agree_with_grade": false,
+    "final_grade": "C",
+    "checks": [
+     {
+      "claim": "Business exists as described, single end business (not a namesake, chain or agency)",
+      "verdict": "confirmed",
+      "note": "Re-opened grasi.in Llumar locator (row Auto Clinic, Near Iscon Flyover, Bellagio Road 380053, 9909956565, @autoclinic_ahmedabad, no website, (c) 2025 footer, undated), localeye.in (Car Spa & Detailing, Iscon Ambli Rd 380058, same phone, no website) and Instagram @autoclinic_ahmedabad (4,546 followers, since 2017, Llumar USA PPF partner, no link/phone/WhatsApp in bio). Three sources agree it exists. No multi-outlet claim seen. The Garware PPF Ahmedabad page does not list it (not a conflict, different film brand)."
+     },
+     {
+      "claim": "Finder's '4.6 rating' / strong social proof",
+      "verdict": "unsupported",
+      "note": "Not reproduced on localeye (rating and reviews 'not listed') nor anywhere else. My searches for this studio in the same Ambli/Iscon area returned only CarzSpa Ambli, whose listings show about 4.6 stars with about 239 reviews: the finder very likely picked up the neighbouring franchise's rating. Treat the rating as unknown and probably wrong."
+     },
+     {
+      "claim": "Need: no own website, so slot c (no website button) applies",
+      "verdict": "unsupported",
+      "note": "Absence of a site across a locator, a directory and an Instagram bio is a negative finding. The Google Maps website button, reviews, review replies and Maps-published phone were never seen by anyone. No campaign slot a/b/c/d is provable. Need is inferred only (dossier says so correctly). Searches for an official site return nothing, which is also consistent with weak indexing."
+     },
+     {
+      "claim": "Phone 9909956565 is the business's own number and reaches the owner",
+      "verdict": "corrected",
+      "note": "Number appears on the Llumar dealer row (a supplier-maintained page, plausibly filled by the studio) and on localeye (a scraped-style directory, probably copied from Maps/Justdial). Two sources are not fully independent. Not seen on Maps or Instagram. Row names two people (Vaibhav Solanki / Sagar Jethva) and the email is a personal-style Gmail, so whose mobile this is stays unknown. owner_direct_contact 'probably' is generous; 'unknown' is the honest value. A web search for the number returned nothing."
+     },
+     {
+      "claim": "Ability to pay is strong",
+      "verdict": "corrected",
+      "note": "Evidence is: Llumar partner badge, since 2017, 4.5k Instagram followers, and a localeye line claiming more than 3,000 customers (unverified directory copy). No ads checked, no review count, no price signals. 'Moderate' is the fair label; Llumar partnership shows they sell PPF, not that they will pay Rs 15-25k plus Rs 5k a month for a page. They also already get leads via Llumar locator and Instagram, which raises resistance."
+     },
+     {
+      "claim": "Address and entity consistency",
+      "verdict": "corrected",
+      "note": "Two different addresses (Bellagio Road near Iscon Flyover, beside Maruti 360, pin 380053 versus Ambli Road beside Rajwadi Tea Stall, pin 380058). Could be one place described two ways, but it is unreconciled, and the Ambli Road description is the same stretch as CarzSpa Ambli. Risk of mixing listings."
+     },
+     {
+      "claim": "Best channel: WhatsApp/call to 9909956565 after owner confirms it is on Maps",
+      "verdict": "unsupported",
+      "note": "The dossier itself says do not use the number cold unless it is on Maps. Under the campaign rules (reachable on the mobile the studio publishes on its Google listing) the channel precondition is unmet, so nothing can be sent today."
+     }
+    ],
+    "strongest_objection": "Nothing the campaign requires has actually been observed: the gap (website button, reviews, owner replies) and the Maps-published phone are all unseen, so the whole lead rests on 'no website found' from a supplier locator and a directory, plus a 4.6 rating that is probably CarzSpa Ambli's, and an unproven owner mobile.",
+    "corrections": [
+     "Drop the finder's 4.6 rating; it is unreproduced and likely belongs to the neighbouring CarzSpa Ambli.",
+     "ability_to_pay: moderate, not strong (no ad, review or price evidence).",
+     "owner_direct_contact: unknown, not 'probably' (two named principals, personal Gmail, number not seen on Maps or Instagram).",
+     "need_evidence stays inferred; safe_first_message_slot is none until a human looks at the Google listing.",
+     "ready_for_campaign stays false. To earn B: a manual look at the Google Maps listing confirming the same phone is published there and the website button is missing or opens Instagram, plus review dates and owner replies. To earn A: add a running Meta ad or a clearly named owner with a verified mobile."
+    ]
+   },
+   "console_entry": null
+  },
+  {
+   "business": "MK29 Detailing (MK29 Car Detailing Studio / MK TwentyNine)",
+   "first_grade": "C",
+   "skeptic_grade": null,
+   "final_grade": "C",
+   "challenged": false,
+   "ready_for_campaign": false,
+   "strongest_objection": "",
+   "reason_not_ready": "grade C: need only inferred / owner-direct contact and Google Maps signals unverified",
+   "dossier": {
+    "business": "MK29 Detailing (MK29 Car Detailing Studio / MK TwentyNine)",
+    "city": "Chharodi (Nirma University Road), Ahmedabad",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.mk29detailing.com/ (WebFetch 2026-11-04): own site live; ceramic/graphene coating, PPF, polishing, interior; address Shop 01, Wertical Space, Nirma University Rd, Chharodi, Ahmedabad 382481; phone, email, social links; form 'Book Your Services Now'; no WhatsApp link, no prices/packages, no reviews widget",
+     "https://www.mk29detailing.com/contact: same phone/address; form fields name, phone, email, vehicle model, message; no WhatsApp, no hours, no owner name",
+     "https://www.mk29detailing.com/about: HTTP 522 on first and second try; second attempt returned text: owner/founder not named, no team list, only one address, footer credits website designer Fruxinfo Pvt. Ltd.",
+     "https://www.mk29detailing.com/services: no prices, no size-based packages, no WhatsApp button, 'Book Your Services Now' twice (target link not visible in text)",
+     "https://www.mk29detailing.com/gallery: HTTP 522 (not verified)",
+     "https://www.instagram.com/mk29detailing/ (public view): display name 'MK29 CAR DETAILING STUDIO', 107 followers, bio claims '200+ luxury cars restored', doorstep service mentioned, same phone number inside post images, latest dated post 2026-10-10",
+     "https://www.facebook.com/profile.php?id=61587725211936: only name 'MK TwentyNine' returned, nothing else verified",
+     "WebSearch for MK29 name and phone: no independent third-party hit (no Maps, Justdial, news). Google Maps fetch returned nothing usable."
+    ],
+    "official_website": "https://www.mk29detailing.com/",
+    "what_they_do": "Car detailing, ceramic and graphene coating, PPF, polishing, interior detailing, Ahmedabad (Chharodi). Site claims XPEL/3M/Aegis products and a warranty.",
+    "entity_type": "end_business",
+    "size_cues": "Single address, no branches mentioned. Small social footprint (Instagram 107 followers). Own claims: 300+ cars, 96% retention, 8+ years on site; Instagram bio says 200+ cars (claims inconsistent, own marketing, unverified). New-looking Facebook page id. Website built by an outside developer (Fruxinfo).",
+    "decision_maker": "not found (site lists Kishan Bhatiya as 'operations', Krish Patel and Milind Rao as detailing experts; no public page says who owns it)",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 84870 11029",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "note": "Labelled 'Hotline' on the contact page; also in Instagram post images. Likely WhatsApp-capable (Indian mobile), NOT confirmed. Not confirmed to be the number on the Google Maps listing and not confirmed to reach the owner."
+     },
+     {
+      "kind": "email",
+      "value": "info.mk29detailing@gmail.com",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "note": "Decoded by the fetch tool from the Cloudflare-obfuscated address; shared inbox, email does not count as a way in"
+     },
+     {
+      "kind": "website",
+      "value": "https://www.mk29detailing.com/",
+      "source_url": "https://www.mk29detailing.com/",
+      "note": "Live own site with enquiry form"
+     },
+     {
+      "kind": "instagram",
+      "value": "https://www.instagram.com/mk29detailing/",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "note": "Business account"
+     },
+     {
+      "kind": "facebook",
+      "value": "https://www.facebook.com/profile.php?id=61587725211936",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "note": "Business page"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Own website is live with a 'Book Your Services Now' enquiry form (name, phone, email, vehicle model, message); no WhatsApp button or link anywhere in the text of home, contact or services pages",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Services page shows no prices and no packages by car size, and no reviews or testimonials widget",
+      "source_url": "https://www.mk29detailing.com/services",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Instagram account has 107 followers; latest visible dated post 2026-10-10; phone number shown in post images",
+      "source_url": "https://www.instagram.com/mk29detailing/",
+      "date": "2026-10-10"
+     },
+     {
+      "fact": "Only one address (Chharodi, Ahmedabad) is published; no branch or franchise mention",
+      "source_url": "https://www.mk29detailing.com/contact",
+      "date": "2026-11-04"
+     }
+    ],
+    "hypotheses": [
+     "A booking and proof page with packages by car size, before/after photos and a WhatsApp Book button would add what the site lacks (inference from missing elements, not from any observed lost enquiry)",
+     "The studio is young (small Instagram, new-looking Facebook page id, inconsistent car-count claims), so it may be under-budgeted but also hungry for visible proof",
+     "The Google Maps listing may be thin or absent, but this could not be checked"
+    ],
+    "need_evidence": "inferred",
+    "ability_to_pay": "Unknown. Paid for a custom-looking website built by an outside developer and claims premium products (XPEL/3M/Aegis), but the only independent footprint is tiny (107 Instagram followers). No ad activity checked, no Google rating or review count visible.",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "Has a live site built by an outside web vendor (Fruxinfo) and an enquiry form; may see the website as 'done'. Owner is not identified. The phone is labelled hotline and may be answered by the operations person, not the decider.",
+    "grade": "C",
+    "reject_reason": "",
+    "case_for": "Real single-outlet Ahmedabad studio in the target geography with a published phone number and live site; the site visibly lacks size-based packages, proof/reviews and a WhatsApp button, which fits the booking-and-proof offer.",
+    "case_against": "No Google Maps data could be verified (phone, website button, reviews, owner replies all unknown), so none of the campaign's safe slots a/b/c/d is confirmed; the site already has a working enquiry form (slot d does not apply); owner not named and the number is a 'Hotline'; weak independent footprint (only own site and a 107-follower Instagram), claims inconsistent (300+ vs 200+ cars); pay signal weak; need only inferred.",
+    "best_angle": "None safe yet. Only after Maps is checked by a human or cheap tool: if the Google website button is missing/broken or the newest 3 reviews are unanswered, use that. From the site alone, the only literal truth is 'no WhatsApp button and no packages by car size on the site', which is not one of the campaign's allowed slots.",
+    "best_channel": "WhatsApp to the published +91 84870 11029 (likely WhatsApp-capable, unconfirmed) only if the owner confirms it reaches the decider; email is shared inbox only and does not count. Not ready.",
+    "gaps": [
+     "Google Maps listing (name, phone published there, website button target, rating, review count, newest review date, owner replies) not observable with the available tools",
+     "Gallery and About pages returned HTTP 522 on first try (about text obtained on retry; gallery not seen)",
+     "Owner/decision-maker unknown; whether the hotline number reaches him unknown",
+     "Ad Library status not checked",
+     "Only two business-owned sources (site, Instagram) plus a Facebook page with no readable detail; no independent third-party source"
+    ],
+    "phone_published": "+91 84870 11029 (own site contact page; Maps listing phone unverified)",
+    "website_status": "own site alive (enquiry form, no WhatsApp button, no packages, no reviews widget)",
+    "newest_review_date": "unknown (Maps not observable)",
+    "owner_replies_in_newest_3": "unknown",
+    "brand_franchise_flag": "single outlet, no franchise or brand mention found",
+    "safe_first_message_slot": "none confirmed (a/b/c unverifiable without Maps; d does not apply because a form exists)",
+    "ready_for_campaign": false
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "Dignity Cares (Dignity Care, Garware Application Studio)",
+   "first_grade": "C",
+   "skeptic_grade": null,
+   "final_grade": "C",
+   "challenged": false,
+   "ready_for_campaign": false,
+   "strongest_objection": "",
+   "reason_not_ready": "grade C: need only inferred / owner-direct contact and Google Maps signals unverified",
+   "dossier": {
+    "business": "Dignity Cares (Dignity Care, Garware Application Studio)",
+    "city": "Ghodasar, Ahmedabad",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad - Garware's own applicator list shows 'Dignity Care (Garware Application Studio)', 75 New Arti Society, Tulsikunj, Prakash Nagar, Ghodasar, Ahmedabad 380050, phone 9925784929, no website; its Get Direction map link resolves to the Google Maps place 'Empire Heights' (Ghodasar), which reconciles the address conflict with Justdial",
+     "Justdial listing (seen via search snippet only, page itself returned 403): 'Dignity Cares', 4 Ground Floor, Empire Heights, Ghodasar 380050; car wash, detailing, wrapping, teflon coating; 4.2 from 4 reviews; hours about 9:30-20:00; a second older Justdial page (about 917 days old) repeats the address",
+     "https://dignitycare.in - Hostinger 'Parked Domain' page, no owner or business named; NOT attributable to the studio",
+     "WebSearch for name + phone + Ahmedabad: no Instagram, Facebook, own website or Google Maps review data surfaced; no other independent source found"
+    ],
+    "official_website": "none found (dignitycare.in is a parked Hostinger page, ownership unconfirmed)",
+    "website_status": "none found / possibly a parked domain (unconfirmed). Google listing website button NOT checked",
+    "what_they_do": "Car wash, car detailing, wrapping, Teflon coating; listed by Garware as a PPF application studio. Likely a small car wash plus detailing outlet rather than a pure detailing studio.",
+    "entity_type": "end_business",
+    "size_cues": "Single outlet. Justdial 4 reviews only (4.2). Open for roughly 2.5 years going by the older Justdial listing (inferred from listing age). Garware applicator listing indicates a manufacturer-approved PPF installer, no staff count.",
+    "decision_maker": "not found",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "9925784929 (Indian mobile, likely WhatsApp-capable)",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "note": "Published by the manufacturer (Garware) in its applicator register, not confirmed as the number on the studio's own Google Maps listing; unknown whether it reaches the owner or a front desk"
+     },
+     {
+      "kind": "maps",
+      "value": "Google Maps place 'Empire Heights', Ghodasar (via maps.app.goo.gl/dCm6ZRnhF3ACYKGi6)",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "note": "Resolves to the building, not clearly to a business profile; the studio's own Maps profile (phone, website button, reviews) was not reachable"
+     },
+     {
+      "kind": "maps",
+      "value": "Justdial listing Dignity Cares, Ghodasar",
+      "source_url": "https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services",
+      "note": "Page blocked (403); only seen via search snippet; no contact read from it"
+     }
+    ],
+    "observed_facts": [
+     {
+      "fact": "Garware lists Dignity Care as a Garware Application Studio in Ghodasar with phone 9925784929 and no website",
+      "source_url": "https://www.garwarehitechfilms.com/paint-protection-film/ahmedabad",
+      "date": "checked 2026-11-04 (page undated)"
+     },
+     {
+      "fact": "Justdial lists Dignity Cares at Empire Heights, Ghodasar for car wash, detailing, wrapping and teflon coating, 4.2 stars from 4 reviews; no website in the snippet",
+      "source_url": "https://www.justdial.com/Ahmedabad/Dignity-Cares-Ghodasar/079PXX79-XX79-220905130245-P6Z5_BZDET/services",
+      "date": "checked 2026-11-04 via search snippet"
+     },
+     {
+      "fact": "dignitycare.in resolves to a Hostinger parked-domain page with no owner named",
+      "source_url": "https://dignitycare.in",
+      "date": "2026-11-04"
+     }
+    ],
+    "hypotheses": [
+     "Studio may have no working own website (only two directory-style listings found), which would make slot c (no website button) the opening, but this is unverified until the Google profile is seen",
+     "The parked dignitycare.in may belong to the studio and be unused; no evidence",
+     "Phone 9925784929 probably reaches the owner or a small team given the single-outlet scale, but it comes from the manufacturer register, not the studio's own listing",
+     "Garware certification suggests it sells PPF/coating jobs of meaningful ticket size, so it can probably afford Rs 5k a month; unproven"
+    ],
+    "need_evidence": "inferred",
+    "ability_to_pay": "Weak to modest signal: Garware-approved applicator (suggests PPF work) but only 4 Justdial reviews, no ads seen (ad status not checked), no visible Instagram or reviews presence, may be mostly a car-wash business.",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "None observed. No vendor or website visible. Risk that it is mainly a car-wash point (excluded type) and that the owner is not the phone answerer.",
+    "grade": "C",
+    "reject_reason": "",
+    "case_for": "Real, single-outlet Gujarat studio verified by two independent sources (Garware register and Justdial) that agree on name, area and services; no own website visible; Garware-approved PPF installer; phone published by a third party is an Indian mobile.",
+    "case_against": "Need is only 'no website found', not observed on the Google profile (website button, reviews and owner replies never seen); phone is from the manufacturer, not the studio's own Maps listing, owner reach unknown; weak pay signal (4 reviews, no ads known); may be a plain car-wash business with detailing as a sideline; no Instagram or Facebook found so little proof content to build a proof page from; address differs between sources (reconciled via map link).",
+    "best_angle": "Slot c only, and only after someone looks at the Google Maps profile and confirms there is no website button: a short note that we noticed the studio has no website link on Google and that customers cannot tap to book or see before and after proof; offer a one-page booking and proof page. Do not claim lost bookings. Do not use until slot c is confirmed.",
+    "best_channel": "WhatsApp or call on 9925784929 (likely WhatsApp) but only once the number is matched to the studio's own Maps listing; no opt-in route exists, so first-touch requires owner approval of this specific lead. Not ready now.",
+    "gaps": [
+     "Own Google Maps profile: published phone, website button, newest 3 reviews and owner replies, review count and dates",
+     "Whether dignitycare.in belongs to the studio",
+     "Instagram or Facebook presence (none found by search)",
+     "Who the owner is and whether 9925784929 reaches him",
+     "Ad Library status (not checked, low expected value)",
+     "Whether it is mainly a car wash point or a real detailing/PPF studio",
+     "Justdial page body (403)"
+    ],
+    "phone_published": "9925784929 on Garware applicator register (manufacturer, not confirmed on the studio's own Maps listing)",
+    "newest_review_date": "unknown (Justdial: 4 reviews, dates not seen; Google reviews not seen)",
+    "owner_replies_in_newest_3": "unknown",
+    "ad_status": "not checked",
+    "brand_franchise_flag": "single outlet; Garware Application Studio is a manufacturer certification, not a franchise of a studio brand",
+    "safe_first_message_slot": "c, conditional on confirming no website button on the Google profile; none confirmed yet",
+    "ready_for_campaign": false,
+    "reason_not_ready": "Grade C: need inferred, owner-direct contact unknown (number from manufacturer register, not the studio's own listing), weak pay signal, slot not confirmed."
+   },
+   "challenge": null,
+   "console_entry": null
+  },
+  {
+   "business": "Detailing Spot",
+   "first_grade": "C",
+   "skeptic_grade": null,
+   "final_grade": "C",
+   "challenged": false,
+   "ready_for_campaign": false,
+   "strongest_objection": "",
+   "reason_not_ready": "grade C: need only inferred / owner-direct contact and Google Maps signals unverified",
+   "dossier": {
+    "business": "Detailing Spot",
+    "city": "Nizampura (Chhani Jakat Naka), Vadodara",
+    "identity_verified": true,
+    "verification_trail": [
+     "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489 : opened; confirms name, address Shop no. 2-3 Sanwaliya Enclave GF, Chhani Jakat Naka Cir, Chistiya Nagar, Vadodara 390024, phone +91 95877 11010, rating 4.7 from 63 ratings; no website, no business Instagram, no owner name (only a 'Claim listing' link, i.e. unclaimed); no review dates",
+     "https://detailing-spot-car-detailing.wheree.com/ : page itself returned HTTP 403 to me; only the search-engine snippet was seen (same address, same phone, hours 07:00-11:00, PPF/ceramic/graphene detailing). Second directory, but a scraped aggregator, so weak independence",
+     "WebSearch x3 (name + area, name + phone, name + instagram/justdial): no official website, no Instagram, no Google Maps listing surfaced; searches mostly returned CarzSpa (a different chain)"
+    ],
+    "official_website": "none found",
+    "website_status": "none found (two directory pages show none; Google Maps profile NOT seen, so a site or social link could exist there)",
+    "what_they_do": "Car detailing, PPF and ceramic/graphene coating shop (single shop, directory-described)",
+    "entity_type": "end_business",
+    "brand_franchise_flag": "single outlet as far as seen (no chain evidence); not verified beyond directories",
+    "size_cues": "One shop (Shop 2-3, ground floor). 63 ratings on Magicpin. Long listed hours (07:00-11:00 per Wheree snippet). No staff/years/branch info found.",
+    "decision_maker": "not found",
+    "contacts": [
+     {
+      "kind": "phone",
+      "value": "+91 95877 11010",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "note": "Indian mobile, likely WhatsApp-capable (not confirmed). Same number in the Wheree snippet. Published by directories, NOT confirmed as published by the business itself, and not confirmed to reach the owner. Magicpin listing is unclaimed."
+     },
+     {
+      "kind": "whatsapp",
+      "value": "magicpin 'Enquire now' WhatsApp link points to a different number (+91 87965 76868); NOT recorded as the business's number, likely a magicpin platform/lead-routing number",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "note": "Do not use"
+     }
+    ],
+    "phone_published": "yes, +91 95877 11010 on Magicpin and Wheree directories; not seen on a business-owned page or on its Google Maps listing",
+    "observed_facts": [
+     {
+      "fact": "Magicpin lists the shop at Shop no. 2-3, Sanwaliya Enclave, Chhani Jakat Naka Circle, Chistiya Nagar, Vadodara 390024, 4.7 rating from 63 ratings, phone +91 95877 11010",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "date": "undated (fetched 2026-11-04)"
+     },
+     {
+      "fact": "The Magicpin listing shows no website and no business Instagram, and has an unclaimed 'Claim listing' link",
+      "source_url": "https://magicpin.in/Vadodara/Nizampura/Autocare/Detailing-Spot-||-Car-Detailing-Shop-In-Vadodara-|-Ppf-Coating-Shop-In-Vadodara-|-Car-Ceramic-Shop-In-Vadodara/store/3045489",
+      "date": "2026-11-04"
+     },
+     {
+      "fact": "Wheree (search snippet only) lists same address and phone, hours 07:00-11:00, PPF, ceramic and graphene coating; reviews summarised as positive",
+      "source_url": "https://detailing-spot-car-detailing.wheree.com/",
+      "date": "undated"
+     },
+     {
+      "fact": "No official website found by three web searches",
+      "source_url": "web search 2026-11-04",
+      "date": "2026-11-04"
+     }
+    ],
+    "hypotheses": [
+     "No website of its own means no booking/proof page: a gap our offer fills (inferred from directory pages only; the Google profile may link a site or Instagram)",
+     "PPF/ceramic/graphene work is premium-priced, so the owner can likely afford Rs 15-25k setup (inference from service type, no direct pay evidence)",
+     "The +91 95877 11010 mobile may be the owner's or a staff phone (unknown)"
+    ],
+    "need_evidence": "inferred",
+    "ability_to_pay": "Premium services (PPF, ceramic, graphene) and 63 ratings at 4.7 suggest a working shop; no ad activity, no funding, no branch count observed. Moderate, unproven.",
+    "pay_signal": "weak",
+    "reachability": "business_contact",
+    "owner_direct_contact": "unknown",
+    "resistance": "Unknown. No evidence of an existing vendor or agency; no website to show one. Listing unclaimed on Magicpin (suggests low digital engagement, also means the number may be scraped/stale).",
+    "newest_review_date": "not observable (Magicpin shows no review dates; Wheree 403; Google reviews not accessible)",
+    "owner_replies_in_newest_3": "not observable",
+    "ad_status": "unknown (not checked; no Meta Ad Library access)",
+    "grade": "C",
+    "reject_reason": "",
+    "case_for": "Real-looking single-outlet detailing shop doing premium work (PPF/ceramic/graphene), 4.7 from 63 ratings, a mobile number published in two directories, and no website found anywhere: a match for the booking + proof page offer.",
+    "case_against": "All evidence is from two aggregator directories (likely sharing source data); the page is unclaimed and I could not open the Google Maps listing, so the 'no website' signal is unconfirmed and the number is not shown to be the owner's or business-published. No owner name, no review dates, no ad or pay evidence, and Vadodara is second-wave geography. Need is inferred, not observed.",
+    "best_angle": "Only after a Google Maps check: a short, human-style question about whether customers can see price/packages and before-and-after photos and book on WhatsApp from one page (no claims about lost customers), reusing the shop's own review rating.",
+    "best_channel": "WhatsApp (call/voice note) to +91 95877 11010 ONLY after the owner confirms this lead and the number is confirmed on its Google Maps listing as the business's own; opt-in route preferred. Not ready now: owner_direct_contact unknown.",
+    "safe_first_message_slot": "c ONLY after confirming on Google (agree with finder; do not send until the Google listing, number and no-website status are verified)",
+    "gaps": [
+     "Open the Google Maps listing: confirm the number, website/Instagram link, newest review date, owner replies, Q&A",
+     "Check Instagram for a business account by the shop's name (public page only)",
+     "Confirm whether the number reaches the owner (cannot be done read-only)",
+     "Wheree page was 403, so only snippet seen",
+     "No ad-activity check done (Meta Ad Library)"
+    ]
+   },
+   "challenge": null,
+   "console_entry": null
+  }
+ ],
+ "note": "Run via Agent-tool fallback (Workflow tool missing). Skeptic run only on first-grade B leads (1 and 3); C/reject leads cannot be raised."
+}

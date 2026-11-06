@@ -1,0 +1,2210 @@
+{
+  "meta": {
+    "date": "2026-10-20",
+    "status": "INTERNAL working model; not for Sridhar",
+    "currency": "INR before GST",
+    "rates_rs_per_hour": [
+      500,
+      1000,
+      1500
+    ],
+    "fx_inr_per_usd": {
+      "low": 92.0,
+      "base": 96.5,
+      "high": 100.0
+    },
+    "contingency_on_ai": 0.2
+  },
+  "a_unit_costs": {
+    "p_whatsapp_reach_observed": {
+      "k": 1,
+      "n": 6,
+      "share": 0.16666666666666666,
+      "wilson95": [
+        0.03005258587173032,
+        0.563509436563646
+      ]
+    },
+    "p_owner_named_observed": {
+      "k": 4,
+      "n": 6,
+      "share": 0.6666666666666666,
+      "wilson95": [
+        0.29998832134152864,
+        0.9032306674407831
+      ]
+    },
+    "ai_per_builder": {
+      "low": {
+        "tokens": 84000,
+        "usd_before_contingency": 0.1371,
+        "usd_small": 0.0071,
+        "usd_deep": 0.09,
+        "usd_search": 0.04,
+        "inr_with_contingency": 15.13584,
+        "as_is_note_inr": 24
+      },
+      "base": {
+        "tokens": 134000,
+        "usd_before_contingency": 0.2013,
+        "usd_small": 0.0113,
+        "usd_deep": 0.13,
+        "usd_search": 0.06,
+        "inr_with_contingency": 23.31054,
+        "as_is_note_inr": 76
+      },
+      "high": {
+        "tokens": 253000,
+        "usd_before_contingency": 0.49670000000000003,
+        "usd_small": 0.0167,
+        "usd_deep": 0.34,
+        "usd_search": 0.14,
+        "inr_with_contingency": 59.604,
+        "as_is_note_inr": 279
+      }
+    },
+    "wa_msg_cost": {
+      "bsp_rs_per_marketing_msg": 1.5,
+      "with_gst": 1.77,
+      "per_builder_2_touches_delivered": 3.0
+    },
+    "variable_per_researched_builder": {
+      "500": {
+        "low": {
+          "ai": 15.13584,
+          "human": 20.833333333333332,
+          "total": 37.96917333333333
+        },
+        "base": {
+          "ai": 23.31054,
+          "human": 37.5,
+          "total": 62.81054
+        },
+        "high": {
+          "ai": 59.604,
+          "human": 75.0,
+          "total": 136.60399999999998
+        }
+      },
+      "1000": {
+        "low": {
+          "ai": 15.13584,
+          "human": 41.666666666666664,
+          "total": 58.802506666666666
+        },
+        "base": {
+          "ai": 23.31054,
+          "human": 75.0,
+          "total": 100.31054
+        },
+        "high": {
+          "ai": 59.604,
+          "human": 150.0,
+          "total": 211.60399999999998
+        }
+      },
+      "1500": {
+        "low": {
+          "ai": 15.13584,
+          "human": 62.5,
+          "total": 79.63584
+        },
+        "base": {
+          "ai": 23.31054,
+          "human": 112.5,
+          "total": 137.81054
+        },
+        "high": {
+          "ai": 59.604,
+          "human": 225.0,
+          "total": 286.604
+        }
+      }
+    },
+    "fixed_alloc_per_builder": {
+      "pilot_50": 20.8,
+      "month_150": 12.266666666666667
+    },
+    "pilot_fully_loaded_base": {
+      "500": {
+        "pilot_total_cost": 24843.860333333338,
+        "per_researched": 496.8772066666668
+      },
+      "1000": {
+        "pilot_total_cost": 46302.19366666667,
+        "per_researched": 926.0438733333335
+      },
+      "1500": {
+        "pilot_total_cost": 67760.527,
+        "per_researched": 1355.21054
+      }
+    },
+    "cost_matrix_base": {
+      "observed 1 of 6 (17%)": {
+        "30%": {
+          "reachable_builders": 8.333333333333332,
+          "delivered_builders": 2.4999999999999996,
+          "variable_per_messaged_rate500": 377.76324,
+          "variable_per_delivered_rate500": 1259.2108000000003,
+          "full_pilot_per_delivered_rate500": 9937.544133333337,
+          "full_pilot_per_reachable_rate500": 2981.263240000001,
+          "variable_per_messaged_rate1000": 602.76324,
+          "variable_per_delivered_rate1000": 2009.2108000000003,
+          "full_pilot_per_delivered_rate1000": 18520.877466666672,
+          "full_pilot_per_reachable_rate1000": 5556.263240000002
+        },
+        "45%": {
+          "reachable_builders": 8.333333333333332,
+          "delivered_builders": 3.7499999999999996,
+          "variable_per_messaged_rate500": 378.21324000000004,
+          "variable_per_delivered_rate500": 840.4738666666668,
+          "full_pilot_per_delivered_rate500": 6625.029422222224,
+          "full_pilot_per_reachable_rate500": 2981.263240000001,
+          "variable_per_messaged_rate1000": 603.21324,
+          "variable_per_delivered_rate1000": 1340.473866666667,
+          "full_pilot_per_delivered_rate1000": 12347.251644444448,
+          "full_pilot_per_reachable_rate1000": 5556.263240000002
+        },
+        "60%": {
+          "reachable_builders": 8.333333333333332,
+          "delivered_builders": 4.999999999999999,
+          "variable_per_messaged_rate500": 378.66324000000003,
+          "variable_per_delivered_rate500": 631.1054000000001,
+          "full_pilot_per_delivered_rate500": 4968.772066666668,
+          "full_pilot_per_reachable_rate500": 2981.263240000001,
+          "variable_per_messaged_rate1000": 603.66324,
+          "variable_per_delivered_rate1000": 1006.1054000000001,
+          "full_pilot_per_delivered_rate1000": 9260.438733333336,
+          "full_pilot_per_reachable_rate1000": 5556.263240000002
+        }
+      },
+      "assumption 35%": {
+        "30%": {
+          "reachable_builders": 17.5,
+          "delivered_builders": 5.25,
+          "variable_per_messaged_rate500": 180.35868571428574,
+          "variable_per_delivered_rate500": 601.1956190476191,
+          "full_pilot_per_delivered_rate500": 4732.163873015874,
+          "full_pilot_per_reachable_rate500": 1419.6491619047622,
+          "variable_per_messaged_rate1000": 287.50154285714285,
+          "variable_per_delivered_rate1000": 958.3384761904762,
+          "full_pilot_per_delivered_rate1000": 8819.465460317462,
+          "full_pilot_per_reachable_rate1000": 2645.8396380952386
+        },
+        "45%": {
+          "reachable_builders": 17.5,
+          "delivered_builders": 7.875,
+          "variable_per_messaged_rate500": 180.80868571428573,
+          "variable_per_delivered_rate500": 401.79707936507936,
+          "full_pilot_per_delivered_rate500": 3154.775915343916,
+          "full_pilot_per_reachable_rate500": 1419.6491619047622,
+          "variable_per_messaged_rate1000": 287.9515428571429,
+          "variable_per_delivered_rate1000": 639.8923174603175,
+          "full_pilot_per_delivered_rate1000": 5879.6436402116415,
+          "full_pilot_per_reachable_rate1000": 2645.8396380952386
+        },
+        "60%": {
+          "reachable_builders": 17.5,
+          "delivered_builders": 10.5,
+          "variable_per_messaged_rate500": 181.25868571428575,
+          "variable_per_delivered_rate500": 302.09780952380953,
+          "full_pilot_per_delivered_rate500": 2366.081936507937,
+          "full_pilot_per_reachable_rate500": 1419.6491619047622,
+          "variable_per_messaged_rate1000": 288.4015428571429,
+          "variable_per_delivered_rate1000": 480.6692380952381,
+          "full_pilot_per_delivered_rate1000": 4409.732730158731,
+          "full_pilot_per_reachable_rate1000": 2645.8396380952386
+        }
+      },
+      "upper end of 95% interval (56%)": {
+        "30%": {
+          "reachable_builders": 28.000000000000004,
+          "delivered_builders": 8.4,
+          "variable_per_messaged_rate500": 113.06167857142857,
+          "variable_per_delivered_rate500": 376.8722619047619,
+          "full_pilot_per_delivered_rate500": 2957.602420634921,
+          "full_pilot_per_reachable_rate500": 887.2807261904762,
+          "variable_per_messaged_rate1000": 180.02596428571428,
+          "variable_per_delivered_rate1000": 600.0865476190476,
+          "full_pilot_per_delivered_rate1000": 5512.165912698413,
+          "full_pilot_per_reachable_rate1000": 1653.6497738095238
+        },
+        "45%": {
+          "reachable_builders": 28.000000000000004,
+          "delivered_builders": 12.600000000000001,
+          "variable_per_messaged_rate500": 113.51167857142856,
+          "variable_per_delivered_rate500": 252.2481746031746,
+          "full_pilot_per_delivered_rate500": 1971.7349470899471,
+          "full_pilot_per_reachable_rate500": 887.2807261904762,
+          "variable_per_messaged_rate1000": 180.47596428571427,
+          "variable_per_delivered_rate1000": 401.05769841269836,
+          "full_pilot_per_delivered_rate1000": 3674.7772751322755,
+          "full_pilot_per_reachable_rate1000": 1653.6497738095238
+        },
+        "60%": {
+          "reachable_builders": 28.000000000000004,
+          "delivered_builders": 16.8,
+          "variable_per_messaged_rate500": 113.96167857142856,
+          "variable_per_delivered_rate500": 189.93613095238095,
+          "full_pilot_per_delivered_rate500": 1478.8012103174606,
+          "full_pilot_per_reachable_rate500": 887.2807261904762,
+          "variable_per_messaged_rate1000": 180.9259642857143,
+          "variable_per_delivered_rate1000": 301.5432738095238,
+          "full_pilot_per_delivered_rate1000": 2756.0829563492066,
+          "full_pilot_per_reachable_rate1000": 1653.6497738095238
+        }
+      }
+    },
+    "builders_needed_for_30_delivered": {
+      "observed 1 of 6 (17%)": {
+        "30%": 600.0,
+        "45%": 400.0,
+        "60%": 300.0
+      },
+      "assumption 35%": {
+        "30%": 285.7142857142857,
+        "45%": 190.47619047619048,
+        "60%": 142.85714285714286
+      },
+      "upper end of 95% interval (56%)": {
+        "30%": 178.57142857142856,
+        "45%": 119.04761904761902,
+        "60%": 89.28571428571428
+      }
+    },
+    "monthly_full_cost_per_delivered_rate1000": {
+      "50": {
+        "cost_rate1000": 14305.527,
+        "per_delivered": {
+          "observed 1 of 6 (17%)": {
+            "30%": 5722.210800000001,
+            "45%": 3814.8072000000006,
+            "60%": 2861.1054000000004
+          },
+          "assumption 35%": {
+            "30%": 2724.862285714286,
+            "45%": 1816.5748571428571,
+            "60%": 1362.431142857143
+          },
+          "upper end of 95% interval (56%)": {
+            "30%": 1703.0389285714284,
+            "45%": 1135.3592857142855,
+            "60%": 851.5194642857142
+          }
+        }
+      },
+      "100": {
+        "cost_rate1000": 19221.054,
+        "per_delivered": {
+          "observed 1 of 6 (17%)": {
+            "30%": 3844.2108000000007,
+            "45%": 2562.8072,
+            "60%": 1922.1054000000004
+          },
+          "assumption 35%": {
+            "30%": 1830.5765714285715,
+            "45%": 1220.384380952381,
+            "60%": 915.2882857142857
+          },
+          "upper end of 95% interval (56%)": {
+            "30%": 1144.110357142857,
+            "45%": 762.740238095238,
+            "60%": 572.0551785714285
+          }
+        }
+      },
+      "150": {
+        "cost_rate1000": 24136.581,
+        "per_delivered": {
+          "observed 1 of 6 (17%)": {
+            "30%": 3218.2108,
+            "45%": 2145.4738666666667,
+            "60%": 1609.1054
+          },
+          "assumption 35%": {
+            "30%": 1532.4813333333332,
+            "45%": 1021.6542222222222,
+            "60%": 766.2406666666666
+          },
+          "upper end of 95% interval (56%)": {
+            "30%": 957.8008333333331,
+            "45%": 638.5338888888888,
+            "60%": 478.90041666666656
+          }
+        }
+      }
+    }
+  },
+  "b_capacity": {
+    "credit_inr": 9650.0,
+    "builders_per_month_covered_by_100usd_credit": {
+      "lean_low": 637.5595936532098,
+      "lean_base": 413.97582381188937,
+      "lean_high": 161.90188577947788,
+      "as_is_note_base": 126.97368421052632,
+      "as_is_note_high": 34.587813620071685
+    },
+    "ai_cost_per_builder_inr_shocks": {
+      "today": {
+        "low": 15.13584,
+        "base": 23.31054,
+        "high": 59.604
+      },
+      "x2": {
+        "low": 30.27168,
+        "base": 46.62108,
+        "high": 119.208
+      },
+      "x5": {
+        "low": 75.6792,
+        "base": 116.5527,
+        "high": 298.02
+      },
+      "deep_call_on_opus_5_5": {
+        "low": 25.071839999999998,
+        "base": 38.36454,
+        "high": 100.40400000000001
+      },
+      "deep_call_on_fable_5_1": {
+        "low": 54.879839999999994,
+        "base": 83.52654,
+        "high": 222.804
+      },
+      "small_model_unavailable_all_on_sonnet": {
+        "low": 30.028799999999997,
+        "base": 48.172799999999995,
+        "high": 97.68
+      }
+    },
+    "builders_per_month_by_human_review_ceiling": {
+      "12h_a_month": {
+        "low": 180.0,
+        "base": 59.333333333333336,
+        "high": 0
+      },
+      "20h_a_month": {
+        "low": 372.0,
+        "base": 166.0,
+        "high": 53.333333333333336
+      },
+      "30h_a_month": {
+        "low": 612.0,
+        "base": 299.3333333333333,
+        "high": 120.0
+      }
+    },
+    "pool": {
+      "shortlist_now": 72,
+      "loose_3_districts_no_date_limit": 424,
+      "all_cg_no_date_limit": 798,
+      "new_qualifying_per_month": "about 4 (8.4 new valid approvals a month)",
+      "source": "cg_rera_demo_summary.txt, unit_costs.md section 6B, comparison.md section 6"
+    }
+  },
+  "c_pilot": {
+    "hours_standard": {
+      "low": {
+        "setup": 22,
+        "run": 5.783333333333333,
+        "total": 27.78333333333333
+      },
+      "base": {
+        "setup": 33,
+        "run": 9.916666666666668,
+        "total": 42.91666666666667
+      },
+      "high": {
+        "setup": 48,
+        "run": 18.833333333333336,
+        "total": 66.83333333333334
+      }
+    },
+    "hours_previous_low_price_model": {
+      "low": 35.4,
+      "base": 51.9,
+      "high": 75.8
+    },
+    "cash_standard": {
+      "low": {
+        "total": 846.792,
+        "ai": 756.792,
+        "report_llm": 90,
+        "voice_licence": 0,
+        "number_domain_once": 0,
+        "hosting_alloc": 0
+      },
+      "base": {
+        "total": 3385.527,
+        "ai": 1165.527,
+        "report_llm": 180,
+        "voice_licence": 540,
+        "number_domain_once": 1000,
+        "hosting_alloc": 500
+      },
+      "high": {
+        "total": 9030.2,
+        "ai": 2980.2,
+        "report_llm": 450,
+        "voice_licence": 1100,
+        "number_domain_once": 3000,
+        "hosting_alloc": 1500
+      }
+    },
+    "cash_if_ai_as_is_note": {
+      "low": 1290,
+      "base": 6020,
+      "high": 20000
+    },
+    "hours_starter": {
+      "low": {
+        "setup": 17.8,
+        "run": 4.738643533123029,
+        "total": 22.53864353312303
+      },
+      "base": {
+        "setup": 26.5,
+        "run": 8.167455310199792,
+        "total": 34.66745531019979
+      },
+      "high": {
+        "setup": 38.41111111111111,
+        "run": 15.716614090431127,
+        "total": 54.12772520154224
+      }
+    },
+    "cash_starter": {
+      "low": 846.792,
+      "base": 2845.527,
+      "high": 7930.2
+    },
+    "price_grid_standard": {
+      "35000": {
+        "500": {
+          "low": {
+            "cost": 14738.458666666666,
+            "margin": 20261.541333333334,
+            "margin_pct": 57.890118095238094
+          },
+          "base": {
+            "cost": 24843.860333333338,
+            "margin": 10156.139666666662,
+            "margin_pct": 29.01754190476189
+          },
+          "high": {
+            "cost": 42446.86666666667,
+            "margin": -7446.866666666669,
+            "margin_pct": -21.27676190476191
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 28630.125333333333,
+            "margin": 6369.874666666667,
+            "margin_pct": 18.199641904761904
+          },
+          "base": {
+            "cost": 46302.19366666667,
+            "margin": -11302.193666666673,
+            "margin_pct": -32.291981904761926
+          },
+          "high": {
+            "cost": 75863.53333333334,
+            "margin": -40863.53333333334,
+            "margin_pct": -116.75295238095241
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 42521.792,
+            "margin": -7521.792000000001,
+            "margin_pct": -21.49083428571429
+          },
+          "base": {
+            "cost": 67760.527,
+            "margin": -32760.527000000002,
+            "margin_pct": -93.60150571428572
+          },
+          "high": {
+            "cost": 109280.20000000001,
+            "margin": -74280.20000000001,
+            "margin_pct": -212.22914285714288
+          }
+        }
+      },
+      "40000": {
+        "500": {
+          "low": {
+            "cost": 14738.458666666666,
+            "margin": 25261.541333333334,
+            "margin_pct": 63.15385333333333
+          },
+          "base": {
+            "cost": 24843.860333333338,
+            "margin": 15156.139666666662,
+            "margin_pct": 37.89034916666665
+          },
+          "high": {
+            "cost": 42446.86666666667,
+            "margin": -2446.8666666666686,
+            "margin_pct": -6.117166666666671
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 28630.125333333333,
+            "margin": 11369.874666666667,
+            "margin_pct": 28.424686666666666
+          },
+          "base": {
+            "cost": 46302.19366666667,
+            "margin": -6302.193666666673,
+            "margin_pct": -15.755484166666683
+          },
+          "high": {
+            "cost": 75863.53333333334,
+            "margin": -35863.53333333334,
+            "margin_pct": -89.65883333333335
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 42521.792,
+            "margin": -2521.7920000000013,
+            "margin_pct": -6.3044800000000025
+          },
+          "base": {
+            "cost": 67760.527,
+            "margin": -27760.527000000002,
+            "margin_pct": -69.4013175
+          },
+          "high": {
+            "cost": 109280.20000000001,
+            "margin": -69280.20000000001,
+            "margin_pct": -173.20050000000003
+          }
+        }
+      },
+      "45000": {
+        "500": {
+          "low": {
+            "cost": 14738.458666666666,
+            "margin": 30261.541333333334,
+            "margin_pct": 67.24786962962963
+          },
+          "base": {
+            "cost": 24843.860333333338,
+            "margin": 20156.139666666662,
+            "margin_pct": 44.79142148148147
+          },
+          "high": {
+            "cost": 42446.86666666667,
+            "margin": 2553.1333333333314,
+            "margin_pct": 5.673629629629625
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 28630.125333333333,
+            "margin": 16369.874666666667,
+            "margin_pct": 36.37749925925926
+          },
+          "base": {
+            "cost": 46302.19366666667,
+            "margin": -1302.1936666666734,
+            "margin_pct": -2.8937637037037183
+          },
+          "high": {
+            "cost": 75863.53333333334,
+            "margin": -30863.53333333334,
+            "margin_pct": -68.58562962962964
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 42521.792,
+            "margin": 2478.2079999999987,
+            "margin_pct": 5.507128888888886
+          },
+          "base": {
+            "cost": 67760.527,
+            "margin": -22760.527000000002,
+            "margin_pct": -50.578948888888895
+          },
+          "high": {
+            "cost": 109280.20000000001,
+            "margin": -64280.20000000001,
+            "margin_pct": -142.8448888888889
+          }
+        }
+      },
+      "48000": {
+        "500": {
+          "low": {
+            "cost": 14738.458666666666,
+            "margin": 33261.541333333334,
+            "margin_pct": 69.29487777777777
+          },
+          "base": {
+            "cost": 24843.860333333338,
+            "margin": 23156.139666666662,
+            "margin_pct": 48.241957638888884
+          },
+          "high": {
+            "cost": 42446.86666666667,
+            "margin": 5553.133333333331,
+            "margin_pct": 11.569027777777773
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 28630.125333333333,
+            "margin": 19369.874666666667,
+            "margin_pct": 40.353905555555556
+          },
+          "base": {
+            "cost": 46302.19366666667,
+            "margin": 1697.8063333333266,
+            "margin_pct": 3.5370965277777637
+          },
+          "high": {
+            "cost": 75863.53333333334,
+            "margin": -27863.53333333334,
+            "margin_pct": -58.049027777777795
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 42521.792,
+            "margin": 5478.207999999999,
+            "margin_pct": 11.412933333333331
+          },
+          "base": {
+            "cost": 67760.527,
+            "margin": -19760.527000000002,
+            "margin_pct": -41.16776458333334
+          },
+          "high": {
+            "cost": 109280.20000000001,
+            "margin": -61280.20000000001,
+            "margin_pct": -127.66708333333337
+          }
+        }
+      },
+      "50000": {
+        "500": {
+          "low": {
+            "cost": 14738.458666666666,
+            "margin": 35261.541333333334,
+            "margin_pct": 70.52308266666667
+          },
+          "base": {
+            "cost": 24843.860333333338,
+            "margin": 25156.139666666662,
+            "margin_pct": 50.31227933333332
+          },
+          "high": {
+            "cost": 42446.86666666667,
+            "margin": 7553.133333333331,
+            "margin_pct": 15.106266666666663
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 28630.125333333333,
+            "margin": 21369.874666666667,
+            "margin_pct": 42.739749333333336
+          },
+          "base": {
+            "cost": 46302.19366666667,
+            "margin": 3697.8063333333266,
+            "margin_pct": 7.395612666666654
+          },
+          "high": {
+            "cost": 75863.53333333334,
+            "margin": -25863.53333333334,
+            "margin_pct": -51.72706666666668
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 42521.792,
+            "margin": 7478.207999999999,
+            "margin_pct": 14.956415999999997
+          },
+          "base": {
+            "cost": 67760.527,
+            "margin": -17760.527000000002,
+            "margin_pct": -35.521054
+          },
+          "high": {
+            "cost": 109280.20000000001,
+            "margin": -59280.20000000001,
+            "margin_pct": -118.56040000000003
+          }
+        }
+      }
+    },
+    "price_grid_starter": {
+      "30000": {
+        "500": {
+          "low": {
+            "cost": 12116.113766561513,
+            "margin": 17883.886233438487,
+            "margin_pct": 59.612954111461626
+          },
+          "base": {
+            "cost": 20179.254655099896,
+            "margin": 9820.745344900104,
+            "margin_pct": 32.73581781633368
+          },
+          "high": {
+            "cost": 34994.06260077112,
+            "margin": -4994.062600771118,
+            "margin_pct": -16.646875335903726
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 23385.43553312303,
+            "margin": 6614.564466876971,
+            "margin_pct": 22.048548222923237
+          },
+          "base": {
+            "cost": 37512.98231019979,
+            "margin": -7512.98231019979,
+            "margin_pct": -25.043274367332636
+          },
+          "high": {
+            "cost": 62057.92520154224,
+            "margin": -32057.92520154224,
+            "margin_pct": -106.85975067180746
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 34654.75729968454,
+            "margin": -4654.757299684541,
+            "margin_pct": -15.515857665615137
+          },
+          "base": {
+            "cost": 54846.70996529969,
+            "margin": -24846.70996529969,
+            "margin_pct": -82.82236655099896
+          },
+          "high": {
+            "cost": 89121.78780231335,
+            "margin": -59121.78780231335,
+            "margin_pct": -197.0726260077112
+          }
+        }
+      },
+      "35000": {
+        "500": {
+          "low": {
+            "cost": 12116.113766561513,
+            "margin": 22883.886233438487,
+            "margin_pct": 65.38253209553854
+          },
+          "base": {
+            "cost": 20179.254655099896,
+            "margin": 14820.745344900104,
+            "margin_pct": 42.34498669971458
+          },
+          "high": {
+            "cost": 34994.06260077112,
+            "margin": 5.937399228881986,
+            "margin_pct": 0.016963997796805675
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 23385.43553312303,
+            "margin": 11614.564466876971,
+            "margin_pct": 33.184469905362775
+          },
+          "base": {
+            "cost": 37512.98231019979,
+            "margin": -2512.98231019979,
+            "margin_pct": -7.179949457713686
+          },
+          "high": {
+            "cost": 62057.92520154224,
+            "margin": -27057.92520154224,
+            "margin_pct": -77.30835771869211
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 34654.75729968454,
+            "margin": 345.24270031545893,
+            "margin_pct": 0.9864077151870255
+          },
+          "base": {
+            "cost": 54846.70996529969,
+            "margin": -19846.70996529969,
+            "margin_pct": -56.704885615141976
+          },
+          "high": {
+            "cost": 89121.78780231335,
+            "margin": -54121.78780231335,
+            "margin_pct": -154.633679435181
+          }
+        }
+      },
+      "38000": {
+        "500": {
+          "low": {
+            "cost": 12116.113766561513,
+            "margin": 25883.886233438487,
+            "margin_pct": 68.11549008799602
+          },
+          "base": {
+            "cost": 20179.254655099896,
+            "margin": 17820.745344900104,
+            "margin_pct": 46.89669827605291
+          },
+          "high": {
+            "cost": 34994.06260077112,
+            "margin": 3005.937399228882,
+            "margin_pct": 7.910361576918111
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 23385.43553312303,
+            "margin": 14614.564466876971,
+            "margin_pct": 38.45938017599203
+          },
+          "base": {
+            "cost": 37512.98231019979,
+            "margin": 487.01768980021006,
+            "margin_pct": 1.281625499474237
+          },
+          "high": {
+            "cost": 62057.92520154224,
+            "margin": -24057.92520154224,
+            "margin_pct": -63.310329477742734
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 34654.75729968454,
+            "margin": 3345.242700315459,
+            "margin_pct": 8.80327026398805
+          },
+          "base": {
+            "cost": 54846.70996529969,
+            "margin": -16846.70996529969,
+            "margin_pct": -44.33344727710445
+          },
+          "high": {
+            "cost": 89121.78780231335,
+            "margin": -51121.78780231335,
+            "margin_pct": -134.53102053240355
+          }
+        }
+      },
+      "40000": {
+        "500": {
+          "low": {
+            "cost": 12116.113766561513,
+            "margin": 27883.886233438487,
+            "margin_pct": 69.70971558359622
+          },
+          "base": {
+            "cost": 20179.254655099896,
+            "margin": 19820.745344900104,
+            "margin_pct": 49.55186336225026
+          },
+          "high": {
+            "cost": 34994.06260077112,
+            "margin": 5005.937399228882,
+            "margin_pct": 12.514843498072207
+          }
+        },
+        "1000": {
+          "low": {
+            "cost": 23385.43553312303,
+            "margin": 16614.56446687697,
+            "margin_pct": 41.536411167192426
+          },
+          "base": {
+            "cost": 37512.98231019979,
+            "margin": 2487.01768980021,
+            "margin_pct": 6.217544224500525
+          },
+          "high": {
+            "cost": 62057.92520154224,
+            "margin": -22057.92520154224,
+            "margin_pct": -55.144813003855596
+          }
+        },
+        "1500": {
+          "low": {
+            "cost": 34654.75729968454,
+            "margin": 5345.242700315459,
+            "margin_pct": 13.363106750788647
+          },
+          "base": {
+            "cost": 54846.70996529969,
+            "margin": -14846.709965299691,
+            "margin_pct": -37.11677491324923
+          },
+          "high": {
+            "cost": 89121.78780231335,
+            "margin": -49121.78780231335,
+            "margin_pct": -122.80446950578339
+          }
+        }
+      }
+    },
+    "breakeven_rate_standard": {
+      "35000": {
+        "low": 1229.2696340731854,
+        "base": 736.6479145631067,
+        "high": 388.5755610972568
+      },
+      "40000": {
+        "low": 1409.2336412717457,
+        "base": 853.1527689320387,
+        "high": 463.38852867830417
+      },
+      "45000": {
+        "low": 1589.197648470306,
+        "base": 969.6576233009707,
+        "high": 538.2014962593516
+      },
+      "48000": {
+        "low": 1697.176052789442,
+        "base": 1039.56053592233,
+        "high": 583.08927680798
+      },
+      "50000": {
+        "low": 1769.1616556688664,
+        "base": 1086.1624776699027,
+        "high": 613.014463840399
+      }
+    },
+    "breakeven_rate_starter": {
+      "30000": {
+        "low": 1293.4765997410686,
+        "base": 783.2842865744075,
+        "high": 407.735590546694
+      },
+      "35000": {
+        "low": 1515.3178118198678,
+        "base": 927.5117747260663,
+        "high": 500.1096923842037
+      },
+      "38000": {
+        "low": 1648.4225390671472,
+        "base": 1014.0482676170615,
+        "high": 555.5341534867094
+      },
+      "40000": {
+        "low": 1737.1590238986669,
+        "base": 1071.739262877725,
+        "high": 592.4837942217133
+      }
+    },
+    "extra_cash_if_ai_as_is_vs_lean": {
+      "low": 443.20799999999997,
+      "base": 2634.473,
+      "high": 10969.8
+    },
+    "setup_items": [
+      {
+        "id": "S1",
+        "name": "Research pipeline: detail-page pull, group resolution, site contact extraction, small + deep model calls, budget meter, record format, 6-builder calibration",
+        "low": 6,
+        "base": 9,
+        "high": 14,
+        "previous_base": 5,
+        "note": "More hours than before ON PURPOSE: scripts replace most agent work, so AI cost per builder falls and no subscription is needed. Reusable for the monthly run"
+      },
+      {
+        "id": "S2",
+        "name": "ONE master video (English) + script-filled builder page (beacons, mobile check)",
+        "low": 4,
+        "base": 6,
+        "high": 9,
+        "previous_base": 15,
+        "note": "Cut: no per-builder video, no Hindi cut, designs/animatic/sample page already exist, Sridhar supplies recordings"
+      },
+      {
+        "id": "S3",
+        "name": "+91 number, display name, 2 templates (touch 1 with video header, touch 2 text), BSP rate/billing confirm, Meta approvals",
+        "low": 3,
+        "base": 4,
+        "high": 5,
+        "previous_base": 4,
+        "note": "Same as before"
+      },
+      {
+        "id": "S4",
+        "name": "Forward-only reply routing to Sridhar + STOP rule + alert test",
+        "low": 4,
+        "base": 6,
+        "high": 8,
+        "previous_base": 6,
+        "note": "Same as before; required by Sridhar's own rule that he takes every genuine reply"
+      },
+      {
+        "id": "S5",
+        "name": "Read-only view for Sridhar (viewer login, this campaign only, numbers masked, CSV export)",
+        "low": 3,
+        "base": 5,
+        "high": 8,
+        "previous_base": 8,
+        "note": "Cut: reuse existing pages, no new charts"
+      },
+      {
+        "id": "S6",
+        "name": "Claims and copy QA, test sends to our own phones, go-live check",
+        "low": 2,
+        "base": 3,
+        "high": 4,
+        "previous_base": 3,
+        "note": "Same as before"
+      }
+    ],
+    "run_items": {
+      "R1": {
+        "low": 2.0833333333333335,
+        "base": 3.75,
+        "high": 7.5
+      },
+      "R2": {
+        "low": 0.7,
+        "base": 1.1666666666666667,
+        "high": 2.3333333333333335
+      },
+      "R3": {
+        "low": 0.75,
+        "base": 1.0,
+        "high": 1.5
+      },
+      "R4": {
+        "low": 1.75,
+        "base": 3.0,
+        "high": 4.5
+      },
+      "R5": {
+        "low": 0.5,
+        "base": 1.0,
+        "high": 3.0
+      }
+    },
+    "starter_cuts": [
+      {
+        "id": "S1",
+        "what": "Pipeline: calibrate on 3 builders (not 6); group resolution by hand for flagged ones only"
+      },
+      {
+        "id": "S2",
+        "what": "Page + video: reuse the sample page and animatic, captions only, no new recordings, one hook"
+      },
+      {
+        "id": "S4",
+        "what": "Hand-off: alert + reply log only; STOP rule kept; no routing rules"
+      },
+      {
+        "id": "S5",
+        "what": "Read-only view: daily static snapshot page (unlisted link, numbers masked) instead of a login"
+      },
+      {
+        "id": "S6",
+        "what": "QA and test sends trimmed"
+      },
+      {
+        "id": "R4",
+        "what": "Final report only (no mid-pilot note), one review call"
+      },
+      {
+        "id": "R2/R3/R5",
+        "what": "Lighter check-ins and upkeep"
+      }
+    ],
+    "delivery_test_price48000_base_rate1000": {
+      "observed 1 of 6 (17%)": {
+        "30%": {
+          "messages_sent": 16.666666666666664,
+          "messages_delivered": 4.999999999999999,
+          "passthrough_billed_to_sridhar": 7.499999999999998,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1680.3063333333266
+        },
+        "60%": {
+          "messages_sent": 16.666666666666664,
+          "messages_delivered": 9.999999999999998,
+          "passthrough_billed_to_sridhar": 14.999999999999996,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1687.8063333333266
+        }
+      },
+      "assumption 35%": {
+        "30%": {
+          "messages_sent": 35.0,
+          "messages_delivered": 10.5,
+          "passthrough_billed_to_sridhar": 15.75,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1661.0563333333266
+        },
+        "60%": {
+          "messages_sent": 35.0,
+          "messages_delivered": 21.0,
+          "passthrough_billed_to_sridhar": 31.5,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1676.8063333333266
+        }
+      },
+      "upper end of 95% interval (56%)": {
+        "30%": {
+          "messages_sent": 56.00000000000001,
+          "messages_delivered": 16.8,
+          "passthrough_billed_to_sridhar": 25.200000000000003,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1639.0063333333267
+        },
+        "60%": {
+          "messages_sent": 56.00000000000001,
+          "messages_delivered": 33.6,
+          "passthrough_billed_to_sridhar": 50.400000000000006,
+          "our_margin_if_bsp_bills_delivered_only": 1697.8063333333266,
+          "our_margin_if_bsp_bills_every_message_sent": 1664.2063333333267
+        }
+      }
+    },
+    "whatsapp_passthrough": {
+      "max_messages": 100,
+      "max_cost_all_delivered": 150.0,
+      "alerts_cap": 30,
+      "alerts_cost": 45.0,
+      "max_total_before_gst": 195.0,
+      "max_total_with_gst": 230.1,
+      "expected_range_before_gst": [
+        7.6499999999999995,
+        50.400000000000006
+      ]
+    }
+  },
+  "c_monthly": {
+    "cost_grid": {
+      "50": {
+        "low": {
+          "hours": 6.583333333333334,
+          "cash": 1356.792,
+          "cost_rate500": 4648.458666666667,
+          "cost_rate1000": 7940.125333333333,
+          "cost_rate1500": 11231.792
+        },
+        "base": {
+          "hours": 11.3,
+          "cash": 3005.527,
+          "cost_rate500": 8655.527,
+          "cost_rate1000": 14305.527,
+          "cost_rate1500": 19955.527000000002
+        },
+        "high": {
+          "hours": 19.5,
+          "cash": 7480.2,
+          "cost_rate500": 17230.2,
+          "cost_rate1000": 26980.2,
+          "cost_rate1500": 36730.2
+        }
+      },
+      "100": {
+        "low": {
+          "hours": 8.666666666666668,
+          "cash": 2113.584,
+          "cost_rate500": 6446.917333333334,
+          "cost_rate1000": 10780.250666666667,
+          "cost_rate1500": 15113.584000000003
+        },
+        "base": {
+          "hours": 15.05,
+          "cash": 4171.054,
+          "cost_rate500": 11696.054,
+          "cost_rate1000": 19221.054,
+          "cost_rate1500": 26746.054
+        },
+        "high": {
+          "hours": 27.0,
+          "cash": 10460.4,
+          "cost_rate500": 23960.4,
+          "cost_rate1000": 37460.4,
+          "cost_rate1500": 50960.4
+        }
+      },
+      "150": {
+        "low": {
+          "hours": 10.75,
+          "cash": 2870.376,
+          "cost_rate500": 8245.376,
+          "cost_rate1000": 13620.376,
+          "cost_rate1500": 18995.376
+        },
+        "base": {
+          "hours": 18.8,
+          "cash": 5336.581,
+          "cost_rate500": 14736.581,
+          "cost_rate1000": 24136.581,
+          "cost_rate1500": 33536.581
+        },
+        "high": {
+          "hours": 34.5,
+          "cash": 13440.6,
+          "cost_rate500": 30690.6,
+          "cost_rate1000": 47940.6,
+          "cost_rate1500": 65190.6
+        }
+      }
+    },
+    "breakeven_rate": {
+      "price25000_n50": {
+        "low": 3591.373367088607,
+        "base": 1946.4135398230085,
+        "high": 898.451282051282
+      },
+      "price25000_n100": {
+        "low": 2640.7403076923074,
+        "base": 1383.9831229235879,
+        "high": 538.5037037037038
+      },
+      "price25000_n150": {
+        "low": 2058.569674418605,
+        "base": 1045.9265425531914,
+        "high": 335.0550724637681
+      },
+      "price30000_n50": {
+        "low": 4350.867037974683,
+        "base": 2388.891415929203,
+        "high": 1154.8615384615384
+      },
+      "price30000_n100": {
+        "low": 3217.663384615384,
+        "base": 1716.2090365448505,
+        "high": 723.6888888888889
+      },
+      "price30000_n150": {
+        "low": 2523.685953488372,
+        "base": 1311.883989361702,
+        "high": 479.98260869565223
+      },
+      "price36000_n50": {
+        "low": 5262.259443037974,
+        "base": 2919.864867256637,
+        "high": 1462.553846153846
+      },
+      "price36000_n100": {
+        "low": 3909.971076923076,
+        "base": 2114.8801328903655,
+        "high": 945.911111111111
+      },
+      "price36000_n150": {
+        "low": 3081.825488372093,
+        "base": 1631.032925531915,
+        "high": 653.895652173913
+      }
+    },
+    "extra_50_builders": {
+      "low": {
+        "hours": 2.0833333333333335,
+        "ai": 756.792,
+        "cost_rate1000": 2840.1253333333334
+      },
+      "base": {
+        "hours": 3.75,
+        "ai": 1165.527,
+        "cost_rate1000": 4915.527
+      },
+      "high": {
+        "hours": 7.5,
+        "ai": 2980.2,
+        "cost_rate1000": 10480.2
+      }
+    },
+    "capped_worst_case_6min_box": {
+      "100": {
+        "hours": 17.55,
+        "cash": 6840.0,
+        "cost_rate1000": 24390.0
+      },
+      "150": {
+        "hours": 22.55,
+        "cash": 9340.0,
+        "cost_rate1000": 31890.0
+      }
+    }
+  },
+  "research_only_check_50_builders_price12000": {
+    "first_list_incl_pipeline_build": {
+      "hours": 14.75,
+      "cash": 1345.527,
+      "cost_rate500": 8720.527,
+      "cost_rate1000": 16095.527,
+      "breakeven_rate_at_12000": 722.3371525423729
+    },
+    "repeat_list_pipeline_exists": {
+      "hours": 5.75,
+      "cash": 1345.527,
+      "cost_rate500": 4220.527,
+      "cost_rate1000": 7095.527,
+      "breakeven_rate_at_12000": 1852.9518260869565
+    }
+  },
+  "f_sensitivity": {
+    "pilot_price_35000": {
+      "low": {
+        "500": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 37.96917333333333,
+          "fixed_month": 2850.0,
+          "min_builders_to_break_even": 4.304935488200428,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 81.9436992
+        },
+        "1000": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 58.802506666666666,
+          "fixed_month": 5100.0,
+          "min_builders_to_break_even": 7.953867650803043,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 40.9718496
+        }
+      },
+      "base": {
+        "500": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 62.81054,
+          "fixed_month": 5615.0,
+          "min_builders_to_break_even": 8.812135718629118,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 80.96273520000001
+        },
+        "1000": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 100.31054,
+          "fixed_month": 9390.0,
+          "min_builders_to_break_even": 15.658104112751955,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 40.481367600000006
+        }
+      },
+      "high": {
+        "500": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 136.60399999999998,
+          "fixed_month": 10500.0,
+          "min_builders_to_break_even": 18.636980028257213,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 76.60752
+        },
+        "1000": {
+          "price_per_builder": 700.0,
+          "var_cost_per_builder": 211.60399999999998,
+          "fixed_month": 16500.0,
+          "min_builders_to_break_even": 33.784060475515766,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 38.30376
+        }
+      }
+    },
+    "pilot_price_48000": {
+      "low": {
+        "500": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 37.96917333333333,
+          "fixed_month": 2850.0,
+          "min_builders_to_break_even": 3.0910029443411813,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 113.1436992
+        },
+        "1000": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 58.802506666666666,
+          "fixed_month": 5100.0,
+          "min_builders_to_break_even": 5.659136912527586,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 56.5718496
+        }
+      },
+      "base": {
+        "500": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 62.81054,
+          "fixed_month": 5615.0,
+          "min_builders_to_break_even": 6.258432862106962,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 112.16273520000001
+        },
+        "1000": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 100.31054,
+          "fixed_month": 9390.0,
+          "min_builders_to_break_even": 10.922548707297167,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 56.08136760000001
+        }
+      },
+      "high": {
+        "500": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 136.60399999999998,
+          "fixed_month": 10500.0,
+          "min_builders_to_break_even": 12.752065834665217,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 107.80752
+        },
+        "1000": {
+          "price_per_builder": 960.0,
+          "var_cost_per_builder": 211.60399999999998,
+          "fixed_month": 16500.0,
+          "min_builders_to_break_even": 22.047151508025163,
+          "max_human_minutes_per_builder_before_loss_ignoring_fixed": 53.90376
+        }
+      }
+    },
+    "monthly_fee_30000_max_builders": {
+      "low": {
+        "500": {
+          "max_builders_before_loss_at_fee30000": 754.8130102517415
+        },
+        "1000": {
+          "max_builders_before_loss_at_fee30000": 438.360936184037
+        },
+        "1500": {
+          "max_builders_before_loss_at_fee30000": 291.74669843206436
+        }
+      },
+      "base": {
+        "500": {
+          "max_builders_before_loss_at_fee30000": 400.99956356250084
+        },
+        "1000": {
+          "max_builders_before_loss_at_fee30000": 209.64181460095733
+        },
+        "1500": {
+          "max_builders_before_loss_at_fee30000": 123.9594511589454
+        }
+      },
+      "high": {
+        "500": {
+          "max_builders_before_loss_at_fee30000": 144.86939466880628
+        },
+        "1000": {
+          "max_builders_before_loss_at_fee30000": 64.40716780214119
+        },
+        "1500": {
+          "max_builders_before_loss_at_fee30000": 26.352405447569254
+        }
+      }
+    }
+  },
+  "d_drivers": [
+    {
+      "id": "D1",
+      "req": "More builders (each extra batch of 50, Chhattisgarh)",
+      "once_h": [
+        0,
+        0,
+        0
+      ],
+      "month_h": [
+        2.1,
+        3.75,
+        7.5
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        757,
+        1166,
+        2980
+      ],
+      "note": "Review time 2.5/4.5/9 min per builder plus AI at the lean cost. The pool is the real limit: about 72 shortlisted now, about 424 on a loose rule, about 4 new qualifying builders a month. Above about 150 the small/medium rule must be loosened (Sridhar's decision).",
+      "once_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "month_rs_at_change_rate": [
+        2857.0,
+        4916.0,
+        10480.0
+      ]
+    },
+    {
+      "id": "D2",
+      "req": "Per-builder video (name, project, city inside the video)",
+      "once_h": [
+        3,
+        4,
+        5
+      ],
+      "month_h": [
+        0.9,
+        1.5,
+        2.5
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        100,
+        300
+      ],
+      "note": "Per 50: about 1 hour of unattended render (1.45 min each is MEASURED for the 38 s video) plus a person looking at the first and last frame; 2 of 6 campaign-1 renders needed rework for a wrong name. Whether this BSP accepts a different video per recipient in a template header was not checked (UNKNOWN). No evidence that a name in the video lifts replies.",
+      "once_rs_at_change_rate": [
+        3000,
+        4000,
+        5000
+      ],
+      "month_rs_at_change_rate": [
+        900.0,
+        1600.0,
+        2800.0
+      ]
+    },
+    {
+      "id": "D3",
+      "req": "Hindi (or Gujarati) variant of page, video text and templates",
+      "once_h": [
+        4,
+        5.5,
+        7
+      ],
+      "month_h": [
+        0.25,
+        0.5,
+        1
+      ],
+      "cash_once": [
+        0,
+        500,
+        2000
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Per language. Needs a native-speaker check (none done so far). Voice clips are recorded by Sridhar. Gujarati is not relevant to Chhattisgarh.",
+      "once_rs_at_change_rate": [
+        4000,
+        6000.0,
+        9000
+      ],
+      "month_rs_at_change_rate": [
+        250.0,
+        500.0,
+        1000
+      ]
+    },
+    {
+      "id": "D4",
+      "req": "Another state's RERA fetcher (only where the site allows bots; Madhya Pradesh excluded)",
+      "once_h": [
+        8,
+        12,
+        20
+      ],
+      "month_h": [
+        1,
+        1.5,
+        3
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Per state. Includes a robots.txt and terms check. From our 20 Oct table: Odisha, Gujarat, Rajasthan were readable; Telangana has an image CAPTCHA (we do not bypass); UP gave errors. MP RERA robots.txt says Disallow all, so MP is NOT automated.",
+      "once_rs_at_change_rate": [
+        8000,
+        12000,
+        20000
+      ],
+      "month_rs_at_change_rate": [
+        1000,
+        1500.0,
+        3000
+      ]
+    },
+    {
+      "id": "D4b",
+      "req": "Madhya Pradesh as a hand-built list (a person looks up each builder)",
+      "once_h": [
+        0,
+        0,
+        0
+      ],
+      "month_h": [
+        0,
+        0,
+        0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "per_builder_min": [
+        15,
+        27,
+        40
+      ],
+      "note": "15 to 40 minutes per builder by hand = Rs 250 to 670 per builder at Rs 1,000 an hour (no human timing was taken; ASSUMPTION). Not automation. Asking MP RERA for permission is possible but not promised.",
+      "once_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "month_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "rs_per_builder_at_change_rate": [
+        250.0,
+        450.0,
+        666.6666666666666
+      ]
+    },
+    {
+      "id": "D5",
+      "req": "Nexus360 CRM integration (push qualified builders or replies into his CRM)",
+      "once_h": null,
+      "month_h": null,
+      "cash_once": null,
+      "cash_month": null,
+      "planning_bracket_h": [
+        6,
+        20,
+        40
+      ],
+      "note": "NOT QUOTABLE until we see his API. Free 1 to 2 hour API review first, then a range. Internal planning bracket only (not for Sridhar): file import 3 to 6 h, one-way push 8 to 20 h, two-way sync 30 h or more.",
+      "once_rs_at_change_rate": null,
+      "month_rs_at_change_rate": null
+    },
+    {
+      "id": "D6",
+      "req": "Email as a second channel (business-published role inboxes)",
+      "once_h": [
+        5,
+        7,
+        9
+      ],
+      "month_h": [
+        1,
+        1.5,
+        2.5
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        1800
+      ],
+      "note": "Templates, page link, inbox-placement test, bounce handling, and a reply path that is actually monitored (campaign 1: 9 of 12 emails had an unmonitored Reply-To). Mail-sending plan cost is an ASSUMPTION. Raises the share of builders we can contact: 4 of 6 tested had some business-published channel, but that count includes landlines.",
+      "once_rs_at_change_rate": [
+        5000,
+        7000,
+        9000
+      ],
+      "month_rs_at_change_rate": [
+        1000,
+        1500.0,
+        4300.0
+      ]
+    },
+    {
+      "id": "D7",
+      "req": "Calls by us (instead of Sridhar's team)",
+      "once_h": [
+        0,
+        0,
+        0
+      ],
+      "month_h": [
+        0,
+        0,
+        0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "per_builder_min": [
+        10,
+        20,
+        30
+      ],
+      "note": "Up to 3 tries per builder = 10 to 30 minutes = Rs 170 to 500 per builder, so Rs 8,300 to 25,000 per 50 at Rs 1,000 an hour, plus telecom cost. Telecom (TRAI) rules for B2B calls not established. We recommend his team calls the warm ones. WhatsApp voice notes cannot open a conversation (templates carry text, image, video or document headers: INFERENCE from general WhatsApp knowledge, not re-checked today).",
+      "once_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "month_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "rs_per_builder_at_change_rate": [
+        166.66666666666666,
+        333.3333333333333,
+        500.0
+      ]
+    },
+    {
+      "id": "D8",
+      "req": "Faster start (days instead of about 7 working days to first send)",
+      "once_h": [
+        4,
+        8,
+        12
+      ],
+      "month_h": [
+        0,
+        0,
+        0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "About 25% of setup hours as overtime. It cannot beat outside waits: Meta template approval (16 to 20 min measured for one template), +91 number availability (UNKNOWN), and Sridhar's own inputs.",
+      "once_rs_at_change_rate": [
+        4000,
+        8000,
+        12000
+      ],
+      "month_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "D9",
+      "req": "More reports (extra weekly report, extra review call)",
+      "once_h": [
+        0,
+        0,
+        0
+      ],
+      "month_h": [
+        2,
+        3,
+        4
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Per month: 4 extra written reports at 0.5 to 1 h plus one extra call 0.75 h. Custom analysis on request: 2 to 4 h each.",
+      "once_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "month_rs_at_change_rate": [
+        2000,
+        3000,
+        4000
+      ]
+    },
+    {
+      "id": "D10",
+      "req": "Licensed registry data source (company and director records)",
+      "once_h": [
+        4,
+        6,
+        8
+      ],
+      "month_h": [
+        -1,
+        -0.8,
+        -0.4
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": null,
+      "note": "Licence fee is UNKNOWN: pass it through at cost, we do not guess it. Our tests used manual single lookups because the free sites bar scraping. It saves manual minutes only for the builders we upgrade from LIKELY to VERIFIED (about 10 per 50).",
+      "once_rs_at_change_rate": [
+        4000,
+        6000,
+        8000
+      ],
+      "month_rs_at_change_rate": null
+    },
+    {
+      "id": "D11",
+      "req": "Separate +91 number and display name",
+      "once_h": [
+        0,
+        0,
+        0
+      ],
+      "month_h": [
+        0,
+        0,
+        0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        750,
+        1500
+      ],
+      "note": "Already INSIDE the lean price (3 to 5 h, row S3). Not yet known: whether our BSP can give a +91 number, its fee, Meta display-name approval, our business-verification status (a new portfolio is capped at 250 unique recipients per 24 h until verified). Cash shown is the possible BSP fee for the extra number (ASSUMPTION).",
+      "once_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ],
+      "month_rs_at_change_rate": [
+        0,
+        750,
+        1500
+      ]
+    },
+    {
+      "id": "D12",
+      "req": "Forward-only reply routing (every reply goes to Sridhar)",
+      "once_h": [
+        3,
+        4.5,
+        6
+      ],
+      "month_h": [
+        0.5,
+        1,
+        1.5
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        45
+      ],
+      "note": "The basic version (one recipient, STOP rule, alert) is INSIDE the lean price (row S4). The row shows extras: second recipient, working-hour rules, fallback alert by another channel. Each alert sent from our number is a marketing-category message at Rs 1.5 (as seen on 19 Oct).",
+      "once_rs_at_change_rate": [
+        3000,
+        4500.0,
+        6000
+      ],
+      "month_rs_at_change_rate": [
+        500.0,
+        1000,
+        1545.0
+      ]
+    },
+    {
+      "id": "D13",
+      "req": "Also message the mobile number filed on the RERA page (official contact, often an operator or adviser, not the owner)",
+      "once_h": [
+        1,
+        2,
+        3
+      ],
+      "month_h": [
+        0.8,
+        1.2,
+        2.0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Raises the share of builders we can message a lot (every tested builder had a filed mobile) but Sridhar himself says these are not the owners. Opt-in risk with Meta is higher (error 131049 hit 2 of 7 in campaign 1). Needs the owner's and Sridhar's decision. Not legal advice.",
+      "once_rs_at_change_rate": [
+        1000,
+        2000,
+        3000
+      ],
+      "month_rs_at_change_rate": [
+        800.0,
+        1200.0,
+        2000.0
+      ]
+    },
+    {
+      "id": "D14",
+      "req": "A third or fourth follow-up message",
+      "once_h": [
+        0.5,
+        0.5,
+        1
+      ],
+      "month_h": [
+        0.1,
+        0.2,
+        0.4
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Plus Rs 1.5 per delivered message passed through. More touches raise Meta limit and block risk.",
+      "once_rs_at_change_rate": [
+        500.0,
+        500.0,
+        1000
+      ],
+      "month_rs_at_change_rate": [
+        100.0,
+        200.0,
+        400.0
+      ]
+    },
+    {
+      "id": "D15",
+      "req": "One more change round (page, video or message text)",
+      "once_h": [
+        2,
+        3,
+        4
+      ],
+      "month_h": [
+        0,
+        0,
+        0
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "One round is inside the lean price. Each extra round is quoted before work starts.",
+      "once_rs_at_change_rate": [
+        2000,
+        3000,
+        4000
+      ],
+      "month_rs_at_change_rate": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "D16",
+      "req": "Custom dashboard views or more viewers",
+      "once_h": [
+        3,
+        5,
+        8
+      ],
+      "month_h": [
+        0.25,
+        0.5,
+        1
+      ],
+      "cash_once": [
+        0,
+        0,
+        0
+      ],
+      "cash_month": [
+        0,
+        0,
+        0
+      ],
+      "note": "Two viewers and the standard views are inside the lean price.",
+      "once_rs_at_change_rate": [
+        3000,
+        5000,
+        8000
+      ],
+      "month_rs_at_change_rate": [
+        250.0,
+        500.0,
+        1000
+      ]
+    }
+  ],
+  "e_promise_boundary": {
+    "we_promise_if_inputs_arrive": [
+      "Research records for up to 50 Chhattisgarh builders from the public RERA register, each fact with a source link and date, and a label VERIFIED / LIKELY / UNKNOWN for the owner or decision-maker. Where we cannot find one the record says UNKNOWN.",
+      "A first WhatsApp message and at most one follow-up, in English, only to numbers the business itself published (own website, own ad or the register), only after a person on our side has checked the record, from our +91 line, with a STOP line.",
+      "One master video and one personalised page per messaged builder, built from the register fields.",
+      "Every genuine reply forwarded to the person Sridhar names, without any AI answer to the owner. We stop messaging a builder at once after any reply or STOP.",
+      "A read-only view of the pilot data (funnel counts, builder table with labels, send and reply log) and a CSV export.",
+      "One mid-pilot note and one final report (Day 17) with the funnel and what we learned, and an updated estimate for what comes next."
+    ],
+    "we_never_promise": [
+      "Replies, demos, meetings, customers or any reply rate. Our own first campaign: 9 contacted, no confirmed genuine reply; 2 of 7 cold WhatsApp messages arrived on time.",
+      "A direct WhatsApp number or verified personal contact for every owner. Tested on 6 builders: owner or decision-maker named for 4 (labels LIKELY or VERIFIED, n = 6), a number wired for WhatsApp for 1, a verified direct owner number for 0.",
+      "That every builder can be messaged. Builders without a business-published WhatsApp-capable number are researched and handed over as records, not messaged.",
+      "Delivery of every message. Meta decides; some messages will not arrive.",
+      "Madhya Pradesh automation (its RERA site disallows bots), other states, email, calls, Hindi or Gujarati, CRM integration. Each is a priced option, not included.",
+      "A reply-rate verdict from 50 builders. At most about 8 to 28 of them can be messaged and a few of those delivered; a verdict needs roughly 90 to 600 researched builders depending on reach.",
+      "Anything about Nexus360's own sales results or savings."
+    ]
+  },
+  "pilot_caps": [
+    "Builders: up to 50, Chhattisgarh only, chosen by the rules agreed at the kickoff call from the public RERA register.",
+    "Research depth: one record per builder with sources, up to 10 manual company-record lookups, and a time-box per builder (a builder we cannot resolve inside it is marked UNKNOWN).",
+    "Messages: WhatsApp only, English only, at most 2 per builder and at most 100 in total, only to numbers the business itself published, only after our check; STOP honoured at once.",
+    "Video and page: one master video (up to 45 seconds) and one page per messaged builder, built from register fields; no per-builder video.",
+    "Hand-off: every genuine reply forwarded to one person and number you name; up to 30 alerts.",
+    "Dashboard: read-only, up to 2 viewers, pilot period plus 14 days; CSV export at the end.",
+    "Reports: one mid-pilot note and one final report at Day 17.",
+    "Change rounds: one round of changes to page, video or message text; further rounds quoted.",
+    "Not included: calls, email, CRM integration, Hindi or Gujarati, other states, any reply handling by us."
+  ],
+  "clauses": {
+    "indicative": "This is an indicative estimate. It can change once we have your written requirements. We confirm a fixed price in writing before any work starts, and nothing is charged before you approve it.",
+    "whatsapp_passthrough": "WhatsApp: Rs 1.5 per delivered marketing message, billed at our provider's rate with no markup, plus GST. Estimated Rs 10 to 100 for the pilot; the most it can reach inside the caps is Rs 195; we do not bill more than Rs 300 without your approval. Any other third-party fee we cannot know today (for example a fee for an extra number or a licensed data source) is passed through at cost only with your prior approval.",
+    "price_change": "This price assumes AI, messaging and platform prices as of 20 October 2026. If any of them rises so that our direct cost per builder or per message rises by more than 25%, we pass the actual increase through at cost after 30 days' written notice, and you may stop at that point without penalty. No other price change happens without your written approval.",
+    "change_requests": "Anything outside the caps is quoted in hours before work starts (change rate Rs 1,000 per hour).",
+    "inputs": "The clock starts when we have the items on your list of inputs. If they arrive late, the dates move by the same number of days."
+  },
+  "steady_state_check_40_builders": {
+    "hours": 10.55,
+    "cash": 2772.4216,
+    "cost_rate1000": 13322.4216
+  },
+  "recommended": {
+    "pilot_standard_from_rs": 48000,
+    "pilot_starter_from_rs": 35000,
+    "monthly_up_to_100_builders_from_rs": 30000,
+    "monthly_up_to_150_builders_from_rs": 36000,
+    "monthly_each_extra_50_builders_rs": 6000,
+    "monthly_steady_state_from_month_4_up_to_40_builders_rs": 15000,
+    "all_prices_before_gst": true,
+    "whatsapp_passthrough_rs_per_delivered_marketing_msg_before_gst": 1.5,
+    "pilot_whatsapp_cap_rs_before_gst": 300,
+    "change_rate_rs_per_hour": 1000,
+    "basis": "Standard 48,000 covers base hours at Rs 1,000 an hour (cost about 46,300). Starter 35,000 covers base hours down to about Rs 930 an hour. Monthly 30,000 for 100 builders covers even the 6-minute time-boxed worst case at Rs 1,000 an hour (about 24,400)."
+  },
+  "key_numbers": {
+    "ai_rs_per_builder_lean_low_base_high": [
+      15.1,
+      23.3,
+      59.6
+    ],
+    "ai_rs_per_builder_as_is_notes": [
+      24,
+      76,
+      279
+    ],
+    "tokens_per_builder_lean_low_base_high": [
+      84000,
+      134000,
+      253000
+    ],
+    "variable_rs_per_researched_builder_at_rate1000_low_base_high": [
+      59,
+      100,
+      212
+    ],
+    "variable_rs_per_researched_builder_at_rate500_low_base_high": [
+      38,
+      63,
+      137
+    ],
+    "pilot_standard_hours_low_base_high": [
+      27.8,
+      42.9,
+      66.8
+    ],
+    "pilot_standard_cash_low_base_high": [
+      847,
+      3386,
+      9030
+    ],
+    "pilot_standard_cost_base_hours_at_500_1000_1500": [
+      24844,
+      46302,
+      67761
+    ],
+    "pilot_starter_hours_low_base_high": [
+      22.5,
+      34.7,
+      54.1
+    ],
+    "pilot_starter_cost_base_hours_at_500_1000_1500": [
+      20179,
+      37513,
+      54847
+    ],
+    "breakeven_rate_standard_48000_low_base_high": [
+      1697,
+      1040,
+      583
+    ],
+    "breakeven_rate_standard_35000_low_base_high": [
+      1229,
+      737,
+      389
+    ],
+    "breakeven_rate_starter_35000_low_base_high": [
+      1515,
+      928,
+      500
+    ],
+    "credit_inr_per_month": 9650,
+    "builders_covered_by_credit_lean_base_high": [
+      414,
+      162
+    ]
+  }
+}

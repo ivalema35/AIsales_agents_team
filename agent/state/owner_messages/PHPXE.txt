@@ -1,0 +1,19 @@
+APPROVAL NEEDED [PHPXE]
+WHATSAPP TEMPLATE (first touch)
+To: +917874082362
+Lead label (typed by the agent, not checked): Swagat Developers
+Template: iv_en_followup_v1 (en)
+Agent's reason (typed by the agent, not checked): follow-up: they read our earlier WhatsApp message and did not reply
+--- text ---
+Hi Swagat Developers team, a short follow-up from IV Infotech, Mehsana. Earlier we sent a short video about automatic WhatsApp replies for Swagat Cilantra.
+
+If someone taps the WhatsApp button on a Swagat Cilantra ad late in the evening, an automatic first reply can go out while your team is offline.
+
+Want to see it for Swagat Cilantra? Tap "Yes, send the demo" below.
+--- end of text ---
+Footer: Reply STOP to opt out
+Button [Yes, send the demo]
+Button [No, thanks]
+This code approves exactly the text above and nothing else.
+Reply OK PHPXE to approve, NO PHPXE to skip.
+Valid till 28 Oct 00:15 IST.

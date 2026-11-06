@@ -1,0 +1,186 @@
+[
+ {
+  "type": "lead",
+  "key": "ai-auto-re-class-one-evoq-rajkot",
+  "data": {
+   "name": "Class One Infra - Class One Evoq (Raiya Hills), Rajkot",
+   "city": "Rajkot",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call to the number the business printed in its own ad, at an off-peak time; ask for the sales head or a partner. Use WhatsApp only after they agree (opt-in), never as a cold template, and never message through the ad pretending to be a buyer.",
+   "best_angle": "Open with one checkable fact: they are running Meta ads for the Evoq sample flat since 13 Oct. Offer the first reply in about a minute with a brochure and a site-visit slot for Evoq. Do not claim they lose enquiries.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "91575 96575 (printed as 91 575 96 575)",
+     "source": "https://www.facebook.com/ads/library/?id=1141357448479865",
+     "note": "Printed by the business in its own Meta ad. This resolves the researcher doubt: the +91 81691 14718 Connect Now number is the listing portal, this one is the builder."
+    },
+    {
+     "kind": "instagram",
+     "value": "@classonegroupindia",
+     "source": "https://www.facebook.com/ads/library/?id=1141357448479865",
+     "note": "Handle printed in the ad text (not used for outreach)."
+    }
+   ],
+   "observed_facts": [
+    "Active Meta ad by Classone Group started 13 Oct 2026 (2 ads use the same creative): sample flat of 4 BHK Class One Evoq, Tulsi Park, Sopan Luxuria Road, Raiya Hills, Rajkot; phone printed in the ad. Re-opened by the chat session in the Meta Ad Library on 2026-10-27 (the daily researcher got HTTP 403): the CTA button text was not read on the page.",
+    "Class One Infra is a partnership firm, incorporated 14 Aug 2023, with 8 named partners including Bhavin Udaykumar Nathwani. Its project Class One Evoq (RERA PR/GJ/RAJKOT/RAJKOT/Rajkot Municipal Corporation/RAA15532/180725/311229) was approved 18 Jul 2025, with 56 units and completion due 31 Dec 2029. (2025-07-18 (approval), https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534)",
+    "The RERA data shows construction progress of 14.2% (Jan 2026) and 22.05% (Apr 2026). The page also shows 0 of 56 units booked, but this is a RERA self-declaration and likely stale, so it is not evidence of unsold stock. (2026-04, https://www.aurumproptech.in/pulse/rera/gujarat/rajkot/class-one-evoq/26534)",
+    "Houssed lists Class One Evoq as a New Launch, 4 BHK, carpet about 1,140-1,150 sq ft, Rs 80-85 lakh, 56 units, 1 tower of 15 floors, with a WhatsApp 'Connect Now' link to +91 81691 14718. (None, https://houssed.com/rajkot/class-one-infra/class-one-evoq-161259)"
+   ],
+   "hypotheses": [
+    "The finder's claim of two active Meta ads started 2026-10-13 with a WhatsApp CTA is plausible but UNVERIFIED by me (the Ad Library returned 403). If true, they pay for WhatsApp-click leads and have a live inbound channel to automate.",
+    "A sales team that runs ad-driven WhatsApp enquiries for a 56-unit, Rs 80-85 lakh project probably misses some evening and night enquiries. This is inference only, with no evidence of actual response times.",
+    "The firm likely sells through a small in-house team and/or channel brokers. Nothing was found about its sales setup or whether it already uses a WhatsApp tool or a CRM.",
+    "Gross inventory is roughly 56 x Rs 80-85 lakh, about Rs 45-48 crore, so the firm can afford a small automation fee. This is arithmetic from the listed price and unit count."
+   ],
+   "case_for": "Real developer with a live project and live paid ads that open WhatsApp (verified in the Ad Library by the chat session). The business exists and is verified through a RERA record (via a mirror) plus an independent listing portal. It is a real, young, single-project Rajkot developer with a high-ticket product (Rs 80-85 lakh x 56 units) and eight named partners. It is in the target geography and size band, with no site or CRM vendor visible. If the finder's WhatsApp-CTA ads are real, it matches the offer well.",
+   "case_against": "Slow replies are not shown anywhere: ads that bring enquiries are normal for a developer. The ad CTA could not be read; the project is 56 units (smaller buyer). The ads say Classone Group, the RERA promoter is Class One Infra.",
+   "next_step": "Owner review, then add to the campaign. Grade B was raised from C by the chat session after it opened the ads itself (the researcher could not: HTTP 403).",
+   "researched": "2026-10-27 (daily-leads run + chat-session ad check)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "ai-auto-re-shreem-avdhesh-ahmedabad",
+  "data": {
+   "name": "Shreem Group - Shreem Avdhesh (Odhav, Ahmedabad)",
+   "city": "Ahmedabad (Odhav)",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call to the number the business printed in its own ad, at an off-peak time; ask for the sales head or a partner. Use WhatsApp only after they agree (opt-in), never as a cold template, and never message through the ad pretending to be a buyer.",
+   "best_angle": "Gujarati first. Open with the fact that their Shreem Avdhesh festival ads send people to WhatsApp (since 14 and 16 Oct). Offer the first reply in about a minute with a brochure and a site-visit slot, framed around the unsold inventory. No price talk.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "+91 96248 42535",
+     "source": "https://www.facebook.com/ads/library/?id=2985438971803637",
+     "note": "Printed in the 16 Oct ad."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 95865 64040",
+     "source": "https://www.facebook.com/ads/library/?id=2045598407088530",
+     "note": "Printed in the 14 Oct ad (a different number than the 16 Oct ad: two lines)."
+    },
+    {
+     "kind": "email",
+     "value": "Shreemgroupinfo@gmail.com",
+     "source": "https://www.facebook.com/ads/library/?id=2045598407088530",
+     "note": "Printed in both ads; a free-mail address."
+    }
+   ],
+   "observed_facts": [
+    "Two active Meta ads for Shreem Avdhesh, started 14 Oct and 16 Oct 2026; both with the CTA Chat with us / Send WhatsApp message; text in Gujarati (2 and 3 BHK, Odhav Varjal ring road). Re-opened by the chat session in the Meta Ad Library on 2026-10-27 (the daily researcher got HTTP 403): confirmed (dates, CTA, phones, email).",
+    "RERA mirror shows about 419 unsold units across two registrations (April 2026 snapshot) and a partner group that also builds Shreem Luxuria (https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536).",
+    "Shree Avdhesh Developers is a partnership firm (inc. 4 Aug 2022) with six named partners including Prakashbhai Madhubhai Vekariya, Dineshkumar Batukbhai Patel, Jagdishkumar Pragjibhai Patel, Yogeshkumar Pravinchandra Panchal, Harsh Jagdishbhai Patel and Meetkumar Patel. Promoter shows 0 completed projects and 1 ongoing. (RERA data, progress as of Apr 2026, https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536)",
+    "Shreem Avdhesh: 384 units under RERA MAA11539 (139 booked, 245 unbooked) plus 230 units under MAA11534 (80 booked, 174 unbooked), so about 419 unsold units remain across both registrations. Estimated cost about Rs 99.65 cr, total about Rs 108 cr. Completion due 31 Dec 2027; 60.27% progress. (Apr 2026, https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-avdhesh/18536)",
+    "The same partner set, via Shree Gigev Developers, runs Shreem Luxuria in Hanspura (total cost about Rs 144.5 cr, 81.56% progress). This shows a group building multiple Rs 100 cr+ projects. (Apr 2026, https://www.aurumproptech.in/pulse/rera/gujarat/ahmedabad/shreem-luxuria/18020)"
+   ],
+   "hypotheses": [
+    "The finder's two Meta ads (14 and 16 Oct 2026) with WhatsApp CTA could not be verified by me; if real, the team already pays for WhatsApp-click enquiries and handles them manually. This is the finder's claim, not my observation.",
+    "With roughly 419 unsold units and 14 months to the Dec 2027 completion date, plus likely festival-season ad spend, speed-to-first-reply probably matters commercially.",
+    "Evening and night enquiries probably wait for a human, because the firm has no visible sales team or website. This is inference.",
+    "'Shreem Group' is likely a loose brand for sister partnership firms around the Vekariya/Patel/Panchal partners; no legal entity named Shreem Group was found.",
+    "Shreem Design's director Yogesh Panchal is probably the same person as developer partner Yogeshkumar Pravinchandra Panchal, which makes info@shreemdesign.com a warm route to the partners. Unconfirmed."
+   ],
+   "case_for": "Real developer with a live project and live paid ads that open WhatsApp (verified in the Ad Library by the chat session). Real, RERA-registered, owner-run developer. About Rs 108 cr live project with roughly 419 unsold units, a sister project of Rs 144 cr, and partners who can pay for a small automation. No website and portal-led marketing suggest no existing CRM or bot. A phone/WhatsApp route exists. If the Meta WhatsApp ads are real, it is a strong fit and should move to B (possibly A with a named decision-maker).",
+   "case_against": "Pain (slow replies) is inferred, not seen: a WhatsApp CTA is standard. Informal brand Shreem over a partnership firm; contacts are only the ad numbers and a free-mail address; no own website found.",
+   "next_step": "Owner review, then add to the campaign. Grade B was raised from C by the chat session after it opened the ads itself (the researcher could not: HTTP 403).",
+   "researched": "2026-10-27 (daily-leads run + chat-session ad check)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "ai-auto-re-shivanta-krushnam-vadodara",
+  "data": {
+   "name": "Shivanta Group - Shivanta Krushnam (New Manjalpur), Vadodara",
+   "city": "Vadodara (Manjalpur)",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call to the number the business printed in its own ad, at an off-peak time; ask for the sales head or a partner. Use WhatsApp only after they agree (opt-in), never as a cold template, and never message through the ad pretending to be a buyer.",
+   "best_angle": "Open with one fact: six live ads across three projects, the Krushnam one pointing to WhatsApp. Offer one WhatsApp first-reply flow that can serve all three projects (brochure, 3 questions, site-visit slot). Ask for the sales head or a partner (founders named on the About page: unconfirmed).",
+   "contacts": [
+    {
+     "kind": "website",
+     "value": "https://www.shivantagroup.com/",
+     "source": "https://www.facebook.com/ads/library/?id=1383953363769565",
+     "note": "Named in the ad. The researcher saw an expired TLS certificate via search snippets only."
+    },
+    {
+     "kind": "phone",
+     "value": "+91 92270 31144",
+     "source": "https://www.facebook.com/ads/library/?id=1383953363769565",
+     "note": "Printed in several ads together with 8141133114, +91 75673 31144 and +91 88499 92177 (the Kapurai villa ad)."
+    }
+   ],
+   "observed_facts": [
+    "6 active Meta ads from Shivanta Group (Krushnam, Ramam, villas at Kapurai) started 9 to 19 Oct 2026; the Krushnam ad has the CTA Book Your Site Visit / Send WhatsApp message and states 191 premium apartments and its own website. Re-opened by the chat session in the Meta Ad Library on 2026-10-27 (the daily researcher got HTTP 403): confirmed.",
+    "Official site lists Shivanta Krushnam in New Manjalpur as Ongoing, near Aarya Four Square Complex on Billa Bong School Road. Menu also lists Ramam, Villa, Skyview and Shree Rang Vatika. Tagline 'Building Landmarks Since 2021'. Office phone (+91) 92270 31144. Seen only in a search-result snippet; my own fetch failed on the expired certificate. (2026-10-27, https://shivantagroup.com/)",
+    "About page (via snippet) says the group was founded by Hardik Shah, Nachiket Gandhi and Manoj Sharma. The year in the text may be a placeholder. (2026-10-27, https://shivantagroup.com/about/)",
+    "Third-party directory lists Shivanta Group with 4 projects (Ramam under construction, Villa 23 villas under construction, Skyview ready, Shree Rang Vatika ready) and phone +91 92270 31144. (2026-10-27, https://bharatpropertty.com/estate_developer/shivanta-group/)"
+   ],
+   "hypotheses": [
+    "The finder says the Meta ad runs a WhatsApp CTA 'Book Your Site Visit!' (started 2026-10-09). I could not re-check it (HTTP 403), so this is a claim, not a fact I confirmed.",
+    "If the ad does route to WhatsApp, leads probably land on one office number (92270 31144) and are answered by staff by hand, so evening and night enquiries may wait. Inferred, not observed.",
+    "The 191-unit figure for Krushnam is unverified. The project is probably newly launched and may still need RERA registration or marketing push.",
+    "Shivanta Buildcon and Shivanta Developers are probably separate partnership firms using the brand. They should not be treated as the same buyer unless confirmed.",
+    "Five-plus projects at different stages suggest steady enquiry inflow and real marketing spend, but that is inferred."
+   ],
+   "case_for": "Real developer with a live project and live paid ads that open WhatsApp (verified in the Ad Library by the chat session). Real, verifiable Vadodara developer with several projects and RERA-registered ones. Krushnam is confirmed as an ongoing project. A published office number is on the site and the directory. Founders are named. If the finder's ad is real, it sends buyers to WhatsApp, which is exactly the first-reply gap our offer fixes. Small owner-led firm, so a quick decision is likely.",
+   "case_against": "Pain is inferred. Several projects and phone numbers suggest an organised sales desk already. The site certificate looked expired (not seen by us directly). Decision-maker unconfirmed.",
+   "next_step": "Owner review, then add to the campaign. Grade B was raised from C by the chat session after it opened the ads itself (the researcher could not: HTTP 403).",
+   "researched": "2026-10-27 (daily-leads run + chat-session ad check)"
+  }
+ },
+ {
+  "type": "lead",
+  "key": "ai-auto-re-kishan-antilia-vadodara",
+  "data": {
+   "name": "Kishan Antilia (RERA promoter Ambica Inc), Bhayli, Vadodara",
+   "city": "Vadodara (Bhayli)",
+   "product": "WhatsApp automation: every enquiry gets a first reply in about a minute (brochure, 3 quick questions, site-visit slot) and one list for the sales team",
+   "campaign": "AI WhatsApp first-reply automation for real-estate developers (Gujarat)",
+   "grade": "B",
+   "status": "researched",
+   "contacted": false,
+   "best_channel": "Phone call to the number the business printed in its own ad, at an off-peak time; ask for the sales head or a partner. Use WhatsApp only after they agree (opt-in), never as a cold template, and never message through the ad pretending to be a buyer.",
+   "best_angle": "Open with the ad fact: the Kishan Antilia ad (since 26 Sep) invites people to DM or call. Offer a first reply in about a minute with a brochure and a site-visit slot. No claims about lost enquiries.",
+   "contacts": [
+    {
+     "kind": "phone",
+     "value": "84696 18000 / 84697 18000",
+     "source": "https://www.facebook.com/ads/library/?id=1400703488886438",
+     "note": "Printed by the business in its own ad. (The +91 81691 14718 WhatsApp number on portals is the portal, not them.)"
+    }
+   ],
+   "observed_facts": [
+    "Active Meta ad started 26 Sep 2026 for Kishan Antilia 4 BHK, Bhayli Canal Road, with the CTA Send WhatsApp message and the text DM or call for details. Re-opened by the chat session in the Meta Ad Library on 2026-10-27 (the daily researcher got HTTP 403): confirmed (date, CTA, phones).",
+    "RERA mirror: promoter Ambica Inc, 60 units, approved 23 May 2024, only 0 to 3 booked (snapshot date unknown) (https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824).",
+    "Kishan Antilia is RERA-registered (RAA13554), promoter Ambica Inc (partnership), 60 units, approved 2024-05-23, completion due 2029-12-31, construction in progress. (2024-05-23, https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824)",
+    "The RERA mirror shows only 0 to 3 of 60 units booked, with two sections of the page disagreeing. The project is early stage with most inventory unsold. The date of the data snapshot is not shown. (None, https://www.aurumproptech.in/pulse/rera/gujarat/vadodara/kishan-antilia/21824)",
+    "4 BHK, Rs 1.3-2.1 Cr, 1,710-2,560 sq ft carpet, listed as a new launch, possession 30 Dec 2029. (None, https://houssed.com/vadodara/ambica-infracon/ambica-kishan-antilia-11691)"
+   ],
+   "hypotheses": [
+    "Ads route leads to WhatsApp, DM and phone, so slow evening or night replies probably lose enquiries. This is inferred from the finder's description of the ad plus how this sector works, not from any observed delay.",
+    "With only 0-3 of 60 premium units booked, every enquiry is valuable, so first-reply speed likely matters more to this project than to a sold-out one.",
+    "The two near-identical numbers (84696/84697 18000) look like a dedicated sales or telecaller line pair, so a sales team or agency may already handle replies.",
+    "The group may already use a CRM or an ad agency for lead handling. This is unknown."
+   ],
+   "case_for": "Real developer with a live project and live paid ads that open WhatsApp (verified in the Ad Library by the chat session). Real RERA-registered developer, confirmed by two independent public sources. A high-ticket 4 BHK project (Rs 1.3-2.1 Cr) with most units apparently unsold, so each enquiry is worth a lot. It runs, per the finder, a paid ad that routes to WhatsApp and phone, which is exactly the use case for our offer. The group has several projects and can afford a small fee. A direct sales phone is reachable thro",
+   "case_against": "No website and no named owner; only ad numbers. Pain is inferred. A single ad running since 26 Sep (about a month).",
+   "next_step": "Owner review, then add to the campaign. Grade B was raised from C by the chat session after it opened the ads itself (the researcher could not: HTTP 403).",
+   "researched": "2026-10-27 (daily-leads run + chat-session ad check)"
+  }
+ }
+]

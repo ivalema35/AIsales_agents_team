@@ -1,0 +1,331 @@
+{
+ "drafts": [
+  {
+   "key": "time-roi",
+   "title": "The Ad Rupee That Gets a Reply",
+   "angle": "Angle A, time and money. An ad rupee buys an enquiry, and the first reply decides whether it becomes a site visit. An automatic WhatsApp reply on the developer's own number answers within about a minute, day or night. The sales team saves hours, talks only to ready buyers, and fewer enquiries are lost, so every ad rupee works harder.",
+   "scenes": [
+    {
+     "seconds": "0-4",
+     "visual": "Vertical 2D illustration, calm pastel colours. A phone shows a simple ad card reading '{PROJECT}, {CITY}'. A gold rupee coin (rupee sign only, no amount) drops from the ad card into a WhatsApp chat. A young couple's bubble arrives: 'Hi, I saw your ad', with a small clock showing {TIME}. The developer/owner stands in the corner, calm, holding nothing, just watching the coin.",
+     "caption": "Ad rupee buys an enquiry. First reply wins.",
+     "voice": "Every ad rupee buys an enquiry. First reply wins the visit."
+    },
+    {
+     "seconds": "4-8",
+     "visual": "Same chat, the clock at {TIME} with a moon icon swapping to a sun icon to show day and night. A friendly assistant icon on the developer's own enquiry number sends a reply bubble with the {PROJECT} brochure card and a visit-slot button. A ring timer fills to one minute and the label 'Replied within a minute' appears. The couple smiles.",
+     "caption": "Automatic reply in about a minute, day or night.",
+     "voice": "An automatic WhatsApp reply answers in about a minute, day or night."
+    },
+    {
+     "seconds": "8-14",
+     "visual": "Night scene, a young couple on a sofa with one phone. Three small chat windows are open for three different projects. In the {PROJECT} window a reply with the brochure appears first and gets a green tick, while the other two windows still show typing dots. The couple's thumbs move to the {PROJECT} chat. Time {TIME} stays on the phone top bar. No project is named except {PROJECT}, and nothing suggests the developer was slow.",
+     "caption": "At {TIME}, a couple asks about {PROJECT}.",
+     "voice": "At night, a couple asks a few projects. They remember whoever answers first."
+    },
+    {
+     "seconds": "14-22",
+     "visual": "Full-screen WhatsApp chat on the developer's enquiry number, header '{PROJECT}'. Bubbles appear one by one: the brochure card; three quick questions with tap chips (budget range chips shown as plain words with no amounts or prices, BHK chips '2 BHK' and '3 BHK', preferred visit time chips 'Morning' and 'Evening'); then 'Pick a site visit slot' with two slot buttons 'Sat 11:00 AM' and 'Sun 4:00 PM'. The buyer taps a slot and a green tick shows 'Site visit slot picked'. Only the words site visit and enquiry are used, nothing about booking or registration.",
+     "caption": "Brochure, three questions, then a site visit slot.",
+     "voice": "It sends the brochure, asks budget, BHK and visit time, then offers site visit slots."
+    },
+    {
+     "seconds": "22-29",
+     "visual": "Next morning with a sunrise window. A sales executive at a desk opens one simple enquiry board on a phone titled '{PROJECT} - {CITY}'. Cards list buyer name, BHK, and visit slot; the top two cards glow with a warm 'Hot' tag. The executive taps a Hot card and calls that buyer, while cards without the tag stay untouched. The developer/owner glances at the same board on his own phone and nods.",
+     "caption": "One enquiry board. Team talks to ready buyers.",
+     "voice": "Your team sees every enquiry on one board, hot buyers marked on top."
+    },
+    {
+     "seconds": "29-36",
+     "visual": "A calendar strip with three chips 'Day 1', 'Day 3', 'Day 7'. Each chip sends a polite WhatsApp reminder bubble to the buyer ('Would you like to visit the site this week?'). On the last reminder the buyer types 'Can I talk to someone?' and the sales executive's name tag slides into the chat with 'Hello, I am from the {PROJECT} team'. The assistant icon steps aside with a small wave.",
+     "caption": "Reminders day 1, 3, 7. Your team joins anytime.",
+     "voice": "Reminders on day one, three and seven keep enquiries alive. Your team joins whenever a buyer wants."
+    },
+    {
+     "seconds": "36-43",
+     "visual": "The same gold rupee coin from scene 1 rides along a simple left-to-right path: ad, enquiry, reply, then lands on a calendar tile 'Site visit - {PROJECT}, {CITY}'. Behind it the sales executive's desk looks light and tidy, a clock icon shows time handed back (icons only, no numbers or percentages). Several visit tiles fill the calendar week. The owner smiles calmly as the coin glows.",
+     "caption": "Hours saved. More site visits. Ad rupee works harder.",
+     "voice": "Your team saves hours. More enquiries become site visits, and every ad rupee works harder."
+    },
+    {
+     "seconds": "43-48",
+     "visual": "Close-up of the owner's phone with the WhatsApp chat. Under the video a large button 'Yes, send the demo' pulses gently, with a thumb about to tap it. A small line 'or reply YES' sits below. Small Ivinfotech, Mehsana sign-off at the bottom. Calm, uncluttered, no offers or prices.",
+     "caption": "Tap 'Yes, send the demo' or reply YES.",
+     "voice": "Want to see it? Tap Yes, send the demo, or reply YES."
+    }
+   ],
+   "voice_word_count": 108,
+   "cta": "Tap the WhatsApp button 'Yes, send the demo' under the video, or reply YES.",
+   "why_it_works": "The first 8 seconds already deliver the whole point (ad rupee buys an enquiry, the first reply wins the visit, an automatic WhatsApp reply answers in about a minute, day or night), so a viewer who stops there still gets it. It is a WhatsApp chat story rather than a lecture, which answers the old feedback 'not engaging, does not explain'. Every caption is 9 words or fewer and carries the full meaning on its own for muted viewing. Personalisation is only on screen ({PROJECT}, {CITY}, {TIME}), so one voice track serves every developer. The ROI and time-saving payoff comes from the ad coin ending on a site visit tile and the sales team talking only to ready buyers. Nothing implies the developer's own replies are slow. The script uses no prices, statistics, tech words or RERA-risky words, and asks for one easy action."
+  },
+  {
+   "key": "night-story",
+   "title": "One Buyer, One Night",
+   "angle": "Angle B - one buyer's night. A single buyer taps the {PROJECT} ad at {TIME}. The screen shows two phones side by side: the same night told twice. Left phone is labelled \"Without automatic reply\" and stays silent until morning. Right phone is labelled \"With automatic WhatsApp reply\" and gets the brochure, three quick questions and a site visit slot within a minute. The side-by-side comparison runs from the hook to the morning scene, then the video widens into the board, reminders and human hand-over.",
+   "scenes": [
+    {
+     "seconds": "0-8",
+     "visual": "Vertical 9:16, calm dark-blue night palette, simple 2D illustration. A young couple sits on a sofa, one of them holding a phone and tapping an ad card that reads '{PROJECT}, {CITY}'. A small clock chip shows {TIME}. After about 2 seconds the frame becomes two phones side by side, each showing the same WhatsApp chat with the buyer's message 'Hi, I want details of {PROJECT}'. The left phone has a grey label 'Without automatic reply', one grey tick and a sleeping moon. The right phone has a green label 'With automatic WhatsApp reply', a small friendly assistant icon, and by second 6 a reply bubble appears with a timer chip 'within a minute'. The caption sits in the bottom third in large type, so a viewer who stops here already gets the whole idea.",
+     "caption": "Automatic WhatsApp reply within a minute keeps the buyer",
+     "voice": "A buyer taps an ad at night. An automatic reply within a minute keeps him. Waiting till morning does not."
+    },
+    {
+     "seconds": "8-15",
+     "visual": "Same two phones. Left phone: the message sits with one grey tick, the chat stays empty, and a clock above it turns from {TIME} to 1:00 AM to 3:00 AM while the moon rises. Right phone: within seconds the assistant icon replies 'Thank you for your interest in {PROJECT}, {CITY}. Here is the brochure.' A PDF card named '{PROJECT} brochure' slides in, with a small timer chip reading 'within a minute'. The buyer in the right half looks pleased and starts reading.",
+     "caption": "Same message. One gets silence. One gets the brochure.",
+     "voice": "He sends one message. One chat stays silent. The other gets the brochure in a minute."
+    },
+    {
+     "seconds": "15-22",
+     "visual": "Zoom into the right phone. The assistant asks three short questions one after another, each with tap buttons the buyer presses: 'Your budget range?' (soft placeholder chips, no numbers), 'How many BHK?' (2 BHK, 3 BHK, 4 BHK), 'When would you like to visit?' Then a slot card appears: 'Sat 11:00 AM' and 'Sun 4:00 PM'. The buyer taps Sat 11:00 AM and a green tick shows 'Site visit slot picked'. The left phone stays dark with the moon and a 3:00 AM clock.",
+     "caption": "Three quick questions. Then a site visit slot.",
+     "voice": "Three quick questions: budget, BHK, visit time. Then he picks a site visit slot."
+    },
+    {
+     "seconds": "22-29",
+     "visual": "Sunrise wipe across both phones; a clock chip reads 9:00 AM. Left half (still labelled 'Without automatic reply'): the buyer's phone now shows a different project's ad and chat, the original chat has a small grey 'cold' tag, and the sales executive at a desk types a first 'Good morning' message into an empty chat. Right half: the sales executive opens the enquiry board and sees a new card at the top for the {PROJECT} buyer with a green 'Hot' tag and the lines '3 BHK', 'Visit Saturday 11:00 AM'. The executive smiles and sits up.",
+     "caption": "By morning: one cold chat, one ready buyer.",
+     "voice": "By morning, one chat is cold. The other has a ready buyer and a visit time."
+    },
+    {
+     "seconds": "29-37",
+     "visual": "The split dissolves into one full-width screen, the enquiry board. Header: '{PROJECT} enquiries, {CITY}'. Neat rows of enquiry cards with simple tags Hot, Warm, New. The developer-owner stands behind the sales executive, looks at the board and nods. On one card a mini timeline pops up with three small chips 'Day 1', 'Day 3', 'Day 7', each showing a gentle reminder bubble 'Reminder sent' going to the buyer on WhatsApp, with ticks turning green.",
+     "caption": "One board. Reminders on day 1, 3 and 7.",
+     "voice": "One board shows every enquiry and who is hot. Reminders on day 1, 3 and 7 forget no one."
+    },
+    {
+     "seconds": "37-44",
+     "visual": "Close-up of a chat. The buyer types 'Can I speak to someone?'. The assistant icon steps aside with a small wave and the sales executive's avatar joins: 'Hello, I am from the sales team, happy to help.' Next shot: the couple meets the sales executive at the project site entrance for the site visit, the developer-owner watching calmly from a distance. In the background a few sales executives sit relaxed at their desks, with only the ready buyers' chats open on their screens. Use the words 'site visit' and 'enquiry' only; no booking, no registration claims.",
+     "caption": "Your team talks only to ready buyers.",
+     "voice": "Your team stays. They talk only to ready buyers, and join when the buyer wants."
+    },
+    {
+     "seconds": "44-49",
+     "visual": "Calm end card on the dark-blue night background, with a soft sunrise glow behind the couple, who look at a phone showing the reply. Centre: a WhatsApp-style green button graphic reading 'Yes, send the demo' (pointing down to the real button under the video). Beneath it, small text 'or reply YES'. Footer: 'Ivinfotech, Mehsana, Gujarat' and 'Made for {PROJECT}, {CITY}'.",
+     "caption": "Tap 'Yes, send the demo' or reply YES.",
+     "voice": "Want to see it? Tap Yes, send the demo, or reply YES."
+    }
+   ],
+   "voice_word_count": 112,
+   "cta": "Tap the WhatsApp button \"Yes, send the demo\" under the video, or reply YES.",
+   "why_it_works": "The first 8 seconds already show both endings of the same night, so a muted viewer who stops there still understands the point: an automatic WhatsApp reply within a minute against silence till morning. The two phones side by side are the whole argument, so nobody has to follow a lecture. The left phone is labelled \"Without automatic reply\", never tied to the developer's own team, so it tells a generic buyer story and does not say their replies are slow. All the meaning sits in large captions and on-screen chat bubbles, so it works muted. The voice is the same for everyone, while {PROJECT}, {CITY} and {TIME} appear only on screen: in the ad card, the chat, the brochure card, the board header and the end card. This makes the video feel made for them. The ROI point (the ad rupee buys an enquiry, and a quick first reply keeps it), the time saved (one board, reminders, the team talks only to ready buyers) and the growth point (a site visit slot picked that night) are shown rather than claimed. There are no prices, no statistics, no registration or booking claims and no tech words, and the tone stays calm and respectful for premium buyers. One easy action closes the video."
+  },
+  {
+   "key": "owner-calm",
+   "title": "Three Small Worries, One Quiet Board",
+   "angle": "C - calm owner's view. The video speaks to the developer as an equal. It names three small worries every busy developer has (enquiries piling up, follow-ups forgotten, team time spent on people only looking) and answers each one on a single enquiry board. Style: 2D flat illustration, deep navy and warm cream with soft WhatsApp green, slow gentle motion, no flashing, no emojis. Large captions sit in the lower third, white on a soft dark band, and carry the full meaning with sound off. Small numeral badges 1, 2, 3 are graphics, not captions.",
+   "scenes": [
+    {
+     "seconds": "0-8",
+     "visual": "Night scene. A young couple sit on a sofa looking at a phone. The phone shows a project ad card reading '{PROJECT}, {CITY}'. A clock chip in the corner reads '{TIME}' with a small moon. They type 'Hi, please send details' and tap send. Within a second a friendly round assistant icon with a green tick sends back a bubble with a brochure card titled '{PROJECT} brochure'. A thin progress ring labelled '1 min' fills beside the reply. In the corner, a sun icon and moon icon alternate to show day and night. The developer's own WhatsApp number is shown at the top of the chat as the sender.",
+     "caption": "Every enquiry answered in about a minute. Night too.",
+     "voice": "Every enquiry on your WhatsApp number gets a reply in about a minute, day and night."
+    },
+    {
+     "seconds": "8-15",
+     "visual": "Cut to the developer-owner at a tidy desk, calm and relaxed. A small coin labelled with a rupee sign (no amounts) leaves an ad card and turns into a WhatsApp 'New enquiry' bubble that lands on his phone. Then three quiet thought cards float up beside him, one by one: 'Enquiries pile up', 'Follow-ups forgotten', 'Team time wasted'. They slide into three empty lanes on a soft outline of an enquiry board that fades in behind him, ready to be filled.",
+     "caption": "Ad rupees buy enquiries. Three small worries waste them.",
+     "voice": "Every ad rupee buys an enquiry. Three small worries can waste it. Each has a quiet answer."
+    },
+    {
+     "seconds": "15-22",
+     "visual": "Badge '1' appears over the first worry card. Phone chat story: the couple's message at '{TIME}' about {PROJECT} is answered by the assistant icon. In order, bubbles appear: the {PROJECT} brochure card, then three quick questions as tap chips: Budget (soft range chips, no figures), BHK (2 BHK / 3 BHK), Preferred visit time (Morning / Evening). Then two site visit slot buttons appear: 'Sat 11:00 AM' and 'Sun 4:00 PM'. The couple tap 'Sat 11:00 AM'. On the board at the side, a new card 'Enquiry - {PROJECT}' lands in the 'New' lane and gets a green 'Replied' tick. The worry card 'Enquiries pile up' turns into a calm green tick.",
+     "caption": "Enquiries pile up? Each gets brochure, questions, visit slot.",
+     "voice": "First, enquiries pile up. Every buyer gets the brochure, three quick questions, and a site visit slot."
+    },
+    {
+     "seconds": "22-29",
+     "visual": "Badge '2' appears over 'Follow-ups forgotten'. A calendar strip shows three chips lighting up one after another: 'Day 1', 'Day 3', 'Day 7'. At each chip the assistant icon sends the young man a short polite WhatsApp message, for example 'Would you like to see {PROJECT} this weekend?'. On Day 3 he replies 'Sunday works', and his card on the enquiry board glides from 'Warm' to 'Site visit chosen'. The worry card 'Follow-ups forgotten' turns into a green tick.",
+     "caption": "Follow-ups forgotten? Reminders on day 1, 3 and 7.",
+     "voice": "Second, follow-ups get forgotten. Reminders go out on day one, three and seven. No enquiry is left behind."
+    },
+    {
+     "seconds": "29-37",
+     "visual": "Badge '3' appears over 'Team time wasted'. The full enquiry board fills the screen with three lanes: 'New', 'Warm', 'Hot'. Several cards sit in 'New' and 'Warm', each with the assistant icon quietly chatting. A few cards in 'Hot' glow softly (calm glow, no flashing). A sales executive with a phone, plus the owner and a second teammate, all look at the same board. The executive taps only the Hot cards. The worry card 'Team time wasted' turns into a green tick. A small tag on the board reads '{PROJECT} - {CITY}'.",
+     "caption": "People only looking? The board shows who is hot.",
+     "voice": "Third, time goes on people only looking. The board shows who is hot, so your team meets ready buyers."
+    },
+    {
+     "seconds": "37-42",
+     "visual": "Close up on a chat. The young man types 'Can I speak to someone?'. The assistant icon steps aside (fades to the background) and the sales executive's avatar with a 'Sales team' tag takes over in the same chat: 'Hello, I am happy to help. Shall we fix your site visit?'. Behind them the whole sales team is shown, relaxed. The owner nods calmly.",
+     "caption": "Your team stays. A person steps in anytime.",
+     "voice": "The team stays. A person steps in whenever the buyer wants."
+    },
+    {
+     "seconds": "42-48",
+     "visual": "Calm end card on cream background. The owner sits relaxed with a phone, the finished enquiry board with three green ticks glowing softly behind him, small text '{PROJECT} - {CITY}'. A gentle arrow points down to the WhatsApp button below the video labelled 'Yes, send the demo'. Small Ivinfotech, Mehsana logo at the bottom. No price, no offer text, no emojis.",
+     "caption": "Tap \"Yes, send the demo\" or reply YES.",
+     "voice": "See it for your project. Tap Yes, send the demo, or reply YES."
+    }
+   ],
+   "voice_word_count": 111,
+   "cta": "Tap the \"Yes, send the demo\" button under the video, or reply YES.",
+   "why_it_works": "The first 8 seconds already deliver the whole point (every enquiry answered in about a minute, night too), so a viewer who stops there still gets it, and the large caption carries it with sound off. The rest speaks to the owner as an equal: a quiet ad-rupee line for ROI, then three worries matched one by one to three answers on a single board. These cover the replies, the day 1/3/7 reminders and the team meeting only ready buyers, with a human taking over on request. Nothing implies the owner's own replies are slow, since the buyer story is generic. The video makes no price, statistic, registration or booking claim and uses none of the banned tech words. It ends on one easy action. Only {PROJECT}, {CITY} and {TIME} change on screen, and the voice track is identical for every developer. Total length is about 48 seconds at roughly 2.3 words per second."
+  }
+ ],
+ "judges": [
+  {
+   "persona": "Owner of an Ahmedabad ultra-premium 4 and 5 BHK developer (from Rs 4.50 crore), brand-protective, non-technical, suspicious of automatic messages",
+   "scores": [
+    {
+     "script_key": "time-roi",
+     "understood": 7,
+     "would_reply": 3,
+     "trust": 4,
+     "best_moment": "The Day 7 moment where the buyer types 'Can I talk to someone?' and my sales executive joins the chat. It is the only part that answers my fear that my buyers lose the personal touch.",
+     "ignore_reason": "It talks about my 'ad rupee' and a gold coin, as if my buyers are bought by the rupee, and 'first reply wins' hints that my team is slow. It feels like a marketing agency pitch, not something made for a Rs 4.50 crore home. The 2 BHK and 3 BHK chips tell me they do not know my product.",
+     "fix": "Remove the rupee coin, 'ad rupee' and 'first reply wins' money framing. Open with a courteous, branded reply to a mature family asking about a 4 or 5 BHK, and keep the human hand-over visible early."
+    },
+    {
+     "script_key": "night-story",
+     "understood": 8,
+     "would_reply": 4,
+     "trust": 5,
+     "best_moment": "The split-screen hook in the first 8 seconds. Two phones, one silent and one answered, and the caption makes the whole idea clear with the sound off.",
+     "ignore_reason": "The 'Without automatic reply' phone, the cold chat and the executive typing 'Good morning' into an empty chat show a business like mine losing a buyer through carelessness. It reads as a fear pitch and a dig at my team. It is also 49 seconds, and the BHK chips are 2 and 3 BHK, not my homes.",
+     "fix": "Drop the 'without' phone and the 'cold chat' scene. Show only the polite brochure reply for my project, then my team taking over, in about 30 seconds. Make the chips 4 BHK and 5 BHK."
+    },
+    {
+     "script_key": "owner-calm",
+     "understood": 7,
+     "would_reply": 5,
+     "trust": 7,
+     "best_moment": "'The team stays. A person steps in whenever the buyer wants,' with the owner nodding calmly. The navy and cream look and the slow motion feel closer to my brand than the other two.",
+     "ignore_reason": "It is still an automatic reply under my brand name from a company I have never heard of, with no proof or face behind it. It is long, and the three worries plus the Warm/Hot lanes feel like a software demo. The 2 BHK and 3 BHK chips are wrong for my buyers.",
+     "fix": "Cut it to about 30 seconds. Open with the idea that I stay in control (my number, my words, my team joins anytime), then give the three worries one line each. Change the chips to 4 and 5 BHK, and add one real human introduction from Ivinfotech."
+    }
+   ],
+   "best_key": "owner-calm",
+   "must_change": [
+    "Match the product: replace every 2 BHK and 3 BHK chip with 4 BHK and 5 BHK, and show mature, well-off family buyers in refined interiors, not a young couple on a sofa. Right now it looks like mass-market housing.",
+    "Protect my brand in the first 8 seconds: show that the reply goes out on my own number, in my project's name and tone, and that a person from my team can step in at any moment. Do not leave this to the last third.",
+    "Remove anything that implies my team or my current process is slow or careless. That means the rupee coin and 'ad rupee' talk, 'first reply wins', the silent 'without automatic reply' phone, and 'cold chat'. Also drop cheap-sounding labels like Hot and Warm for Rs 4.50 crore buyers.",
+    "Add credibility and a low-risk ask: a real named person from Ivinfotech, Mehsana introducing themselves, and a line saying the demo is a sample on my own project with no cost or commitment. 'Yes, send the demo' is fine, but I need to know who is asking.",
+    "Shorten to about 30 seconds. 43 to 49 seconds is too long for a cold WhatsApp video from a stranger, and each scene needs one clear idea."
+   ]
+  },
+  {
+   "persona": "Rajkot developer, 422-unit project launched, about 160 paid ads all feeding one WhatsApp number. Busy, practical, thinks in leads and site visits, not technical.",
+   "scores": [
+    {
+     "script_key": "time-roi",
+     "understood": 8,
+     "would_reply": 5,
+     "trust": 6,
+     "best_moment": "First 4 seconds: the rupee coin drops from the ad into a WhatsApp chat, with the caption 'Ad rupee buys an enquiry. First reply wins.' I get the point on mute because it is my money language.",
+     "ignore_reason": "It sounds like every WhatsApp-automation pitch I have already seen. 'Saves hours' and 'ad rupee works harder' are claims with no proof, the middle drifts into a feature walk (board, reminders), and 48 seconds is long for a cold message from a stranger.",
+     "fix": "Open with the lost lead, not the coin: a night enquiry sitting unanswered, then answered in a minute. Add one real proof point from a live project (for example the reply time or visits from a similar developer). Trim it to about 30 seconds."
+    },
+    {
+     "script_key": "night-story",
+     "understood": 9,
+     "would_reply": 7,
+     "trust": 7,
+     "best_moment": "The two phones side by side in the first 8 seconds: same message at night, one chat silent with a moon, the other gets the brochure within a minute. Then 'By morning: one cold chat, one ready buyer.' It shows my fear (leads going cold overnight) with no sound and no reading effort.",
+     "ignore_reason": "I would swipe if I think 'my team already replies, this is just a chatbot'. Nothing shows it handles my scale (160 ads, one number). At 49 seconds it is long, and the 'Without automatic reply' half quietly says I am slow.",
+     "fix": "Keep the split screen, but say in the first 8 seconds that it works on all your ads and your one number. Compress the board, reminders and hand-over into one scene to bring it near 35 seconds. Make the left phone 'any slow reply', not 'you', so it never feels like an accusation."
+    },
+    {
+     "script_key": "owner-calm",
+     "understood": 7,
+     "would_reply": 5,
+     "trust": 7,
+     "best_moment": "The 'People only looking?' line with the board showing who is hot. Wasted team time on tyre-kickers is a real pain for me and it is named plainly.",
+     "ignore_reason": "It reads like a feature checklist dressed up as worries. The 8-15 second scene is three text cards, which is slow to read on mute, and 'small worries' feels a bit patronising when I am running a 422-unit launch. By second 15 I have seen nothing I could not imagine from any chatbot.",
+     "fix": "Drop the worry-card scene. Open with the one worry that costs money (night enquiries unanswered), and give each of the other two one clear visual and one line. Replace 'small worries' with real losses (lost enquiries, wasted site visits)."
+    }
+   ],
+   "best_key": "night-story",
+   "must_change": [
+    "Cut to about 30-35 seconds. 48-49 seconds is too long for a cold WhatsApp video, and the whole message must already be clear by second 8.",
+    "Say explicitly that it works on all your ads and your one WhatsApp number. None of the scripts shows the scale (many ads, one chat), which is my real problem.",
+    "Add one proof point (a real result from a live project, or a real chat screenshot). Right now every script says 'saves hours' and 'more site visits' with nothing behind it.",
+    "Make the CTA safe and specific. 'Yes, send the demo' is vague: say it is free, shows my {PROJECT}, and no one will call me unless I ask.",
+    "Remove any wording that implies the developer is slow or careless (the 'Without automatic reply' label, 'forget no one', 'small worries'). Frame it as 'buyers at night go to whoever answers first', not 'you are losing'.",
+    "Trim the board and reminders section to one short scene, since the hook and the first reply are what earn the YES."
+   ]
+  },
+  {
+   "persona": "Gandhinagar developer-founder, premium brand, several projects, running ads for months. Non-technical, watching on my phone between meetings with the sound off. A stranger from Mehsana has sent me this on WhatsApp. I give it about 3 seconds before I decide to swipe.",
+   "scores": [
+    {
+     "script_key": "time-roi",
+     "understood": 7,
+     "would_reply": 4,
+     "trust": 6,
+     "best_moment": "The opening: a gold rupee drops from my project's ad card into a WhatsApp chat, and the caption says the ad rupee buys an enquiry and the first reply wins. It's about money, which I care about, and I got it without sound.",
+     "ignore_reason": "It runs 48 seconds and spends the middle on reminders and a board, so I'd stop watching before the offer lands. 'Hours saved' and 'ad rupee works harder' sound like every software pitch I already ignore. Scene 3 also shows other projects' chats with typing dots, which feels like a dig at my team being slow. I'd think I'll look later and never do.",
+     "fix": "Cut it to about 25 seconds: the rupee-to-reply hook, one reply scene, one board shot, then the button. Drop the vague closing line ('hours saved', 'works harder') and show one believable thing, like a visit slot filling in my own project's calendar."
+    },
+    {
+     "script_key": "night-story",
+     "understood": 8,
+     "would_reply": 5,
+     "trust": 6,
+     "best_moment": "Seconds 0-8: one couple taps my ad at night, the screen splits into two phones, and one stays silent while the other replies within a minute. Even muted, the caption and the picture explain the whole idea. It's the only one where I picture a real buyer at 11 PM actually going to a competitor.",
+     "ignore_reason": "The left phone, 'Without automatic reply', plainly says my current setup loses the buyer. The morning scene with my executive typing 'Good morning' into a cold chat makes my team look slow. That's a fair point, but it's a stranger telling it to me. I'd also doubt whether it would sound like my premium brand. 49 seconds is long, and I don't know who Ivinfotech is or what the demo contains.",
+     "fix": "Keep the split-phone hook and cut everything after the morning scene. Soften the left label to something neutral like 'Night enquiry, reply next morning' so it doesn't read as my team failing. Add one line that says what the demo is, for example 'a sample made on your {PROJECT}, 2 minutes', so tapping YES feels safe."
+    },
+    {
+     "script_key": "owner-calm",
+     "understood": 6,
+     "would_reply": 4,
+     "trust": 7,
+     "best_moment": "The tone. The cream and navy look, the calm pace, the 'team stays, a person steps in whenever the buyer wants' scene, and the end card with three green ticks all feel premium and respectful. It doesn't threaten my sales team's jobs.",
+     "ignore_reason": "It opens with a chat reply and only then names 'three small worries', which I may not even have. 'Enquiries pile up' and 'Team time wasted' feel like it's diagnosing me. The thought cards, lanes and badges are a lot to read on a small phone with the sound off. It's calm but abstract, and nothing makes me feel I'd lose a buyer tonight. I'd feel it was nice and then forget it.",
+     "fix": "Start with the worry, not the solution. Open with one concrete picture, a buyer messaging at night and nobody replying, and make it one worry instead of three. Show the board once, simply, then the button."
+    }
+   ],
+   "best_key": "night-story",
+   "must_change": [
+    "Cut the length to about 25 to 30 seconds. At 43 to 49 seconds I would swipe before the offer lands. Keep only the hook, the instant reply, one simple board shot and the button. Fold reminders and human hand-over into a single line.",
+    "Make it obvious in the first 3 seconds that it is made for my project and city. The real project name and city should show on the ad card in frame one, so it doesn't look like a mass forward.",
+    "Don't show my team as the failure. The 'Without automatic reply' label and the 'Good morning to a cold chat' scene feel like criticism from a stranger. Use neutral wording like 'Night enquiry, reply next morning'.",
+    "Say in plain words what 'Yes, send the demo' gets me: a sample on my own project, how long it takes, and that nothing needs installing. Right now it reads like I'm signing up for a salesperson's call.",
+    "Add one credibility signal. I need to know it uses my own official WhatsApp number, won't spam buyers, and won't risk my number or my brand voice. Without that, a premium developer says no. Also name who Ivinfotech is in one line, with a reference or a similar developer.",
+    "Replace vague claims ('hours saved', 'every ad rupee works harder', 'more site visits') with one concrete, believable picture. Or drop them. They sound like every software pitch I already ignore."
+   ]
+  },
+  {
+   "persona": "Managing director of an Ahmedabad real estate developer: new show house just ready, small sales team, Facebook lead form running, time-poor and non-technical. Judging muted on a phone, honestly and a little harshly.",
+   "scores": [
+    {
+     "script_key": "time-roi",
+     "understood": 7,
+     "would_reply": 5,
+     "trust": 7,
+     "best_moment": "4-8s: the ring timer fills to 'Replied within a minute' while the brochure and a visit-slot button appear. I can see exactly what my buyer would get.",
+     "ignore_reason": "At 48 seconds it sounds like every other WhatsApp bot pitch. 'Hours saved, more site visits' is vague and has no proof, so I would think 'later' and swipe away.",
+     "fix": "Show the problem in the first 3 seconds as one visible contrast (reply in a minute vs. next morning). Replace the vague closing caption with one concrete line, 'Every Facebook enquiry gets a WhatsApp reply in a minute', and cut the video to about 30 seconds."
+    },
+    {
+     "script_key": "night-story",
+     "understood": 9,
+     "would_reply": 7,
+     "trust": 6,
+     "best_moment": "About 6 seconds in: two phones side by side, left one silent under a moon, right one getting the reply 'within a minute'. I got the whole idea with the sound off before the caption finished.",
+     "ignore_reason": "It feels like it is pointing at my team being asleep at night. I also cannot tell if this works with my Facebook lead form, and 49 seconds is long. 'Keeps him' sounds like an over-promise.",
+     "fix": "Add one line in the first 8 seconds saying it works on leads from your Facebook ad form. Soften the left label to 'Reply next morning' so it does not blame the team. Merge the middle scenes and cut the length to about 30 seconds."
+    },
+    {
+     "script_key": "owner-calm",
+     "understood": 6,
+     "would_reply": 4,
+     "trust": 8,
+     "best_moment": "37-42s: 'The team stays. A person steps in anytime.' It tells me my sales staff are not being replaced, and the tone treats me as an equal.",
+     "ignore_reason": "The three worry cards ('Enquiries pile up', 'Team time wasted') need reading and the point lands only after 15 seconds. The slow, calm pace means I would swipe before the value arrives, and 'Team time wasted' feels a bit insulting.",
+     "fix": "Drop the three-worries device. Open straight on the one-minute reply, move the enquiry board up to the first 20 seconds, and keep the respectful 'your team stays' line as the closer."
+    }
+   ],
+   "best_key": "night-story",
+   "must_change": [
+    "Show in the first 10 seconds that it works with the Facebook lead form I already run. All three scripts show a buyer messaging on WhatsApp first, so I cannot tell if my current leads would get this.",
+    "Cut every version from about 48 seconds to about 30. A busy MD swiping muted will not wait through 7-8 scenes, and the hand-over and reminders can be one scene.",
+    "Replace vague claims like 'hours saved' and 'more site visits' with one concrete visible outcome. Do not invent numbers, but show what changes for my team.",
+    "Make the ask specific: say what the demo is and how long it takes (for example, 'a demo on your own project'). Right now I do not know what 'Yes, send the demo' gives me or who Ivinfotech is beyond a small sign-off.",
+    "Do not imply my team is slow or wasting time ('cold chat', 'Team time wasted'). Frame it as 'your team joins when the buyer is ready'.",
+    "Fix captions that carry no meaning muted, such as 'At {TIME}, a couple asks about {PROJECT}'. Every caption should state the benefit on its own."
+   ]
+  }
+ ]
+}

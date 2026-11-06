@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<title>SAMPLE - Nexus360 page for a builder</title>
+<meta name="description" content="SAMPLE layout and copy of the page a Chhattisgarh builder would open from a WhatsApp message. Placeholders are in [brackets].">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   LAYOUT CONCEPT: the page is a drawing sheet. Tracing-paper ground with a faint 24 px grid, a title block as the
+   personalised header (prepared for / project / city / RERA no.), lettered detail callouts (A, B, C) for the three
+   screens, redline-yellow chips for every placeholder. One bold move only: the title block + Hindi headline in the hero.
+   FONTS: Barlow Condensed (signage-style display), IBM Plex Sans (body), IBM Plex Mono (annotations), Noto Sans Devanagari
+   (Hindi). All are loaded from Google Fonts with system fallbacks; for production self-host the same four (all OFL).
+   COLOURS: swap these tokens for the Nexus360 brand colours once Sridhar sends them.
+   ========================================================================== */
+:root {
+  --paper: #E9EEEC;        /* tracing paper, a cool grey with a green bias (not cream) */
+  --sheet: #F8FAF8;        /* cards */
+  --ink: #15262C;          /* deep blue-green slate */
+  --ink-soft: #425760;     /* secondary text, 7:1 on paper */
+  --rule: rgba(21, 38, 44, .22);
+  --grid: rgba(21, 38, 44, .055);
+  --brick: #A8341F;        /* the problem: used for the questions */
+  --brick-bg: #F5E3DE;
+  --slot: #6B4500;         /* placeholders: logo, photo, screen slots, notes */
+  --slot-bg: #FBF0D4;
+  --slot-line: #D2A93F;
+  --go: #0B7A55;           /* the one action: WhatsApp button */
+  --go-dark: #075E41;
+  --mark: #FFD84D;         /* redline highlighter: placeholders and the key phrase */
+  --night: #14262C;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --deva: "Noto Sans Devanagari", "Nirmala UI", "Mangal", "Kohinoor Devanagari", "Devanagari Sangam MN", sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font: 400 17px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; }
+ul, ol { list-style: none; }
+a { color: inherit; text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: min(1120px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+.mono { font-family: var(--mono); }
+[lang="hi"] { font-family: var(--deva); }
+
+/* ---------- SAMPLE ribbon ---------- */
+.ribbon { background: var(--ink); color: #fff; font: 500 12px/1.4 var(--mono); letter-spacing: .02em; text-align: center; padding: 7px var(--gutter); }
+.rib-long { display: none; }
+.ribbon b { font-weight: 500; background: #fff; color: var(--ink); padding: 1px 7px; border-radius: 3px; margin-right: 8px; letter-spacing: .12em; }
+
+/* ---------- placeholder chip: a redline note on the drawing ---------- */
+.ph { font-family: var(--mono); font-size: .86em; font-weight: 500; background: #FBF0D4; color: #5E3C00; outline: 1px dashed #D2A93F; outline-offset: -1px; padding: 1px 6px; border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; white-space: normal; }
+
+/* ---------- top bar ---------- */
+.top { background: var(--sheet); border-bottom: 1.5px solid var(--ink); }
+.top-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-mark { width: 40px; height: 40px; border: 1.5px dashed var(--slot-line); border-radius: 6px; display: grid; place-items: center; font: 500 10px/1.1 var(--mono); color: var(--slot); text-align: center; flex: none; background: var(--slot-bg); }
+.brand-name { font: 700 24px/1 var(--display); letter-spacing: .01em; }
+.brand-name small { display: block; font: 500 12px/1.3 var(--mono); letter-spacing: .02em; color: var(--ink-soft); margin-top: 3px; }
+.top-note { font: 500 12px/1.35 var(--mono); color: var(--ink-soft); text-align: right; }
+
+/* ---------- title block: the personalised header ---------- */
+.tb { background: var(--sheet); border-bottom: 1.5px solid var(--ink); }
+.tb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tb-cell { padding: 7px 12px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.tb-cell:nth-child(2n) { border-right: 0; }
+.tb-cell:nth-child(n+3) { border-bottom: 0; }
+.tb-cell:nth-child(5) { display: none; }
+.tb-cell dt { font: 500 11px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.tb-cell dd { font: 600 16px/1.3 var(--body); margin-top: 3px; overflow-wrap: anywhere; }
+.tb-cell.wide { grid-column: 1 / -1; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 24px 36px; }
+.hero-grid { display: grid; gap: 32px; }
+.eyebrow { display: inline-block; font: 500 12px/1.3 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); border-left: 4px solid var(--ink); padding-left: 10px; margin-bottom: 14px; }
+.h1-hi { font: 700 clamp(31px, 8.4vw, 54px)/1.32 var(--deva); letter-spacing: -.005em; text-wrap: balance; }
+.h1-hi mark { background: linear-gradient(transparent 52%, var(--mark) 52%, var(--mark) 94%, transparent 94%); color: inherit; padding: 0 2px; }
+.h1-en { margin-top: 14px; font: 600 clamp(24px, 6vw, 32px)/1.12 var(--display); letter-spacing: .005em; color: var(--ink-soft); text-wrap: balance; }
+.lede { margin-top: 14px; font-size: 16.5px; line-height: 1.55; max-width: 58ch; }
+.lede b { font-weight: 600; }
+
+.cta-block { margin-top: 20px; display: grid; gap: 10px; max-width: 520px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 64px; padding: 10px 22px; border-radius: 12px; background: var(--go); color: #fff; text-decoration: none; border: 2px solid var(--go-dark); box-shadow: 0 5px 0 var(--go-dark); transition: transform .12s ease, box-shadow .12s ease; text-align: left; cursor: pointer; }
+.btn:hover { transform: translateY(2px); box-shadow: 0 3px 0 var(--go-dark); }
+.btn:active { transform: translateY(5px); box-shadow: 0 0 0 var(--go-dark); }
+.btn svg { width: 30px; height: 30px; fill: #fff; flex: none; }
+.btn > span { display: grid; gap: 1px; }
+.btn b { font: 700 19px/1.25 var(--body); }
+.btn .ph { font-size: .8em; padding: 0 5px; }
+.btn small { font: 500 15px/1.6 var(--deva); opacity: .95; }
+.tapline { font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+.tapline b { color: var(--ink); font-weight: 600; }
+
+.person { margin-top: 24px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 12px; padding: 14px; max-width: 520px; }
+.avatar { width: 64px; height: 64px; border-radius: 50%; border: 2px dashed var(--slot-line); background: var(--slot-bg); display: grid; place-items: center; font: 500 11px/1.2 var(--mono); color: var(--slot); text-align: center; }
+.person-name { font: 700 22px/1.15 var(--display); letter-spacing: .01em; }
+.person-role { font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
+.person-line { margin-top: 5px; font-size: 15px; line-height: 1.4; }
+.person-line b { font-weight: 600; }
+.fwd { margin-top: 14px; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--ink); border-radius: 10px; font: 600 16px/1.25 var(--body); text-decoration: none; background: transparent; color: var(--ink); }
+.fwd:hover { background: var(--sheet); }
+.fwd small { font: 500 14px/1.6 var(--deva); color: var(--ink-soft); display: block; }
+
+/* video (poster only in the sample) */
+.video { display: grid; gap: 10px; justify-items: center; }
+.poster { position: relative; width: min(100%, 290px); aspect-ratio: 9 / 16; border-radius: 20px; background: var(--night); color: #fff; overflow: hidden; border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--rule); display: grid; align-content: center; justify-items: center; gap: 12px; padding: 26px 20px; text-align: center; }
+.poster::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 20px 20px; }
+.poster > * { position: relative; }
+.poster-chip { font: 500 11px/1.35 var(--mono); letter-spacing: .06em; background: var(--mark); color: var(--ink); padding: 5px 9px; border-radius: 3px; }
+.poster-q { font: 700 25px/1.45 var(--deva); }
+.poster-q mark { background: none; color: var(--mark); }
+.poster-en { font: 500 15px/1.35 var(--body); color: #cfdad7; }
+.play { width: 62px; height: 62px; border-radius: 50%; background: #fff; display: grid; place-items: center; margin-top: 6px; }
+.play svg { width: 26px; height: 26px; fill: var(--night); margin-left: 4px; }
+.poster-time { position: absolute !important; right: 12px; bottom: 10px; font: 500 12px var(--mono); color: #cfdad7; }
+.video figcaption { font-size: 14px; line-height: 1.45; color: var(--ink-soft); text-align: center; max-width: 300px; }
+
+/* ---------- section scaffolding ---------- */
+.sec { padding-block: 44px; border-top: 1.5px solid var(--ink); }
+.sec-head { display: grid; gap: 6px; margin-bottom: 26px; }
+.sec-tag { font: 500 12px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.sec-h { font: 700 clamp(30px, 6.8vw, 44px)/1.05 var(--display); letter-spacing: .005em; text-wrap: balance; }
+.sec-sub { font-size: 17px; color: var(--ink-soft); max-width: 62ch; }
+
+/* ---------- three screens ---------- */
+.screens { display: grid; gap: 22px; }
+.screen { background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.screen-top { display: flex; align-items: center; gap: 12px; }
+.callout { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; font: 700 22px/1 var(--display); flex: none; background: var(--paper); }
+.screen-tag { font: 500 12px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.q { font: 700 29px/1.08 var(--display); letter-spacing: .005em; color: var(--brick); text-wrap: balance; }
+.screen p { font-size: 16px; line-height: 1.55; }
+.checks { display: grid; gap: 7px; }
+.checks li { position: relative; padding-left: 26px; font-size: 16px; line-height: 1.45; }
+.checks li::before { content: ""; position: absolute; left: 3px; top: 7px; width: 12px; height: 7px; border-left: 2.5px solid var(--go); border-bottom: 2.5px solid var(--go); transform: rotate(-45deg); }
+/* screenshot slot: layout only, no numbers, clearly a placeholder */
+.slot { margin-top: auto; border: 2px dashed var(--slot-line); border-radius: 10px; background: var(--slot-bg); padding: 12px; display: grid; gap: 7px; }
+.slot-label { font: 500 12px/1.35 var(--mono); color: var(--slot); letter-spacing: .02em; }
+.slot-row { display: grid; grid-template-columns: minmax(0, 1fr) 46%; gap: 10px; align-items: center; background: #fff; border-radius: 6px; padding: 8px 10px; }
+.slot-row span { font: 500 13px/1.25 var(--body); color: var(--ink); }
+.slot-row i { display: block; height: 8px; border-radius: 4px; background: #CBD5D1; }
+.slot-row i.w1 { width: 82%; } .slot-row i.w2 { width: 46%; } .slot-row i.w3 { width: 64%; } .slot-row i.w4 { width: 30%; } .slot-row i.w5 { width: 90%; }
+.also { margin-top: 22px; font-size: 16px; color: var(--ink-soft); border-top: 1px solid var(--rule); padding-top: 16px; }
+.also b { color: var(--ink); font-weight: 600; }
+
+/* ---------- after the tap ---------- */
+.tap-grid { display: grid; gap: 28px; align-items: start; }
+.steps { display: grid; gap: 0; counter-reset: s; }
+.steps li { counter-increment: s; position: relative; padding: 0 0 22px 54px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font: 700 20px/1 var(--display); }
+.steps li::after { content: ""; position: absolute; left: 18px; top: 42px; bottom: 4px; width: 2px; background: var(--rule); }
+.steps li:last-child::after { display: none; }
+.steps h3 { font: 700 22px/1.15 var(--display); letter-spacing: .01em; margin-bottom: 4px; padding-top: 6px; }
+.steps p { font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+.steps p b { color: var(--ink); font-weight: 600; }
+.wa { width: min(100%, 330px); margin-inline: auto; border-radius: 26px; background: #0b1318; padding: 9px; box-shadow: 8px 8px 0 var(--rule); }
+.wa-in { border-radius: 19px; overflow: hidden; background: #ECE5DD; display: grid; grid-template-rows: auto 1fr auto; min-height: 330px; }
+.wa-head { background: #0B5C52; color: #fff; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+.wa-av { width: 36px; height: 36px; border-radius: 50%; background: #CFE9E4; color: #0B5C52; display: grid; place-items: center; font: 700 16px var(--body); flex: none; }
+.wa-head b { font: 600 16px/1.2 var(--body); display: block; }
+.wa-head small { font: 400 12px/1.2 var(--body); opacity: .85; }
+.wa-chat { padding: 16px 12px; display: grid; align-content: start; gap: 8px; }
+.wa-day { justify-self: center; font: 500 11px/1 var(--mono); background: #fff; padding: 5px 9px; border-radius: 6px; color: var(--ink-soft); }
+.wa-bar { background: #F0F0F0; padding: 8px 10px; display: grid; grid-template-columns: minmax(0, 1fr) 42px; gap: 8px; align-items: end; }
+.wa-field { background: #fff; border-radius: 20px; padding: 9px 13px; font: 400 14.5px/1.35 var(--body); color: var(--ink); border: 2px solid var(--mark); }
+.wa-send { width: 42px; height: 42px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; }
+.wa-send svg { width: 20px; height: 20px; fill: #fff; margin-left: 2px; }
+.wa-hint { margin-top: 14px; text-align: center; font: 500 13px/1.4 var(--mono); color: var(--ink-soft); }
+.wa-hint b { color: var(--ink); font-weight: 500; }
+
+/* ---------- objections ---------- */
+.objs { display: grid; gap: 18px; }
+.obj { background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 14px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.said { align-self: start; justify-self: start; background: var(--brick-bg); color: var(--brick); font: 600 17px/1.3 var(--body); padding: 8px 14px; border-radius: 14px 14px 14px 3px; }
+.obj p { font-size: 16px; line-height: 1.55; }
+.obj p + p { color: var(--ink-soft); }
+
+/* ---------- proof ---------- */
+.proof { display: grid; gap: 22px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.fact { background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 12px; padding: 14px; }
+.fact b { display: block; font: 700 42px/1 var(--display); }
+.fact span { font-size: 15px; line-height: 1.35; color: var(--ink-soft); display: block; margin-top: 4px; }
+.logos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.logo-slot { aspect-ratio: 3 / 2; border: 2px dashed var(--slot-line); background: var(--slot-bg); border-radius: 8px; display: grid; place-items: center; padding: 6px; text-align: center; font: 500 11px/1.3 var(--mono); color: var(--slot); }
+.quote { border-left: 4px solid var(--ink); padding: 4px 0 4px 16px; display: grid; gap: 6px; }
+.quote q { font: 600 24px/1.2 var(--display); quotes: none; }
+.quote small { font-size: 14px; color: var(--ink-soft); }
+
+/* ---------- final call ---------- */
+.final { background: var(--night); color: #fff; padding-block: 48px; border-top: 1.5px solid var(--ink); position: relative; }
+.final::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+.final .wrap { position: relative; display: grid; gap: 18px; }
+.final h2 { font: 700 clamp(30px, 6.4vw, 42px)/1.35 var(--deva); text-wrap: balance; }
+.final h2 + p { font: 600 clamp(24px, 5.6vw, 30px)/1.12 var(--display); color: #BFD0CC; }
+.final .btn { border-color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.5); max-width: 520px; }
+.final .tapline { color: #BFD0CC; }
+.final .tapline b { color: #fff; }
+.final .person { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.55); }
+.final .person-role { color: #BFD0CC; }
+.final .fwd { border-color: rgba(255,255,255,.7); color: #fff; justify-self: start; margin-top: 0; }
+.final .fwd:hover { background: rgba(255,255,255,.1); }
+.final .fwd small { color: #BFD0CC; }
+.final .ph { color: var(--ink); }
+
+/* ---------- footer ---------- */
+.foot { padding-block: 26px 28px; font-size: 14px; line-height: 1.55; color: var(--ink-soft); background: var(--sheet); border-top: 1.5px solid var(--ink); }
+.foot p + p { margin-top: 10px; }
+.foot b { color: var(--ink); font-weight: 600; }
+
+/* ---------- sample notes (not part of the page) ---------- */
+.notes { margin-block: 34px; border: 2px dashed var(--slot-line); border-radius: 14px; padding: 20px; background: rgba(255,255,255,.6); display: grid; gap: 14px; }
+.notes h2 { font: 700 26px/1.1 var(--display); color: var(--slot); }
+.notes h3 { font: 500 12px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
+.notes ul { display: grid; gap: 4px; }
+.notes li { font-size: 14.5px; line-height: 1.5; padding-left: 16px; position: relative; }
+.notes li::before { content: "-"; position: absolute; left: 0; color: var(--slot); }
+.notes-cols { display: grid; gap: 16px; }
+
+/* ---------- sticky bar (phones) and toast ---------- */
+.sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px var(--gutter) max(10px, env(safe-area-inset-bottom, 0px)); background: rgba(248, 250, 248, .96); border-top: 1.5px solid var(--ink); transform: translateY(110%); transition: transform .2s ease; }
+.sticky.on { transform: none; }
+.sticky .btn { min-height: 54px; padding-block: 6px; }
+.sticky .btn b { font-size: 17px; }
+.sticky .btn small { display: none; }
+.toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%) translateY(20px); z-index: 30; background: var(--ink); color: #fff; font: 500 14px/1.4 var(--body); padding: 12px 16px; border-radius: 10px; width: min(92vw, 420px); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.toast.on { opacity: 1; transform: translateX(-50%); }
+
+/* ---------- wider screens ---------- */
+@media (min-width: 720px) {
+  .tb-grid { grid-template-columns: 1.4fr 1.4fr 1fr 1.2fr .9fr; }
+  .tb-cell, .tb-cell:nth-child(2n) { border-right: 1px solid var(--rule); border-bottom: 0; }
+  .tb-cell:nth-child(5) { display: block; border-right: 0; }
+  .rib-long { display: inline; }
+  .screens, .objs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .notes-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .proof { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+@media (min-width: 980px) {
+  .hero { padding-block: 48px 56px; }
+  .hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+  .tap-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; }
+  .video { position: sticky; top: 24px; }
+  .sticky { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.200zm4.5-6.1c-.2-.1-1.500-.7-1.700-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.200-.3.200-.5.100a6.700 6.700 0 0 1-3.300-2.900c-.2-.4.200-.4.700-1.300.1-.2 0-.3 0-.5l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.300 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.800 11.900 11.900 0 0 0 4.600 4c1.700.7 2.400.8 3.200.7a2.700 2.700 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.3-.2-.5-.3z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.500v13l11-6.500z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M3 20.500 21 12 3 3.500v6.500l11 2-11 2z"/></symbol>
+  <symbol id="i-fwd" viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4.200c-5 0-8.500 1.600-11 5.200 1-5.500 4.500-9.600 11-10.500z" fill="currentColor"/></symbol>
+</svg>
+
+<!-- ======================= SAMPLE MARKER ======================= -->
+<div class="ribbon"><b>SAMPLE</b><span class="rib-long">Layout and copy for Sridhar's approval. Not live. </span>[Brackets] = filled per builder or decided by Sridhar</div>
+
+<!-- ======================= TOP BAR ======================= -->
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">[logo]</div>
+      <div class="brand-name">Nexus360<small>ERP + CRM for builders</small></div>
+    </div>
+    <p class="top-note">Rajnandgaon,<br>Chhattisgarh</p>
+  </div>
+</header>
+
+<!-- ======================= TITLE BLOCK = THE PERSONALISED HEADER (only these five fields change per builder) ======================= -->
+<section class="tb" aria-label="Prepared for">
+  <div class="wrap">
+    <dl class="tb-grid">
+      <div class="tb-cell"><dt>Prepared for</dt><dd><span class="ph" data-slot="builder">[Builder name]</span></dd></div>
+      <div class="tb-cell"><dt>Project</dt><dd><span class="ph" data-slot="project">[Project name]</span></dd></div>
+      <div class="tb-cell"><dt>City</dt><dd><span class="ph" data-slot="city">[City]</span></dd></div>
+      <div class="tb-cell"><dt>CG RERA no.</dt><dd><span class="ph" data-slot="rera">[PCGRERA number]</span></dd></div>
+      <div class="tb-cell"><dt>Sheet date</dt><dd><span class="ph" data-slot="date">[dd Mon yyyy]</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<main>
+<!-- ======================= HERO ======================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Site purchases + customer follow-up</p>
+      <h1 class="h1-hi" lang="hi">साइट से इंडेंट आया है।<br><mark>अप्रूव करने से पहले आप क्या देखते हैं?</mark></h1>
+      <p class="h1-en" lang="en">An indent just came in from site. What do you check before you approve it?</p>
+      <p class="lede">Before you approve, Nexus360 checks <b>site stock, unused stock at your other sites, material already on order and the BOQ</b>. Leads, site visits and customer payments live in the same system.</p>
+
+      <div class="cta-block">
+        <a class="btn" id="cta-hero" href="#after-tap" data-wa="https://wa.me/91{SRIDHAR_NUMBER}?text={PREFILLED_MESSAGE}">
+          <svg aria-hidden="true"><use href="#i-wa"/></svg>
+          <span><b>Book a <span class="ph">[20]</span>-minute demo on WhatsApp</b><small lang="hi">WhatsApp पर डेमो बुक करें</small></span>
+        </a>
+        <p class="tapline"><b>What the tap does:</b> it opens a WhatsApp chat with Sridhar and the message is already typed. Nothing is sent until you press Send.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" aria-hidden="true">[photo]</div>
+        <div>
+          <p class="person-name">Sridhar Patnaik</p>
+          <p class="person-role">Nexus360 <span class="ph">[title: Sridhar confirms]</span></p>
+          <p class="person-line"><b>WhatsApp or call:</b> +91 <span class="ph">[Sridhar's number]</span></p>
+          <p class="person-line">You will talk to Sridhar himself.</p>
+        </div>
+      </div>
+
+      <a class="fwd" id="fwd-hero" href="#after-tap" data-wa="https://wa.me/?text={FORWARD_MESSAGE}">
+        <svg width="20" height="20" aria-hidden="true"><use href="#i-fwd"/></svg>
+        <span>Reading this for someone else? Forward it to the owner<small lang="hi">मालिक या पार्टनर को भेजें</small></span>
+      </a>
+    </div>
+
+    <div class="hero-side">
+      <figure class="video">
+        <div class="poster" role="img" aria-label="Video poster: the opening question, in Hindi">
+          <span class="poster-chip">[Nexus360 · ERP + CRM for builders]</span>
+          <p class="poster-q" lang="hi">साइट से इंडेंट आया है।<br><mark>अप्रूव करने से पहले आप क्या देखते हैं?</mark></p>
+          <p class="poster-en">An indent just came in. What do you check before you approve it?</p>
+          <div class="play"><svg aria-hidden="true"><use href="#i-play"/></svg></div>
+          <span class="poster-time">0:17</span>
+        </div>
+        <figcaption>17 seconds. Two real screens from Nexus360, with captions. <span class="ph">[Voice: Sridhar, Hindi]</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= THREE SCREENS ======================= -->
+<section class="sec" id="screens">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">What you will see in the demo</p>
+      <h2 class="sec-h">Three questions. Three screens.</h2>
+      <p class="sec-sub">Each screen answers one question you are likely to ask on a normal working day. The demo walks through them one by one.</p>
+    </div>
+
+    <div class="screens">
+      <article class="screen">
+        <div class="screen-top"><span class="callout">A</span><span class="screen-tag">Purchase control</span></div>
+        <h3 class="q">Did what you ordered reach the site?</h3>
+        <ul class="checks">
+          <li>Before approval, each indent is checked against site stock, unused stock at other sites, material already on order, similar recent indents and the BOQ.</li>
+          <li>Material received is reconciled against the purchase order.</li>
+          <li>While you raise a PO you see the last price paid, the 6-month range and the lowest price.</li>
+        </ul>
+        <div class="slot" aria-label="Screenshot placeholder">
+          <p class="slot-label">[SCREEN A: indent approval, from Sridhar]</p>
+          <div class="slot-row"><span>Stock at this site</span><i class="w1"></i></div>
+          <div class="slot-row"><span>Unused stock at other sites</span><i class="w2"></i></div>
+          <div class="slot-row"><span>Already on order</span><i class="w3"></i></div>
+          <div class="slot-row"><span>Similar recent indents</span><i class="w4"></i></div>
+          <div class="slot-row"><span>BOQ limit</span><i class="w5"></i></div>
+        </div>
+      </article>
+
+      <article class="screen">
+        <div class="screen-top"><span class="callout">B</span><span class="screen-tag">Customer follow-up</span></div>
+        <h3 class="q">Who called the customer who asked for a call-back?</h3>
+        <ul class="checks">
+          <li>Leads from all sources, brokers included, are captured in one place.</li>
+          <li>Site visits and follow-ups are planned in an activity planner.</li>
+          <li>Each deal moves through a pipeline until it closes.</li>
+        </ul>
+        <div class="slot" aria-label="Screenshot placeholder">
+          <p class="slot-label">[SCREEN B: leads and follow-up planner, from Sridhar]</p>
+          <div class="slot-row"><span>New lead (source, broker)</span><i class="w3"></i></div>
+          <div class="slot-row"><span>Follow-up planned</span><i class="w1"></i></div>
+          <div class="slot-row"><span>Site visit planned</span><i class="w2"></i></div>
+          <div class="slot-row"><span>Deal in pipeline</span><i class="w5"></i></div>
+        </div>
+      </article>
+
+      <article class="screen">
+        <div class="screen-top"><span class="callout">C</span><span class="screen-tag">Collections</span></div>
+        <h3 class="q">Which payments have come in against each schedule?</h3>
+        <ul class="checks">
+          <li>A deal becomes a customer with a deal structure and a payment schedule.</li>
+          <li>Payments received are tracked against that schedule.</li>
+        </ul>
+        <div class="slot" aria-label="Screenshot placeholder">
+          <p class="slot-label">[SCREEN C: customer payment schedule, from Sridhar]</p>
+          <div class="slot-row"><span>Payment 1 received</span><i class="w5"></i></div>
+          <div class="slot-row"><span>Payment 2 received</span><i class="w1"></i></div>
+          <div class="slot-row"><span>Payment 3 due</span><i class="w2"></i></div>
+          <div class="slot-row"><span>Payment 4 due</span><i class="w4"></i></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="also"><b>Also in the product:</b> <span>ask a question in plain English and get a table or chart from your live data. It works on a desktop, a tablet or a phone browser, with nothing to install.</span></p>
+  </div>
+</section>
+
+<!-- ======================= WHAT HAPPENS AFTER THE TAP ======================= -->
+<section class="sec" id="after-tap">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">Before you tap</p>
+      <h2 class="sec-h">What happens when you tap the button</h2>
+    </div>
+    <div class="tap-grid">
+      <ol class="steps">
+        <li>
+          <h3>WhatsApp opens, the message is ready</h3>
+          <p>You see a short message to Sridhar with your project name already in it. <b>Nothing is sent until you press Send.</b></p>
+        </li>
+        <li>
+          <h3>Sridhar answers himself</h3>
+          <p>A person replies, not a bot. <span class="ph">[Usual reply time and hours, set by Sridhar]</span></p>
+        </li>
+        <li>
+          <h3>You agree a time</h3>
+          <p>The demo takes <span class="ph">[20]</span> minutes <span class="ph">[on a video call / at your office]</span>. It shows screens A, B and C and answers your questions. <span class="ph">[Sample data / your own BOQ]</span></p>
+        </li>
+        <li>
+          <h3>You decide, there is no pressure</h3>
+          <p>Cost, set-up time and how it fits your team are discussed only if you ask. <span class="ph">[Demo is free: Sridhar to confirm]</span> Reply STOP at any time and the messages stop.</p>
+        </li>
+      </ol>
+
+      <div>
+        <div class="wa" aria-label="Example of the WhatsApp chat that opens">
+          <div class="wa-in">
+            <div class="wa-head"><div class="wa-av">S</div><div><b>Sridhar Patnaik</b><small>Nexus360</small></div></div>
+            <div class="wa-chat"><span class="wa-day">TODAY</span></div>
+            <div class="wa-bar">
+              <div class="wa-field">Hi Sridhar, I would like to see the Nexus360 demo for <span class="ph" data-slot="project">[Project name]</span>.</div>
+              <div class="wa-send"><svg aria-hidden="true"><use href="#i-send"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <p class="wa-hint"><b>You press Send.</b> Until then this stays on your phone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ALREADY HAVE EXCEL / TALLY / ANOTHER ERP ======================= -->
+<section class="sec" id="already">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">Fair question</p>
+      <h2 class="sec-h">Already using Excel, Tally or another ERP?</h2>
+    </div>
+    <div class="objs">
+      <article class="obj">
+        <p class="said">"We run it on Excel."</p>
+        <p>Excel works while one person keeps every sheet current. Test it with one question: if two sites need cement today, can you see stock at both and the open orders before you approve?</p>
+        <p>If yes, you may not need us. If not, that is the first screen in the demo.</p>
+      </article>
+      <article class="obj">
+        <p class="said">"We use Tally."</p>
+        <p>Tally keeps your accounts. Nexus360 covers the site and sales side: BOQ, indents, purchase orders, stock, leads, follow-ups and collections.</p>
+        <p><span class="ph">[Sridhar to say how the two work together. The Nexus360 website does not mention a Tally link, so none is claimed here.]</span></p>
+      </article>
+      <article class="obj">
+        <p class="said">"We already have an ERP or CRM."</p>
+        <p>Then compare. Open screens A, B and C in your system and in ours. If yours already does these checks well, keep it.</p>
+        <p>The demo asks you to change nothing and takes <span class="ph">[20]</span> minutes.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PROOF ======================= -->
+<section class="sec" id="proof">
+  <div class="wrap proof">
+    <div>
+      <div class="sec-head">
+        <p class="sec-tag">Where it runs</p>
+        <h2 class="sec-h">Where Nexus360 runs today</h2>
+      </div>
+      <div class="facts">
+        <div class="fact"><b>20+</b><span>projects <span class="ph">[Sridhar to confirm today's count]</span></span></div>
+        <div class="fact"><b>200+</b><span>people using it <span class="ph">[confirm]</span></span></div>
+      </div>
+    </div>
+    <div style="display:grid;gap:18px">
+      <div>
+        <p class="sec-tag" style="margin-bottom:8px">Customers (shown only with their permission)</p>
+        <div class="logos">
+          <div class="logo-slot">[Mahavir Group, if agreed]</div>
+          <div class="logo-slot">[customer logo]</div>
+          <div class="logo-slot">[customer logo]</div>
+        </div>
+      </div>
+      <blockquote class="quote">
+        <q><span class="ph">[One line from a customer, in their own words]</span></q>
+        <small><span class="ph">[Name, role, company. Used only with written permission]</span></small>
+      </blockquote>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ======================= FINAL CALL ======================= -->
+<section class="final" id="final">
+  <div class="wrap">
+    <h2 lang="hi">अपने प्रोजेक्ट के सवालों के साथ ये तीन स्क्रीन देखिए।</h2>
+    <p>See screens A, B and C with the questions from your own project.</p>
+    <a class="btn" id="cta-final" href="#after-tap" data-wa="https://wa.me/91{SRIDHAR_NUMBER}?text={PREFILLED_MESSAGE}">
+      <svg aria-hidden="true"><use href="#i-wa"/></svg>
+      <span><b>Book a <span class="ph">[20]</span>-minute demo on WhatsApp</b><small lang="hi">WhatsApp पर डेमो बुक करें</small></span>
+    </a>
+    <p class="tapline"><b>Prefer to talk first?</b> Sridhar Patnaik, +91 <span class="ph">[Sridhar's number]</span></p>
+    <a class="fwd" id="fwd-final" href="#after-tap" data-wa="https://wa.me/?text={FORWARD_MESSAGE}">
+      <svg width="20" height="20" aria-hidden="true"><use href="#i-fwd"/></svg>
+      <span>Forward this page to the owner or a partner<small lang="hi">मालिक या पार्टनर को भेजें</small></span>
+    </a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><b>Why you are seeing this page.</b> <span class="ph" data-slot="project">[Project name]</span> is listed on the public Chhattisgarh RERA register, and we looked for the people behind it using public sources. This page was sent on behalf of Nexus360 (GreyBoard Consulting, Rajnandgaon) by IV Infotech, Mehsana, which runs the WhatsApp number that messaged you.</p>
+    <p>We use your number only to send you this page and to pass your reply to Sridhar. We do not sell it. Reply STOP in the chat and we stop. We count how often this page opens, with no cookies and no third party. If you want this page taken down, tell us and we will remove it.</p>
+  </div>
+</footer>
+
+<!-- ======================= SAMPLE NOTES: NOT PART OF THE PAGE ======================= -->
+<aside class="wrap notes" aria-label="Notes for Sridhar">
+  <h2>Sample notes for Sridhar (remove before sending)</h2>
+  <div class="notes-cols">
+    <div>
+      <h3>What changes per builder</h3>
+      <ul>
+        <li>Only the title block (builder, project, city, RERA no., date) and the project name in the WhatsApp message. Try it: add ?project=Sample+Heights&amp;city=Durg to this file's address.</li>
+        <li>The video and every product statement are the same for all builders.</li>
+        <li>If we cannot name the owner with evidence, the page says "Prepared for [project name]" and no person.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What Sridhar must supply or decide</h3>
+      <ul>
+        <li>His WhatsApp number, photo, logo, brand colours, and his job title. No title is shown until he confirms it.</li>
+        <li>Screens A, B and C (recordings or screenshots, with customer data hidden).</li>
+        <li>Which customers may be named, and one quote with permission.</li>
+        <li>Demo length, medium, free or not, reply hours, how Nexus360 works with Tally.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What this page does not say, on purpose</h3>
+      <ul>
+        <li>No savings, ROI or time-saved numbers. Nexus360's own site makes none.</li>
+        <li>Nothing about other states or other builders' results.</li>
+        <li>Every product line comes from nexus360.in (BOQ, indents and their pre-approval checks, POs and price guidance, inward against PO, stock, leads, follow-ups, pipeline, customers, collections, plain-English questions). The site does not say the checks appear on one screen, so the page does not either. Sridhar to confirm each line against the live product.</li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<div class="sticky" id="sticky"><a class="btn" id="cta-sticky" href="#after-tap" data-wa="https://wa.me/91{SRIDHAR_NUMBER}?text={PREFILLED_MESSAGE}"><svg aria-hidden="true"><use href="#i-wa"/></svg><span><b>Book a demo on WhatsApp</b></span></a></div>
+<div class="toast" id="toast" role="status" aria-live="polite">SAMPLE: on the live page this opens WhatsApp with the message ready. Nothing is sent from this sample.</div>
+
+<script>
+/* The only script. (1) Sample only: the buttons show a note instead of opening WhatsApp. On the live page the href is the data-wa value, with the
+   number and the message filled in per page. (2) On phones a bar with the button appears once the hero button has scrolled out of view. */
+(function () {
+  "use strict";
+  // Personalisation demo: open this file with ?builder=...&project=...&city=...&rera=...&date=... and the five header fields (and the project name in the
+  // message and the footer) fill in. Text only, never HTML. On the live page the same five values come from the builder's research record.
+  var qs = new URLSearchParams(location.search);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-slot]"), function (n) {
+    var v = qs.get(n.getAttribute("data-slot"));
+    if (v) { n.textContent = v.slice(0, 80); n.classList.remove("ph"); }
+  });
+  var toast = document.getElementById("toast"), timer;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"), function (a) {
+    a.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      toast.classList.add("on"); clearTimeout(timer);
+      timer = setTimeout(function () { toast.classList.remove("on"); }, 3800);
+    });
+  });
+  var sticky = document.getElementById("sticky"), hero = document.getElementById("cta-hero"), fin = document.getElementById("cta-final");
+  if (sticky && hero && "IntersectionObserver" in window) {
+    var vis = { hero: true, fin: false };
+    var update = function () { sticky.classList.toggle("on", !vis.hero && !vis.fin); };
+    new IntersectionObserver(function (e) { vis.hero = e[0].isIntersecting; update(); }).observe(hero);
+    new IntersectionObserver(function (e) { vis.fin = e[0].isIntersecting; update(); }).observe(fin);
+  }
+})();
+</script>
+</body>
+</html>

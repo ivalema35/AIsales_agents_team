@@ -1,0 +1,14 @@
+[
+  {"type": "activity", "key": "manual-wa-20261027-shreem-avdhesh", "created_at": "2026-10-27T05:33:00+00:00",
+   "data": {"kind": "whatsapp_sent", "lead": "Shreem Group - Shreem Avdhesh (Odhav, Ahmedabad)", "campaign": "AI automation - Gujarat real estate", "source": "manual",
+            "text": "Owner sent the reel video + personalised Gujarati message + demo link on WhatsApp (both ad numbers)"}},
+  {"type": "activity", "key": "manual-wa-20261027-shivanta-krushnam", "created_at": "2026-10-27T05:35:00+00:00",
+   "data": {"kind": "whatsapp_sent", "lead": "Shivanta Group - Shivanta Krushnam (New Manjalpur), Vadodara", "campaign": "AI automation - Gujarat real estate", "source": "manual",
+            "text": "Owner sent the reel video + personalised message + demo link on WhatsApp (3 numbers); main number sent an automatic welcome"}},
+  {"type": "activity", "key": "manual-wa-20261027-kishan-antilia", "created_at": "2026-10-27T05:38:00+00:00",
+   "data": {"kind": "whatsapp_sent", "lead": "Kishan Antilia (RERA promoter Ambica Inc), Bhayli, Vadodara", "campaign": "AI automation - Gujarat real estate", "source": "manual",
+            "text": "Owner sent the reel video + personalised message + demo link on WhatsApp (both ad numbers); one number sent an automatic thank-you"}},
+  {"type": "activity", "key": "manual-wa-20261027-class-one-evoq", "created_at": "2026-10-27T05:40:00+00:00",
+   "data": {"kind": "whatsapp_sent", "lead": "Class One Infra - Class One Evoq (Raiya Hills), Rajkot", "campaign": "AI automation - Gujarat real estate", "source": "manual",
+            "text": "Owner sent the reel video + personalised message + demo link on WhatsApp (ad number)"}}
+]

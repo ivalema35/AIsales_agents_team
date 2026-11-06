@@ -1,0 +1,22 @@
+[
+{"id":1,"name":"Sunshine Cars","city":"Ahmedabad (Prahlad Nagar)","phone":"076005 66760","rating":"4.8","reviews":196,"slot":"c","note":"Maps category car wash; maybe same brand as #2"},
+{"id":2,"name":"Sunshine Car Spa","city":"Ahmedabad (Ghatlodia/Ranip)","phone":"075677 35635","rating":"4.9","reviews":204,"slot":"c","note":"check if same brand as #1"},
+{"id":3,"name":"B2 CARZ","city":"Ahmedabad (Prahlad Nagar/Satellite)","phone":"099799 49967","rating":"4.4","reviews":50,"slot":"c"},
+{"id":4,"name":"V8 Car Detailing Studio","city":"Ahmedabad (Ghatlodia/Sola)","phone":"095109 46974","rating":"4.8","reviews":118,"slot":"a-instagram","website_host":"instagram.com"},
+{"id":5,"name":"Sparkling Car Studio","city":"Ahmedabad (Sola/Science City, Mahindra showroom)","phone":"099245 05093","rating":"4.8","reviews":58,"slot":"c"},
+{"id":6,"name":"Autobell Car Detailing Studio","city":"Ahmedabad (Sola, Satyamev Complex)","phone":"097276 12121","rating":"4.7","reviews":48,"slot":"c","note":"Maps category 'Car dealer'"},
+{"id":7,"name":"Autogard Motors","city":"Ahmedabad (Prahlad Nagar)","phone":"098982 09168","rating":"4.7","reviews":62,"slot":"c","note":"may be a workshop"},
+{"id":8,"name":"Silent Car Care","city":"Surat (Varachha, Escon residency)","phone":"087587 60191","rating":"4.9","reviews":114,"slot":"c"},
+{"id":9,"name":"Autoworrld","city":"Surat (New City Light Rd)","phone":"098251 37796","rating":"4.8","reviews":42,"slot":"c","note":"Maps category Car detailing service"},
+{"id":10,"name":"Autodox","city":"Surat (Piplod, Blue Ribbon Building)","phone":"099745 58098","rating":"4.9","reviews":76,"slot":"c","note":"Maps category auto body shop"},
+{"id":11,"name":"CarNest Detailing and Diagnostic Center","city":"Vadodara (Sevasi)","phone":"091577 36373","rating":"4.9","reviews":89,"slot":"c"},
+{"id":12,"name":"The Car & Bike Surgeon Gotri","city":"Vadodara (Gotri)","phone":"080003 33303","rating":"4.9","reviews":245,"slot":"c","note":"name suggests branches: check chain"},
+{"id":13,"name":"Radhe Krishna car detailing","city":"Vadodara (Ajwa Rd)","phone":"095861 30367","rating":"5.0","reviews":143,"slot":"c"},
+{"id":14,"name":"Premium Car Wash - Best car detailing studio, coating and PPF in Vadodara","city":"Vadodara (Airport Circle)","phone":"092658 63791","rating":"5.0","reviews":135,"slot":"c"},
+{"id":15,"name":"Csm Detailing Studio","city":"Vadodara (Manek Park, Airport Circle)","phone":"063514 94395","rating":"4.8","reviews":43,"slot":"c"},
+{"id":16,"name":"Trinay Car Care","city":"Vadodara (Kala Ghoda Circle)","phone":"096011 06898","rating":"4.6","reviews":99,"slot":"c","note":"may be plain car wash"},
+{"id":17,"name":"BRIGHTSPOTS car studio","city":"Rajkot (Bolbala Main Rd)","phone":"092657 17142","rating":"5.0","reviews":71,"slot":"c"},
+{"id":18,"name":"RideinStyl - Ceramic Coating & PPF Studio","city":"Vapi (NH48, Vibrant Business Park)","phone":"095457 78806","rating":"4.9","reviews":392,"slot":"c"},
+{"id":19,"name":"o3 Car Spa Ceramic Coating, Graphene Coating, PPF","city":"Vapi (Chala, Daman Chala road)","phone":"072030 32500","rating":"5.0","reviews":307,"slot":"a-instagram","website_host":"instagram.com"},
+{"id":20,"name":"Elite Detailing & Car Washing VAPI","city":"Vapi","phone":"075740 13364","rating":"4.9","reviews":134,"slot":"a-instagram","website_host":"instagram.com","note":"may be wash-focused"}
+]

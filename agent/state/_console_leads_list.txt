@@ -1,0 +1,28 @@
+inbound-zaid-white-label-agency-2026-10       Zaid - white-label agency (inbound)
+re-gj-swagat-developers-swagat-cilantra       Swagat Developers - Swagat Cilantra
+re-gj-pride-group-pride-aura                  Pride Group - Pride Aura
+re-gj-shyamal-park-lane-vadodara              Shyamal Group - Shyamal Park Lane
+re-gj-space-age-consultants-arvind-sensora    Space Age Consultants - Arvind Sensora
+re-gj-great-spaces-aaroham                    Great Spaces - Aaroham
+re-gj-brij-group                              Brij Group
+re-gj-shree-namasya-vadodara                  Shree Namasya - Shree Namasya Residency
+re-gj-vistara-anahata-florenza                Vistara Group - Anahata Florenza
+re-gj-blj-infra-silver-square                 BLJ Infra LLP - Silver Square
+re-gj-parshwanath-corporation-parshwanath-emerald Parshwanath Corporation - Parshwanath Emerald
+re-gj-nitya-buildcon-nitya-aurelia            Nitya Buildcon - Nitya Aurelia
+re-gj-satyagrah-developers                    Satyagrah Developers
+re-gj-swarna-group-swarna-avsar               Swarna Group - Swarna Avsar
+re-gj-cs-group-terra                          CS Group - Terra
+re-gj-1-clik-property                         1 Clik Property
+re-gj-nyalkaran-group                         Nyalkaran Group
+re-gj-rameshwar-developers                    Rameshwar Developers
+re-gj-shrinivas-organisors-supercity          Shrinivas Organisors - SuperCITY
+re-gj-rivanta-group-rivanta-heritage          Rivanta Group - Rivanta Heritage
+re-gj-nb-developer-legacy-tower               NB Developer - Legacy Tower
+re-gj-elenza-group-elenza-gardens             Elenza Group - Elenza Gardens
+re-gj-silver-group-silver-residency-3         Silver Group - Silver Residency 3
+re-gj-trinetra-group                          Trinetra Group
+re-gj-somnath-buildcon-shreeji-homes          Somnath Buildcon - Shreeji Homes
+re-gj-lotus-lifestyle                         Lotus Lifestyle
+re-gj-beverlynn-group-upvan                   Beverlynn Group - Upvan
+27 lead

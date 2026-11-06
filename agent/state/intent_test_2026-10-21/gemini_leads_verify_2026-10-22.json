@@ -1,0 +1,403 @@
+[
+ {
+  "lead": "docncr",
+  "verify": {
+   "lead": "docncr",
+   "post_exists": "yes",
+   "post_date": "2026-10-19 (comment posted 02:44 UTC on the 19 Oct 2026 AutoModerator weekly thread, which was created 02:30 UTC the same day). Gemini's 20 Oct date is wrong by a day.",
+   "quote_verified": "exact",
+   "intent": "none",
+   "intent_note": "The only thing the author wrote is a promotional comment in a weekly startup self-promotion megathread. It starts \"Disclosure: I'm posting on behalf of DocNCR\". It describes the service and tells families to check coverage, availability, timing and fee with the team before booking. The author asks for no help, tool, developer or automation, and complains about no workload, so there is no buying signal of any kind. The quote Gemini gives is a patient-facing booking instruction, not a statement of a business pain point. A cold WhatsApp or email about AI automation would be plausible in general, since the whole intake runs by phone/WhatsApp, but it would be cold outreach with nothing tying it to this post.",
+   "company_role": "end_business",
+   "company_note": "DocNCR (docncr.in) is a real, live end business. It sells doctor home visits in Delhi, Noida, Greater Noida, Ghaziabad, Gurgaon and Faridabad. The site says the consultation is Rs 1,499, the service runs 24/7, and it takes bookings only by call or WhatsApp (no booking form or chatbot). The About page (docncr.in/about-us.html) says: \"Founded by Dr Mahendra Mandiya, DocNCR is a unit of VJMANDIYA PRIVATE LIMITED.\" It also says research began in Jan 2025, home-visit operations began in spring 2025, and the website launched in March 2026. That page's dateModified is 2026-10-19, the same day as the Reddit comment, and the Terms page also says \"Last updated: 19 October 2026\". The company link is therefore self-asserted by the business's own recently edited pages. I found no independent record of \"VJMANDIYA Private Limited\" (no MCA, Zauba, Tofler or Instafinancials hit), and no Google Maps/Justdial listing, no reviews, no LinkedIn or other social presence, and no mention of Dr Mandiya anywhere else. It looks like a very small, young startup of unknown size and revenue. The homepage does not name the founder or the company.",
+   "person_belongs_to_company": "unverifiable",
+   "contact_verified": "yes",
+   "contact_note": "+91 87969 33327 (written 8796933327) is published by the business itself on docncr.in. The homepage has \"Call Now\" (tel: link) and \"WhatsApp Us\" (wa.me/918796933327) buttons for this number. The Terms page (docncr.in/terms.html, Section 6 Contact Us) labels it \"Phone / WhatsApp\". The About and Privacy pages show the same number. Email on the site is contact@docncr.in. The Privacy page also lists an address, M block-193, Gaon Wala Chowk, Raghubir Nagar, Tagore Garden Extension, Delhi 110027, but the site says customers do not visit an office, so it may be a registered or home address. No Google Maps or Justdial listing was found, so the number is verified from the website only. This is the only number on the site. No personal number for Dr Mandiya is published.",
+   "wrong_or_unsupported_claims": [
+    "Date: Gemini says 20 Oct 2026. The comment was posted 19 Oct 2026 (02:44 UTC), inside the window but one day off.",
+    "Person: the Reddit comment was written by the account Mobile_Economist8874, not by Dr Mandiya. The account's only other activity is a 2024 Clash of Clans clan-recruiting post. It says it is 'posting on behalf of DocNCR', so the writer is an unidentified representative. Gemini presents the founder as the person behind the post.",
+    "Name and title: the site says 'Dr Mahendra Mandiya', founder. 'Mahendra Kumar Mandiya' and 'Founder & Director' appear nowhere. The Reddit comment and the About page say 'founded by', and no page says he is a director.",
+    "Pain point: 'families must manually call or WhatsApp to check address coverage, doctor availability, symptoms and dispatch, and the team manually calls every patient the next morning' is Gemini's inference. The author wrote no pain point and no wish to automate anything. The site does describe call/WhatsApp booking, coverage confirmation, and a policy of calling every patient after every visit. A patient testimonial says 'They called me the next morning', but those are service features presented as positives, not complaints.",
+    "'Buying signal: High fit' is unsupported. This is a promotion comment in a megathread and nothing in it signals intent to buy software.",
+    "'500+ NCR sectors' is slightly off. The homepage says '500+ areas, with more added every week', and the coverage section lists five cities (Faridabad appears only in the nav and on the About page).",
+    "'Newly launched' is only partly true. Operations reportedly began in spring 2025 and the website launched in March 2026, so it is a young business but not brand new.",
+    "'Phone WhatsApp & Call on website and Terms page' is correct. The Terms page labels it 'Phone / WhatsApp'. Gemini's phrasing hides the fact that the only identity evidence for the company and founder is the business's own About page, edited the same day as the Reddit comment.",
+    "The 24/7 claim, Delhi Medical Council (DMC) verification of doctors, and the Rs 1,499 flat fee are the business's own statements. I could not verify them independently."
+   ],
+   "grade": "C",
+   "reason": "The post and the quote are real and exact, and the phone number is genuinely published by the business and labelled Phone/WhatsApp. But there is no intent: the comment is pure self-promotion in a startup megathread, and the 'manual calling' pain point is Gemini's own inference, not something the author wrote. The poster is an unidentified account acting 'on behalf of' the company, not the founder. The company link (Dr Mandiya, VJMANDIYA Private Limited) rests only on the business's own About page, edited the same day, with no independent record found. It is a very small, young end business with unknown ability to pay. The structural fit is plausible (everything runs on manual call and WhatsApp intake, 24/7), so it could be a low-priority cold-outreach prospect, but it is not an intent lead. It does not meet B, which needs a clear implied need. Gemini's 'High fit / buying signal' label should be discarded.",
+   "fit_for_iv_infotech": "Potential but unproven. DocNCR's whole intake is manual: calls and WhatsApp for booking, address-coverage checks, dispatch, and follow-up calls after every visit. A WhatsApp booking/triage bot, dispatch workflow and follow-up automation would be relevant to IV Infotech's WhatsApp automation and n8n work. Against that: it is a tiny, young Delhi business (Rs 1,499 per visit, no sign of team size or funding), and it may be happy running calls by hand. It is health-related, so there are patient-data and claims sensitivities. It is also in Delhi NCR, not Gujarat. Treat it as a low-priority cold prospect (contact verified), not as a lead that has asked for help.",
+   "post_author": "Mobile_Economist8874 (Reddit, comment id phme7py, in AutoModerator's thread). The comment says it is posted on behalf of DocNCR. The founder named on the DocNCR About page is Dr Mahendra Mandiya.",
+   "sources": [
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/weekly_startups_promotion_thread_19_october_2026/ (thread and comment confirmed via the Arctic Shift archive API; reddit.com itself returned 403)",
+    "https://arctic-shift.photon-reddit.com/api/comments/search?link_id=1x9l7x1&body=docncr",
+    "https://arctic-shift.photon-reddit.com/api/posts/ids?ids=1x9l7x1",
+    "https://arctic-shift.photon-reddit.com/api/comments/search?author=Mobile_Economist8874",
+    "https://arctic-shift.photon-reddit.com/api/posts/search?author=Mobile_Economist8874",
+    "https://docncr.in",
+    "https://docncr.in/about-us.html",
+    "https://docncr.in/terms.html",
+    "https://docncr.in/privacy.html",
+    "https://docncr.in/disclaimer.html"
+   ]
+  },
+  "skeptic": {
+   "lead": "docncr",
+   "agree_with_grade": true,
+   "final_grade": "C",
+   "corrections": [
+    "Post and quote CONFIRMED independently. Arctic Shift archive record: comment id phme7py by u/Mobile_Economist8874, created_utc 1792377840 = 19 Oct 2026 02:44 UTC, parent is the AutoModerator thread 1x9l7x1, not edited, score 1 (own upvote only), no replies. Both Gemini quote sentences appear verbatim in the body. Gemini's date (20 Oct) is wrong; it is 19 Oct. Inside the 8-22 Oct window.",
+    "INTENT is none, confirmed. The body opens with 'Disclosure: I'm posting on behalf of DocNCR', then describes the service and tells patients to confirm coverage, availability, timing and fee. No ask for a developer, tool, automation or help. The quoted sentences are patient-facing booking advice, not a pain point. Gemini's 'manual calls / next-morning calls' pain point is not in the post (inferred from site copy). 'Buying signal: High fit' is unsupported.",
+    "The author is NOT Dr Mandiya by evidence. The comment is by an anonymous account that says it posts on behalf of DocNCR, so the poster is an unidentified rep. Gemini presents the founder as the person behind the post.",
+    "FIRST VERIFIER ERROR: it said no LinkedIn presence exists. A LinkedIn company page does exist (linkedin.com/company/docncr/, 'Home Health Care Services', Delhi HQ, self-declared 'Founded 2025', 'Company size 11-50 employees'). It names Dr Mahendra Mandiya as founder, says DocNCR is a unit of VJMANDIYA PRIVATE LIMITED, and lists +91 8796933327 and contact@docncr.in. The About page also links LinkedIn and F6S (the F6S page was blocked by a bot check, so UNVERIFIABLE). The identity link is therefore consistent across the business's own channels. But the LinkedIn page looks brand new: the cover-image upload stamp in the image URL converts to about 01:31 UTC on 19 Oct 2026 (my inference from the timestamp), and its only two posts are '3d' old. The About page says 'Business information updated: 19 October 2026'. The Terms page says last updated 19 Oct 2026, and the Reddit comment is also 19 Oct. This looks like one same-day online-presence push (marketing), not independent evidence. The 11-50 headcount is self-declared and unproven.",
+    "Company link still not independently confirmed. Searches found no MCA/Tofler/Instafinancials hit for 'VJMANDIYA PRIVATE LIMITED', no web hit for a 'Mahendra Mandiya' home-visit doctor, no Justdial/Google Maps/Practo listing, and no web page carrying the phone number other than the business's own channels. Treat the founder, the Pvt Ltd and the headcount as self-asserted.",
+    "CONTACT is verified, with the source for each: +91 87969 33327 (8796933327) is published by the business on docncr.in (tel: link, wa.me/918796933327 button, footer WhatsApp link), on the Terms page labelled 'Phone / WhatsApp', on the About and Privacy pages, and on its LinkedIn page. It is the only number found. No Google Maps/Justdial listing was found, so the verification rests on the business's own site. The listed address (M block-193, Gaon Wala Chowk, Raghubir Nagar, Delhi 110027) is not a Maps-verified premises.",
+    "Fit nuance the first verifier missed: the homepage says a real person answers every call with 'no automated menus'. That is a deliberate positioning against IVR/bot intake, so a pitch for a WhatsApp bot may clash with the brand. Weak positives: the Privacy page (last updated April 2026) says they run Google Analytics and Google Ads, so there is some marketing spend, and the intake is entirely manual call/WhatsApp, so a dispatch or CRM workflow is plausible. Both are my inference, not statements by DocNCR. They are in Delhi NCR (not Gujarat), charge Rs 1,499 per visit, and handle sensitive health data. Ability to pay is unknown.",
+    "Minor Gemini inaccuracies: '500+ NCR sectors' is really '500+ areas' on the homepage, and Faridabad is in the nav but not in the coverage list. 'Newly launched' is only partly right: the About page says operations began spring 2025 and the website launched March 2026. 'Mahendra Kumar Mandiya' and the 'Founder & Director' title appear nowhere (the pages say 'Dr Mahendra Mandiya', 'founded by'). The 24/7, DMC-verified doctors and Rs 1,499 claims are the business's own marketing, not independently verified."
+   ],
+   "strongest_objection": "The best case for a higher grade is that DocNCR is a real, live end business with a business-published, WhatsApp-labelled number, and its whole intake (booking, coverage check, dispatch, follow-up calls) is manual, which sits squarely in IV Infotech's WhatsApp/n8n field. But that is Gemini's inference from the company's own site, not an expressed need. The only signal within the window is a disclosed promo comment in a self-promotion megathread, posted by an unidentified rep, with zero engagement. Nobody asked for anything. The company also markets 'no automated menus', which works against the pitch. Nothing in the evidence reaches B, so it stays a cold, low-priority C prospect.",
+   "sources": [
+    "https://arctic-shift.photon-reddit.com/api/comments/search?link_id=1x9l7x1&author=Mobile_Economist8874",
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/weekly_startups_promotion_thread_19_october_2026/",
+    "https://docncr.in",
+    "https://docncr.in/about-us.html",
+    "https://docncr.in/terms.html",
+    "https://docncr.in/privacy.html",
+    "https://docncr.in/disclaimer.html",
+    "https://docncr.in/blog/",
+    "https://www.linkedin.com/company/docncr/",
+    "https://www.f6s.com/docncr (blocked by bot check, unverifiable)"
+   ]
+  }
+ },
+ {
+  "lead": "excel_tools",
+  "verify": {
+   "lead": "excel_tools",
+   "post_exists": "yes",
+   "post_date": "2026-10-19 (05:32 UTC), inside the 8-22 Oct window",
+   "post_author": "Meet-Tank4 (forum display name \"Meet Tank4\", not \"Meet Tank\"); no company, job title, bio or location on the forum profile",
+   "quote_verified": "exact",
+   "intent": "none",
+   "intent_note": "The post is a how-to question to the ERPNext community. It asks whether a BOM plus Repack/Manufacture stock entry is the recommended way to pack 5 sets plus a carton in ERPNext v16. It also asks which gives better valuation and whether any standard feature auto-deducts packing material on a Delivery Note. Nobody is asked to build, quote or automate anything. The author already runs ERPNext v16.50, India Compliance and Frappe CRM v2 dev, and his only reply is from a Frappe team member asking \"why not?\" about the Print Hide point. Of his 38 forum topics, many are about customising or upgrading ERPNext (client/server scripts, print formats, migration), plus many bug reports, feature requests and a \"Developer Learning Hub\" thread. A cold WhatsApp or email about AI automation or a custom ERP/CRM would not relate to anything he wrote. He has ERP, HR and CRM running and is tuning them himself.",
+   "company_role": "unclear",
+   "company_note": "The only link between the author and \"Excel Tools And Equipments\" is the post's words \"We manufacture tool sets\" and the product name \"Excel P14 Master Carton - 5 Sets\". The post never names the company or any location. I found no profile, site, LinkedIn page or IndiaMART listing connecting him to it. Both public listings describe a small hardware retailer, not a tool-set manufacturer. Google Maps calls it \"Hardware store\" (4.8 stars, 6 reviews, no website, 29 photos, 2 of the 6 reviews 2 years old, one 5 years old: \"one stop solution of all equipments need, owner and staff are very helpful\"). Justdial files it under Hardware Shops and Pipe Dealers (5.0, 6 ratings) with the summary \"pipes, nuts, bolts, screws\", and shows a \"Claim this business\" button. Address on both: Plot No 209/210, beside Perfect Polyplast, Aji GIDC, Rajkot 360003. Nothing shows any ERP use, headcount or turnover for that shop. His forum activity (an Employee Checkin list with 6,600+ records, biometric sync, payroll overtime, an Agriculture module question) does not look like a 6-review hardware shop. His GitHub account (Meet-Tank4) has one public repo, \"odoo\", containing custom Odoo 17/18 addons and project folders named anansi_project, agrolt, indiamart_odoo and dgpl_gardens. That suggests he may be an ERP developer or implementer working on several projects, which would make him a peer or competitor. This is an inference, not confirmed. Gemini's job title \"Operations / ERP Lead\" appears nowhere.",
+   "person_belongs_to_company": "unverifiable",
+   "contact_verified": "partial",
+   "contact_note": "The Google Maps listing for EXCEL TOOLS AND EQUIPMENTS (Hardware store, Plot 209/210 Aji GIDC) shows the phone 098244 52001, so +91 98244 52001 does appear on that listing, matching Gemini. Maps does not label it WhatsApp, and the listing has no website. I could not confirm the business itself published it, and could not check whether the listing is claimed. On Justdial the number is hidden behind a \"Show Number\" button, which I did not click (it normally asks for login or OTP). The Justdial page source does not contain the number, so Justdial is unverified. The Justdial WhatsApp button is a generic feature of every listing, not evidence this number has WhatsApp. This number belongs to the shop listing, not to the forum poster, and nothing shows the poster works there. A message to it would reach a hardware shop, not an ERP user.",
+   "wrong_or_unsupported_claims": [
+    "Gemini's \"Operations / ERP Lead\" title is not on the forum profile, the GitHub profile or the post. The forum profile has title null and no bio.",
+    "The \"Profile\" link https://github.com/frappe/frappe/issues/33365 is not a profile. It is a July 2025 Frappe v15 dark-theme bug report from the same username. It does not mention Excel Tools, Rajkot or any company.",
+    "The \"tool-set manufacturer/wholesaler\" label is not supported by the cited listings. Google Maps says Hardware store and Justdial says Hardware Shops / Pipe Dealers (pipes, nuts, bolts). No page I found shows that Excel Tools And Equipments makes or owns an \"Excel P14\" tool set.",
+    "The claim that Meet Tank belongs to Excel Tools And Equipments is unsupported. The post names no company, only a product called \"Excel P14\", and the word \"Excel\" is not evidence by itself.",
+    "\"High local Gujarat fit for custom ERP/CRM automation\" is Gemini's own inference. The author never says where he is, and ERPNext, HR and Frappe CRM are already running. He asks a configuration question and does not ask for a vendor.",
+    "The name is \"Meet Tank4\" (username Meet-Tank4), not \"Meet Tank\".",
+    "Gemini's post summary and date (19 Oct 2026) are correct, but that only proves a post exists, not a buying signal. The thread has one reply, from a Frappe team member."
+   ],
+   "grade": "REJECT",
+   "reason": "The post is real, dated 19 Oct 2026, and the topic matches Gemini's description. It is not a buying signal and the person-to-company link is unproven. It is a technical ERPNext configuration question with no request for help or a vendor, and the author already runs ERPNext v16, HR and Frappe CRM. Nothing shows he works for Excel Tools And Equipments. The only evidence for that company is the shop's own listings (Google Maps: Hardware store; Justdial: Hardware Shops / Pipe Dealers), which show a small retailer, not a tool-set manufacturer. His GitHub (custom Odoo addons for several named projects) and forum history suggest he may be an ERP developer or implementer, which would make him a peer, not a client. The phone number exists on the Google Maps shop listing but belongs to the shop, not to him. Gemini's job title and \"manufacturer/wholesaler\" label are unsupported. Do not contact this lead.",
+   "fit_for_iv_infotech": "Poor. An ERPNext config question gives no reason to pitch a WhatsApp automation or a custom ERP/CRM. An ERPNext user who tunes his own system with client and server scripts would not be won by a cold message. If he is a freelance ERP developer, he is a peer or possible partner, not a buyer. The only reachable number is a hardware shop's listing number, and nothing shows the shop has budget or an automation need. No buying-power evidence was found either way (6-review shop; unknown headcount).",
+   "sources": [
+    "https://discuss.frappe.io/t/sell-master-carton-5-sets-carton-as-one-item-auto-deduct-packing-without-product-bundle-v16/165274",
+    "https://discuss.frappe.io/u/Meet-Tank4.json",
+    "https://discuss.frappe.io/topics/created-by/Meet-Tank4.json",
+    "https://discuss.frappe.io/t/163719.json",
+    "https://github.com/frappe/frappe/issues/33365",
+    "https://github.com/Meet-Tank4",
+    "https://github.com/Meet-Tank4/odoo",
+    "https://www.justdial.com/Rajkot/Excel-Tools-And-Equipments-Beside-Perfect-Polyplast-Aji-GIDC/0281PX281-X281-230128101309-Q6T7_BZDET",
+    "https://www.google.com/maps/search/Excel+Tools+and+Equipments+Aji+GIDC+Rajkot"
+   ]
+  },
+  "skeptic": null
+ },
+ {
+  "lead": "contus_mirrorfly",
+  "verify": {
+   "lead": "contus_mirrorfly",
+   "post_exists": "yes",
+   "post_date": "2026-10-16 (original post 8:38pm UTC; thread still receiving replies to 2026-10-22, 129 posts, about 1,350 views)",
+   "post_author": "Shyamvijay (display name \"Shyam Vijay\") on community.n8n.io, Jobs category. The profile is hidden, the post names no company, and the author never replied in the pages I checked (1, 2, 3, 5 and 7).",
+   "quote_verified": "partial",
+   "intent": "explicit",
+   "intent_note": "The post is an explicit paid-freelance request for an n8n + MirrorFly developer. Scope: meeting creation, Google Calendar/Calendly scheduling, invites and reminders, HubSpot/Salesforce/Pipedrive sync, post-meeting follow-ups, and an optional recording add-on. Budget: base GBP 800-1,000 and advanced GBP 800-1,200. Deliverables: workflows, docs, one handover session and 30 days of bug support. The author wrote that they are ready to start immediately and gave no company, existing app, location or timeline. The ask is video-meeting automation, not WhatsApp automation, so a cold WhatsApp or email pitch would only be relevant as a reply offering to build exactly this. The thread is a crowded bidding pit. More than 100 replies are mostly bids and pitches (Pond AI, agencies, AI-agent accounts) quoting about GBP 900-1,000. Several posters asked whether the role is still open and got no answer. The author has been silent for 6 days with no sign a developer was chosen.",
+   "company_role": "agency_or_vendor",
+   "company_note": "CONTUS Tech Private Limited (CIN U72300TN2008PTC066630, founded 2008, Chennai, Porur office) owns MirrorFly. The MirrorFly site footer says \"CONTUS TECH PRIVATE LIMITED\" and links About to contus.com. contus.com calls itself an \"AI transformation partner\" selling product development, digital engineering, AI and cloud services. That makes it a software vendor and services firm, so it is a competitor to IV Infotech, not an end business. contus.com cites \"1000+ agile experts\" in its talent pool. Gemini's \"400+ employees\" is not confirmed by the company site. Sriram Manoharan as Founder and CEO appears only on Owler (crowdsourced), not on the company site. The post itself names no company, so the link to CONTUS rests on the author's name and the MirrorFly topic.",
+   "person_belongs_to_company": "probably",
+   "contact_verified": "unverifiable",
+   "contact_note": "Neither contus.com nor mirrorfly.com publishes any phone, WhatsApp number or email. Both show only an address (The Hive Workspaces, Keppel One Paramount, Porur, Chennai 600116) and HubSpot demo/contact forms. I could not open the Google Maps listing, TechBehemoths (403) or Cutshort. Web searches for +91 98843 11333 and 044-49201030 found nothing tied to CONTUS. A Comparably listing gives a different landline, 044-4920 1000, and IndiaMART lists +91 80478 28436, both third-party. Neither of Gemini's numbers is shown to be business-published, and neither is shown to be a WhatsApp line. The n8n post gives no contact except a forum reply.",
+   "wrong_or_unsupported_claims": [
+    "Shyam Vijay is not in Product Marketing. His Peerlist resume (self-reported) says Senior Content Strategist at MirrorFly, listed as Senior Digital Marketing Associate at Contus Tech since Feb 2025, and his Substack says he writes content for communication APIs. He is a content/digital marketer, not a product or engineering owner. Gemini's title is unsupported.",
+    "The post never says Shyamvijay works for MirrorFly or CONTUS. The n8n profile is hidden and no company is named. Gemini treated a name match as identity; it is probable but unproven.",
+    "The budget 'GBP 800-2,200' is a merge of two ranges: base 800-1,000 and advanced 800-1,200. 2,200 is the sum of the upper bounds, not a stated figure. The sterling budget also does not fit a Chennai company's own project.",
+    "The phones +91 98843 11333 (Google Maps/TechBehemoths) and 044-49201030 (Cutshort) are third-party listings I could not confirm. The company's own sites publish no phone. Gemini presented them as usable contacts.",
+    "'400+ employee' is not supported by the company site, which claims 1000+ agile experts. This is a firm of hundreds of people that is itself a software services provider, not a small buyer.",
+    "'Active 22 Oct' is true only because other people kept replying. The author did not post after 16 Oct and nobody has answered the 'is it still open' questions.",
+    "Gemini implies the author needs automation help from IV Infotech. The thread is an open contest with 100+ bidders, many already quoting about GBP 900-1,000. An uninvited WhatsApp or email to a vendor's marketing employee is a weak, competitive approach."
+   ],
+   "grade": "C",
+   "reason": "The post is real, dated 16 Oct (inside the window) and an explicit paid ask for n8n automation. That part of Gemini's claim holds. It still falls short of a usable A or B lead for four reasons. (1) The company, CONTUS/MirrorFly, is a software product and services vendor that sells the same kind of work we do, so it is a competitor or peer. (2) The post names no company, and the n8n profile is hidden. The author is a content/digital marketing employee (not Product Marketing as Gemini said), so the link to CONTUS is probable only, and this may not be an official company project. (3) The phone numbers are not shown on the company's own sites and could not be verified. (4) The thread is a crowded bidding pit with 100+ replies, a low GBP 800-1,200 budget and a silent poster. The task is also video-conferencing/CRM glue, not our WhatsApp automation sweet spot. It is not a REJECT because the post and its date exist and the intent is real. Treat it as low priority. At most, reply publicly on the n8n thread if the team wants to bid like everyone else; do not cold-contact the listed phone numbers.",
+   "fit_for_iv_infotech": "Technically in scope, since IV Infotech builds n8n workflows and CRM integrations. Commercially poor. The budget is about GBP 800-1,200, which is roughly INR 85-130k, against 100+ competing bids, many from agencies and AI-agent accounts quoting the same price. The poster is silent and the buyer is probably a vendor's marketing employee, not a decision-maker. Ability to pay is plausible for CONTUS as a firm, but this specific project is small and contested. Do not pursue by cold WhatsApp or phone. A reply on the thread is the only sensible route, and it is a long shot.",
+   "sources": [
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016.json",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016?page=2",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016?page=3",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016?page=5",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016?page=7",
+    "https://community.n8n.io/u/Shyamvijay.json",
+    "https://peerlist.io/shyamvijay/resume",
+    "https://peerlist.io/company/contus/people",
+    "https://shyamvijay.substack.com/",
+    "https://www.contus.com/",
+    "https://www.mirrorfly.com/",
+    "https://www.comparably.com/companies/contus",
+    "https://www.instafinancials.com/company/contus-tech-private-limited-U72300TN2008PTC066630",
+    "https://www.owler.com/company/contus/competitors"
+   ]
+  },
+  "skeptic": {
+   "lead": "contus_mirrorfly",
+   "agree_with_grade": true,
+   "final_grade": "C",
+   "corrections": [
+    "POST CONFIRMED (re-opened independently): the n8n thread exists. Title 'N8n + MirrorFly Developer for Video Conferencing Automation', category 13 = Jobs, created 2026-10-16 20:38 UTC by username Shyamvijay (display 'Shyam Vijay'), 1,352 views, last reply 2026-10-22 01:59 UTC. The wording 'This is a paid freelance project with clear requirements and a defined scope' is in the original post. Intent is explicit: a paid n8n + MirrorFly developer is wanted. The post says 'email or messaging services' and never names WhatsApp.",
+    "FIRST VERIFIER IS RIGHT, AND I CAN STRENGTHEN IT: I pulled all 128 posts through the Discourse JSON API, not only pages 1, 2, 3, 5 and 7. The only post by Shyamvijay in the whole thread is post #1. The author has never replied, never named a company, and never said whether a developer was chosen. At least 14 bidders asked 'is this still open?' (for example posts 43, 50, 54, 86, 89, 108, 110, 114, 117, 119, 122-124) and none got an answer. 'Active 22 Oct' in Gemini's claim therefore reflects other people's bids, not the author. The post metadata shows trust_level 0 and the profile is hidden.",
+    "MINOR FIX to the first verifier: the thread has 128 posts (post numbers run to 129, and #5 is missing), not 129. The reply count shown by the API is 7. The 100+ bids are mostly agencies, AI-agent accounts and freelancers (Pond AI disclosure, Octacer, Hez Core and others), so the 'crowded bidding pit' point holds.",
+    "IDENTITY: the first verifier's finding holds. The Peerlist profile 'Shyam Vijay' (joined 23 May 2025) has the headline 'Senior Content Strategist at MirrorFly' and lists 'Senior Digital Marketing Associate' at Contus (Feb 2025-present, Chennai). That is a content/digital-marketing role, not 'Product Marketing' as Gemini wrote. No page I could open links the n8n account to the Peerlist profile. The link rests on the same name, the same handle slug and the MirrorFly topic, so it is probable, not proven. The n8n post names no company. I did not re-open the Substack, since the Apify fetch was still running when I stopped waiting.",
+    "CONTACT, NEW EVIDENCE the first verifier could not get (it reported TechBehemoths and Cutshort as 403 and Cutshort as unopened). (a) Cutshort https://cutshort.io/company/contus opens. 044-49201030 appears there only inside an old 'Fullstack Developer' job ad, as 'Contact :- HR -Akshaya- 044-49201030 / 9940669912', posted by an HR partner. That is a stale recruiter line on a third-party job board. It is not a business-published sales number and is not labelled WhatsApp. The ad also carries the old Guindy-era '200+ tech professionals' text. (b) TechBehemoths https://techbehemoths.com/company/contus opens. The profile is unclaimed and stale: HQ shown as Atlanta, one phone +1 408 707 2982, team size 250-999. +91 98843 11333 is NOT on it, so Gemini's TechBehemoths attribution is false. (c) +91 98843 11333: web searches found nothing tied to CONTUS, and I could not open the Google Maps listing, so it is UNVERIFIABLE. (d) contus.com and mirrorfly.com publish no phone or WhatsApp number. Only the Porur, Chennai address and demo forms appear. No usable business-published contact exists.",
+    "COMPANY: CONTUS Tech Private Limited (footer on mirrorfly.com; contus.com) is a software services and product firm. It sells product development, digital engineering, AI and cloud services, plus its own products MirrorFly, VPlayed and OnTheFly. That makes it a vendor and competitor, not an end business. Headcount claims are inconsistent across sources: contus.com says '1000+ agile experts', mirrorfly.com says '300+ In-House Developers', TechBehemoths says 250-999 and Cutshort says 100-1000. Gemini's '400+' is not stated anywhere I could open. Sriram Manoharan as Founder & CEO is not on the company site (Owler search snippet only).",
+    "GEMINI CLAIMS THAT ARE WRONG OR UNSUPPORTED: (1) 'GBP 800-2,200' is a merge of two ranges, base 800-1,000 and advanced 800-1,200; 2,200 is not in the post. (2) Shyam Vijay is not Product Marketing (see above). (3) The phones are not business-published, and one is an HR recruiter line from an old ad. (4) '400+ employees' is unsupported. (5) Any suggestion that this is an end-business buyer is wrong, since the author's employer sells the same kind of work. (6) The post asks for MirrorFly video-API plus n8n/CRM glue, not WhatsApp automation.",
+    "FIT AND PAYING ABILITY: n8n and CRM glue is in IV Infotech's scope, but the post prefers MirrorFly SDK/video experience, which we have no evidence of. The budget is about GBP 800-1,200, roughly INR 1 lakh by my rough estimate at about INR 110 per GBP (not verified). Against 100+ bids this is a long shot. CONTUS could pay as a firm, but a marketing employee's freelance brief is not a decision-maker's project. Recommended action: do not cold-WhatsApp or call any listed number. The only route is a public reply on the n8n thread, if the team wants to bid like everyone else."
+   ],
+   "strongest_objection": "The best case that C is too generous is REJECT. The only deliverable that makes a lead usable is a business-published contact, and every number Gemini gave fails: one is an HR recruiter line from a stale job ad, the other is unverifiable, and neither company site publishes a phone. The poster is a marketing employee at a competing software vendor. Nothing in the post links it to CONTUS or MirrorFly, the author has been silent for six days, and 14 or more bidders asking 'is it still open?' got no answer. It could be an unfunded marketing or community-seeding exercise, though I could not verify that. I still grade C, not REJECT, because the post is real, dated 16 Oct inside the window, and an explicit paid ask for n8n work, and Gemini's description of CONTUS as a SaaS/CPaaS provider is accurate. It is a real signal from the wrong kind of buyer, and it cannot be reached by cold outreach.",
+   "sources": [
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016",
+    "https://community.n8n.io/t/n8n-mirrorfly-developer-for-video-conferencing-automation/322016.json",
+    "https://community.n8n.io/t/322016/posts.json",
+    "https://community.n8n.io/u/Shyamvijay.json",
+    "https://community.n8n.io/c/13/show.json",
+    "https://peerlist.io/shyamvijay/resume",
+    "https://www.contus.com/",
+    "https://www.mirrorfly.com/",
+    "https://cutshort.io/company/contus",
+    "https://techbehemoths.com/company/contus",
+    "https://www.comparably.com/companies/contus",
+    "https://www.owler.com/company/contus/competitors"
+   ]
+  }
+ },
+ {
+  "lead": "innoterra",
+  "verify": {
+   "lead": "innoterra",
+   "post_exists": "yes",
+   "post_date": "16 Sep 2026 (both issues, created 2026-09-16 at 12:13Z and 12:28Z; last comment 18 Sep by innoterraindia; Gemini's \"17 Oct 2026\" is wrong)",
+   "post_author": "GitHub user Deepakjs5665 (both issues end with \"Regards, Deepak Singh\"); a second account, innoterraindia, commented on #59113 on 18 Sep",
+   "quote_verified": "partial",
+   "intent": "none",
+   "intent_note": "Both threads are feature requests filed to the ERPNext open-source project (labels: feature-request, Under Review). #59113 asks ERPNext to ship FY-wise consolidated Audit Trail / Edit Log reports for statutory audit. Its body mentions \"JSON diff of old/new values\" only as a description of tabVersion data. It does not say \"automate\" and does not mention external accounting tools as a build task. #59114 asks for a separate MR->PO quantity-allowance setting in Buying Settings; it was closed 6 Oct because a maintainer said \"Over Order Allowance %\" already existed (PR #55340). Neither is a request for anyone to build or automate something. Nobody is hiring a vendor. The topics (audit-trail reports, PO tolerance settings) are ERP core features, not WhatsApp or workflow automation, so a cold WhatsApp or email about AI automation would not be relevant to what he wrote.",
+   "company_role": "end_business",
+   "company_note": "Innoterra Limited (formerly MilkLane Dairy Services Pvt Ltd) is a real, operating, technology-led agri-food group: raw milk procurement, cattle nutrition (Aayush), fruits, rice (Amaraah). Brands on innoterra.in are MilkLane and Farmlink. Happy Fruits is not on the homepage. Offices: Vashi (Navi Mumbai) and Bengaluru. It filed a DRHP with SEBI on 29 Jun 2026 (fresh issue Rs 105 Cr). Reported revenue was Rs 191.7 Cr (FY24), Rs 163.5 Cr (FY25) and Rs 236.7 Cr for the nine months to Dec 2025. It is a Swiss-linked group of about 20 entities in 7 countries, with directory headcount figures of 346 to over 500. So it can pay, but it is large and already has an ERP stack. Frappe's case study says ERPNext was implemented on Frappe Cloud by Agkiya Technology and Consulting LLP (modules include Buying, Selling, Accounts, Stock, Manufacturing, HRMS and custom Landed Cost, Orchestration Workflows and a mobile app). Its ERP vendor is therefore already in place. Ticket \"44555\" in the older issue #48766 suggests a vendor support channel.",
+   "person_belongs_to_company": "probably",
+   "contact_verified": "partial",
+   "contact_note": "Verified from innoterra.in/contact-innoterra/: +91 22 4750 8225 (Navi Mumbai office, Vashi) and +91 80 4909 2960 (Bengaluru office), plus email customercare@innoterra.com. These are generic office landlines, not WhatsApp. The page does not mention WhatsApp. +91 22 4540 5100 \"Google Maps\": I could not verify it. The Maps page did not load and searches did not return it, so it is UNVERIFIABLE. No direct number for Deepak exists. Reaching an ERP/IT person would mean going through a switchboard.",
+   "fit_for_iv_infotech": "Poor. It is a Rs 160-240 Cr, IPO-bound group with ERPNext on Frappe Cloud, run by an implementation partner (Agkiya) and Frappe support. A small Mehsana firm cannot credibly pitch custom ERP or CRM to them. The audit-trail and PO-tolerance asks are ERPNext core product gaps, not services work. A generic AI/WhatsApp-automation pitch to a person who only filed upstream feature requests has no hook. They could pay, but there is no buying intent and a vendor already holds the account.",
+   "wrong_or_unsupported_claims": [
+    "Date wrong: Gemini says 17 Oct 2026. Both issues were created 16 Sep 2026, so they fall outside the 8-22 Oct window and are about 36 days old. The only later activity is the issue-#59113 bot/triage activity, a 3 Oct comment by an unrelated third party (gopinathaum-rgb), and the closing of #59114 on 6 Oct.",
+    "Intent wrong: Gemini frames it as automating consolidated audit-trail JSON diff reports across ERPNext and external accounting tools. The author asked ERPNext (the open-source project) to add a standard report. He did not ask anyone to automate or build anything.",
+    "Issue content mismatched: #59113 is the audit-trail request and #59114 is the MR->PO tolerance request. #59114 was closed on 6 Oct because the feature already existed (maintainer said so), so it is not an open pain point.",
+    "Title unsupported: 'ERP & Tech Operations Lead' appears nowhere. The GitHub profile Deepakjs5665 has no name, bio, company or repos, the issue bodies carry no job title, and no LinkedIn or other source for a Deepak Singh at Innoterra was found.",
+    "Company link is indirect: the two cited issues never name Innoterra. The link comes from the same account's older issue #48766 (titled 'Innoterra : Request to Enable Report...', 2025, closed as duplicate) and the innoterraindia comment, so the company is probable but not confirmed.",
+    "Phone +91 22 4540 5100 attributed to Google Maps could not be verified. The other two numbers do appear on the company's contact page, but they are generic office lines and none is labelled WhatsApp.",
+    "Happy Fruits is not on innoterra.in's homepage, so that brand claim is unsupported there."
+   ],
+   "grade": "C",
+   "reason": "Innoterra is a real, sizeable end business and the GitHub posts exist, but the lead does not match Gemini's description. The posts are 36 days old (16 Sep, not 17 Oct), outside the 14-day window. They are upstream feature requests to the ERPNext project, not requests for anyone to build or automate something. One was already closed as 'feature exists'. The company has an ERPNext implementation partner (Agkiya) and Frappe Cloud support, the contacts are generic office landlines with no WhatsApp, the person's title is unsupported, and there is no hook for a cold AI-automation pitch. Not a fabricated lead, so not a REJECT, but not worth outreach.",
+   "sources": [
+    "https://github.com/frappe/erpnext/issues/59113",
+    "https://github.com/frappe/erpnext/issues/59114",
+    "https://api.github.com/repos/frappe/erpnext/issues/59113",
+    "https://api.github.com/repos/frappe/erpnext/issues/59114",
+    "https://api.github.com/repos/frappe/erpnext/issues/59113/comments",
+    "https://api.github.com/repos/frappe/erpnext/issues/48766",
+    "https://github.com/Deepakjs5665",
+    "https://innoterra.in",
+    "https://innoterra.in/contact-innoterra/",
+    "https://frappe.io/stories/Innoterra%20Group",
+    "https://www.businesstoday.in/markets/ipo-corner/story/renfra-energy-innoterra-gni-infra-file-drhps-with-sebi-for-ipos-check-key-details-540267-2026-07-01",
+    "https://www.kotakneo.com/news/ipos/innoterra-india-ipo-drhp-sebi-105-crore-fresh-issue-milk-collection-agritech/"
+   ]
+  },
+  "skeptic": {
+   "lead": "innoterra",
+   "agree_with_grade": false,
+   "final_grade": "REJECT",
+   "corrections": [
+    "The first verifier's facts check out and I reproduced them: both issues were created 16 Sep 2026 (#59113 at 12:13Z, #59114 at 12:28Z), by GitHub user Deepakjs5665. #59113 is open and was last updated 3 Oct. #59114 was closed 6 Oct by maintainer mihir-kandoi, who said Over Order Allowance already exists (PR #55340). Nothing from either account falls inside the 8-22 Oct window. A search for Deepakjs5665's comments since 1 Oct returned 0.",
+    "Likely origin of Gemini's wrong date: Frappe staff member DipenFrappe commented on #59113 on 17 Sep 2026 ('Have you tried the Audit Trail report?'). Gemini probably misread 17 Sep as 17 Oct. This is my inference, not something I could confirm.",
+    "The first verifier graded the person-to-company link 'probably'. It is weaker than that. Deepakjs5665 has filed 18 issues since Oct 2024 under many different client-name prefixes (Innoterra, Duval, CE, ClouldExtel, Agkiya). The Agkiya issue (frappe/frappe#31300) says 'our client', and #59114 says 'Multiple clients have requested that these be decoupled'. Most of the issues are signed 'Regards, Deepak Singh', so he looks like an ERPNext implementation consultant filing for several clients. That makes him a vendor-side person, not Innoterra staff. The likely employer is Agkiya Technology and Consulting LLP, the Frappe partner that implemented Innoterra's ERPNext, but no page names him, so this is an inference. Innoterra has its own account, innoterraindia, which commented on #59113 on 18 Sep.",
+    "#59114 never names Innoterra. It is a generic multi-client request and was closed as 'already exists'. Gemini's link between #59114 and Innoterra rests only on the shared account.",
+    "The first verifier said the issue 'does not mention external accounting tools'. That is slightly off. #59113 says reports should cover the ERP 'and any other accounting software used in parallel', and its acceptance criteria say to identify any non-ERP accounting software that needs a separate export. 'JSON diff of old/new values' (from the Version table) is also in the body. So parts of Gemini's quote have a basis. The words 'automate' and 'Innoterra' are not in either body. It is a request to the ERPNext project to ship a report, not a request for anyone to build or automate something.",
+    "The Google Maps number +91 22 4540 5100 is still UNVERIFIABLE. The Maps short link that came up in search resolves to a place called 'International Exibhibition Centre' at Platinum Techno Park, which is the building, not Innoterra. It showed no phone number. A search for the number returned nothing tied to Innoterra, and the Justdial result was also for Platinum Techno Park, not for the company. The other two numbers (+91 22 4750 8225 Navi Mumbai, +91 80 4909 2960 Bengaluru) are on the company's contact page. They are office lines with no WhatsApp mention, and the page names no individual.",
+    "'ERP & Tech Operations Lead' and the personal link between Deepak Singh and Innoterra are unsupported. The GitHub profile is empty (no name, company or repos). The Frappe case study names only Ram Shastri (Product Manager), and a web search found no Deepak Singh at Innoterra. 'Happy Fruits' is not on the innoterra.in homepage, which lists MilkLane, Farmlink, InnoDairy, Amaraah and Aayush.",
+    "Grade changed from C to REJECT. Gemini's main claims are false: the date is outside the window by about 36 days, the 'automate' intent is invented, the job title is unsupported, and the author is probably a consultant for several clients. The lead as described does not exist. I would not send an outreach message. The company is real, so this is a close call with C."
+   ],
+   "strongest_objection": "Nothing here is fabricated, so C is arguably fairer than REJECT. Innoterra is a real, operating, IPO-bound agri-food group that can pay. Its own GitHub account (innoterraindia) said on 18 Sep that the existing ERPNext Audit Trail report 'is not serving the purpose', so a statutory-audit reporting gap is real and open. A custom script report built on the Version table, which is what the thread itself suggests, is something a custom-software shop could in principle build. Against that, the posts are 36 days old, they are asks to the ERPNext project and not requests for a vendor, a different party (Agkiya) holds the ERPNext account, the author is probably a consultant, and the contacts are generic office lines. The REJECT call rests on how strictly 'not what Gemini says' is read. Either grade means no outreach.",
+   "sources": [
+    "https://api.github.com/repos/frappe/erpnext/issues/59113",
+    "https://api.github.com/repos/frappe/erpnext/issues/59113/comments",
+    "https://api.github.com/repos/frappe/erpnext/issues/59114",
+    "https://api.github.com/repos/frappe/erpnext/issues/59114/comments",
+    "https://api.github.com/repos/frappe/erpnext/issues/48766",
+    "https://api.github.com/repos/frappe/frappe/issues/31300",
+    "https://api.github.com/repos/frappe/erpnext/issues/57332",
+    "https://api.github.com/repos/frappe/erpnext/issues/57671",
+    "https://api.github.com/search/issues?q=author:Deepakjs5665",
+    "https://api.github.com/search/issues?q=author:innoterraindia",
+    "https://api.github.com/users/Deepakjs5665",
+    "https://api.github.com/users/innoterraindia",
+    "https://innoterra.in",
+    "https://innoterra.in/contact-innoterra/",
+    "https://frappe.io/stories/Innoterra%20Group",
+    "https://frappe.io/partners/India/Agkiya%20Technology%20and%20Consulting%20LLP",
+    "https://maps.app.goo.gl/RBbavt89Fo7JDEVv9"
+   ]
+  }
+ },
+ {
+  "lead": "diya_tech",
+  "verify": {
+   "lead": "diya_tech",
+   "post_exists": "yes",
+   "post_date": "2026-10-19 (comment posted 15:47 UTC on 19 Oct 2026, not 21 Oct as Gemini said). The parent thread is the AutoModerator weekly promotion thread of 19 Oct 2026 (58 comments). Inside the 8-22 Oct window.",
+   "post_author": "Reddit user u/Slight_Big_43 (comment id phps86c). The comment text does not give a personal name. It says \"I'm the founder and full-stack engineer behind Diya Tech Solutions\" and links a LinkedIn profile under the name \"Muthulaskhmi Vivek\" (the URL slug and the profile title use this spelling).",
+   "quote_verified": "partial",
+   "intent": "none",
+   "intent_note": "The comment is a self-promotion post in a weekly promotion thread. The author is selling their own services. They write that they build \"custom, scalable web applications and operational tools directly with startups\". They are looking for \"Startups and agency founders looking for a reliable, dedicated technical lead / full-stack developer\" and say \"Networking with fellow Indian founders and builders!\". The author asks for no help and has no pain of their own. The \"off-the-shelf tools become too expensive or restrictive\" line is their sales pitch to prospects, not their own problem. The post does not mention n8n, WhatsApp automation, AI agents, white-labelling or any wish for a partner who supplies those things. Its stack is Laravel, React, MySQL, REST APIs, Tailwind and Linux/DevOps. A cold WhatsApp or email offering AI automation would be unrelated to what they wrote. At most it would be a vendor-to-vendor partnership pitch.",
+   "company_role": "agency_or_vendor",
+   "company_note": "Diya Tech Solutions is a software vendor and a direct competitor of IV Infotech. The site diyatechsolutions.com lists custom web development, mobile apps and CRM implementation. It also sells its own products: QuickBill/KariBill (POS and GST billing), QuickSite, Diya CRM, JewelSoft (jewellery ERP), Clinical Care and Academy/NEET Prep. The site is live. Its footer shows \"© 2026\" and the address \"Mariamman Kovil Street, Srivilliputtur -626125, Tamilnadu\". The domain was registered on 5 Jan 2026 through GoDaddy (RDAP), so the business is under 10 months old online. The Reddit post says \"I\", and the site gives no team size or founder name, so it looks like a solo or very small studio. The site shows client logos for Masha Imports, Super Brand and Spreky, and testimonials from Thowfiq (Superbrand), Mohammed (Masha Imports) and Rajesh (Horizon Properties). I did not verify any of them. The person-to-company link rests on the author's own words and a LinkedIn link in the post. The public LinkedIn stub shows only the name and \"Virudhunagar, Tamil Nadu\", with no company or headline. Srivilliputtur is in Virudhunagar district, which fits. The company's own site names no founder. I found no Google Maps, Justdial or IndiaMART listing for the business.",
+   "contact_verified": "partial",
+   "contact_note": "+91 91595 23221 is real and is published by the business on its own website footer (tel:+919159523221, checked in the live DOM). It is not labelled WhatsApp anywhere. The site also lists the email sales@diyatechsolutions.com. I found no Google Maps or Justdial listing to cross-check, and a search for the number returned nothing. The number is a business contact for sales enquiries to a vendor, not a buyer contact. Founder name: \"Muthulakshmi Vivek\" is supported only by the LinkedIn slug in the Reddit post (spelled \"Muthulaskhmi\"). Neither the company site nor the Reddit comment text states it.",
+   "person_belongs_to_company": "probably",
+   "wrong_or_unsupported_claims": [
+    "Comment date is wrong: Gemini said 21 Oct 2026, the actual date is 19 Oct 2026 (15:47 UTC). Both fall inside the window.",
+    "The quote is lightly edited. The original reads 'Off-the-shelf tools (like generic CRMs or basic CMSs) become too expensive or restrictive as soon as business workflows get complex.' The parenthetical was dropped without marking it. The closing sentence 'Open to feedback, collaborations, or just connecting with fellow builders in the community!' is exact.",
+    "Presenting the off-the-shelf line as a pain point or buying signal is wrong. It is the vendor's own sales pitch aimed at other startups.",
+    "'Medium-high partnership signal (white-label n8n + WhatsApp AI agent partner)' is unsupported. The post never mentions n8n, WhatsApp automation, AI agents or white-labelling. It asks only for startups and agency founders who need a full-stack developer or technical lead.",
+    "'Founder Muthulakshmi Vivek' is not stated in the comment text or on the company site. It rests only on the LinkedIn link in the comment, and the public LinkedIn stub shows no company.",
+    "'Custom web/POS/CRM development studio' is accurate. But that makes it a competitor, so describing it as a lead is wrong.",
+    "The phone number is on the website footer, as Gemini said, but it is not a WhatsApp number."
+   ],
+   "grade": "C",
+   "reason": "The comment exists and is quoted almost correctly. Gemini got the date wrong (19 Oct, not 21 Oct), trimmed the quote without marking it, and invented the partnership signal. The author is a vendor promoting their own web, CRM and POS development services, and has no need or request for anything IV Infotech sells. Diya Tech Solutions is a direct competitor in custom software, CRM, ERP and mobile apps. It is a small, young studio (domain registered Jan 2026, apparently solo). Nothing in the post suggests it would buy or white-label AI or WhatsApp automation. The website phone is real and business-published but is not marked WhatsApp. At most this is a speculative vendor-to-vendor contact to park, not a client lead, so I did not grade it A or B. I did not grade it REJECT because the post, the company and the number are real.",
+   "sources": [
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/weekly_startups_promotion_thread_19_october_2026/ (thread by AutoModerator, 2026-10-19; read via an Apify Reddit scraper because direct fetches were blocked)",
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/comment/phps86c/ (u/Slight_Big_43 comment, 2026-10-19T15:47:58Z)",
+    "https://diyatechsolutions.com (homepage, footer phone/email/address, products, services, testimonials)",
+    "https://rdap.verisign.com/com/v1/domain/diyatechsolutions.com (domain registered 2026-01-05, GoDaddy)",
+    "https://www.linkedin.com/in/muthulaskhmi-vivek-108314445 (public stub: Muthulaskhmi Vivek, Virudhunagar, Tamil Nadu)"
+   ],
+   "fit_for_iv_infotech": "Poor as a client. Diya Tech Solutions sells the same things IV Infotech sells (custom web, CRM/ERP, mobile apps, WhatsApp invoice sharing), so any pitch would go to a competitor. The only conceivable angle is a low-priority vendor partnership (subcontracting or white-label AI automation), and the post gives no evidence of interest in that. Ability to pay is low, since it is apparently a solo studio in Srivilliputtur with a site under 10 months old. Recommendation: do not run a client campaign. Park it in a partner or competitor watch list."
+  },
+  "skeptic": {
+   "lead": "diya_tech",
+   "agree_with_grade": true,
+   "final_grade": "C",
+   "corrections": [
+    "The first verifier's facts all held up on re-check. I found no mistakes that would change the grade.",
+    "Post exists: comment id phps86c by u/Slight_Big_43, posted 2026-10-19T15:47:58Z, in the AutoModerator weekly promotion thread of 19 Oct 2026. I read it through the trudax/reddit-scraper-lite Apify actor, because direct Reddit fetches were blocked. Gemini's date of 21 Oct is wrong. Both dates fall inside the 8-22 Oct window.",
+    "Quote check: Gemini dropped the parenthetical '(like generic CRMs or basic CMSs)' without marking it. The closing line 'Open to feedback, collaborations, or just connecting with fellow builders in the community!' is exact.",
+    "The comment text contains no personal name. 'Muthulakshmi Vivek' comes only from the LinkedIn link slug 'muthulaskhmi-vivek-108314445' (spelled Muthulaskhmi). The company site names no founder. LinkedIn returned HTTP 999 to me, so I could not independently view the profile and relied on the first verifier's stub reading (name and Virudhunagar only, no company).",
+    "Intent is none, not even implied. The comment is a vendor pitch. 'Off-the-shelf tools become too expensive or restrictive' is their sales line aimed at prospects, not their own pain point. They ask for 'Startups and agency founders looking for a reliable, dedicated technical lead / full-stack developer' and for networking. The comment never mentions n8n, WhatsApp automation, AI agents or white-labelling, so Gemini's 'white-label n8n + WhatsApp AI agent partner' signal is invented. Their stated stack is Laravel, React, MySQL, REST and Tailwind.",
+    "Company is a software vendor and a direct competitor. The site diyatechsolutions.com sells custom web development, mobile apps, CRM implementation and tailored ERPs. Its own products are QuickBill/KariBill (POS and GST billing with WhatsApp invoice sharing), QuickSite, Diya CRM, JewelSoft, Clinical Care and Academy/NEET Prep. The domain was registered 2026-01-05 (RDAP), so it is under 10 months old. The post says 'I', which points to a solo or very small studio. The site names no team.",
+    "Phone +91-9159523221 is published by the business on its own site footer. The HTML has tel:+919159523221 and mailto:sales@diyatechsolutions.com. There is no wa.me or api.whatsapp link, and nothing labels the number as WhatsApp. WhatsApp appears only as a feature of their own products. A web search for the number and for a Google Maps, Justdial or IndiaMART listing for 'Diya Tech Solutions Srivilliputtur' returned nothing, so there is no second source. The number is a sales-enquiry line for a vendor, not a buyer contact.",
+    "Testimonial and client names (Thowfiq/Superbrand, Mohammed/Masha Imports, Rajesh/Horizon Properties, Spreky) are on the site and are unverified. They do not change the grade.",
+    "A different comment in the same thread (Predator_CR, 20 Oct) does explicitly ask for a web designer or agency. That is unrelated to this lead and was not assessed."
+   ],
+   "strongest_objection": "The strongest case for upgrading to B is that this is a real, recent (19 Oct), in-window post by a real founder with a business-published phone and a stated wish for 'collaborations'. A small 10-month-old studio could plausibly want a white-label AI/WhatsApp automation partner. The evidence does not support that. The comment never mentions automation or n8n, and what it asks for is to be hired as a technical lead by startups and agencies. Diya Tech sells the same CRM, ERP, web and app work as IV Infotech, so a cold pitch would go to a competitor, not a buyer. The number is not labelled WhatsApp. Ability to pay is low for a solo studio in Srivilliputtur. That makes this a vendor-to-vendor contact to park on a partner or competitor watch list, not a client lead. REJECT does not fit, because the post, company and number are all real.",
+   "sources": [
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/weekly_startups_promotion_thread_19_october_2026/",
+    "https://www.reddit.com/r/StartUpIndia/comments/1x9l7x1/comment/phps86c/",
+    "https://diyatechsolutions.com",
+    "https://rdap.verisign.com/com/v1/domain/diyatechsolutions.com",
+    "https://www.linkedin.com/in/muthulaskhmi-vivek-108314445"
+   ]
+  }
+ },
+ {
+  "lead": "trioangle",
+  "verify": {
+   "lead": "trioangle",
+   "post_exists": "yes",
+   "post_date": "2026-10-15 (topic 321607 at 05:51 UTC, topic 321611 at 05:58 UTC, both by user lunagracie). Both inside the 8-22 Oct window.",
+   "post_author": "lunagracie (n8n community username; profile hidden, no real name, no title or bio). Not named Vignesh or Bowshul. Only link to Trioangle is the sign-off lines in the posts (WhatsApp +91 63796 30152, sales@trioangle.com).",
+   "quote_verified": "partial",
+   "intent": "implied",
+   "intent_note": "Both posts are technical design questions in the n8n forum category \"Help me Build my Workflow\". Post 321607 (multi-service app: rides, food, grocery, home services) lists order notifications, vendor onboarding, customer support routing, payment monitoring and reporting, then asks: one workflow per service or a shared workflow with branches, and how to handle errors and duplicate processing on a shared webhook. Post 321611 (handyman platform) asks: webhooks or DB polling for booking events, and how to handle retries, duplicates and failed notifications. The author never asks anyone to build it, never gives a budget or timeline, and says only that they are \"exploring\". The five replies already given are pattern advice. Two replies (Odoemelamair, Zeke_2007/Abdulrasaq) disclose Pond AI and pitch their own automation services. Both posts end with a sales WhatsApp number and sales email, which looks like lead-gen signage. At most this is an implied or weak signal that Trioangle is researching n8n for its own product line. A cold WhatsApp offering AI automation would not be relevant to an explicit need, because there is none.",
+   "company_role": "agency_or_vendor",
+   "company_note": "trioangle.com says it is an AI-powered web and mobile app development company selling ready-made clone scripts (Makent = Airbnb clone, GoferJek = Gojek clone, plus delivery, rental, e-commerce, crypto and NFT white-label products) and custom development. Home page says 100+ team members. About page says Madurai head office (No 12/9, Santhosh Raj Plaza, 3rd Floor, Subburaman Street, Gandhi Nagar, Madurai 625020) and a branch in Tulsa, USA. About page lists Vignesh Palanivel as Co-Founder and CEO and Bowshul Sheik Rahaman N as Co-Founder and COO, so the founder names are confirmed. CB Insights also lists Bowshul as co-founder and COO. Founded 2015/2016, operating, with Trustpilot and Clutch listings. Independent listings differ on size (Clutch: 10-49 employees). GoferJek is a multi-service script covering handyman, food and taxi, which is exactly the product the two posts describe. So the author is almost certainly a Trioangle staff member researching automation for its own clone products. Trioangle is a software vendor and competitor of IV Infotech, not an end business.",
+   "person_belongs_to_company": "probably",
+   "contact_verified": "partial",
+   "contact_note": "+91 63796 30152: published by the business. The trioangle.com home page and About page use it in wa.me links, and the About page lists it as WhatsApp. It is a sales/enquiry line and it also appears in the posts. +91 98436 56616: published by the business on the trioangle.com About page, but labelled \"WhatsApp for career inquiries\" (HR/careers), not a sales or decision-maker line. I found no Google Maps or Justdial listing for it, so Gemini's \"Google Maps\" source is unsupported. Web searches found no phone number for it on any third-party directory. The only other number I saw was a US number (+1 415-231-3705) on a bitscale.ai directory profile, which I could not confirm and which is not used by Gemini. Also published on the site: sales@trioangle.com, hr@trioangle.com, Telegram @Trioangle_Technologies, and a Calendly booking link. The numbers are real and business-published, but the lead is a vendor.",
+   "wrong_or_unsupported_claims": [
+    "The business-vs-vendor framing is wrong: Gemini lists Trioangle as a client who needs automation, but it is a 100+ person software vendor selling clone scripts. It is a competitor or at best a white-label partner.",
+    "Gemini says the posts show Trioangle 'needs' help. Neither post asks anyone to build or hire anything. They are generic how-to-design questions, 'exploring' language only, and each ends with a sales WhatsApp number and sales email.",
+    "'Vendor onboarding verification' and 'daily reports' are stretched. The post says 'vendor onboarding' and 'reporting'/daily reporting. 'Verification' and 'provider matching' are Gemini wording; the handyman post says 'provider assignment notifications'.",
+    "120 employees is not supported. The company site says 100+ team members, and Clutch lists 10-49.",
+    "+91 98436 56616 attributed to 'Google Maps' is unsupported. I found it only on the About page, labelled WhatsApp for career inquiries. No Google Maps or Justdial listing was found.",
+    "Gemini's description of the second number as 'WhatsApp, on the post and support page' is half right: it is on the posts and the site (home and About page), but I did not locate a 'support page' that carries it.",
+    "Authorship is inferred, not shown. lunagracie has a hidden profile and no name. The Trioangle link rests only on the sign-off contact lines. Gemini does not clearly say this.",
+    "Vignesh Palanivel and Bowshul Sheik Rahaman as co-founders: confirmed on the trioangle.com About page (CEO and COO). Not wrong, but they are not the post authors, and nothing links either to the n8n account.",
+    "Quote check: only paraphrase could be confirmed (the fetch tool returned summaries, not verbatim text). The topics Gemini lists are present, so the quote is only partly verified."
+   ],
+   "grade": "C",
+   "reason": "The posts are real, dated 15 Oct 2026 (in window), and the contact numbers are business-published. But there is no explicit ask. They are forum design questions from what is almost certainly a Trioangle staff member researching n8n for its own GoferJek-type clone products. Trioangle is a software vendor with a 100+ person in-house team, i.e. a competitor, and very unlikely to buy automation from a small Mehsana firm. Contact is a sales/HR line, not a buyer. Poor fit; only a possible white-label or partnership note at best.",
+   "sources": [
+    "https://community.n8n.io/t/using-n8n-to-automate-workflows-in-a-multi-service-app/321607",
+    "https://community.n8n.io/t/using-n8n-to-automate-workflows-in-a-multi-service-app/321607.json",
+    "https://community.n8n.io/t/automating-handyman-service-bookings-and-notifications-with-n8n/321611",
+    "https://community.n8n.io/t/automating-handyman-service-bookings-and-notifications-with-n8n/321611.json",
+    "https://community.n8n.io/u/lunagracie.json",
+    "https://trioangle.com",
+    "https://www.trioangle.com/about-us/",
+    "https://www.cbinsights.com/company/trioangle-technologies/people",
+    "https://bitscale.ai/directory/trioangle-technologies",
+    "https://alternativeto.net/software/goferjek--gojek-clone/about/",
+    "https://clutch.co/profile/trioangle"
+   ],
+   "fit_for_iv_infotech": "Poor. Trioangle builds the same kind of product IV Infotech sells (custom software, apps, marketplaces) and has 100+ staff, so it would build automation in-house or buy from a niche AI vendor (Pond AI replies already pitched in the thread). It has no stated budget or request. Madurai is far from Mehsana. Do not contact it as a prospect. If anything, treat it as a competitor and a possible white-label or subcontract partner only after a deliberate decision."
+  },
+  "skeptic": {
+   "lead": "trioangle",
+   "agree_with_grade": false,
+   "final_grade": "REJECT",
+   "corrections": [
+    "Wrong premise in first verifier: it called the author 'almost certainly a Trioangle staff member researching n8n for its own clone products'. The evidence shows a marketing account, not research. n8n forum search shows lunagracie has posted 7 topics from 2025-11-10 to 2026-10-15: TikTok clone (219200), taxi app x3 (220676, 234349, 241677), handyman (300789), multi-service (321607) and handyman (321611). Each is written like a blog post and ends with the same sign-off 'WhatsApp - +91 63796 30152 / Email ID - sales@trioangle.com'. Three of them (219200 tiktok-clone, 300789 handyman-script, 220676) link to trioangle.com product pages ('Tap to visit them' / 'To Know More'). So the 15 Oct 2026 posts are recurring lead-gen/SEO posts by Trioangle. They are not a buying signal.",
+    "Intent should be 'none', not 'implied'. The first post of 321611 (read as raw JSON) describes what automation 'could' do, and asks only a technical question: webhooks or DB polling, retries, duplicate events. The first post of 321607 asks only 'separate n8n workflow for each service or a shared workflow with conditional branches'. Neither asks anyone to build, hire or quote. Both are inside the 'Help me Build my Workflow' category (id 36) and carry the auto tag 'bug:unconfirmed'; the tag is not meaningful. The post wording itself ('A multi-service platform can bring together...') reads as a vendor describing its product category.",
+    "Authorship is better established than the first verifier said. The profile is hidden and has no name, but the identical sign-off number and email across all 7 topics, plus product-page links in the earlier ones, tie the account to Trioangle. The first verifier left this at 'probably'.",
+    "The first verifier was too harsh on Gemini's paraphrase. Post 321607 does say 'Vendor onboarding: Trigger verification tasks when a new service provider registers', 'Payment monitoring: Flag failed payment events', and 'Collect daily booking and order data'. Post 321611 says 'Notify an available handyman when a new service request matches their skills and availability'. So 'vendor onboarding verification', 'failed payment alerts', 'daily reports' and 'provider matching' are fair paraphrases, not Gemini inventions. The real error is the framing (client vs vendor), not the wording.",
+    "The first verifier said it could not find a 'support page' carrying +91 63796 30152. It exists: trioangle.com/support/ (the Support Policy page) has this number in a footer WhatsApp icon, with a pre-filled message 'let's discuss about your clone script'. The home page footer has it unlabelled, and the About page labels it 'Whatsapp'. So the number is a clone-script sales line, which confirms Gemini's 'support page' claim but undercuts any buyer reading of it.",
+    "The +91 98436 56616 point is confirmed and sharper: the About page lists it as 'Whatsapp' under the 'Career' heading, with the pre-filled message 'regarding job positions. Waiting for your call.' It is an HR line. I found no Google Maps or Justdial listing for it. I could not open Google Maps itself, so that part is UNVERIFIABLE, but no web search result carries it, so Gemini's 'Google Maps' source is unsupported.",
+    "Size claim: Gemini's '120-employee' is unsupported. The site says '100 + Expert Team Members', and Clutch says 10-49. Clutch also lists a $1,000+ minimum project size, a rate under $25/hr, Madurai HQ, and founding in 2016. The founders Vignesh Palanivel (CEO) and Bowshul Sheik Rahaman N (COO) are confirmed on the About page.",
+    "The reply detail was muddled in the first verifier's note. In thread 321607 Odoemelamair discloses 'I am affiliated with Pond AI'; the summary says Abdulrasaq discloses it too, but I could not read that line in the raw text. In thread 321611 Zeke_2007 pitches Pond AI (7-day refund, free flow mapping). The point stands: outside automation vendors are already replying to these posts.",
+    "Dates confirmed by the forum JSON: topic 321607 created 2026-10-15T05:51:50Z, topic 321611 created 2026-10-15T05:58:13Z, both in the 8-22 Oct window. The date is not the problem."
+   ],
+   "strongest_objection": "The best case for C over REJECT is that the posts really exist and are in the window, Trioangle is a real operating company (Madurai, 2016, Clutch listing), and +91 63796 30152 is a number the business publishes itself. Under a literal reading of the rubric, a vendor with no real intent is C, and REJECT is for leads that are not what Gemini says or cannot be verified. Against that, Gemini presents these posts as evidence that Trioangle needs automation built, and that premise is false. The posts are Trioangle's own recurring marketing, and it sells the same multi-service and handyman clone scripts, so it is a competitor and not a buyer. I also cannot rule out that Trioangle really does want n8n help in-house, but there is no ask, budget or timeline, and the 7-post history points the other way. A cold WhatsApp offering AI automation to a sales line that answers 'let's discuss about your clone script' has no relevant hook. Either grade means do not contact. I chose REJECT because the signal itself is a marketing artefact. C would be acceptable if the rubric is read literally.",
+   "sources": [
+    "https://community.n8n.io/t/using-n8n-to-automate-workflows-in-a-multi-service-app/321607 (raw JSON read; post 1 by lunagracie 2026-10-15T05:51:50Z; replies by n8n bot, Kjooleng, operantsolo, Odoemelamair, Abdulrasaq)",
+    "https://community.n8n.io/t/automating-handyman-service-bookings-and-notifications-with-n8n/321611 (raw JSON read; post 1 by lunagracie 2026-10-15T05:58:13Z; replies by Kjooleng, Loopwise_AI_Loopwise, Stephen3, mamun379, Zeke_2007)",
+    "https://community.n8n.io/u/lunagracie.json (profile_hidden true, empty name)",
+    "https://community.n8n.io/search.json?q=%40lunagracie (7 topics: 219200, 220676, 234349, 241677, 300789, 321607, 321611)",
+    "https://community.n8n.io/search.json?q=sales%40trioangle.com (topics 300789, 321607, 321611 carry the same sign-off)",
+    "https://community.n8n.io/t/300789.json (links to https://www.trioangle.com/handyman-script/)",
+    "https://community.n8n.io/t/219200.json (links to https://www.trioangle.com/tiktok-clone/)",
+    "https://www.trioangle.com/about-us/ (Whatsapp +91 6379630152; Whatsapp +91 9843656616 under Career; Madurai and Tulsa addresses; founders)",
+    "https://www.trioangle.com/ (100+ Expert Team Members; footer WhatsApp +916379630152; Support link)",
+    "https://www.trioangle.com/support/ (Support Policy page; footer WhatsApp +916379630152; 'clone script' pre-filled message)",
+    "https://clutch.co/profile/trioangle (10-49 employees, $1,000+ min project, <$25/hr, founded 2016)",
+    "https://bitscale.ai/directory/trioangle-technologies (web search: only a US number listed; no Google Maps or Justdial listing found)"
+   ]
+  }
+ }
+]

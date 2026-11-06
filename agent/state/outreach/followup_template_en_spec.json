@@ -1,0 +1,21 @@
+{
+  "name": "iv_en_followup_v1",
+  "language": "en",
+  "category": "MARKETING",
+  "body": "Hi {{1}}, a short follow-up from IV Infotech, Mehsana. Earlier we sent a short video about automatic WhatsApp replies for {{2}}.\n\nIf someone taps the WhatsApp button on a {{2}} ad late in the evening, an automatic first reply can go out while your team is offline.\n\nWant to see it for {{2}}? Tap \"Yes, send the demo\" below.",
+  "body_examples": [
+    "Sunrise Heights team",
+    "Sunrise Heights"
+  ],
+  "footer": "Reply STOP to opt out",
+  "buttons": [
+    {
+      "type": "QUICK_REPLY",
+      "text": "Yes, send the demo"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "No, thanks"
+    }
+  ]
+}

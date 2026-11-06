@@ -1,0 +1,22 @@
+[
+ {
+  "code": "KSDWM",
+  "label": "owner test email (reply path)",
+  "group": "",
+  "cmd": [
+   "python",
+   "agent/tools/send_email.py",
+   "--to",
+   "hardikv682@gmail.com",
+   "--subject",
+   "[Test] Great Spaces Aaroham: automatic WhatsApp replies",
+   "--body-file",
+   "agent/state/drafts/owner_test_reply/email_test.txt",
+   "--lead",
+   "Owner test: Great Spaces",
+   "--live",
+   "--approval",
+   "KSDWM"
+  ]
+ }
+]

@@ -1,0 +1,25 @@
+{
+  "name": "iv_detailing_video_hi_v2",
+  "language": "hi",
+  "category": "MARKETING",
+  "header": {
+    "format": "VIDEO",
+    "file": "../outreach/assets/SAMPLE_detailing_hi_v1.mp4"
+  },
+  "body": "नमस्ते {{1}} टीम, हम IV Infotech, मेहसाणा से हैं।\n\nऑनलाइन आपके स्टूडियो को देखते हुए हमने गौर किया कि {{2}}।\n\nहम एक सिंपल पेज बनाते हैं जो आपका काम दिखाए और बुकिंग आसान करे, और Google प्रोफ़ाइल की देखभाल करते हैं। ऊपर वाला वीडियो (करीब एक मिनट, AI आवाज़ में) दिखाता है: कार के साइज़ के हिसाब से पैकेज, पहले-बाद की फ़ोटो और WhatsApp पर बुकिंग का बटन।\n\nऔर जानना चाहेंगे? नीचे \"हाँ, बताइए\" दबा दीजिए।",
+  "body_examples": [
+    "Sunrise Car Studio",
+    "आपकी Google लिस्टिंग का वेबसाइट बटन Instagram प्रोफ़ाइल पर खुलता है"
+  ],
+  "footer": "मैसेज बंद करने के लिए STOP लिखें",
+  "buttons": [
+    {
+      "type": "QUICK_REPLY",
+      "text": "हाँ, बताइए"
+    },
+    {
+      "type": "QUICK_REPLY",
+      "text": "अभी नहीं"
+    }
+  ]
+}

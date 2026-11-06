@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Overview - Agent Console{% endblock %}
+{% block kicker %}{{ today.strftime('%A, %d %B') }}{% endblock %}
+{% block header %}Overview{% endblock %}
+{% block actions %}
+<nav class="seg" aria-label="Time range">
+  {% for key, label in (('today', 'Today'), ('7d', '7 days'), ('30d', '30 days')) %}
+  <a href="{{ url_for('overview', range=key) }}" {% if rng == key %}aria-current="true"{% endif %}>{{ label }}</a>
+  {% endfor %}
+</nav>
+{% endblock %}
+
+{% block main %}
+<div class="bento">
+  <section class="tile glass hero" aria-labelledby="h-hero">
+    <p class="kicker">{{ greeting }}</p>
+    <h2 id="h-hero">Here is what your agent is doing</h2>
+    <p class="muted hero-line"><span class="pill state-{{ agent_state }}"><span class="dot" aria-hidden="true"></span>{{ agent_label }}</span>{% if agent_seen %}<span>last seen {{ agent_seen }}</span>{% endif %}</p>
+    <div class="spark-wrap">
+      <svg class="spark" viewBox="0 0 200 48" preserveAspectRatio="none" role="img" aria-label="Agent activity over the last {{ spark.days }} days: {{ spark.total }} events, busiest day {{ spark.peak }}">
+        <polygon class="spark-area" points="{{ spark.area }}"/><polyline class="spark-line" points="{{ spark.line }}"/>
+      </svg>
+      <p class="spark-cap"><span class="num">{{ spark.total }}</span> events in the last {{ spark.days }} days</p>
+    </div>
+  </section>
+
+  <section class="tile glass limits" aria-labelledby="h-res">
+    <h2 id="h-res" class="tile-title">Limits and credits</h2>
+    {% if meters %}
+    <ul class="meter-list">
+      {% for m in meters %}{% set p = pct(m.data.used, m.data.cap) %}
+      <li>
+        <div class="meter-row"><span>{{ m.data.label or m.key }}</span><span class="num muted">{{ m.data.used if m.data.used is not none else '-' }}{% if m.data.cap %} of {{ m.data.cap }}{% endif %} {{ m.data.unit or '' }}</span></div>
+        {% if p is not none %}<progress class="bar {{ 'bad' if p >= 95 else 'warn' if p >= 80 else '' }}" max="100" value="{{ p }}" aria-label="{{ m.data.label or m.key }}">{{ p }}%</progress>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty compact"><h3>No numbers yet</h3><p>The agent reports Apify spend, video credits and Claude usage here.</p></div>
+    {% endif %}
+  </section>
+
+  {% for k in kpis %}
+  <article class="tile kpi tone-{{ loop.index }}">
+    <div class="kpi-top"><span class="clay">{{ icon(k.icon) }}</span><span class="kpi-label">{{ k.label }}</span></div>
+    <div class="kpi-value num">{{ k.value }}</div>
+    <div class="kpi-sub">{{ k.sub }}{% if k.href %} - <a class="kpi-go" href="{{ k.href }}">View leads</a>{% endif %}</div>
+  </article>
+  {% endfor %}
+
+  {# Pipeline: har lead sirf ek stage me (jahan abhi hai). Bar = poori leads me se hissa; number click karo to wahi leads /leads me khulti hain. #}
+  {% macro pipe_body(s, total) -%}
+  <span class="pipe-top"><span class="pipe-no" aria-hidden="true">{{ s.no }}</span><span class="pipe-label">{{ s.label }}</span></span>
+  <span class="pipe-count num">{{ s.count }}</span>
+  <span class="pipe-sub">{{ s.sub }}</span>
+  <progress class="bar" max="100" value="{{ s.pct }}" aria-label="{{ s.label }}: {{ s.count }} of {{ total }} leads">{{ s.pct }}%</progress>
+  {%- endmacro %}
+  <section class="tile glass pipeline" aria-labelledby="h-pipe">
+    <div class="tile-head"><h2 id="h-pipe" class="tile-title">Pipeline</h2>{% if pipeline.total %}<a class="link" href="{{ url_for('leads') }}">All leads</a>{% endif %}</div>
+    {% if pipeline.total %}
+    <ol class="pipe">
+      {% for s in pipeline.stages %}
+      <li>{% if s.href %}<a class="pipe-step" href="{{ s.href }}">{{ pipe_body(s, pipeline.total) }}</a>{% else %}<div class="pipe-step">{{ pipe_body(s, pipeline.total) }}</div>{% endif %}</li>
+      {% endfor %}
+    </ol>
+    <p class="muted small pipe-foot">Each lead is counted once, at the furthest stage it has reached. {{ pipeline.total }} lead{{ '' if pipeline.total == 1 else 's' }} in the pipeline{% if pipeline.closed %}; {% if pipeline.closed_href %}<a class="link" href="{{ pipeline.closed_href }}">{{ pipeline.closed }} closed</a>{% else %}{{ pipeline.closed }} closed{% endif %} (lost, rejected or asked to stop) not counted{% endif %}.</p>
+    {% else %}
+    <div class="empty compact">{{ icon('users') }}<h3>No leads in the pipeline yet</h3><p>When the agent finds leads and messages them, you see how far each one got.</p></div>
+    {% endif %}
+  </section>
+
+  <section class="tile glass activity" aria-labelledby="h-activity">
+    <h2 id="h-activity" class="tile-title">Agent activity</h2>
+    {% if activity %}
+    <ul class="feed">
+      {% for a in activity %}
+      <li>
+        <span class="feed-icon">{{ icon('send' if a.data.kind in ('sent','email_sent','wa_sent','whatsapp_sent','template_sent') else 'reply' if a.data.kind in ('reply','reply_received','lead_reply') else 'users' if a.data.kind == 'lead_found' else 'activity') }}</span>
+        <div class="feed-body"><p>{{ a.data.text or a.data.kind or 'Activity' }}</p>{% if a.data.campaign %}<small>{{ a.data.campaign }}</small>{% endif %}</div>
+        <time class="muted" datetime="{{ a.created_at }}">{{ a.created_at|ago }}</time>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty">{{ icon('activity') }}<h3>No activity yet</h3><p>When the agent finds leads, sends messages or gets replies, each step shows up here.</p></div>
+    {% endif %}
+  </section>
+
+  <section class="tile glass upcoming" aria-labelledby="h-up">
+    <div class="tile-head"><h2 id="h-up" class="tile-title">Coming up</h2><a class="link" href="{{ url_for('campaigns') }}">Calendar</a></div>
+    {% if upcoming %}
+    <ul class="agenda">
+      {% for u in upcoming %}
+      <li><span class="swatch {{ u.status }}" aria-hidden="true"></span><div><p>{{ u.title }}</p><small class="muted">{{ u.when }}</small></div></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty compact">{{ icon('calendar') }}<h3>Nothing scheduled</h3><p>Campaign dates and planned sends appear here.</p></div>
+    {% endif %}
+  </section>
+
+  <section class="tile glass attention" aria-labelledby="h-attn">
+    <h2 id="h-attn" class="tile-title">Needs your attention</h2>
+    {% if attention %}
+    <ul class="feed">
+      {% for e in attention %}
+      <li>
+        <span class="feed-icon warn">{{ icon('alert') }}</span>
+        <div class="feed-body"><p>{{ e.data.title or e.data.text or e.type|capitalize }}</p><small>{{ e.type|capitalize }} - {{ e.data.status or 'open' }}</small></div>
+        <time class="muted" datetime="{{ e.updated_at }}">{{ e.updated_at|ago }}</time>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty compact">{{ icon('check') }}<h3>Nothing waiting for you</h3><p>Approvals and hand-offs will appear here.</p></div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
